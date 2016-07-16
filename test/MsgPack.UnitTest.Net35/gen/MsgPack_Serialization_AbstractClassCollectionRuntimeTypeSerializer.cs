@@ -17,15 +17,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.ObjectModel.KeyedCollection<string, string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType> this_PackValueOfValueDelegate;
-        
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.AbstractClassCollectionRuntimeType, System.Collections.ObjectModel.KeyedCollection<string, string>> this_SetUnpackedValueOfValueDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.AbstractClassCollectionRuntimeType, bool>> _nullCheckersTable;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassCollectionRuntimeType, int, int> this_UnpackValueOfValueDelegate;
+        private System.Action<MsgPack.Serialization.AbstractClassCollectionRuntimeType, System.Collections.ObjectModel.KeyedCollection<string, string>> this_SetUnpackedValueOfValueDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -46,6 +44,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType>>(1);
             packOperationTable["Value"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType>(this.PackValueOfValue);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.AbstractClassCollectionRuntimeType, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.AbstractClassCollectionRuntimeType, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.AbstractClassCollectionRuntimeType, bool>>(1);
+            nullCheckerTable["Value"] = new System.Func<MsgPack.Serialization.AbstractClassCollectionRuntimeType, bool>(this.IsValueNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassCollectionRuntimeType, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassCollectionRuntimeType, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassCollectionRuntimeType, int, int>[1];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassCollectionRuntimeType, int, int>(this.UnpackValueOfValue);
@@ -56,21 +58,33 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Value"};
-            this.this_PackValueOfValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType>(this.PackValueOfValue);
             this.this_SetUnpackedValueOfValueDelegate = new System.Action<MsgPack.Serialization.AbstractClassCollectionRuntimeType, System.Collections.ObjectModel.KeyedCollection<string, string>>(this.SetUnpackedValueOfValue);
-            this.this_UnpackValueOfValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassCollectionRuntimeType, int, int>(this.UnpackValueOfValue);
         }
         
         private void PackValueOfValue(MsgPack.Packer packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType objectTree) {
             this._serializer0.PackTo(packer, objectTree.Value);
         }
         
+        private bool IsValueNull(MsgPack.Serialization.AbstractClassCollectionRuntimeType objectTree) {
+            return (objectTree.Value == null);
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.AbstractClassCollectionRuntimeType objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.AbstractClassCollectionRuntimeType> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.AbstractClassCollectionRuntimeType>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.AbstractClassCollectionRuntimeType> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.AbstractClassCollectionRuntimeType>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -79,7 +93,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.AbstractClassCollectionRuntimeType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.ObjectModel.KeyedCollection<string, string>), "Value", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfValueDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.AbstractClassCollectionRuntimeType, System.Collections.ObjectModel.KeyedCollection<string, string>> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.AbstractClassCollectionRuntimeType, System.Collections.ObjectModel.KeyedCollection<string, string>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(System.Collections.ObjectModel.KeyedCollection<string, string>);
+            unpackHelperParameters.MemberName = "Value";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = null;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfValueDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         protected internal override MsgPack.Serialization.AbstractClassCollectionRuntimeType UnpackFromCore(MsgPack.Unpacker unpacker) {

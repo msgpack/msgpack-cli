@@ -17,31 +17,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.List<int>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass> this_PackValueOfCollectionReadOnlyPropertyDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<int> _serializer1;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass> this_PackValueOfPublicFieldDelegate;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass> this_PackValueOfPublicPropertyDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PlainClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.PlainClass, bool>> _nullCheckersTable;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int> this_UnpackValueOfCollectionReadOnlyPropertyDelegate;
+        private System.Action<MsgPack.Serialization.PlainClass, System.Collections.Generic.List<int>> this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate;
         
         private System.Action<MsgPack.Serialization.PlainClass, int> this_SetUnpackedValueOfPublicFieldDelegate;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int> this_UnpackValueOfPublicFieldDelegate;
-        
         private System.Action<MsgPack.Serialization.PlainClass, int> this_SetUnpackedValueOfPublicPropertyDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int> this_UnpackValueOfPublicPropertyDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -69,6 +59,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["PublicField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfPublicField);
             packOperationTable["PublicProperty"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfPublicProperty);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.PlainClass, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.PlainClass, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.PlainClass, bool>>(1);
+            nullCheckerTable["CollectionReadOnlyProperty"] = new System.Func<MsgPack.Serialization.PlainClass, bool>(this.IsCollectionReadOnlyPropertyNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int>[3];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int>(this.UnpackValueOfCollectionReadOnlyProperty);
@@ -85,20 +79,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "CollectionReadOnlyProperty",
                     "PublicField",
                     "PublicProperty"};
-            this.this_PackValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfCollectionReadOnlyProperty);
-            this.this_PackValueOfPublicFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfPublicField);
-            this.this_PackValueOfPublicPropertyDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PlainClass>(this.PackValueOfPublicProperty);
             this.this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Serialization.PlainClass, System.Collections.Generic.List<int>>(this.SetUnpackedValueOfCollectionReadOnlyProperty);
-            this.this_UnpackValueOfCollectionReadOnlyPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int>(this.UnpackValueOfCollectionReadOnlyProperty);
             this.this_SetUnpackedValueOfPublicFieldDelegate = new System.Action<MsgPack.Serialization.PlainClass, int>(this.SetUnpackedValueOfPublicField);
             this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
-            this.this_UnpackValueOfPublicFieldDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int>(this.UnpackValueOfPublicField);
             this.this_SetUnpackedValueOfPublicPropertyDelegate = new System.Action<MsgPack.Serialization.PlainClass, int>(this.SetUnpackedValueOfPublicProperty);
-            this.this_UnpackValueOfPublicPropertyDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PlainClass, int, int>(this.UnpackValueOfPublicProperty);
         }
         
         private void PackValueOfCollectionReadOnlyProperty(MsgPack.Packer packer, MsgPack.Serialization.PlainClass objectTree) {
             this._serializer0.PackTo(packer, objectTree.CollectionReadOnlyProperty);
+        }
+        
+        private bool IsCollectionReadOnlyPropertyNull(MsgPack.Serialization.PlainClass objectTree) {
+            return (objectTree.CollectionReadOnlyProperty == null);
         }
         
         private void PackValueOfPublicField(MsgPack.Packer packer, MsgPack.Serialization.PlainClass objectTree) {
@@ -110,11 +102,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PlainClass objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.PlainClass> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.PlainClass>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.PlainClass> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.PlainClass>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -137,7 +139,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfCollectionReadOnlyProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.List<int>), "CollectionReadOnlyProperty", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PlainClass, System.Collections.Generic.List<int>> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PlainClass, System.Collections.Generic.List<int>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(System.Collections.Generic.List<int>);
+            unpackHelperParameters.MemberName = "CollectionReadOnlyProperty";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = null;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfCollectionReadOnlyPropertyDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         private void SetUnpackedValueOfPublicField(MsgPack.Serialization.PlainClass unpackingContext, int unpackedValue) {
@@ -145,7 +158,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPublicField(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int), "PublicField", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicFieldDelegate);
+            MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.PlainClass, int> unpackHelperParameters0 = default(MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.PlainClass, int>);
+            unpackHelperParameters0.Unpacker = unpacker;
+            unpackHelperParameters0.UnpackingContext = unpackingContext;
+            unpackHelperParameters0.Serializer = this._serializer1;
+            unpackHelperParameters0.ItemsCount = itemsCount;
+            unpackHelperParameters0.Unpacked = indexOfItem;
+            unpackHelperParameters0.TargetObjectType = typeof(int);
+            unpackHelperParameters0.MemberName = "PublicField";
+            unpackHelperParameters0.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
+            unpackHelperParameters0.Setter = this.this_SetUnpackedValueOfPublicFieldDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(ref unpackHelperParameters0);
         }
         
         private void SetUnpackedValueOfPublicProperty(MsgPack.Serialization.PlainClass unpackingContext, int unpackedValue) {
@@ -153,7 +176,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfPublicProperty(MsgPack.Unpacker unpacker, MsgPack.Serialization.PlainClass unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int), "PublicProperty", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfPublicPropertyDelegate);
+            MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.PlainClass, int> unpackHelperParameters1 = default(MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.PlainClass, int>);
+            unpackHelperParameters1.Unpacker = unpacker;
+            unpackHelperParameters1.UnpackingContext = unpackingContext;
+            unpackHelperParameters1.Serializer = this._serializer1;
+            unpackHelperParameters1.ItemsCount = itemsCount;
+            unpackHelperParameters1.Unpacked = indexOfItem;
+            unpackHelperParameters1.TargetObjectType = typeof(int);
+            unpackHelperParameters1.MemberName = "PublicProperty";
+            unpackHelperParameters1.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
+            unpackHelperParameters1.Setter = this.this_SetUnpackedValueOfPublicPropertyDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(ref unpackHelperParameters1);
         }
         
         protected internal override MsgPack.Serialization.PlainClass UnpackFromCore(MsgPack.Unpacker unpacker) {

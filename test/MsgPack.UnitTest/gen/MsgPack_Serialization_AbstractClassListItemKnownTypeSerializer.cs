@@ -17,13 +17,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType> this_PackValueOfValueDelegate;
-        
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType>> _packOperationTable;
         
-        private System.Func<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfValueAsyncDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.AbstractClassListItemKnownType, bool>> _nullCheckersTable;
         
         private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
@@ -31,15 +29,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Action<MsgPack.Serialization.AbstractClassListItemKnownType, System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>> this_SetUnpackedValueOfValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int> this_UnpackValueOfValueDelegate;
-        
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int>> _unpackOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int>> _unpackOperationTable;
-        
-        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfValueAsyncDelegate;
         
         private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
         
@@ -71,6 +65,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
             packOperationTableAsync["Value"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfValueAsync);
             this._packOperationTableAsync = packOperationTableAsync;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.AbstractClassListItemKnownType, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.AbstractClassListItemKnownType, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.AbstractClassListItemKnownType, bool>>(1);
+            nullCheckerTable["Value"] = new System.Func<MsgPack.Serialization.AbstractClassListItemKnownType, bool>(this.IsValueNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int>[1];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int>(this.UnpackValueOfValue);
@@ -89,23 +87,33 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "Value"};
-            this.this_PackValueOfValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType>(this.PackValueOfValue);
-            this.this_PackValueOfValueAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.AbstractClassListItemKnownType, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfValueAsync);
             this.this_SetUnpackedValueOfValueDelegate = new System.Action<MsgPack.Serialization.AbstractClassListItemKnownType, System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>>(this.SetUnpackedValueOfValue);
-            this.this_UnpackValueOfValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int>(this.UnpackValueOfValue);
-            this.this_UnpackValueOfValueAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AbstractClassListItemKnownType, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfValueAsync);
         }
         
         private void PackValueOfValue(MsgPack.Packer packer, MsgPack.Serialization.AbstractClassListItemKnownType objectTree) {
             this._serializer0.PackTo(packer, objectTree.Value);
         }
         
+        private bool IsValueNull(MsgPack.Serialization.AbstractClassListItemKnownType objectTree) {
+            return (objectTree.Value == null);
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.AbstractClassListItemKnownType objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.AbstractClassListItemKnownType> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.AbstractClassListItemKnownType>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.AbstractClassListItemKnownType> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.AbstractClassListItemKnownType>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -114,11 +122,23 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.AbstractClassListItemKnownType objectTree, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.PackToArrayAsyncParameters<MsgPack.Serialization.AbstractClassListItemKnownType> packHelperParameters = default(MsgPack.Serialization.PackToArrayAsyncParameters<MsgPack.Serialization.AbstractClassListItemKnownType>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationListAsync;
+            packHelperParameters.CancellationToken = cancellationToken;
+            MsgPack.Serialization.PackToMapAsyncParameters<MsgPack.Serialization.AbstractClassListItemKnownType> packHelperParameters0 = default(MsgPack.Serialization.PackToMapAsyncParameters<MsgPack.Serialization.AbstractClassListItemKnownType>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTableAsync;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
+            packHelperParameters0.CancellationToken = cancellationToken;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(ref packHelperParameters);
             }
             else {
-                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(ref packHelperParameters0);
             }
         }
         
@@ -127,7 +147,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.AbstractClassListItemKnownType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>), "Value", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfValueDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.AbstractClassListItemKnownType, System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.AbstractClassListItemKnownType, System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>);
+            unpackHelperParameters.MemberName = "Value";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = null;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfValueDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         protected internal override MsgPack.Serialization.AbstractClassListItemKnownType UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -142,7 +173,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfValueAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.AbstractClassListItemKnownType unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>), "Value", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfValueDelegate, cancellationToken);
+            MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Serialization.AbstractClassListItemKnownType, System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Serialization.AbstractClassListItemKnownType, System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(System.Collections.Generic.IList<MsgPack.Serialization.AbstractFileSystemEntry>);
+            unpackHelperParameters.MemberName = "Value";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = null;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfValueDelegate;
+            unpackHelperParameters.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(ref unpackHelperParameters);
         }
         
         protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.AbstractClassListItemKnownType> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {

@@ -17,45 +17,27 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
         
-        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfheightAsyncDelegate;
-        
-        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfsizeAsyncDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer1;
-        
-        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOftitleAsyncDelegate;
-        
-        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfuriAsyncDelegate;
-        
-        private System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfwidthAsyncDelegate;
         
         private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
         private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationTableAsync;
         
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Image, bool>> _nullCheckersTable;
+        
         private System.Action<MsgPack.Image, int> this_SetUnpackedValueOfheightDelegate;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<int>> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfheightAsyncDelegate;
-        
         private System.Action<MsgPack.Image, int> this_SetUnpackedValueOfsizeDelegate;
-        
-        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfsizeAsyncDelegate;
         
         private System.Action<MsgPack.Image, string> this_SetUnpackedValueOftitleDelegate;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>> MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
         
-        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOftitleAsyncDelegate;
-        
         private System.Action<MsgPack.Image, string> this_SetUnpackedValueOfuriDelegate;
         
-        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfuriAsyncDelegate;
-        
         private System.Action<MsgPack.Image, int> this_SetUnpackedValueOfwidthDelegate;
-        
-        private System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfwidthAsyncDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -87,6 +69,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTableAsync["uri"] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfuriAsync);
             packOperationTableAsync["width"] = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfwidthAsync);
             this._packOperationTableAsync = packOperationTableAsync;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Image, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Image, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Image, bool>>(2);
+            nullCheckerTable["title"] = new System.Func<MsgPack.Image, bool>(this.IstitleNull);
+            nullCheckerTable["uri"] = new System.Func<MsgPack.Image, bool>(this.IsuriNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[] unpackOperationListAsync = default(System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[]);
             unpackOperationListAsync = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>[5];
             unpackOperationListAsync[0] = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfheightAsync);
@@ -109,23 +96,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "title",
                     "uri",
                     "width"};
-            this.this_PackValueOfheightAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfheightAsync);
-            this.this_PackValueOfsizeAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfsizeAsync);
-            this.this_PackValueOftitleAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOftitleAsync);
-            this.this_PackValueOfuriAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfuriAsync);
-            this.this_PackValueOfwidthAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Image, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfwidthAsync);
             this.this_SetUnpackedValueOfheightDelegate = new System.Action<MsgPack.Image, int>(this.SetUnpackedValueOfheight);
             this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<int>>(MsgPack.Serialization.UnpackHelpers.UnpackInt32ValueAsync);
-            this.this_UnpackValueOfheightAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfheightAsync);
             this.this_SetUnpackedValueOfsizeDelegate = new System.Action<MsgPack.Image, int>(this.SetUnpackedValueOfsize);
-            this.this_UnpackValueOfsizeAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfsizeAsync);
             this.this_SetUnpackedValueOftitleDelegate = new System.Action<MsgPack.Image, string>(this.SetUnpackedValueOftitle);
             this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>>(MsgPack.Serialization.UnpackHelpers.UnpackStringValueAsync);
-            this.this_UnpackValueOftitleAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOftitleAsync);
             this.this_SetUnpackedValueOfuriDelegate = new System.Action<MsgPack.Image, string>(this.SetUnpackedValueOfuri);
-            this.this_UnpackValueOfuriAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfuriAsync);
             this.this_SetUnpackedValueOfwidthDelegate = new System.Action<MsgPack.Image, int>(this.SetUnpackedValueOfwidth);
-            this.this_UnpackValueOfwidthAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Image, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfwidthAsync);
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Image objectTree) {
@@ -144,8 +121,16 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             return this._serializer1.PackToAsync(packer, objectTree.title, cancellationToken);
         }
         
+        private bool IstitleNull(MsgPack.Image objectTree) {
+            return (objectTree.title == null);
+        }
+        
         private System.Threading.Tasks.Task PackValueOfuriAsync(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
             return this._serializer1.PackToAsync(packer, objectTree.uri, cancellationToken);
+        }
+        
+        private bool IsuriNull(MsgPack.Image objectTree) {
+            return (objectTree.uri == null);
         }
         
         private System.Threading.Tasks.Task PackValueOfwidthAsync(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
@@ -153,11 +138,23 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Image objectTree, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.PackToArrayAsyncParameters<MsgPack.Image> packHelperParameters = default(MsgPack.Serialization.PackToArrayAsyncParameters<MsgPack.Image>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationListAsync;
+            packHelperParameters.CancellationToken = cancellationToken;
+            MsgPack.Serialization.PackToMapAsyncParameters<MsgPack.Image> packHelperParameters0 = default(MsgPack.Serialization.PackToMapAsyncParameters<MsgPack.Image>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTableAsync;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
+            packHelperParameters0.CancellationToken = cancellationToken;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(ref packHelperParameters);
             }
             else {
-                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(ref packHelperParameters0);
             }
         }
         
@@ -173,7 +170,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfheightAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "height", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfheightDelegate, cancellationToken);
+            MsgPack.Serialization.UnpackValueTypeValueAsyncParameters<MsgPack.Image, int> unpackHelperParameters = default(MsgPack.Serialization.UnpackValueTypeValueAsyncParameters<MsgPack.Image, int>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(int);
+            unpackHelperParameters.MemberName = "height";
+            unpackHelperParameters.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfheightDelegate;
+            unpackHelperParameters.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(ref unpackHelperParameters);
         }
         
         private void SetUnpackedValueOfsize(MsgPack.Image unpackingContext, int unpackedValue) {
@@ -181,7 +189,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfsizeAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "size", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfsizeDelegate, cancellationToken);
+            MsgPack.Serialization.UnpackValueTypeValueAsyncParameters<MsgPack.Image, int> unpackHelperParameters0 = default(MsgPack.Serialization.UnpackValueTypeValueAsyncParameters<MsgPack.Image, int>);
+            unpackHelperParameters0.Unpacker = unpacker;
+            unpackHelperParameters0.UnpackingContext = unpackingContext;
+            unpackHelperParameters0.Serializer = this._serializer0;
+            unpackHelperParameters0.ItemsCount = itemsCount;
+            unpackHelperParameters0.Unpacked = indexOfItem;
+            unpackHelperParameters0.TargetObjectType = typeof(int);
+            unpackHelperParameters0.MemberName = "size";
+            unpackHelperParameters0.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate;
+            unpackHelperParameters0.Setter = this.this_SetUnpackedValueOfsizeDelegate;
+            unpackHelperParameters0.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(ref unpackHelperParameters0);
         }
         
         private void SetUnpackedValueOftitle(MsgPack.Image unpackingContext, string unpackedValue) {
@@ -189,7 +208,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOftitleAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(string), "title", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOftitleDelegate, cancellationToken);
+            MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Image, string> unpackHelperParameters1 = default(MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Image, string>);
+            unpackHelperParameters1.Unpacker = unpacker;
+            unpackHelperParameters1.UnpackingContext = unpackingContext;
+            unpackHelperParameters1.Serializer = this._serializer1;
+            unpackHelperParameters1.ItemsCount = itemsCount;
+            unpackHelperParameters1.Unpacked = indexOfItem;
+            unpackHelperParameters1.TargetObjectType = typeof(string);
+            unpackHelperParameters1.MemberName = "title";
+            unpackHelperParameters1.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters1.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
+            unpackHelperParameters1.Setter = this.this_SetUnpackedValueOftitleDelegate;
+            unpackHelperParameters1.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(ref unpackHelperParameters1);
         }
         
         private void SetUnpackedValueOfuri(MsgPack.Image unpackingContext, string unpackedValue) {
@@ -197,7 +228,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfuriAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(string), "uri", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOfuriDelegate, cancellationToken);
+            MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Image, string> unpackHelperParameters2 = default(MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Image, string>);
+            unpackHelperParameters2.Unpacker = unpacker;
+            unpackHelperParameters2.UnpackingContext = unpackingContext;
+            unpackHelperParameters2.Serializer = this._serializer1;
+            unpackHelperParameters2.ItemsCount = itemsCount;
+            unpackHelperParameters2.Unpacked = indexOfItem;
+            unpackHelperParameters2.TargetObjectType = typeof(string);
+            unpackHelperParameters2.MemberName = "uri";
+            unpackHelperParameters2.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters2.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
+            unpackHelperParameters2.Setter = this.this_SetUnpackedValueOfuriDelegate;
+            unpackHelperParameters2.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(ref unpackHelperParameters2);
         }
         
         private void SetUnpackedValueOfwidth(MsgPack.Image unpackingContext, int unpackedValue) {
@@ -205,7 +248,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfwidthAsync(MsgPack.Unpacker unpacker, MsgPack.Image unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "width", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate, this.this_SetUnpackedValueOfwidthDelegate, cancellationToken);
+            MsgPack.Serialization.UnpackValueTypeValueAsyncParameters<MsgPack.Image, int> unpackHelperParameters3 = default(MsgPack.Serialization.UnpackValueTypeValueAsyncParameters<MsgPack.Image, int>);
+            unpackHelperParameters3.Unpacker = unpacker;
+            unpackHelperParameters3.UnpackingContext = unpackingContext;
+            unpackHelperParameters3.Serializer = this._serializer0;
+            unpackHelperParameters3.ItemsCount = itemsCount;
+            unpackHelperParameters3.Unpacked = indexOfItem;
+            unpackHelperParameters3.TargetObjectType = typeof(int);
+            unpackHelperParameters3.MemberName = "width";
+            unpackHelperParameters3.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueAsyncDelegate;
+            unpackHelperParameters3.Setter = this.this_SetUnpackedValueOfwidthDelegate;
+            unpackHelperParameters3.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValueAsync(ref unpackHelperParameters3);
         }
         
         protected internal override System.Threading.Tasks.Task<MsgPack.Image> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {

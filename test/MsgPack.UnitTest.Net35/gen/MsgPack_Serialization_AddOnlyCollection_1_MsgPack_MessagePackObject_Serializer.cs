@@ -38,7 +38,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             int itemsCount = default(int);
             itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-            return MsgPack.Serialization.UnpackHelpers.UnpackCollection<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>(unpacker, itemsCount, this.CreateInstance(itemsCount), this._unpackTo, null);
+            MsgPack.Serialization.UnpackCollectionParameters<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>> unpackHelperParameters = default(MsgPack.Serialization.UnpackCollectionParameters<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Collection = this.CreateInstance(itemsCount);
+            unpackHelperParameters.BulkOperation = this._unpackTo;
+            unpackHelperParameters.EachOperation = null;
+            return MsgPack.Serialization.UnpackHelpers.UnpackCollection<MsgPack.Serialization.AddOnlyCollection<MsgPack.MessagePackObject>>(ref unpackHelperParameters);
         }
         
         private static MsgPack.Serialization.PolymorphismSchema RestoreSchema() {

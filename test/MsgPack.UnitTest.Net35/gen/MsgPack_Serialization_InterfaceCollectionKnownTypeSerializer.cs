@@ -17,15 +17,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<string>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceCollectionKnownType> this_PackValueOfValueDelegate;
-        
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceCollectionKnownType>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceCollectionKnownType>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.InterfaceCollectionKnownType, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfValueDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.InterfaceCollectionKnownType, bool>> _nullCheckersTable;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceCollectionKnownType, int, int> this_UnpackValueOfValueDelegate;
+        private System.Action<MsgPack.Serialization.InterfaceCollectionKnownType, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfValueDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -50,6 +48,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable = new System.Collections.Generic.Dictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceCollectionKnownType>>(1);
             packOperationTable["Value"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceCollectionKnownType>(this.PackValueOfValue);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.InterfaceCollectionKnownType, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.InterfaceCollectionKnownType, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.InterfaceCollectionKnownType, bool>>(1);
+            nullCheckerTable["Value"] = new System.Func<MsgPack.Serialization.InterfaceCollectionKnownType, bool>(this.IsValueNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceCollectionKnownType, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceCollectionKnownType, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceCollectionKnownType, int, int>[1];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceCollectionKnownType, int, int>(this.UnpackValueOfValue);
@@ -60,21 +62,33 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTable = unpackOperationTable;
             this._memberNames = new string[] {
                     "Value"};
-            this.this_PackValueOfValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.InterfaceCollectionKnownType>(this.PackValueOfValue);
             this.this_SetUnpackedValueOfValueDelegate = new System.Action<MsgPack.Serialization.InterfaceCollectionKnownType, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfValue);
-            this.this_UnpackValueOfValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.InterfaceCollectionKnownType, int, int>(this.UnpackValueOfValue);
         }
         
         private void PackValueOfValue(MsgPack.Packer packer, MsgPack.Serialization.InterfaceCollectionKnownType objectTree) {
             this._serializer0.PackTo(packer, objectTree.Value);
         }
         
+        private bool IsValueNull(MsgPack.Serialization.InterfaceCollectionKnownType objectTree) {
+            return (objectTree.Value == null);
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.InterfaceCollectionKnownType objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.InterfaceCollectionKnownType> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.InterfaceCollectionKnownType>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.InterfaceCollectionKnownType> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.InterfaceCollectionKnownType>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -83,7 +97,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.InterfaceCollectionKnownType unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "Value", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfValueDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.InterfaceCollectionKnownType, System.Collections.Generic.IList<string>> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.InterfaceCollectionKnownType, System.Collections.Generic.IList<string>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(System.Collections.Generic.IList<string>);
+            unpackHelperParameters.MemberName = "Value";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = null;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfValueDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         protected internal override MsgPack.Serialization.InterfaceCollectionKnownType UnpackFromCore(MsgPack.Unpacker unpacker) {

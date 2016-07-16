@@ -17,13 +17,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> this_PackValueOfAliasDelegate;
-        
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>> _packOperationTable;
         
-        private System.Func<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_PackValueOfAliasAsyncDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, bool>> _nullCheckersTable;
         
         private System.Collections.Generic.IList<System.Func<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _packOperationListAsync;
         
@@ -33,8 +31,6 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int> this_UnpackValueOfAliasDelegate;
-        
         private System.Collections.Generic.IList<string> _memberNames;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>> _unpackOperationList;
@@ -42,8 +38,6 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>> _unpackOperationTable;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>> MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
-        
-        private System.Func<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> this_UnpackValueOfAliasAsyncDelegate;
         
         private System.Collections.Generic.IList<System.Func<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationListAsync;
         
@@ -70,6 +64,10 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTableAsync = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, System.Threading.CancellationToken, System.Threading.Tasks.Task>>(1);
             packOperationTableAsync["Alias"] = new System.Func<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfAliasAsync);
             this._packOperationTableAsync = packOperationTableAsync;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, bool>>(1);
+            nullCheckerTable["Alias"] = new System.Func<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, bool>(this.IsAliasNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>[1];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>(this.UnpackValueOfAlias);
@@ -88,25 +86,35 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._unpackOperationTableAsync = unpackOperationTableAsync;
             this._memberNames = new string[] {
                     "Alias"};
-            this.this_PackValueOfAliasDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>(this.PackValueOfAlias);
-            this.this_PackValueOfAliasAsyncDelegate = new System.Func<MsgPack.Packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.PackValueOfAliasAsync);
             this.this_SetUnpackedValueOfMemberDelegate = new System.Action<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string>(this.SetUnpackedValueOfMember);
             this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfAliasDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int>(this.UnpackValueOfAlias);
             this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<string>>(MsgPack.Serialization.UnpackHelpers.UnpackStringValueAsync);
-            this.this_UnpackValueOfAliasAsyncDelegate = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackValueOfAliasAsync);
         }
         
         private void PackValueOfAlias(MsgPack.Packer packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget objectTree) {
             this._serializer0.PackTo(packer, objectTree.Member);
         }
         
+        private bool IsAliasNull(MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget objectTree) {
+            return (objectTree.Member == null);
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -115,11 +123,23 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         protected internal override System.Threading.Tasks.Task PackToAsyncCore(MsgPack.Packer packer, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget objectTree, System.Threading.CancellationToken cancellationToken) {
+            MsgPack.Serialization.PackToArrayAsyncParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> packHelperParameters = default(MsgPack.Serialization.PackToArrayAsyncParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationListAsync;
+            packHelperParameters.CancellationToken = cancellationToken;
+            MsgPack.Serialization.PackToMapAsyncParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> packHelperParameters0 = default(MsgPack.Serialization.PackToMapAsyncParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTableAsync;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
+            packHelperParameters0.CancellationToken = cancellationToken;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(packer, objectTree, this._packOperationListAsync, cancellationToken);
+                return MsgPack.Serialization.PackHelpers.PackToArrayAsync(ref packHelperParameters);
             }
             else {
-                return MsgPack.Serialization.PackHelpers.PackToMapAsync(packer, objectTree, this._packOperationTableAsync, cancellationToken);
+                return MsgPack.Serialization.PackHelpers.PackToMapAsync(ref packHelperParameters0);
             }
         }
         
@@ -128,7 +148,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfAlias(MsgPack.Unpacker unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Alias", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfMemberDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(string);
+            unpackHelperParameters.MemberName = "Alias";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfMemberDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         protected internal override MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget UnpackFromCore(MsgPack.Unpacker unpacker) {
@@ -143,7 +174,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private System.Threading.Tasks.Task UnpackValueOfAliasAsync(MsgPack.Unpacker unpacker, MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget unpackingContext, int indexOfItem, int itemsCount, System.Threading.CancellationToken cancellationToken) {
-            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Alias", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate, this.this_SetUnpackedValueOfMemberDelegate, cancellationToken);
+            MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueAsyncParameters<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget, string>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(string);
+            unpackHelperParameters.MemberName = "Alias";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueAsyncDelegate;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfMemberDelegate;
+            unpackHelperParameters.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValueAsync(ref unpackHelperParameters);
         }
         
         protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.DataMemberAttributeNamedPropertyTestTarget> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {

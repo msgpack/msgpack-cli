@@ -17,25 +17,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNameDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeGenerated> _serializer1;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure> this_PackValueOfNestedDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>> _packOperationTable;
         
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, bool>> _nullCheckersTable;
+        
         private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string> this_SetUnpackedValueOfNameDelegate;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNameDelegate;
-        
         private System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated> this_SetUnpackedValueOfNestedDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int> this_UnpackValueOfNestedDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -61,6 +55,11 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["Name"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
             packOperationTable["Nested"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, bool>>(2);
+            nullCheckerTable["Name"] = new System.Func<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, bool>(this.IsNameNull);
+            nullCheckerTable["Nested"] = new System.Func<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, bool>(this.IsNestedNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>[2];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
@@ -74,29 +73,43 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             this._memberNames = new string[] {
                     "Name",
                     "Nested"};
-            this.this_PackValueOfNameDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfName);
-            this.this_PackValueOfNestedDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure>(this.PackValueOfNested);
             this.this_SetUnpackedValueOfNameDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string>(this.SetUnpackedValueOfName);
             this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfNameDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfName);
             this.this_SetUnpackedValueOfNestedDelegate = new System.Action<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated>(this.SetUnpackedValueOfNested);
-            this.this_UnpackValueOfNestedDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure, int, int>(this.UnpackValueOfNested);
         }
         
         private void PackValueOfName(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
             this._serializer0.PackTo(packer, objectTree.Name);
         }
         
+        private bool IsNameNull(MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
+            return (objectTree.Name == null);
+        }
+        
         private void PackValueOfNested(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
             this._serializer1.PackTo(packer, objectTree.Nested);
         }
         
+        private bool IsNestedNull(MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
+            return (objectTree.Nested == null);
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeGeneratedEnclosure objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -105,7 +118,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfName(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(string), "Name", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfNameDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, string>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(string);
+            unpackHelperParameters.MemberName = "Name";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfNameDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         private void SetUnpackedValueOfNested(MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, MsgPack.Serialization.ComplexTypeGenerated unpackedValue) {
@@ -113,7 +137,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNested(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeGeneratedEnclosure unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(MsgPack.Serialization.ComplexTypeGenerated), "Nested", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNestedDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated> unpackHelperParameters0 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.ComplexTypeGeneratedEnclosure, MsgPack.Serialization.ComplexTypeGenerated>);
+            unpackHelperParameters0.Unpacker = unpacker;
+            unpackHelperParameters0.UnpackingContext = unpackingContext;
+            unpackHelperParameters0.Serializer = this._serializer1;
+            unpackHelperParameters0.ItemsCount = itemsCount;
+            unpackHelperParameters0.Unpacked = indexOfItem;
+            unpackHelperParameters0.TargetObjectType = typeof(MsgPack.Serialization.ComplexTypeGenerated);
+            unpackHelperParameters0.MemberName = "Nested";
+            unpackHelperParameters0.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters0.DirectRead = null;
+            unpackHelperParameters0.Setter = this.this_SetUnpackedValueOfNestedDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters0);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeGeneratedEnclosure UnpackFromCore(MsgPack.Unpacker unpacker) {

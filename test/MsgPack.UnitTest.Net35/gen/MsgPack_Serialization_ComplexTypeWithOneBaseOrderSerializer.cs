@@ -15,29 +15,19 @@ namespace MsgPack.Serialization.GeneratedSerializers {
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_ComplexTypeWithOneBaseOrderSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.ComplexTypeWithOneBaseOrder> {
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder> this_PackMemberPlaceHolderDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<int> _serializer0;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder> this_PackValueOfOneDelegate;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder> this_PackValueOfTwoDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>> _packOperationTable;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int> this_UnpackMemberPlaceHolderDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, bool>> _nullCheckersTable;
         
         private System.Action<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int> this_SetUnpackedValueOfOneDelegate;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, int> MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int> this_UnpackValueOfOneDelegate;
-        
         private System.Action<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int> this_SetUnpackedValueOfTwoDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int> this_UnpackValueOfTwoDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -61,6 +51,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["One"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(this.PackValueOfOne);
             packOperationTable["Two"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(this.PackValueOfTwo);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, bool>>(0);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int>[3];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int>(this.UnpackMemberPlaceHolder);
@@ -76,15 +69,9 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     null,
                     "One",
                     "Two"};
-            this.this_PackMemberPlaceHolderDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(this.PackMemberPlaceHolder);
-            this.this_PackValueOfOneDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(this.PackValueOfOne);
-            this.this_PackValueOfTwoDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder>(this.PackValueOfTwo);
-            this.this_UnpackMemberPlaceHolderDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int>(this.UnpackMemberPlaceHolder);
             this.this_SetUnpackedValueOfOneDelegate = new System.Action<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>(this.SetUnpackedValueOfOne);
             this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, int>(MsgPack.Serialization.UnpackHelpers.UnpackInt32Value);
-            this.this_UnpackValueOfOneDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int>(this.UnpackValueOfOne);
             this.this_SetUnpackedValueOfTwoDelegate = new System.Action<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>(this.SetUnpackedValueOfTwo);
-            this.this_UnpackValueOfTwoDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int, int>(this.UnpackValueOfTwo);
         }
         
         private void PackMemberPlaceHolder(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder objectTree) {
@@ -100,11 +87,21 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.ComplexTypeWithOneBaseOrder objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -117,7 +114,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfOne(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "One", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfOneDelegate);
+            MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int> unpackHelperParameters = default(MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(int);
+            unpackHelperParameters.MemberName = "One";
+            unpackHelperParameters.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfOneDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(ref unpackHelperParameters);
         }
         
         private void SetUnpackedValueOfTwo(MsgPack.Serialization.ComplexTypeWithOneBaseOrder unpackingContext, int unpackedValue) {
@@ -125,7 +132,17 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfTwo(MsgPack.Unpacker unpacker, MsgPack.Serialization.ComplexTypeWithOneBaseOrder unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(int), "Two", this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate, this.this_SetUnpackedValueOfTwoDelegate);
+            MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int> unpackHelperParameters0 = default(MsgPack.Serialization.UnpackValueTypeValueParameters<MsgPack.Serialization.ComplexTypeWithOneBaseOrder, int>);
+            unpackHelperParameters0.Unpacker = unpacker;
+            unpackHelperParameters0.UnpackingContext = unpackingContext;
+            unpackHelperParameters0.Serializer = this._serializer0;
+            unpackHelperParameters0.ItemsCount = itemsCount;
+            unpackHelperParameters0.Unpacked = indexOfItem;
+            unpackHelperParameters0.TargetObjectType = typeof(int);
+            unpackHelperParameters0.MemberName = "Two";
+            unpackHelperParameters0.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackInt32ValueDelegate;
+            unpackHelperParameters0.Setter = this.this_SetUnpackedValueOfTwoDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackValueTypeValue(ref unpackHelperParameters0);
         }
         
         protected internal override MsgPack.Serialization.ComplexTypeWithOneBaseOrder UnpackFromCore(MsgPack.Unpacker unpacker) {

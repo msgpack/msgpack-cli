@@ -17,35 +17,25 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.Dictionary<int, int>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfDictionaryFieldDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<int[]> _serializer1;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfInt32ArrayFieldDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer2;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType> this_PackValueOfStringFieldDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>> _packOperationTable;
         
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.TestValueType, bool>> _nullCheckersTable;
+        
         private System.Func<UnpackingContext, MsgPack.Serialization.TestValueType> this_CreateInstanceFromContextDelegate;
         
         private System.Action<UnpackingContext, System.Collections.Generic.Dictionary<int, int>> this_SetUnpackedValueOfDictionaryFieldDelegate;
         
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfDictionaryFieldDelegate;
-        
         private System.Action<UnpackingContext, int[]> this_SetUnpackedValueOfInt32ArrayFieldDelegate;
-        
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfInt32ArrayFieldDelegate;
         
         private System.Action<UnpackingContext, string> this_SetUnpackedValueOfStringFieldDelegate;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
-        
-        private System.Action<MsgPack.Unpacker, UnpackingContext, int, int> this_UnpackValueOfStringFieldDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -76,6 +66,12 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["Int32ArrayField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfInt32ArrayField);
             packOperationTable["StringField"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfStringField);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.TestValueType, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.TestValueType, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.TestValueType, bool>>(3);
+            nullCheckerTable["DictionaryField"] = new System.Func<MsgPack.Serialization.TestValueType, bool>(this.IsDictionaryFieldNull);
+            nullCheckerTable["Int32ArrayField"] = new System.Func<MsgPack.Serialization.TestValueType, bool>(this.IsInt32ArrayFieldNull);
+            nullCheckerTable["StringField"] = new System.Func<MsgPack.Serialization.TestValueType, bool>(this.IsStringFieldNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, UnpackingContext, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, UnpackingContext, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>[3];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfDictionaryField);
@@ -92,37 +88,53 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "DictionaryField",
                     "Int32ArrayField",
                     "StringField"};
-            this.this_PackValueOfDictionaryFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfDictionaryField);
-            this.this_PackValueOfInt32ArrayFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfInt32ArrayField);
-            this.this_PackValueOfStringFieldDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.TestValueType>(this.PackValueOfStringField);
             this.this_CreateInstanceFromContextDelegate = new System.Func<UnpackingContext, MsgPack.Serialization.TestValueType>(this.CreateInstanceFromContext);
             this.this_SetUnpackedValueOfDictionaryFieldDelegate = new System.Action<UnpackingContext, System.Collections.Generic.Dictionary<int, int>>(this.SetUnpackedValueOfDictionaryField);
-            this.this_UnpackValueOfDictionaryFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfDictionaryField);
             this.this_SetUnpackedValueOfInt32ArrayFieldDelegate = new System.Action<UnpackingContext, int[]>(this.SetUnpackedValueOfInt32ArrayField);
-            this.this_UnpackValueOfInt32ArrayFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfInt32ArrayField);
             this.this_SetUnpackedValueOfStringFieldDelegate = new System.Action<UnpackingContext, string>(this.SetUnpackedValueOfStringField);
             this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfStringFieldDelegate = new System.Action<MsgPack.Unpacker, UnpackingContext, int, int>(this.UnpackValueOfStringField);
         }
         
         private void PackValueOfDictionaryField(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree) {
             this._serializer0.PackTo(packer, objectTree.DictionaryField);
         }
         
+        private bool IsDictionaryFieldNull(MsgPack.Serialization.TestValueType objectTree) {
+            return (objectTree.DictionaryField == null);
+        }
+        
         private void PackValueOfInt32ArrayField(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree) {
             this._serializer1.PackTo(packer, objectTree.Int32ArrayField);
+        }
+        
+        private bool IsInt32ArrayFieldNull(MsgPack.Serialization.TestValueType objectTree) {
+            return (objectTree.Int32ArrayField == null);
         }
         
         private void PackValueOfStringField(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree) {
             this._serializer2.PackTo(packer, objectTree.StringField);
         }
         
+        private bool IsStringFieldNull(MsgPack.Serialization.TestValueType objectTree) {
+            return (objectTree.StringField == null);
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.TestValueType objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.TestValueType> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.TestValueType>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.TestValueType> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.TestValueType>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -139,7 +151,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryField(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.Dictionary<int, int>), "DictionaryField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryFieldDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<UnpackingContext, System.Collections.Generic.Dictionary<int, int>> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<UnpackingContext, System.Collections.Generic.Dictionary<int, int>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(System.Collections.Generic.Dictionary<int, int>);
+            unpackHelperParameters.MemberName = "DictionaryField";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = null;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfDictionaryFieldDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         private void SetUnpackedValueOfInt32ArrayField(UnpackingContext unpackingContext, int[] unpackedValue) {
@@ -147,7 +170,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfInt32ArrayField(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(int[]), "Int32ArrayField", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfInt32ArrayFieldDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<UnpackingContext, int[]> unpackHelperParameters0 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<UnpackingContext, int[]>);
+            unpackHelperParameters0.Unpacker = unpacker;
+            unpackHelperParameters0.UnpackingContext = unpackingContext;
+            unpackHelperParameters0.Serializer = this._serializer1;
+            unpackHelperParameters0.ItemsCount = itemsCount;
+            unpackHelperParameters0.Unpacked = indexOfItem;
+            unpackHelperParameters0.TargetObjectType = typeof(int[]);
+            unpackHelperParameters0.MemberName = "Int32ArrayField";
+            unpackHelperParameters0.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters0.DirectRead = null;
+            unpackHelperParameters0.Setter = this.this_SetUnpackedValueOfInt32ArrayFieldDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters0);
         }
         
         private void SetUnpackedValueOfStringField(UnpackingContext unpackingContext, string unpackedValue) {
@@ -155,7 +189,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfStringField(MsgPack.Unpacker unpacker, UnpackingContext unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(string), "StringField", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfStringFieldDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<UnpackingContext, string> unpackHelperParameters1 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<UnpackingContext, string>);
+            unpackHelperParameters1.Unpacker = unpacker;
+            unpackHelperParameters1.UnpackingContext = unpackingContext;
+            unpackHelperParameters1.Serializer = this._serializer2;
+            unpackHelperParameters1.ItemsCount = itemsCount;
+            unpackHelperParameters1.Unpacked = indexOfItem;
+            unpackHelperParameters1.TargetObjectType = typeof(string);
+            unpackHelperParameters1.MemberName = "StringField";
+            unpackHelperParameters1.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters1.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
+            unpackHelperParameters1.Setter = this.this_SetUnpackedValueOfStringFieldDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters1);
         }
         
         protected internal override MsgPack.Serialization.TestValueType UnpackFromCore(MsgPack.Unpacker unpacker) {

@@ -41,7 +41,13 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             int itemsCount = default(int);
             itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-            return MsgPack.Serialization.UnpackHelpers.UnpackCollection<MsgPack.Serialization.AddOnlyCollection<int[]>>(unpacker, itemsCount, this.CreateInstance(itemsCount), this._unpackTo, null);
+            MsgPack.Serialization.UnpackCollectionParameters<MsgPack.Serialization.AddOnlyCollection<int[]>> unpackHelperParameters = default(MsgPack.Serialization.UnpackCollectionParameters<MsgPack.Serialization.AddOnlyCollection<int[]>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Collection = this.CreateInstance(itemsCount);
+            unpackHelperParameters.BulkOperation = this._unpackTo;
+            unpackHelperParameters.EachOperation = null;
+            return MsgPack.Serialization.UnpackHelpers.UnpackCollection<MsgPack.Serialization.AddOnlyCollection<int[]>>(ref unpackHelperParameters);
         }
         
         protected internal override System.Threading.Tasks.Task<MsgPack.Serialization.AddOnlyCollection<int[]>> UnpackFromAsyncCore(MsgPack.Unpacker unpacker, System.Threading.CancellationToken cancellationToken) {
@@ -50,7 +56,14 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             }
             int itemsCount = default(int);
             itemsCount = MsgPack.Serialization.UnpackHelpers.GetItemsCount(unpacker);
-            return MsgPack.Serialization.UnpackHelpers.UnpackCollectionAsync<MsgPack.Serialization.AddOnlyCollection<int[]>>(unpacker, itemsCount, this.CreateInstance(itemsCount), this._unpackToAsync, null, cancellationToken);
+            MsgPack.Serialization.UnpackCollectionAsyncParameters<MsgPack.Serialization.AddOnlyCollection<int[]>> unpackHelperParameters = default(MsgPack.Serialization.UnpackCollectionAsyncParameters<MsgPack.Serialization.AddOnlyCollection<int[]>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Collection = this.CreateInstance(itemsCount);
+            unpackHelperParameters.BulkOperation = this._unpackToAsync;
+            unpackHelperParameters.EachOperation = null;
+            unpackHelperParameters.CancellationToken = cancellationToken;
+            return MsgPack.Serialization.UnpackHelpers.UnpackCollectionAsync<MsgPack.Serialization.AddOnlyCollection<int[]>>(ref unpackHelperParameters);
         }
         
         private static MsgPack.Serialization.PolymorphismSchema RestoreSchema() {

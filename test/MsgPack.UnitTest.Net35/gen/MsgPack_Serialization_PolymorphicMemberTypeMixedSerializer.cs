@@ -17,111 +17,61 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>> _serializer0;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfDictionaryKnownContainerRuntimeValueDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>> _serializer1;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfDictionaryKnownValueDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, object>> _serializer2;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfDictionaryObjectRuntimeValueDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IDictionary<string, string>> _serializer3;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfDictionaryVanillaDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>> _serializer4;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfListKnownItemDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>> _serializer5;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfListKnwonContainerRuntimeItemDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<object>> _serializer6;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfListObjectRuntimeItemDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<System.Collections.Generic.IList<string>> _serializer7;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfListVanillaDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.FileSystemEntry> _serializer8;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfNormalKnownDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.FileSystemEntry> _serializer9;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfNormalRuntimeDelegate;
         
         private MsgPack.Serialization.MessagePackSerializer<string> _serializer10;
         
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfNormalVanillaDelegate;
-        
         private MsgPack.Serialization.MessagePackSerializer<object> _serializer11;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfObjectRuntimeDelegate;
-        
-        private System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed> this_PackValueOfObjectRuntimeOmittedTypeDelegate;
         
         private System.Collections.Generic.IList<System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>> _packOperationList;
         
         private System.Collections.Generic.IDictionary<string, System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>> _packOperationTable;
         
-        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>> this_SetUnpackedValueOfDictionaryKnownContainerRuntimeValueDelegate;
+        private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>> _nullCheckersTable;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfDictionaryKnownContainerRuntimeValueDelegate;
+        private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>> this_SetUnpackedValueOfDictionaryKnownContainerRuntimeValueDelegate;
         
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>> this_SetUnpackedValueOfDictionaryKnownValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfDictionaryKnownValueDelegate;
-        
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, object>> this_SetUnpackedValueOfDictionaryObjectRuntimeValueDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfDictionaryObjectRuntimeValueDelegate;
         
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, string>> this_SetUnpackedValueOfDictionaryVanillaDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfDictionaryVanillaDelegate;
-        
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>> this_SetUnpackedValueOfListKnownItemDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfListKnownItemDelegate;
         
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>> this_SetUnpackedValueOfListKnwonContainerRuntimeItemDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfListKnwonContainerRuntimeItemDelegate;
-        
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<object>> this_SetUnpackedValueOfListObjectRuntimeItemDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfListObjectRuntimeItemDelegate;
         
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<string>> this_SetUnpackedValueOfListVanillaDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfListVanillaDelegate;
-        
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry> this_SetUnpackedValueOfNormalKnownDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfNormalKnownDelegate;
-        
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry> this_SetUnpackedValueOfNormalRuntimeDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfNormalRuntimeDelegate;
         
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, string> this_SetUnpackedValueOfNormalVanillaDelegate;
         
         private System.Func<MsgPack.Unpacker, System.Type, string, string> MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfNormalVanillaDelegate;
-        
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, object> this_SetUnpackedValueOfObjectRuntimeDelegate;
         
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfObjectRuntimeDelegate;
-        
         private System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, object> this_SetUnpackedValueOfObjectRuntimeOmittedTypeDelegate;
-        
-        private System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int> this_UnpackValueOfObjectRuntimeOmittedTypeDelegate;
         
         private System.Collections.Generic.IList<string> _memberNames;
         
@@ -233,6 +183,22 @@ namespace MsgPack.Serialization.GeneratedSerializers {
             packOperationTable["ObjectRuntime"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfObjectRuntime);
             packOperationTable["ObjectRuntimeOmittedType"] = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfObjectRuntimeOmittedType);
             this._packOperationTable = packOperationTable;
+            System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>> nullCheckerTable = default(System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>>);
+            nullCheckerTable = new System.Collections.Generic.Dictionary<string, System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>>(13);
+            nullCheckerTable["DictionaryKnownContainerRuntimeValue"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsDictionaryKnownContainerRuntimeValueNull);
+            nullCheckerTable["DictionaryKnownValue"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsDictionaryKnownValueNull);
+            nullCheckerTable["DictionaryObjectRuntimeValue"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsDictionaryObjectRuntimeValueNull);
+            nullCheckerTable["DictionaryVanilla"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsDictionaryVanillaNull);
+            nullCheckerTable["ListKnownItem"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsListKnownItemNull);
+            nullCheckerTable["ListKnwonContainerRuntimeItem"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsListKnwonContainerRuntimeItemNull);
+            nullCheckerTable["ListObjectRuntimeItem"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsListObjectRuntimeItemNull);
+            nullCheckerTable["ListVanilla"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsListVanillaNull);
+            nullCheckerTable["NormalKnown"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsNormalKnownNull);
+            nullCheckerTable["NormalRuntime"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsNormalRuntimeNull);
+            nullCheckerTable["NormalVanilla"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsNormalVanillaNull);
+            nullCheckerTable["ObjectRuntime"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsObjectRuntimeNull);
+            nullCheckerTable["ObjectRuntimeOmittedType"] = new System.Func<MsgPack.Serialization.PolymorphicMemberTypeMixed, bool>(this.IsObjectRuntimeOmittedTypeNull);
+            this._nullCheckersTable = nullCheckerTable;
             System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>[] unpackOperationList = default(System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>[]);
             unpackOperationList = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>[13];
             unpackOperationList[0] = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfDictionaryKnownContainerRuntimeValue);
@@ -279,106 +245,142 @@ namespace MsgPack.Serialization.GeneratedSerializers {
                     "NormalVanilla",
                     "ObjectRuntime",
                     "ObjectRuntimeOmittedType"};
-            this.this_PackValueOfDictionaryKnownContainerRuntimeValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryKnownContainerRuntimeValue);
-            this.this_PackValueOfDictionaryKnownValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryKnownValue);
-            this.this_PackValueOfDictionaryObjectRuntimeValueDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryObjectRuntimeValue);
-            this.this_PackValueOfDictionaryVanillaDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfDictionaryVanilla);
-            this.this_PackValueOfListKnownItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListKnownItem);
-            this.this_PackValueOfListKnwonContainerRuntimeItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListKnwonContainerRuntimeItem);
-            this.this_PackValueOfListObjectRuntimeItemDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListObjectRuntimeItem);
-            this.this_PackValueOfListVanillaDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfListVanilla);
-            this.this_PackValueOfNormalKnownDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfNormalKnown);
-            this.this_PackValueOfNormalRuntimeDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfNormalRuntime);
-            this.this_PackValueOfNormalVanillaDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfNormalVanilla);
-            this.this_PackValueOfObjectRuntimeDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfObjectRuntime);
-            this.this_PackValueOfObjectRuntimeOmittedTypeDelegate = new System.Action<MsgPack.Packer, MsgPack.Serialization.PolymorphicMemberTypeMixed>(this.PackValueOfObjectRuntimeOmittedType);
             this.this_SetUnpackedValueOfDictionaryKnownContainerRuntimeValueDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>>(this.SetUnpackedValueOfDictionaryKnownContainerRuntimeValue);
-            this.this_UnpackValueOfDictionaryKnownContainerRuntimeValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfDictionaryKnownContainerRuntimeValue);
             this.this_SetUnpackedValueOfDictionaryKnownValueDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>>(this.SetUnpackedValueOfDictionaryKnownValue);
-            this.this_UnpackValueOfDictionaryKnownValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfDictionaryKnownValue);
             this.this_SetUnpackedValueOfDictionaryObjectRuntimeValueDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, object>>(this.SetUnpackedValueOfDictionaryObjectRuntimeValue);
-            this.this_UnpackValueOfDictionaryObjectRuntimeValueDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfDictionaryObjectRuntimeValue);
             this.this_SetUnpackedValueOfDictionaryVanillaDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, string>>(this.SetUnpackedValueOfDictionaryVanilla);
-            this.this_UnpackValueOfDictionaryVanillaDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfDictionaryVanilla);
             this.this_SetUnpackedValueOfListKnownItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>(this.SetUnpackedValueOfListKnownItem);
-            this.this_UnpackValueOfListKnownItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfListKnownItem);
             this.this_SetUnpackedValueOfListKnwonContainerRuntimeItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>(this.SetUnpackedValueOfListKnwonContainerRuntimeItem);
-            this.this_UnpackValueOfListKnwonContainerRuntimeItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfListKnwonContainerRuntimeItem);
             this.this_SetUnpackedValueOfListObjectRuntimeItemDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<object>>(this.SetUnpackedValueOfListObjectRuntimeItem);
-            this.this_UnpackValueOfListObjectRuntimeItemDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfListObjectRuntimeItem);
             this.this_SetUnpackedValueOfListVanillaDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<string>>(this.SetUnpackedValueOfListVanilla);
-            this.this_UnpackValueOfListVanillaDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfListVanilla);
             this.this_SetUnpackedValueOfNormalKnownDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry>(this.SetUnpackedValueOfNormalKnown);
-            this.this_UnpackValueOfNormalKnownDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfNormalKnown);
             this.this_SetUnpackedValueOfNormalRuntimeDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry>(this.SetUnpackedValueOfNormalRuntime);
-            this.this_UnpackValueOfNormalRuntimeDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfNormalRuntime);
             this.this_SetUnpackedValueOfNormalVanillaDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, string>(this.SetUnpackedValueOfNormalVanilla);
             this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate = new System.Func<MsgPack.Unpacker, System.Type, string, string>(MsgPack.Serialization.UnpackHelpers.UnpackStringValue);
-            this.this_UnpackValueOfNormalVanillaDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfNormalVanilla);
             this.this_SetUnpackedValueOfObjectRuntimeDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, object>(this.SetUnpackedValueOfObjectRuntime);
-            this.this_UnpackValueOfObjectRuntimeDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfObjectRuntime);
             this.this_SetUnpackedValueOfObjectRuntimeOmittedTypeDelegate = new System.Action<MsgPack.Serialization.PolymorphicMemberTypeMixed, object>(this.SetUnpackedValueOfObjectRuntimeOmittedType);
-            this.this_UnpackValueOfObjectRuntimeOmittedTypeDelegate = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed, int, int>(this.UnpackValueOfObjectRuntimeOmittedType);
         }
         
         private void PackValueOfDictionaryKnownContainerRuntimeValue(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer0.PackTo(packer, objectTree.DictionaryKnownContainerRuntimeValue);
         }
         
+        private bool IsDictionaryKnownContainerRuntimeValueNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.DictionaryKnownContainerRuntimeValue == null);
+        }
+        
         private void PackValueOfDictionaryKnownValue(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer1.PackTo(packer, objectTree.DictionaryKnownValue);
+        }
+        
+        private bool IsDictionaryKnownValueNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.DictionaryKnownValue == null);
         }
         
         private void PackValueOfDictionaryObjectRuntimeValue(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer2.PackTo(packer, objectTree.DictionaryObjectRuntimeValue);
         }
         
+        private bool IsDictionaryObjectRuntimeValueNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.DictionaryObjectRuntimeValue == null);
+        }
+        
         private void PackValueOfDictionaryVanilla(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer3.PackTo(packer, objectTree.DictionaryVanilla);
+        }
+        
+        private bool IsDictionaryVanillaNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.DictionaryVanilla == null);
         }
         
         private void PackValueOfListKnownItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer4.PackTo(packer, objectTree.ListKnownItem);
         }
         
+        private bool IsListKnownItemNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.ListKnownItem == null);
+        }
+        
         private void PackValueOfListKnwonContainerRuntimeItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer5.PackTo(packer, objectTree.ListKnwonContainerRuntimeItem);
+        }
+        
+        private bool IsListKnwonContainerRuntimeItemNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.ListKnwonContainerRuntimeItem == null);
         }
         
         private void PackValueOfListObjectRuntimeItem(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer6.PackTo(packer, objectTree.ListObjectRuntimeItem);
         }
         
+        private bool IsListObjectRuntimeItemNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.ListObjectRuntimeItem == null);
+        }
+        
         private void PackValueOfListVanilla(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer7.PackTo(packer, objectTree.ListVanilla);
+        }
+        
+        private bool IsListVanillaNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.ListVanilla == null);
         }
         
         private void PackValueOfNormalKnown(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer8.PackTo(packer, objectTree.NormalKnown);
         }
         
+        private bool IsNormalKnownNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.NormalKnown == null);
+        }
+        
         private void PackValueOfNormalRuntime(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer9.PackTo(packer, objectTree.NormalRuntime);
+        }
+        
+        private bool IsNormalRuntimeNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.NormalRuntime == null);
         }
         
         private void PackValueOfNormalVanilla(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer10.PackTo(packer, objectTree.NormalVanilla);
         }
         
+        private bool IsNormalVanillaNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.NormalVanilla == null);
+        }
+        
         private void PackValueOfObjectRuntime(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer11.PackTo(packer, objectTree.ObjectRuntime);
+        }
+        
+        private bool IsObjectRuntimeNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.ObjectRuntime == null);
         }
         
         private void PackValueOfObjectRuntimeOmittedType(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
             this._serializer11.PackTo(packer, objectTree.ObjectRuntimeOmittedType);
         }
         
+        private bool IsObjectRuntimeOmittedTypeNull(MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            return (objectTree.ObjectRuntimeOmittedType == null);
+        }
+        
         protected internal override void PackToCore(MsgPack.Packer packer, MsgPack.Serialization.PolymorphicMemberTypeMixed objectTree) {
+            MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed> packHelperParameters = default(MsgPack.Serialization.PackToArrayParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed>);
+            packHelperParameters.Packer = packer;
+            packHelperParameters.Target = objectTree;
+            packHelperParameters.Operations = this._packOperationList;
+            MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed> packHelperParameters0 = default(MsgPack.Serialization.PackToMapParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed>);
+            packHelperParameters0.Packer = packer;
+            packHelperParameters0.Target = objectTree;
+            packHelperParameters0.Operations = this._packOperationTable;
+            packHelperParameters0.SerializationContext = this.OwnerContext;
+            packHelperParameters0.NullCheckers = this._nullCheckersTable;
             if ((this.OwnerContext.SerializationMethod == MsgPack.Serialization.SerializationMethod.Array)) {
-                MsgPack.Serialization.PackHelpers.PackToArray(packer, objectTree, this._packOperationList);
+                MsgPack.Serialization.PackHelpers.PackToArray(ref packHelperParameters);
             }
             else {
-                MsgPack.Serialization.PackHelpers.PackToMap(packer, objectTree, this._packOperationTable);
+                MsgPack.Serialization.PackHelpers.PackToMap(ref packHelperParameters0);
             }
         }
         
@@ -387,7 +389,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryKnownContainerRuntimeValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer0, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>), "DictionaryKnownContainerRuntimeValue", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryKnownContainerRuntimeValueDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>> unpackHelperParameters = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>>);
+            unpackHelperParameters.Unpacker = unpacker;
+            unpackHelperParameters.UnpackingContext = unpackingContext;
+            unpackHelperParameters.Serializer = this._serializer0;
+            unpackHelperParameters.ItemsCount = itemsCount;
+            unpackHelperParameters.Unpacked = indexOfItem;
+            unpackHelperParameters.TargetObjectType = typeof(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
+            unpackHelperParameters.MemberName = "DictionaryKnownContainerRuntimeValue";
+            unpackHelperParameters.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters.DirectRead = null;
+            unpackHelperParameters.Setter = this.this_SetUnpackedValueOfDictionaryKnownContainerRuntimeValueDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters);
         }
         
         private void SetUnpackedValueOfDictionaryKnownValue(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry> unpackedValue) {
@@ -395,7 +408,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryKnownValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer1, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>), "DictionaryKnownValue", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryKnownValueDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>> unpackHelperParameters0 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>>);
+            unpackHelperParameters0.Unpacker = unpacker;
+            unpackHelperParameters0.UnpackingContext = unpackingContext;
+            unpackHelperParameters0.Serializer = this._serializer1;
+            unpackHelperParameters0.ItemsCount = itemsCount;
+            unpackHelperParameters0.Unpacked = indexOfItem;
+            unpackHelperParameters0.TargetObjectType = typeof(System.Collections.Generic.IDictionary<string, MsgPack.Serialization.FileSystemEntry>);
+            unpackHelperParameters0.MemberName = "DictionaryKnownValue";
+            unpackHelperParameters0.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters0.DirectRead = null;
+            unpackHelperParameters0.Setter = this.this_SetUnpackedValueOfDictionaryKnownValueDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters0);
         }
         
         private void SetUnpackedValueOfDictionaryObjectRuntimeValue(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, System.Collections.Generic.IDictionary<string, object> unpackedValue) {
@@ -403,7 +427,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryObjectRuntimeValue(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer2, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, object>), "DictionaryObjectRuntimeValue", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryObjectRuntimeValueDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, object>> unpackHelperParameters1 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, object>>);
+            unpackHelperParameters1.Unpacker = unpacker;
+            unpackHelperParameters1.UnpackingContext = unpackingContext;
+            unpackHelperParameters1.Serializer = this._serializer2;
+            unpackHelperParameters1.ItemsCount = itemsCount;
+            unpackHelperParameters1.Unpacked = indexOfItem;
+            unpackHelperParameters1.TargetObjectType = typeof(System.Collections.Generic.IDictionary<string, object>);
+            unpackHelperParameters1.MemberName = "DictionaryObjectRuntimeValue";
+            unpackHelperParameters1.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters1.DirectRead = null;
+            unpackHelperParameters1.Setter = this.this_SetUnpackedValueOfDictionaryObjectRuntimeValueDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters1);
         }
         
         private void SetUnpackedValueOfDictionaryVanilla(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, System.Collections.Generic.IDictionary<string, string> unpackedValue) {
@@ -411,7 +446,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfDictionaryVanilla(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer3, itemsCount, indexOfItem, typeof(System.Collections.Generic.IDictionary<string, string>), "DictionaryVanilla", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfDictionaryVanillaDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, string>> unpackHelperParameters2 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IDictionary<string, string>>);
+            unpackHelperParameters2.Unpacker = unpacker;
+            unpackHelperParameters2.UnpackingContext = unpackingContext;
+            unpackHelperParameters2.Serializer = this._serializer3;
+            unpackHelperParameters2.ItemsCount = itemsCount;
+            unpackHelperParameters2.Unpacked = indexOfItem;
+            unpackHelperParameters2.TargetObjectType = typeof(System.Collections.Generic.IDictionary<string, string>);
+            unpackHelperParameters2.MemberName = "DictionaryVanilla";
+            unpackHelperParameters2.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters2.DirectRead = null;
+            unpackHelperParameters2.Setter = this.this_SetUnpackedValueOfDictionaryVanillaDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters2);
         }
         
         private void SetUnpackedValueOfListKnownItem(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> unpackedValue) {
@@ -419,7 +465,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListKnownItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer4, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), "ListKnownItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListKnownItemDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>> unpackHelperParameters3 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>);
+            unpackHelperParameters3.Unpacker = unpacker;
+            unpackHelperParameters3.UnpackingContext = unpackingContext;
+            unpackHelperParameters3.Serializer = this._serializer4;
+            unpackHelperParameters3.ItemsCount = itemsCount;
+            unpackHelperParameters3.Unpacked = indexOfItem;
+            unpackHelperParameters3.TargetObjectType = typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
+            unpackHelperParameters3.MemberName = "ListKnownItem";
+            unpackHelperParameters3.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters3.DirectRead = null;
+            unpackHelperParameters3.Setter = this.this_SetUnpackedValueOfListKnownItemDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters3);
         }
         
         private void SetUnpackedValueOfListKnwonContainerRuntimeItem(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry> unpackedValue) {
@@ -427,7 +484,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListKnwonContainerRuntimeItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer5, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>), "ListKnwonContainerRuntimeItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListKnwonContainerRuntimeItemDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>> unpackHelperParameters4 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>>);
+            unpackHelperParameters4.Unpacker = unpacker;
+            unpackHelperParameters4.UnpackingContext = unpackingContext;
+            unpackHelperParameters4.Serializer = this._serializer5;
+            unpackHelperParameters4.ItemsCount = itemsCount;
+            unpackHelperParameters4.Unpacked = indexOfItem;
+            unpackHelperParameters4.TargetObjectType = typeof(System.Collections.Generic.IList<MsgPack.Serialization.FileSystemEntry>);
+            unpackHelperParameters4.MemberName = "ListKnwonContainerRuntimeItem";
+            unpackHelperParameters4.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters4.DirectRead = null;
+            unpackHelperParameters4.Setter = this.this_SetUnpackedValueOfListKnwonContainerRuntimeItemDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters4);
         }
         
         private void SetUnpackedValueOfListObjectRuntimeItem(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, System.Collections.Generic.IList<object> unpackedValue) {
@@ -435,7 +503,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListObjectRuntimeItem(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer6, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<object>), "ListObjectRuntimeItem", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListObjectRuntimeItemDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<object>> unpackHelperParameters5 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<object>>);
+            unpackHelperParameters5.Unpacker = unpacker;
+            unpackHelperParameters5.UnpackingContext = unpackingContext;
+            unpackHelperParameters5.Serializer = this._serializer6;
+            unpackHelperParameters5.ItemsCount = itemsCount;
+            unpackHelperParameters5.Unpacked = indexOfItem;
+            unpackHelperParameters5.TargetObjectType = typeof(System.Collections.Generic.IList<object>);
+            unpackHelperParameters5.MemberName = "ListObjectRuntimeItem";
+            unpackHelperParameters5.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters5.DirectRead = null;
+            unpackHelperParameters5.Setter = this.this_SetUnpackedValueOfListObjectRuntimeItemDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters5);
         }
         
         private void SetUnpackedValueOfListVanilla(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, System.Collections.Generic.IList<string> unpackedValue) {
@@ -443,7 +522,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfListVanilla(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer7, itemsCount, indexOfItem, typeof(System.Collections.Generic.IList<string>), "ListVanilla", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfListVanillaDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<string>> unpackHelperParameters6 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, System.Collections.Generic.IList<string>>);
+            unpackHelperParameters6.Unpacker = unpacker;
+            unpackHelperParameters6.UnpackingContext = unpackingContext;
+            unpackHelperParameters6.Serializer = this._serializer7;
+            unpackHelperParameters6.ItemsCount = itemsCount;
+            unpackHelperParameters6.Unpacked = indexOfItem;
+            unpackHelperParameters6.TargetObjectType = typeof(System.Collections.Generic.IList<string>);
+            unpackHelperParameters6.MemberName = "ListVanilla";
+            unpackHelperParameters6.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters6.DirectRead = null;
+            unpackHelperParameters6.Setter = this.this_SetUnpackedValueOfListVanillaDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters6);
         }
         
         private void SetUnpackedValueOfNormalKnown(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, MsgPack.Serialization.FileSystemEntry unpackedValue) {
@@ -451,7 +541,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNormalKnown(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer8, itemsCount, indexOfItem, typeof(MsgPack.Serialization.FileSystemEntry), "NormalKnown", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNormalKnownDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry> unpackHelperParameters7 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry>);
+            unpackHelperParameters7.Unpacker = unpacker;
+            unpackHelperParameters7.UnpackingContext = unpackingContext;
+            unpackHelperParameters7.Serializer = this._serializer8;
+            unpackHelperParameters7.ItemsCount = itemsCount;
+            unpackHelperParameters7.Unpacked = indexOfItem;
+            unpackHelperParameters7.TargetObjectType = typeof(MsgPack.Serialization.FileSystemEntry);
+            unpackHelperParameters7.MemberName = "NormalKnown";
+            unpackHelperParameters7.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters7.DirectRead = null;
+            unpackHelperParameters7.Setter = this.this_SetUnpackedValueOfNormalKnownDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters7);
         }
         
         private void SetUnpackedValueOfNormalRuntime(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, MsgPack.Serialization.FileSystemEntry unpackedValue) {
@@ -459,7 +560,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNormalRuntime(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer9, itemsCount, indexOfItem, typeof(MsgPack.Serialization.FileSystemEntry), "NormalRuntime", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfNormalRuntimeDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry> unpackHelperParameters8 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, MsgPack.Serialization.FileSystemEntry>);
+            unpackHelperParameters8.Unpacker = unpacker;
+            unpackHelperParameters8.UnpackingContext = unpackingContext;
+            unpackHelperParameters8.Serializer = this._serializer9;
+            unpackHelperParameters8.ItemsCount = itemsCount;
+            unpackHelperParameters8.Unpacked = indexOfItem;
+            unpackHelperParameters8.TargetObjectType = typeof(MsgPack.Serialization.FileSystemEntry);
+            unpackHelperParameters8.MemberName = "NormalRuntime";
+            unpackHelperParameters8.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters8.DirectRead = null;
+            unpackHelperParameters8.Setter = this.this_SetUnpackedValueOfNormalRuntimeDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters8);
         }
         
         private void SetUnpackedValueOfNormalVanilla(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, string unpackedValue) {
@@ -467,7 +579,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfNormalVanilla(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer10, itemsCount, indexOfItem, typeof(string), "NormalVanilla", MsgPack.Serialization.NilImplication.MemberDefault, this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate, this.this_SetUnpackedValueOfNormalVanillaDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, string> unpackHelperParameters9 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, string>);
+            unpackHelperParameters9.Unpacker = unpacker;
+            unpackHelperParameters9.UnpackingContext = unpackingContext;
+            unpackHelperParameters9.Serializer = this._serializer10;
+            unpackHelperParameters9.ItemsCount = itemsCount;
+            unpackHelperParameters9.Unpacked = indexOfItem;
+            unpackHelperParameters9.TargetObjectType = typeof(string);
+            unpackHelperParameters9.MemberName = "NormalVanilla";
+            unpackHelperParameters9.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters9.DirectRead = this.MsgPack_Serialization_UnpackHelpers_UnpackStringValueDelegate;
+            unpackHelperParameters9.Setter = this.this_SetUnpackedValueOfNormalVanillaDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters9);
         }
         
         private void SetUnpackedValueOfObjectRuntime(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, object unpackedValue) {
@@ -475,7 +598,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfObjectRuntime(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(object), "ObjectRuntime", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfObjectRuntimeDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, object> unpackHelperParameters10 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, object>);
+            unpackHelperParameters10.Unpacker = unpacker;
+            unpackHelperParameters10.UnpackingContext = unpackingContext;
+            unpackHelperParameters10.Serializer = this._serializer11;
+            unpackHelperParameters10.ItemsCount = itemsCount;
+            unpackHelperParameters10.Unpacked = indexOfItem;
+            unpackHelperParameters10.TargetObjectType = typeof(object);
+            unpackHelperParameters10.MemberName = "ObjectRuntime";
+            unpackHelperParameters10.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters10.DirectRead = null;
+            unpackHelperParameters10.Setter = this.this_SetUnpackedValueOfObjectRuntimeDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters10);
         }
         
         private void SetUnpackedValueOfObjectRuntimeOmittedType(MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, object unpackedValue) {
@@ -483,7 +617,18 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         }
         
         private void UnpackValueOfObjectRuntimeOmittedType(MsgPack.Unpacker unpacker, MsgPack.Serialization.PolymorphicMemberTypeMixed unpackingContext, int indexOfItem, int itemsCount) {
-            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(unpacker, unpackingContext, this._serializer11, itemsCount, indexOfItem, typeof(object), "ObjectRuntimeOmittedType", MsgPack.Serialization.NilImplication.MemberDefault, null, this.this_SetUnpackedValueOfObjectRuntimeOmittedTypeDelegate);
+            MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, object> unpackHelperParameters11 = default(MsgPack.Serialization.UnpackReferenceTypeValueParameters<MsgPack.Serialization.PolymorphicMemberTypeMixed, object>);
+            unpackHelperParameters11.Unpacker = unpacker;
+            unpackHelperParameters11.UnpackingContext = unpackingContext;
+            unpackHelperParameters11.Serializer = this._serializer11;
+            unpackHelperParameters11.ItemsCount = itemsCount;
+            unpackHelperParameters11.Unpacked = indexOfItem;
+            unpackHelperParameters11.TargetObjectType = typeof(object);
+            unpackHelperParameters11.MemberName = "ObjectRuntimeOmittedType";
+            unpackHelperParameters11.NilImplication = MsgPack.Serialization.NilImplication.MemberDefault;
+            unpackHelperParameters11.DirectRead = null;
+            unpackHelperParameters11.Setter = this.this_SetUnpackedValueOfObjectRuntimeOmittedTypeDelegate;
+            MsgPack.Serialization.UnpackHelpers.UnpackReferenceTypeValue(ref unpackHelperParameters11);
         }
         
         protected internal override MsgPack.Serialization.PolymorphicMemberTypeMixed UnpackFromCore(MsgPack.Unpacker unpacker) {
