@@ -1584,31 +1584,136 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 		// Not needed because generation itself has been done.
-#>
-		[Test]
-		public void TestHasInitOnlyField_Fail()
+
+		const string testValue = "\"123\"";
+		foreach ( var type in
+			new []
+			{
+				new { IsCollection = false,	TestValue = testValue,									DefaultValue = "\"ABC\"" },
+				new { IsCollection = true,	TestValue = "new List<string>{ " + testValue + " }",	DefaultValue = "new List<string>()" }, // test value should be appended to default empty collection.
+			}
+		)
 		{
-			Assert.Throws<SerializationException>( () => this.CreateTarget<HasInitOnlyField>( GetSerializationContext() ) );
-		}
+			foreach ( var spec in
+				new []
+				{
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Default",	Exception = ( !type.IsCollection ? "SerializationException" : null ) }, // cannot be deserialized
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Record",		Exception = default( string ) },
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Both",		Exception = default( string ) },
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Annotated",	Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Default",	Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Record",		Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Both",		Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Annotated",	Exception = default( string ) },
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Default",	Exception = ( !type.IsCollection ? "SerializationException" : null ) }, // cannot be deserialized
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Record",		Exception = default( string ) },
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Both",		Exception = default( string ) },
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Annotated",	Exception = default( string ) },
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Default",	Exception = default( string ) }, // via reflection
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Record",		Exception = default( string ) },
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Both",		Exception = default( string ) }, // via reflection
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Annotated",	Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Default",	Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Record",		Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Both",		Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Annotated",	Exception = default( string ) },
+			}
+			)
+			{
+				var typeName = "Has" + spec.Prefix + ( type.IsCollection ? "AppendableCollection" : String.Empty ) + spec.Suffix + "With" + spec.Constructor + "Constructor";
+#>
 
 		[Test]
-		public void TestHasInitOnlyFieldWithConstructor_Success()
+		public void Test<#= typeName #>_<#= spec.Exception == null ? "Success" : "Fail" #>()
 		{
-			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+<#+
+				if ( spec.Exception != null )
+				{
+#>
+			Assert.Throws<<#= spec.Exception #>>( () => this.CreateTarget<<#= typeName #>>( GetSerializationContext() ) );
+<#+
+				}
+				else
+				{
+#>
+			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new HasInitOnlyFieldWithConstructor( "123" );
+<#+
+					switch ( spec.Constructor )
+					{
+						case "Default":
+						{
+#>
+				var value = new <#= typeName #>();
+				value.InitializeMember( <#= type.TestValue #> );
+<#+
+							break;
+						}
+						case "Record":
+						case "Both":
+						{
+#>
+				var value = new <#= typeName #>( <#= type.TestValue #> );
+<#+
+							break;
+						}
+						case "Annotated":
+						{
+#>
+				var value = new <#= typeName #>( -1 /* dummy */ );
+<#+
+							break;
+						}
+					} // switch ( spec.Constructor )
+#>
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Field, Is.EqualTo( "123" ) );
+<#+
+					if ( spec.Constructor == "Annotated" )
+					{
+#>
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+					}
+					else
+					{
+#>
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( <#= type.TestValue #> ) );
+<#+
+					} // if spec.Constructor == "Annotated"
+
+					switch ( spec.Constructor )
+					{
+						case "Both":
+						case "Annotated":
+						{
+#>
+				Assert.That( result.WasProperConstructorUsed );
+<#+
+							break;
+						}
+					} // switch ( spec.Constructor )
+#>
 			}
+<#+
+				} // if ( Exception != null )
+#>
 		}
+<#+
+				if ( spec.Exception == null )
+				{
+#>
 
 		[Test]
-		public void TestHasInitOnlyFieldWithConstructorMissing_Success()
+		public void Test<#= typeName #>_DeserializeWithMissingMember_Success()
 		{
-			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
 <#+
@@ -1627,14 +1732,89 @@ namespace MsgPack.Serialization
 #>
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Field, Is.Null );
+<#+
+		if ( type.IsCollection )
+		{
+			switch ( spec.Constructor )
+			{
+				case "Default":
+				case "Both":
+				case "Annotated":
+				{
+#>
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+					break;
+				}
+				case "Record":
+				{
+#>
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+<#+
+					break;
+				}
+			}
+		}
+		else
+		{
+			switch ( spec.Constructor )
+			{
+				case "Default":
+				case "Annotated":
+				{
+#>
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+					break;
+				}
+				case "Record":
+				{
+#>
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+<#+
+					break;
+				}
+				case "Both":
+				{
+					switch ( spec.Prefix )
+					{
+						case "PrivateSetter":
+						case "PublicSetter":
+						case "ReadWrite":
+						{
+#>
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+							break;
+						}
+						default:
+						{
+#>
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+<#+
+							break;
+						}
+					}
+
+					break;
+				}
+			}
+		}
+#>
 			}
 		}
 
 		[Test]
-		public void TestHasInitOnlyFieldWithConstructorWithExtra_Success()
+		public void Test<#= typeName #>_DeseriaizeWithExtraMember_Success()
 		{
-			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
 				using ( var packer = Packer.Create( stream, false ) )
@@ -1650,11 +1830,18 @@ namespace MsgPack.Serialization
 		{
 #>
 					packer.PackMapHeader( 2 );
-					packer.PackString( "Field" );
+					packer.PackString( "Member" );
+<#+
+		}
+
+		if ( type.IsCollection )
+		{
+#>
+					packer.PackArrayHeader( 1 );
 <#+
 		}
 #>
-					packer.PackString( "ABC" );
+					packer.PackString( <#= testValue #> );
 <#+
 		if ( serializationMethod == "Map" )
 		{
@@ -1668,159 +1855,29 @@ namespace MsgPack.Serialization
 
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Field, Is.EqualTo( "ABC" ) );
-			}
-		}
-
-		[Test]
-		public void TestHasGetOnlyProperty_Fail()
-		{
-			Assert.Throws<SerializationException>( () => this.CreateTarget<HasGetOnlyProperty>( GetSerializationContext() ) );
-		}
-
-		[Test]
-		public void TestHasGetOnlyPropertyWithConstructor_Success()
-		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
-				var value = new HasGetOnlyPropertyWithConstructor( "123" );
-				serializer.Pack( stream, value );
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.EqualTo( "123" ) );
-			}
-		}
-
-		[Test]
-		public void TestHasGetOnlyPropertyWithConstructorMissing_Success()
-		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
 <#+
-		if ( serializationMethod == "Array" )
+		if ( spec.Constructor == "Annotated" )
 		{
 #>
-				stream.Write( new byte[]{ 0x90 } );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
 <#+
 		}
 		else
 		{
 #>
-				stream.Write( new byte[]{ 0x80 } );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( <#= type.TestValue #> ) );
 <#+
-		}
+		} // if spec.Constructor == "Annotated"
 #>
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.Null );
 			}
 		}
-
-		[Test]
-		public void TestHasGetOnlyPropertyWithConstructorWithExtra_Success()
-		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
-				using ( var packer = Packer.Create( stream, false ) )
-				{
 <#+
-		if ( serializationMethod == "Array" )
-		{
+				} // if spec.Exception == null
+			} // foreach spec
+		} // foreach prefix
 #>
-					packer.PackArrayHeader( 2 );
-<#+
-		}
-		else
-		{
-#>
-					packer.PackMapHeader( 2 );
-					packer.PackString( "Property" );
-<#+
-		}
-#>
-					packer.PackString( "ABC" );
-<#+
-		if ( serializationMethod == "Map" )
-		{
-#>
-					packer.PackString( "Extra" );
-<#+
-		}
-#>
-					packer.PackNull();
-				}
-
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
-			}
-		}
-
-		[Test]
-		public void TestHasPrivateSetterPropertyWithConstructor_Success()
-		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
-				using ( var packer = Packer.Create( stream, false ) )
-				{
-<#+
-		if ( serializationMethod == "Array" )
-		{
-#>
-					packer.PackArrayHeader( 2 );
-<#+
-		}
-		else
-		{
-#>
-					packer.PackMapHeader( 2 );
-					packer.PackString( "Property" );
-<#+
-		}
-#>
-					packer.PackString( "ABC" );
-<#+
-		if ( serializationMethod == "Map" )
-		{
-#>
-					packer.PackString( "Extra" );
-<#+
-		}
-#>
-					packer.PackNull();
-				}
-
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
-			}
-		}
-
-		[Test]
-		public void TestOnlyCollection_Success()
-		{
-			var serializer = this.CreateTarget<OnlyCollection>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
-				var value = new OnlyCollection();
-				value.Collection.Add( 1 );
-				value.Collection.Add( 2 );
-				serializer.Pack( stream, value );
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-				Assert.That( result.Collection.ToArray(), Is.EqualTo( new [] { 1, 2 } ) );
-			}
-		}
-
-		[Test]
-		public void TestConstrutorDeserializationOnlyCollection_Fail()
-		{
-			Assert.Throws<SerializationException>( () => this.CreateTarget<OnlyCollectionWithConstructor>( GetSerializationContext() ) );
-		}
 
 		[Test]
 		public void TestConstrutorDeserializationWithAnotherNameConstrtor_DifferIsSetDefault()
@@ -3124,409 +3181,6 @@ namespace MsgPack.Serialization
 <#+
 	}
 #>
-		public class HasInitOnlyField
-		{
-			public readonly string Field = "ABC";
-		}
-
-		public class HasInitOnlyFieldWithConstructor
-		{
-			public readonly string Field;
-
-			public HasInitOnlyFieldWithConstructor( string field )
-			{
-				this.Field = field;
-			}
-		}
-
-		public class HasGetOnlyProperty
-		{
-			public string Property { get { return "ABC"; } }
-		}
-
-		public class HasGetOnlyPropertyWithConstructor
-		{
-			private readonly string _property;
-			public string Property { get { return this._property; } }
-
-			public HasGetOnlyPropertyWithConstructor( string property )
-			{
-				this._property = property;
-			}
-		}
-
-		public class HasPrivateSetterPropertyWithConstructor
-		{
-			public string Property { get; private set; }
-
-			public HasPrivateSetterPropertyWithConstructor( string property )
-			{
-				this.Property = property;
-			}
-		}
-
-		public class OnlyCollection
-		{
-			public readonly List<int> Collection = new List<int>();
-		}
-
-		public class OnlyCollectionWithConstructor
-		{
-			public readonly List<int> Collection;
-
-			public OnlyCollectionWithConstructor( List<int> collection )
-			{
-				this.Collection = collection;
-			}
-		}
-
-		public class WithAnotherNameConstructor
-		{
-			public readonly int ReadOnlySame;
-			public readonly int ReadOnlyDiffer;
-
-			public WithAnotherNameConstructor( int readonlysame, int the2 )
-			{
-				this.ReadOnlySame = readonlysame;
-				this.ReadOnlyDiffer = the2;
-			}
-		}
-
-		public class WithAnotherTypeConstructor
-		{
-			public readonly int ReadOnlySame;
-			public readonly string ReadOnlyDiffer;
-
-			public WithAnotherTypeConstructor( int readonlysame, int the2 )
-			{
-				this.ReadOnlySame = readonlysame;
-				this.ReadOnlyDiffer = the2.ToString();
-			}
-		}
-
-		public class WithConstructorAttribute
-		{
-			public readonly int Value;
-			public readonly bool IsAttributePreferred;
-
-			public WithConstructorAttribute( int value, bool isAttributePreferred )
-			{
-				this.Value = value;
-				this.IsAttributePreferred = isAttributePreferred;
-			}
-
-			[MessagePackDeserializationConstructor]
-			public WithConstructorAttribute( int value ) : this( value, true ) {}
-		}
-
-		public class WithMultipleConstructorAttributes
-		{
-			public readonly int Value;
-
-			[MessagePackDeserializationConstructor]
-			public WithMultipleConstructorAttributes( int value, string arg ) { }
-
-			[MessagePackDeserializationConstructor]
-			public WithMultipleConstructorAttributes( int value, bool arg ) { }
-		}
-
-#pragma warning disable 3001
-<#+
-	foreach ( var item in constructorParamterSpecs )
-	{
-#>
-		public class WithOptionalConstructorParameter<#= item.Key #>
-		{
-			public readonly <#= item.Key #> Value;
-
-			public WithOptionalConstructorParameter<#= item.Key #>( <#= item.Key #> value = <#= item.Value #> )
-			{
-				this.Value = value;
-			}
-		}
-<#+
-	}
-#>
-#pragma warning restore 3001
-
-		public class JustPackable : IPackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void PackToMessage( Packer packer, PackingOptions options )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-		}
-
-		public class JustUnpackable : IUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void UnpackFromMessage( Unpacker unpacker )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-		public class PackableUnpackable : IPackable, IUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void PackToMessage( Packer packer, PackingOptions options )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-
-			public void UnpackFromMessage( Unpacker unpacker )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-#if FEATURE_TAP
-#pragma warning disable 1998
-
-		public class JustAsyncPackable : IAsyncPackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-		}
-
-		public class JustAsyncUnpackable : IAsyncUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-		public class AsyncPackableUnpackable : IAsyncPackable, IAsyncUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-
-			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-		public class FullPackableUnpackable : IPackable, IUnpackable, IAsyncPackable, IAsyncUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void PackToMessage( Packer packer, PackingOptions options )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-
-			public void UnpackFromMessage( Unpacker unpacker )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-
-			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
-			{
-				this.PackToMessage( packer, options );
-			}
-
-			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
-			{
-				this.UnpackFromMessage( unpacker );
-			}
-		}
-
-#pragma warning restore 1998
-#endif // FEATURE_TAP
-
-		public class CustomDateTimeSerealizer : MessagePackSerializer<DateTime>
-		{
-			private const byte _typeCodeForDateTimeForUs = 1;
-
-			public CustomDateTimeSerealizer()
-				: base( SerializationContext.Default ) {}
-
-			protected internal override void PackToCore( Packer packer, DateTime objectTree )
-			{
-				byte[] data;
-				if ( BitConverter.IsLittleEndian )
-				{
-					data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks ).Reverse().ToArray();
-				}
-				else
-				{
-					data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks );
-				}
-
-				packer.PackExtendedTypeValue( _typeCodeForDateTimeForUs, data );
-			}
-
-			protected internal override DateTime UnpackFromCore( Unpacker unpacker )
-			{
-				var ext = unpacker.LastReadData.AsMessagePackExtendedTypeObject();
-				Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
-				return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
-			}
-		}
-
-		// Issue #25
-
-		public class Person : IEnumerable<Person>
-		{
-			public string Name { get; set; }
-
-			internal IEnumerable<Person> Children { get; set; }
-
-			public IEnumerator<Person> GetEnumerator()
-			{
-				return Children.GetEnumerator();
-			}
-
-			IEnumerator IEnumerable.GetEnumerator()
-			{
-				return GetEnumerator();
-			}
-		}
-
-		public class PersonSerializer : MessagePackSerializer<Person>
-		{
-			public PersonSerializer()
-				: base( SerializationContext.Default ) {}
-
-			protected internal override void PackToCore( Packer packer, Person objectTree )
-			{
-				packer.PackMapHeader( 2 );
-				packer.PackString( "Name" );
-				packer.PackString( objectTree.Name );
-				packer.PackString( "Children" );
-				if ( objectTree.Children == null )
-				{
-					packer.PackNull();
-				}
-				else
-				{
-					this.PackPeople( packer, objectTree.Children );
-				}
-			}
-
-			internal void PackPeople( Packer packer, IEnumerable<Person> people )
-			{
-				var children = people.ToArray();
-
-				packer.PackArrayHeader( children.Length );
-				foreach ( var child in children )
-				{
-					this.PackTo( packer, child );
-				}
-			}
-
-			protected internal override Person UnpackFromCore( Unpacker unpacker )
-			{
-				Assert.That( unpacker.IsMapHeader );
-				Assert.That( unpacker.ItemsCount, Is.EqualTo( 2 ) );
-				var person = new Person();
-				for ( int i = 0; i < 2; i++ )
-				{
-					string key;
-					Assert.That( unpacker.ReadString( out key ) );
-					switch ( key )
-					{
-						case "Name":
-						{
-
-							string name;
-							Assert.That( unpacker.ReadString( out name ) );
-							person.Name = name;
-							break;
-						}
-						case "Children":
-						{
-							Assert.That( unpacker.Read() );
-							if ( !unpacker.LastReadData.IsNil )
-							{
-								person.Children = this.UnpackPeople( unpacker );
-							}
-							break;
-						}
-					}
-				}
-
-				return person;
-			}
-
-			internal IEnumerable<Person> UnpackPeople( Unpacker unpacker )
-			{
-				Assert.That( unpacker.IsArrayHeader );
-				var itemsCount = ( int )unpacker.ItemsCount;
-				var people = new List<Person>( itemsCount );
-				for ( int i = 0; i < itemsCount; i++ )
-				{
-					people.Add( this.UnpackFrom( unpacker ) );
-				}
-
-				return people;
-			}
-		}
-
-		public class ChildrenSerializer : MessagePackSerializer<IEnumerable<Person>>
-		{
-			private readonly PersonSerializer _personSerializer = new PersonSerializer();
-
-			public ChildrenSerializer()
-				: base( SerializationContext.Default ) {}
-
-			protected internal override void PackToCore( Packer packer, IEnumerable<Person> objectTree )
-			{
-				if ( objectTree is Person )
-				{
-					this._personSerializer.PackTo( packer, objectTree as Person );
-				}
-				else
-				{
-					this._personSerializer.PackPeople( packer, objectTree );
-				}
-			}
-
-			protected internal override IEnumerable<Person> UnpackFromCore( Unpacker unpacker )
-			{
-				return this._personSerializer.UnpackPeople( unpacker );
-			}
-		}
 
 		// Related to issue #62 -- internal types handling is not consistent at first.
 

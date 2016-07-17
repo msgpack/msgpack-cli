@@ -607,8 +607,35 @@ namespace MsgPack.Serialization
 		public int FourthProperty { get; set; }
 	}
 
-	// ReSharper restore MemberHidesStaticFromOuterClass
-	// ReSharper restore NotAccessedField.Local
-	// ReSharper restore UnusedMember.Local
+	public class RecordClass
+	{
+		public string ReferenceType { get; private set; }
+
+		public int ValueType { get; private set; }
+
+		public bool? NullableType { get; private set; }
+
+		public RecordClass( string referenceType, int valueType, bool? nullableType )
+		{
+			this.ReferenceType = referenceType;
+			this.ValueType = valueType;
+			this.NullableType = nullableType;
+		}
+	}
+
+	public class RecordClassWithCollection : RecordClass
+	{
+		public List<string> CollectionType { get; private set; }
+
+		public RecordClassWithCollection( string referenceType, int valueType, bool? nullableType, List<string> collectionType )
+			: base( referenceType, valueType, nullableType )
+		{
+			this.CollectionType = collectionType;
+		}
+	}
+
+// ReSharper restore MemberHidesStaticFromOuterClass
+// ReSharper restore NotAccessedField.Local
+// ReSharper restore UnusedMember.Local
 #pragma warning restore 0414
 }

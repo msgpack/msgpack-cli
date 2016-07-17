@@ -16,6 +16,25 @@
 	// TODO -> ComplexTypeGenerated.tt
 var flavors = new []{ "Field", "Context", "Expression" };
 
+var constructorParamterSpecs =
+	new []
+	{
+		new KeyValuePair<string, string>( "Byte", "( byte )2" ),
+		new KeyValuePair<string, string>( "SByte", "( sbyte )-2" ),
+		new KeyValuePair<string, string>( "Int16", "( short )-2" ),
+		new KeyValuePair<string, string>( "UInt16", "( ushort )2" ),
+		new KeyValuePair<string, string>( "Int32", "-2" ),
+		new KeyValuePair<string, string>( "UInt32", "( uint )2" ),
+		new KeyValuePair<string, string>( "Int64", "-2L" ),
+		new KeyValuePair<string, string>( "UInt64", "( ulong )2L" ),
+		new KeyValuePair<string, string>( "Single", "1.2f" ),
+		new KeyValuePair<string, string>( "Double", "1.2" ),
+		new KeyValuePair<string, string>( "Decimal", "1.2m" ),
+		new KeyValuePair<string, string>( "Boolean", "true" ),
+		new KeyValuePair<string, string>( "Char", "'A'" ),
+		new KeyValuePair<string, string>( "String", "\"ABC\"" ),
+	};
+
 var fields =
 	new Tuple<Object, string, string, bool>[]
 	{
@@ -1272,6 +1291,773 @@ GeneratePolymorphismTestTypes();
 		public IEnumerator GetEnumerator()
 		{
 			yield break;
+		}
+	}
+
+<#
+foreach( var spec in
+	new []
+	{
+		new { Prefix = "", 						IsCollection = false,	Type = "string", Default = "\"ABC\"" },
+		new { Prefix = "AppendableCollection",	IsCollection = true,	Type = "List<string>", Default = "new List<string>()" },
+	}
+)
+{
+#>
+
+	public class HasInitOnly<#= spec.Prefix #>FieldWithDefaultConstructor
+	{
+		public readonly <#= spec.Type #> Member;
+
+		public void InitializeMember( <#= spec.Type #> member )
+		{
+			this.GetType().GetRuntimeField( "Member" ).SetValue( this, member );
+		}
+
+		public HasInitOnly<#= spec.Prefix #>FieldWithDefaultConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+		}
+	}
+
+	public class HasInitOnly<#= spec.Prefix #>FieldWithRecordConstructor
+	{
+		public readonly <#= spec.Type #> Member;
+
+		public HasInitOnly<#= spec.Prefix #>FieldWithRecordConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+	}
+
+	public class HasInitOnly<#= spec.Prefix #>FieldWithBothConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public readonly <#= spec.Type #> Member;
+
+		public HasInitOnly<#= spec.Prefix #>FieldWithBothConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+<#
+	if ( spec.IsCollection )
+	{
+#>
+			// Collection is appendable, so default constructor should be used.
+			this._wasProperConstructorUsed = true;
+<#
+	}
+#>
+		}
+
+		public HasInitOnly<#= spec.Prefix #>FieldWithBothConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+<#
+	if ( !spec.IsCollection )
+	{
+#>
+			// Scalar is not appendable, so parameterful constructor should be used.
+			this._wasProperConstructorUsed = true;
+<#
+	}
+#>
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+	
+	public class HasInitOnly<#= spec.Prefix #>FieldWithAnnotatedConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public readonly <#= spec.Type #> Member;
+
+		public HasInitOnly<#= spec.Prefix #>FieldWithAnnotatedConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+		}
+
+		public HasInitOnly<#= spec.Prefix #>FieldWithAnnotatedConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+		
+		[MessagePackDeserializationConstructor]
+		public HasInitOnly<#= spec.Prefix #>FieldWithAnnotatedConstructor( int dummy ) : this( <#= spec.Default #> )
+		{
+			this._wasProperConstructorUsed = true;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+
+	public class HasReadWrite<#= spec.Prefix #>FieldWithDefaultConstructor
+	{
+		public <#= spec.Type #> Member = <#= spec.Default #>;
+
+		public void InitializeMember( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+
+		public HasReadWrite<#= spec.Prefix #>FieldWithDefaultConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+		}
+	}
+
+	public class HasReadWrite<#= spec.Prefix #>FieldWithRecordConstructor
+	{
+		public <#= spec.Type #> Member;
+
+		public HasReadWrite<#= spec.Prefix #>FieldWithRecordConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+	}
+
+	public class HasReadWrite<#= spec.Prefix #>FieldWithBothConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public <#= spec.Type #> Member;
+
+		public HasReadWrite<#= spec.Prefix #>FieldWithBothConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+			this._wasProperConstructorUsed = true;
+		}
+
+		public HasReadWrite<#= spec.Prefix #>FieldWithBothConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+	
+	public class HasReadWrite<#= spec.Prefix #>FieldWithAnnotatedConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public <#= spec.Type #> Member;
+
+		public HasReadWrite<#= spec.Prefix #>FieldWithAnnotatedConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+		}
+
+		public HasReadWrite<#= spec.Prefix #>FieldWithAnnotatedConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+		
+		[MessagePackDeserializationConstructor]
+		public HasReadWrite<#= spec.Prefix #>FieldWithAnnotatedConstructor( int dummy ) : this( <#= spec.Default #> )
+		{
+			this._wasProperConstructorUsed = true;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+
+	public class HasGetOnly<#= spec.Prefix #>PropertyWithDefaultConstructor
+	{
+		private <#= spec.Type #> _member = <#= spec.Default #>;
+		public <#= spec.Type #> Member { get { return this._member; } }
+
+		public void InitializeMember( <#= spec.Type #> member )
+		{
+			this._member = member;
+		}
+
+		public HasGetOnly<#= spec.Prefix #>PropertyWithDefaultConstructor()
+		{
+			this._member = <#= spec.Default #>;
+		}
+	}
+
+	public class HasGetOnly<#= spec.Prefix #>PropertyWithRecordConstructor
+	{
+		private readonly <#= spec.Type #> _member;
+		public <#= spec.Type #> Member { get { return this._member; } }
+
+		public HasGetOnly<#= spec.Prefix #>PropertyWithRecordConstructor( <#= spec.Type #> member )
+		{
+			this._member = member;
+		}
+	}
+
+	public class HasGetOnly<#= spec.Prefix #>PropertyWithBothConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		private readonly <#= spec.Type #> _member;
+		public <#= spec.Type #> Member { get { return this._member; } }
+
+		public HasGetOnly<#= spec.Prefix #>PropertyWithBothConstructor()
+		{
+			this._member = <#= spec.Default #>;
+<#
+	if ( spec.IsCollection )
+	{
+#>
+			// Collection is appendable, so default constructor should be used.
+			this._wasProperConstructorUsed = true;
+<#
+	}
+#>
+		}
+
+		public HasGetOnly<#= spec.Prefix #>PropertyWithBothConstructor( <#= spec.Type #> member )
+		{
+			this._member = member;
+<#
+	if ( !spec.IsCollection )
+	{
+#>
+			// Scalar is not appendable, so parameterful constructor should be used.
+			this._wasProperConstructorUsed = true;
+<#
+	}
+#>
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+
+	public class HasGetOnly<#= spec.Prefix #>PropertyWithAnnotatedConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		private readonly <#= spec.Type #> _member;
+		public <#= spec.Type #> Member { get { return this._member; } }
+
+		public HasGetOnly<#= spec.Prefix #>PropertyWithAnnotatedConstructor()
+		{
+			this._member = <#= spec.Default #>;
+		}
+
+		public HasGetOnly<#= spec.Prefix #>PropertyWithAnnotatedConstructor( <#= spec.Type #> member )
+		{
+			this._member = member;
+		}
+		
+		[MessagePackDeserializationConstructor]
+		public HasGetOnly<#= spec.Prefix #>PropertyWithAnnotatedConstructor( int dummy ) : this( <#= spec.Default #> )
+		{
+			this._wasProperConstructorUsed = true;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+
+	public class HasPrivateSetter<#= spec.Prefix #>PropertyWithDefaultConstructor
+	{
+		public <#= spec.Type #> Member { get; private set; }
+
+		public void InitializeMember( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+
+		public HasPrivateSetter<#= spec.Prefix #>PropertyWithDefaultConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+		}
+	}
+
+	public class HasPrivateSetter<#= spec.Prefix #>PropertyWithRecordConstructor
+	{
+		public <#= spec.Type #> Member { get; private set; }
+
+		public HasPrivateSetter<#= spec.Prefix #>PropertyWithRecordConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+	}
+
+	public class HasPrivateSetter<#= spec.Prefix #>PropertyWithBothConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public <#= spec.Type #> Member { get; private set; }
+
+		public HasPrivateSetter<#= spec.Prefix #>PropertyWithBothConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+			// setter should be used via reflection for backward compatibility here.
+			this._wasProperConstructorUsed = true;
+		}
+
+		public HasPrivateSetter<#= spec.Prefix #>PropertyWithBothConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+
+	public class HasPrivateSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public <#= spec.Type #> Member { get; private set; }
+
+		public HasPrivateSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+		}
+
+		public HasPrivateSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+		
+		[MessagePackDeserializationConstructor]
+		public HasPrivateSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor( int dummy ) : this( <#= spec.Default #> )
+		{
+			this._wasProperConstructorUsed = true;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+
+	public class HasPublicSetter<#= spec.Prefix #>PropertyWithDefaultConstructor
+	{
+		public <#= spec.Type #> Member { get; set; }
+
+		public void InitializeMember( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+
+		public HasPublicSetter<#= spec.Prefix #>PropertyWithDefaultConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+		}
+	}
+
+	public class HasPublicSetter<#= spec.Prefix #>PropertyWithRecordConstructor
+	{
+		public <#= spec.Type #> Member { get; set; }
+
+		public HasPublicSetter<#= spec.Prefix #>PropertyWithRecordConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+	}
+
+	public class HasPublicSetter<#= spec.Prefix #>PropertyWithBothConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public <#= spec.Type #> Member { get; set; }
+
+		public HasPublicSetter<#= spec.Prefix #>PropertyWithBothConstructor()
+		{
+			this.Member = <#= spec.Default #>;
+			this._wasProperConstructorUsed = true;
+		}
+
+		public HasPublicSetter<#= spec.Prefix #>PropertyWithBothConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+
+	public class HasPublicSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor
+	{
+		private readonly bool _wasProperConstructorUsed;
+		public <#= spec.Type #> Member { get; set; }
+
+		public HasPublicSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor() { }
+
+		public HasPublicSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor( <#= spec.Type #> member )
+		{
+			this.Member = member;
+		}
+		
+		[MessagePackDeserializationConstructor]
+		public HasPublicSetter<#= spec.Prefix #>PropertyWithAnnotatedConstructor( int dummy ) : this( <#= spec.Default #> )
+		{
+			this._wasProperConstructorUsed = true;
+		}
+
+		public bool WasProperConstructorUsed()
+		{
+			return this._wasProperConstructorUsed;
+		}
+	}
+<#
+}
+#>
+
+	public class WithAnotherNameConstructor
+	{
+		public readonly int ReadOnlySame;
+		public readonly int ReadOnlyDiffer;
+
+		public WithAnotherNameConstructor( int readonlysame, int the2 )
+		{
+			this.ReadOnlySame = readonlysame;
+			this.ReadOnlyDiffer = the2;
+		}
+	}
+
+	public class WithAnotherTypeConstructor
+	{
+		public readonly int ReadOnlySame;
+		public readonly string ReadOnlyDiffer;
+
+		public WithAnotherTypeConstructor( int readonlysame, int the2 )
+		{
+			this.ReadOnlySame = readonlysame;
+			this.ReadOnlyDiffer = the2.ToString();
+		}
+	}
+
+	public class WithConstructorAttribute
+	{
+		public readonly int Value;
+		public readonly bool IsAttributePreferred;
+
+		public WithConstructorAttribute( int value, bool isAttributePreferred )
+		{
+			this.Value = value;
+			this.IsAttributePreferred = isAttributePreferred;
+		}
+
+		[MessagePackDeserializationConstructor]
+		public WithConstructorAttribute( int value ) : this( value, true ) {}
+	}
+
+	public class WithMultipleConstructorAttributes
+	{
+		public readonly int Value;
+
+		[MessagePackDeserializationConstructor]
+		public WithMultipleConstructorAttributes( int value, string arg ) { }
+
+		[MessagePackDeserializationConstructor]
+		public WithMultipleConstructorAttributes( int value, bool arg ) { }
+	}
+#pragma warning disable 3001
+<#
+foreach ( var item in constructorParamterSpecs )
+{
+#>
+		public class WithOptionalConstructorParameter<#= item.Key #>
+		{
+			public readonly <#= item.Key #> Value;
+
+			public WithOptionalConstructorParameter<#= item.Key #>( <#= item.Key #> value = <#= item.Value #> )
+			{
+				this.Value = value;
+			}
+		}
+<#
+}
+#>
+#pragma warning restore 3001
+
+	public class JustPackable : IPackable
+	{
+		public const string Dummy = "1";
+
+		public int Int32Field { get; set; }
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( Dummy );
+		}
+	}
+
+	public class JustUnpackable : IUnpackable
+	{
+		public const string Dummy = "1";
+
+		public int Int32Field { get; set; }
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			unpacker.UnpackSubtreeData();
+			this.Int32Field = Int32.Parse( Dummy );
+		}
+	}
+
+	public class PackableUnpackable : IPackable, IUnpackable
+	{
+		public const string Dummy = "1";
+
+		public int Int32Field { get; set; }
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( Dummy );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			unpacker.UnpackSubtreeData();
+			this.Int32Field = Int32.Parse( Dummy );
+		}
+	}
+
+#if FEATURE_TAP
+#pragma warning disable 1998
+
+	public class JustAsyncPackable : IAsyncPackable
+	{
+		public const string Dummy = "1";
+
+		public int Int32Field { get; set; }
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( Dummy );
+		}
+	}
+
+	public class JustAsyncUnpackable : IAsyncUnpackable
+	{
+		public const string Dummy = "1";
+
+		public int Int32Field { get; set; }
+
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			unpacker.UnpackSubtreeData();
+			this.Int32Field = Int32.Parse( Dummy );
+		}
+	}
+
+	public class AsyncPackableUnpackable : IAsyncPackable, IAsyncUnpackable
+	{
+		public const string Dummy = "1";
+
+		public int Int32Field { get; set; }
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( Dummy );
+		}
+
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			unpacker.UnpackSubtreeData();
+			this.Int32Field = Int32.Parse( Dummy );
+		}
+	}
+
+	public class FullPackableUnpackable : IPackable, IUnpackable, IAsyncPackable, IAsyncUnpackable
+	{
+		public const string Dummy = "1";
+
+		public int Int32Field { get; set; }
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( Dummy );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			unpacker.UnpackSubtreeData();
+			this.Int32Field = Int32.Parse( Dummy );
+		}
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			this.PackToMessage( packer, options );
+		}
+
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			this.UnpackFromMessage( unpacker );
+		}
+	}
+
+#pragma warning restore 1998
+#endif // FEATURE_TAP
+
+	public class CustomDateTimeSerealizer : MessagePackSerializer<DateTime>
+	{
+		private const byte _typeCodeForDateTimeForUs = 1;
+
+		public CustomDateTimeSerealizer()
+			: base( SerializationContext.Default ) {}
+
+		protected internal override void PackToCore( Packer packer, DateTime objectTree )
+		{
+			byte[] data;
+			if ( BitConverter.IsLittleEndian )
+			{
+				data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks ).Reverse().ToArray();
+			}
+			else
+			{
+				data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks );
+			}
+
+			packer.PackExtendedTypeValue( _typeCodeForDateTimeForUs, data );
+		}
+
+		protected internal override DateTime UnpackFromCore( Unpacker unpacker )
+		{
+			var ext = unpacker.LastReadData.AsMessagePackExtendedTypeObject();
+			Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
+			return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
+		}
+	}
+
+	// Issue #25
+
+	public class Person : IEnumerable<Person>
+	{
+		public string Name { get; set; }
+
+		internal IEnumerable<Person> Children { get; set; }
+
+		public IEnumerator<Person> GetEnumerator()
+		{
+			return Children.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+	}
+
+	public class PersonSerializer : MessagePackSerializer<Person>
+	{
+		public PersonSerializer()
+			: base( SerializationContext.Default ) {}
+
+		protected internal override void PackToCore( Packer packer, Person objectTree )
+		{
+			packer.PackMapHeader( 2 );
+			packer.PackString( "Name" );
+			packer.PackString( objectTree.Name );
+			packer.PackString( "Children" );
+			if ( objectTree.Children == null )
+			{
+				packer.PackNull();
+			}
+			else
+			{
+				this.PackPeople( packer, objectTree.Children );
+			}
+		}
+
+		internal void PackPeople( Packer packer, IEnumerable<Person> people )
+		{
+			var children = people.ToArray();
+
+			packer.PackArrayHeader( children.Length );
+			foreach ( var child in children )
+			{
+				this.PackTo( packer, child );
+			}
+		}
+
+		protected internal override Person UnpackFromCore( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsMapHeader );
+			Assert.That( unpacker.ItemsCount, Is.EqualTo( 2 ) );
+			var person = new Person();
+			for ( int i = 0; i < 2; i++ )
+			{
+				string key;
+				Assert.That( unpacker.ReadString( out key ) );
+				switch ( key )
+				{
+					case "Name":
+					{
+
+						string name;
+						Assert.That( unpacker.ReadString( out name ) );
+						person.Name = name;
+						break;
+					}
+					case "Children":
+					{
+						Assert.That( unpacker.Read() );
+						if ( !unpacker.LastReadData.IsNil )
+						{
+							person.Children = this.UnpackPeople( unpacker );
+						}
+						break;
+					}
+				}
+			}
+
+			return person;
+		}
+
+		internal IEnumerable<Person> UnpackPeople( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			var itemsCount = ( int )unpacker.ItemsCount;
+			var people = new List<Person>( itemsCount );
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+				people.Add( this.UnpackFrom( unpacker ) );
+			}
+
+			return people;
+		}
+	}
+
+	public class ChildrenSerializer : MessagePackSerializer<IEnumerable<Person>>
+	{
+		private readonly PersonSerializer _personSerializer = new PersonSerializer();
+
+		public ChildrenSerializer()
+			: base( SerializationContext.Default ) {}
+
+		protected internal override void PackToCore( Packer packer, IEnumerable<Person> objectTree )
+		{
+			if ( objectTree is Person )
+			{
+				this._personSerializer.PackTo( packer, objectTree as Person );
+			}
+			else
+			{
+				this._personSerializer.PackPeople( packer, objectTree );
+			}
+		}
+
+		protected internal override IEnumerable<Person> UnpackFromCore( Unpacker unpacker )
+		{
+			return this._personSerializer.UnpackPeople( unpacker );
 		}
 	}
 }

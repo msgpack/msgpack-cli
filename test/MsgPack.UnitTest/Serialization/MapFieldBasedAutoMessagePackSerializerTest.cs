@@ -45,7 +45,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Text.RegularExpressions;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -1533,155 +1532,2117 @@ namespace MsgPack.Serialization
 			}
 		}
 
+
 		[Test]
-		public void TestHasInitOnlyField_Fail()
+		public void TestHasInitOnlyFieldWithDefaultConstructor_Fail()
 		{
-			Assert.Throws<SerializationException>( () => this.CreateTarget<HasInitOnlyField>( GetSerializationContext() ) );
+			Assert.Throws<SerializationException>( () => this.CreateTarget<HasInitOnlyFieldWithDefaultConstructor>( GetSerializationContext() ) );
 		}
 
 		[Test]
-		public void TestHasInitOnlyFieldWithConstructor_Success()
+		public void TestHasInitOnlyFieldWithRecordConstructor_Success()
 		{
-			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithRecordConstructor>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new HasInitOnlyFieldWithConstructor( "123" );
+				var value = new HasInitOnlyFieldWithRecordConstructor( "123" );
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Field, Is.EqualTo( "123" ) );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
 			}
 		}
 
 		[Test]
-		public void TestHasInitOnlyFieldWithConstructorMissing_Success()
+		public void TestHasInitOnlyFieldWithRecordConstructor_DeserializeWithMissingMember_Success()
 		{
-			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithRecordConstructor>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
 				stream.Write( new byte[]{ 0x80 } );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Field, Is.Null );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestHasInitOnlyFieldWithConstructorWithExtra_Success()
+		public void TestHasInitOnlyFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success()
 		{
-			var serializer = this.CreateTarget<HasInitOnlyFieldWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithRecordConstructor>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackMapHeader( 2 );
-					packer.PackString( "Field" );
-					packer.PackString( "ABC" );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
 					packer.PackString( "Extra" );
 					packer.PackNull();
 				}
 
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Field, Is.EqualTo( "ABC" ) );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
 			}
 		}
 
 		[Test]
-		public void TestHasGetOnlyProperty_Fail()
+		public void TestHasInitOnlyFieldWithBothConstructor_Success()
 		{
-			Assert.Throws<SerializationException>( () => this.CreateTarget<HasGetOnlyProperty>( GetSerializationContext() ) );
-		}
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithBothConstructor>( GetSerializationContext() );
 
-		[Test]
-		public void TestHasGetOnlyPropertyWithConstructor_Success()
-		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
-				var value = new HasGetOnlyPropertyWithConstructor( "123" );
+				var value = new HasInitOnlyFieldWithBothConstructor( "123" );
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.EqualTo( "123" ) );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+				Assert.That( result.WasProperConstructorUsed );
 			}
 		}
 
 		[Test]
-		public void TestHasGetOnlyPropertyWithConstructorMissing_Success()
+		public void TestHasInitOnlyFieldWithBothConstructor_DeserializeWithMissingMember_Success()
 		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithBothConstructor>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
 				stream.Write( new byte[]{ 0x80 } );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.Null );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
 			}
 		}
 
 		[Test]
-		public void TestHasGetOnlyPropertyWithConstructorWithExtra_Success()
+		public void TestHasInitOnlyFieldWithBothConstructor_DeseriaizeWithExtraMember_Success()
 		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithBothConstructor>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
 				using ( var packer = Packer.Create( stream, false ) )
 				{
 					packer.PackMapHeader( 2 );
-					packer.PackString( "Property" );
-					packer.PackString( "ABC" );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
 					packer.PackString( "Extra" );
 					packer.PackNull();
 				}
 
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
 			}
 		}
 
 		[Test]
-		public void TestHasPrivateSetterPropertyWithConstructor_Success()
+		public void TestHasInitOnlyFieldWithAnnotatedConstructor_Success()
 		{
-			var serializer = this.CreateTarget<HasGetOnlyPropertyWithConstructor>( GetSerializationContext() );
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
 			using ( var stream = new MemoryStream() )
 			{
-				using ( var packer = Packer.Create( stream, false ) )
-				{
-					packer.PackMapHeader( 2 );
-					packer.PackString( "Property" );
-					packer.PackString( "ABC" );
-					packer.PackString( "Extra" );
-					packer.PackNull();
-				}
-
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-				Assert.That( result.Property, Is.EqualTo( "ABC" ) );
-			}
-		}
-
-		[Test]
-		public void TestOnlyCollection_Success()
-		{
-			var serializer = this.CreateTarget<OnlyCollection>( GetSerializationContext() );
-			using ( var stream = new MemoryStream() )
-			{
-				var value = new OnlyCollection();
-				value.Collection.Add( 1 );
-				value.Collection.Add( 2 );
+				var value = new HasInitOnlyFieldWithAnnotatedConstructor( -1 /* dummy */ );
 				serializer.Pack( stream, value );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-				Assert.That( result.Collection.ToArray(), Is.EqualTo( new [] { 1, 2 } ) );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+				Assert.That( result.WasProperConstructorUsed );
 			}
 		}
 
 		[Test]
-		public void TestConstrutorDeserializationOnlyCollection_Fail()
+		public void TestHasInitOnlyFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
 		{
-			Assert.Throws<SerializationException>( () => this.CreateTarget<OnlyCollectionWithConstructor>( GetSerializationContext() ) );
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteFieldWithDefaultConstructor();
+				value.InitializeMember( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteFieldWithRecordConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteFieldWithBothConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteFieldWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithDefaultConstructor_Fail()
+		{
+			Assert.Throws<SerializationException>( () => this.CreateTarget<HasGetOnlyPropertyWithDefaultConstructor>( GetSerializationContext() ) );
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyPropertyWithRecordConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyPropertyWithBothConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyPropertyWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterPropertyWithDefaultConstructor();
+				value.InitializeMember( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterPropertyWithRecordConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterPropertyWithBothConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterPropertyWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterPropertyWithDefaultConstructor();
+				value.InitializeMember( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterPropertyWithRecordConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterPropertyWithBothConstructor( "123" );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( "123" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterPropertyWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasInitOnlyAppendableCollectionFieldWithDefaultConstructor();
+				value.InitializeMember( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasInitOnlyAppendableCollectionFieldWithRecordConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasInitOnlyAppendableCollectionFieldWithBothConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteAppendableCollectionFieldWithDefaultConstructor();
+				value.InitializeMember( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteAppendableCollectionFieldWithRecordConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteAppendableCollectionFieldWithBothConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasReadWriteAppendableCollectionFieldWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasReadWriteAppendableCollectionFieldWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyAppendableCollectionPropertyWithDefaultConstructor();
+				value.InitializeMember( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyAppendableCollectionPropertyWithRecordConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyAppendableCollectionPropertyWithBothConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor();
+				value.InitializeMember( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterAppendableCollectionPropertyWithRecordConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterAppendableCollectionPropertyWithBothConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterAppendableCollectionPropertyWithDefaultConstructor();
+				value.InitializeMember( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithDefaultConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterAppendableCollectionPropertyWithRecordConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithRecordConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterAppendableCollectionPropertyWithBothConstructor( new List<string>{ "123" } );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithBothConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var value = new HasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor( -1 /* dummy */ );
+				serializer.Pack( stream, value );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+				Assert.That( result.WasProperConstructorUsed );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				stream.Write( new byte[]{ 0x80 } );
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
+		}
+
+		[Test]
+		public void TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success()
+		{
+			var serializer = this.CreateTarget<HasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+					packer.PackArrayHeader( 1 );
+					packer.PackString( "123" );
+					packer.PackString( "Extra" );
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
+			}
 		}
 
 		[Test]
@@ -5950,519 +7911,6 @@ namespace MsgPack.Serialization
 
 #endif // !UNITY
 
-		public class HasInitOnlyField
-		{
-			public readonly string Field = "ABC";
-		}
-
-		public class HasInitOnlyFieldWithConstructor
-		{
-			public readonly string Field;
-
-			public HasInitOnlyFieldWithConstructor( string field )
-			{
-				this.Field = field;
-			}
-		}
-
-		public class HasGetOnlyProperty
-		{
-			public string Property { get { return "ABC"; } }
-		}
-
-		public class HasGetOnlyPropertyWithConstructor
-		{
-			private readonly string _property;
-			public string Property { get { return this._property; } }
-
-			public HasGetOnlyPropertyWithConstructor( string property )
-			{
-				this._property = property;
-			}
-		}
-
-		public class HasPrivateSetterPropertyWithConstructor
-		{
-			public string Property { get; private set; }
-
-			public HasPrivateSetterPropertyWithConstructor( string property )
-			{
-				this.Property = property;
-			}
-		}
-
-		public class OnlyCollection
-		{
-			public readonly List<int> Collection = new List<int>();
-		}
-
-		public class OnlyCollectionWithConstructor
-		{
-			public readonly List<int> Collection;
-
-			public OnlyCollectionWithConstructor( List<int> collection )
-			{
-				this.Collection = collection;
-			}
-		}
-
-		public class WithAnotherNameConstructor
-		{
-			public readonly int ReadOnlySame;
-			public readonly int ReadOnlyDiffer;
-
-			public WithAnotherNameConstructor( int readonlysame, int the2 )
-			{
-				this.ReadOnlySame = readonlysame;
-				this.ReadOnlyDiffer = the2;
-			}
-		}
-
-		public class WithAnotherTypeConstructor
-		{
-			public readonly int ReadOnlySame;
-			public readonly string ReadOnlyDiffer;
-
-			public WithAnotherTypeConstructor( int readonlysame, int the2 )
-			{
-				this.ReadOnlySame = readonlysame;
-				this.ReadOnlyDiffer = the2.ToString();
-			}
-		}
-
-		public class WithConstructorAttribute
-		{
-			public readonly int Value;
-			public readonly bool IsAttributePreferred;
-
-			public WithConstructorAttribute( int value, bool isAttributePreferred )
-			{
-				this.Value = value;
-				this.IsAttributePreferred = isAttributePreferred;
-			}
-
-			[MessagePackDeserializationConstructor]
-			public WithConstructorAttribute( int value ) : this( value, true ) {}
-		}
-
-		public class WithMultipleConstructorAttributes
-		{
-			public readonly int Value;
-
-			[MessagePackDeserializationConstructor]
-			public WithMultipleConstructorAttributes( int value, string arg ) { }
-
-			[MessagePackDeserializationConstructor]
-			public WithMultipleConstructorAttributes( int value, bool arg ) { }
-		}
-
-#pragma warning disable 3001
-		public class WithOptionalConstructorParameterByte
-		{
-			public readonly Byte Value;
-
-			public WithOptionalConstructorParameterByte( Byte value = ( byte )2 )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterSByte
-		{
-			public readonly SByte Value;
-
-			public WithOptionalConstructorParameterSByte( SByte value = ( sbyte )-2 )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterInt16
-		{
-			public readonly Int16 Value;
-
-			public WithOptionalConstructorParameterInt16( Int16 value = ( short )-2 )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterUInt16
-		{
-			public readonly UInt16 Value;
-
-			public WithOptionalConstructorParameterUInt16( UInt16 value = ( ushort )2 )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterInt32
-		{
-			public readonly Int32 Value;
-
-			public WithOptionalConstructorParameterInt32( Int32 value = -2 )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterUInt32
-		{
-			public readonly UInt32 Value;
-
-			public WithOptionalConstructorParameterUInt32( UInt32 value = ( uint )2 )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterInt64
-		{
-			public readonly Int64 Value;
-
-			public WithOptionalConstructorParameterInt64( Int64 value = -2L )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterUInt64
-		{
-			public readonly UInt64 Value;
-
-			public WithOptionalConstructorParameterUInt64( UInt64 value = ( ulong )2L )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterSingle
-		{
-			public readonly Single Value;
-
-			public WithOptionalConstructorParameterSingle( Single value = 1.2f )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterDouble
-		{
-			public readonly Double Value;
-
-			public WithOptionalConstructorParameterDouble( Double value = 1.2 )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterDecimal
-		{
-			public readonly Decimal Value;
-
-			public WithOptionalConstructorParameterDecimal( Decimal value = 1.2m )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterBoolean
-		{
-			public readonly Boolean Value;
-
-			public WithOptionalConstructorParameterBoolean( Boolean value = true )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterChar
-		{
-			public readonly Char Value;
-
-			public WithOptionalConstructorParameterChar( Char value = 'A' )
-			{
-				this.Value = value;
-			}
-		}
-		public class WithOptionalConstructorParameterString
-		{
-			public readonly String Value;
-
-			public WithOptionalConstructorParameterString( String value = "ABC" )
-			{
-				this.Value = value;
-			}
-		}
-#pragma warning restore 3001
-
-		public class JustPackable : IPackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void PackToMessage( Packer packer, PackingOptions options )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-		}
-
-		public class JustUnpackable : IUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void UnpackFromMessage( Unpacker unpacker )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-		public class PackableUnpackable : IPackable, IUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void PackToMessage( Packer packer, PackingOptions options )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-
-			public void UnpackFromMessage( Unpacker unpacker )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-#if FEATURE_TAP
-#pragma warning disable 1998
-
-		public class JustAsyncPackable : IAsyncPackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-		}
-
-		public class JustAsyncUnpackable : IAsyncUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-		public class AsyncPackableUnpackable : IAsyncPackable, IAsyncUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-
-			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-		}
-
-		public class FullPackableUnpackable : IPackable, IUnpackable, IAsyncPackable, IAsyncUnpackable
-		{
-			public const string Dummy = "1";
-
-			public int Int32Field { get; set; }
-
-			public void PackToMessage( Packer packer, PackingOptions options )
-			{
-				packer.PackArrayHeader( 1 );
-				packer.PackString( Dummy );
-			}
-
-			public void UnpackFromMessage( Unpacker unpacker )
-			{
-				unpacker.UnpackSubtreeData();
-				this.Int32Field = Int32.Parse( Dummy );
-			}
-
-			public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
-			{
-				this.PackToMessage( packer, options );
-			}
-
-			public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
-			{
-				this.UnpackFromMessage( unpacker );
-			}
-		}
-
-#pragma warning restore 1998
-#endif // FEATURE_TAP
-
-		public class CustomDateTimeSerealizer : MessagePackSerializer<DateTime>
-		{
-			private const byte _typeCodeForDateTimeForUs = 1;
-
-			public CustomDateTimeSerealizer()
-				: base( SerializationContext.Default ) {}
-
-			protected internal override void PackToCore( Packer packer, DateTime objectTree )
-			{
-				byte[] data;
-				if ( BitConverter.IsLittleEndian )
-				{
-					data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks ).Reverse().ToArray();
-				}
-				else
-				{
-					data = BitConverter.GetBytes( objectTree.ToUniversalTime().Ticks );
-				}
-
-				packer.PackExtendedTypeValue( _typeCodeForDateTimeForUs, data );
-			}
-
-			protected internal override DateTime UnpackFromCore( Unpacker unpacker )
-			{
-				var ext = unpacker.LastReadData.AsMessagePackExtendedTypeObject();
-				Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
-				return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
-			}
-		}
-
-		// Issue #25
-
-		public class Person : IEnumerable<Person>
-		{
-			public string Name { get; set; }
-
-			internal IEnumerable<Person> Children { get; set; }
-
-			public IEnumerator<Person> GetEnumerator()
-			{
-				return Children.GetEnumerator();
-			}
-
-			IEnumerator IEnumerable.GetEnumerator()
-			{
-				return GetEnumerator();
-			}
-		}
-
-		public class PersonSerializer : MessagePackSerializer<Person>
-		{
-			public PersonSerializer()
-				: base( SerializationContext.Default ) {}
-
-			protected internal override void PackToCore( Packer packer, Person objectTree )
-			{
-				packer.PackMapHeader( 2 );
-				packer.PackString( "Name" );
-				packer.PackString( objectTree.Name );
-				packer.PackString( "Children" );
-				if ( objectTree.Children == null )
-				{
-					packer.PackNull();
-				}
-				else
-				{
-					this.PackPeople( packer, objectTree.Children );
-				}
-			}
-
-			internal void PackPeople( Packer packer, IEnumerable<Person> people )
-			{
-				var children = people.ToArray();
-
-				packer.PackArrayHeader( children.Length );
-				foreach ( var child in children )
-				{
-					this.PackTo( packer, child );
-				}
-			}
-
-			protected internal override Person UnpackFromCore( Unpacker unpacker )
-			{
-				Assert.That( unpacker.IsMapHeader );
-				Assert.That( unpacker.ItemsCount, Is.EqualTo( 2 ) );
-				var person = new Person();
-				for ( int i = 0; i < 2; i++ )
-				{
-					string key;
-					Assert.That( unpacker.ReadString( out key ) );
-					switch ( key )
-					{
-						case "Name":
-						{
-
-							string name;
-							Assert.That( unpacker.ReadString( out name ) );
-							person.Name = name;
-							break;
-						}
-						case "Children":
-						{
-							Assert.That( unpacker.Read() );
-							if ( !unpacker.LastReadData.IsNil )
-							{
-								person.Children = this.UnpackPeople( unpacker );
-							}
-							break;
-						}
-					}
-				}
-
-				return person;
-			}
-
-			internal IEnumerable<Person> UnpackPeople( Unpacker unpacker )
-			{
-				Assert.That( unpacker.IsArrayHeader );
-				var itemsCount = ( int )unpacker.ItemsCount;
-				var people = new List<Person>( itemsCount );
-				for ( int i = 0; i < itemsCount; i++ )
-				{
-					people.Add( this.UnpackFrom( unpacker ) );
-				}
-
-				return people;
-			}
-		}
-
-		public class ChildrenSerializer : MessagePackSerializer<IEnumerable<Person>>
-		{
-			private readonly PersonSerializer _personSerializer = new PersonSerializer();
-
-			public ChildrenSerializer()
-				: base( SerializationContext.Default ) {}
-
-			protected internal override void PackToCore( Packer packer, IEnumerable<Person> objectTree )
-			{
-				if ( objectTree is Person )
-				{
-					this._personSerializer.PackTo( packer, objectTree as Person );
-				}
-				else
-				{
-					this._personSerializer.PackPeople( packer, objectTree );
-				}
-			}
-
-			protected internal override IEnumerable<Person> UnpackFromCore( Unpacker unpacker )
-			{
-				return this._personSerializer.UnpackPeople( unpacker );
-			}
-		}
 
 		// Related to issue #62 -- internal types handling is not consistent at first.
 
