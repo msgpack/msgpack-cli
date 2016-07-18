@@ -1603,7 +1603,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -1656,7 +1656,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -1814,7 +1814,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -1867,7 +1867,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -1978,7 +1978,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2031,7 +2031,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2189,7 +2189,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2242,7 +2242,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2400,7 +2400,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2453,7 +2453,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2613,7 +2613,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2667,7 +2667,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2828,7 +2828,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -2882,7 +2882,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -3043,7 +3043,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -3097,7 +3097,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -3258,7 +3258,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -3312,7 +3312,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -3473,7 +3473,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( new List<string>{ "123" } ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 
@@ -3527,7 +3527,7 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
 				Assert.That( result.Member, Is.EqualTo( new List<string>() ) );
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 			}
 		}
 

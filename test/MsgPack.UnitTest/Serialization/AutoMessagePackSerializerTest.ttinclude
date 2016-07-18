@@ -1693,7 +1693,7 @@ namespace MsgPack.Serialization
 						case "Annotated":
 						{
 #>
-				Assert.That( result.WasProperConstructorUsed );
+				Assert.That( result.WasProperConstructorUsed() );
 <#+
 							break;
 						}
