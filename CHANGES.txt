@@ -567,6 +567,27 @@ Release 0.7 2016/07/03
 
 Release 0.7.1  2016/7/10
 
-  FIXES
-  * Relaxes .NET Framework version. .NET 4.5.0, 4.5.1, 4.6.0 are resupported. #176.
-  * Reduce memory allocation. #179.
+  BUG FIXES
+  * Relaxes .NET Framework version. .NET 4.5.0, 4.5.1, 4.6.0 are resupported. Issue #176.
+  * Reduce memory allocation. Issue #179.
+
+Development
+
+  BREAKING CHANGES
+  * `MessagePackDeserializationConstructorAttribute` now always used when the type has default constructor.
+    The previous behavior was bug as XML documentatino said.
+
+  NEW FEATURES
+  * Null member skipping in map based serialization. 
+    This behabvior must be enabled via `SerializationContext.DictionarySerializationOptions.OmitNullEntry`.
+    Issue #136.
+  * Dictionary key transformation via `SerializationContext.DictionarySerializationOptions.KeyTransformer`.
+    Built in transformer is placed in `DictionaryKeyTransoformers`.
+    Issue #175.
+
+  BUG FIXES
+  * Fix `MessagePackDeserializationConstructorAttribute` is ignored when the type has default constructor.
+  * Relax constructor based deserialization condition. It will be used even if there are any settable members(including private property setters). Part of issue #178.
+
+  IMPROVEMENTS
+  * PackHelpers and UnpackHelpers APIs are now backward compatible.
