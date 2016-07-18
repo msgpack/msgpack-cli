@@ -584,6 +584,7 @@ Development
   * Dictionary key transformation via `SerializationContext.DictionarySerializationOptions.KeyTransformer`.
     Built in transformer is placed in `DictionaryKeyTransoformers`.
     Issue #175.
+  * Add F# collections support. Related to issue #178.
 
   BUG FIXES
   * Fix `MessagePackDeserializationConstructorAttribute` is ignored when the type has default constructor.
