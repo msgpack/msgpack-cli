@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal class ImmutableCollectionSerializer<T, TItem> : MessagePackSerializer<T>
 		where T : IEnumerable<TItem>
 	{
-		protected static readonly Func<TItem[], T> Factory = FindFactory();
+		protected readonly Func<TItem[], T> Factory;
 
 		private static Func<TItem[], T> FindFactory()
 		{
@@ -98,12 +98,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !UNITY
 		}
 
-		private readonly MessagePackSerializer<TItem> _itemSerializer;
+		protected readonly MessagePackSerializer<TItem> ItemSerializer;
 
 		public ImmutableCollectionSerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
 			: base( ownerContext )
 		{
-			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
+			this.ItemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
+			this.Factory = FindFactory();
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -113,7 +114,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			foreach ( var item in objectTree )
 			{
-				this._itemSerializer.PackTo( packer, item );
+				this.ItemSerializer.PackTo( packer, item );
 			}
 		}
 
@@ -136,11 +137,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
-					buffer[ i ] = this._itemSerializer.UnpackFrom( subTreeUnpacker );
+					buffer[ i ] = this.ItemSerializer.UnpackFrom( subTreeUnpacker );
 				}
 			}
 
-			return Factory( buffer );
+			return this.Factory( buffer );
 		}
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
@@ -162,7 +163,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 			foreach ( var item in objectTree )
 			{
-				await this._itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
+				await this.ItemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
 			}
 		}
 
@@ -184,11 +185,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
-					buffer[ i ] = await this._itemSerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
+					buffer[ i ] = await this.ItemSerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
 				}
 			}
 
-			return Factory( buffer );
+			return this.Factory( buffer );
 		}
 
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, T collection, CancellationToken cancellationToken )

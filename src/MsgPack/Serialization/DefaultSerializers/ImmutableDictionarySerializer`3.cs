@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class ImmutableDictionarySerializer<T, TKey, TValue> : MessagePackSerializer<T>
 		where T : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		private static readonly Func<KeyValuePair<TKey, TValue>[], T> _factory = FindFactory();
+		private readonly Func<KeyValuePair<TKey, TValue>[], T> _factory;
 
 		private static Func<KeyValuePair<TKey, TValue>[], T> FindFactory()
 		{
@@ -85,7 +85,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 								CultureInfo.CurrentCulture,
 								"'{0}' does not have CreateRange({1}[]) public static method.",
 								factoryType.AssemblyQualifiedName,
-								typeof( IEnumerable<KeyValuePair<TKey, TValue>> )
+								typeof( KeyValuePair<TKey, TValue> )
 							)
 						);
 					};
@@ -107,6 +107,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		{
 			this._keySerializer = ownerContext.GetSerializer<TKey>( keysSchema );
 			this._valueSerializer = ownerContext.GetSerializer<TValue>( valuesSchema );
+			this._factory = FindFactory();
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -153,7 +154,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 
-			return _factory( buffer );
+			return this._factory( buffer );
 		}
 
 		protected internal override void UnpackToCore( Unpacker unpacker, T collection )
@@ -211,7 +212,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 
-			return _factory( buffer );
+			return this._factory( buffer );
 		}
 
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, T collection, CancellationToken cancellationToken )

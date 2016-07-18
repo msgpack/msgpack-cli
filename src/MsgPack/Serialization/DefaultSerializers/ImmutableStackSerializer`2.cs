@@ -31,13 +31,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class ImmutableStackSerializer<T, TItem> : ImmutableCollectionSerializer<T, TItem>
 		where T : IEnumerable<TItem>
 	{
-		private readonly MessagePackSerializer<TItem> _itemSerializer;
-
 		public ImmutableStackSerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
-			: base( ownerContext, itemsSchema )
-		{
-			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
-		}
+			: base( ownerContext, itemsSchema ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override T UnpackFromCore( Unpacker unpacker )
@@ -59,11 +54,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
-					buffer[ i ] = this._itemSerializer.UnpackFrom( subTreeUnpacker );
+					buffer[ i ] = this.ItemSerializer.UnpackFrom( subTreeUnpacker );
 				}
 			}
 
-			return Factory( buffer );
+			return this.Factory( buffer );
 		}
 
 #if FEATURE_TAP
@@ -87,11 +82,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 						SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 					}
 
-					buffer[ i ] = await this._itemSerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
+					buffer[ i ] = await this.ItemSerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
 				}
 			}
 
-			return Factory( buffer );
+			return this.Factory( buffer );
 		}
 
 #endif // FEATURE_TAP
