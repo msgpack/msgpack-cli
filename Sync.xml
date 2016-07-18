@@ -7,6 +7,8 @@
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FSharpCollectionSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FSharpMapSerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
@@ -105,6 +107,8 @@
     <Exclude Path="Serialization\CollectionSerializers\DictionarySerializerBase`3.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FSharpCollectionSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FSharpMapSerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
@@ -144,6 +148,8 @@
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FSharpCollectionSerializer`2.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FSharpMapSerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />

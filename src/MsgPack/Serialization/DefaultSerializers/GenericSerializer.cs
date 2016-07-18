@@ -186,7 +186,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			// ImmutableCollections does not support above platforms.
 			return null;
 #else
-			if ( targetType.Namespace != "System.Collections.Immutable" )
+			if ( targetType.Namespace != "System.Collections.Immutable"
+				&& targetType.Namespace != "Microsoft.FSharp.Collections" )
 			{
 				return null;
 			}
@@ -197,7 +198,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 
 			var itemSchema = ( schema ?? PolymorphismSchema.Default );
-			switch ( DetermineImmutableCollectionType(targetType) )
+			switch ( DetermineImmutableCollectionType( targetType ) )
 			{
 				case ImmutableCollectionType.ImmutableArray:
 				case ImmutableCollectionType.ImmutableList:
@@ -225,6 +226,29 @@ namespace MsgPack.Serialization.DefaultSerializers
 							typeof( ImmutableDictionarySerializerFactory<,,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] )
 						).Create( context, itemSchema );
 				}
+				case ImmutableCollectionType.FSharpList:
+				{
+					return
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
+							typeof( FSharpCollectionSerializerFactory<,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
+							"ListModule"
+						).Create( context, itemSchema );
+				}
+				case ImmutableCollectionType.FSharpSet:
+				{
+					return
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
+							typeof( FSharpCollectionSerializerFactory<,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ] ),
+							"SetModule"
+						).Create( context, itemSchema );
+				}
+				case ImmutableCollectionType.FSharpMap:
+				{
+					return
+						ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
+							typeof( FSharpMapSerializerFactory<,,> ).MakeGenericType( targetType, targetType.GetGenericArguments()[ 0 ], targetType.GetGenericArguments()[ 1 ] )
+						).Create( context, itemSchema );
+				}
 				default:
 				{
 #if DEBUG
@@ -241,7 +265,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !NETFX_35 && !NETFX_40 && !SILVERLIGHT
 		private static ImmutableCollectionType DetermineImmutableCollectionType( Type targetType )
 		{
-			if ( targetType.Namespace != "System.Collections.Immutable" )
+			if ( targetType.Namespace != "System.Collections.Immutable" 
+				&& targetType.Namespace != "Microsoft.FSharp.Collections" )
 			{
 				return ImmutableCollectionType.Unknown;
 			}
@@ -284,6 +309,18 @@ namespace MsgPack.Serialization.DefaultSerializers
 				case "ImmutableSortedDictionary`2":
 				{
 					return ImmutableCollectionType.ImmutableSortedDictionary;
+				}
+				case "FSharpList`1":
+				{
+					return ImmutableCollectionType.FSharpList;
+				}
+				case "FSharpSet`1":
+				{
+					return ImmutableCollectionType.FSharpSet;
+				}
+				case "FSharpMap`2":
+				{
+					return ImmutableCollectionType.FSharpMap;
 				}
 				default:
 				{
@@ -583,6 +620,37 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
+
+		[Preserve( AllMembers = true )]
+		private sealed class FSharpCollectionSerializerFactory<T, TItem> : IGenericBuiltInSerializerFactory
+			where T : IEnumerable<TItem>
+		{
+			private readonly string _factoryTypeName;
+
+			public FSharpCollectionSerializerFactory( string factoryTypeName )
+			{
+				this._factoryTypeName = factoryTypeName;
+			}
+
+			public MessagePackSerializer Create( SerializationContext context, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new FSharpCollectionSerializer<T, TItem>( context, itemSchema.ItemSchema, this._factoryTypeName );
+			}
+		}
+
+		[Preserve( AllMembers = true )]
+		private sealed class FSharpMapSerializerFactory<T, TKey, TValue> : IGenericBuiltInSerializerFactory
+			where T : IDictionary<TKey, TValue>
+		{
+			public FSharpMapSerializerFactory() { }
+
+			public MessagePackSerializer Create( SerializationContext context, PolymorphismSchema schema )
+			{
+				var itemSchema = schema ?? PolymorphismSchema.Default;
+				return new FSharpMapSerializer<T, TKey, TValue>( context, itemSchema.KeySchema, itemSchema.ItemSchema );
+			}
+		}
 #endif
 
 		/// <summary>
@@ -720,6 +788,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			ImmutableSortedDictionary,
 			ImmutableSortedSet,
 			ImmutableStack,
+			FSharpList,
+			FSharpMap,
+			FSharpSet,
 		}
 #endif // !NETFX_35 && !NETFX_40 && !SILVERLIGHT && !UNITY
 	}

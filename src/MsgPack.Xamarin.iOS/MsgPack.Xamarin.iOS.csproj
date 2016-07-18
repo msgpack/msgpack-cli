@@ -311,6 +311,12 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\DefaultSerializers.cs">
       <Link>Serialization\DefaultSerializers\DefaultSerializers.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\FSharpCollectionSerializer`2.cs">
+      <Link>Serialization\DefaultSerializers\FSharpCollectionSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\FSharpMapSerializer`3.cs">
+      <Link>Serialization\DefaultSerializers\FSharpMapSerializer`3.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\GenericSerializer.cs">
       <Link>Serialization\DefaultSerializers\GenericSerializer.cs</Link>
     </Compile>
