@@ -587,7 +587,7 @@ Development
 
   BUG FIXES
   * Fix `MessagePackDeserializationConstructorAttribute` is ignored when the type has default constructor.
-  * Relax constructor based deserialization condition. It will be used even if there are any settable members(including private property setters). Part of issue #178.
 
   IMPROVEMENTS
+  * Relax constructor based deserialization condition. It will be used even if there are any settable members(including private property setters). Part of issue #178 and fixes issue #135.
   * PackHelpers and UnpackHelpers APIs are now backward compatible.
