@@ -36,6 +36,9 @@ using System.Linq;
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif // SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETFX_CORE
+using Microsoft.FSharp.Collections;
+#endif // !NETFX_CORE
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -230,8 +233,65 @@ namespace MsgPack.Serialization
 		}
 	}
 #>
+
+#if !NETFX_CORE
+
+<#+
+	foreach ( var type in
+		new []
+		{
+			new FSharpCollectionSpec { Name = "FSharpList`1",	Add = ( t, instance, _, value ) => "new FSharpList<" + t + ">( " + value + ", " + instance  + " )",	Constructor = ( t, _ ) => "FSharpList<" + t + ">.Empty" },
+			new FSharpCollectionSpec { Name = "FSharpSet`1",	Add = ( _1, instance, _2, value ) => instance + ".Add( " + value + " )",							Constructor = ( t, _ ) => "new FSharpSet<" + t + ">( Enumerable.Empty<" + t + ">() )" },
+			new FSharpCollectionSpec { Name = "FSharpMap`2",	Add = ( _, instance, key, value ) => instance + ".Add( " + key + ", " + value + " )",				Constructor = ( tkey, tvalue ) => "new FSharpMap<" + tkey + ", " + tvalue + ">( Enumerable.Empty<Tuple<" + tkey + ", " + tvalue + ">>() )" },
+		}
+	)
+	{
+		foreach ( var itemsCount in new []{ 0, 1, 2 } )
+		{
+			var safeTypeName = type.Name.Remove( type.Name.IndexOf( '`' ) );
+			var isDictionary = type.Name.EndsWith( "2" );
+#>
+
+		[Test]
+		public void <#= safeTypeName #>Test_<#= itemsCount #>_Success()
+		{
+			var collection = <#= type.Constructor( "int", "int" ) #>;
+<#+
+			for ( int i = 0; i < itemsCount; i++ )
+			{
+#>
+			collection = <#= type.Add( "int", "collection", i.ToString( CultureInfo.InvariantCulture ), i.ToString( CultureInfo.InvariantCulture ) ) #>;
+<#+
+			}
+#>
+			var target = this.CreateTarget<<#= safeTypeName #><<#= isDictionary ? "int, int" : "int" #>>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+<#+
+		}
+	}
+#>
+
+#endif // !NETFX_CORE
+
 	}
 }
 <#+
+}
+
+private sealed class FSharpCollectionSpec
+{
+	public string Name;
+	// type, instance, key, value => result
+	public Func<string, string, string, string, string> Add;
+	// T1, T2 => result
+	public Func<string, string, string> Constructor;
 }
 #>

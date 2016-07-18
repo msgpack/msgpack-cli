@@ -32,6 +32,9 @@ using System.Linq;
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif // SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETFX_CORE
+using Microsoft.FSharp.Collections;
+#endif // !NETFX_CORE
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -555,5 +558,155 @@ namespace MsgPack.Serialization
 				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
 			}
 		}
+
+#if !NETFX_CORE
+
+
+		[Test]
+		public void FSharpListTest_0_Success()
+		{
+			var collection = FSharpList<int>.Empty;
+			var target = this.CreateTarget<FSharpList<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpListTest_1_Success()
+		{
+			var collection = FSharpList<int>.Empty;
+			collection = new FSharpList<int>( 0, collection );
+			var target = this.CreateTarget<FSharpList<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpListTest_2_Success()
+		{
+			var collection = FSharpList<int>.Empty;
+			collection = new FSharpList<int>( 0, collection );
+			collection = new FSharpList<int>( 1, collection );
+			var target = this.CreateTarget<FSharpList<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpSetTest_0_Success()
+		{
+			var collection = new FSharpSet<int>( Enumerable.Empty<int>() );
+			var target = this.CreateTarget<FSharpSet<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpSetTest_1_Success()
+		{
+			var collection = new FSharpSet<int>( Enumerable.Empty<int>() );
+			collection = collection.Add( 0 );
+			var target = this.CreateTarget<FSharpSet<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpSetTest_2_Success()
+		{
+			var collection = new FSharpSet<int>( Enumerable.Empty<int>() );
+			collection = collection.Add( 0 );
+			collection = collection.Add( 1 );
+			var target = this.CreateTarget<FSharpSet<int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpMapTest_0_Success()
+		{
+			var collection = new FSharpMap<int, int>( Enumerable.Empty<Tuple<int, int>>() );
+			var target = this.CreateTarget<FSharpMap<int, int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpMapTest_1_Success()
+		{
+			var collection = new FSharpMap<int, int>( Enumerable.Empty<Tuple<int, int>>() );
+			collection = collection.Add( 0, 0 );
+			var target = this.CreateTarget<FSharpMap<int, int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+		[Test]
+		public void FSharpMapTest_2_Success()
+		{
+			var collection = new FSharpMap<int, int>( Enumerable.Empty<Tuple<int, int>>() );
+			collection = collection.Add( 0, 0 );
+			collection = collection.Add( 1, 1 );
+			var target = this.CreateTarget<FSharpMap<int, int>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, collection );
+				buffer.Position = 0;
+				var unpacked = target.Unpack( buffer );
+				buffer.Position = 0;
+				Assert.That( unpacked.ToArray(), Is.EqualTo( collection.ToArray() ) );
+			}
+		}
+
+#endif // !NETFX_CORE
+
 	}
 }
