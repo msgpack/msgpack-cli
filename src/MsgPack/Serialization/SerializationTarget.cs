@@ -95,14 +95,33 @@ namespace MsgPack.Serialization
 
 			if ( memberCandidates.Length == 0 )
 			{
-				var constructor = FindDeserializationConstructor( targetType );
-				return new SerializationTarget( ComplementMembers( getters, context, targetType ), constructor );
+				var deserializationConstructor = FindDeserializationConstructor( targetType );
+				return new SerializationTarget( ComplementMembers( getters, context, targetType ), deserializationConstructor );
 			}
 
-			var defaultConstructor = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
-			if ( defaultConstructor == null && !targetType.GetIsValueType() )
+			// Try to get default constructor.
+			var constructor = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
+			if ( constructor == null && !targetType.GetIsValueType() )
 			{
-				throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( targetType );
+				// Try to get deserialization constructor.
+				var deserializationConstructor = FindDeserializationConstructor( targetType );
+				if ( deserializationConstructor == null )
+				{
+					throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( targetType );
+				}
+
+				constructor = deserializationConstructor;
+			}
+			else
+			{
+				// Let's prefer annotated constructor here.
+				var markedConstructors = FindExplicitDeserializationConstructors( targetType.GetConstructors() );
+				if ( markedConstructors.Count == 1 )
+				{
+					// For backward compatibility, no exceptions are thrown here even if mulitiple deserialization constructor attributes in the type
+					// just use default constructor for it.
+					constructor = markedConstructors[ 0 ];
+				}
 			}
 
 			// Because members' order is equal to declared order is NOT guaranteed, so explicit ordering is required.
@@ -118,7 +137,7 @@ namespace MsgPack.Serialization
 				members = ComplementMembers( memberCandidates, context, targetType );
 			}
 
-			return new SerializationTarget( members, defaultConstructor );
+			return new SerializationTarget( members, constructor );
 		}
 
 		private static MemberInfo[] GetDistinctMembers( Type type )
@@ -129,10 +148,10 @@ namespace MsgPack.Serialization
 			{
 				var members = 
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
-					type.FindMembers( 
-						MemberTypes.Field | MemberTypes.Property, 
+					type.FindMembers(
+						MemberTypes.Field | MemberTypes.Property,
 						BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
-						null, 
+						null,
 						null
 					);
 #else
@@ -153,7 +172,7 @@ namespace MsgPack.Serialization
 			return distinctMembers.ToArray();
 		}
 
-		private static IEnumerable<SerializingMember> GetTargetMembers(Type type)
+		private static IEnumerable<SerializingMember> GetTargetMembers( Type type )
 		{
 			Contract.Assert( type != null, "type != null" );
 
@@ -282,8 +301,8 @@ namespace MsgPack.Serialization
 			}
 
 			// The marked construtor is always preferred.
-			var markedConstructors = constructors.Where( ctor => ctor.IsDefined( typeof( MessagePackDeserializationConstructorAttribute ) ) ).ToArray();
-			switch ( markedConstructors.Length )
+			var markedConstructors = FindExplicitDeserializationConstructors( constructors );
+			switch ( markedConstructors.Count )
 			{
 				case 0:
 				{
@@ -336,6 +355,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private static IList<ConstructorInfo> FindExplicitDeserializationConstructors( IEnumerable<ConstructorInfo> construtors )
+		{
+			return construtors.Where( ctor => ctor.IsDefined( typeof( MessagePackDeserializationConstructorAttribute ) ) ).ToArray();
+		}
+
 		private static SerializationException NewTypeCannotBeSerializedException( Type targetType )
 		{
 			return new SerializationException(
@@ -384,6 +408,10 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
+#if DEBUG
+				Contract.Assert( false, $"Unknown type member {member}" );
+#endif // DEBUG
+				// ReSharper disable once HeuristicUnreachableCode
 				return true;
 			}
 
