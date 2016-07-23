@@ -588,6 +588,8 @@ Development
 
   BUG FIXES
   * Fix `MessagePackDeserializationConstructorAttribute` is ignored when the type has default constructor.
+  * Make Xamarin.iOS unified API compliant. Issue #181.
+  * Fix `mpu.exe -l`.
 
   IMPROVEMENTS
   * Relax constructor based deserialization condition. It will be used even if there are any settable members(including private property setters). Part of issue #178 and fixes issue #135.
