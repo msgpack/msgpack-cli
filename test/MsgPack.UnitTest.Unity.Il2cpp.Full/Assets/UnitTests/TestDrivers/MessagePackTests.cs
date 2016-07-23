@@ -245,7 +245,7 @@ namespace MsgPack
 		/// </summary>
 		protected TestDriver()
 		{
-			this.TestClasses = new List<TestClass>( 47 );
+			this.TestClasses = new List<TestClass>( 48 );
 			InitializeTestClasses( this.TestClasses );
 		}
 
@@ -282,7 +282,7 @@ testClass.FixtureSetup = new Action( AotTest.SetupFixture );
 					new TestClass( 
 						"ArrayGenerationBasedReflectionMessagePackSerializerTest", 
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						336,
+						338,
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -305,7 +305,7 @@ testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSe
 					new TestClass( 
 						"ArrayReflectionBasedReflectionMessagePackSerializerTest", 
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						409,
+						518,
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -319,6 +319,17 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 						BigEndianBinaryTestInitializer.CreateInstance, 
 						10,
 						BigEndianBinaryTestInitializer.InitializeInstance
+					 );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
+						"DictionaryKeyTransformersTest", 
+						DictionaryKeyTransformersTestInitializer.CreateInstance, 
+						1,
+						DictionaryKeyTransformersTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
 			}
@@ -383,7 +394,7 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 					new TestClass( 
 						"MapGenerationBasedReflectionMessagePackSerializerTest", 
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						336,
+						338,
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -406,7 +417,7 @@ testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSeri
 					new TestClass( 
 						"MapReflectionBasedReflectionMessagePackSerializerTest", 
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						409,
+						523,
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -1074,6 +1085,8 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArray", new Action( instance.TestImage_FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArrayNull", new Action( instance.TestImage_FieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldNull", new Action( instance.TestImage_FieldNull ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsGenericIEnumerableWithNoAdd_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsNonGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsNonGenericIEnumerableWithNoAdd_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt32", new Action( instance.TestInt32 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt64", new Action( instance.TestInt64 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInterfaceCollectionKnownType_Success", new Action( instance.TestInterfaceCollectionKnownType_Success ) ) );
@@ -1414,7 +1427,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestComplexTypeWithDataContractWithOrder_WithShortcut", new Action( instance.TestComplexTypeWithDataContractWithOrder_WithShortcut ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestComplexTypeWithoutAnyAttribute_WithoutShortcut", new Action( instance.TestComplexTypeWithoutAnyAttribute_WithoutShortcut ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestComplexTypeWithoutAnyAttribute_WithShortcut", new Action( instance.TestComplexTypeWithoutAnyAttribute_WithShortcut ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationOnlyCollection_Fail", new Action( instance.TestConstrutorDeserializationOnlyCollection_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationWithAnotherNameConstrtor_DifferIsSetDefault", new Action( instance.TestConstrutorDeserializationWithAnotherNameConstrtor_DifferIsSetDefault ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationWithAnotherTypeConstrtor_DifferIsSetDefault", new Action( instance.TestConstrutorDeserializationWithAnotherTypeConstrtor_DifferIsSetDefault ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationWithAttribute_Preferred", new Action( instance.TestConstrutorDeserializationWithAttribute_Preferred ) ) );
@@ -1485,10 +1497,28 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGlobalNamespace", new Action( instance.TestGlobalNamespace ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidField", new Action( instance.TestGuidField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidFieldArray", new Action( instance.TestGuidFieldArray ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyProperty_Fail", new Action( instance.TestHasGetOnlyProperty_Fail ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithConstructor_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithConstructorMissing_Success", new Action( instance.TestHasGetOnlyPropertyWithConstructorMissing_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithConstructorWithExtra_Success", new Action( instance.TestHasGetOnlyPropertyWithConstructorWithExtra_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithBothConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithDefaultConstructor_Fail", new Action( instance.TestHasGetOnlyPropertyWithDefaultConstructor_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithRecordConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithRecordConstructor_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashSet_MessagePackObjectField", new Action( instance.TestHashSet_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashSet_MessagePackObjectFieldArray", new Action( instance.TestHashSet_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashSet_MessagePackObjectFieldArrayNull", new Action( instance.TestHashSet_MessagePackObjectFieldArrayNull ) ) );
@@ -1505,11 +1535,100 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashtableFieldArray", new Action( instance.TestHashtableFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashtableFieldArrayNull", new Action( instance.TestHashtableFieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashtableFieldNull", new Action( instance.TestHashtableFieldNull ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyField_Fail", new Action( instance.TestHasInitOnlyField_Fail ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithConstructor_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithConstructorMissing_Success", new Action( instance.TestHasInitOnlyFieldWithConstructorMissing_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithConstructorWithExtra_Success", new Action( instance.TestHasInitOnlyFieldWithConstructorWithExtra_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithBothConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithDefaultConstructor_Fail", new Action( instance.TestHasInitOnlyFieldWithDefaultConstructor_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithRecordConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithBothConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithRecordConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithBothConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithRecordConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithBothConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasReadWriteFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithBothConstructor_Success", new Action( instance.TestHasReadWriteFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithDefaultConstructor_Success", new Action( instance.TestHasReadWriteFieldWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithRecordConstructor_Success", new Action( instance.TestHasReadWriteFieldWithRecordConstructor_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestICollection_MessagePackObjectField", new Action( instance.TestICollection_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestICollection_MessagePackObjectFieldArray", new Action( instance.TestICollection_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestICollection_MessagePackObjectFieldArrayNull", new Action( instance.TestICollection_MessagePackObjectFieldArrayNull ) ) );
@@ -1556,6 +1675,10 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArray", new Action( instance.TestImage_FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArrayNull", new Action( instance.TestImage_FieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldNull", new Action( instance.TestImage_FieldNull ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail", new Action( instance.TestImplementsGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsGenericIEnumerableWithNoAdd_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsNonGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail", new Action( instance.TestImplementsNonGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsNonGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsNonGenericIEnumerableWithNoAdd_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt32", new Action( instance.TestInt32 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt64", new Action( instance.TestInt64 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInterfaceCollectionKnownType_Success", new Action( instance.TestInterfaceCollectionKnownType_Success ) ) );
@@ -1661,7 +1784,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldArray", new Action( instance.TestObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldArrayNull", new Action( instance.TestObjectFieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldNull", new Action( instance.TestObjectFieldNull ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestOnlyCollection_Success", new Action( instance.TestOnlyCollection_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestOptionalConstructorBoolean_Success", new Action( instance.TestOptionalConstructorBoolean_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestOptionalConstructorByte_Success", new Action( instance.TestOptionalConstructorByte_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestOptionalConstructorChar_Success", new Action( instance.TestOptionalConstructorChar_Success ) ) );
@@ -1748,6 +1870,35 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestToUInt16", new Action( instance.TestToUInt16 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestToUInt32", new Action( instance.TestToUInt32 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestToUInt64", new Action( instance.TestToUInt64 ) ) );
+		}
+	} 
+
+	internal static class DictionaryKeyTransformersTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new DictionaryKeyTransformersTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( DictionaryKeyTransformersTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add(
+				new TestMethod(
+					"TestToLowerCamel",
+					() => {
+						instance.TestToLowerCamel( null, null );
+						instance.TestToLowerCamel( @"", @"" );
+						instance.TestToLowerCamel( @"a", @"a" );
+						instance.TestToLowerCamel( @"A", @"a" );
+						instance.TestToLowerCamel( @"AA", @"aA" );
+						instance.TestToLowerCamel( @"Aa", @"aa" );
+						instance.TestToLowerCamel( @"aa", @"aa" );
+						instance.TestToLowerCamel( @"_a", @"_a" );
+						instance.TestToLowerCamel( @"_A", @"_A" );
+					}
+				)
+			);
 		}
 	} 
 
@@ -2128,6 +2279,8 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArray", new Action( instance.TestImage_FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArrayNull", new Action( instance.TestImage_FieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldNull", new Action( instance.TestImage_FieldNull ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsGenericIEnumerableWithNoAdd_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsNonGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsNonGenericIEnumerableWithNoAdd_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt32", new Action( instance.TestInt32 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt64", new Action( instance.TestInt64 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInterfaceCollectionKnownType_Success", new Action( instance.TestInterfaceCollectionKnownType_Success ) ) );
@@ -2468,7 +2621,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestComplexTypeWithDataContractWithOrder_WithShortcut", new Action( instance.TestComplexTypeWithDataContractWithOrder_WithShortcut ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestComplexTypeWithoutAnyAttribute_WithoutShortcut", new Action( instance.TestComplexTypeWithoutAnyAttribute_WithoutShortcut ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestComplexTypeWithoutAnyAttribute_WithShortcut", new Action( instance.TestComplexTypeWithoutAnyAttribute_WithShortcut ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationOnlyCollection_Fail", new Action( instance.TestConstrutorDeserializationOnlyCollection_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationWithAnotherNameConstrtor_DifferIsSetDefault", new Action( instance.TestConstrutorDeserializationWithAnotherNameConstrtor_DifferIsSetDefault ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationWithAnotherTypeConstrtor_DifferIsSetDefault", new Action( instance.TestConstrutorDeserializationWithAnotherTypeConstrtor_DifferIsSetDefault ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestConstrutorDeserializationWithAttribute_Preferred", new Action( instance.TestConstrutorDeserializationWithAttribute_Preferred ) ) );
@@ -2507,6 +2659,9 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionary_Unpackable_NotAware", new Action( instance.TestDictionary_Unpackable_NotAware ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryEntryField", new Action( instance.TestDictionaryEntryField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryEntryFieldArray", new Action( instance.TestDictionaryEntryFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryKeyTransformer_Custom", new Action( instance.TestDictionaryKeyTransformer_Custom ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryKeyTransformer_Default_AsIs", new Action( instance.TestDictionaryKeyTransformer_Default_AsIs ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryKeyTransformer_LowerCamel", new Action( instance.TestDictionaryKeyTransformer_LowerCamel ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryObjectObjectField", new Action( instance.TestDictionaryObjectObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryObjectObjectFieldArray", new Action( instance.TestDictionaryObjectObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDictionaryObjectObjectFieldArrayNull", new Action( instance.TestDictionaryObjectObjectFieldArrayNull ) ) );
@@ -2539,10 +2694,28 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGlobalNamespace", new Action( instance.TestGlobalNamespace ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidField", new Action( instance.TestGuidField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGuidFieldArray", new Action( instance.TestGuidFieldArray ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyProperty_Fail", new Action( instance.TestHasGetOnlyProperty_Fail ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithConstructor_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithConstructorMissing_Success", new Action( instance.TestHasGetOnlyPropertyWithConstructorMissing_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithConstructorWithExtra_Success", new Action( instance.TestHasGetOnlyPropertyWithConstructorWithExtra_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_Success", new Action( instance.TestHasGetOnlyAppendableCollectionPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithBothConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithDefaultConstructor_Fail", new Action( instance.TestHasGetOnlyPropertyWithDefaultConstructor_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasGetOnlyPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasGetOnlyPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasGetOnlyPropertyWithRecordConstructor_Success", new Action( instance.TestHasGetOnlyPropertyWithRecordConstructor_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashSet_MessagePackObjectField", new Action( instance.TestHashSet_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashSet_MessagePackObjectFieldArray", new Action( instance.TestHashSet_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashSet_MessagePackObjectFieldArrayNull", new Action( instance.TestHashSet_MessagePackObjectFieldArrayNull ) ) );
@@ -2559,11 +2732,100 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashtableFieldArray", new Action( instance.TestHashtableFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashtableFieldArrayNull", new Action( instance.TestHashtableFieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestHashtableFieldNull", new Action( instance.TestHashtableFieldNull ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyField_Fail", new Action( instance.TestHasInitOnlyField_Fail ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithConstructor_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithConstructorMissing_Success", new Action( instance.TestHasInitOnlyFieldWithConstructorMissing_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithConstructorWithExtra_Success", new Action( instance.TestHasInitOnlyFieldWithConstructorWithExtra_Success ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_Success", new Action( instance.TestHasInitOnlyAppendableCollectionFieldWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithBothConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithDefaultConstructor_Fail", new Action( instance.TestHasInitOnlyFieldWithDefaultConstructor_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasInitOnlyFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasInitOnlyFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasInitOnlyFieldWithRecordConstructor_Success", new Action( instance.TestHasInitOnlyFieldWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_Success", new Action( instance.TestHasPrivateSetterAppendableCollectionPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithBothConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPrivateSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPrivateSetterPropertyWithRecordConstructor_Success", new Action( instance.TestHasPrivateSetterPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_Success", new Action( instance.TestHasPublicSetterAppendableCollectionPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithAnnotatedConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithBothConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithDefaultConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasPublicSetterPropertyWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasPublicSetterPropertyWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasPublicSetterPropertyWithRecordConstructor_Success", new Action( instance.TestHasPublicSetterPropertyWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithBothConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_Success", new Action( instance.TestHasReadWriteAppendableCollectionFieldWithRecordConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithAnnotatedConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithAnnotatedConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithAnnotatedConstructor_Success", new Action( instance.TestHasReadWriteFieldWithAnnotatedConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithBothConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithBothConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithBothConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithBothConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithBothConstructor_Success", new Action( instance.TestHasReadWriteFieldWithBothConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithDefaultConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithDefaultConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithDefaultConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithDefaultConstructor_Success", new Action( instance.TestHasReadWriteFieldWithDefaultConstructor_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success", new Action( instance.TestHasReadWriteFieldWithRecordConstructor_DeseriaizeWithExtraMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithRecordConstructor_DeserializeWithMissingMember_Success", new Action( instance.TestHasReadWriteFieldWithRecordConstructor_DeserializeWithMissingMember_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestHasReadWriteFieldWithRecordConstructor_Success", new Action( instance.TestHasReadWriteFieldWithRecordConstructor_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestICollection_MessagePackObjectField", new Action( instance.TestICollection_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestICollection_MessagePackObjectFieldArray", new Action( instance.TestICollection_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestICollection_MessagePackObjectFieldArrayNull", new Action( instance.TestICollection_MessagePackObjectFieldArrayNull ) ) );
@@ -2610,6 +2872,10 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArray", new Action( instance.TestImage_FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldArrayNull", new Action( instance.TestImage_FieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestImage_FieldNull", new Action( instance.TestImage_FieldNull ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail", new Action( instance.TestImplementsGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsGenericIEnumerableWithNoAdd_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsNonGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail", new Action( instance.TestImplementsNonGenericIEnumerableWithNoAdd_ProhibitEnumerableNonCollection_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplementsNonGenericIEnumerableWithNoAdd_Success", new Action( instance.TestImplementsNonGenericIEnumerableWithNoAdd_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt32", new Action( instance.TestInt32 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInt64", new Action( instance.TestInt64 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestInterfaceCollectionKnownType_Success", new Action( instance.TestInterfaceCollectionKnownType_Success ) ) );
@@ -2715,7 +2981,8 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldArray", new Action( instance.TestObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldArrayNull", new Action( instance.TestObjectFieldArrayNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldNull", new Action( instance.TestObjectFieldNull ) ) );
-			testClassInstance.TestMethods.Add( new TestMethod( "TestOnlyCollection_Success", new Action( instance.TestOnlyCollection_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestOmitNullEntryInDictionary", new Action( instance.TestOmitNullEntryInDictionary ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestOmitNullEntryInDictionary_BackwordCompatibility", new Action( instance.TestOmitNullEntryInDictionary_BackwordCompatibility ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestOptionalConstructorBoolean_Success", new Action( instance.TestOptionalConstructorBoolean_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestOptionalConstructorByte_Success", new Action( instance.TestOptionalConstructorByte_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestOptionalConstructorChar_Success", new Action( instance.TestOptionalConstructorChar_Success ) ) );
