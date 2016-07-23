@@ -25,7 +25,8 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchDebug>true</MtouchDebug>
     <AssemblyName>MsgPackUnitTestXamariniOS</AssemblyName>
-    <MtouchI18n></MtouchI18n>
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
@@ -51,7 +52,8 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
     <AssemblyName>MsgPackUnitTestXamariniOS</AssemblyName>
-    <IpaPackageName></IpaPackageName>
+    <IpaPackageName>
+    </IpaPackageName>
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchSdkVersion>9.3</MtouchSdkVersion>
     <MtouchLink>SdkOnly</MtouchLink>

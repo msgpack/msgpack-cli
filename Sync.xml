@@ -86,6 +86,13 @@
     <Exclude Path="NetStandardCompatibility.cs" />
     <Exclude Path="project.json" />
   </Project>
+  
+   <!-- TOOD: should be project.json -->
+ <Project Name="MsgPack.Xamarin.iOS.Unified" Base="MsgPack.Xamarin.iOS">
+    <Preserve Path="Properties\AssemblyInfo.cs" />
+  </Project>
+
+
 
    <!-- TOOD: should be project.json -->
  <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">

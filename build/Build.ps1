@@ -158,11 +158,6 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
-if ( $buildConfig -eq 'Release' )
-{
-	Copy-Item ../bin/MonoTouch10 ../bin/Xamarin.iOS10 -Recurse
-}
-
 dotnet restore $projCoreClr
 if ( $LastExitCode -ne 0 )
 {

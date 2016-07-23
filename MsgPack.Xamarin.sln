@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{60EC42E9-D79B-4ADF-8F80-4DCD580061FD}"
 	ProjectSection(SolutionItems) = preProject
@@ -27,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Xamarin.iOS", "src\MsgPack.Xamarin.iOS\MsgPack.Xamarin.iOS.csproj", "{346B55F0-94FA-4B90-9C11-06031043B685}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.UnitTest.Xamarin.iOS", "test\MsgPack.UnitTest.Xamarin.iOS\MsgPack.UnitTest.Xamarin.iOS.csproj", "{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Xamarin.iOS.Unified", "src\MsgPack.Xamarin.iOS.Unified\MsgPack.Xamarin.iOS.Unified.csproj", "{C9710C8A-2FA9-47FE-812C-992C283471CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +155,38 @@ Global
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}.Release|Mixed Platforms.ActiveCfg = Release|iPhone
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Ad-Hoc|Mixed Platforms.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|Any CPU.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.AppStore|Mixed Platforms.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|iPhone.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C9710C8A-2FA9-47FE-812C-992C283471CC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +197,7 @@ Global
 		{5EDECDB4-5179-4441-974F-EC26B4F54528} = {87A17015-9338-431E-B338-57BDA03984C1}
 		{346B55F0-94FA-4B90-9C11-06031043B685} = {BA5E7D16-23AB-44B5-BAF5-6E9C9F51E67A}
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C} = {87A17015-9338-431E-B338-57BDA03984C1}
+		{C9710C8A-2FA9-47FE-812C-992C283471CC} = {BA5E7D16-23AB-44B5-BAF5-6E9C9F51E67A}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = src\MsgPack.Xamarin.Android\MsgPack.Xamarin.Android.csproj
