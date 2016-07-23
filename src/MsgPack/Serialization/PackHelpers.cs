@@ -85,12 +85,12 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "packer" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -125,12 +125,12 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Packer" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 #if ASSERT
@@ -181,12 +181,12 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "packer" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -219,12 +219,12 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Packer" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 			return PackToArrayAsyncCore( parameter.Packer, parameter.Target, parameter.Operations, parameter.CancellationToken );
@@ -281,12 +281,12 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "packer" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -320,12 +320,12 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Packer" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 #if ASSERT
@@ -333,7 +333,8 @@ namespace MsgPack.Serialization
 			Contract.Assert( parameter.Operations != null );
 #endif // ASSERT
 
-			if ( parameter.NullCheckers != null && ( parameter.SerializationContext?.DictionarySerlaizationOptions.OmitNullEntry ).GetValueOrDefault() )
+			if ( parameter.NullCheckers != null 
+				&& parameter.SerializationContext != null && parameter.SerializationContext.DictionarySerlaizationOptions.OmitNullEntry )
 			{
 #if ASSERT
 				Contract.Assert( !SerializerDebugging.UseLegacyNullMapEntryHandling );
@@ -412,12 +413,12 @@ namespace MsgPack.Serialization
 		{
 			if ( packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "packer" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -452,12 +453,12 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Packer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Packer ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Packer" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 			return PackToMapAsyncCore( parameter.SerializationContext, parameter.Packer, parameter.Target, parameter.Operations, parameter.NullCheckers, parameter.CancellationToken );
@@ -478,7 +479,8 @@ namespace MsgPack.Serialization
 			Contract.Assert( operations != null );
 #endif // ASSERT
 
-			if ( nullCheckers != null && ( serializationContext?.DictionarySerlaizationOptions.OmitNullEntry ).GetValueOrDefault() )
+			if ( nullCheckers != null
+				&& serializationContext != null && serializationContext.DictionarySerlaizationOptions.OmitNullEntry )
 			{
 #if ASSERT
 				Contract.Assert( !SerializerDebugging.UseLegacyNullMapEntryHandling );

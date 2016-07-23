@@ -81,17 +81,17 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( serializer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( serializer ) );
+				SerializationExceptions.ThrowArgumentNullException( "serializer" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 #if ASSERT
@@ -151,17 +151,17 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( serializer == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( serializer ) );
+				SerializationExceptions.ThrowArgumentNullException( "serializer" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 #if ASSERT
@@ -234,42 +234,42 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
 			}
 
 			var parameter =
@@ -319,42 +319,42 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.TargetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "TargetObjectType" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			if ( parameter.Serializer == null && parameter.DirectRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+				SerializationExceptions.ThrowArgumentException( "parameter", "DirectRead cannot be null if Serializer field is null." );
 			}
 			
 			UnpackValueTypeValueCore(
@@ -459,42 +459,42 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
 			}
 
 			var parameter =
@@ -546,42 +546,42 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.TargetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "TargetObjectType" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			if ( parameter.Serializer == null && parameter.DirectRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+				SerializationExceptions.ThrowArgumentException( "parameter", "DirectRead cannot be null if Serializer field is null." );
 			}
 			
 			return UnpackValueTypeValueAsyncCore(
@@ -688,42 +688,42 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
 			}
 
 			var parameter =
@@ -774,42 +774,42 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.TargetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "TargetObjectType" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			if ( parameter.Serializer == null && parameter.DirectRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+				SerializationExceptions.ThrowArgumentException( "parameter", "DirectRead cannot be null if Serializer field is null." );
 			}
 			
 			UnpackReferenceTypeValueCore(
@@ -929,42 +929,42 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
 			}
 
 			var parameter =
@@ -1017,42 +1017,42 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.TargetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "TargetObjectType" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			if ( parameter.Serializer == null && parameter.DirectRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+				SerializationExceptions.ThrowArgumentException( "parameter", "DirectRead cannot be null if Serializer field is null." );
 			}
 			
 			return UnpackReferenceTypeValueAsyncCore(
@@ -1172,42 +1172,42 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
 			}
 
 			var parameter =
@@ -1258,42 +1258,42 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.TargetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "TargetObjectType" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			if ( parameter.Serializer == null && parameter.DirectRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+				SerializationExceptions.ThrowArgumentException( "parameter", "DirectRead cannot be null if Serializer field is null." );
 			}
 			
 			UnpackNullableTypeValueCore(
@@ -1413,42 +1413,42 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( targetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( targetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "targetObjectType" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			if ( serializer == null && directRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( directRead ), "directRead cannot be null if serializer argument is null." );
+				SerializationExceptions.ThrowArgumentException( "directRead", "directRead cannot be null if serializer argument is null." );
 			}
 
 			var parameter =
@@ -1501,42 +1501,42 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.TargetObjectType == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.TargetObjectType ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "TargetObjectType" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			if ( parameter.Serializer == null && parameter.DirectRead == null )
 			{
-				SerializationExceptions.ThrowArgumentException( nameof( parameter ), "DirectRead cannot be null if Serializer field is null." );
+				SerializationExceptions.ThrowArgumentException( "parameter", "DirectRead cannot be null if Serializer field is null." );
 			}
 			
 			return UnpackNullableTypeValueAsyncCore(
@@ -1648,32 +1648,32 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			var parameter =
@@ -1731,32 +1731,32 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			var parameter =
@@ -1814,32 +1814,32 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			var parameter =
@@ -1897,32 +1897,32 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( context == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( context ) );
+				SerializationExceptions.ThrowArgumentNullException( "context" );
 			}
 
 			if ( itemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( itemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "itemsCount" );
 			}
 
 			if ( unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "unpacked" );
 			}
 
 			if ( memberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( memberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "memberName" );
 			}
 
 			if ( setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "setter" );
 			}
 
 			var parameter =
@@ -1966,32 +1966,32 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			UnpackMessagePackObjectValueCore(
@@ -2082,32 +2082,32 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.UnpackingContext == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.UnpackingContext ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "UnpackingContext" );
 			}
 
 			if ( parameter.ItemsCount < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.ItemsCount ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "ItemsCount" );
 			}
 
 			if ( parameter.Unpacked < 0 )
 			{
-				SerializationExceptions.ThrowArgumentCannotBeNegativeException( nameof( parameter ), nameof( parameter.Unpacked ) );
+				SerializationExceptions.ThrowArgumentCannotBeNegativeException( "parameter", "Unpacked" );
 			}
 
 			if ( parameter.MemberName == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.MemberName ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "MemberName" );
 			}
 
 			if ( parameter.Setter == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Setter ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Setter" );
 			}
 
 			return UnpackMessagePackObjectValueAsyncCore(
@@ -2214,17 +2214,17 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -2262,17 +2262,17 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.Factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Factory" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 			return 
@@ -2366,17 +2366,17 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -2417,17 +2417,17 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.Factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Factory" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 			return 
@@ -2518,17 +2518,17 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -2565,17 +2565,17 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.Factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Factory" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 			return 
@@ -2678,17 +2678,17 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "factory" );
 			}
 
 			if ( operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "operations" );
 			}
 
 			var parameter =
@@ -2728,17 +2728,17 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.Factory == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Factory ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Factory" );
 			}
 
 			if ( parameter.Operations == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Operations ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Operations" );
 			}
 
 			return 
@@ -2836,12 +2836,12 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( collection == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( collection ) );
+				SerializationExceptions.ThrowArgumentNullException( "collection" );
 			}
 
 			var parameters =
@@ -2872,12 +2872,12 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.Collection == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Collection ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Collection" );
 			}
 
 			return 
@@ -2964,12 +2964,12 @@ namespace MsgPack.Serialization
 		{
 			if ( unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "unpacker" );
 			}
 
 			if ( collection == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( collection ) );
+				SerializationExceptions.ThrowArgumentNullException( "collection" );
 			}
 
 			var parameters =
@@ -3003,12 +3003,12 @@ namespace MsgPack.Serialization
 		{
 			if ( parameter.Unpacker == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Unpacker ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Unpacker" );
 			}
 
 			if ( parameter.Collection == null )
 			{
-				SerializationExceptions.ThrowArgumentNullException( nameof( parameter ), nameof( parameter.Collection ) );
+				SerializationExceptions.ThrowArgumentNullException( "parameter", "Collection" );
 			}
 
 			return 

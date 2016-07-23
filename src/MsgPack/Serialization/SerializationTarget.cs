@@ -409,7 +409,7 @@ namespace MsgPack.Serialization
 			else
 			{
 #if DEBUG
-				Contract.Assert( false, $"Unknown type member {member}" );
+				Contract.Assert( false, "Unknown type member " + member );
 #endif // DEBUG
 				// ReSharper disable once HeuristicUnreachableCode
 				return true;
