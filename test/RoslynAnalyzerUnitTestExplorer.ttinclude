@@ -11,6 +11,7 @@
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
 <#@ import namespace="System.Threading.Tasks" #>
 <#@ import namespace="Microsoft.CodeAnalysis" #>
 <#@ import namespace="Microsoft.CodeAnalysis.CSharp" #>
@@ -62,6 +63,11 @@ private class TestClassExplorer
 	private readonly string _testSkippingAttributeFullName;
 
 	/// <summary>
+	///		The type full name of "test case" inidicator attribute type.
+	/// ><summary>
+	private readonly string _testCaseAttributeFullName;
+
+	/// <summary>
 	///		The array of type full names of attributes which should mark significant methods including test method, setup method, etc.
 	/// ><summary>
 	private readonly string[] _significantMethodAttributeFullNames;
@@ -76,10 +82,11 @@ private class TestClassExplorer
 	/// <param name="testSetupAttributeFullName">The type full name of "per test setip routine" inidicator attribute type.</param>
 	/// <param name="testCleanupAttributeFullName">The type full name of "per test cleanup routine" inidicator attribute type.</param>
 	/// <param name="testSkippingAttributeFullName">The type full name of "skipping specified test" inidicator attribute type.</param>
+	/// <param name="testCaseAttributeFullName">The type full name of "test case" inidicator attribute type.</param>
 	public TestClassExplorer( string testClassAttributeFullName, string testMethodAttributeFullName, 
 		string fixtureSetupAttributeFullName, string fixtureCleanupAttributeFullName,
 		string testSetupAttributeFullName, string testCleanupAttributeFullName,
-		string testSkippingAttributeFullName
+		string testSkippingAttributeFullName, string testCaseAttributeFullName
 	)
 	{
 		this._testClassAttributeFullName = testClassAttributeFullName;
@@ -89,6 +96,7 @@ private class TestClassExplorer
 		this._testSetupAttributeFullName = testSetupAttributeFullName;
 		this._testCleanupAttributeFullName = testCleanupAttributeFullName;
 		this._testSkippingAttributeFullName = testSkippingAttributeFullName;
+		this._testCaseAttributeFullName = testCaseAttributeFullName;
 		this._significantMethodAttributeFullNames = 
 			new [] { testMethodAttributeFullName, fixtureSetupAttributeFullName, fixtureCleanupAttributeFullName, testSetupAttributeFullName, testCleanupAttributeFullName };
 	}
@@ -109,7 +117,8 @@ private class TestClassExplorer
 				"NUnit.Framework.TestFixtureTearDownAttribute",
 				"NUnit.Framework.SetUpAttribute",
 				"NUnit.Framework.TearDownAttribute",
-				"NUnit.Framework.IgnoreAttribute"
+				"NUnit.Framework.IgnoreAttribute",
+				"NUnit.Framework.TestCaseAttribute"
 			);
 	}
 
@@ -166,8 +175,13 @@ private class TestClassExplorer
 						g.Where( x =>
 							x.member.GetAttributes().Any( a => GetAttributeName( a ) == this._testMethodAttributeFullName ) // Only test methods
 							&& x.member.GetAttributes().All( a => GetAttributeName( a ) != this._testSkippingAttributeFullName ) // Excludes "Ignored" method
-						).Select( x => new TestMethod( x.member.Name ) )
-						.OrderBy( x => x.Name )
+						).Select( x => 
+							new TestMethod(
+								x.member.Name,
+								// only test data from attribute constructor arguments are supported.
+								x.member.GetAttributes().Where( a => GetAttributeName( a ) == this._testCaseAttributeFullName ).Select( a => GetTestData( a ) ).ToArray()
+							)
+						).OrderBy( x => x.Name )
 					)
 					{
 						FixtureSetup = GetSpecialMethodName( g.Select( x => x.member ), this._fixtureSetupAttributeFullName ),
@@ -196,6 +210,115 @@ private class TestClassExplorer
 	private static string GetAttributeName( AttributeData attribute )
 	{
 		return attribute.AttributeClass.ToDisplayString( QualifiedNameOnlyFormat );
+	}
+
+	/// <summary>
+	/// 	Gets test data for specified "test case".
+	/// </summary>
+	/// <param name="attribute">The attribute.</param>
+	/// <returns>
+	///		The test data for the case. The element should be primitive value types, string or null.
+	/// </returns>
+	private static string[] GetTestData( AttributeData attribute )
+	{
+		TypedConstant[] constructorArguments =  attribute.ConstructorArguments.ToArray();
+		switch ( constructorArguments.Length )
+		{
+			case 1:
+			{
+				if ( constructorArguments[ 0 ].Kind == TypedConstantKind.Array )
+				{
+					// [Attr(new object[]{ a, b, c })]
+					// Returns array's content (Values is IEnumerable<TypedConstant>)
+					return constructorArguments[ 0 ].Values.Select( ToCSharpLiteral ).ToArray();
+				}
+				else
+				{
+					goto default;
+				}
+			}
+			default:
+			{
+					// [Attr( a, b, c )]
+				return constructorArguments.Select( ToCSharpLiteral ).ToArray();
+			}
+		}
+	}
+
+	/// <summary>
+	/// 	Converts a Roslyn <see cref="TypedConstant" /> to a C# literal representation.
+	/// </summary>
+	/// <param name="constant">A Roslyn <see cref="TypedConstant" />.</param>
+	/// <returns>A C# literal representation.</returns>
+	private static string ToCSharpLiteral( TypedConstant constant )
+	{
+		if ( constant.IsNull )
+		{
+			return "null";
+		}
+
+		switch( constant.Kind )
+		{
+			case TypedConstantKind.Enum:
+			{
+				var value = constant.Value.ToString();
+				if ( Regex.IsMatch( value, @"^\d+$" ) )
+				{
+					return "( " + constant.Type.Name + " )" + constant.Value;
+				}
+				else
+				{
+					return constant.Type.Name + "." + constant.Value;
+				}
+			}
+			case TypedConstantKind.Type:
+			{
+				// TODO: generic type
+				return "typeof( " + constant.Value + " )";
+			}
+			case TypedConstantKind.Primitive:
+			{
+				switch( Type.GetTypeCode( constant.Value.GetType() ) )
+				{
+					case TypeCode.String:
+					{
+						return "@\"" + constant.Value.ToString().Replace( "\"", "\"\"" ) + "\"";
+					}
+					case TypeCode.Char:
+					{
+						return "'" + constant.Value + "'";
+					}
+					case TypeCode.Int64:
+					{
+						return constant.Value + "L";
+					}
+					case TypeCode.UInt32:
+					{
+						return constant.Value + "U";
+					}
+					case TypeCode.UInt64:
+					{
+						return constant.Value + "UL";
+					}
+					case TypeCode.Single:
+					{
+						return constant.Value + "F";
+					}
+					case TypeCode.Decimal:
+					{
+						return constant.Value + "M";
+					}
+					default:
+					{
+						return constant.Value.ToString();
+					}
+				}
+			}
+			default:
+			{
+				return "__ERROR(" + constant.Kind + ")__";
+			}
+		}
 	}
 
 	/// <summary>

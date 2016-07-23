@@ -292,9 +292,32 @@ private void GenerateTestDriver( IEnumerable<TestClass> testClasses )
 		GenerateActionAssignmentIfNotEmpty( testClass.TestCleanup, "testClassInstance.TestCleanup", "instance.{0}" );
 		foreach ( var method in testClass.TestMethods )
 		{
+			if ( method.ArgumentsList.Count == 0 )
+			{
 #>
 			testClassInstance.TestMethods.Add( new TestMethod( "<#= method.Name #>", new Action( instance.<#= method.Name #> ) ) );
 <#+
+			}
+			else
+			{
+#>
+			testClassInstance.TestMethods.Add(
+				new TestMethod(
+					"<#= method.Name #>",
+					() => {
+<#+
+				foreach( var arguments in method.ArgumentsList )
+				{
+#>
+						instance.<#= method.Name #>( <#= String.Join( ", ", arguments ) #> );
+<#+
+				}
+#>
+					}
+				)
+			);
+<#+
+			}
 		}
 #>
 		}
@@ -390,7 +413,6 @@ private class TestClass
 /// </summary>
 private struct TestMethod
 {
-	// TODO: TestCase, TestData etc.
 	/// <summary>
 	///		Gets the name of the test method.
 	/// </summary>
@@ -400,12 +422,23 @@ private struct TestMethod
 	public string Name { get; private set; }
 
 	/// <summary>
+	///		Gets the arguments for the test method in C# syntax
+	/// </summary>
+	/// <value>
+	/// 	The arguments for the test method in C# syntax. Each element is arguments for single test method invocation.
+	/// 	This value will not be <c>null</c>.
+	/// </value>
+	public IList<IList<string>> ArgumentsList { get; private set; }
+
+	/// <summary>
 	///		Initializes a new instance.
 	/// </summary>
 	/// <param name="name">The name of the test method.</param>
-	public TestMethod( string name )
+	/// <param name="arguments">The arguments for the test method.</param>
+	public TestMethod( string name, IList<IList<string>> argumentsList )
 	{
 		this.Name = name;
+		this.ArgumentsList = argumentsList;
 	}
 }
 #>
