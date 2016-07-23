@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;__MOBILE__;__IOS__;__MOBILE__;__IOS__;__MOBILE__;__IOS__;AOT;XAMARIN;FEATURE_TAP;</DefineConstants>
+    <DefineConstants>DEBUG;__MOBILE__;__IOS__;AOT;NETSTANDARD1_3;XAMARIN;FEATURE_TAP;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -29,12 +29,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DefineConstants>__MOBILE__;__IOS__;__MOBILE__;__IOS__;__MOBILE__;__IOS__;AOT;NETSTANDARD1_3;XAMARIN;FEATURE_TAP;</DefineConstants>
+    <DefineConstants>__MOBILE__;__IOS__;AOT;NETSTANDARD1_3;XAMARIN;FEATURE_TAP;</DefineConstants>
     <DocumentationFile>..\..\bin\MonoTouch10\MsgPack.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="System.Numerics" />
