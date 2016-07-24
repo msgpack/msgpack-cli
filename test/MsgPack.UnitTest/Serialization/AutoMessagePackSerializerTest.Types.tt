@@ -189,6 +189,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Text.RegularExpressions;
 
 #if FEATURE_TAP
 using System.Threading;
@@ -1254,18 +1255,18 @@ foreach ( var collection in new []
 GeneratePolymorphismTestTypes();
 #>
 
-		// Issue170
-		public class ClassHasStaticField
-		{
-			public string m_string;
-			public static int m_int = 1000;
+	// Issue170
+	public class ClassHasStaticField
+	{
+		public string m_string;
+		public static int m_int = 1000;
 
-			public ClassHasStaticField()
-			{
-				m_string = "dummy";
-				m_int = 1000;
-			}
+		public ClassHasStaticField()
+		{
+			m_string = "dummy";
+			m_int = 1000;
 		}
+	}
 
 		
 	// Issue 169

@@ -285,6 +285,7 @@
       <DependentUpon>PackHelperParameters.tt</DependentUpon>
     </Compile>
     <Compile Include="Serialization\PackHelpers.cs" />
+    <Compile Include="Serialization\PolymorphicTypeVerificationContext.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="Serialization\Polymorphic\IPolymorphicDeserializer.cs" />
     <Compile Include="Serialization\Polymorphic\KnownTypePolymorphicMessagePackSerializer`1.cs" />
@@ -293,6 +294,7 @@
     <Compile Include="Serialization\Metadata\_Decimal.cs" />
     <Compile Include="Serialization\NilImplicationHandler`4.cs" />
     <Compile Include="Serialization\Polymorphic\PolymorphicSerializerProvider`1.cs" />
+    <Compile Include="Serialization\Polymorphic\RuntimeTypeVerifier.cs" />
     <Compile Include="Serialization\PolymorphismSchema.cs" />
     <Compile Include="Serialization\PolymorphismSchema.Constructors.cs" />
     <Compile Include="Serialization\PolymorphismSchema.Internals.cs" />

@@ -95,10 +95,10 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			var assemblyName = type.GetAssembly().GetName();
 
-			await packer.PackArrayHeaderAsync( 2 , cancellationToken ).ConfigureAwait( false );
-			await packer.PackArrayHeaderAsync( 6 , cancellationToken ).ConfigureAwait( false );
+			await packer.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
+			await packer.PackArrayHeaderAsync( 6, cancellationToken ).ConfigureAwait( false );
 
-			await packer.PackAsync( ( byte ) TypeInfoEncoding.RawCompressed, cancellationToken ).ConfigureAwait( false );
+			await packer.PackAsync( ( byte )TypeInfoEncoding.RawCompressed, cancellationToken ).ConfigureAwait( false );
 
 			// Omit namespace prefix when it equals to declaring assembly simple name.
 			var compressedTypeName =
@@ -111,7 +111,7 @@ namespace MsgPack.Serialization.Polymorphic
 			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Build ), 0, version, 8, 4 );
 			Buffer.BlockCopy( BitConverter.GetBytes( assemblyName.Version.Revision ), 0, version, 12, 4 );
 
-			await packer.PackStringAsync( compressedTypeName , cancellationToken ).ConfigureAwait( false );
+			await packer.PackStringAsync( compressedTypeName, cancellationToken ).ConfigureAwait( false );
 			await packer.PackStringAsync( assemblyName.Name, cancellationToken ).ConfigureAwait( false );
 			await packer.PackBinaryAsync( version, cancellationToken ).ConfigureAwait( false );
 			await packer.PackStringAsync( assemblyName.GetCultureName(), cancellationToken ).ConfigureAwait( false );
@@ -194,7 +194,7 @@ namespace MsgPack.Serialization.Polymorphic
 					SerializationExceptions.ThrowUnexpectedEndOfStream( subTreeUnpacker );
 				}
 
-				return ( T ) await unpackingAsync( type, subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
+				return ( T )await unpackingAsync( type, subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
 			}
 		}
 
@@ -219,13 +219,13 @@ namespace MsgPack.Serialization.Polymorphic
 					SerializationExceptions.ThrowUnexpectedEndOfStream( subTreeUnpacker );
 				}
 
-				return ( T ) await unpackingAsync( type, subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
+				return ( T )await unpackingAsync( type, subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
 			}
 		}
 
 #endif // FEATURE_TAP
 
-		public static Type DecodeRuntimeTypeInfo( Unpacker unpacker )
+		public static Type DecodeRuntimeTypeInfo( Unpacker unpacker, Func<PolymorphicTypeVerificationContext, bool> typeVerifier )
 		{
 			CheckUnpackerForRuntimeTypeInfoDecoding( unpacker );
 
@@ -272,7 +272,11 @@ namespace MsgPack.Serialization.Polymorphic
 					ThrowFailedToDecodeAssemblyKeyToken();
 				}
 
-				return LoadDecodedType( assemblySimpleName, version, culture, publicKeyToken, compressedTypeName );
+				var assemblyName = BuildAssemblyName( assemblySimpleName, version, culture, publicKeyToken );
+				var typeFullName = DecompressTypeName( assemblyName.Name, compressedTypeName );
+				RuntimeTypeVerifier.Verify( assemblyName, typeFullName, typeVerifier );
+
+				return LoadDecodedType( assemblyName, typeFullName );
 			}
 		}
 
@@ -310,7 +314,7 @@ namespace MsgPack.Serialization.Polymorphic
 		{
 			throw new SerializationException( "Failed to decode public key token component." );
 		}
-		
+
 		private static void CheckUnpackerForRuntimeTypeInfoDecoding( Unpacker unpacker )
 		{
 			if ( !unpacker.IsArrayHeader )
@@ -334,24 +338,6 @@ namespace MsgPack.Serialization.Polymorphic
 			throw new SerializationException( "Components count of type info is not valid." );
 		}
 
-		private static Type LoadDecodedType( string assemblySimpleName, byte[] version, string culture, byte[] publicKeyToken, string compressedTypeName )
-		{
-			return
-				Assembly.Load(
-					BuildAssemblyName( assemblySimpleName, version, culture, publicKeyToken )
-#if SILVERLIGHT
-					.ToString()
-#endif // SILVERLIGHT
-				).GetType(
-					compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
-						? assemblySimpleName + compressedTypeName
-						: compressedTypeName
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
-					, throwOnError: true
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
-				);
-		}
-
 		private static AssemblyName BuildAssemblyName( string assemblySimpleName, byte[] version, string culture, byte[] publicKeyToken )
 		{
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
@@ -361,10 +347,10 @@ namespace MsgPack.Serialization.Polymorphic
 					Name = assemblySimpleName,
 					Version =
 						new Version(
-						BitConverter.ToInt32( version, 0 ),
-						BitConverter.ToInt32( version, 4 ),
-						BitConverter.ToInt32( version, 8 ),
-						BitConverter.ToInt32( version, 12 )
+							BitConverter.ToInt32( version, 0 ),
+							BitConverter.ToInt32( version, 4 ),
+							BitConverter.ToInt32( version, 8 ),
+							BitConverter.ToInt32( version, 12 )
 						),
 					CultureInfo =
 						String.IsNullOrEmpty( culture )
@@ -397,9 +383,33 @@ namespace MsgPack.Serialization.Polymorphic
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
+		private static string DecompressTypeName( string assemblySimpleName, string compressedTypeName )
+		{
+			return
+				compressedTypeName.StartsWith( Elipsis, StringComparison.Ordinal )
+					? assemblySimpleName + compressedTypeName
+					: compressedTypeName;
+		}
+
+		private static Type LoadDecodedType( AssemblyName assemblyName, string typeFullName )
+		{
+			return
+				Assembly.Load(
+					assemblyName
+#if SILVERLIGHT
+					.ToString()
+#endif // SILVERLIGHT
+				).GetType(
+					typeFullName
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+					, throwOnError: true
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+				);
+		}
+
 #if FEATURE_TAP
 
-		public static async Task<Type> DecodeRuntimeTypeInfoAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		public static async Task<Type> DecodeRuntimeTypeInfoAsync( Unpacker unpacker, Func<PolymorphicTypeVerificationContext, bool> typeVerifier, CancellationToken cancellationToken )
 		{
 			CheckUnpackerForRuntimeTypeInfoDecoding( unpacker );
 
@@ -446,11 +456,13 @@ namespace MsgPack.Serialization.Polymorphic
 					ThrowFailedToDecodeAssemblyKeyToken();
 				}
 
-				return LoadDecodedType( assemblySimpleName.Value, version.Value, culture.Value, publicKeyToken.Value, compressedTypeName.Value );
+				var assemblyName = BuildAssemblyName( assemblySimpleName.Value, version.Value, culture.Value, publicKeyToken.Value );
+				var typeFullName = DecompressTypeName( assemblyName.Name, compressedTypeName.Value );
+				RuntimeTypeVerifier.Verify( assemblyName, typeFullName, typeVerifier );
+				return LoadDecodedType( assemblyName, typeFullName );
 			}
 		}
 
 #endif // FEATURE_TAP
-
 	}
 }

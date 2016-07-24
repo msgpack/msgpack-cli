@@ -43,6 +43,8 @@ namespace MsgPack.Serialization
 {
 	partial class PolymorphismSchema
 	{
+		private static readonly Func<PolymorphicTypeVerificationContext, bool> DefaultTypeVerfiier = _ => true;
+
 		/// <summary>
 		///		Default instance (null object).
 		/// </summary>
@@ -207,18 +209,42 @@ namespace MsgPack.Serialization
 #else
 			SerializingMember memberMayBeNull
 #endif // !UNITY
- )
+			)
 		{
 			if ( type.GetIsValueType() )
 			{
+				SerializerDebugging.TracePolimorphicSchemaEvent(
+					"Returns default because '{0}' is value type: {1}",
+					memberMayBeNull == null
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+					? type
+#else
+					? type.GetTypeInfo()
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !UNITY
+					: memberMayBeNull.Value.Member,
+#else
+					: memberMayBeNull.Member,
+#endif
+					Default
+				);
 				// Value types will never be polymorphic.
 				return Default;
 			}
 
 			if ( memberMayBeNull == null )
 			{
-				// Using default for collection/tuple items.
-				return Default;
+				var schema =
+					CreateCore(
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+						type,
+#else
+						type.GetTypeInfo(),
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+						Default
+					);
+				SerializerDebugging.TracePolimorphicSchemaEvent( "Returns root type schema for '{0}': {1}", type, schema );
+				return schema;
 			}
 
 #if !UNITY
@@ -227,28 +253,48 @@ namespace MsgPack.Serialization
 			var member = memberMayBeNull;
 #endif // !UNITY
 
-			var table = TypeTable.Create( member.Member );
+			return
+				CreateCore(
+					member.Member,
+					CreateCore(
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+						type,
+#else
+						type.GetTypeInfo(),
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+						Default
+					)
+				);
+		}
 
-			var traits = member.Member.GetMemberValueType().GetCollectionTraits( CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false );
+		private static PolymorphismSchema CreateCore( MemberInfo member, PolymorphismSchema defaultSchema )
+		{
+			var table = TypeTable.Create( member, defaultSchema );
+
+			var traits = member.GetMemberValueType().GetCollectionTraits( CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false );
 			switch ( traits.CollectionType )
 			{
 				case CollectionKind.Array:
 				{
 					if ( !table.Member.Exists && !table.CollectionItem.Exists )
 					{
-						return Default;
+						SerializerDebugging.TracePolimorphicSchemaEvent( "Returns default because '{0}' does not have own nor items schema: {1}", member, defaultSchema );
+						return defaultSchema;
 					}
 
+					SerializerDebugging.TracePolimorphicSchemaEvent( "Returns collection schema for '{0}': {1}", member, defaultSchema );
 					return
 						new PolymorphismSchema(
-							member.Member.GetMemberValueType(),
+							member.GetMemberValueType(),
 							table.Member.PolymorphismType,
 							table.Member.CodeTypeMapping,
+							table.Member.TypeVerifier,
 							PolymorphismSchemaChildrenType.CollectionItems,
 							new PolymorphismSchema(
 								traits.ElementType,
 								table.CollectionItem.PolymorphismType,
 								table.CollectionItem.CodeTypeMapping,
+								table.CollectionItem.TypeVerifier,
 								PolymorphismSchemaChildrenType.None
 							)
 						);
@@ -257,25 +303,30 @@ namespace MsgPack.Serialization
 				{
 					if ( !table.Member.Exists && !table.DictionaryKey.Exists && !table.CollectionItem.Exists )
 					{
-						return Default;
+						SerializerDebugging.TracePolimorphicSchemaEvent( "Returns default because '{0}' does not have own, keys, nor items schema: {1}", member, defaultSchema );
+						return defaultSchema;
 					}
 
+					SerializerDebugging.TracePolimorphicSchemaEvent( "Returns dictionary schema for '{0}': {1}", member, defaultSchema );
 					return
 						new PolymorphismSchema(
-							member.Member.GetMemberValueType(),
+							member.GetMemberValueType(),
 							table.Member.PolymorphismType,
 							table.Member.CodeTypeMapping,
+							table.Member.TypeVerifier,
 							PolymorphismSchemaChildrenType.DictionaryKeyValues,
 							new PolymorphismSchema(
 								traits.ElementType.GetGenericArguments()[ 0 ],
 								table.DictionaryKey.PolymorphismType,
 								table.DictionaryKey.CodeTypeMapping,
+								table.DictionaryKey.TypeVerifier,
 								PolymorphismSchemaChildrenType.None
 							),
 							new PolymorphismSchema(
 								traits.ElementType.GetGenericArguments()[ 1 ],
 								table.CollectionItem.PolymorphismType,
 								table.CollectionItem.CodeTypeMapping,
+								table.CollectionItem.TypeVerifier,
 								PolymorphismSchemaChildrenType.None
 							)
 						);
@@ -283,27 +334,31 @@ namespace MsgPack.Serialization
 				default:
 				{
 #if !NETFX_35 && !UNITY
-					if ( TupleItems.IsTuple( member.Member.GetMemberValueType() ) )
+					if ( TupleItems.IsTuple( member.GetMemberValueType() ) )
 					{
 						if ( table.TupleItems.Count == 0 )
 						{
-							return Default;
+							SerializerDebugging.TracePolimorphicSchemaEvent( "Returns default because '{0}' does not have any tuple items schema: {1}", member, defaultSchema );
+							return defaultSchema;
 						}
 
-						var tupleItemTypes = TupleItems.GetTupleItemTypes( member.Member.GetMemberValueType() );
+						var tupleItemTypes = TupleItems.GetTupleItemTypes( member.GetMemberValueType() );
+						SerializerDebugging.TracePolimorphicSchemaEvent( "Returns tuple items schema for '{0}': {1}", member, defaultSchema );
 						return
 							new PolymorphismSchema(
-								member.Member.GetMemberValueType(),
+								member.GetMemberValueType(),
 								PolymorphismType.None,
 								EmptyMap,
+								DefaultTypeVerfiier,
 								PolymorphismSchemaChildrenType.TupleItems,
 								table.TupleItems
-								.Zip(tupleItemTypes, (e,t) => new { Entry = e, ItemType = t })
+								.Zip( tupleItemTypes, ( e, t ) => new { Entry = e, ItemType = t } )
 								.Select( e =>
 									new PolymorphismSchema(
 										e.ItemType,
-										e.Entry.PolymorphismType, 
+										e.Entry.PolymorphismType,
 										e.Entry.CodeTypeMapping,
+										e.Entry.TypeVerifier,
 										PolymorphismSchemaChildrenType.None
 									)
 								).ToArray()
@@ -314,14 +369,17 @@ namespace MsgPack.Serialization
 					{
 						if ( !table.Member.Exists )
 						{
-							return Default;
+							SerializerDebugging.TracePolimorphicSchemaEvent( "Returns default because '{0}' does not have own schema: {1}", member, defaultSchema );
+							return defaultSchema;
 						}
 
+						SerializerDebugging.TracePolimorphicSchemaEvent( "Returns type of member schema for '{0}'.", member, defaultSchema );
 						return
 							new PolymorphismSchema(
-								member.Member.GetMemberValueType(),
+								member.GetMemberValueType(),
 								table.Member.PolymorphismType,
 								table.Member.CodeTypeMapping,
+								table.Member.TypeVerifier,
 								PolymorphismSchemaChildrenType.None
 							);
 					}
@@ -355,13 +413,13 @@ namespace MsgPack.Serialization
 #endif // !NETFX_35 && !UNITY
 			}
 
-			public static TypeTable Create( MemberInfo member )
+			public static TypeTable Create( MemberInfo member, PolymorphismSchema defaultSchema )
 			{
 				return
 					new TypeTable(
-						TypeTableEntry.Create( member, PolymorphismTarget.Member ),
-						TypeTableEntry.Create( member, PolymorphismTarget.CollectionItem ),
-						TypeTableEntry.Create( member, PolymorphismTarget.DictionaryKey )
+						TypeTableEntry.Create( member, PolymorphismTarget.Member, defaultSchema ),
+						TypeTableEntry.Create( member, PolymorphismTarget.CollectionItem, defaultSchema.TryGetItemSchema() ),
+						TypeTableEntry.Create( member, PolymorphismTarget.DictionaryKey, defaultSchema.TryGetKeySchema() )
 #if !NETFX_35 && !UNITY
 						, TypeTableEntry.CreateTupleItems( member )
 #endif // !NETFX_35 && !UNITY
@@ -396,11 +454,14 @@ namespace MsgPack.Serialization
 
 			public bool Exists { get { return this._useTypeEmbedding || this._knownTypeMapping.Count > 0; } }
 
+			public Func<PolymorphicTypeVerificationContext, bool> TypeVerifier { get; private set; }
+
 			private TypeTableEntry() { }
 
-			public static TypeTableEntry Create( MemberInfo member, PolymorphismTarget targetType )
+			public static TypeTableEntry Create( MemberInfo member, PolymorphismTarget targetType, PolymorphismSchema defaultSchema )
 			{
 				var result = new TypeTableEntry();
+				var memberName = member.ToString();
 				foreach (
 					var attribute in
 						member.GetCustomAttributes( false )
@@ -408,7 +469,14 @@ namespace MsgPack.Serialization
 							.Where( a => a.Target == targetType )
 				)
 				{
-					result.Interpret( attribute, member.ToString(), -1 );
+					// TupleItem schema should never come here, so passing -1 as tupleItemNumber is OK.
+					result.Interpret( attribute, memberName, -1 );
+				}
+
+				if ( defaultSchema != null )
+				{
+					// TupleItem schema should never come here, so passing -1 as tupleItemNumber is OK.
+					result.SetDefault( targetType, memberName, -1, defaultSchema );
 				}
 
 				return result;
@@ -423,7 +491,7 @@ namespace MsgPack.Serialization
 				}
 
 				var tupleItems = TupleItems.GetTupleItemTypes( member.GetMemberValueType() );
-				var result = Enumerable.Repeat( default( object ), tupleItems.Count ).Select( _ => new TypeTableEntry() ).ToArray();
+				var result = tupleItems.Select( _ => new TypeTableEntry() ).ToArray();
 				foreach (
 					var attribute in
 						member.GetCustomAttributes( false )
@@ -443,25 +511,8 @@ namespace MsgPack.Serialization
 				var asKnown = attribute as IPolymorphicKnownTypeAttribute;
 				if ( asKnown != null )
 				{
-					if ( this._useTypeEmbedding )
-					{
-						throw new SerializationException(
-							GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( attribute, memberName, tupleItemNumber )
-						);
-					}
-
-					var typeCode = asKnown.TypeCode;
-					try
-					{
-						this._knownTypeMapping.Add( typeCode, asKnown.BindingType );
-						return;
-					}
-					catch ( ArgumentException )
-					{
-						throw new SerializationException(
-							GetCannotDuplicateKnownTypeCodeErrorMessage( attribute, typeCode, memberName, tupleItemNumber )
-						);
-					}
+					this.SetKnownType( attribute.Target, memberName, tupleItemNumber, asKnown.TypeCode, asKnown.BindingType );
+					return;
 				}
 
 #if DEBUG
@@ -483,19 +534,73 @@ namespace MsgPack.Serialization
 					);
 				}
 
-				if ( this._knownTypeMapping.Count > 0 )
+				this.SetRuntimeType( attribute.Target, memberName, tupleItemNumber, GetVerifier( attribute as IPolymorphicRuntimeTypeAttribute ) );
+			}
+
+			private void SetDefault( PolymorphismTarget target, string memberName, int tupleItemNumber, PolymorphismSchema defaultSchema )
+			{
+				if ( this._useTypeEmbedding || this._knownTypeMapping.Count > 0 )
+				{
+					// Default is not required.
+					return;
+				}
+
+				switch ( defaultSchema.PolymorphismType )
+				{
+					case PolymorphismType.KnownTypes:
+					{
+						foreach ( var typeMapping in defaultSchema.CodeTypeMapping )
+						{
+							this.SetKnownType( target, memberName, tupleItemNumber, typeMapping.Key, typeMapping.Value );
+						}
+
+						break;
+					}
+					case PolymorphismType.RuntimeType:
+					{
+						this.SetRuntimeType( target, memberName, tupleItemNumber, defaultSchema.TypeVerifier );
+						break;
+					}
+				}
+			}
+
+			private void SetKnownType( PolymorphismTarget target, string memberName, int tupleItemNumber, string typeCode, Type bindingType )
+			{
+				if ( this._useTypeEmbedding )
 				{
 					throw new SerializationException(
-						GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( attribute, memberName, tupleItemNumber )
+						GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( target, memberName, tupleItemNumber )
 					);
 				}
 
-				this._useTypeEmbedding = true;
+				try
+				{
+					this._knownTypeMapping.Add( typeCode, bindingType );
+					this.TypeVerifier = DefaultTypeVerfiier;
+				}
+				catch ( ArgumentException )
+				{
+					throw new SerializationException(
+						GetCannotDuplicateKnownTypeCodeErrorMessage( target, typeCode, memberName, tupleItemNumber )
+					);
+				}
 			}
 
-			private static string GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber )
+			private void SetRuntimeType( PolymorphismTarget target, string memberName, int tupleItemNumber, Func<PolymorphicTypeVerificationContext, bool> typeVerifier )
 			{
-				switch ( attribute.Target )
+				if ( this._knownTypeMapping.Count > 0 )
+				{
+					throw new SerializationException(
+						GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( target, memberName, tupleItemNumber )
+					);
+				}
+
+				this.TypeVerifier = typeVerifier;
+				this._useTypeEmbedding = true;
+			}
+			private static string GetCannotSpecifyKnownTypeAndRuntimeTypeErrorMessage( PolymorphismTarget target, string memberName, int? tupleItemNumber )
+			{
+				switch ( target )
 				{
 					case PolymorphismTarget.CollectionItem:
 					{
@@ -545,9 +650,9 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			private static string GetCannotDuplicateKnownTypeCodeErrorMessage( IPolymorphicHelperAttribute attribute, string typeCode, string memberName, int tupleItemNumber )
+			private static string GetCannotDuplicateKnownTypeCodeErrorMessage( PolymorphismTarget target, string typeCode, string memberName, int tupleItemNumber )
 			{
-				switch ( attribute.Target )
+				switch ( target )
 				{
 					case PolymorphismTarget.CollectionItem:
 					{
@@ -591,6 +696,52 @@ namespace MsgPack.Serialization
 							);
 					}
 				}
+			}
+
+			private static Func<PolymorphicTypeVerificationContext, bool> GetVerifier( IPolymorphicRuntimeTypeAttribute attribute )
+			{
+				if ( attribute.VerifierType == null )
+				{
+					// Use default.
+					return DefaultTypeVerfiier;
+				}
+
+				if ( String.IsNullOrEmpty( attribute.VerifierMethodName ) )
+				{
+					throw new SerializationException( "VerifierMethodName cannot be null nor empty if VerifierType is specified." );
+				}
+
+				// 1. Explore public static bool X(PolymorphicTypeVerificationContext)
+				var method = attribute.VerifierType.GetRuntimeMethods().SingleOrDefault( m => IsVerificationMethod( m, attribute.VerifierMethodName ) );
+				if ( method == null )
+				{
+					throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "A public static or instance method named '{0}' with single parameter typed PolymorphicTypeVerificationContext in type '{1}'.", attribute.VerifierMethodName, attribute.VerifierMethodName ) );
+				}
+
+				if ( method.IsStatic )
+				{
+					return method.CreateDelegate( typeof( Func<PolymorphicTypeVerificationContext, bool> ) ) as Func<PolymorphicTypeVerificationContext, bool>;
+				}
+				else
+				{
+					return method.CreateDelegate( typeof( Func<PolymorphicTypeVerificationContext, bool> ), Activator.CreateInstance( attribute.VerifierType ) ) as Func<PolymorphicTypeVerificationContext, bool>;
+				}
+			}
+
+			private static bool IsVerificationMethod( MethodInfo method, string name )
+			{
+				if ( method.ReturnType != typeof( bool ) )
+				{
+					return false;
+				}
+
+				if ( method.Name != name )
+				{
+					return false;
+				}
+
+				var parameters = method.GetParameters();
+				return parameters.Length == 1 && parameters[ 0 ].ParameterType.IsAssignableFrom( typeof( PolymorphicTypeVerificationContext ) );
 			}
 		}
 	}

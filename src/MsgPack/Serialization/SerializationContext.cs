@@ -618,6 +618,8 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>( object providerParameter )
 		{
+			// Set default schema if provider parameter is not specified.
+			providerParameter = providerParameter ?? PolymorphismSchema.Create( typeof( T ), null );
 #if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // DEBUG

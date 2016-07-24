@@ -36,6 +36,7 @@ namespace MsgPack.Serialization
 			public const int Trace = 0;
 			public const int ILTrace = 101;
 			public const int DefineType = 102;
+			public const int PolimorphicSchema = 103;
 			public const int NoAccessorFound = 901;
 			public const int MultipleAccessorFound = 902;
 			public const int ReadOnlyValueTypeMember = 903;
@@ -47,6 +48,7 @@ namespace MsgPack.Serialization
 			public const TraceEventType Trace = TraceEventType.Verbose;
 			public const TraceEventType ILTrace = TraceEventType.Verbose;
 			public const TraceEventType DefineType = TraceEventType.Verbose;
+			public const TraceEventType PolimorphicSchema = TraceEventType.Verbose;
 			public const TraceEventType NoAccessorFound = TraceEventType.Verbose;
 			public const TraceEventType MultipleAccessorFound = TraceEventType.Verbose;
 			public const TraceEventType ReadOnlyValueTypeMember = TraceEventType.Verbose;
@@ -74,7 +76,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Conditional( "TRACE" )]
-		public void TraceEvent( TraceEventType eventType, int id, string format, params object[] args )
+		public void TraceEmitEvent( TraceEventType eventType, int id, string format, params object[] args )
 		{
 			Debug.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} {1}: {2} : {3}", this._name, eventType, id, String.Format( CultureInfo.InvariantCulture, format, args ) ) );
 		}

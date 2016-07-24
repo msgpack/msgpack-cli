@@ -62,6 +62,7 @@ using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using CategoryAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestCategoryAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
+using Does = NUnit.Framework.Does;
 #endif
 
 namespace MsgPack.Serialization
@@ -18900,6 +18901,1176 @@ namespace MsgPack.Serialization
 		}
 
 #endif // FEATURE_TAP
+
+#region -- Polymorphic Attributes in Type and Member --
+
+		private static void SetUpDefaultCollectionsForPolymorphism( SerializationContext context )
+		{
+			context.DefaultCollectionTypes.Register( typeof( IKnownTypePolymorphicCollection ), typeof( KnownTypePolymorphicCollection ) );
+			context.DefaultCollectionTypes.Register( typeof( IRuntimeTypePolymorphicCollection ), typeof( RuntimeTypePolymorphicCollection ) );
+			context.DefaultCollectionTypes.Register( typeof( IKnownTypePolymorphicDictionary ), typeof( KnownTypePolymorphicDictionary ) );
+			context.DefaultCollectionTypes.Register( typeof( IRuntimeTypePolymorphicDictionary ), typeof( RuntimeTypePolymorphicDictionary ) );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphismAttributesInType()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			context.GetSerializer<IKnownTypePolymorphic>();
+			context.GetSerializer<IRuntimeTypePolymorphic>();
+			context.GetSerializer<IKnownTypePolymorphicCollection>();
+			context.GetSerializer<IRuntimeTypePolymorphicCollection>();
+			context.GetSerializer<IKnownTypePolymorphicDictionary>();
+			context.GetSerializer<IRuntimeTypePolymorphicDictionary>();
+		}
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownType_AttributeIsNothing_Field_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicVanillaField = new KnownTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicVanillaField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownType_AttributeIsNothing_Property_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicVanillaProperty = new KnownTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicVanillaProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownType_AttributeIsKnown_Field_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicKnownField = new KnownTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicKnownField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				// Verify override in member value.
+				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownType_AttributeIsKnown_Property_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicKnownProperty = new KnownTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicKnownProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				// Verify override in member value.
+				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownType_AttributeIsRuntime_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicRuntimeField = new KnownTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicRuntimeField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownType_AttributeIsRuntime_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicRuntimeProperty = new KnownTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicRuntimeProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeType_AttributeIsNothing_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicVanillaField = new RuntimeTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicVanillaField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeType_AttributeIsNothing_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicVanillaProperty = new RuntimeTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicVanillaProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeType_AttributeIsKnown_Field_Known_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicKnownField = new RuntimeTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeType_AttributeIsKnown_Property_Known_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicKnownProperty = new RuntimeTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeType_AttributeIsRuntime_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicRuntimeField = new RuntimeTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicRuntimeField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeType_AttributeIsRuntime_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicRuntimeProperty = new RuntimeTypePolymorphic();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicRuntimeProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeCollection_AttributeIsNothing_Field_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicCollectionVanillaField = new KnownTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicCollectionVanillaField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeCollection_AttributeIsNothing_Property_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicCollectionVanillaProperty = new KnownTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicCollectionVanillaProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeCollection_AttributeIsKnown_Field_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicCollectionKnownField = new KnownTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicCollectionKnownField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				// Verify override in member value.
+				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeCollection_AttributeIsKnown_Property_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicCollectionKnownProperty = new KnownTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicCollectionKnownProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				// Verify override in member value.
+				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicCollectionRuntimeField = new KnownTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicCollectionRuntimeField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicCollectionRuntimeProperty = new KnownTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicCollectionRuntimeProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicCollectionVanillaField = new RuntimeTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicCollectionVanillaField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicCollectionVanillaProperty = new RuntimeTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicCollectionVanillaProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicCollectionKnownField = new RuntimeTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicCollectionKnownProperty = new RuntimeTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicCollectionRuntimeField = new RuntimeTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicCollectionRuntimeField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicCollectionRuntimeProperty = new RuntimeTypePolymorphicCollection();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicCollectionRuntimeProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeDictionary_AttributeIsNothing_Field_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicDictionaryVanillaField = new KnownTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicDictionaryVanillaField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeDictionary_AttributeIsNothing_Property_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicDictionaryVanillaProperty = new KnownTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicDictionaryVanillaProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeDictionary_AttributeIsKnown_Field_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicDictionaryKnownField = new KnownTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicDictionaryKnownField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				// Verify override in member value.
+				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeDictionary_AttributeIsKnown_Property_Known()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicDictionaryKnownProperty = new KnownTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicDictionaryKnownProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				// Verify override in member value.
+				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicDictionaryRuntimeField = new KnownTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicDictionaryRuntimeField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.KnownTypePolymorphicDictionaryRuntimeProperty = new KnownTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "KnownTypePolymorphicDictionaryRuntimeProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicDictionaryVanillaField = new RuntimeTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicDictionaryVanillaField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicDictionaryVanillaProperty = new RuntimeTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicDictionaryVanillaProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicDictionaryKnownField = new RuntimeTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicDictionaryKnownProperty = new RuntimeTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicDictionaryRuntimeField = new RuntimeTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicDictionaryRuntimeField" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.RuntimeTypePolymorphicDictionaryRuntimeProperty = new RuntimeTypePolymorphicDictionary();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "RuntimeTypePolymorphicDictionaryRuntimeProperty" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+			}
+		}
+
+
+#endregion -- Polymorphic Attributes in Type and Member --
+
+#region -- TypeVerifier cases --
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForPublicTypeVerifierPublicStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForPublicTypeVerifierPublicStaticAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForPublicTypeVerifierPublicStaticAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForPublicTypeVerifierPrivateStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForPublicTypeVerifierPrivateStaticAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForPublicTypeVerifierPrivateStaticAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForPublicTypeVerifierPublicInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForPublicTypeVerifierPublicInstanceAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForPublicTypeVerifierPublicInstanceAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForPublicTypeVerifierPrivateInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForPublicTypeVerifierPrivateInstanceAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForPublicTypeVerifierPrivateInstanceAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPublicStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPublicStaticAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPublicStaticAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPrivateStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPrivateStaticAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPrivateStaticAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPublicInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPublicInstanceAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPublicInstanceAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPrivateInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPrivateInstanceAllowAll, Is.Not.Null );
+				Assert.That( deserialized.ForNonPublicTypeVerifierPrivateInstanceAllowAll.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new RuntimeTypePolymorphicWithInvalidVerifierNoMethods { Value = "Foo" };
+			
+			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierNoMethods>() );
+			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new RuntimeTypePolymorphicWithInvalidVerifierVoidReturnMethod { Value = "Foo" };
+			
+			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierVoidReturnMethod>() );
+			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new RuntimeTypePolymorphicWithInvalidVerifierNoParametersMethod { Value = "Foo" };
+			
+			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierNoParametersMethod>() );
+			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new RuntimeTypePolymorphicWithInvalidVerifierExtraParametersMethod { Value = "Foo" };
+			
+			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierExtraParametersMethod>() );
+			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierDoesNotLoadTypeItself()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var serializer = context.GetSerializer<IRuntimeTypePolymorphicWithVerification>();
+			
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				Polymorphic.TypeInfoEncoder.Encode( packer, typeof( DangerousClass ) );
+				packer.PackArrayHeader( 1 );
+				packer.PackString( "Foo" ); // Value
+				buffer.Position = 0;
+				var ex = Assert.Catch<SerializationException>( () => serializer.Unpack( buffer ) );
+				Assert.That( ex.Message, Does.StartWith( "Type verifier rejects type " ) );
+			}
+		}
+
+#endregion -- TypeVerifier cases --
+
 
 		#endregion -- Polymorphism --
 		[Test]

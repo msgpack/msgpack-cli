@@ -73,7 +73,7 @@ namespace MsgPack.Serialization.Polymorphic
 				TypeInfoEncoder.Decode(
 					unpacker,
 					// ReSharper disable once ConvertClosureToMethodGroup
-					u => TypeInfoEncoder.DecodeRuntimeTypeInfo( u ), // Lamda capture is more efficient.
+					u => TypeInfoEncoder.DecodeRuntimeTypeInfo( u, this._schema.TypeVerifier ), // Lamda capture is more efficient.
 					( t, u ) => ( T )this.GetActualTypeSerializer( t ).UnpackFrom( u )
 				);
 		}
@@ -97,7 +97,7 @@ namespace MsgPack.Serialization.Polymorphic
 				TypeInfoEncoder.DecodeAsync<T>(
 					unpacker,
 					// ReSharper disable once ConvertClosureToMethodGroup
-					( u, c ) => TypeInfoEncoder.DecodeRuntimeTypeInfoAsync( u, c ), // Lamda capture is more efficient.
+					( u, c ) => TypeInfoEncoder.DecodeRuntimeTypeInfoAsync( u, this._schema.TypeVerifier, c ), // Lamda capture is more efficient.
 					( t, u, c ) => this.GetActualTypeSerializer( t ).UnpackFromAsync( u, c ),
 					cancellationToken
 				);

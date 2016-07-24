@@ -1201,7 +1201,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				if ( SerializerDebugging.DumpEnabled )
 				{
-					SerializerDebugging.TraceEvent( "Compile {0}", codeGenerationContext.DeclaringType.Name );
+					SerializerDebugging.TraceEmitEvent( "Compile {0}", codeGenerationContext.DeclaringType.Name );
 					codeProvider.GenerateCodeFromCompileUnit( cu, SerializerDebugging.ILTraceWriter, new CodeGeneratorOptions() );
 					SerializerDebugging.FlushTraceData();
 				}
@@ -1245,7 +1245,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEvent( "Build assembly '{0}' from dom.", cr.PathToAssembly );
+				SerializerDebugging.TraceEmitEvent( "Build assembly '{0}' from dom.", cr.PathToAssembly );
 			}
 
 			SerializerDebugging.AddCompiledCodeDomAssembly( cr.PathToAssembly );

@@ -153,6 +153,26 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "source" );
 			}
 
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+			var asType = source as Type;
+			if ( asType != null )
+			{
+				// Nested type.
+				return asType;
+			}
+#else
+#if DEBUG
+			Contract.Assert( typeof( MemberInfo ).IsAssignableFrom( typeof( Type ) ), "Type is assginable to MemberInfo on this platform, so should not step in this line." );
+			Contract.Assert( typeof( Type ).IsAssignableFrom( typeof( TypeInfo ) ), "TypeInfo is assginable to Type on this platform, so should not step in this line." );
+#endif // DEBUG
+			var asTypeInfo = source as TypeInfo;
+			if ( asTypeInfo != null )
+			{
+				// Nested type.
+				return asTypeInfo.AsType();
+			}
+#endif // !NETFX_CORE
+
 			var asProperty = source as PropertyInfo;
 			var asField = source as FieldInfo;
 
@@ -469,7 +489,7 @@ namespace MsgPack.Serialization
 #if !NETFX_35 && !UNITY
 					genericTypes.ISetT = genericInterfaces.FirstOrDefault( i => i == typeof(ISet<>) );
 #endif // !NETFX_35 && !UNITY
-#if !NETFX_35 && !UNITY && !NETFX_40 && !(SILVERLIGHT && !WINDOWS_PHONE)
+#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 					genericTypes.IReadOnlyCollectionT = genericInterfaces.FirstOrDefault( i => i == typeof(IReadOnlyCollection<>) );
 					genericTypes.IReadOnlyListT = genericInterfaces.FirstOrDefault( i => i == typeof(IReadOnlyList<>) );
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )

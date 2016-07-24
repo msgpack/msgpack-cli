@@ -40,7 +40,7 @@ namespace MsgPack.Serialization
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
 	/// </remarks>
-	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed class MessagePackKnownTypeAttribute : Attribute, IPolymorphicKnownTypeAttribute
 	{
 		PolymorphismTarget IPolymorphicHelperAttribute.Target
@@ -89,7 +89,7 @@ namespace MsgPack.Serialization
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
 	/// </remarks>
-	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed class MessagePackKnownCollectionItemTypeAttribute : Attribute, IPolymorphicKnownTypeAttribute
 	{
 		PolymorphismTarget IPolymorphicHelperAttribute.Target
@@ -138,7 +138,7 @@ namespace MsgPack.Serialization
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
 	/// </remarks>
-	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
 	public sealed class MessagePackKnownDictionaryKeyTypeAttribute : Attribute, IPolymorphicKnownTypeAttribute
 	{
 		PolymorphismTarget IPolymorphicHelperAttribute.Target

@@ -627,6 +627,15 @@ namespace NUnit.Framework.Constraints
         /// Returns a constraint that succeeds if the actual
         /// value starts with the substring supplied as an argument.
         /// </summary>
+        public StartsWithConstraint StartWith(string expected)
+        {
+            return (StartsWithConstraint)this.Append(new StartsWithConstraint(expected));
+        }
+
+        /// <summary>
+        /// Returns a constraint that succeeds if the actual
+        /// value starts with the substring supplied as an argument.
+        /// </summary>
         public StartsWithConstraint StartsWith(string expected)
         {
             return (StartsWithConstraint)this.Append(new StartsWithConstraint(expected));
