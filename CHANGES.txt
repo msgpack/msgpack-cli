@@ -571,7 +571,7 @@ Release 0.7.1  2016/7/10
   * Relaxes .NET Framework version. .NET 4.5.0, 4.5.1, 4.6.0 are resupported. Issue #176.
   * Reduce memory allocation. Issue #179.
 
-Development
+Release 0.8.0 beta 2016/07/24
 
   BREAKING CHANGES
   * `MessagePackDeserializationConstructorAttribute` now always used when the type has default constructor.
