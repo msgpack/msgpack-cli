@@ -50,6 +50,12 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal class SerializationTarget
 	{
+		// Type names to avoid user who doesn't embed "message pack assembly's attributes" in their code directly.
+		private static readonly string MessagePackMemberAttributeTypeName = typeof( MessagePackMemberAttribute ).FullName;
+		private static readonly string MessagePackIgnoreAttributeTypeName = typeof( MessagePackIgnoreAttribute ).FullName;
+		private static readonly string MessagePackDeserializationConstructorAttributeTypeName = typeof( MessagePackDeserializationConstructorAttribute ).FullName;
+
+
 		public IList<SerializingMember> Members { get; private set; }
 		public ConstructorInfo DeserializationConstructor { get; private set; }
 		public bool IsConstructorDeserialization
@@ -177,7 +183,7 @@ namespace MsgPack.Serialization
 			Contract.Assert( type != null, "type != null" );
 
 			var members = GetDistinctMembers( type );
-			var filtered = members.Where( item => item.IsDefined( typeof( MessagePackMemberAttribute ) ) ).ToArray();
+			var filtered = members.Where( item => item.GetCustomAttributesData().Any( a => a.GetAttributeType().FullName == MessagePackMemberAttributeTypeName ) ).ToArray();
 
 			if ( filtered.Length > 0 )
 			{
@@ -197,7 +203,7 @@ namespace MsgPack.Serialization
 		{
 			var duplicated =
 				filtered.FirstOrDefault(
-					member => member.IsDefined( typeof( MessagePackIgnoreAttribute ) )
+					member => member.GetCustomAttributesData().Any( a => a.GetAttributeType().FullName == MessagePackIgnoreAttributeTypeName )
 				);
 
 			if ( duplicated != null )
@@ -357,7 +363,7 @@ namespace MsgPack.Serialization
 
 		private static IList<ConstructorInfo> FindExplicitDeserializationConstructors( IEnumerable<ConstructorInfo> construtors )
 		{
-			return construtors.Where( ctor => ctor.IsDefined( typeof( MessagePackDeserializationConstructorAttribute ) ) ).ToArray();
+			return construtors.Where( ctor => ctor.GetCustomAttributesData().Any( a => a.GetAttributeType().FullName == MessagePackDeserializationConstructorAttributeTypeName ) ).ToArray();
 		}
 
 		private static SerializationException NewTypeCannotBeSerializedException( Type targetType )
