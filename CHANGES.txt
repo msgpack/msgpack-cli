@@ -594,3 +594,16 @@ Release 0.8.0 beta 2016/07/24
   IMPROVEMENTS
   * Relax constructor based deserialization condition. It will be used even if there are any settable members(including private property setters). Part of issue #178 and fixes issue #135.
   * PackHelpers and UnpackHelpers APIs are now backward compatible.
+
+Release 0.8.0
+
+  Nothing from 0.8.0 beta.
+
+Release 0.9.0 (planned)
+
+  NEW FEATURES
+  * Enum name transformation via `SerializationContext.EnumSerializationOptions.NameTransformer`.
+    Built in transformer is placed in `EnumTransoformers`.
+    Issue #184.
+  * Polymorphic attributes now supports type qualification. Issue #171.
+  * Runtime type polymorphism now supports name based type verification. This feature allows to prevent loading malicious or unknown types ibefore assembly loading.
