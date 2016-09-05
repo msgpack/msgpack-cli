@@ -46,19 +46,6 @@
     <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
   </Project>
 
-  <Project Name="MsgPack.UnitTest.Xamarin.iOS.Unified" Base="MsgPack.UnitTest.Xamarin.iOS">
-    <Preserve Path="Properties\*" />
-    <Preserve Path="Resources\*" />
-    <Preserve File="*.config" />
-    <Preserve File="*.json" />
-    <Preserve File="*.mpac" />
-    <Preserve File="*.snk" />
-    <Preserve File="*.plist" />
-    <Preserve Path="Main.cs" />
-    <Preserve Path="AppDelegate.cs" />
-    <Exclude Path="UnitTestAppDelegate.cs" />
-  </Project>
-
   <Project Name="MsgPack.UnitTest.Xamarin.Android" Base="MsgPack.UnitTest.Xamarin.iOS">
     <Preserve Path="Properties\*" />
     <Preserve Path="Resources\*" />
