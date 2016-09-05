@@ -176,7 +176,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private readonly DictionarySerlaizationOptions _didtiinarySerializationOptions;
+		private readonly DictionarySerlaizationOptions _dictionarySerializationOptions;
 
 		/// <summary>
 		///		Gets the dictionary(map) based serialization options.
@@ -192,7 +192,7 @@ namespace MsgPack.Serialization
 				Contract.Ensures( Contract.Result<SerializationCompatibilityOptions>() != null );
 #endif // DEBUG
 
-				return this._didtiinarySerializationOptions;
+				return this._dictionarySerializationOptions;
 			}
 		}
 
@@ -560,7 +560,7 @@ namespace MsgPack.Serialization
 			this._generationLock = new object();
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 			this._serializerGeneratorOptions = new SerializerOptions();
-			this._didtiinarySerializationOptions = new DictionarySerlaizationOptions();
+			this._dictionarySerializationOptions = new DictionarySerlaizationOptions();
 		}
 
 		internal bool ContainsSerializer( Type rootType )
