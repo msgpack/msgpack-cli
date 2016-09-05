@@ -8873,18 +8873,18 @@ namespace MsgPack.Serialization
 			var obj = new SimpleClass { FirstProperty = "foo", SecondProperty = "bar", ThirdProperty = 3, FourthProperty = 4 };
 			using ( var buffer = new MemoryStream() )
 			{
-#if FEATURE_TASK
+#if FEATURE_TAP
 				if ( isAsync )
 				{
 					serializer.PackAsync( buffer, obj, CancellationToken.None ).Wait();
 				}
 				else
 				{
-#endif // FEATURE_TASK
+#endif // FEATURE_TAP
 					serializer.Pack( buffer, obj );
-#if FEATURE_TASK
+#if FEATURE_TAP
 				}
-#endif // FEATURE_TASK
+#endif // FEATURE_TAP
 
 				buffer.Position = 0;
 				var map = MessagePackSerializer.UnpackMessagePackObject( buffer ).AsDictionary();
@@ -8901,18 +8901,18 @@ namespace MsgPack.Serialization
 				buffer.Position = 0;
 
 				SimpleClass deserialized;
-#if FEATURE_TASK
+#if FEATURE_TAP
 				if ( isAsync )
 				{
 					deserialized = serializer.UnpackAsync( buffer, CancellationToken.None ).Result;
 				}
 				else
 				{
-#endif // FEATURE_TASK
+#endif // FEATURE_TAP
 					deserialized = serializer.Unpack( buffer );
-#if FEATURE_TASK
+#if FEATURE_TAP
 				}
-#endif // FEATURE_TASK
+#endif // FEATURE_TAP
 
 				Assert.That( deserialized.FirstProperty, Is.EqualTo( obj.FirstProperty ) );
 				Assert.That( deserialized.SecondProperty, Is.EqualTo( obj.SecondProperty ) );
