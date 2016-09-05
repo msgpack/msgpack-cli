@@ -57,12 +57,34 @@ namespace MsgPack.Serialization
 			get { return PolymorphismTarget.Member; }
 		}
 
+		/// <summary>
+		///		Gets or sets the type which implement type verfier method.
+		/// </summary>
+		/// <value>
+		///		The type which implement type verfier method.
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
 		public Type VerifierType
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		///		Gets or sets the name of the method which implement type verification.
+		/// </summary>
+		/// <value>
+		///		The name of the method which implement type verification
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
+		/// <remarks>
+		///		The type verfication method must be following:
+		///		<list type="bullet">
+		///			<item>The method has just only one parameter, which type must be <see cref="PolymorphicTypeVerificationContext" />.</item>
+		///			<item>The method must return <see cref="Boolean" />. <c>true</c> indicates the verification result is OK; <c>false</c> indicates not OK.</item>
+		///			<item>The method can be static method or instance method. The accessibility is not limited.</item>
+		///		</list>
+		/// </remarks>
 		public string VerifierMethodName
 		{
 			get;
@@ -108,12 +130,34 @@ namespace MsgPack.Serialization
 			get { return PolymorphismTarget.CollectionItem; }
 		}
 
+		/// <summary>
+		///		Gets or sets the type which implement type verfier method.
+		/// </summary>
+		/// <value>
+		///		The type which implement type verfier method.
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
 		public Type VerifierType
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		///		Gets or sets the name of the method which implement type verification.
+		/// </summary>
+		/// <value>
+		///		The name of the method which implement type verification
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
+		/// <remarks>
+		///		The type verfication method must be following:
+		///		<list type="bullet">
+		///			<item>The method has just only one parameter, which type must be <see cref="PolymorphicTypeVerificationContext" />.</item>
+		///			<item>The method must return <see cref="Boolean" />. <c>true</c> indicates the verification result is OK; <c>false</c> indicates not OK.</item>
+		///			<item>The method can be static method or instance method. The accessibility is not limited.</item>
+		///		</list>
+		/// </remarks>
 		public string VerifierMethodName
 		{
 			get;
@@ -159,12 +203,34 @@ namespace MsgPack.Serialization
 			get { return PolymorphismTarget.DictionaryKey; }
 		}
 
+		/// <summary>
+		///		Gets or sets the type which implement type verfier method.
+		/// </summary>
+		/// <value>
+		///		The type which implement type verfier method.
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
 		public Type VerifierType
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		///		Gets or sets the name of the method which implement type verification.
+		/// </summary>
+		/// <value>
+		///		The name of the method which implement type verification
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
+		/// <remarks>
+		///		The type verfication method must be following:
+		///		<list type="bullet">
+		///			<item>The method has just only one parameter, which type must be <see cref="PolymorphicTypeVerificationContext" />.</item>
+		///			<item>The method must return <see cref="Boolean" />. <c>true</c> indicates the verification result is OK; <c>false</c> indicates not OK.</item>
+		///			<item>The method can be static method or instance method. The accessibility is not limited.</item>
+		///		</list>
+		/// </remarks>
 		public string VerifierMethodName
 		{
 			get;
@@ -210,12 +276,34 @@ namespace MsgPack.Serialization
 			get { return PolymorphismTarget.TupleItem; }
 		}
 
+		/// <summary>
+		///		Gets or sets the type which implement type verfier method.
+		/// </summary>
+		/// <value>
+		///		The type which implement type verfier method.
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
 		public Type VerifierType
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		///		Gets or sets the name of the method which implement type verification.
+		/// </summary>
+		/// <value>
+		///		The name of the method which implement type verification
+		///		The default is <c>null</c>, which indicates that no type verification will be processed.
+		/// </value>
+		/// <remarks>
+		///		The type verfication method must be following:
+		///		<list type="bullet">
+		///			<item>The method has just only one parameter, which type must be <see cref="PolymorphicTypeVerificationContext" />.</item>
+		///			<item>The method must return <see cref="Boolean" />. <c>true</c> indicates the verification result is OK; <c>false</c> indicates not OK.</item>
+		///			<item>The method can be static method or instance method. The accessibility is not limited.</item>
+		///		</list>
+		/// </remarks>
 		public string VerifierMethodName
 		{
 			get;

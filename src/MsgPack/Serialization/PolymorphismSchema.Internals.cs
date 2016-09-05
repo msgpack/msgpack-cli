@@ -711,7 +711,7 @@ namespace MsgPack.Serialization
 					throw new SerializationException( "VerifierMethodName cannot be null nor empty if VerifierType is specified." );
 				}
 
-				// 1. Explore public static bool X(PolymorphicTypeVerificationContext)
+				// Explore [static] bool X(PolymorphicTypeVerificationContext)
 				var method = attribute.VerifierType.GetRuntimeMethods().SingleOrDefault( m => IsVerificationMethod( m, attribute.VerifierMethodName ) );
 				if ( method == null )
 				{
