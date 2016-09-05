@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
 #if FEATURE_TAP
@@ -43,6 +44,8 @@ namespace MsgPack.Serialization
 		where TEnum : struct
 	{
 		private readonly Type _underlyingType;
+		private readonly Dictionary<TEnum, string> _serializationMapping;
+		private readonly Dictionary<string, TEnum> _deserializationMapping;
 		private EnumSerializationMethod _serializationMethod; // not readonly -- changed in cloned instance in GetCopyAs()
 
 		/// <summary>
@@ -63,6 +66,15 @@ namespace MsgPack.Serialization
 
 			this._serializationMethod = serializationMethod;
 			this._underlyingType = Enum.GetUnderlyingType( typeof( TEnum ) );
+			var members = Enum.GetValues( typeof( TEnum ) ) as TEnum[];
+			this._serializationMapping = new Dictionary<TEnum, string>( members.Length );
+			this._deserializationMapping = new Dictionary<string, TEnum>( members.Length );
+			foreach ( var member in members )
+			{
+				var asString = ownerContext.EnumSerializationOptions.SafeNameTransformer( member.ToString() );
+				this._serializationMapping[ member ] = asString;
+				this._deserializationMapping[ asString ] = member;
+			}
 		}
 
 		/// <summary>
@@ -79,7 +91,14 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				packer.PackString( objectTree.ToString() );
+				string asString;
+				if ( !this._serializationMapping.TryGetValue( objectTree, out asString ) )
+				{
+					// May be undefined value which should be numeric.
+					asString = objectTree.ToString();
+				}
+
+				packer.PackString( asString );
 			}
 		}
 
@@ -111,7 +130,14 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				return packer.PackStringAsync( objectTree.ToString(), cancellationToken );
+				string asString;
+				if ( !this._serializationMapping.TryGetValue( objectTree, out asString ) )
+				{
+					// May be undefined value which should be numeric.
+					asString = objectTree.ToString();
+				}
+
+				return packer.PackStringAsync( asString, cancellationToken );
 			}
 		}
 
@@ -153,36 +179,40 @@ namespace MsgPack.Serialization
 				var asString = unpacker.LastReadData.AsString();
 
 				TEnum result;
+				if ( !this._deserializationMapping.TryGetValue( asString, out result ) )
+				{
+					// May be undefined value which should be numeric, or PacakCasing.
 #if NETFX_35 || UNITY
-				try
-				{
-					result = ( TEnum ) Enum.Parse( typeof( TEnum ), asString, false );
-				}
-				catch ( ArgumentException ex )
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Name '{0}' is not member of enum type '{1}'.",
-							asString,
-							typeof( TEnum )
-							),
-						ex
-					);
-				}
+					try
+					{
+						result = ( TEnum ) Enum.Parse( typeof( TEnum ), asString, false );
+					}
+					catch ( ArgumentException ex )
+					{
+						throw new SerializationException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Name '{0}' is not member of enum type '{1}'.",
+								asString,
+								typeof( TEnum )
+								),
+							ex
+						);
+					}
 #else
-				if ( !Enum.TryParse( asString, false, out result ) )
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Name '{0}' is not member of enum type '{1}'.",
-							asString,
-							typeof( TEnum )
-						)
-					);
-				}
+					if ( !Enum.TryParse( asString, false, out result ) )
+					{
+						throw new SerializationException(
+								String.Format(
+									CultureInfo.CurrentCulture,
+									"Name '{0}' is not member of enum type '{1}'.",
+									asString,
+									typeof( TEnum )
+								)
+							);
+					}
 #endif // NETFX_35 || UNITY
+				}
 
 				return result;
 			}
@@ -266,6 +296,15 @@ namespace MsgPack.Serialization
 
 			this._serializationMethod = serializationMethod;
 			this._underlyingType = Enum.GetUnderlyingType( targetType );
+			var members = Enum.GetValues( typeof( TEnum ) ) as TEnum[];
+			this._serializationMapping = new Dictionary<TEnum, string>( members.Length );
+			this._deserializationMapping = new Dictionary<string, TEnum>( members.Length );
+			foreach ( var member in members )
+			{
+				var asString = ownerContext.EnumSerializationOptions.SafeNameTransformer( member.ToString() );
+				this._serializationMapping[ member ] = asString;
+				this._deserializationMapping[ asString ] = member;
+			}
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -277,7 +316,14 @@ namespace MsgPack.Serialization
 			}
 			else
 			{
-				packer.PackString( objectTree.ToString() );
+				string asString;
+				if ( !this._serializationMapping.TryGetValue( objectTree, out asString ) )
+				{
+					// May be undefined value which should be numeric.
+					asString = objectTree.ToString();
+				}
+
+				packer.PackString( asString );
 			}
 		}
 
@@ -290,22 +336,29 @@ namespace MsgPack.Serialization
 			{
 				var asString = unpacker.LastReadData.AsString();
 
-				try
+				TEnum result;
+				if ( !this._deserializationMapping.TryGetValue( asString, out result ) )
 				{
-					return Enum.Parse( this.TargetType, asString, false );
+					// May be undefined value which should be numeric, or PacakCasing.
+					try
+					{
+						result = Enum.Parse( this.TargetType, asString, false );
+					}
+					catch ( ArgumentException ex )
+					{
+						throw new SerializationException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"Name '{0}' is not member of enum type '{1}'.",
+								asString,
+								this.TargetType
+								),
+							ex
+						);
+					}
 				}
-				catch ( ArgumentException ex )
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Name '{0}' is not member of enum type '{1}'.",
-							asString,
-							this.TargetType
-							),
-						ex
-					);
-				}
+
+				return result;
 			}
 			else if ( unpacker.LastReadData.IsTypeOf( this._underlyingType ).GetValueOrDefault() )
 			{

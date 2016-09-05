@@ -37,6 +37,7 @@ namespace MsgPack.Serialization
 	/// <remarks>
 	///		These options do NOT affect serialization of <see cref="System.Collections.IDictionary"/> 
 	///		and <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
+	///		The option only affect dictionary (map) based serialization which can be enabled via <see cref="SerializationContext.SerializationMethod"/>.
 	/// </remarks>
 	public sealed class DictionarySerlaizationOptions
 	{
@@ -86,7 +87,7 @@ namespace MsgPack.Serialization
 #if NO_THREADING_VOLATILE
 		private volatile Func<string, string> _keyNameHandler;
 #else
-		private Func<string, string> _keyNameHandler;
+		private Func<string, string> _keyTransformer;
 #endif
 
 
@@ -105,7 +106,7 @@ namespace MsgPack.Serialization
 #if NO_THREADING_VOLATILE
 				return this._keyNameHandler;
 #else
-				return Volatile.Read( ref this._keyNameHandler );
+				return Volatile.Read( ref this._keyTransformer );
 #endif
 			}
 			set
@@ -113,14 +114,14 @@ namespace MsgPack.Serialization
 #if NO_THREADING_VOLATILE
 				this._keyNameHandler = value;
 #else
-				Volatile.Write( ref this._keyNameHandler, value );
+				Volatile.Write( ref this._keyTransformer, value );
 #endif
 			}
 		}
 
 		internal Func<string, string> SafeKeyTransformer
 		{
-			get { return this.KeyTransformer ?? DictionaryKeyTransformers.AsIs; }
+			get { return this.KeyTransformer ?? KeyNameTransformers.AsIs; }
 		} 
 
 		/// <summary>

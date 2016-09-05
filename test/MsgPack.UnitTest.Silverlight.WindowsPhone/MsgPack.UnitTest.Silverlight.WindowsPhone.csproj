@@ -234,9 +234,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\DictionaryKeyTransformersTest.cs">
-      <Link>Serialization\DictionaryKeyTransformersTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs">
       <Link>Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs</Link>
     </Compile>
@@ -251,6 +248,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\KeyNameTransformersTest.cs">
+      <Link>Serialization\KeyNameTransformersTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs</Link>

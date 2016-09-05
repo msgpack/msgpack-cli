@@ -189,7 +189,7 @@ namespace MsgPack.Serialization
 			get
 			{
 #if DEBUG
-				Contract.Ensures( Contract.Result<SerializationCompatibilityOptions>() != null );
+				Contract.Ensures( Contract.Result<DictionarySerlaizationOptions>() != null );
 #endif // DEBUG
 
 				return this._dictionarySerializationOptions;
@@ -236,7 +236,25 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private int _enumSerializationMethod;
+		private readonly EnumSerializationOptions _enumSerializationOptions;
+
+		/// <summary>
+		///		Gets the enum serialization options.
+		/// </summary>
+		/// <value>
+		///		The <see cref="Serialization.EnumSerializationOptions"/> which stores enum serialization options. This value will not be <c>null</c>.
+		/// </value>
+		public EnumSerializationOptions EnumSerializationOptions
+		{
+			get
+			{
+#if DEBUG
+				Contract.Ensures( Contract.Result<EnumSerializationOptions>() != null );
+#endif // DEBUG
+
+				return this._enumSerializationOptions;
+			}
+		}
 
 		/// <summary>
 		///		Gets or sets the <see cref="EnumSerializationMethod"/> to determine default serialization strategy of enum types.
@@ -246,6 +264,7 @@ namespace MsgPack.Serialization
 		/// </value>
 		/// <exception cref="ArgumentOutOfRangeException">The setting value is invalid as <see cref="EnumSerializationMethod"/> enum.</exception>
 		/// <remarks>
+		///		<note>This property is wrapper for <see cref="Serialization.EnumSerializationOptions.SerializationMethod"/> property.</note>
 		///		A serialization strategy for specific <strong>member</strong> is determined as following:
 		///		<list type="numeric">
 		///			<item>If the member is marked with <see cref="MessagePackEnumMemberAttribute"/> and its value is not <see cref="EnumMemberSerializationMethod.Default"/>, then it will be used.</item>
@@ -256,33 +275,8 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public EnumSerializationMethod EnumSerializationMethod
 		{
-			get
-			{
-#if DEBUG
-				Contract.Ensures( Enum.IsDefined( typeof( EnumSerializationMethod ), Contract.Result<EnumSerializationMethod>() ) );
-#endif // DEBUG
-
-				return ( EnumSerializationMethod )Volatile.Read( ref this._enumSerializationMethod );
-			}
-			set
-			{
-				switch ( value )
-				{
-					case EnumSerializationMethod.ByName:
-					case EnumSerializationMethod.ByUnderlyingValue:
-					{
-						break;
-					}
-					default:
-					{
-						throw new ArgumentOutOfRangeException( "value" );
-					}
-				}
-
-				Contract.EndContractBlock();
-
-				Volatile.Write( ref this._enumSerializationMethod, ( int )value );
-			}
+			get { return this._enumSerializationOptions.SerializationMethod; }
+			set { this._enumSerializationOptions.SerializationMethod = value; }
 		}
 
 #if !AOT
@@ -561,6 +555,7 @@ namespace MsgPack.Serialization
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 			this._serializerGeneratorOptions = new SerializerOptions();
 			this._dictionarySerializationOptions = new DictionarySerlaizationOptions();
+			this._enumSerializationOptions = new EnumSerializationOptions();
 		}
 
 		internal bool ContainsSerializer( Type rootType )

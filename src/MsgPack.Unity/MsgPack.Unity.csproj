@@ -425,8 +425,14 @@
     <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializer`1.cs">
       <Link>Serialization\EnumMessagePackSerializer`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumNameTransformers.cs">
+      <Link>Serialization\EnumNameTransformers.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumSerializationMethod.cs">
       <Link>Serialization\EnumSerializationMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumSerializationOptions.cs">
+      <Link>Serialization\EnumSerializationOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExtTypeCodeMapping.cs">
       <Link>Serialization\ExtTypeCodeMapping.cs</Link>
@@ -448,6 +454,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\INilImplicationHandlerParameter.cs">
       <Link>Serialization\INilImplicationHandlerParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\KeyNameTransformers.cs">
+      <Link>Serialization\KeyNameTransformers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\LazyDelegatingMessagePackSerializer`1.cs">
       <Link>Serialization\LazyDelegatingMessagePackSerializer`1.cs</Link>

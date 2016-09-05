@@ -25,8 +25,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchDebug>true</MtouchDebug>
     <AssemblyName>MsgPackUnitTestXamariniOS</AssemblyName>
-    <MtouchI18n>
-    </MtouchI18n>
+    <MtouchI18n></MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
@@ -52,8 +51,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
     <AssemblyName>MsgPackUnitTestXamariniOS</AssemblyName>
-    <IpaPackageName>
-    </IpaPackageName>
+    <IpaPackageName></IpaPackageName>
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchSdkVersion>9.3</MtouchSdkVersion>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -1705,9 +1703,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
       <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\DictionaryKeyTransformersTest.cs">
-      <Link>Serialization\DictionaryKeyTransformersTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs">
       <Link>Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs</Link>
     </Compile>
@@ -1725,6 +1720,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
       <Link>Serialization\IVerifiable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\KeyNameTransformersTest.cs">
+      <Link>Serialization\KeyNameTransformersTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs">
       <Link>Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs</Link>

@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -1195,5 +1196,139 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		// Issue #184
+		[Test]
+		public void TestEnumKeyTransformer_Default_AsIs()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			Assert.That( context.EnumSerializationOptions.NameTransformer, Is.Null, "default value" );
+			TestEnumKeyCore( context, "ToEven", isAsync: false );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestEnumKeyTransformer_Default_AsIs_Async()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			Assert.That( context.EnumSerializationOptions.NameTransformer, Is.Null, "default value" );
+			TestEnumKeyCore( context, "ToEven", isAsync: true );
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestEnumKeyTransformer_LowerCamel()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.NameTransformer = EnumNameTransformers.LowerCamel;
+			TestEnumKeyCore( context, "toEven", isAsync: false );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestEnumKeyTransformer_LowerCamel_Async()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.NameTransformer = EnumNameTransformers.LowerCamel;
+			TestEnumKeyCore( context, "toEven", isAsync: true );
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestEnumKeyTransformer_AllUpper()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.NameTransformer = EnumNameTransformers.UpperSnake;
+			TestEnumKeyCore( context, "TO_EVEN", isAsync: false );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestEnumKeyTransformer_AllUpper_Async()
+		{
+			var context = GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.NameTransformer = EnumNameTransformers.UpperSnake;
+			TestEnumKeyCore( context, "TO_EVEN", isAsync: true );
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestEnumKeyTransformer_Custom()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.NameTransformer = 
+				key => Regex.Replace( key, "[A-Z]", match => match.Index == 0 ? match.Value.ToLower() : "-" + match.Value.ToLower() );
+			TestEnumKeyCore( context, "to-even", isAsync: false );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestEnumKeyTransformer_Custom_Async()
+		{
+			var context = this.GetSerializationContext();
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.NameTransformer = 
+				key => Regex.Replace( key, "[A-Z]", match => match.Index == 0 ? match.Value.ToLower() : "-" + match.Value.ToLower() );
+			TestEnumKeyCore( context, "to-even", isAsync: true );
+		}
+
+#endif // FEATURE_TAP
+
+		private static void TestEnumKeyCore( SerializationContext context, string expected, bool isAsync )
+		{
+			var serializer = context.GetSerializer<MidpointRounding>();
+			var obj = MidpointRounding.ToEven;
+			using ( var buffer = new MemoryStream() )
+			{
+#if FEATURE_TAP
+				if ( isAsync )
+				{
+					serializer.PackAsync( buffer, obj, CancellationToken.None ).Wait();
+				}
+				else
+				{
+#endif // FEATURE_TAP
+					serializer.Pack( buffer, obj );
+#if FEATURE_TAP
+				}
+#endif // FEATURE_TAP
+
+				buffer.Position = 0;
+				var stringValue = MessagePackSerializer.UnpackMessagePackObject( buffer ).AsString();
+
+				Assert.That( stringValue, Is.EqualTo( expected ) );
+
+				buffer.Position = 0;
+
+				MidpointRounding deserialized;
+#if FEATURE_TAP
+				if ( isAsync )
+				{
+					deserialized = serializer.UnpackAsync( buffer, CancellationToken.None ).Result;
+				}
+				else
+				{
+#endif // FEATURE_TAP
+					deserialized = serializer.Unpack( buffer );
+#if FEATURE_TAP
+				}
+#endif // FEATURE_TAP
+
+				Assert.That( deserialized, Is.EqualTo( obj ) );
+			}
+		}
 	}
 }

@@ -37,7 +37,7 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
-	public class DictionaryKeyTransformersTest
+	public class KeyNameTransformersTest
 	{
 		[Test]
 		[TestCase( default ( string ), default ( string ) )]
@@ -51,7 +51,26 @@ namespace MsgPack.Serialization
 		[TestCase( "_A", "_A" )]
 		public void TestToLowerCamel( string input, string expected )
 		{
-			Assert.That( DictionaryKeyTransformers.ToLowerCamel( input ), Is.EqualTo( expected ) );
+			Assert.That( KeyNameTransformers.ToLowerCamel( input ), Is.EqualTo( expected ) );
+		}
+
+		[Test]
+		[TestCase( default( string ), default( string ) )]
+		[TestCase( "", "" )]
+		[TestCase( "a", "A" )]
+		[TestCase( "A", "A" )]
+		[TestCase( "AA", "AA" )]
+		[TestCase( "Aa", "AA" )]
+		[TestCase( "aa", "AA" )]
+		[TestCase( "aA", "A_A" )]
+		[TestCase( "AAa", "AAA" )]
+		[TestCase( "AaA", "AA_A" )]
+		[TestCase( "aaA", "AA_A" )]
+		[TestCase( "_a", "_A" )]
+		[TestCase( "_A", "_A" )]
+		public void TestToUpperSnake( string input, string expected )
+		{
+			Assert.That( KeyNameTransformers.ToUpperSnake( input ), Is.EqualTo( expected ) );
 		}
 	}
 }

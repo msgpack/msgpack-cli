@@ -23,17 +23,17 @@ using System;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Defines built-in, out-of-box handlers for <see cref="DictionarySerlaizationOptions.KeyTransformer"/>.
+	///		Defines built-in, out-of-box handlers for <see cref="EnumSerializationOptions.NameTransformer"/>.
 	/// </summary>
-	public static class DictionaryKeyTransformers
+	public static class EnumNameTransformers
 	{
 		private static readonly Func<string, string> _lowerCamel = KeyNameTransformers.ToLowerCamel;
 
 		/// <summary>
-		///		Gets the handler which transforms upper camel casing (PascalCasing) key to lower camel casing (camelCasing) key.
+		///		Gets the handler which transforms upper camel casing (PascalCasing) name to lower camel casing (camelCasing) name.
 		/// </summary>
 		/// <value>
-		///		The handler which transforms upper camel casing (PascalCasing) key to lower camel casing (camelCasing) key.
+		///		The handler which transforms upper camel casing (PascalCasing) name to lower camel casing (camelCasing) name.
 		/// </value>
 		/// <remarks>
 		///		This method uses <see cref="Char"/> based invariant culture to tranform casing, so non ASCII charactors may not be transformed correctly espetially surrogate pairs.
@@ -41,6 +41,22 @@ namespace MsgPack.Serialization
 		public static Func<string, string> LowerCamel
 		{
 			get { return _lowerCamel; }
+		}
+
+		private static readonly Func<string, string> _upperSnake = KeyNameTransformers.ToUpperSnake;
+
+		/// <summary>
+		///		Gets the handler which transforms upper camel casing (PascalCasing) name to upper snake casing (UPPER_SNAKE_CASING) name.
+		/// </summary>
+		/// <value>
+		///		The handler which transforms upper camel casing (PascalCasing) name to upper snake casing (UPPER_SNAKE_CASING) name.
+		/// </value>
+		/// <remarks>
+		///		This method uses <see cref="Char"/> based invariant culture to tranform casing, so non ASCII charactors may not be transformed correctly espetially surrogate pairs.
+		/// </remarks>
+		public static Func<string, string> UpperSnake
+		{
+			get { return _upperSnake; }
 		}
 	}
 }
