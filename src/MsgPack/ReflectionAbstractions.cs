@@ -254,7 +254,7 @@ namespace MsgPack
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
-#if NETFX_35 || NETFX_40 || SILVERLIGHT
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
 		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
 		{
 			return Delegate.CreateDelegate( delegateType, source );
@@ -265,7 +265,7 @@ namespace MsgPack
 			return Delegate.CreateDelegate( delegateType, target, source );
 		}
 
-#endif // NETFX_35 || NETFX_40 || SILVERLIGHT
+#endif // NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
 
 #if NETSTANDARD1_1 || NETSTANDARD1_3
 		public static MethodInfo GetMethod( this Type source, string name )

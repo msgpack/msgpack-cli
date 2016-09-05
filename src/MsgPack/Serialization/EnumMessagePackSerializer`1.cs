@@ -282,6 +282,8 @@ namespace MsgPack.Serialization
 	internal abstract class UnityEnumMessagePackSerializer : NonGenericMessagePackSerializer, ICustomizableEnumSerializer
 	{
 		private readonly Type _underlyingType;
+		private readonly Dictionary<object, string> _serializationMapping;
+		private readonly Dictionary<string, object> _deserializationMapping;
 		private EnumSerializationMethod _serializationMethod; // not readonly -- changed in cloned instance in GetCopyAs()
 
 		protected UnityEnumMessagePackSerializer( SerializationContext ownerContext, Type targetType, EnumSerializationMethod serializationMethod )
@@ -296,9 +298,9 @@ namespace MsgPack.Serialization
 
 			this._serializationMethod = serializationMethod;
 			this._underlyingType = Enum.GetUnderlyingType( targetType );
-			var members = Enum.GetValues( typeof( TEnum ) ) as TEnum[];
-			this._serializationMapping = new Dictionary<TEnum, string>( members.Length );
-			this._deserializationMapping = new Dictionary<string, TEnum>( members.Length );
+			var members = Enum.GetValues(targetType ) as object[];
+			this._serializationMapping = new Dictionary<object, string>( members.Length );
+			this._deserializationMapping = new Dictionary<string, object>( members.Length );
 			foreach ( var member in members )
 			{
 				var asString = ownerContext.EnumSerializationOptions.SafeNameTransformer( member.ToString() );
@@ -336,7 +338,7 @@ namespace MsgPack.Serialization
 			{
 				var asString = unpacker.LastReadData.AsString();
 
-				TEnum result;
+				object result;
 				if ( !this._deserializationMapping.TryGetValue( asString, out result ) )
 				{
 					// May be undefined value which should be numeric, or PacakCasing.

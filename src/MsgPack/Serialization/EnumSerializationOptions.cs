@@ -118,7 +118,7 @@ namespace MsgPack.Serialization
 			set
 			{
 #if NO_THREADING_VOLATILE
-				this._enumNameTransformer = value;
+				this._nameTransformer = value;
 #else
 				Volatile.Write( ref this._nameTransformer, value );
 #endif

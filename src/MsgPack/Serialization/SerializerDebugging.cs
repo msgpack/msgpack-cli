@@ -146,6 +146,7 @@ namespace MsgPack.Serialization
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
 		}
+#endif // !AOT && !SILVERLIGHT
 
 		/// <summary>
 		///		Traces the polymorphic schema event.
@@ -156,14 +157,17 @@ namespace MsgPack.Serialization
 
 		public static void TracePolimorphicSchemaEvent( string format, MemberInfo memberInfo, PolymorphismSchema schema )
 		{
+#if !AOT && !SILVERLIGHT
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.PolimorphicSchema, Tracer.EventId.PolimorphicSchema, format, memberInfo, schema == null ? "(null)" : schema.DebugString );
+#endif // !AOT && !SILVERLIGHT
 		}
 
+#if !AOT && !SILVERLIGHT
 		/// <summary>
 		///		Flushes the trace data.
 		/// </summary>
