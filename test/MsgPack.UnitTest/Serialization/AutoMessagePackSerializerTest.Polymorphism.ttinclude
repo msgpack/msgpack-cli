@@ -396,94 +396,93 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 		generatedSerializableTypeNames.Add( new TestTargetType( "DirectoryEntry", true ) );
 #>
 
-		public interface IFileSystemEntry { }
+	public interface IFileSystemEntry { }
 
-		public abstract class AbstractFileSystemEntry : IFileSystemEntry { }
+	public abstract class AbstractFileSystemEntry : IFileSystemEntry { }
 
-		public abstract class FileSystemEntry : AbstractFileSystemEntry, IComparable<FileSystemEntry>
+	public abstract class FileSystemEntry : AbstractFileSystemEntry, IComparable<FileSystemEntry>
+	{
+		public string Name { get; set; }
+
+		public override bool Equals( object obj )
 		{
-			public string Name { get; set; }
-
-			public override bool Equals( object obj )
+			var other = obj as FileSystemEntry;
+			if ( Object.ReferenceEquals( other, null ) )
 			{
-				var other = obj as FileSystemEntry;
-				if ( Object.ReferenceEquals( other, null ) )
-				{
-					return false;
-				}
-
-				return this.Name == other.Name;
+				return false;
 			}
 
-			public override int GetHashCode()
-			{
-				return ( this.Name ?? String.Empty ).GetHashCode();
-			}
-
-			int IComparable<FileSystemEntry>.CompareTo( FileSystemEntry other )
-			{
-				return String.Compare( this.Name, other.Name, StringComparison.Ordinal );
-			}
+			return this.Name == other.Name;
 		}
 
-		public class FileEntry : FileSystemEntry
+		public override int GetHashCode()
 		{
-			public long Size { get; set; }
-
-			public override bool Equals( object obj )
-			{
-				var other = obj as FileEntry;
-				if ( Object.ReferenceEquals( other, null ) )
-				{
-					return false;
-				}
-
-				return this.Name == other.Name && this.Size == other.Size;
-			}
-
-			public override int GetHashCode()
-			{
-				return ( this.Name ?? String.Empty ).GetHashCode() ^ this.Size.GetHashCode();
-			}
-
-			public override string ToString()
-			{
-				return "File(Name=" + this.Name + ", Size=" + this.Size + ")";
-			}
+			return ( this.Name ?? String.Empty ).GetHashCode();
 		}
 
-		public class DirectoryEntry : FileSystemEntry
+		int IComparable<FileSystemEntry>.CompareTo( FileSystemEntry other )
 		{
-			public int ChildCount { get; set; }
-
-			public override bool Equals( object obj )
-			{
-				var other = obj as DirectoryEntry;
-				if ( Object.ReferenceEquals( other, null ) )
-				{
-					return false;
-				}
-
-				return this.Name == other.Name && this.ChildCount == other.ChildCount;
-			}
-
-			public override int GetHashCode()
-			{
-				return ( this.Name ?? String.Empty ).GetHashCode() ^ this.ChildCount.GetHashCode();
-			}
-
-			public override string ToString()
-			{
-				return "Directory(Name=" + this.Name + ", ChildCount=" + this.ChildCount + ")";
-			}
+			return String.Compare( this.Name, other.Name, StringComparison.Ordinal );
 		}
+	}
+
+	public class FileEntry : FileSystemEntry
+	{
+		public long Size { get; set; }
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as FileEntry;
+			if ( Object.ReferenceEquals( other, null ) )
+			{
+				return false;
+			}
+
+			return this.Name == other.Name && this.Size == other.Size;
+		}
+
+		public override int GetHashCode()
+		{
+			return ( this.Name ?? String.Empty ).GetHashCode() ^ this.Size.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+			return "File(Name=" + this.Name + ", Size=" + this.Size + ")";
+		}
+	}
+
+	public class DirectoryEntry : FileSystemEntry
+	{
+		public int ChildCount { get; set; }
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as DirectoryEntry;
+			if ( Object.ReferenceEquals( other, null ) )
+			{
+				return false;
+			}
+
+			return this.Name == other.Name && this.ChildCount == other.ChildCount;
+		}
+
+		public override int GetHashCode()
+		{
+			return ( this.Name ?? String.Empty ).GetHashCode() ^ this.ChildCount.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+			return "Directory(Name=" + this.Name + ", ChildCount=" + this.ChildCount + ")";
+		}
+	}
+
 <#+
 	}
 
-	if ( generateTypes || generateMethods )
+	if ( generateMethods )
 	{
-		if ( generateMethods )
-		{
 #>
 		// Issue 137
 		[Test]
@@ -533,7 +532,12 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 
 #endif // FEATURE_TAP
 <#+
-		}
+	}
+
+GeneratePolymorohismExtensionTests( generateTypes, generateMethods );
+
+	if ( generateTypes || generateMethods )
+	{
 #>
 
 		#endregion -- Polymorphism --
@@ -553,8 +557,8 @@ private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member
 #>
 #if !UNITY
 
-		public class <#= typeName #>
-		{
+	public class <#= typeName #>
+	{
 <#+
 		GenerateMember( kind, member, attributeFactory, asObject );
 #>
@@ -562,7 +566,7 @@ private string GeneratePolymorphicTestType( string suffix, TypeKind kind, Member
 <#+
 		GenerateConstructor( typeName, kind, asObject, member );
 #>
-		}
+	}
 
 #endif // !UNITY
 <#+
@@ -579,7 +583,7 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, bool, IE
 	{
 		GenerateAttributes( member, attributeFactory, asObject );
 #>
-			public <#= ( kind & TypeKind.IsReadOnly ) == TypeKind.IsReadOnly ? "readonly" : String.Empty #> <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( kind )( member.Name ) #>;
+		public <#= ( kind & TypeKind.IsReadOnly ) == TypeKind.IsReadOnly ? "readonly" : String.Empty #> <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( kind )( member.Name ) #>;
 <#+
 	}
 	else
@@ -587,23 +591,23 @@ private void GenerateMember( TypeKind kind, Member member, Func<Member, bool, IE
 		var backingField = GetMemberNameGenerator( TypeKind.Property )( member.Name );
 
 #>
-			private <#= asObject ? "object" : member.Type #> <#=  backingField #>;
+		private <#= asObject ? "object" : member.Type #> <#=  backingField #>;
 
 <#+
 		GenerateAttributes( member, attributeFactory, asObject );
 #>
-			public <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( TypeKind.Field )( member.Name ) #>
-			{
-				get { return this.<#= backingField #>; }
+		public <#= asObject ? "object" : member.Type #> <#=  GetMemberNameGenerator( TypeKind.Field )( member.Name ) #>
+		{
+			get { return this.<#= backingField #>; }
 <#+
 		if ( ( kind & TypeKind.HasSetter ) == TypeKind.HasSetter )
 		{
 #>
-				<#= ( kind & TypeKind.IsPublicSetter ) == TypeKind.IsPublicSetter ? String.Empty : "private" #> set { this.<#= backingField #> = value; }
+			<#= ( kind & TypeKind.IsPublicSetter ) == TypeKind.IsPublicSetter ? String.Empty : "private" #> set { this.<#= backingField #> = value; }
 <#+
 		}
 #>
-			}
+		}
 <#+
 	}
 }
@@ -613,7 +617,7 @@ private void GenerateAttributes( Member member, Func<Member, bool, IEnumerable<s
 	foreach ( var attribute in attributeFactory( member, asObject ) )
 	{
 #>
-			<#= attribute #>
+		<#= attribute #>
 <#+
 	}
 }
@@ -622,44 +626,44 @@ private void GenerateConstructor( string typeName, TypeKind kind, bool asObject,
 {
 #>
 
-			<#= ( kind & TypeKind.HasConstructor ) == TypeKind.HasConstructor ? "public" : "private" #> <#= typeName #>( <#=  String.Join( ", ", members.Select( member => ( asObject ? "object" : member.Type ) + " " + member.Name ) ) #> ) 
-			{
+		<#= ( kind & TypeKind.HasConstructor ) == TypeKind.HasConstructor ? "public" : "private" #> <#= typeName #>( <#=  String.Join( ", ", members.Select( member => ( asObject ? "object" : member.Type ) + " " + member.Name ) ) #> ) 
+		{
 <#+
 	foreach ( var member in members )
 	{
 #>
-				this.<#=  GetMemberNameGenerator( kind )( member.Name ) #> = <#= member.Name #>;
+			this.<#=  GetMemberNameGenerator( kind )( member.Name ) #> = <#= member.Name #>;
 <#+
 	}
 #>
-			}
+		}
 <#+
 	if ( ( kind & TypeKind.HasConstructor ) == 0 )
 	{
 #>
 
-			public <#= typeName #>()
-			{
+		public <#= typeName #>()
+		{
 <#+
 	foreach ( var member in members )
 	{
 #>
-				this.<#=  GetMemberNameGenerator( kind )( member.Name ) #> = <#= member.EmptyValue #>;
+			this.<#=  GetMemberNameGenerator( kind )( member.Name ) #> = <#= member.EmptyValue #>;
 <#+
 	}
 #>
-			}
+		}
 
-			public static <#= typeName #> Initialize()
-			{
-				return new <#= typeName #>( <#= String.Join( ", ", members.Select( m => m.InitialValue ) ) #> );
-			}
+		public static <#= typeName #> Initialize()
+		{
+			return new <#= typeName #>( <#= String.Join( ", ", members.Select( m => m.InitialValue ) ) #> );
+		}
 <#+
 	}
 	else
 	{
 #>
-			public <#= typeName #>() {}
+		public <#= typeName #>() {}
 <#+
 	}
 }
@@ -823,8 +827,8 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 	if ( generateTypes )
 	{
 #>
-		public class <#= typeName #>
-		{
+	public class <#= typeName #>
+	{
 <#+
 		foreach ( var member in members )
 		{
@@ -838,11 +842,11 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			foreach ( var attribute in member.Attributes )
 			{
 #>
-			<#= attribute #>
+		<#= attribute #>
 <#+
 			}
 #>
-			public <#= member.Type #> <#= member.Name #> { get; set; }
+		public <#= member.Type #> <#= member.Name #> { get; set; }
 <#+
 			if ( member.IsTuple )
 			{
@@ -853,8 +857,8 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 		}
 #>
 
-			public <#= typeName #>() { }
-		}
+		public <#= typeName #>() { }
+	}
 <#+
 	}
 
@@ -1083,16 +1087,16 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 #>
 #if !NETFX_35 && !UNITY
 
-		public class TupleAbstractType
-		{
-			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
-			[MessagePackKnownTupleItemType( 2, "1", typeof( FileEntry ) )]
-			[MessagePackRuntimeTupleItemType( 3 )]
-			[MessagePackRuntimeTupleItemType( 4 )]
-			public Tuple<AbstractFileSystemEntry, IFileSystemEntry, AbstractFileSystemEntry, IFileSystemEntry> Value { get; set; }
+	public class TupleAbstractType
+	{
+		[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
+		[MessagePackKnownTupleItemType( 2, "1", typeof( FileEntry ) )]
+		[MessagePackRuntimeTupleItemType( 3 )]
+		[MessagePackRuntimeTupleItemType( 4 )]
+		public Tuple<AbstractFileSystemEntry, IFileSystemEntry, AbstractFileSystemEntry, IFileSystemEntry> Value { get; set; }
 
-			public TupleAbstractType() { }
-		}
+		public TupleAbstractType() { }
+	}
 
 #endif // !NETFX_35 && !UNITY
 <#+
@@ -1177,27 +1181,27 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 		{
 #>
 #if !NETFX_35 && !UNITY
-		public class <#= tupleItemClassName #>
-		{
+	public class <#= tupleItemClassName #>
+	{
 <#+
 	for ( var i = 0; i < testCase.Known; i++ )
 	{
 #>
-			[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
+		[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
 <#+
 	}
 
 	for ( var i = 0; i < testCase.Runtime; i++ )
 	{
 #>
-			[MessagePackRuntimeTupleItemType( 1 )]
+		[MessagePackRuntimeTupleItemType( 1 )]
 <#+
 	}
 #>
-			public Tuple<FileSystemEntry> Value  { get; set; }
+		public Tuple<FileSystemEntry> Value  { get; set; }
 
-			public <#= tupleItemClassName #>() { }
-		}
+		public <#= tupleItemClassName #>() { }
+	}
 #endif // !NETFX_35 && !UNITY
 <#+
 		}
@@ -1219,20 +1223,20 @@ private void GenerateAbstractTypeTestClass( string typeName, string attribute, s
 {
 #>
 
-		public class <#= typeName #>
-		{
+	public class <#= typeName #>
+	{
 <#+
 			if ( attribute != null )
 			{
 #>
-			<#= attribute #>
+		<#= attribute #>
 <#+
 			}
 #>
-			public <#= declarationType #> Value { get; set; }
+		public <#= declarationType #> Value { get; set; }
 
-			public <#= typeName #>() { }
-		}
+		public <#= typeName #>() { }
+	}
 <#+
 }
 
@@ -1304,27 +1308,27 @@ private void GenerateAttributeErrorTestClass( string typeName, int knownAttribut
 {
 #>
 
-		public class <#= typeName #>
-		{
+	public class <#= typeName #>
+	{
 <#+
 	for ( var i = 0; i < knownAttributeCount; i++ )
 	{
 #>
-			[MessagePackKnown<#= attributeQualifier #>Type( "1", typeof( <#= knownType #> ) )]
+		[MessagePackKnown<#= attributeQualifier #>Type( "1", typeof( <#= knownType #> ) )]
 <#+
 	}
 
 	for ( var i = 0; i < runtimeAttributeCount; i++ )
 	{
 #>
-			[MessagePackRuntime<#= attributeQualifier #>Type]
+		[MessagePackRuntime<#= attributeQualifier #>Type]
 <#+
 	}
 #>
-			public <#= memberType #> Value  { get; set; }
+		public <#= memberType #> Value  { get; set; }
 
-			public <#= typeName #>() { }
-		}
+		public <#= typeName #>() { }
+	}
 <#+
 }
 
@@ -1341,6 +1345,471 @@ private void GenerateAttributeErrorTestMethod(  string testCaseName, string type
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<#= "<" + typeName + ">" #>() );
 		}
 <#+
+}
+
+private void GeneratePolymorohismExtensionTests( bool generateTypes, bool generateMethods )
+{
+	bool[] Bools = new [] { true, false };
+	string[] PolymorphismKinds = new [] { "Known", "Runtime" };
+	string[] TypeKinds = new [] { String.Empty, "Collection", "Dictionary" };
+	string[] Results = new [] { null, "Known", "Runtime" };
+	var attributeFormats =
+		new Dictionary<string, string>
+		{
+			{ "Known", "[MessagePackKnownType( \"A\", typeof( {0}TypePolymorphic{1} ) )]" },
+			{ "Runtime", "[MessagePackRuntimeType( VerifierType = typeof( DefaultTypeVerifier ), VerifierMethodName = \"AllowOnly{0}TypePolymorphic{1}\" )]" },
+		};
+
+	var polymorphicOverrideTestCases =
+		TypeKinds.SelectMany( TypeKind =>
+			PolymorphismKinds.SelectMany( PolymorphismKind =>
+				Results.Select( Result =>
+					new
+					{
+						TypeKind,
+						PolymorphismKind,
+						InterfaceName = "I" + PolymorphismKind + "TypePolymorphic" + TypeKind,
+						MemberName = PolymorphismKind + "TypePolymorphic" + TypeKind + ( Result ?? "Vanilla" ),
+						Result,
+						Attribute = Result == null ? null : String.Format( CultureInfo.InvariantCulture, attributeFormats[ Result ], Result, TypeKind ),
+					}
+				)
+			)
+		).ToArray();
+	
+	var typeVerifierSpecs =
+		Bools.Select( IsPublicType =>
+			new
+			{
+				IsPublicType,
+				VerifierTypeName = ( IsPublicType ? "Public" : "NonPublic" ) + "TypeVerifier",
+				Methods =
+					Bools.SelectMany( IsStaticMethod =>
+						Bools.Select( IsPublicMethod =>
+							new
+							{
+								IsStaticMethod,
+								IsPublicMethod,
+								VerifierMethodName = ( IsPublicMethod ? "Public" : "Private" ) + ( IsStaticMethod ? "Static" : "Instance" ) + "AllowAll"
+							}
+						)
+					).ToArray()
+			}
+		).ToArray();
+
+	var defaultTypeVerifierSpecs =
+		PolymorphismKinds.SelectMany( polymorphismKind =>
+			TypeKinds.Select( typeKind =>
+				new
+				{
+					VerifierMethodName = "AllowOnly" +  polymorphismKind + "TypePolymorphic" + typeKind,
+					AllowedType = polymorphismKind + "TypePolymorphic" + typeKind
+				}
+			)
+		).ToArray();
+
+	if ( generateTypes )
+	{
+#>
+
+#region -- Polymorphic Attributes in Type and Member --
+
+	[MessagePackKnownType( "1", typeof( KnownTypePolymorphic ) )]
+	[MessagePackKnownType( "2", typeof( PolymorphicValueA ) )]
+	[MessagePackKnownType( "3", typeof( PolymorphicValueB ) )]
+	public interface IKnownTypePolymorphic : IPolymorphicValue { }
+
+	[MessagePackRuntimeType]
+	public interface IRuntimeTypePolymorphic : IPolymorphicValue { }
+
+	[MessagePackKnownType( "1", typeof( KnownTypePolymorphicCollection ) )]
+	[MessagePackKnownCollectionItemType( "1", typeof( PolymorphicValueA ) )]
+	[MessagePackKnownCollectionItemType( "2", typeof( PolymorphicValueB ) )]
+	public interface IKnownTypePolymorphicCollection : ICollection<IKnownTypePolymorphic> { }
+
+	public class KnownTypePolymorphicCollection : List<IKnownTypePolymorphic>, IKnownTypePolymorphicCollection { }
+
+	[MessagePackRuntimeType]
+	[MessagePackRuntimeCollectionItemType]
+	public interface IRuntimeTypePolymorphicCollection : ICollection<IRuntimeTypePolymorphic> { }
+
+	public class RuntimeTypePolymorphicCollection : List<IRuntimeTypePolymorphic>, IRuntimeTypePolymorphicCollection { }
+
+	[MessagePackKnownType( "1", typeof( KnownTypePolymorphicDictionary ) )]
+	[MessagePackKnownDictionaryKeyType( "1", typeof( PolymorphicValueA ) )]
+	[MessagePackKnownDictionaryKeyType( "2", typeof( PolymorphicValueB ) )]
+	[MessagePackKnownCollectionItemType( "1", typeof( PolymorphicValueA ) )]
+	[MessagePackKnownCollectionItemType( "2", typeof( PolymorphicValueB ) )]
+	public interface IKnownTypePolymorphicDictionary : IDictionary<IKnownTypePolymorphic, IKnownTypePolymorphic> { }
+
+	public class KnownTypePolymorphicDictionary : Dictionary<IKnownTypePolymorphic, IKnownTypePolymorphic> , IKnownTypePolymorphicDictionary { }
+
+	[MessagePackRuntimeType]
+	[MessagePackRuntimeDictionaryKeyType]
+	[MessagePackRuntimeCollectionItemType]
+	public interface IRuntimeTypePolymorphicDictionary : IDictionary<IRuntimeTypePolymorphic, IRuntimeTypePolymorphic> { }
+
+	public class RuntimeTypePolymorphicDictionary : Dictionary<IRuntimeTypePolymorphic, IRuntimeTypePolymorphic> , IRuntimeTypePolymorphicDictionary { }
+
+	[MessagePackRuntimeType( VerifierType = typeof( PublicTypeVerifier ) )]
+	public class RuntimeTypePolymorphicWithInvalidVerifierNoMethods : PolymorphicValueBase { }
+
+	[MessagePackRuntimeType( VerifierType = typeof( PublicTypeVerifier ), VerifierMethodName = "VoidReturn" )]
+	public class RuntimeTypePolymorphicWithInvalidVerifierVoidReturnMethod : PolymorphicValueBase { }
+
+	[MessagePackRuntimeType( VerifierType = typeof( PublicTypeVerifier ), VerifierMethodName = "NoParameters" )]
+	public class RuntimeTypePolymorphicWithInvalidVerifierNoParametersMethod : PolymorphicValueBase { }
+
+	[MessagePackRuntimeType( VerifierType = typeof( PublicTypeVerifier ), VerifierMethodName = "ExtraParameters" )]
+	public class RuntimeTypePolymorphicWithInvalidVerifierExtraParametersMethod : PolymorphicValueBase { }
+
+	public interface IPolymorphicValue
+	{
+		string Value { get; set; }
+	}
+
+	public abstract class PolymorphicValueBase : IPolymorphicValue
+	{
+		public string Value { get; set; }
+
+		protected PolymorphicValueBase() { }
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as PolymorphicValueBase;
+			if ( other == null )
+			{
+				return false;
+			}
+			
+			return this.Value == other.Value;
+		}
+
+		public override int GetHashCode()
+		{
+			return this.Value == null ? 0 : this.Value.GetHashCode();
+		}
+	}
+
+	public sealed class KnownTypePolymorphic : PolymorphicValueBase, IKnownTypePolymorphic { }
+
+	public sealed class RuntimeTypePolymorphic : PolymorphicValueBase, IRuntimeTypePolymorphic { }
+
+	public sealed class PolymorphicValueA : PolymorphicValueBase, IKnownTypePolymorphic, IRuntimeTypePolymorphic { }
+
+	public sealed class PolymorphicValueB : PolymorphicValueBase, IKnownTypePolymorphic, IRuntimeTypePolymorphic { }
+
+	[MessagePackRuntimeType( VerifierType = typeof( <#= typeVerifierSpecs[ 0 ].VerifierTypeName #> ), VerifierMethodName = "WithoutDangerous" )]
+	public interface IRuntimeTypePolymorphicWithVerification : IRuntimeTypePolymorphic { }
+
+	public sealed class DangerousClass : PolymorphicValueBase, IKnownTypePolymorphic, IRuntimeTypePolymorphicWithVerification
+	{
+		static DangerousClass()
+		{
+			Assert.Fail( "Dangerous call." );
+		}
+	}
+
+	public class PolymorphicHolder
+	{
+<#+
+		foreach( var testCase in polymorphicOverrideTestCases )
+		{
+			if( testCase.Attribute != null )
+			{
+#>
+		<#= testCase.Attribute #>
+<#+
+			}
+#>
+		public <#= testCase.InterfaceName #> <#= testCase.MemberName #>Field;
+
+<#+
+			if( testCase.Attribute != null )
+			{
+#>
+		<#= testCase.Attribute #>
+<#+
+			}
+#>
+		public <#= testCase.InterfaceName #> <#= testCase.MemberName #>Property { get; set; }
+
+<#+
+		} // foreach ( var testCase in ...
+
+		foreach ( var typeSpec in typeVerifierSpecs )
+		{
+			foreach ( var methodSpec in typeSpec.Methods )
+			{
+#>
+		[MessagePackRuntimeType( VerifierType = typeof( <#= typeSpec.VerifierTypeName #> ), VerifierMethodName = "<#= methodSpec.VerifierMethodName #>" )]
+		public IRuntimeTypePolymorphic For<#= typeSpec.VerifierTypeName #><#= methodSpec.VerifierMethodName #> { get; set; }
+
+<#+
+			}
+		}
+#>
+		public PolymorphicHolder() { }
+	}  // PolymorphicHolder
+<#+
+
+		// Verifier
+		foreach ( var typeSpec in typeVerifierSpecs )
+		{
+#>
+
+	<#= typeSpec.IsPublicType ? "public" : "internal" #> sealed class <#= typeSpec.VerifierTypeName #>
+	{
+		private static readonly Regex VerificationRegex =
+			new Regex( 	"^" + Regex.Escape( typeof( <#= typeSpec.VerifierTypeName #> ).Namespace ) + @"\.(Known|Runtime)Polymorphic(Collection|Dictionary)?$" );
+<#+
+			foreach ( var methodSpec in typeSpec.Methods )
+			{
+#>
+		<#= methodSpec.IsPublicMethod ? "public" : "private" #><#= methodSpec.IsStaticMethod ? " static" : String.Empty #> bool <#= methodSpec.VerifierMethodName #>( PolymorphicTypeVerificationContext context )
+		{
+			Assert.NotNull( context );
+			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
+			Assert.That( context.LoadingAssemblyFullName, Is.Not.Empty );
+			Assert.That( context.LoadingAssemblyName, Is.Not.Null );
+			Assert.That( context.LoadingAssemblyFullName, Is.EqualTo( context.LoadingAssemblyName.ToString() ) );
+
+			return true;
+		}
+
+<#+
+			} // foreach ( var methodSpec in ...
+#>
+		public static void VoidReturn( PolymorphicTypeVerificationContext context ) { }
+
+		public static bool NoParameters()
+		{
+			return false;
+		}
+
+		public static bool ExtraParameters( PolymorphicTypeVerificationContext context, object state )
+		{
+			return false;
+		}
+
+		public static bool WithoutDangerous( PolymorphicTypeVerificationContext context )
+		{
+			return VerificationRegex.IsMatch( context.LoadingTypeFullName );
+		}
+	} // <#= typeSpec.VerifierTypeName #>
+	
+<#+
+		} // foreach ( var typeSpec in ...
+#>
+	public static class DefaultTypeVerifier
+	{
+<#+
+			foreach( var spec in defaultTypeVerifierSpecs )
+			{
+#>
+		public static bool <#= spec.VerifierMethodName #>( PolymorphicTypeVerificationContext context )
+		{
+			return context.LoadingTypeFullName == typeof( <#= spec.AllowedType #> ).FullName;
+		}
+
+<#+
+			}
+#>
+	}
+
+<#+
+		// end Verifier
+#>
+
+#endregion -- Polymorphic Attributes in Type and Member --
+
+<#+
+	} // if generateTypes
+
+	if ( generateMethods )
+	{
+#>
+
+#region -- Polymorphic Attributes in Type and Member --
+
+		private static void SetUpDefaultCollectionsForPolymorphism( SerializationContext context )
+		{
+			context.DefaultCollectionTypes.Register( typeof( IKnownTypePolymorphicCollection ), typeof( KnownTypePolymorphicCollection ) );
+			context.DefaultCollectionTypes.Register( typeof( IRuntimeTypePolymorphicCollection ), typeof( RuntimeTypePolymorphicCollection ) );
+			context.DefaultCollectionTypes.Register( typeof( IKnownTypePolymorphicDictionary ), typeof( KnownTypePolymorphicDictionary ) );
+			context.DefaultCollectionTypes.Register( typeof( IRuntimeTypePolymorphicDictionary ), typeof( RuntimeTypePolymorphicDictionary ) );
+		}
+
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestPolymorphismAttributesInType()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			context.GetSerializer<IKnownTypePolymorphic>();
+			context.GetSerializer<IRuntimeTypePolymorphic>();
+			context.GetSerializer<IKnownTypePolymorphicCollection>();
+			context.GetSerializer<IRuntimeTypePolymorphicCollection>();
+			context.GetSerializer<IKnownTypePolymorphicDictionary>();
+			context.GetSerializer<IRuntimeTypePolymorphicDictionary>();
+		}
+<#+
+		foreach ( var testCase in polymorphicOverrideTestCases )
+		{
+			foreach ( var suffix in new [] { "Field", "Property" } )
+			{
+				var failsOnPack = testCase.PolymorphismKind == "Runtime" && testCase.Result == "Known";
+#>
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void Test<#= testCase.PolymorphismKind #>Type<#= testCase.TypeKind #>_AttributeIs<#= testCase.Result ?? "Nothing" #>_<#= suffix #>_<#= testCase.Result ?? testCase.PolymorphismKind #><#= failsOnPack ? "_Fail" : String.Empty #>()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			context.SerializationMethod = SerializationMethod.Map;
+			SetUpDefaultCollectionsForPolymorphism( context );
+
+			var target = new PolymorphicHolder();
+			target.<#= testCase.MemberName #><#= suffix #> = new <#= testCase.PolymorphismKind #>TypePolymorphic<#= testCase.TypeKind #>();
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+<#+
+				if ( failsOnPack )
+				{
+#>
+				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+<#+
+				}
+				else
+				{
+#>
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var serializedObject = Unpacking.UnpackObject( buffer );
+				Assert.That( serializedObject.IsDictionary, Is.True, serializedObject.ToString() );
+				var serializedMember = serializedObject.AsDictionary()[ "<#= testCase.MemberName #><#= suffix #>" ];
+				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
+				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
+				var typeHeader = serializedMember.AsList()[ 0 ];
+<#+
+					if ( ( testCase.Result ?? testCase.PolymorphismKind ) == "Known" )
+					{
+#>
+				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+<#+
+						if ( testCase.Result == testCase.PolymorphismKind )
+						{
+#>
+				// Verify override in member value.
+				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
+<#+
+						}
+					}
+					else
+					{
+						// There are no way to verify override...
+#>
+				Assert.That( typeHeader.IsArray, typeHeader.ToString() );
+				Assert.That( typeHeader.AsList().Count, Is.EqualTo( 6 ), typeHeader.ToString() ); // runtime type header
+<#+
+					} // if ( ( testCase.Result ?? testCase.PolymorphismKind ) == "Known" )
+				} // if ( failsOnPack )
+#>
+			}
+		}
+
+<#+
+			} // foreach ( var suffix in new [] { "Field", "Property" } )
+		} // foreach( var testCase in polymorphicOverrideTestCases )
+		
+#>
+
+#endregion -- Polymorphic Attributes in Type and Member --
+
+#region -- TypeVerifier cases --
+
+<#+
+
+		foreach ( var typeSpec in typeVerifierSpecs )
+		{
+			foreach ( var methodSpec in typeSpec.Methods )
+			{
+#>
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierSelection_<#= typeSpec.IsPublicType ? "Public" : "NonPublic" #>VerifierType_<#= methodSpec.IsPublicMethod ? "Public" : "NonPublic" #><#= methodSpec.IsStaticMethod ? "Static" : "Instance" #>Method_OK()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			SetUpDefaultCollectionsForPolymorphism( context );
+			var target = new PolymorphicHolder { For<#= typeSpec.VerifierTypeName #><#= methodSpec.VerifierMethodName #> = new PolymorphicValueA { Value = "Foo" } };
+			var serializer = context.GetSerializer<PolymorphicHolder>();
+			
+			using ( var buffer = new MemoryStream() )
+			{
+				serializer.Pack( buffer, target );
+				buffer.Position = 0;
+				var deserialized = serializer.Unpack( buffer );
+				Assert.That( deserialized.For<#= typeSpec.VerifierTypeName #><#= methodSpec.VerifierMethodName #>, Is.Not.Null );
+				Assert.That( deserialized.For<#= typeSpec.VerifierTypeName #><#= methodSpec.VerifierMethodName #>.Value, Is.EqualTo( "Foo" ) );
+			}
+		}
+
+<#+
+			} // foreach ( var methodSpec in typeSpec.Methods )
+		} // foreach ( var typeSpec in typeVerifierSpecs )
+
+		foreach ( var reason in
+			new []
+			{
+				"NoMethods",
+				"VoidReturnMethod",
+				"NoParametersMethod",
+				"ExtraParametersMethod",
+			}
+		)
+		{
+			var typeName = "RuntimeTypePolymorphicWithInvalidVerifier" + reason;
+#>
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestSpecifiedTypeVerifierIsNotFound_Because<#= reason #>_Fail()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var target = new <#= typeName #> { Value = "Foo" };
+			
+			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<<#= typeName #>>() );
+			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+		}
+
+<#+
+		} // foreach ( var typeName in ...
+
+#>
+		[Test]
+		[Category( "PolymorphicSerialization" )]
+		public void TestTypeVerifierDoesNotLoadTypeItself()
+		{
+			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var serializer = context.GetSerializer<IRuntimeTypePolymorphicWithVerification>();
+			
+			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( buffer ) )
+			{
+				Polymorphic.TypeInfoEncoder.Encode( packer, typeof( DangerousClass ) );
+				packer.PackArrayHeader( 1 );
+				packer.PackString( "Foo" ); // Value
+				buffer.Position = 0;
+				var ex = Assert.Catch<SerializationException>( () => serializer.Unpack( buffer ) );
+				Assert.That( ex.Message, Does.StartWith( "Type verifier rejects type " ) );
+			}
+		}
+
+#endregion -- TypeVerifier cases --
+
+<#+
+	} // if generateMethods
 }
 
 // Helper Methods

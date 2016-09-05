@@ -530,6 +530,9 @@
     <Compile Include="..\MsgPack\Serialization\PackHelpers.cs">
       <Link>Serialization\PackHelpers.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphicTypeVerificationContext.cs">
+      <Link>Serialization\PolymorphicTypeVerificationContext.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicDeserializer.cs">
       <Link>Serialization\Polymorphic\IPolymorphicDeserializer.cs</Link>
     </Compile>
@@ -541,6 +544,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\PolymorphicSerializerProvider`1.cs">
       <Link>Serialization\Polymorphic\PolymorphicSerializerProvider`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\RuntimeTypeVerifier.cs">
+      <Link>Serialization\Polymorphic\RuntimeTypeVerifier.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeEmbedingPolymorphicMessagePackSerializer`1.cs">
       <Link>Serialization\Polymorphic\TypeEmbedingPolymorphicMessagePackSerializer`1.cs</Link>

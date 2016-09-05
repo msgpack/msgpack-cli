@@ -48,6 +48,7 @@ foreach( var item in
 				},
 			Target = "Member",
 			OmitConstructor = false,
+			CanQualifyType = true,
 		},
 		new 
 		{ 
@@ -60,6 +61,7 @@ foreach( var item in
 				},
 			Target = "CollectionItem",
 			OmitConstructor = false,
+			CanQualifyType = true,
 		},
 		new 
 		{ 
@@ -72,6 +74,7 @@ foreach( var item in
 				},
 			Target = "DictionaryKey",
 			OmitConstructor = false,
+			CanQualifyType = true,
 		},
 		new 
 		{ 
@@ -84,6 +87,7 @@ foreach( var item in
 				},
 			Target = "TupleItem",
 			OmitConstructor = true,
+			CanQualifyType = false,
 		},
 	}
  )
@@ -110,7 +114,20 @@ foreach( var item in
 	///			You must use one-to-one relationship between type-code and the type.
 	///		</note>
 	/// </remarks>
+<#
+	if ( item.CanQualifyType )
+	{
+#>
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
+<#
+	}
+	else
+	{
+#>
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true )]
+<#
+	}
+#>
 	public sealed <#= item.OmitConstructor ? "partial " : String.Empty #>class <#= typeName #> : Attribute, IPolymorphicKnownTypeAttribute
 	{
 		PolymorphismTarget IPolymorphicHelperAttribute.Target

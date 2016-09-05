@@ -24,7 +24,7 @@
 
 #if DEBUG
 #define ASSERT
-#endif // DEBUG && !UNITY && !UNITY
+#endif // DEBUG
 
 #if DEBUG && !NETFX_CORE
 #define TRACING

@@ -131,13 +131,13 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Traces the specific event.
+		///		Traces the emitting event.
 		/// </summary>
 		/// <param name="format">The format string.</param>
 		/// <param name="args">The args for formatting.</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "format", Justification = "Used in other platforms" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "args", Justification = "Used in other platforms" )]
-		public static void TraceEvent( string format, params object[] args )
+		public static void TraceEmitEvent( string format, params object[] args )
 		{
 			if ( !_traceEnabled )
 			{
@@ -145,6 +145,23 @@ namespace MsgPack.Serialization
 			}
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
+		}
+
+		/// <summary>
+		///		Traces the polymorphic schema event.
+		/// </summary>
+		/// <param name="format">The format string.</param>
+		/// <param name="memberInfo">The target of schema.</param>
+		/// <param name="schema">The schema.</param>
+
+		public static void TracePolimorphicSchemaEvent( string format, MemberInfo memberInfo, PolymorphismSchema schema )
+		{
+			if ( !_traceEnabled )
+			{
+				return;
+			}
+
+			Tracer.Emit.TraceEvent( Tracer.EventType.PolimorphicSchema, Tracer.EventId.PolimorphicSchema, format, memberInfo, schema == null ? "(null)" : schema.DebugString );
 		}
 
 		/// <summary>

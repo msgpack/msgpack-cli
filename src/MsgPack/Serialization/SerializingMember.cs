@@ -120,5 +120,15 @@ namespace MsgPack.Serialization
 
 			return DateTimeMemberConversionMethod.Default;
 		}
+
+		public override string ToString()
+		{
+			if ( this.MemberName == null )
+			{
+				return String.Empty;
+			}
+
+			return String.Format( "{{\"Name\": \"{0}\", \"Id\": {1}, \"Member\": \"{2}\", \"NilImplication\": \"{3}\" }}", this.MemberName, this.Contract.Id, this.MemberName, this.Contract.NilImplication );
+		}
 	}
 }

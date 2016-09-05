@@ -1,7 +1,7 @@
 ﻿#region -- License Terms --
 //  MessagePack for CLI
 // 
-//  Copyright (C) 2015-2015 FUJIWARA, Yusuke
+//  Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //     Licensed under the Apache License, Version 2.0 (the "License");
 //     you may not use this file except in compliance with the License.
@@ -23,9 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-#if !UNITY || MSGPACK_UNITY_FULL
-using System.ComponentModel;
-#endif // !UNITY || MSGPACK_UNITY_FULL
 using System.Linq;
 
 namespace MsgPack.Serialization
@@ -55,12 +52,15 @@ namespace MsgPack.Serialization
 		private PolymorphismSchema(
 			Type targetType,
 			PolymorphismType polymorphismType,
+			Func<PolymorphicTypeVerificationContext, bool> typeVerifier,
 			PolymorphismSchemaChildrenType childrenType,
-			params PolymorphismSchema[] childItemSchemaList )
+			params PolymorphismSchema[] childItemSchemaList
+		)
 			: this(
 				targetType,
 				polymorphismType,
 				new ReadOnlyDictionary<string, Type>( EmptyMap ),
+				typeVerifier,
 				childrenType,
 				new ReadOnlyCollection<PolymorphismSchema>(
 					( childItemSchemaList ?? EmptyChildren ).Select( x => x ?? Default ).ToArray()
@@ -71,12 +71,15 @@ namespace MsgPack.Serialization
 			Type targetType,
 			PolymorphismType polymorphismType,
 			IDictionary<string, Type> codeTypeMapping,
+			Func<PolymorphicTypeVerificationContext, bool> typeVerifier,
 			PolymorphismSchemaChildrenType childrenType,
-			params PolymorphismSchema[] childItemSchemaList )
+			params PolymorphismSchema[] childItemSchemaList
+		)
 			: this(
 				targetType,
 				polymorphismType,
 				new ReadOnlyDictionary<string, Type>( codeTypeMapping ),
+				typeVerifier,
 				childrenType,
 				new ReadOnlyCollection<PolymorphismSchema>(
 					( childItemSchemaList ?? EmptyChildren ).Select( x => x ?? Default ).ToArray()
@@ -87,8 +90,10 @@ namespace MsgPack.Serialization
 			Type targetType,
 			PolymorphismType polymorphismType,
 			ReadOnlyDictionary<string, Type> codeTypeMapping,
+			Func<PolymorphicTypeVerificationContext, bool> typeVerifier,
 			PolymorphismSchemaChildrenType childrenType,
-			ReadOnlyCollection<PolymorphismSchema> childItemSchemaList )
+			ReadOnlyCollection<PolymorphismSchema> childItemSchemaList
+		)
 		{
 			if ( targetType == null )
 			{
@@ -100,6 +105,7 @@ namespace MsgPack.Serialization
 			this._codeTypeMapping = codeTypeMapping;
 			this.ChildrenType = childrenType;
 			this._children = childItemSchemaList;
+			this.TypeVerifier = typeVerifier ?? DefaultTypeVerfiier;
 		}
 
 		// Plane
@@ -110,12 +116,21 @@ namespace MsgPack.Serialization
 		/// <param name="targetType">The type of the serialization target.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses type embedding based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicObject( Type targetType )
 		{
-			return new PolymorphismSchema( targetType, PolymorphismType.RuntimeType, PolymorphismSchemaChildrenType.None );
+			return new PolymorphismSchema( targetType, PolymorphismType.RuntimeType, DefaultTypeVerfiier, PolymorphismSchemaChildrenType.None );
+		}
+
+		/// <summary>
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses type embedding based polymorphism.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="typeVerifier">The delegate which verifies loading type in runtime type polymorphism.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses type embedding based polymorphism.</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
+		public static PolymorphismSchema ForPolymorphicObject( Type targetType, Func<PolymorphicTypeVerificationContext, bool> typeVerifier )
+		{
+			return new PolymorphismSchema( targetType, PolymorphismType.RuntimeType, typeVerifier, PolymorphismSchemaChildrenType.None );
 		}
 
 		/// <summary>
@@ -125,9 +140,6 @@ namespace MsgPack.Serialization
 		/// <param name="codeTypeMapping">The code-type mapping which maps between ext-type codes and .NET <see cref="Type"/>s.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for non-collection object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicObject( Type targetType, IDictionary<string, Type> codeTypeMapping )
 		{
 			return
@@ -135,6 +147,7 @@ namespace MsgPack.Serialization
 					targetType,
 					PolymorphismType.KnownTypes,
 					codeTypeMapping,
+					DefaultTypeVerfiier,
 					PolymorphismSchemaChildrenType.None
 				);
 		}
@@ -148,15 +161,13 @@ namespace MsgPack.Serialization
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses declared type or context specified concrete type.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForContextSpecifiedCollection( Type targetType, PolymorphismSchema itemSchema )
 		{
 			return
 				new PolymorphismSchema(
 					targetType,
 					PolymorphismType.None,
+					DefaultTypeVerfiier,
 					PolymorphismSchemaChildrenType.CollectionItems,
 					itemSchema
 				);
@@ -169,15 +180,33 @@ namespace MsgPack.Serialization
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses type embedding based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicCollection( Type targetType, PolymorphismSchema itemSchema )
 		{
 			return
 				new PolymorphismSchema(
 					targetType,
 					PolymorphismType.RuntimeType,
+					DefaultTypeVerfiier,
+					PolymorphismSchemaChildrenType.CollectionItems,
+					itemSchema
+				);
+		}
+
+		/// <summary>
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses type embedding based polymorphism.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
+		/// <param name="typeVerifier">The delegate which verifies loading type in runtime type polymorphism.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses type embedding based polymorphism.</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
+		public static PolymorphismSchema ForPolymorphicCollection( Type targetType, PolymorphismSchema itemSchema, Func<PolymorphicTypeVerificationContext, bool> typeVerifier )
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.RuntimeType,
+					typeVerifier,
 					PolymorphismSchemaChildrenType.CollectionItems,
 					itemSchema
 				);
@@ -191,13 +220,10 @@ namespace MsgPack.Serialization
 		/// <param name="itemSchema">The schema for collection items of the serialization target collection.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for collection object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicCollection(
 			Type targetType,
 			IDictionary<string, Type> codeTypeMapping,
-			PolymorphismSchema itemSchema 
+			PolymorphismSchema itemSchema
 		)
 		{
 			return
@@ -205,6 +231,7 @@ namespace MsgPack.Serialization
 					targetType,
 					PolymorphismType.KnownTypes,
 					codeTypeMapping,
+					DefaultTypeVerfiier,
 					PolymorphismSchemaChildrenType.CollectionItems,
 					itemSchema
 				);
@@ -220,18 +247,17 @@ namespace MsgPack.Serialization
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses declared type or context specified concrete type.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForContextSpecifiedDictionary(
 			Type targetType,
 			PolymorphismSchema keySchema,
-			PolymorphismSchema valueSchema )
+			PolymorphismSchema valueSchema
+		)
 		{
 			return
 				new PolymorphismSchema(
 					targetType,
 					PolymorphismType.None,
+					DefaultTypeVerfiier,
 					PolymorphismSchemaChildrenType.DictionaryKeyValues,
 					keySchema,
 					valueSchema
@@ -246,9 +272,6 @@ namespace MsgPack.Serialization
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses type embedding based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicDictionary(
 			Type targetType,
 			PolymorphismSchema keySchema,
@@ -259,6 +282,34 @@ namespace MsgPack.Serialization
 				new PolymorphismSchema(
 					targetType,
 					PolymorphismType.RuntimeType,
+					DefaultTypeVerfiier,
+					PolymorphismSchemaChildrenType.DictionaryKeyValues,
+					keySchema,
+					valueSchema
+				);
+		}
+
+		/// <summary>
+		///		Creates a new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses type embedding based polymorphism.
+		/// </summary>
+		/// <param name="targetType">The type of the serialization target.</param>
+		/// <param name="keySchema">The schema for dictionary keys of the serialization target dictionary.</param>
+		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
+		/// <param name="typeVerifier">The delegate which verifies loading type in runtime type polymorphism.</param>
+		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses type embedding based polymorphism.</returns>
+		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
+		public static PolymorphismSchema ForPolymorphicDictionary(
+			Type targetType,
+			PolymorphismSchema keySchema,
+			PolymorphismSchema valueSchema,
+			Func<PolymorphicTypeVerificationContext, bool> typeVerifier
+		)
+		{
+			return
+				new PolymorphismSchema(
+					targetType,
+					PolymorphismType.RuntimeType,
+					typeVerifier,
 					PolymorphismSchemaChildrenType.DictionaryKeyValues,
 					keySchema,
 					valueSchema
@@ -274,14 +325,11 @@ namespace MsgPack.Serialization
 		/// <param name="valueSchema">The schema for dictionary values of the serialization target dictionary.</param>
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for dictionary object which uses ext-type code mapping based polymorphism.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
-#if !UNITY || MSGPACK_UNITY_FULL
-		[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 		public static PolymorphismSchema ForPolymorphicDictionary(
 			Type targetType,
 			IDictionary<string, Type> codeTypeMapping,
 			PolymorphismSchema keySchema,
-			PolymorphismSchema valueSchema 
+			PolymorphismSchema valueSchema
 		)
 		{
 			return
@@ -289,6 +337,7 @@ namespace MsgPack.Serialization
 					targetType,
 					PolymorphismType.KnownTypes,
 					codeTypeMapping,
+					DefaultTypeVerfiier,
 					PolymorphismSchemaChildrenType.DictionaryKeyValues,
 					keySchema,
 					valueSchema
@@ -306,7 +355,6 @@ namespace MsgPack.Serialization
 		/// <returns>A new instance of the <see cref="PolymorphismSchema"/> class for <see cref="Tuple"/> object.</returns>
 		/// <exception cref="System.ArgumentNullException"><paramref name="targetType"/> is <c>null</c>.</exception>
 		/// <exception cref="System.ArgumentException">A count of <paramref name="itemSchemaList"/> does not match for an arity of the tuple type specified as <paramref name="targetType"/>.</exception>
-		[EditorBrowsable( EditorBrowsableState.Never )]
 		public static PolymorphismSchema ForPolymorphicTuple( Type targetType, PolymorphismSchema[] itemSchemaList )
 		{
 			VerifyArity( targetType, itemSchemaList );
@@ -314,6 +362,7 @@ namespace MsgPack.Serialization
 				new PolymorphismSchema(
 					targetType,
 					PolymorphismType.None,
+					DefaultTypeVerfiier,
 					PolymorphismSchemaChildrenType.TupleItems,
 					itemSchemaList
 				);
@@ -341,7 +390,7 @@ namespace MsgPack.Serialization
 				return this;
 			}
 
-			return new PolymorphismSchema( this.TargetType, PolymorphismType.None, this._codeTypeMapping, this.ChildrenType, this._children );
+			return new PolymorphismSchema( this.TargetType, PolymorphismType.None, this._codeTypeMapping, this.TypeVerifier, this.ChildrenType, this._children );
 		}
 	}
 }

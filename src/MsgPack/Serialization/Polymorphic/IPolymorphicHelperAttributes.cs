@@ -44,7 +44,8 @@ namespace MsgPack.Serialization.Polymorphic
 	/// </summary>
 	internal interface IPolymorphicRuntimeTypeAttribute : IPolymorphicHelperAttribute
 	{
-		// nothing
+		Type VerifierType { get; }
+		string VerifierMethodName { get; }
 	}
 
 	/// <summary>

@@ -214,7 +214,7 @@ namespace MsgPack.Serialization
 #endif // DEBUG
 
 #if DEBUG && !AOT && !SILVERLIGHT
-			SerializerDebugging.TraceEvent(
+			SerializerDebugging.TraceEmitEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
 				context.GetHashCode(),

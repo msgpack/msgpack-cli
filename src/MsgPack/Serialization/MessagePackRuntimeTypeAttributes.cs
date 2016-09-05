@@ -49,12 +49,24 @@ namespace MsgPack.Serialization
 	///			It mitigate chance of potential exploits.
 	///		</note>
 	/// </remarks>
-	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property )]
 	public sealed class MessagePackRuntimeTypeAttribute : Attribute, IPolymorphicRuntimeTypeAttribute
 	{
 		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.Member; }
+		}
+
+		public Type VerifierType
+		{
+			get;
+			set;
+		}
+
+		public string VerifierMethodName
+		{
+			get;
+			set;
 		}
 
 		/// <summary>
@@ -88,12 +100,24 @@ namespace MsgPack.Serialization
 	///			It mitigate chance of potential exploits.
 	///		</note>
 	/// </remarks>
-	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property )]
 	public sealed class MessagePackRuntimeCollectionItemTypeAttribute : Attribute, IPolymorphicRuntimeTypeAttribute
 	{
 		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.CollectionItem; }
+		}
+
+		public Type VerifierType
+		{
+			get;
+			set;
+		}
+
+		public string VerifierMethodName
+		{
+			get;
+			set;
 		}
 
 		/// <summary>
@@ -127,12 +151,24 @@ namespace MsgPack.Serialization
 	///			It mitigate chance of potential exploits.
 	///		</note>
 	/// </remarks>
-	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
+	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property )]
 	public sealed class MessagePackRuntimeDictionaryKeyTypeAttribute : Attribute, IPolymorphicRuntimeTypeAttribute
 	{
 		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.DictionaryKey; }
+		}
+
+		public Type VerifierType
+		{
+			get;
+			set;
+		}
+
+		public string VerifierMethodName
+		{
+			get;
+			set;
 		}
 
 		/// <summary>
@@ -172,6 +208,18 @@ namespace MsgPack.Serialization
 		PolymorphismTarget IPolymorphicHelperAttribute.Target
 		{
 			get { return PolymorphismTarget.TupleItem; }
+		}
+
+		public Type VerifierType
+		{
+			get;
+			set;
+		}
+
+		public string VerifierMethodName
+		{
+			get;
+			set;
 		}
 
 	}

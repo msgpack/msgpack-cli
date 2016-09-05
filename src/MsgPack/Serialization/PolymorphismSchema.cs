@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,25 +25,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-#if !UNITY || MSGPACK_UNITY_FULL
-using System.ComponentModel;
-#endif // !UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
 using System.Linq;
 
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		<para>
-	///			<strong>This is intened to MsgPack for CLI internal use. Do not use this type from application directly.</strong>
-	///		</para>
-	///		<para>
-	///			A provider parameter to support polymorphism.
-	///		</para>
+	///		A provider parameter to support polymorphism.
 	/// </summary>
-#if !UNITY || MSGPACK_UNITY_FULL
-	[EditorBrowsable( EditorBrowsableState.Never )]
-#endif // !UNITY || MSGPACK_UNITY_FULL
 	[DebuggerDisplay("{DebugString}")]
 	public sealed partial class PolymorphismSchema
 	{
@@ -74,7 +63,10 @@ namespace MsgPack.Serialization
 		internal IDictionary<string, Type> CodeTypeMapping { get { return this._codeTypeMapping; } }
 
 		internal bool UseDefault { get { return this.PolymorphismType == PolymorphismType.None; } }
+
 		internal bool UseTypeEmbedding { get { return this.PolymorphismType == PolymorphismType.RuntimeType; } }
+
+		internal Func<PolymorphicTypeVerificationContext, bool> TypeVerifier { get; private set; }
 
 		internal PolymorphismSchemaChildrenType ChildrenType { get; private set; }
 
@@ -123,6 +115,25 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		private PolymorphismSchema TryGetItemSchema()
+		{
+			switch ( this.ChildrenType )
+			{
+				case PolymorphismSchemaChildrenType.CollectionItems:
+				{
+					return this._children.FirstOrDefault();
+				}
+				case PolymorphismSchemaChildrenType.DictionaryKeyValues:
+				{
+					return this._children.Skip( 1 ).FirstOrDefault();
+				}
+				default:
+				{
+					return null;
+				}
+			}
+		}
+
 		/// <summary>
 		///		Gets the schema for dictionary keys of the serialization target collection.
 		/// </summary>
@@ -150,6 +161,19 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+
+		private PolymorphismSchema TryGetKeySchema()
+		{
+			if ( this.ChildrenType == PolymorphismSchemaChildrenType.DictionaryKeyValues )
+			{
+				return this._children.FirstOrDefault();
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 #if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY || CORE_CLR
 		private sealed class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
 		{
