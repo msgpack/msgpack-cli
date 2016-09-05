@@ -15201,7 +15201,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 			}
 		}
 
@@ -15227,7 +15227,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 			}
 		}
 
@@ -15253,7 +15253,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 				// Verify override in member value.
 				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
 			}
@@ -15281,7 +15281,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 				// Verify override in member value.
 				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
 			}
@@ -15410,7 +15410,11 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+#else
+				Assert.That( ex.Message.Contains( "is not defined as known type" ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 
@@ -15429,7 +15433,11 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+#else
+				Assert.That( ex.Message.Contains( "is not defined as known type" ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 
@@ -15509,7 +15517,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 			}
 		}
 
@@ -15535,7 +15543,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 			}
 		}
 
@@ -15561,7 +15569,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 				// Verify override in member value.
 				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
 			}
@@ -15589,7 +15597,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 				// Verify override in member value.
 				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
 			}
@@ -15718,7 +15726,11 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+#else
+				Assert.That( ex.Message.Contains( "is not defined as known type" ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 
@@ -15737,7 +15749,11 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+#else
+				Assert.That( ex.Message.Contains( "is not defined as known type" ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 
@@ -15817,7 +15833,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 			}
 		}
 
@@ -15843,7 +15859,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 			}
 		}
 
@@ -15869,7 +15885,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 				// Verify override in member value.
 				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
 			}
@@ -15897,7 +15913,7 @@ namespace MsgPack.Serialization
 				Assert.That( serializedMember.IsArray, Is.True, serializedObject.ToString() );
 				Assert.That( serializedMember.AsList().Count, Is.EqualTo( 2 ), serializedMember.ToString() );
 				var typeHeader = serializedMember.AsList()[ 0 ];
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 				// Verify override in member value.
 				Assert.That( typeHeader.AsString(), Is.EqualTo( "A" ), typeHeader.ToString() );
 			}
@@ -16026,7 +16042,11 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+#else
+				Assert.That( ex.Message.Contains( "is not defined as known type" ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 
@@ -16045,7 +16065,11 @@ namespace MsgPack.Serialization
 			using ( var buffer = new MemoryStream() )
 			{
 				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+#else
+				Assert.That( ex.Message.Contains( "is not defined as known type" ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 
@@ -16268,7 +16292,11 @@ namespace MsgPack.Serialization
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierNoMethods { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierNoMethods>() );
+#if !UNITY && !XAMARIN
 			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+#else
+			Assert.That( ex.Message.StartsWith( "VerifierMethodName cannot be null " ) || ex.Message.StartsWith( "A public static or instance method " ), ex.Message );
+#endif // !UNITY && !XAMARIN
 		}
 
 		[Test]
@@ -16279,7 +16307,11 @@ namespace MsgPack.Serialization
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierVoidReturnMethod { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierVoidReturnMethod>() );
+#if !UNITY && !XAMARIN
 			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+#else
+			Assert.That( ex.Message.StartsWith( "VerifierMethodName cannot be null " ) || ex.Message.StartsWith( "A public static or instance method " ), ex.Message );
+#endif // !UNITY && !XAMARIN
 		}
 
 		[Test]
@@ -16290,7 +16322,11 @@ namespace MsgPack.Serialization
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierNoParametersMethod { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierNoParametersMethod>() );
+#if !UNITY && !XAMARIN
 			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+#else
+			Assert.That( ex.Message.StartsWith( "VerifierMethodName cannot be null " ) || ex.Message.StartsWith( "A public static or instance method " ), ex.Message );
+#endif // !UNITY && !XAMARIN
 		}
 
 		[Test]
@@ -16301,7 +16337,11 @@ namespace MsgPack.Serialization
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierExtraParametersMethod { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierExtraParametersMethod>() );
+#if !UNITY && !XAMARIN
 			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+#else
+			Assert.That( ex.Message.StartsWith( "VerifierMethodName cannot be null " ) || ex.Message.StartsWith( "A public static or instance method " ), ex.Message );
+#endif // !UNITY && !XAMARIN
 		}
 
 		[Test]
@@ -16319,7 +16359,11 @@ namespace MsgPack.Serialization
 				packer.PackString( "Foo" ); // Value
 				buffer.Position = 0;
 				var ex = Assert.Catch<SerializationException>( () => serializer.Unpack( buffer ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.StartWith( "Type verifier rejects type " ) );
+#else
+				Assert.That( ex.Message.StartsWith( "Type verifier rejects type " ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 

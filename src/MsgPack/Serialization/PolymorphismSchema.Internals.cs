@@ -243,7 +243,15 @@ namespace MsgPack.Serialization
 #endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 						Default
 					);
-				SerializerDebugging.TracePolimorphicSchemaEvent( "Returns root type schema for '{0}': {1}", type, schema );
+				SerializerDebugging.TracePolimorphicSchemaEvent(
+					"Returns root type schema for '{0}': {1}",
+#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+					type,
+#else
+					type.GetTypeInfo(),
+#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+					schema
+				);
 				return schema;
 			}
 

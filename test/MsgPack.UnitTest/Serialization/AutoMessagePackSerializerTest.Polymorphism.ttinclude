@@ -1679,7 +1679,11 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 				{
 #>
 				var ex = Assert.Catch<SerializationException>( () => serializer.Pack( buffer ,target ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.Contain( "is not defined as known type" ) );
+#else
+				Assert.That( ex.Message.Contains( "is not defined as known type" ), ex.Message );
+#endif // !UNITY && !XAMARIN
 <#+
 				}
 				else
@@ -1697,7 +1701,7 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 					if ( ( testCase.Result ?? testCase.PolymorphismKind ) == "Known" )
 					{
 #>
-				Assert.That( typeHeader.IsTypeOf<string>, Is.True, typeHeader.ToString() ); // known type header
+				Assert.That( typeHeader.IsTypeOf<string>().GetValueOrDefault(), Is.True, typeHeader.ToString() ); // known type header
 <#+
 						if ( testCase.Result == testCase.PolymorphismKind )
 						{
@@ -1780,7 +1784,11 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 			var target = new <#= typeName #> { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<<#= typeName #>>() );
+#if !UNITY && !XAMARIN
 			Assert.That( ex.Message, Does.StartWith( "VerifierMethodName cannot be null " ).Or.StartWith( "A public static or instance method " ) );
+#else
+			Assert.That( ex.Message.StartsWith( "VerifierMethodName cannot be null " ) || ex.Message.StartsWith( "A public static or instance method " ), ex.Message );
+#endif // !UNITY && !XAMARIN
 		}
 
 <#+
@@ -1802,7 +1810,11 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 				packer.PackString( "Foo" ); // Value
 				buffer.Position = 0;
 				var ex = Assert.Catch<SerializationException>( () => serializer.Unpack( buffer ) );
+#if !UNITY && !XAMARIN
 				Assert.That( ex.Message, Does.StartWith( "Type verifier rejects type " ) );
+#else
+				Assert.That( ex.Message.StartsWith( "Type verifier rejects type " ), ex.Message );
+#endif // !UNITY && !XAMARIN
 			}
 		}
 

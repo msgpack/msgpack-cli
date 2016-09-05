@@ -76,7 +76,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Conditional( "TRACE" )]
-		public void TraceEmitEvent( TraceEventType eventType, int id, string format, params object[] args )
+		public void TraceEvent( TraceEventType eventType, int id, string format, params object[] args )
 		{
 			Debug.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} {1}: {2} : {3}", this._name, eventType, id, String.Format( CultureInfo.InvariantCulture, format, args ) ) );
 		}
