@@ -205,7 +205,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				SerializationTarget targetInfo;
 				this.BuildSerializer( codeGenerationContext, concreteType, schema, out targetInfo );
-				constructor = this.CreateSerializerConstructor( codeGenerationContext, targetInfo, schema );
+				constructor =
+					this.CreateSerializerConstructor(
+						codeGenerationContext,
+						targetInfo,
+						schema,
+						targetInfo == null ? default( SerializerCapabilities? ) : targetInfo.GetCapabilitiesForObject()
+					);
 			}
 
 			if ( constructor != null )
@@ -237,10 +243,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="concreteType">The substitution type if <see cref="TargetType"/> is abstract type. <c>null</c> when <see cref="TargetType"/> is not abstract type.</param>
 		/// <param name="schema">The schema which contains schema for collection items, dictionary keys, or tuple items. This value may be <c>null</c>.</param>
 		/// <param name="targetInfo">The parsed serialization target information.</param>
-		/// <returns>
-		///		Newly created serializer object.
-		///		This value will not be <c>null</c>.
-		/// </returns>
 		protected void BuildSerializer( TContext context, Type concreteType, PolymorphismSchema schema, out SerializationTarget targetInfo )
 		{
 #if DEBUG
@@ -253,8 +255,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionKind.Array:
 				case CollectionKind.Map:
 				{
-					targetInfo = null;
-					this.BuildCollectionSerializer( context, concreteType, schema );
+					this.BuildCollectionSerializer( context, concreteType, schema, out targetInfo );
 					break;
 				}
 				case CollectionKind.NotCollection:
@@ -276,7 +277,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if DEBUG
 						Contract.Assert( schema == null || schema.UseDefault );
 #endif // DEBUG
-						this.BuildObjectSerializer( context, out targetInfo );
+						targetInfo = this.BuildObjectSerializer( context );
 					}
 					break;
 				}
@@ -293,6 +294,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <param name="codeGenerationContext">The code generation context.</param>
 		/// <param name="targetInfo">The parsed serialization target information.</param>
 		/// <param name="schema">The polymorphism schema of this.</param>
+		/// <param name="capabilities">The capabilities of the generating serializer.</param>
 		/// <returns>
 		///		<see cref="Func{T, TResult}"/> which refers newly created constructor.
 		///		This value will not be <c>null</c>.
@@ -300,7 +302,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected abstract Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructor(
 			TContext codeGenerationContext,
 			SerializationTarget targetInfo,
-			PolymorphismSchema schema
+			PolymorphismSchema schema,
+			SerializerCapabilities? capabilities
 		);
 
 		/// <summary>

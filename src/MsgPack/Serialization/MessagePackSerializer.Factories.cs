@@ -611,7 +611,9 @@ namespace MsgPack.Serialization
 					}
 #endif // !NETFX_35 && !UNITY
 
-					return new ReflectionObjectMessagePackSerializer<T>( context );
+					SerializationTarget.VerifyType( typeof( T ) );
+					var target = SerializationTarget.Prepare( context, typeof( T ) );
+					return new ReflectionObjectMessagePackSerializer<T>( context, target, target.GetCapabilitiesForObject() );
 				}
 			}
 		}

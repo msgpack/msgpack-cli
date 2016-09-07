@@ -342,6 +342,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		protected override CodeDomConstruct EmitThrowStatement( CodeDomContext context, CodeDomConstruct exception )
+		{
+			return CodeDomConstruct.Statement( new CodeThrowExceptionStatement( exception.AsExpression() ) );
+		}
+
 		protected override CodeDomConstruct EmitSequentialStatements( CodeDomContext context, TypeDefinition contextType, IEnumerable<CodeDomConstruct> statements )
 		{
 #if DEBUG
@@ -1145,26 +1152,35 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			asCodeDomContext.Reset( this.TargetType, this.BaseClass );
 
-			SerializationTarget targetInfo;
 			if ( !this.TargetType.GetIsEnum() )
 			{
+				SerializationTarget targetInfo;
 				this.BuildSerializer( asCodeDomContext, concreteType, itemSchema, out targetInfo );
+				this.Finish(
+					asCodeDomContext,
+					targetInfo,
+					false,
+					targetInfo == null
+						? default( SerializerCapabilities? )
+						: this.CollectionTraits.CollectionType == CollectionKind.NotCollection
+							? targetInfo.GetCapabilitiesForObject()
+							: targetInfo.GetCapabilitiesForCollection( this.CollectionTraits )
+				);
 			}
 			else
 			{
-				targetInfo = null;
 				this.BuildEnumSerializer( asCodeDomContext );
+				this.Finish( asCodeDomContext, null, true, ( SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) );
 			}
-
-			this.Finish( asCodeDomContext, targetInfo, this.TargetType.GetIsEnum() );
 		}
 
-		protected override Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructor( CodeDomContext codeGenerationContext, SerializationTarget targetInfo, PolymorphismSchema schema )
+		protected override Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructor( CodeDomContext codeGenerationContext, SerializationTarget targetInfo, PolymorphismSchema schema, SerializerCapabilities? capabilities )
 		{
-			this.Finish( codeGenerationContext, targetInfo, false );
+			this.Finish( codeGenerationContext, targetInfo, false, capabilities );
 			var targetType = PrepareSerializerConstructorCreation( codeGenerationContext );
 
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
+
 			return
 				Expression.Lambda<Func<SerializationContext, MessagePackSerializer>>(
 					Expression.New( targetType.GetConstructors().Single(), contextParameter ),
@@ -1174,7 +1190,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override Func<SerializationContext, MessagePackSerializer> CreateEnumSerializerConstructor( CodeDomContext codeGenerationContext )
 		{
-			this.Finish( codeGenerationContext, null, true );
+			this.Finish( codeGenerationContext, null, true, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom );
 			var targetType = PrepareSerializerConstructorCreation( codeGenerationContext );
 
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
@@ -1297,7 +1313,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
-		private void Finish( CodeDomContext context, SerializationTarget targetInfo, bool isEnum )
+		private void Finish( CodeDomContext context, SerializationTarget targetInfo, bool isEnum, SerializerCapabilities? capabilities )
 		{
 			// ctor
 			if ( isEnum )
@@ -1362,6 +1378,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 									MethodName.RestoreSchema
 								)
 							)
+						);
+					}
+
+					if ( capabilities.HasValue )
+					{
+						var capabilitiesExpression = BuildCapabilitiesExpression( null, capabilities.Value, SerializerCapabilities.PackTo );
+						capabilitiesExpression = BuildCapabilitiesExpression( capabilitiesExpression, capabilities.Value, SerializerCapabilities.UnpackFrom );
+						capabilitiesExpression = BuildCapabilitiesExpression( capabilitiesExpression, capabilities.Value, SerializerCapabilities.UnpackTo );
+
+						ctor.BaseConstructorArgs.Add(
+							capabilitiesExpression
+							?? new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( typeof( SerializerCapabilities ) ), "None" )
 						);
 					}
 
@@ -1506,7 +1534,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						);
 					} // foreach ( in context.GetCachedMethodBases() )
 
-					if ( targetInfo != null )
+					if ( targetInfo != null && this.CollectionTraits.CollectionType == CollectionKind.NotCollection )
 					{ 
 						// For object only.
 						if ( !typeof( IPackable ).IsAssignableFrom( this.TargetType )
@@ -1562,10 +1590,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						}
 
 						if (
-							!typeof( IUnpackable ).IsAssignableFrom( this.TargetType )
+							targetInfo.CanDeserialize
+							&& (
+								!typeof( IUnpackable ).IsAssignableFrom( this.TargetType )
 #if FEATURE_TAP
-							|| !typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType )
+								|| !typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType )
 #endif // FEATURE_TAP
+							)
 						)
 						{
 							if ( !typeof( IUnpackable ).IsAssignableFrom( this.TargetType ) )
@@ -1673,6 +1704,32 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 
 				context.DeclaringType.Members.Add( conditional );
+			}
+		}
+
+		private static CodeExpression BuildCapabilitiesExpression( CodeExpression expression, SerializerCapabilities capabilities, SerializerCapabilities value ) 
+		{
+			if ( ( capabilities & value ) != 0 )
+			{
+				var capabilityExpression =
+					new CodeFieldReferenceExpression( new CodeTypeReferenceExpression( typeof( SerializerCapabilities ) ), value.ToString() );
+				if ( expression == null )
+				{
+					return capabilityExpression;
+				}
+				else
+				{
+					return
+						new CodeBinaryOperatorExpression(
+							expression,
+							CodeBinaryOperatorType.BitwiseOr,
+							capabilityExpression
+						);
+				}
+			}
+			else
+			{
+				return expression;
 			}
 		}
 

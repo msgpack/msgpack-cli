@@ -418,6 +418,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitFieldOfExpression( TContext context, FieldInfo field );
 
+		/// <summary>
+		///		Emits the 'throw' statement.
+		/// </summary>
+		/// <param name="context">The generation context.</param>
+		/// <param name="exception">The expression to returns an exception.</param>
+		/// <returns>The generated construct.</returns>
+		protected abstract TConstruct EmitThrowStatement( TContext context, TConstruct exception );
+
 		#endregion -- Operations --
 
 		#region -- Aggregation --
@@ -1591,6 +1599,34 @@ namespace MsgPack.Serialization.AbstractSerializers
 					withBoxing
 					? this.EmitBoxExpression( context, valueType, value )
 					: value
+				);
+		}
+
+		private TConstruct EmitThrowCannotUnpackFrom( TContext context )
+		{
+			return
+				this.EmitThrowStatement(
+					context,
+					this.EmitInvokeMethodExpression(
+						context,
+						null,
+						SerializationExceptions.NewUnpackFromIsNotSupportedMethod,
+						this.EmitTypeOfExpression( context, this.TargetType )
+					)
+				);
+		}
+
+		private TConstruct EmitThrowCannotCreateInstance( TContext context )
+		{
+			return
+				this.EmitThrowStatement(
+					context,
+					this.EmitInvokeMethodExpression(
+						context,
+						null,
+						SerializationExceptions.NewCreateInstanceIsNotSupportedMethod,
+						this.EmitTypeOfExpression( context, this.TargetType )
+					)
 				);
 		}
 

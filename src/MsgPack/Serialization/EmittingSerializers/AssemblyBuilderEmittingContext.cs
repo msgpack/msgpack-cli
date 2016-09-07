@@ -173,7 +173,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 					body.Evaluate( this.IL );
 				}
 
-				this.IL.EmitRet();
+				if ( body == null || !body.IsTerminating )
+				{
+					this.IL.EmitRet();
+				}
 			}
 			finally
 			{

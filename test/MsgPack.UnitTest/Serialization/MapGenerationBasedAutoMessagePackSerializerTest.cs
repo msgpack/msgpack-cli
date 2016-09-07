@@ -5175,6 +5175,187 @@ namespace MsgPack.Serialization
 		}
 
 #endregion issue #169
+
+		#region -- Asymmetric --
+		[Test]
+		public void TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new NoSettableNoConstructorsForAsymmetricTest().Initialize( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x81, 0xA5, ( byte )'V', ( byte )'a', ( byte )'l', ( byte )'u', ( byte )'e', 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new NoSettableMultipleConstructorsForAsymmetricTest( "A", 0 ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x81, 0xA5, ( byte )'V', ( byte )'a', ( byte )'l', ( byte )'u', ( byte )'e', 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_NoDefaultConstructor_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new NoDefaultConstructorForAsymmetricTest( 'A' ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x81, 0xA5, ( byte )'V', ( byte )'a', ( byte )'l', ( byte )'u', ( byte )'e', 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableEnumerableForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableCollection_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableCollectionForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableList_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableListForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableDictionary_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableDictionaryForAsymmetricTest( new KeyValuePair<string, string>( "A", "A" ) ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x81, 0xA1, ( byte )'A', 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableNonGenericEnumerableForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableNonGenericCollectionForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableNonGenericListForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnconstructableNonGenericDictionaryForAsymmetricTest( new DictionaryEntry( "A", "A" ) ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x81, 0xA1, ( byte )'A', 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnappendableEnumerable_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnappendableEnumerableForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnappendableNonGenericEnumerableForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnappendableNonGenericCollectionForAsymmetricTest( "A" ),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnsettableArrayMemberObjectForAsymmetricTest(),
+				SerializerCapabilities.PackTo,
+				new byte[] { 0x82, 0xA5, ( byte )'F', ( byte )'i', ( byte )'e', ( byte )'l', ( byte )'d', 0x91, 0xA1, ( byte )'A', 0xA8, ( byte )'P', ( byte )'r', ( byte )'o', ( byte )'p', ( byte )'e', ( byte )'r', ( byte )'t', ( byte )'y', 0x91, 0xA1, ( byte )'A' }
+			);
+		}
+
+		private static void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized )
+		{
+			var context = GetSerializationContext();
+			context.CompatibilityOptions.AllowAsymmetricSerializer = true;
+			context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+
+			var serializer = context.GetSerializer<T>();
+			Assert.That( serializer.Capabilities, Is.EqualTo( expectedCapabilities ) );
+
+			var obj = factory();
+			using ( var buffer = new MemoryStream() )
+			{
+				if ( ( expectedCapabilities & SerializerCapabilities.PackTo ) != 0 )
+				{
+					serializer.Pack( buffer, obj );
+					Assert.That( buffer.ToArray(), Is.EqualTo( serialized ), "{0} != {1}", BitConverter.ToString( buffer.ToArray() ), BitConverter.ToString( serialized ) );
+				}
+				else if ( ( expectedCapabilities & SerializerCapabilities.UnpackFrom ) != 0 )
+				{
+					buffer.Write( serialized, 0, serialized.Length );
+					buffer.Position = 0;
+					var unpacked = serializer.Unpack( buffer );
+					Assert.That( obj, Is.EqualTo( unpacked ) );
+				}
+			}
+		}
+
+		#endregion -- Asymmetric --
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 

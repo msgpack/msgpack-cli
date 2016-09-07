@@ -33,8 +33,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 {
 	partial class SerializerEmitter
 	{
-		private static readonly Type[] ConstructorParameterTypes = { typeof( SerializationContext ) };
-		private static readonly Type[] CollectionConstructorParameterTypes = { typeof( SerializationContext ), typeof( PolymorphismSchema ) };
+		private static readonly Type[] ConstructorParameterTypesWithoutCapabilities = { typeof( SerializationContext ) };
+		private static readonly Type[] ConstructorParameterTypesWithCapabilities = { typeof( SerializationContext ), typeof( SerializerCapabilities ) };
+		private static readonly Type[] CollectionConstructorParameterTypes = { typeof( SerializationContext ), typeof( PolymorphismSchema ), typeof( SerializerCapabilities ) };
 
 		#region -- Dependent Serializer Management --
 
@@ -227,8 +228,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		private TypeBuilder _unpackingContextType;
 
-		private readonly Dictionary<string, FieldBuilder> _unpackingContextFields = new Dictionary<string, FieldBuilder>();
-
 		public void DefineUnpackingContext( string name, IList<KeyValuePair<string, Type>> fields, out Type type, out ConstructorInfo constructor )
 		{
 			this._unpackingContextType =
@@ -253,7 +252,6 @@ namespace MsgPack.Serialization.EmittingSerializers
 				for ( var i = 0; i < fields.Count; i++ )
 				{
 					var field = this._unpackingContextType.DefineField( fields[ i ].Key, fields[ i ].Value, FieldAttributes.Public );
-					this._unpackingContextFields.Add( fields[ i ].Key, field );
 					il.EmitLdargThis();
 					il.EmitAnyLdarg( i + 1 );
 					il.EmitStfld( field );
@@ -275,7 +273,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			constructor = type.GetConstructors().Single();
 		}
 
-#endregion -- UnpackingContext Management --
+		#endregion -- UnpackingContext Management --
 
 		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
@@ -284,13 +282,20 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <param name="builder">The builder which implements actions initialization emit.</param>
 		/// <param name="targetInfo">The information of the target.</param>
 		/// <param name="schema">The <see cref="PolymorphismSchema"/> for this instance.</param>
+		/// <param name="capabilities">The capabilities of the generating serializer.</param>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer"/> instance.
 		///		This value will not be <c>null</c>.
 		///	</returns>
-		public MessagePackSerializer CreateObjectInstance( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder builder, SerializationTarget targetInfo, PolymorphismSchema schema )
+		public MessagePackSerializer CreateObjectInstance(
+			AssemblyBuilderEmittingContext context,
+			AssemblyBuilderSerializerBuilder builder,
+			SerializationTarget targetInfo,
+			PolymorphismSchema schema,
+			SerializerCapabilities? capabilities
+		)
 		{
-			return this.CreateObjectConstructor(  context, builder, targetInfo )( context.SerializationContext, schema );
+			return this.CreateObjectConstructor( context, builder, targetInfo, capabilities )( context.SerializationContext, schema );
 		}
 
 		/// <summary>
@@ -298,13 +303,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <param name="builder">The builder which implements actions initialization emit.</param>
-		/// <param name="targetInfo">The information of the target</param>
+		/// <param name="targetInfo">The information of the targe.t</param>
+		/// <param name="capabilities">The <see cref="SerializerCapabilities"/> for object serializer. <c>null</c> for other types.</param>
 		/// <returns>
 		///		Newly built <see cref="MessagePackSerializer{T}"/> type constructor.
 		///		This value will not be <c>null</c>.
 		///	</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Reflection objects" )]
-		public Func<SerializationContext, PolymorphismSchema, MessagePackSerializer> CreateObjectConstructor( AssemblyBuilderEmittingContext context, AssemblyBuilderSerializerBuilder builder, SerializationTarget targetInfo )
+		public Func<SerializationContext, PolymorphismSchema, MessagePackSerializer> CreateObjectConstructor(
+			AssemblyBuilderEmittingContext context,
+			AssemblyBuilderSerializerBuilder builder,
+			SerializationTarget targetInfo,
+			SerializerCapabilities? capabilities
+		)
 		{
 			var hasPackActions = targetInfo != null && !typeof( IPackable ).IsAssignableFrom( builder.TargetType );
 			var hasUnpackActions = targetInfo != null && !typeof( IUnpackable ).IsAssignableFrom( builder.TargetType );
@@ -331,11 +342,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var contextfulConstructor =
 				this.CreateConstructor(
 					MethodAttributes.Public,
-					ConstructorParameterTypes,
+					ConstructorParameterTypesWithoutCapabilities,
 					( type, il ) =>
 						this.CreateContextfulObjectConstructor(
 							context,
 							type,
+							capabilities,
 							il,
 							hasPackActions
 								? packActionsInitialization( false )
@@ -389,9 +401,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			);
 
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
-			var ctor = this._typeBuilder.CreateType().GetConstructor( ConstructorParameterTypes );
+			var ctor = this._typeBuilder.CreateType().GetConstructor( ConstructorParameterTypesWithoutCapabilities );
 #else
-			var ctor = this._typeBuilder.CreateTypeInfo().GetConstructor( ConstructorParameterTypes );
+			var ctor = this._typeBuilder.CreateTypeInfo().GetConstructor( ConstructorParameterTypesWithoutCapabilities );
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
 			var schemaParameter = Expression.Parameter( typeof( PolymorphismSchema ), "schema" );
@@ -425,6 +437,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private void CreateContextfulObjectConstructor(
 			AssemblyBuilderEmittingContext context,
 			Type baseType,
+			SerializerCapabilities? capabilities,
 			TracingILGenerator il,
 			Func<ILConstruct> packActionListInitializerProvider,
 			Func<ILConstruct> packActionTableInitializerProvider,
@@ -456,13 +469,27 @@ namespace MsgPack.Serialization.EmittingSerializers
 			il.EmitLdarg_1();
 			if ( this._specification.TargetCollectionTraits.CollectionType == CollectionKind.NotCollection )
 			{
-				il.EmitCallConstructor(
-					baseType.GetRuntimeConstructor( ConstructorParameterTypes )
-				);
+				if ( capabilities.HasValue )
+				{
+					il.EmitAnyLdc_I4( ( int )capabilities.Value );
+
+					il.EmitCallConstructor(
+						baseType.GetRuntimeConstructor( ConstructorParameterTypesWithCapabilities )
+					);
+				}
+				else
+				{
+					il.EmitCallConstructor(
+						baseType.GetRuntimeConstructor( ConstructorParameterTypesWithoutCapabilities )
+					);
+				}
 			}
 			else
 			{
+				Contract.Assert( capabilities.HasValue );
+
 				il.EmitCall( this._methodTable[ MethodName.RestoreSchema ] );
+				il.EmitAnyLdc_I4( ( int )capabilities.Value );
 				il.EmitCallConstructor(
 					baseType.GetRuntimeConstructor( CollectionConstructorParameterTypes )
 				);

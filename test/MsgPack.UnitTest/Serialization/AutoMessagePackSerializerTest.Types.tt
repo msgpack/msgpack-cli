@@ -2061,6 +2061,185 @@ foreach ( var item in constructorParamterSpecs )
 			return this._personSerializer.UnpackPeople( unpacker );
 		}
 	}
+
+	#region -- Asymmetric --
+
+<#
+foreach ( var typeName in new [] { "NoSettableNoConstructorsForAsymmetricTest", "NoSettableMultipleConstructorsForAsymmetricTest", "NoDefaultConstructorForAsymmetricTest" } )
+{
+#>
+	public partial class <#= typeName #>
+	{
+		private string _value;
+
+		public override bool Equals( object obj )
+		{
+			var other = obj as <#= typeName #>;
+			if ( Object.ReferenceEquals( other, null ) )
+			{
+				return false;
+			}
+
+			return this._value == other._value;
+		}
+
+		public override int GetHashCode()
+		{
+			return this._value.GetHashCode();
+		}
+	}
+
+<#
+}
+#>
+	partial class NoSettableNoConstructorsForAsymmetricTest
+	{
+		public string Value { get { return this._value; } }
+
+		public NoSettableNoConstructorsForAsymmetricTest() { }
+
+		public NoSettableNoConstructorsForAsymmetricTest Initialize( string value )
+		{
+			this._value = value;
+			return this;
+		}
+	}
+
+	partial class NoSettableMultipleConstructorsForAsymmetricTest
+	{
+		public string Value { get { return this._value; } }
+
+		public NoSettableMultipleConstructorsForAsymmetricTest( string value, bool other )
+		{
+			this._value = value;
+		}
+
+		public NoSettableMultipleConstructorsForAsymmetricTest( string value, int other )
+		{
+			this._value = value;
+		}
+	}
+	
+	partial class NoDefaultConstructorForAsymmetricTest
+	{
+		public string Value
+		{
+			get { return this._value; }
+			set { this._value = value; }
+		}
+
+		public NoDefaultConstructorForAsymmetricTest( char value )
+		{
+			this._value = value.ToString();
+		}
+	}
+
+<#
+foreach ( var kind in
+	new []
+	{
+		new { Type = "Enumerable",	IsDictionary = false },
+		new { Type = "Collection", 	IsDictionary = false },
+		new { Type = "List", 		IsDictionary = false },
+		new { Type = "Dictionary", 	IsDictionary = true },
+	}
+)
+{
+	foreach ( var generic in new [] { true, false } )
+	{
+		var typeName = "Unconstructable" + ( generic ? String.Empty : "NonGeneric" ) + kind.Type + "ForAsymmetricTest";
+#>
+
+	public sealed class <#= typeName #> : <#= generic ? String.Empty : "NonGeneric" #><#= kind.Type #>Base<#= generic ? "<string>" : String.Empty #>
+	{
+		public <#= typeName #>( params <#= !kind.IsDictionary ? "string" : generic ? "KeyValuePair<string, string>" : "DictionaryEntry" #>[] items )
+		{
+			foreach ( var item in items )
+			{
+				this.Underlying.Add( <#= !kind.IsDictionary ? "item" : "item.Key, item.Value" #> );
+			}
+		}
+	}
+
+	partial class UnconstructableCollectionMemberObjectForAsymmetricTest
+	{
+		public readonly <#= typeName #> <#= typeName #>Field = new <#= typeName #>( <#= !kind.IsDictionary ? "\"A\"" : generic ? "new KeyValuePair<string, string>( \"A\", \"A\" )" : "new DictionaryEntry( \"A\", \"A\" )" #> );
+
+		public <#= typeName #> <#= typeName #>Property { get{ return this.<#= typeName #>Field; } }
+	}
+<#
+	}
+}
+#>
+
+	public sealed partial class UnconstructableCollectionMemberObjectForAsymmetricTest
+	{
+		public UnconstructableCollectionMemberObjectForAsymmetricTest() { }
+	}
+
+	public sealed partial class UnsettableArrayMemberObjectForAsymmetricTest
+	{
+		public readonly string[] Field = new string[] { "A" };
+
+		public string[] Property { get { return this.Field; } }
+
+		public UnsettableArrayMemberObjectForAsymmetricTest() { }
+	}
+
+<#
+foreach ( var spec in
+	new []
+	{
+		new { Type = "NonGenericEnumerable", BaseType = "IEnumerable" },
+		new { Type = "Enumerable", BaseType = "IEnumerable<string>" },
+		new { Type = "NonGenericCollection", BaseType = "ICollection" },
+	}
+)
+{
+#>
+
+	public sealed partial class Unappendable<#= spec.Type #>ForAsymmetricTest : <#= spec.BaseType #>
+	{
+		private readonly List<string> _underlying;
+
+		public Unappendable<#= spec.Type #>ForAsymmetricTest( params string[] items )
+		{
+			this._underlying = new List<string>( items );
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this._underlying.GetEnumerator();
+		}
+	}
+<#
+}
+#>
+
+	partial class UnappendableEnumerableForAsymmetricTest
+	{
+		IEnumerator<string> IEnumerable<string>.GetEnumerator()
+		{
+			return this._underlying.GetEnumerator();
+		}
+	}
+
+	partial class UnappendableNonGenericCollectionForAsymmetricTest
+	{
+		public int Count { get { return this._underlying.Count; } }
+
+		bool ICollection.IsSynchronized { get { return false; } }
+
+		object ICollection.SyncRoot { get { return this; } }
+
+		public void CopyTo( Array array, int index )
+		{
+			this._underlying.CopyTo( ( string[] )array, index );
+		}
+	}
+
+	#endregion -- Asymmetric --
+
 }
 
 // Issue #108

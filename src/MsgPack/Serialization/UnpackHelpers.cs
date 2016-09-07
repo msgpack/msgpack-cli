@@ -731,13 +731,34 @@ namespace MsgPack.Serialization
 
 			return serializer.UnpackFromCore( unpacker );
 		}
+		internal static SerializationTarget DetermineCollectionSerializationStrategy( Type instanceType, bool allowAsymmetricSerializer )
+		{
+			bool canDeserialize;
+			var collectionConstructor = UnpackHelpers.TryGetCollectionConstructor( instanceType );
+			if ( collectionConstructor == null )
+			{
+				if ( !allowAsymmetricSerializer )
+				{
+					SerializationExceptions.ThrowTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( instanceType );
+				}
+
+				// Pack only.
+				canDeserialize = false;
+			}
+			else
+			{
+				canDeserialize = true;
+			}
+
+			return SerializationTarget.CreateForCollection( collectionConstructor, canDeserialize );
+		}
 
 		/// <summary>
 		///		Retrieves a most appropriate constructor with <see cref="Int32"/> capacity parameter and <see cref="IEqualityComparer{T}"/> comparer parameter or both of them, >or default constructor of the <paramref name="instanceType"/>.
 		/// </summary>
 		/// <param name="instanceType">The target collection type to be instanciated.</param>
 		/// <returns>A constructor of the <paramref name="instanceType"/>.</returns>
-		internal static ConstructorInfo GetCollectionConstructor( Type instanceType )
+		private static ConstructorInfo TryGetCollectionConstructor( Type instanceType )
 		{
 			const int noParameters = 0;
 			const int withCapacity = 10;
@@ -793,11 +814,6 @@ namespace MsgPack.Serialization
 						break;
 					}
 				}
-			}
-
-			if ( constructor == null )
-			{
-				SerializationExceptions.ThrowTargetDoesNotHavePublicDefaultConstructorNorInitialCapacity( instanceType );
 			}
 
 			return constructor;

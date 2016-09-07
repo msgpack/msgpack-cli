@@ -75,6 +75,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			PolymorphismSchema schema
 		)
 		{
+			var targetInfo = UnpackHelpers.DetermineCollectionSerializationStrategy( targetType, context.CompatibilityOptions.AllowAsymmetricSerializer );
+
 			switch ( traits.DetailedCollectionType )
 			{
 				case CollectionDetailedKind.Array:
@@ -92,9 +94,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( CollectionSerializerFactory<,> ).MakeGenericType( typeof( T ), traits.ElementType )
-						).Create( context, targetType, traits, schema );
+						).Create( context, targetType, traits, schema, targetInfo );
 #else
-						new ReflectionCollectionMessagePackSerializer( context, typeof( T ), targetType, traits, schema );
+						new ReflectionCollectionMessagePackSerializer( context, typeof( T ), targetType, traits, schema, targetInfo );
 #endif // !UNITY
 				}
 				case CollectionDetailedKind.GenericEnumerable:
@@ -104,9 +106,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( EnumerableSerializerFactory<,> ).MakeGenericType( typeof( T ), traits.ElementType )
-						).Create( context, targetType, traits, schema );
+						).Create( context, targetType, traits, schema, targetInfo );
 #else
-						new ReflectionEnumerableMessagePackSerializer( context, typeof( T ), targetType, traits, schema );
+						new ReflectionEnumerableMessagePackSerializer( context, typeof( T ), targetType, traits, schema, targetInfo );
 #endif // !Enumerable
 				}
 				case CollectionDetailedKind.GenericDictionary:
@@ -121,7 +123,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 								genericArgumentOfKeyValuePair[ 0 ],
 								genericArgumentOfKeyValuePair[ 1 ]
 							)
-						).Create( context, targetType, traits, schema );
+						).Create( context, targetType, traits, schema, targetInfo );
 #else
 						new ReflectionDictionaryMessagePackSerializer(
 							context,
@@ -130,7 +132,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							genericArgumentOfKeyValuePair[ 0 ],
 							genericArgumentOfKeyValuePair[ 1 ],
 							traits,
-							schema 
+							schema,
+							targetInfo
 						);
 #endif // !UNITY
 				}
@@ -141,9 +144,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericListSerializerFactory<> ).MakeGenericType( typeof( T ) )
-						).Create( context, targetType, traits, schema );
+						).Create( context, targetType, traits, schema, targetInfo );
 #else
-						new ReflectionNonGenericListMessagePackSerializer( context, typeof( T ), targetType, schema );
+						new ReflectionNonGenericListMessagePackSerializer( context, typeof( T ), targetType, traits, schema, targetInfo );
 #endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericCollection:
@@ -153,9 +156,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericCollectionSerializerFactory<> ).MakeGenericType( typeof( T ) )
-						).Create( context, targetType, traits, schema );
+						).Create( context, targetType, traits, schema, targetInfo );
 #else
-						new ReflectionNonGenericCollectionMessagePackSerializer( context, typeof( T ), targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ), schema );
+						new ReflectionNonGenericCollectionMessagePackSerializer( context, typeof( T ), targetType, traits, schema, targetInfo );
 #endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericEnumerable:
@@ -165,9 +168,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericEnumerableSerializerFactory<> ).MakeGenericType( typeof( T ) )
-						).Create( context, targetType, traits, schema );
+						).Create( context, targetType, traits, schema, targetInfo );
 #else
-						new ReflectionNonGenericEnumerableMessagePackSerializer( context, typeof( T ), targetType, targetType.GetCollectionTraits( CollectionTraitOptions.WithAddMethod, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ), schema );
+						new ReflectionNonGenericEnumerableMessagePackSerializer( context, typeof( T ), targetType, traits, schema, targetInfo );
 #endif // !UNITY
 				}
 				case CollectionDetailedKind.NonGenericDictionary:
@@ -177,9 +180,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						( MessagePackSerializer<T> )
 						ReflectionExtensions.CreateInstancePreservingExceptionType<IVariantReflectionSerializerFactory>(
 							typeof( NonGenericDictionarySerializerFactory<> ).MakeGenericType( typeof( T ) )
-						).Create( context, targetType, traits, schema );
+						).Create( context, targetType, traits, schema, targetInfo );
 #else
-						new ReflectionNonGenericDictionaryMessagePackSerializer( context, typeof( T ), targetType, schema );
+						new ReflectionNonGenericDictionaryMessagePackSerializer( context, typeof( T ), targetType, traits, schema, targetInfo );
 #endif // !UNITY
 				}
 				default:
@@ -334,12 +337,12 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		}
 
 #if !UNITY
-		public static Func<int, T> CreateCollectionInstanceFactory<T, TKey>( Type targetType )
+		public static Func<int, T> CreateCollectionInstanceFactory<T, TKey>( Type targetType, ConstructorInfo constructor )
 #else
-		public static Func<int, object> CreateCollectionInstanceFactory( Type abstractType, Type targetType, Type comparisonType )
+		public static Func<int, object> CreateCollectionInstanceFactory( Type abstractType, Type targetType, Type comparisonType, ConstructorInfo constructor )
 #endif // !UNITY
 		{
-			var constructor = UnpackHelpers.GetCollectionConstructor( targetType );
+			// ReSharper disable once PossibleNullReferenceException
 			var parameters = constructor.GetParameters();
 
 			switch ( parameters.Length )
@@ -426,7 +429,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		/// </summary>
 		private interface IVariantReflectionSerializerFactory
 		{
-			MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema );
+			MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo );
 		}
 
 		// ReSharper disable MemberHidesStaticFromOuterClass
@@ -437,9 +440,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			public NonGenericEnumerableSerializerFactory() { }
 
-			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema )
+			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo )
 			{
-				return new ReflectionNonGenericEnumerableMessagePackSerializer<T>( context, targetType, collectionTraits, schema );
+				return new ReflectionNonGenericEnumerableMessagePackSerializer<T>( context, targetType, collectionTraits, schema, targetInfo );
 			}
 		}
 
@@ -449,9 +452,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			public NonGenericCollectionSerializerFactory() { }
 
-			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema )
+			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo )
 			{
-				return new ReflectionNonGenericCollectionMessagePackSerializer<T>( context, targetType, collectionTraits, schema );
+				return new ReflectionNonGenericCollectionMessagePackSerializer<T>( context, targetType, collectionTraits, schema, targetInfo );
 			}
 		}
 
@@ -461,9 +464,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			public NonGenericListSerializerFactory() { }
 
-			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema )
+			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo )
 			{
-				return new ReflectionNonGenericListMessagePackSerializer<T>( context, targetType, schema );
+				return new ReflectionNonGenericListMessagePackSerializer<T>( context, targetType, collectionTraits, schema, targetInfo );
 			}
 		}
 
@@ -473,9 +476,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			public NonGenericDictionarySerializerFactory() { }
 
-			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema )
+			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo )
 			{
-				return new ReflectionNonGenericDictionaryMessagePackSerializer<T>( context, targetType, schema );
+				return new ReflectionNonGenericDictionaryMessagePackSerializer<T>( context, targetType, collectionTraits, schema, targetInfo );
 			}
 		}
 
@@ -485,10 +488,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			public EnumerableSerializerFactory() { }
 
-			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema )
+			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo )
 			{
 				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new ReflectionEnumerableMessagePackSerializer<TCollection, TItem>( context, targetType, collectionTraits, itemSchema );
+				return new ReflectionEnumerableMessagePackSerializer<TCollection, TItem>( context, targetType, collectionTraits, itemSchema, targetInfo );
 			}
 		}
 
@@ -498,10 +501,10 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			public CollectionSerializerFactory() { }
 
-			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema )
+			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo )
 			{
 				var itemSchema = schema ?? PolymorphismSchema.Default;
-				return new ReflectionCollectionMessagePackSerializer<TCollection, TItem>( context, targetType, itemSchema );
+				return new ReflectionCollectionMessagePackSerializer<TCollection, TItem>( context, targetType, collectionTraits, itemSchema, targetInfo );
 			}
 		}
 
@@ -511,9 +514,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			public DictionarySerializerFactory() { }
 
-			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema )
+			public MessagePackSerializer Create( SerializationContext context, Type targetType, CollectionTraits collectionTraits, PolymorphismSchema schema, SerializationTarget targetInfo )
 			{
-				return new ReflectionDictionaryMessagePackSerializer<TDictionary, TKey, TValue>( context, targetType, schema );
+				return new ReflectionDictionaryMessagePackSerializer<TDictionary, TKey, TValue>( context, targetType, collectionTraits, schema, targetInfo );
 			}
 		}
 		// ReSharper restore MemberHidesStaticFromOuterClass

@@ -337,9 +337,10 @@ namespace MsgPack.Serialization
 			if ( ienumerable != null )
 			{
 				var addMethod = GetAddMethod( source, typeof( object ), options | CollectionTraitOptions.WithAddMethod );
-				if ( addMethod != null )
+				if ( addMethod != null || ( ( options & CollectionTraitOptions.AllowNonCollectionEnumerableTypes ) == 0 ) )
 				{
-					return 
+					// This should be appendable or unappendable collection
+					return
 						new CollectionTraits(
 							( ilist != null )
 							? CollectionDetailedKind.NonGenericList
@@ -369,7 +370,8 @@ namespace MsgPack.Serialization
 			var addMethod = GetAddMethod( source, elementType, options );
 			if ( addMethod == null && ( ( options & CollectionTraitOptions.AllowNonCollectionEnumerableTypes ) != 0 ) )
 			{
-				result = default(CollectionTraits);
+				// This should be non collection object isntead of "unappendable" collection.
+				result = default( CollectionTraits );
 				return false;
 			}
 
@@ -399,13 +401,14 @@ namespace MsgPack.Serialization
 			}
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				
-			result = new CollectionTraits(
-				kind,
-				elementType,
-				getMethod ?? GetGetEnumeratorMethodFromElementType( source, elementType, options ),
-				addMethod,
-				GetCountGetterMethod( source, elementType, options )
-			);
+			result =
+				new CollectionTraits(
+					kind,
+					elementType,
+					getMethod ?? GetGetEnumeratorMethodFromElementType( source, elementType, options ),
+					addMethod,
+					GetCountGetterMethod( source, elementType, options )
+				);
 			return true;
 		}
 
@@ -948,6 +951,7 @@ namespace MsgPack.Serialization
 
 		private struct GenericCollectionTypes
 		{
+			// ReSharper disable InconsistentNaming
 			internal Type IEnumerableT;
 			internal Type ICollectionT;
 			internal Type IListT;
@@ -961,6 +965,7 @@ namespace MsgPack.Serialization
 			internal Type IReadOnlyDictionaryT;
 #endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 #endif // !NETFX_35 && !UNITY
+			// ReSharper restore InconsistentNaming
 		}
 	}
 }

@@ -57,11 +57,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly ParameterInfo[] _constructorParameters;
 		private readonly Dictionary<int, int> _constructorArgumentIndexes;
 
-		public ReflectionObjectMessagePackSerializer( SerializationContext context )
-			: base( context )
+		public ReflectionObjectMessagePackSerializer( SerializationContext context, SerializationTarget target, SerializerCapabilities capabilities )
+			: base( context, capabilities )
 		{
-			SerializationTarget.VerifyType( typeof( T ) );
-			var target = SerializationTarget.Prepare( context, typeof( T ) );
 			ReflectionSerializerHelper.GetMetadata( typeof( T ), target.Members, context, out this._getters, out this._setters, out this._memberInfos, out this._contracts, out this._serializers );
 			this._memberIndexes =
 				this._contracts

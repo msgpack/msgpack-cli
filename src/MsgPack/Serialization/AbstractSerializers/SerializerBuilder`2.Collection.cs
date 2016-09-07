@@ -29,6 +29,7 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY
 using System.Linq;
+using System.Reflection;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,7 +43,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private void BuildCollectionSerializer(
 			TContext context,
 			Type concreteType,
-			PolymorphismSchema schema
+			PolymorphismSchema schema,
+			out SerializationTarget targetInfo
 		)
 		{
 #if DEBUG
@@ -50,7 +52,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // DEBUG
 			bool isUnpackFromRequired;
 			bool isAddItemRequired;
-			this.DetermineSerializationStrategy( out isUnpackFromRequired, out isAddItemRequired );
+			this.DetermineSerializationStrategy( context, concreteType, out targetInfo, out isUnpackFromRequired, out isAddItemRequired );
 
 			if ( typeof( IPackable ).IsAssignableFrom( this.TargetType ) )
 			{
@@ -68,13 +70,13 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 #endif // FEATURE_TAP
 
-			this.BuildCollectionCreateInstance( context, concreteType );
+			this.BuildCollectionCreateInstance( context, targetInfo.DeserializationConstructor, targetInfo.CanDeserialize );
 
 			var useUnpackable = false;
 
 			if ( typeof( IUnpackable ).IsAssignableFrom( concreteType ?? this.TargetType ) )
 			{
-				this.BuildIUnpackableUnpackFrom( context, this.GetUnpackableCollectionInstantiation( context ) );
+				this.BuildIUnpackableUnpackFrom( context, this.GetUnpackableCollectionInstantiation( context ), targetInfo.CanDeserialize );
 				useUnpackable = true;
 			}
 
@@ -84,7 +86,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				if ( typeof( IAsyncUnpackable ).IsAssignableFrom( concreteType ?? this.TargetType ) )
 				{
-					this.BuildIAsyncUnpackableUnpackFrom( context, this.GetUnpackableCollectionInstantiation( context ) );
+					this.BuildIAsyncUnpackableUnpackFrom( context, this.GetUnpackableCollectionInstantiation( context ), targetInfo.CanDeserialize );
 					useUnpackable = true;
 				}
 			}
@@ -93,7 +95,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( isAddItemRequired )
 			{
-				if ( useUnpackable )
+				if ( useUnpackable || !targetInfo.CanDeserialize )
 				{
 					// AddItem should never called because UnpackFromCore calls IUnpackable/IAsyncUnpackable
 					this.BuildCollectionAddItemNotImplemented( context );
@@ -112,11 +114,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( isUnpackFromRequired && !useUnpackable )
 			{
-				this.BuildCollectionUnpackFromCore( context, concreteType, schema, false );
+				this.BuildCollectionUnpackFromCore( context, concreteType, schema, targetInfo.CanDeserialize, isAsync: false );
 #if FEATURE_TAP
 				if ( this.WithAsync( context ) )
 				{
-					this.BuildCollectionUnpackFromCore( context, concreteType, schema, true );
+					this.BuildCollectionUnpackFromCore( context, concreteType, schema, targetInfo.CanDeserialize, isAsync: true );
 				}
 #endif // FEATURE_TAP
 			}
@@ -124,8 +126,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 			this.BuildRestoreSchema( context, schema );
 		}
 
-		private void DetermineSerializationStrategy( out bool isUnpackFromRequired, out bool isAddItemRequired )
+		private void DetermineSerializationStrategy(
+			TContext context,
+			Type concreteType,
+			out SerializationTarget targetInfo,
+			out bool isUnpackFromRequired,
+			out bool isAddItemRequired
+		)
 		{
+			targetInfo =
+				UnpackHelpers.DetermineCollectionSerializationStrategy(
+					concreteType ?? this.TargetType,
+					context.SerializationContext.CompatibilityOptions.AllowAsymmetricSerializer
+				);
+
 			switch ( this.CollectionTraits.DetailedCollectionType )
 			{
 				case CollectionDetailedKind.NonGenericEnumerable:
@@ -236,7 +250,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- UnpackFromCore --
 
-		private void BuildCollectionUnpackFromCore( TContext context, Type concreteType, PolymorphismSchema schema, bool isAsync )
+		private void BuildCollectionUnpackFromCore( TContext context, Type concreteType, PolymorphismSchema schema, bool canDeserialize, bool isAsync )
 		{
 			var methodName =
 #if FEATURE_TAP
@@ -250,11 +264,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			context.EndMethodOverride(
 				methodName,
-				this.EmitSequentialStatements(
+				canDeserialize
+				? this.EmitSequentialStatements(
 					context,
 					this.TargetType,
 					this.EmitCollectionUnpackFromStatements( context, instanceType, schema, isAsync )
-				)
+				) : this.EmitThrowCannotUnpackFrom( context )
 			);
 		}
 
@@ -434,22 +449,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 		
 		#region -- CreateInstance --
 
-		private void BuildCollectionCreateInstance( TContext context, Type concreteType )
+		private void BuildCollectionCreateInstance( TContext context, ConstructorInfo collectionConstructor, bool canDeserialize )
 		{
 			context.BeginMethodOverride( MethodName.CreateInstance );
 
-			var instanceType = concreteType ?? this.TargetType;
 			var collection =
 				this.DeclareLocal(
 					context,
 					this.TargetType,
 					"collection"
 				);
-			var ctor = UnpackHelpers.GetCollectionConstructor( instanceType );
-			var ctorArguments = this.DetermineCollectionConstructorArguments( context, ctor );
+
 			context.EndMethodOverride(
 				MethodName.CreateInstance,
-				this.EmitSequentialStatements(
+				canDeserialize
+				? this.EmitSequentialStatements(
 					context,
 					this.TargetType,
 					collection,
@@ -459,15 +473,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitCreateNewObjectExpression(
 							context,
 							collection,
-							ctor,
-							ctorArguments
+							collectionConstructor,
+							this.DetermineCollectionConstructorArguments( context, collectionConstructor )
 						)
 					),
 					this.EmitRetrunStatement(
 						context,
 						this.EmitLoadVariableExpression( context, collection )
 					)
-				)
+				) : this.EmitThrowCannotCreateInstance( context )
 			);
 		}
 

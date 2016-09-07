@@ -22,7 +22,6 @@ using System;
 
 namespace MsgPack.Serialization
 {
-#warning TODO: Asymmetric serializers
 	/// <summary>
 	///		Represents serializer capabilities.
 	/// </summary>

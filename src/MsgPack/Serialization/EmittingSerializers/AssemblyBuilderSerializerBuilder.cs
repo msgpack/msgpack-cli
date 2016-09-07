@@ -519,6 +519,23 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		protected override ILConstruct EmitThrowStatement( AssemblyBuilderEmittingContext context, ILConstruct exception )
+		{
+			return
+				ILConstruct.Instruction(
+					"throw",
+					typeof( void ),
+					true,
+					il =>
+					{
+						exception.LoadValue( il, false );
+						il.EmitThrow();
+					}
+				);
+		}
+
 		protected override ILConstruct DeclareLocal( AssemblyBuilderEmittingContext context, TypeDefinition nestedType, string name )
 		{
 			return
@@ -908,10 +925,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected override Func<SerializationContext, MessagePackSerializer> CreateSerializerConstructor( 
 			AssemblyBuilderEmittingContext codeGenerationContext,
 			SerializationTarget targetInfo,
-			PolymorphismSchema schema 
+			PolymorphismSchema schema,
+			SerializerCapabilities? capabilities
 		)
 		{
-			return context => codeGenerationContext.Emitter.CreateObjectInstance( codeGenerationContext, this, targetInfo, schema );
+			return context => codeGenerationContext.Emitter.CreateObjectInstance( codeGenerationContext, this, targetInfo, schema, capabilities );
 		}
 
 		protected override Func<SerializationContext, MessagePackSerializer> CreateEnumSerializerConstructor( AssemblyBuilderEmittingContext codeGenerationContext )
@@ -1147,7 +1165,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				SerializationTarget targetInfo;
 				this.BuildSerializer( emittingContext, concreteType, itemSchema, out targetInfo );
 				// Finish type creation, and discard returned ctor.
-				emittingContext.Emitter.CreateObjectConstructor( emittingContext, this, targetInfo );
+				emittingContext.Emitter.CreateObjectConstructor( emittingContext, this, targetInfo, targetInfo.GetCapabilitiesForObject() );
 			}
 			else
 			{

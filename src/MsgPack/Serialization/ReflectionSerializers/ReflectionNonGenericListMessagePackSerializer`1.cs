@@ -61,11 +61,21 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		public ReflectionNonGenericListMessagePackSerializer(
 			SerializationContext ownerContext,
 			Type targetType,
-			PolymorphismSchema itemsSchema
+			CollectionTraits collectionTraits,
+			PolymorphismSchema itemsSchema,
+			SerializationTarget targetInfo
 		)
-			: base( ownerContext, itemsSchema )
+			: base( ownerContext, itemsSchema, targetInfo.GetCapabilitiesForCollection( collectionTraits ) )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TList, object>( targetType );
+			if ( targetInfo.CanDeserialize )
+			{
+				this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TList, object>( targetType, targetInfo.DeserializationConstructor );
+			}
+			else
+			{
+				this._factory = _ => { throw SerializationExceptions.NewCreateInstanceIsNotSupported( targetType ); };
+			}
+
 			this._isPackable = typeof( IPackable ).IsAssignableFrom( targetType ?? typeof( TList ) );
 			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( targetType ?? typeof( TList ) );
 #if FEATURE_TAP
@@ -78,11 +88,21 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			SerializationContext ownerContext,
 			Type abstractType,
 			Type concreteType,
-			PolymorphismSchema itemsSchema
+			CollectionTraits concreteTypeCollectionTraits,
+			PolymorphismSchema itemsSchema,
+			SerializationTarget targetInfo
 		)
-			: base( ownerContext, abstractType, itemsSchema )
+			: base( ownerContext, abstractType, itemsSchema, targetInfo.GetCapabilitiesForCollection( concreteTypeCollectionTraits ) )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, typeof( object ) );
+			if ( targetInfo.CanDeserialize )
+			{
+				this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, typeof( object ), targetInfo.DeserializationConstructor );
+			}
+			else
+			{
+				this._factory = _ => { throw SerializationExceptions.NewCreateInstanceIsNotSupported( concreteType ); };
+			}
+
 			this._isPackable = typeof( IPackable ).IsAssignableFrom( concreteType ?? abstractType );
 			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( concreteType ?? abstractType );
 		}

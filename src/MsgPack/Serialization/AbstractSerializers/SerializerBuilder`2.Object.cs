@@ -38,10 +38,10 @@ namespace MsgPack.Serialization.AbstractSerializers
 {
 	partial class SerializerBuilder<TContext, TConstruct>
 	{
-		private void BuildObjectSerializer( TContext context, out SerializationTarget targetInfo )
+		private SerializationTarget BuildObjectSerializer( TContext context )
 		{
 			SerializationTarget.VerifyType( this.TargetType );
-			targetInfo = SerializationTarget.Prepare( context.SerializationContext, this.TargetType );
+			var targetInfo = SerializationTarget.Prepare( context.SerializationContext, this.TargetType );
 
 			if ( typeof( IPackable ).IsAssignableFrom( this.TargetType ) )
 			{
@@ -70,7 +70,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 			if ( typeof( IUnpackable ).IsAssignableFrom( this.TargetType ) )
 			{
-				this.BuildIUnpackableUnpackFrom( context, this.GetUnpackableObjectInstantiation( context ) );
+				this.BuildIUnpackableUnpackFrom( context, this.GetUnpackableObjectInstantiation( context ), targetInfo.CanDeserialize );
 			}
 			else
 			{
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				if ( typeof( IAsyncUnpackable ).IsAssignableFrom( this.TargetType ) )
 				{
-					this.BuildIAsyncUnpackableUnpackFrom( context, this.GetUnpackableObjectInstantiation( context ) );
+					this.BuildIAsyncUnpackableUnpackFrom( context, this.GetUnpackableObjectInstantiation( context ), targetInfo.CanDeserialize );
 				}
 				else
 				{
@@ -92,6 +92,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 #endif // FEATURE_TAP
+
+			return targetInfo;
 		}
 
 		#region -- IPackable --
@@ -646,16 +648,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- IUnpackable --
 
-		private void BuildIUnpackableUnpackFrom( TContext context, TConstruct objectCreation )
+		private void BuildIUnpackableUnpackFrom( TContext context, TConstruct objectCreation, bool canDeserialize )
 		{
 
 			context.BeginMethodOverride( MethodName.UnpackFromCore );
 			context.EndMethodOverride( MethodName.UnpackFromCore,
-				this.EmitSequentialStatements(
+				canDeserialize
+				? this.EmitSequentialStatements(
 					context,
 					this.TargetType,
 					this.BuildIUnpackableUnpackFromCore( context, typeof( IUnpackable ), objectCreation )
-				)
+				) : this.EmitThrowCannotUnpackFrom( context )
 			);
 		}
 
@@ -676,17 +679,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- IAsyncUnpackable --
 
-		private void BuildIAsyncUnpackableUnpackFrom( TContext context, TConstruct objectCreation )
+		private void BuildIAsyncUnpackableUnpackFrom( TContext context, TConstruct objectCreation, bool canDeserialize )
 		{
-
 			context.BeginMethodOverride( MethodName.UnpackFromAsyncCore );
 			context.EndMethodOverride(
 				MethodName.UnpackFromAsyncCore,
-				this.EmitSequentialStatements(
+				canDeserialize
+				? this.EmitSequentialStatements(
 					context,
 					this.TargetType,
 					this.BuildIUnpackableUnpackFromCore( context, typeof( IAsyncUnpackable ), objectCreation )
-				)
+				) : this.EmitThrowCannotUnpackFrom( context )
 			);
 		}
 
@@ -771,11 +774,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			context.BeginMethodOverride( methodName );
 			context.EndMethodOverride(
 				methodName,
-				this.EmitSequentialStatements(
+				targetInfo.CanDeserialize
+				? this.EmitSequentialStatements(
 					context,
 					this.TargetType,
 					this.EmitObjectUnpackFromCore( context, targetInfo, isAsync )
-				)
+				) : this.EmitThrowCannotUnpackFrom( context )
 			);
 		}
 
@@ -1315,6 +1319,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 			bool isAsync
 		)
 		{
+			if ( !targetInfo.CanDeserialize )
+			{
+				yield break;
+			}
+
 			yield return actionCollection;
 
 #if DEBUG
@@ -1410,7 +1419,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				yield return argument;
 
 				constructorArguments.Add( argument );
-				var correspondingMemberName = target.FindCorrespondingMemberName( constructorParameters[ i ] );
+				var correspondingMemberName = target.GetCorrespondingMemberName( i );
 				if ( correspondingMemberName != null )
 				{
 					mappableConstructorArguments.Add( correspondingMemberName );

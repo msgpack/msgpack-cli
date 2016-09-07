@@ -824,6 +824,47 @@ namespace MsgPack.Serialization
 			throw NewFailedToDeserializeMember( targetType, memberName, inner );
 		}
 
+#if !AOT
+		/// <summary>
+		///		<see cref="NewUnpackFromIsNotSupported(Type)"/>
+		/// </summary>
+		internal static readonly MethodInfo NewUnpackFromIsNotSupportedMethod =
+			FromExpression.ToMethod( ( Type targetType ) => NewUnpackFromIsNotSupported( targetType ) );
+#endif // !AOT
+
+		/// <summary>
+		/// 	Returns a new exception which represents <c>UnpackFrom</c> is not supported in this asymmetric serializer.
+		/// </summary>
+		/// <param name="targetType">Deserializing type.</param>
+		/// <returns>The exception. This value will not be <c>null</c>.</returns>
+		public static Exception NewUnpackFromIsNotSupported( Type targetType )
+		{
+#if DEBUG
+			Contract.Requires( targetType != null );
+#endif // DEBUG
+			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported for '{0}' because the serializer does not support UnpackFrom method.", targetType ) );
+		}
+
+#if !AOT
+		/// <summary>
+		///		<see cref="NewCreateInstanceIsNotSupported(Type)"/>
+		/// </summary>
+		internal static readonly MethodInfo NewCreateInstanceIsNotSupportedMethod =
+			FromExpression.ToMethod( ( Type targetType ) => NewCreateInstanceIsNotSupported( targetType ) );
+#endif // !AOT
+
+		/// <summary>
+		/// 	Returns a new exception which represents <c>UnpackFrom</c> is not supported in this asymmetric serializer.
+		/// </summary>
+		/// <param name="targetType">Deserializing type.</param>
+		/// <returns>The exception. This value will not be <c>null</c>.</returns>
+		public static Exception NewCreateInstanceIsNotSupported( Type targetType )
+		{
+#if DEBUG
+			Contract.Requires( targetType != null );
+#endif // DEBUG
+			return new NotSupportedException( String.Format( CultureInfo.CurrentCulture, "This operation is not supported for '{0}' because the serializer does not support CreateInstance method.", targetType ) );
+		}
 
 		internal static Exception NewUnpackToIsNotSupported( Type type, Exception inner )
 		{

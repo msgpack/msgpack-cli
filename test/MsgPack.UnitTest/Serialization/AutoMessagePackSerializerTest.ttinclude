@@ -3328,7 +3328,7 @@ namespace MsgPack.Serialization
 		}
 
 <#+
-	}
+	} // if !forIos
 
 	if ( serializationMethod == "Map" && !forIos )
 	{
@@ -3569,9 +3569,146 @@ namespace MsgPack.Serialization
 			}
 		}
 <#+
-	}
+	} // if  serializationMethod == "Map" && !forIoS
 #>
 #endregion issue #169
+
+		#region -- Asymmetric --
+<#+
+	foreach ( var testCase in
+		new []
+		{
+			new { Type = "NoSettableNoConstructors",		Init = "().Initialize( \"A\" )" },
+			new { Type = "NoSettableMultipleConstructors",	Init = "( \"A\", 0 )" },
+			new { Type = "NoDefaultConstructor",			Init = "( 'A' )" },
+		}
+	)
+	{
+#>
+		[Test]
+		public void TestAsymmetric_PackOnly_<#= testCase.Type #>_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new <#= testCase.Type #>ForAsymmetricTest<#= testCase.Init #>,
+				SerializerCapabilities.PackTo,
+<#+
+		if ( serializationMethod == "Map" )
+		{
+#>
+				new byte[] { 0x81, 0xA5, ( byte )'V', ( byte )'a', ( byte )'l', ( byte )'u', ( byte )'e', 0xA1, ( byte )'A' }
+<#+
+		}
+		else
+		{
+#>
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+<#+
+		}
+#>
+			);
+		}
+
+<#+
+	}
+#>
+
+<#+
+	foreach ( var testCase in
+		new []
+		{
+			new { Type = "UnconstructableEnumerable",				IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnconstructableCollection",				IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnconstructableList",						IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnconstructableDictionary",				IsDictionary = true,	Init = "( new KeyValuePair<string, string>( \"A\", \"A\" ) )" },
+			new { Type = "UnconstructableNonGenericEnumerable",		IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnconstructableNonGenericCollection",		IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnconstructableNonGenericList",			IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnconstructableNonGenericDictionary",		IsDictionary = true,	Init = "( new DictionaryEntry( \"A\", \"A\" ) )" },
+			new { Type = "UnappendableEnumerable",					IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnappendableNonGenericEnumerable",		IsDictionary = false,	Init = "( \"A\" )" },
+			new { Type = "UnappendableNonGenericCollection",		IsDictionary = false,	Init = "( \"A\" )" }
+		}
+	)
+	{
+#>
+		[Test]
+		public void TestAsymmetric_PackOnly_<#= testCase.Type #>_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new <#= testCase.Type #>ForAsymmetricTest<#= testCase.Init #>,
+				SerializerCapabilities.PackTo,
+<#+
+		if ( testCase.IsDictionary )
+		{
+#>
+				new byte[] { 0x81, 0xA1, ( byte )'A', 0xA1, ( byte )'A' }
+<#+
+		}
+		else
+		{
+#>
+				new byte[] { 0x91, 0xA1, ( byte )'A' }
+<#+
+		}
+#>
+			);
+		}
+
+<#+
+	}
+#>
+
+		[Test]
+		public void TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable()
+		{
+			TestAsymmetricPackOnlyCore(
+				() => new UnsettableArrayMemberObjectForAsymmetricTest(),
+				SerializerCapabilities.PackTo,
+<#+
+		if ( serializationMethod == "Map" )
+		{
+#>
+				new byte[] { 0x82, 0xA5, ( byte )'F', ( byte )'i', ( byte )'e', ( byte )'l', ( byte )'d', 0x91, 0xA1, ( byte )'A', 0xA8, ( byte )'P', ( byte )'r', ( byte )'o', ( byte )'p', ( byte )'e', ( byte )'r', ( byte )'t', ( byte )'y', 0x91, 0xA1, ( byte )'A' }
+<#+
+		}
+		else
+		{
+#>
+				new byte[] { 0x92, 0x91, 0xA1, ( byte )'A', 0x91, 0xA1, ( byte )'A' }
+<#+
+		}
+#>
+			);
+		}
+
+		private static void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized )
+		{
+			var context = GetSerializationContext();
+			context.CompatibilityOptions.AllowAsymmetricSerializer = true;
+			context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+
+			var serializer = context.GetSerializer<T>();
+			Assert.That( serializer.Capabilities, Is.EqualTo( expectedCapabilities ) );
+
+			var obj = factory();
+			using ( var buffer = new MemoryStream() )
+			{
+				if ( ( expectedCapabilities & SerializerCapabilities.PackTo ) != 0 )
+				{
+					serializer.Pack( buffer, obj );
+					Assert.That( buffer.ToArray(), Is.EqualTo( serialized ), "{0} != {1}", BitConverter.ToString( buffer.ToArray() ), BitConverter.ToString( serialized ) );
+				}
+				else if ( ( expectedCapabilities & SerializerCapabilities.UnpackFrom ) != 0 )
+				{
+					buffer.Write( serialized, 0, serialized.Length );
+					buffer.Position = 0;
+					var unpacked = serializer.Unpack( buffer );
+					Assert.That( obj, Is.EqualTo( unpacked ) );
+				}
+			}
+		}
+
+		#endregion -- Asymmetric --
 <#+
 	GeneratePolymorphismTestParts();
 }

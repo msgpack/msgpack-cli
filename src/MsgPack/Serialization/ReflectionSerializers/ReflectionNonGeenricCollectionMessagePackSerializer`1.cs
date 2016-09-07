@@ -63,12 +63,22 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			SerializationContext ownerContext,
 			Type targetType,
 			CollectionTraits collectionTraits,
-			PolymorphismSchema itemsSchema
+			PolymorphismSchema itemsSchema,
+			SerializationTarget targetInfo
 		)
-			: base( ownerContext, itemsSchema )
+			: base( ownerContext, itemsSchema, targetInfo.GetCapabilitiesForCollection( collectionTraits ) )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TCollection, object>( targetType );
-			this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, object>( targetType, collectionTraits );
+			if ( targetInfo.CanDeserialize )
+			{
+				this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TCollection, object>( targetType, targetInfo.DeserializationConstructor );
+				this._addItem = ReflectionSerializerHelper.GetAddItem<TCollection, object>( targetType, collectionTraits );
+			}
+			else
+			{
+				this._factory = _ => { throw SerializationExceptions.NewCreateInstanceIsNotSupported( targetType ); };
+				this._addItem = ( c, x ) => { throw SerializationExceptions.NewUnpackFromIsNotSupported( targetType ); };
+			}
+
 			this._isPackable = typeof( IPackable ).IsAssignableFrom( targetType ?? typeof( TCollection ) );
 			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( targetType ?? typeof( TCollection ) );
 #if FEATURE_TAP
@@ -82,12 +92,22 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			Type abstractType,
 			Type concreteType,
 			CollectionTraits concreteTypeCollectionTraits,
-			PolymorphismSchema itemsSchema 
+			PolymorphismSchema itemsSchema,
+			SerializationTarget targetInfo
 		)
-			: base( ownerContext, abstractType, itemsSchema )
+			: base( ownerContext, abstractType, itemsSchema, targetInfo.GetCapabilitiesForCollection( concreteTypeCollectionTraits ) )
 		{
-			this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, typeof( object ) );
-			this._addItem = ReflectionSerializerHelper.GetAddItem( concreteType, concreteTypeCollectionTraits );
+			if ( targetInfo.CanDeserialize )
+			{
+				this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory( abstractType, concreteType, typeof( object ), targetInfo.DeserializationConstructor );
+				this._addItem = ReflectionSerializerHelper.GetAddItem( concreteType, concreteTypeCollectionTraits );
+			}
+			else
+			{
+				this._factory = _ => { throw SerializationExceptions.NewCreateInstanceIsNotSupported( targetType ); };
+				this._addItem = ( c, x ) => { throw SerializationExceptions.NewUnpackFromIsNotSupported( targetType ); };
+			}
+
 			this._isPackable = typeof( IPackable ).IsAssignableFrom( concreteType ?? abstractType );
 			this._isUnpackable = typeof( IUnpackable ).IsAssignableFrom( concreteType ?? abstractType );
 		}

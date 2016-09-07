@@ -153,7 +153,7 @@ namespace MsgPack.Serialization
 #if NETFX_35 || UNITY || SILVERLIGHT
 				return this._allowNonCollectionEnumerableTypes;
 #else
-				return Volatile.Read(ref this._allowNonCollectionEnumerableTypes);
+				return Volatile.Read( ref this._allowNonCollectionEnumerableTypes );
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 			}
 			set
@@ -161,7 +161,46 @@ namespace MsgPack.Serialization
 #if NETFX_35 || UNITY || SILVERLIGHT
 				this._allowNonCollectionEnumerableTypes = value;
 #else
-				Volatile.Write(ref this._allowNonCollectionEnumerableTypes, value);
+				Volatile.Write( ref this._allowNonCollectionEnumerableTypes, value );
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
+		}
+
+
+#if NETFX_35 || UNITY || SILVERLIGHT
+		private volatile bool _allowAsymmetricSerializer;
+#else
+		private bool _allowAsymmetricSerializer;
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+
+		/// <summary>
+		///		Gets or sets a value indicating whether the serializer generator generates serializer types even when the generator determines that feature complete serializer cannot be generated due to lack of some requirement.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if the serializer generator generates serializer types even when the generator determines that feature complete serializer cannot be generated due to lack of some requirement; otherwise, <c>false</c>. The default is <c>false</c>.
+		/// </value>
+		/// <remarks>
+		///		Currently, the lack of constructor (default or parameterized) or lack of settable members are considerd as "cannot generate feature complete serializer".
+		///		Therefore, you can get serialization only serializer if this property is set to <c>true</c>.
+		///		This is useful for logging, telemetry injestion, or so.
+		///		You can investigate serializer capability via <see cref="MessagePackSerializer.Capabilities"/> property.
+		/// </remarks>
+		public bool AllowAsymmetricSerializer
+		{
+			get
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				return this._allowAsymmetricSerializer;
+#else
+				return Volatile.Read( ref this._allowAsymmetricSerializer );
+#endif // NETFX_35 || UNITY || SILVERLIGHT
+			}
+			set
+			{
+#if NETFX_35 || UNITY || SILVERLIGHT
+				this._allowAsymmetricSerializer = value;
+#else
+				Volatile.Write( ref this._allowAsymmetricSerializer, value );
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 			}
 		}
@@ -173,6 +212,7 @@ namespace MsgPack.Serialization
 			this.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			this.IgnorePackabilityForCollection = false;
 			this.AllowNonCollectionEnumerableTypes = true;
+			this.AllowAsymmetricSerializer = false;
 		}
 	}
 }
