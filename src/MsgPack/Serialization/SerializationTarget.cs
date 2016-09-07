@@ -348,15 +348,14 @@ namespace MsgPack.Serialization
 				}
 				default:
 				{
-					throw
-						new SerializationException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and serializer generator failed to determine constructor to deserialize among({1}).",
-								targetType,
-								String.Join( ", ", mostRichConstructors.Select( ctor => ctor.ToString() ).ToArray() )
-							)
-						);
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and serializer generator failed to determine constructor to deserialize among({1}).",
+							targetType,
+							String.Join( ", ", mostRichConstructors.Select( ctor => ctor.ToString() ).ToArray() )
+						)
+					);
 				}
 			}
 		}
@@ -368,11 +367,12 @@ namespace MsgPack.Serialization
 
 		private static SerializationException NewTypeCannotBeSerializedException( Type targetType )
 		{
-			return new SerializationException(
-				String.Format(
-					CultureInfo.CurrentCulture,
-					"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and it does not have any public constructors with parameters.",
-					targetType
+			return 
+				new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and it does not have any public constructors with parameters.",
+						targetType
 					)
 				);
 		}
@@ -446,7 +446,8 @@ namespace MsgPack.Serialization
 			if ( context.CompatibilityOptions.OneBoundDataMemberOrder && candidates[ 0 ].Contract.Id == 0 )
 			{
 				throw new NotSupportedException(
-					"Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true." );
+					"Cannot specify order value 0 on DataMemberAttribute when SerializationContext.CompatibilityOptions.OneBoundDataMemberOrder is set to true."
+				);
 			}
 
 #if !UNITY

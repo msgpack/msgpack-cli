@@ -75,13 +75,13 @@ namespace MsgPack.Serialization
 				{
 					case EnumSerializationMethod.ByName:
 					case EnumSerializationMethod.ByUnderlyingValue:
-						{
-							break;
-						}
+					{
+						break;
+					}
 					default:
-						{
-							throw new ArgumentOutOfRangeException( "value" );
-						}
+					{
+						throw new ArgumentOutOfRangeException( "value" );
+					}
 				}
 
 				Contract.EndContractBlock();
