@@ -49,6 +49,16 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return result.IsNil ? null : new StringBuilder( result.DeserializeAsString() );
 		}
 
+		protected internal override void UnpackToCore( Unpacker unpacker, StringBuilder collection )
+		{
+			// NOTE: More efficient?
+			var result = unpacker.LastReadData;
+			if ( !result.IsNil )
+			{
+				collection.Append( result.DeserializeAsString() );
+			}
+		}
+
 #if FEATURE_TAP
 
 		protected internal override Task PackToAsyncCore( Packer packer, StringBuilder objectTree, CancellationToken cancellationToken )
@@ -64,6 +74,28 @@ namespace MsgPack.Serialization.DefaultSerializers
 			try
 			{
 				tcs.SetResult( this.UnpackFromCore( unpacker ) );
+			}
+			catch ( Exception ex )
+			{
+				tcs.SetException( ex );
+			}
+
+			return tcs.Task;
+		}
+
+		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, StringBuilder collection, CancellationToken cancellationToken )
+		{
+			// NOTE: More efficient?
+			var tcs = new TaskCompletionSource<object>();
+			try
+			{
+				var result = unpacker.LastReadData;
+				if ( !result.IsNil )
+				{
+					collection.Append( result.DeserializeAsString() );
+				}
+
+				tcs.SetResult( null );
 			}
 			catch ( Exception ex )
 			{
