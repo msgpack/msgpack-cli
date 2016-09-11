@@ -47,6 +47,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly ICollectionInstanceFactory _concreteCollectionInstanceFactory;
 		private readonly MessagePackSerializer _concreteSerializer;
 
+		internal override SerializerCapabilities InternalGetCapabilities()
+		{
+			return this._concreteSerializer.Capabilities;
+		}
+
 		public AbstractNonGenericEnumerableMessagePackSerializer(
 			SerializationContext ownerContext,
 #if !UNITY
@@ -60,7 +65,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 			: base( ownerContext, schema )
 #else
-			: base( ownerContext, abstractType, schema )
+			: base( ownerContext, abstractType, schema, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 #endif // !UNITY
 		{
 			AbstractCollectionSerializerHelper.GetConcreteSerializer(

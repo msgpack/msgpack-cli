@@ -44,7 +44,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly DateTimeConversionMethod _conversion;
 
 		public DateTimeOffsetMessagePackSerializer( SerializationContext ownerContext, DateTimeConversionMethod conversion )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._conversion = conversion;
 		}

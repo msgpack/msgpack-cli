@@ -103,7 +103,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 
 		public FSharpCollectionSerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema, string factoryTypeName )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
 			this._factory = FindFactory( factoryTypeName );

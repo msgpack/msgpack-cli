@@ -51,14 +51,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #if !UNITY
 		public MultidimensionalArraySerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
 			this._int32ArraySerializer = ownerContext.GetSerializer<int[]>( itemsSchema );
 		}
 #else
 		public UnityMultidimensionalArraySerializer( SerializationContext ownerContext, Type itemType, PolymorphismSchema itemsSchema )
-			: base( ownerContext, itemType.MakeArrayType() )
+			: base( ownerContext, itemType.MakeArrayType(), SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._itemSerializer = ownerContext.GetSerializer( itemType, itemsSchema );
 			this._int32ArraySerializer = ownerContext.GetSerializer( typeof( int[] ), itemsSchema );

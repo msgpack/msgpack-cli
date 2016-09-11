@@ -36,7 +36,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TItem> _itemSerializer;
 
 		public System_Collections_Generic_Queue_1MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<TItem>();
 		}

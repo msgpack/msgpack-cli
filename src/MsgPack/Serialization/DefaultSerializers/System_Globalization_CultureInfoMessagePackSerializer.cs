@@ -31,7 +31,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Globalization_CultureInfoMessagePackSerializer : MessagePackSerializer<CultureInfo>
 	{
 		public System_Globalization_CultureInfoMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]

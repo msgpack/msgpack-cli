@@ -39,7 +39,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
 
 		public System_Collections_Generic_KeyValuePair_2MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._keySerializer = ownerContext.GetSerializer<TKey>();
 			this._valueSerializer = ownerContext.GetSerializer<TValue>();

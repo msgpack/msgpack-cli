@@ -52,6 +52,21 @@ namespace MsgPack.Serialization.CollectionSerializers
 			: base( ownerContext, schema ) { }
 
 		/// <summary>
+		///		Initializes a new instance of the <see cref="ReadOnlyDictionaryMessagePackSerializer{TDictionary, TKey, TValue}"/> class.
+		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
+		/// <param name="schema">
+		///		The schema for collection itself or its items for the member this instance will be used to. 
+		///		<c>null</c> will be considered as <see cref="PolymorphismSchema.Default"/>.
+		/// </param>
+		/// <param name="capabilities">A serializer calability flags represents capabilities of this instance.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="ownerContext"/> is <c>null</c>.
+		/// </exception>
+		protected ReadOnlyDictionaryMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema, SerializerCapabilities capabilities )
+			: base( ownerContext, schema, capabilities ) { }
+
+		/// <summary>
 		///		Returns count of the dictionary.
 		/// </summary>
 		/// <param name="dictionary">A collection. This value will not be <c>null</c>.</param>

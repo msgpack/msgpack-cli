@@ -55,6 +55,21 @@ namespace MsgPack.Serialization.CollectionSerializers
 			: base( ownerContext, schema ) { }
 
 		/// <summary>
+		///		Initializes a new instance of the <see cref="NonGenericListMessagePackSerializer{TList}"/> class.
+		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
+		/// <param name="schema">
+		///		The schema for collection itself or its items for the member this instance will be used to. 
+		///		<c>null</c> will be considered as <see cref="PolymorphismSchema.Default"/>.
+		/// </param>
+		/// <param name="capabilities">A serializer calability flags represents capabilities of this instance.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="ownerContext"/> is <c>null</c>.
+		/// </exception>
+		protected NonGenericListMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema, SerializerCapabilities capabilities )
+			: base( ownerContext, schema, capabilities ) { }
+
+		/// <summary>
 		///		Deserializes object with specified <see cref="Unpacker"/>.
 		/// </summary>
 		/// <param name="unpacker"><see cref="Unpacker"/> which unpacks values of resulting object tree. This value will not be <c>null</c>.</param>
@@ -154,8 +169,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 #warning TODO: Remove if possible for maintenancibility.
 	internal abstract class UnityNonGenericListMessagePackSerializer : UnityNonGenericCollectionMessagePackSerializer
 	{
-		protected UnityNonGenericListMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema )
-			: base( ownerContext, targetType, schema ) { }
+		protected UnityNonGenericListMessagePackSerializer( SerializationContext ownerContext, Type targetType, PolymorphismSchema schema, SerializerCapabilities capabilities )
+			: base( ownerContext, targetType, schema, capabilities ) { }
 
 		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{

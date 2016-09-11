@@ -33,7 +33,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal class System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer : MessagePackSerializer<List<MessagePackObject>>, ICollectionInstanceFactory
 	{
 		public System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]

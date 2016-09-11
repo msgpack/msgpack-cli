@@ -37,6 +37,11 @@ namespace MsgPack.Serialization
 		private readonly object _providerParameter;
 		private MessagePackSerializer<T> _delegated;
 
+		internal override SerializerCapabilities InternalGetCapabilities()
+		{
+			return this.GetDelegatedSerializer().Capabilities;
+		}
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="LazyDelegatingMessagePackSerializer&lt;T&gt;"/> class.
 		/// </summary>

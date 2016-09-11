@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 {
 	public SByteArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -189,7 +189,7 @@ internal sealed class SByteArraySerializer : MessagePackSerializer<SByte[]>
 internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 {
 	public Int16ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -302,7 +302,7 @@ internal sealed class Int16ArraySerializer : MessagePackSerializer<Int16[]>
 internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 {
 	public Int32ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -415,7 +415,7 @@ internal sealed class Int32ArraySerializer : MessagePackSerializer<Int32[]>
 internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 {
 	public Int64ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -528,7 +528,7 @@ internal sealed class Int64ArraySerializer : MessagePackSerializer<Int64[]>
 internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 {
 	public ByteArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -641,7 +641,7 @@ internal sealed class ByteArraySerializer : MessagePackSerializer<Byte[]>
 internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 {
 	public UInt16ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -754,7 +754,7 @@ internal sealed class UInt16ArraySerializer : MessagePackSerializer<UInt16[]>
 internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 {
 	public UInt32ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -867,7 +867,7 @@ internal sealed class UInt32ArraySerializer : MessagePackSerializer<UInt32[]>
 internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 {
 	public UInt64ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -980,7 +980,7 @@ internal sealed class UInt64ArraySerializer : MessagePackSerializer<UInt64[]>
 internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 {
 	public SingleArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1093,7 +1093,7 @@ internal sealed class SingleArraySerializer : MessagePackSerializer<Single[]>
 internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 {
 	public DoubleArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1206,7 +1206,7 @@ internal sealed class DoubleArraySerializer : MessagePackSerializer<Double[]>
 internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 {
 	public BooleanArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1319,7 +1319,7 @@ internal sealed class BooleanArraySerializer : MessagePackSerializer<Boolean[]>
 internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte?[]>
 {
 	public NullableSByteArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1432,7 +1432,7 @@ internal sealed class NullableSByteArraySerializer : MessagePackSerializer<SByte
 internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16?[]>
 {
 	public NullableInt16ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1545,7 +1545,7 @@ internal sealed class NullableInt16ArraySerializer : MessagePackSerializer<Int16
 internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32?[]>
 {
 	public NullableInt32ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1658,7 +1658,7 @@ internal sealed class NullableInt32ArraySerializer : MessagePackSerializer<Int32
 internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64?[]>
 {
 	public NullableInt64ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1771,7 +1771,7 @@ internal sealed class NullableInt64ArraySerializer : MessagePackSerializer<Int64
 internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[]>
 {
 	public NullableByteArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1884,7 +1884,7 @@ internal sealed class NullableByteArraySerializer : MessagePackSerializer<Byte?[
 internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt16?[]>
 {
 	public NullableUInt16ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -1997,7 +1997,7 @@ internal sealed class NullableUInt16ArraySerializer : MessagePackSerializer<UInt
 internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt32?[]>
 {
 	public NullableUInt32ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -2110,7 +2110,7 @@ internal sealed class NullableUInt32ArraySerializer : MessagePackSerializer<UInt
 internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt64?[]>
 {
 	public NullableUInt64ArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -2223,7 +2223,7 @@ internal sealed class NullableUInt64ArraySerializer : MessagePackSerializer<UInt
 internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Single?[]>
 {
 	public NullableSingleArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -2336,7 +2336,7 @@ internal sealed class NullableSingleArraySerializer : MessagePackSerializer<Sing
 internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Double?[]>
 {
 	public NullableDoubleArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -2449,7 +2449,7 @@ internal sealed class NullableDoubleArraySerializer : MessagePackSerializer<Doub
 internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boolean?[]>
 {
 	public NullableBooleanArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -2562,7 +2562,7 @@ internal sealed class NullableBooleanArraySerializer : MessagePackSerializer<Boo
 internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 {
 	public StringArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -2675,7 +2675,7 @@ internal sealed class StringArraySerializer : MessagePackSerializer<String[]>
 internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 {
 	public BinaryArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
@@ -2788,7 +2788,7 @@ internal sealed class BinaryArraySerializer : MessagePackSerializer<Byte[][]>
 internal sealed class MessagePackObjectArraySerializer : MessagePackSerializer<MessagePackObject[]>
 {
 	public MessagePackObjectArraySerializer( SerializationContext ownerContext )
-		: base ( ownerContext ) { }
+		: base ( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]

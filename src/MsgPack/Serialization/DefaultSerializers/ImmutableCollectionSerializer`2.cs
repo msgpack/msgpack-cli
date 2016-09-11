@@ -101,7 +101,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected readonly MessagePackSerializer<TItem> ItemSerializer;
 
 		public ImmutableCollectionSerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this.ItemSerializer = ownerContext.GetSerializer<TItem>( itemsSchema );
 			this.Factory = FindFactory();

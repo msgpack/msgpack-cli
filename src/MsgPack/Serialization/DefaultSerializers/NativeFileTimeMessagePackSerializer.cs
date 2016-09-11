@@ -32,7 +32,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	internal sealed class NativeFileTimeMessagePackSerializer : MessagePackSerializer<FILETIME>
 	{
-		public NativeFileTimeMessagePackSerializer( SerializationContext ownerContext ) : base( ownerContext ) { }
+		public NativeFileTimeMessagePackSerializer( SerializationContext ownerContext ) : base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, FILETIME objectTree )

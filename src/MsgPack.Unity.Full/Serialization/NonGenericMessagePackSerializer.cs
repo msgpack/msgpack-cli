@@ -40,9 +40,10 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <param name="targetType">The type to be serialized.</param>
+		/// <param name="capabilities">The capability flags for this instance.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
-		protected NonGenericMessagePackSerializer( SerializationContext ownerContext, Type targetType )
-			: this( ownerContext, targetType, null ) { }
+		protected NonGenericMessagePackSerializer( SerializationContext ownerContext, Type targetType, SerializerCapabilities capabilities )
+			: this( ownerContext, targetType, null, capabilities ) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="NonGenericMessagePackSerializer"/> class with explicitly specified compatibility option.
@@ -50,16 +51,16 @@ namespace MsgPack.Serialization
 		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <param name="targetType">The type to be serialized.</param>
 		/// <param name="packerCompatibilityOptions">The <see cref="PackerCompatibilityOptions"/> for new packer creation.</param>
+		/// <param name="capabilities">The capability flags for this instance.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="ownerContext"/> is <c>null</c>.</exception>
 		/// <remarks>
 		///		This method also supports backword compatibility with 0.4.
 		/// </remarks>
-		protected NonGenericMessagePackSerializer( SerializationContext ownerContext, Type targetType, PackerCompatibilityOptions packerCompatibilityOptions )
-			: this( ownerContext, targetType, new PackerCompatibilityOptions?( packerCompatibilityOptions ) ) { }
+		protected NonGenericMessagePackSerializer( SerializationContext ownerContext, Type targetType, PackerCompatibilityOptions packerCompatibilityOptions, SerializerCapabilities capabilities )
+			: this( ownerContext, targetType, new PackerCompatibilityOptions?( packerCompatibilityOptions ), capabilities ) { }
 
-		private NonGenericMessagePackSerializer( SerializationContext ownerContext, Type targetType, PackerCompatibilityOptions? packerCompatibilityOptions )
-#warning TODO: capabilities from derived class
-			: base( ownerContext, packerCompatibilityOptions, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
+		private NonGenericMessagePackSerializer( SerializationContext ownerContext, Type targetType, PackerCompatibilityOptions? packerCompatibilityOptions, SerializerCapabilities capabilities )
+			: base( ownerContext, packerCompatibilityOptions, capabilities )
 		{
 			this._targetType = targetType;
 			this._isNullable = JudgeNullable( targetType );

@@ -67,6 +67,25 @@ namespace MsgPack.Serialization.CollectionSerializers
 		}
 
 		/// <summary>
+		///		Initializes a new instance of the <see cref="EnumerableMessagePackSerializerBase{TCollection, TItem}"/> class.
+		/// </summary>
+		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
+		/// <param name="schema">
+		///		The schema for collection itself or its items for the member this instance will be used to. 
+		///		<c>null</c> will be considered as <see cref="PolymorphismSchema.Default"/>.
+		/// </param>
+		/// <param name="capabilities">A serializer calability flags represents capabilities of this instance.</param>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="ownerContext"/> is <c>null</c>.
+		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by base .ctor" )]
+		protected EnumerableMessagePackSerializerBase( SerializationContext ownerContext, PolymorphismSchema schema, SerializerCapabilities capabilities )
+			: base( ownerContext, capabilities )
+		{
+			this._itemSerializer = ownerContext.GetSerializer<TItem>( ( schema ?? PolymorphismSchema.Default ).ItemSchema );
+		}
+
+		/// <summary>
 		///		Creates a new collection instance with specified initial capacity.
 		/// </summary>
 		/// <param name="initialCapacity">
@@ -255,8 +274,8 @@ namespace MsgPack.Serialization.CollectionSerializers
 		internal MessagePackSerializer ItemSerializer { get { return this._itemSerializer; } }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by base .ctor" )]
-		protected UnityEnumerableMessagePackSerializerBase( SerializationContext ownerContext, Type targetType, Type itemType, PolymorphismSchema schema )
-			: base( ownerContext, targetType )
+		protected UnityEnumerableMessagePackSerializerBase( SerializationContext ownerContext, Type targetType, Type itemType, PolymorphismSchema schema, SerializerCapabilities capabilities )
+			: base( ownerContext, targetType, capabilities )
 		{
 			this._itemSerializer = ownerContext.GetSerializer( itemType, ( schema ?? PolymorphismSchema.Default ).ItemSchema );
 		}

@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
 		public System_Collections_Generic_List_1MessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<T>( itemsSchema );
 		}
@@ -179,7 +179,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MethodInfo _add;
 
 		public System_Collections_Generic_List_1MessagePackSerializer( SerializationContext ownerContext, Type targetType, CollectionTraits traits, PolymorphismSchema itemsSchema )
-			: base( ownerContext, targetType )
+			: base( ownerContext, targetType, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			this._itemSerializer = ownerContext.GetSerializer( traits.ElementType, itemsSchema );
 			this._constructor = targetType.GetConstructor( ConstructorWithCapacityParameterTypes );

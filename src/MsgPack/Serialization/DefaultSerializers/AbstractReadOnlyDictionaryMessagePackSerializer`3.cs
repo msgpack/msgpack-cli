@@ -37,6 +37,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly IPolymorphicDeserializer _polymorphicDeserializer;
 		private readonly MessagePackSerializer _concreteDeserializer;
 
+		internal override SerializerCapabilities InternalGetCapabilities()
+		{
+			return this._concreteDeserializer.Capabilities | SerializerCapabilities.PackTo;
+		}
+
 		public AbstractReadOnlyDictionaryMessagePackSerializer(
 			SerializationContext ownerContext,
 			Type targetType,

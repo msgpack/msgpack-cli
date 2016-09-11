@@ -30,7 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class MsgPack_MessagePackObjectMessagePackSerializer : MessagePackSerializer<MessagePackObject>
 	{
 		public MsgPack_MessagePackObjectMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		protected internal override void PackToCore( Packer packer, MessagePackObject value )
 		{

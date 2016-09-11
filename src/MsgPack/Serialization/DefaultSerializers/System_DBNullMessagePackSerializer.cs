@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal class System_DBNullMessagePackSerializer : MessagePackSerializer<DBNull>
 	{
 		public System_DBNullMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) {}
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) {}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, DBNull objectTree )

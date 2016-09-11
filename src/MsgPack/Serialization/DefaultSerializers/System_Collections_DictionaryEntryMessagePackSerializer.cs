@@ -32,7 +32,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Collections_DictionaryEntryMessagePackSerializer : MessagePackSerializer<DictionaryEntry>
 	{
 		public System_Collections_DictionaryEntryMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, DictionaryEntry objectTree )

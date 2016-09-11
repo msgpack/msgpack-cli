@@ -36,7 +36,7 @@ namespace MsgPack.Serialization.Polymorphic
 		private readonly PolymorphismSchema _schema;
 
 		public TypeEmbedingPolymorphicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			if ( typeof( T ).GetIsValueType() )
 			{

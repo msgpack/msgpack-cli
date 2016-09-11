@@ -31,7 +31,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Text_StringBuilderMessagePackSerializer : MessagePackSerializer<StringBuilder>
 	{
 		public System_Text_StringBuilderMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]

@@ -45,13 +45,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<T> _valueSerializer;
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext )
-		{
-			this._valueSerializer = ownerContext.GetSerializer<T>();
-		}
+			: this( ownerContext, ownerContext.GetSerializer<T>() ) { }
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext, MessagePackSerializer<T> valueSerializer )
-			: base( ownerContext )
+			: base( ownerContext, valueSerializer.Capabilities )
 		{
 			this._valueSerializer = valueSerializer;
 		}
@@ -106,13 +103,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer _valueSerializer;
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, Type underlyingType )
-			: base( ownerContext, nullableType )
+			: base( ownerContext, nullableType, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._valueSerializer = ownerContext.GetSerializer( underlyingType );
 		}
 
 		public NullableMessagePackSerializer( SerializationContext ownerContext, Type nullableType, MessagePackSerializer valueSerializer )
-			: base( ownerContext, nullableType )
+			: base( ownerContext, nullableType, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._valueSerializer = valueSerializer;
 		}

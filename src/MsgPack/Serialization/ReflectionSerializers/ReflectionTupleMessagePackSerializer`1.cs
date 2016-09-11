@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly IList<MessagePackSerializer> _itemSerializers;
 
 		public ReflectionTupleMessagePackSerializer( SerializationContext ownerContext, IList<PolymorphismSchema> itemSchemas )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			var itemTypes = TupleItems.GetTupleItemTypes( typeof( T ) );
 			this._itemSerializers =

@@ -43,7 +43,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_Vector2MessagePackSerializer : MessagePackSerializer<Vector2>
 	{
 		public System_Numerics_Vector2MessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, Vector2 objectTree )
@@ -131,7 +131,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_Vector3MessagePackSerializer : MessagePackSerializer<Vector3>
 	{
 		public System_Numerics_Vector3MessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, Vector3 objectTree )
@@ -233,7 +233,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_Vector4MessagePackSerializer : MessagePackSerializer<Vector4>
 	{
 		public System_Numerics_Vector4MessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, Vector4 objectTree )
@@ -349,7 +349,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_PlaneMessagePackSerializer : MessagePackSerializer<Plane>
 	{
 		public System_Numerics_PlaneMessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, Plane objectTree )
@@ -465,7 +465,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_QuaternionMessagePackSerializer : MessagePackSerializer<Quaternion>
 	{
 		public System_Numerics_QuaternionMessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, Quaternion objectTree )
@@ -581,7 +581,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_Matrix3x2MessagePackSerializer : MessagePackSerializer<Matrix3x2>
 	{
 		public System_Numerics_Matrix3x2MessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, Matrix3x2 objectTree )
@@ -725,7 +725,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_Matrix4x4MessagePackSerializer : MessagePackSerializer<Matrix4x4>
 	{
 		public System_Numerics_Matrix4x4MessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, Matrix4x4 objectTree )

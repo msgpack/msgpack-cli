@@ -55,7 +55,7 @@ namespace MsgPack.Serialization
 		/// <param name="serializationMethod">The <see cref="EnumSerializationMethod"/> which determines serialization form of the enums.</param>
 		/// <exception cref="InvalidOperationException"><c>TEnum</c> is not enum type.</exception>
 		protected EnumMessagePackSerializer( SerializationContext ownerContext, EnumSerializationMethod serializationMethod )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			if ( !typeof( TEnum ).GetIsEnum() )
 			{
@@ -287,7 +287,7 @@ namespace MsgPack.Serialization
 		private EnumSerializationMethod _serializationMethod; // not readonly -- changed in cloned instance in GetCopyAs()
 
 		protected UnityEnumMessagePackSerializer( SerializationContext ownerContext, Type targetType, EnumSerializationMethod serializationMethod )
-			: base( ownerContext, targetType )
+			: base( ownerContext, targetType, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			if ( !targetType.GetIsEnum() )
 			{

@@ -58,9 +58,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			PolymorphismSchema schema
 		)
 #if !UNITY
-			: base( ownerContext, schema )
+			: base( ownerContext, schema, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 #else
-			: base( ownerContext, abstractType, schema )
+			: base( ownerContext, abstractType, schema, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 #endif // !UNITY
 		{
 			MessagePackSerializer serializer;

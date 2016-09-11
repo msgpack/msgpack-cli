@@ -53,7 +53,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<TValue> _valueSerializer;
 
 		public System_Collections_Generic_Dictionary_2MessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			this._keySerializer = ownerContext.GetSerializer<TKey>( keysSchema );
 			this._valueSerializer = ownerContext.GetSerializer<TValue>( valuesSchema );
@@ -221,7 +221,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MethodInfo _add;
 
 		public System_Collections_Generic_Dictionary_2MessagePackSerializer( SerializationContext ownerContext, Type targetType, CollectionTraits traits, Type keyType, Type valueType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
-			: base( ownerContext, targetType )
+			: base( ownerContext, targetType, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			this._keySerializer = ownerContext.GetSerializer( keyType, keysSchema );
 			this._valueSerializer = ownerContext.GetSerializer( valueType, valuesSchema );

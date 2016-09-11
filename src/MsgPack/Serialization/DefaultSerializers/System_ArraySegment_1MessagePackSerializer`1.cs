@@ -135,7 +135,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		private readonly MessagePackSerializer<T> _itemSerializer;
 
 		public System_ArraySegment_1MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<T>();
 		}

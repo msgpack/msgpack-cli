@@ -68,7 +68,7 @@ foreach( var type in types )
 	internal sealed class System_Numerics_<#= type.Name #>MessagePackSerializer : MessagePackSerializer<#= typeArgument #>
 	{
 		public System_Numerics_<#= type.Name #>MessagePackSerializer( SerializationContext ownerContext ) 
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, <#= type.Name #> objectTree )

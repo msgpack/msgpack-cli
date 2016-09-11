@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_BooleanMessagePackSerializer : MessagePackSerializer< System.Boolean >
 	{
 		public System_BooleanMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Boolean value )
@@ -95,7 +95,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_ByteMessagePackSerializer : MessagePackSerializer< System.Byte >
 	{
 		public System_ByteMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Byte value )
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_CharMessagePackSerializer : MessagePackSerializer< System.Char >
 	{
 		public System_CharMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Char value )
@@ -205,7 +205,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_DecimalMessagePackSerializer : MessagePackSerializer< System.Decimal >
 	{
 		public System_DecimalMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Decimal value )
@@ -262,7 +262,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_DoubleMessagePackSerializer : MessagePackSerializer< System.Double >
 	{
 		public System_DoubleMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Double value )
@@ -315,7 +315,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_GuidMessagePackSerializer : MessagePackSerializer< System.Guid >
 	{
 		public System_GuidMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Guid value )
@@ -372,7 +372,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Int16MessagePackSerializer : MessagePackSerializer< System.Int16 >
 	{
 		public System_Int16MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Int16 value )
@@ -425,7 +425,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Int32MessagePackSerializer : MessagePackSerializer< System.Int32 >
 	{
 		public System_Int32MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Int32 value )
@@ -478,7 +478,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Int64MessagePackSerializer : MessagePackSerializer< System.Int64 >
 	{
 		public System_Int64MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Int64 value )
@@ -531,7 +531,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_SByteMessagePackSerializer : MessagePackSerializer< System.SByte >
 	{
 		public System_SByteMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.SByte value )
@@ -584,7 +584,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_SingleMessagePackSerializer : MessagePackSerializer< System.Single >
 	{
 		public System_SingleMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Single value )
@@ -637,7 +637,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_TimeSpanMessagePackSerializer : MessagePackSerializer< System.TimeSpan >
 	{
 		public System_TimeSpanMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.TimeSpan value )
@@ -693,7 +693,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_UInt16MessagePackSerializer : MessagePackSerializer< System.UInt16 >
 	{
 		public System_UInt16MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.UInt16 value )
@@ -746,7 +746,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_UInt32MessagePackSerializer : MessagePackSerializer< System.UInt32 >
 	{
 		public System_UInt32MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.UInt32 value )
@@ -799,7 +799,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_UInt64MessagePackSerializer : MessagePackSerializer< System.UInt64 >
 	{
 		public System_UInt64MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.UInt64 value )
@@ -855,7 +855,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Collections_Specialized_BitVector32MessagePackSerializer : MessagePackSerializer< System.Collections.Specialized.BitVector32 >
 	{
 		public System_Collections_Specialized_BitVector32MessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Collections.Specialized.BitVector32 value )
@@ -917,7 +917,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
 		public System_Numerics_BigIntegerMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Numerics.BigInteger value )

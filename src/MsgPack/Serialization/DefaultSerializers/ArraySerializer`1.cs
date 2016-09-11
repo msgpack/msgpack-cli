@@ -50,13 +50,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #if !UNITY
 		public ArraySerializer( SerializationContext ownerContext, PolymorphismSchema itemsSchema )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			this._itemSerializer = ownerContext.GetSerializer<T>( itemsSchema );
 		}
 #else
 		public UnityArraySerializer( SerializationContext ownerContext, Type itemType, PolymorphismSchema itemsSchema )
-			: base( ownerContext, itemType.MakeArrayType() )
+			: base( ownerContext, itemType.MakeArrayType(), SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			this._itemSerializer = ownerContext.GetSerializer( itemType, itemsSchema );
 			this._itemType = itemType;

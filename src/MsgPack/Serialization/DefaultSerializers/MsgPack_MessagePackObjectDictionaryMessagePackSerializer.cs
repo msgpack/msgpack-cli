@@ -32,7 +32,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class MsgPack_MessagePackObjectDictionaryMessagePackSerializer : MessagePackSerializer<MessagePackObjectDictionary>, ICollectionInstanceFactory
 	{
 		public MsgPack_MessagePackObjectDictionaryMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]

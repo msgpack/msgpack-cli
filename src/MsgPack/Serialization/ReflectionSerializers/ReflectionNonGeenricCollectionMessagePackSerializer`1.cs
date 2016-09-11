@@ -104,8 +104,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				this._factory = _ => { throw SerializationExceptions.NewCreateInstanceIsNotSupported( targetType ); };
-				this._addItem = ( c, x ) => { throw SerializationExceptions.NewUnpackFromIsNotSupported( targetType ); };
+				this._factory = _ => { throw SerializationExceptions.NewCreateInstanceIsNotSupported( concreteType ); };
+				this._addItem = ( c, x ) => { throw SerializationExceptions.NewUnpackFromIsNotSupported( concreteType ); };
 			}
 
 			this._isPackable = typeof( IPackable ).IsAssignableFrom( concreteType ?? abstractType );

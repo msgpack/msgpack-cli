@@ -30,7 +30,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	internal sealed class System_StringMessagePackSerializer : MessagePackSerializer<string>
 	{
 		public System_StringMessagePackSerializer( SerializationContext ownerContext )
-			: base( ownerContext ) { }
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected internal override void PackToCore( Packer packer, string value )

@@ -73,7 +73,13 @@ namespace MsgPack.Serialization
 		/// </value>
 		public SerializerCapabilities Capabilities
 		{
-			get { return this._capabilities; }
+			get { return this.InternalGetCapabilities(); }
+		}
+
+		// For LazyDelegatingMessagePackSerializer
+		internal virtual SerializerCapabilities InternalGetCapabilities()
+		{
+			return this._capabilities;
 		}
 
 		/// <summary>

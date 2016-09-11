@@ -31,7 +31,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	/// </summary>
 	internal class NativeDateTimeMessagePackSerializer : MessagePackSerializer<DateTime>
 	{
-		public NativeDateTimeMessagePackSerializer( SerializationContext ownerContext ) : base( ownerContext ) { }
+		public NativeDateTimeMessagePackSerializer( SerializationContext ownerContext ) : base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, DateTime objectTree )

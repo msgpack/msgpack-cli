@@ -46,7 +46,7 @@ namespace MsgPack.Serialization.Polymorphic
 		private readonly IDictionary<RuntimeTypeHandle, string> _typeCodeMap;
 
 		public KnownTypePolymorphicMessagePackSerializer( SerializationContext ownerContext, PolymorphismSchema schema )
-			: base( ownerContext )
+			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo )
 		{
 			if ( typeof( T ).GetIsValueType() )
 			{
