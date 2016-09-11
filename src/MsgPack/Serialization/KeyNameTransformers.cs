@@ -57,6 +57,7 @@ namespace MsgPack.Serialization
 			}
 
 			var buffer = new StringBuilder( mayBeUpperCamel.Length * 2 );
+			char previous = '\0';
 			int index = 0;
 			for ( ; index < mayBeUpperCamel.Length; index++ )
 			{
@@ -64,10 +65,12 @@ namespace MsgPack.Serialization
 				if ( Char.IsUpper( c ) )
 				{
 					buffer.Append( c );
+					previous = c;
 				}
 				else
 				{
 					buffer.Append( Char.ToUpperInvariant( c ) );
+					previous = c;
 					index++;
 					break;
 				}
@@ -78,12 +81,18 @@ namespace MsgPack.Serialization
 				var c = mayBeUpperCamel[ index ];
 				if ( Char.IsUpper( c ) )
 				{
-					buffer.Append( '_' );
+					if ( previous != '_' )
+					{
+						buffer.Append( '_' );
+					}
+
 					buffer.Append( c );
+					previous = c;
 				}
 				else
 				{
 					buffer.Append( Char.ToUpperInvariant( c ) );
+					previous = c;
 				}
 			}
 
