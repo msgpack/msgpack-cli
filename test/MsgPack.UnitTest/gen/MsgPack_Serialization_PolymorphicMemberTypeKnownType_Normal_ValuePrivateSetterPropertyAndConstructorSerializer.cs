@@ -11,7 +11,7 @@
 namespace MsgPack.Serialization.GeneratedSerializers {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.7.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.9.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor> {
         
@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context) {
+                base(context, (MsgPack.Serialization.SerializerCapabilities.PackTo | MsgPack.Serialization.SerializerCapabilities.UnpackFrom)) {
             this._serializer0 = context.GetSerializer<System.DateTime>(MsgPack.Serialization.DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod(context, MsgPack.Serialization.DateTimeMemberConversionMethod.Default));
             this._methodBasePolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor_set_Value0 = MsgPack.Serialization.ReflectionHelpers.GetMethod(typeof(MsgPack.Serialization.PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor), "set_Value", new System.Type[] {
                         typeof(System.DateTime)});

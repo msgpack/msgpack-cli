@@ -11,7 +11,7 @@
 namespace MsgPack.Serialization.GeneratedSerializers {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.7.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.9.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_EnumMemberObjectSerializer : MsgPack.Serialization.MessagePackSerializer<MsgPack.Serialization.EnumMemberObject> {
         
@@ -72,7 +72,7 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         private System.Collections.Generic.IDictionary<string, System.Func<MsgPack.Unpacker, MsgPack.Serialization.EnumMemberObject, int, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>> _unpackOperationTableAsync;
         
         public MsgPack_Serialization_EnumMemberObjectSerializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context) {
+                base(context, (MsgPack.Serialization.SerializerCapabilities.PackTo | MsgPack.Serialization.SerializerCapabilities.UnpackFrom)) {
             this._serializer0 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.ByName));
             this._serializer1 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.ByUnderlyingValue));
             this._serializer2 = context.GetSerializer<MsgPack.Serialization.EnumByName>(MsgPack.Serialization.EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(context, typeof(MsgPack.Serialization.EnumByName), MsgPack.Serialization.EnumMemberSerializationMethod.Default));

@@ -11,12 +11,13 @@
 namespace MsgPack.Serialization.GeneratedSerializers {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.7.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.9.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer : MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer<System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject>, MsgPack.MessagePackObject> {
         
         public System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context, System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer.RestoreSchema()) {
+                base(context, System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer.RestoreSchema(), ((MsgPack.Serialization.SerializerCapabilities.PackTo | MsgPack.Serialization.SerializerCapabilities.UnpackFrom) 
+                                | MsgPack.Serialization.SerializerCapabilities.UnpackTo)) {
         }
         
         protected override System.Collections.ObjectModel.Collection<MsgPack.MessagePackObject> CreateInstance(int initialCapacity) {

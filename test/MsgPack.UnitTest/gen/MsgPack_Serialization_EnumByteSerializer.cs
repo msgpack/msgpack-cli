@@ -11,7 +11,7 @@
 namespace MsgPack.Serialization.GeneratedSerializers {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.7.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.9.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_EnumByteSerializer : MsgPack.Serialization.EnumMessagePackSerializer<MsgPack.Serialization.EnumByte> {
         

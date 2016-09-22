@@ -11,7 +11,7 @@
 namespace MsgPack.Serialization.GeneratedSerializers {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.7.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.9.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer : MsgPack.Serialization.CollectionSerializers.EnumerableMessagePackSerializer<MsgPack.Serialization.AddOnlyCollection<object>, object> {
         
@@ -20,7 +20,8 @@ namespace MsgPack.Serialization.GeneratedSerializers {
         private System.Func<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object>, int, System.Threading.CancellationToken, System.Threading.Tasks.Task> _unpackToAsync;
         
         public MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context, MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer.RestoreSchema()) {
+                base(context, MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer.RestoreSchema(), ((MsgPack.Serialization.SerializerCapabilities.PackTo | MsgPack.Serialization.SerializerCapabilities.UnpackFrom) 
+                                | MsgPack.Serialization.SerializerCapabilities.UnpackTo)) {
             this._unpackTo = new System.Action<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object>, int>(this.UnpackToCore);
             this._unpackToAsync = new System.Func<MsgPack.Unpacker, MsgPack.Serialization.AddOnlyCollection<object>, int, System.Threading.CancellationToken, System.Threading.Tasks.Task>(this.UnpackToAsyncCore);
         }

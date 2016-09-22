@@ -11,12 +11,13 @@
 namespace MsgPack.Serialization.GeneratedSerializers {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.7.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("MsgPack.Serialization.CodeDomSerializers.CodeDomSerializerBuilder", "0.9.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public class MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer : MsgPack.Serialization.CollectionSerializers.CollectionMessagePackSerializer<MsgPack.Serialization.SimpleCollection<System.DateTime[]>, System.DateTime[]> {
         
         public MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer(MsgPack.Serialization.SerializationContext context) : 
-                base(context, MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.RestoreSchema()) {
+                base(context, MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.RestoreSchema(), ((MsgPack.Serialization.SerializerCapabilities.PackTo | MsgPack.Serialization.SerializerCapabilities.UnpackFrom) 
+                                | MsgPack.Serialization.SerializerCapabilities.UnpackTo)) {
         }
         
         protected override MsgPack.Serialization.SimpleCollection<System.DateTime[]> CreateInstance(int initialCapacity) {
