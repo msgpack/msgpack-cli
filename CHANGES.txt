@@ -607,3 +607,6 @@ Release 0.9.0 (planned)
     Issue #184.
   * Polymorphic attributes now supports type qualification. Issue #171.
   * Runtime type polymorphism now supports name based type verification. This feature allows to prevent loading malicious or unknown types ibefore assembly loading.
+  * Asymmetric serializers. You can generate "pack only" serializer when you set SerializationContext.CompabilityOptions.AllowAsymmetricSerializer to true. #68.
+  * Built in serializer for System.Text.StringBuilder now supports UnpackTo.
+
