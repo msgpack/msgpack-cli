@@ -3588,7 +3588,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_<#= testCase.Type #>_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new <#= testCase.Type #>ForAsymmetricTest<#= testCase.Init #>,
 				SerializerCapabilities.PackTo,
 <#+
@@ -3634,7 +3634,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_<#= testCase.Type #>_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new <#= testCase.Type #>ForAsymmetricTest<#= testCase.Init #>,
 				SerializerCapabilities.PackTo,
 <#+
@@ -3661,7 +3661,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnsettableArrayMemberObjectForAsymmetricTest(),
 				SerializerCapabilities.PackTo,
 <#+
@@ -3681,30 +3681,45 @@ namespace MsgPack.Serialization
 			);
 		}
 
-		private static void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized )
+		private void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized )
 		{
-			var context = GetSerializationContext();
-			context.CompatibilityOptions.AllowAsymmetricSerializer = true;
-			context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+			this.TestAsymmetricPackOnlyCore( factory, expectedCapabilities, serialized, true );
+			this.TestAsymmetricPackOnlyCore( factory, expectedCapabilities, serialized, false );
+		}
 
-			var serializer = context.GetSerializer<T>();
-			Assert.That( serializer.Capabilities, Is.EqualTo( expectedCapabilities ) );
-
-			var obj = factory();
-			using ( var buffer = new MemoryStream() )
+		private void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized, bool avoidsGenericSerializer )
+		{
+			var previousAvoidsGenericSerializer = SerializerDebugging.AvoidsGenericSerializer;
+			SerializerDebugging.AvoidsGenericSerializer = avoidsGenericSerializer;
+			try 
 			{
-				if ( ( expectedCapabilities & SerializerCapabilities.PackTo ) != 0 )
+				var context = GetSerializationContext();
+				context.CompatibilityOptions.AllowAsymmetricSerializer = true;
+				context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+
+				var serializer = this.CreateTarget<T>( context );
+				Assert.That( serializer.Capabilities, Is.EqualTo( expectedCapabilities ) );
+
+				var obj = factory();
+				using ( var buffer = new MemoryStream() )
 				{
-					serializer.Pack( buffer, obj );
-					Assert.That( buffer.ToArray(), Is.EqualTo( serialized ), "{0} != {1}", BitConverter.ToString( buffer.ToArray() ), BitConverter.ToString( serialized ) );
+					if ( ( expectedCapabilities & SerializerCapabilities.PackTo ) != 0 )
+					{
+						serializer.Pack( buffer, obj );
+						Assert.That( buffer.ToArray(), Is.EqualTo( serialized ), "{0} != {1}", BitConverter.ToString( buffer.ToArray() ), BitConverter.ToString( serialized ) );
+					}
+					else if ( ( expectedCapabilities & SerializerCapabilities.UnpackFrom ) != 0 )
+					{
+						buffer.Write( serialized, 0, serialized.Length );
+						buffer.Position = 0;
+						var unpacked = serializer.Unpack( buffer );
+						Assert.That( obj, Is.EqualTo( unpacked ) );
+					}
 				}
-				else if ( ( expectedCapabilities & SerializerCapabilities.UnpackFrom ) != 0 )
-				{
-					buffer.Write( serialized, 0, serialized.Length );
-					buffer.Position = 0;
-					var unpacked = serializer.Unpack( buffer );
-					Assert.That( obj, Is.EqualTo( unpacked ) );
-				}
+			}
+			finally
+			{
+				SerializerDebugging.AvoidsGenericSerializer = previousAvoidsGenericSerializer;
 			}
 		}
 

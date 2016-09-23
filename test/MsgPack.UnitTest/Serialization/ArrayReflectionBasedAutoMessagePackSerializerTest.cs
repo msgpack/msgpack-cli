@@ -8515,7 +8515,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new NoSettableNoConstructorsForAsymmetricTest().Initialize( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8525,7 +8525,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new NoSettableMultipleConstructorsForAsymmetricTest( "A", 0 ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8535,7 +8535,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_NoDefaultConstructor_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new NoDefaultConstructorForAsymmetricTest( 'A' ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8545,7 +8545,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableEnumerableForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8555,7 +8555,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableCollection_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableCollectionForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8565,7 +8565,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableList_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableListForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8575,7 +8575,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableDictionary_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableDictionaryForAsymmetricTest( new KeyValuePair<string, string>( "A", "A" ) ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x81, 0xA1, ( byte )'A', 0xA1, ( byte )'A' }
@@ -8585,7 +8585,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableNonGenericEnumerableForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8595,7 +8595,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableNonGenericCollectionForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8605,7 +8605,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableNonGenericListForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8615,7 +8615,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnconstructableNonGenericDictionaryForAsymmetricTest( new DictionaryEntry( "A", "A" ) ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x81, 0xA1, ( byte )'A', 0xA1, ( byte )'A' }
@@ -8625,7 +8625,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnappendableEnumerable_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnappendableEnumerableForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8635,7 +8635,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnappendableNonGenericEnumerableForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8645,7 +8645,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnappendableNonGenericCollectionForAsymmetricTest( "A" ),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x91, 0xA1, ( byte )'A' }
@@ -8656,41 +8656,70 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable()
 		{
-			TestAsymmetricPackOnlyCore(
+			this.TestAsymmetricPackOnlyCore(
 				() => new UnsettableArrayMemberObjectForAsymmetricTest(),
 				SerializerCapabilities.PackTo,
 				new byte[] { 0x92, 0x91, 0xA1, ( byte )'A', 0x91, 0xA1, ( byte )'A' }
 			);
 		}
 
-		private static void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized )
+		private void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized )
 		{
-			var context = GetSerializationContext();
-			context.CompatibilityOptions.AllowAsymmetricSerializer = true;
-			context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+			this.TestAsymmetricPackOnlyCore( factory, expectedCapabilities, serialized, true );
+			this.TestAsymmetricPackOnlyCore( factory, expectedCapabilities, serialized, false );
+		}
 
-			var serializer = context.GetSerializer<T>();
-			Assert.That( serializer.Capabilities, Is.EqualTo( expectedCapabilities ) );
-
-			var obj = factory();
-			using ( var buffer = new MemoryStream() )
+		private void TestAsymmetricPackOnlyCore<T>( Func<T> factory, SerializerCapabilities expectedCapabilities, byte[] serialized, bool avoidsGenericSerializer )
+		{
+			var previousAvoidsGenericSerializer = SerializerDebugging.AvoidsGenericSerializer;
+			SerializerDebugging.AvoidsGenericSerializer = avoidsGenericSerializer;
+			try 
 			{
-				if ( ( expectedCapabilities & SerializerCapabilities.PackTo ) != 0 )
+				var context = GetSerializationContext();
+				context.CompatibilityOptions.AllowAsymmetricSerializer = true;
+				context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = false;
+
+				var serializer = this.CreateTarget<T>( context );
+				Assert.That( serializer.Capabilities, Is.EqualTo( expectedCapabilities ) );
+
+				var obj = factory();
+				using ( var buffer = new MemoryStream() )
 				{
-					serializer.Pack( buffer, obj );
-					Assert.That( buffer.ToArray(), Is.EqualTo( serialized ), "{0} != {1}", BitConverter.ToString( buffer.ToArray() ), BitConverter.ToString( serialized ) );
+					if ( ( expectedCapabilities & SerializerCapabilities.PackTo ) != 0 )
+					{
+						serializer.Pack( buffer, obj );
+						Assert.That( buffer.ToArray(), Is.EqualTo( serialized ), "{0} != {1}", BitConverter.ToString( buffer.ToArray() ), BitConverter.ToString( serialized ) );
+					}
+					else if ( ( expectedCapabilities & SerializerCapabilities.UnpackFrom ) != 0 )
+					{
+						buffer.Write( serialized, 0, serialized.Length );
+						buffer.Position = 0;
+						var unpacked = serializer.Unpack( buffer );
+						Assert.That( obj, Is.EqualTo( unpacked ) );
+					}
 				}
-				else if ( ( expectedCapabilities & SerializerCapabilities.UnpackFrom ) != 0 )
-				{
-					buffer.Write( serialized, 0, serialized.Length );
-					buffer.Position = 0;
-					var unpacked = serializer.Unpack( buffer );
-					Assert.That( obj, Is.EqualTo( unpacked ) );
-				}
+			}
+			finally
+			{
+				SerializerDebugging.AvoidsGenericSerializer = previousAvoidsGenericSerializer;
 			}
 		}
 
 		#endregion -- Asymmetric --
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 
