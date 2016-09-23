@@ -8806,6 +8806,84 @@ namespace MsgPack.Serialization
 
 		#endregion -- Asymmetric --
 
+		#region -- Object Packing/Unpacking --
+
+		[Test]
+		public void TestToFromMessagePackObject_Complex()
+		{
+			var target = new ComplexType() { Source = new Uri( "http://www.exambple.com" ), TimeStamp = DateTime.Now, Data = new byte[] { 0x1, 0x2, 0x3, 0x4 } };
+			target.History.Add( DateTime.Now.Subtract( TimeSpan.FromDays( 1 ) ), "Create New" );
+			target.Points.Add( 123 );
+			TestToFromMessagePackObjectCore(
+				target,
+				mpo =>
+				{
+					Assert.That( mpo.IsArray );
+					var asList = mpo.AsList();
+					Assert.That( asList.Count, Is.EqualTo( 5 ) );
+
+					Assert.That( asList[ 0 ].IsTypeOf<string>().Value );
+					Assert.That( asList[ 0 ].AsString(), Is.EqualTo( target.Source.ToString() ) );
+
+					Assert.That( asList[ 1 ].IsTypeOf<byte[]>().Value );
+					Assert.That( asList[ 1 ].AsBinary(), Is.EqualTo( target.Data ) );
+
+					Assert.That( asList[ 2 ].IsTypeOf<long>().Value );
+					Assert.That( asList[ 2 ].AsInt64(), Is.EqualTo( target.TimeStamp.ToBinary() ) );
+
+					Assert.That( asList[ 3 ].IsDictionary );
+					Assert.That( asList[ 3 ].AsDictionary().Single().Key.AsInt64(), Is.EqualTo( target.History.Single().Key.ToBinary() ) );
+					Assert.That( asList[ 3 ].AsDictionary().Single().Value.AsString(), Is.EqualTo( target.History.Single().Value ) );
+
+					Assert.That( asList[ 4 ].IsArray );
+					Assert.That( asList[ 4 ].AsList().Single().AsInt32(), Is.EqualTo( target.Points.Single() ) );
+				}
+			);
+		}
+
+		[Test]
+		public void TestToFromMessagePackObject_ComplexGenerated()
+		{
+			var target = new ComplexTypeGenerated();
+			target.Initialize();
+			// This test does not check packed result -- it is verfied with previous test and seems overkill.
+			this.TestToFromMessagePackObjectCore( target, _ => {} );
+		}
+
+		private void TestToFromMessagePackObjectCore<T>( T value, Action<MessagePackObject> mpoAssertion )
+			where T : IVerifiable<T>
+		{
+			this.TestToFromMessagePackObjectCore( value, mpoAssertion, true );
+			this.TestToFromMessagePackObjectCore( value, mpoAssertion, false );
+		}
+
+		private void TestToFromMessagePackObjectCore<T>( T value, Action<MessagePackObject> mpoAssertion, bool avoidsGenericSerializer )
+			where T : IVerifiable<T>
+		{
+			var previousAvoidsGenericSerializer = SerializerDebugging.AvoidsGenericSerializer;
+			SerializerDebugging.AvoidsGenericSerializer = avoidsGenericSerializer;
+			try 
+			{
+				var context = GetSerializationContext();
+				var serializer = this.CreateTarget<T>( context );
+				var mpo = serializer.ToMessagePackObject( value );
+				mpoAssertion( mpo );
+				var result = serializer.FromMessagePackObject( mpo );
+				result.Verify( value );
+
+				var mpoLoose = ( ( MessagePackSerializer )serializer ).ToMessagePackObject( value );
+				mpoAssertion( mpoLoose );
+				var resultLoose = ( ( MessagePackSerializer )serializer ).FromMessagePackObject( mpoLoose );
+				Assert.That( resultLoose, Is.TypeOf<T>() );
+				( ( T )resultLoose ).Verify( value );
+			}
+			finally
+			{
+				SerializerDebugging.AvoidsGenericSerializer = previousAvoidsGenericSerializer;
+			}
+		}
+
+		#endregion -- Object Packing/Unpacking --
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 

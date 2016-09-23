@@ -33,7 +33,7 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
-	public class ComplexType : IVerifiable
+	public class ComplexType : IVerifiable, IVerifiable<ComplexType>
 	{
 		[MessagePackMember( 0 )]
 		public Uri Source { get; set; }
@@ -94,6 +94,15 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( array[ 3 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 				NUnit.Framework.Assert.That( array[ 4 ].AsList().Count, Is.EqualTo( this.Points.Count ) );
 			}
+		}
+
+		public void Verify( ComplexType expected )
+		{
+			AutoMessagePackSerializerTest.Verify( expected.Source, this.Source );
+			AutoMessagePackSerializerTest.Verify( expected.Data, this.Data );
+			AutoMessagePackSerializerTest.Verify( expected.TimeStamp, this.TimeStamp );
+			AutoMessagePackSerializerTest.Verify( expected.History, this.History );
+			AutoMessagePackSerializerTest.Verify( expected.Points, this.Points );
 		}
 	}
 }

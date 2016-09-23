@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Deserialize object from the <see cref="Stream"/>.
+		///		Deserializes object from the <see cref="Stream"/>.
 		/// </summary>
 		/// <param name="source"><see cref="MessagePackSerializer"/> object.</param>
 		/// <param name="stream">Source <see cref="Stream"/>.</param>
@@ -112,5 +112,128 @@ namespace MsgPack.Serialization
 
 			return source.UnpackFrom( unpacker );
 		}
+
+		/// <summary>
+		///		Serializes object as a single <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <param name="source"><see cref="MessagePackSerializer"/> object.</param>
+		/// <param name="obj">The object to be serialized.</param>
+		/// <returns><see cref="MessagePackObject"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize.
+		/// </exception>
+		public static MessagePackObject ToMessagePackObject( this MessagePackSerializer source, object obj )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			using ( var buffer = new MemoryStream() )
+			{
+				source.Pack( buffer, obj );
+				buffer.Position = 0;
+				return Unpacking.UnpackObject( buffer );
+			}
+		}
+
+		/// <summary>
+		///		Serializes object as a single <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of the object to be serialized.</typeparam>
+		/// <param name="source"><see cref="MessagePackSerializer{T}"/> object.</param>
+		/// <param name="obj">The object to be serialized.</param>
+		/// <returns><see cref="MessagePackObject"/>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize.
+		/// </exception>
+		public static MessagePackObject ToMessagePackObject<T>( this MessagePackSerializer<T> source, T obj )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			using ( var buffer = new MemoryStream() )
+			{
+				source.Pack( buffer, obj );
+				buffer.Position = 0;
+				return Unpacking.UnpackObject( buffer );
+			}
+		}
+
+		/// <summary>
+		///		Deserializes object from a single <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <param name="source"><see cref="MessagePackSerializer"/> object.</param>
+		/// <param name="mpo">The <see cref="MessagePackObject"/> which represents deserializing object structructure.</param>
+		/// <returns>A deserialized object. This value can be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize.
+		/// </exception>
+		public static object FromMessagePackObject( this MessagePackSerializer source, MessagePackObject mpo )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			// This idea is borrowed from @TSnake41
+			using ( var buffer = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None, ownsStream: false ) )
+				{
+					mpo.PackToMessage( packer, null );
+				}
+
+				buffer.Position = 0;
+
+				return source.Unpack( buffer );
+			}
+		}
+
+		/// <summary>
+		///		Deserializes object from a single <see cref="MessagePackObject"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of the object to be deserialized.</typeparam>
+		/// <param name="source"><see cref="MessagePackSerializer{T}"/> object.</param>
+		/// <param name="mpo">The <see cref="MessagePackObject"/> which represents deserializing object structructure.</param>
+		/// <returns>A deserialized object. This value can be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="source"/> is <c>null</c>.
+		/// </exception>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to deserialize.
+		/// </exception>
+		public static T FromMessagePackObject<T>( this MessagePackSerializer<T> source, MessagePackObject mpo )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			// This idea is borrowed from @TSnake41
+			using ( var buffer = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None, ownsStream: false ) )
+				{
+					mpo.PackToMessage( packer, null );
+				}
+
+				buffer.Position = 0;
+
+				return source.Unpack( buffer );
+			}
+		}
 	}
 }
+
