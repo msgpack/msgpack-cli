@@ -5,9 +5,9 @@ init:
 - cmd: >-
     cd \
 
-    appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.3.4-windows.zip
+    appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.4.1-windows.zip
 
-    7z x android-sdk_r24.3.4-windows.zip > nul
+    7z x android-sdk_r24.4.1-windows.zip > nul
 
     cd %APPVEYOR_BUILD_FOLDER%
 assembly_info:
