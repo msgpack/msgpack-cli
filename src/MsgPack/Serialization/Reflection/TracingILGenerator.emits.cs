@@ -1939,6 +1939,7 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Unbox, type );
 		}
+#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'throw' instruction with specified arguments.
@@ -1953,7 +1954,6 @@ namespace MsgPack.Serialization.Reflection
 
 			this._underlying.Emit( OpCodes.Throw );
 		}
-#endif // DEBUG
 
 		///	<summary>
 		///		Emit 'ldfld' instruction with specified arguments.
