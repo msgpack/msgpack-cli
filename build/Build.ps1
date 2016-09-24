@@ -192,8 +192,8 @@ if ( $buildConfig -eq 'Release' )
 {
 	& $nuget pack ../MsgPack.nuspec -Symbols -Version $env:PackageVersion -OutputDirectory ../dist
 
-	Copy-Item ../bin/ ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
-	Copy-Item ../tools/mpu/bin/ ./MsgPack-CLI/mpu/ -Recurse -Exclude @("*.vshost.*")
+	Copy-Item ../bin/* ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
+	Copy-Item ../tools/mpu/bin/* ./MsgPack-CLI/mpu/ -Recurse -Exclude @("*.vshost.*")
 	[Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" ) | Out-Null
 	# 'latest' should be rewritten with semver manually.
 	if ( ( Test-Path "../dist/MsgPack.Cli.${env:PackageVersion}.zip" ) )
