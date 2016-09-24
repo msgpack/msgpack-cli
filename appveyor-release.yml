@@ -8,9 +8,9 @@ init:
 - cmd: >-
     cd \
 
-    appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.3.4-windows.zip
+@rem    appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.3.4-windows.zip
 
-    7z x android-sdk_r24.3.4-windows.zip > nul
+@rem    7z x android-sdk_r24.3.4-windows.zip > nul
 
     cd %APPVEYOR_BUILD_FOLDER%
 assembly_info:
@@ -27,7 +27,7 @@ install:
 
     ./SetBuildEnv.ps1
 
-    ./UpdateAndroidSdk.cmd
+#    ./UpdateAndroidSdk.cmd
 
     cd ..
 build_script:
