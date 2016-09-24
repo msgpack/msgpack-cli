@@ -43,6 +43,7 @@
   </Project>
 
   <!-- TOOD: should be project.json -->
+  <!-- .Uwp is testing purpose only, this is just .NET Native test target for .NET Standard 1.3 configuration -->
   <Project Name="MsgPack.Uwp" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="BufferedStream.cs" />
@@ -86,16 +87,9 @@
     <Exclude Path="NetStandardCompatibility.cs" />
     <Exclude Path="project.json" />
   </Project>
-  
-   <!-- TOOD: should be project.json -->
- <Project Name="MsgPack.Xamarin.iOS.Unified" Base="MsgPack.Xamarin.iOS">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-  </Project>
 
-
-
-   <!-- TOOD: should be project.json -->
- <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
+  <!-- TOOD: should be project.json -->
+  <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
   </Project>
 

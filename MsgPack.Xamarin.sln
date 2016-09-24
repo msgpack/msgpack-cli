@@ -24,11 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DB9CF5
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Xamarin.iOS", "src\MsgPack.Xamarin.iOS\MsgPack.Xamarin.iOS.csproj", "{346B55F0-94FA-4B90-9C11-06031043B685}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.UnitTest.Xamarin.iOS", "test\MsgPack.UnitTest.Xamarin.iOS\MsgPack.UnitTest.Xamarin.iOS.csproj", "{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Xamarin.iOS.Unified", "src\MsgPack.Xamarin.iOS.Unified\MsgPack.Xamarin.iOS.Unified.csproj", "{C9710C8A-2FA9-47FE-812C-992C283471CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsgPack.Xamarin.iOS", "src\MsgPack.Xamarin.iOS\MsgPack.Xamarin.iOS.csproj", "{C9710C8A-2FA9-47FE-812C-992C283471CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,31 +101,6 @@ Global
 		{5EDECDB4-5179-4441-974F-EC26B4F54528}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{5EDECDB4-5179-4441-974F-EC26B4F54528}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5EDECDB4-5179-4441-974F-EC26B4F54528}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Ad-Hoc|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Ad-Hoc|Mixed Platforms.Build.0 = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.AppStore|Any CPU.Build.0 = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.AppStore|iPhone.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.AppStore|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.AppStore|Mixed Platforms.Build.0 = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Release|Any CPU.Build.0 = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{346B55F0-94FA-4B90-9C11-06031043B685}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}.Ad-Hoc|Any CPU.ActiveCfg = Ad-Hoc|iPhone
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
@@ -195,7 +168,6 @@ Global
 		{BA5E7D16-23AB-44B5-BAF5-6E9C9F51E67A} = {1BD5D488-707E-4030-8AE8-80D93D04963F}
 		{A6210C9C-1614-46C5-97B2-6A37032AF143} = {BA5E7D16-23AB-44B5-BAF5-6E9C9F51E67A}
 		{5EDECDB4-5179-4441-974F-EC26B4F54528} = {87A17015-9338-431E-B338-57BDA03984C1}
-		{346B55F0-94FA-4B90-9C11-06031043B685} = {BA5E7D16-23AB-44B5-BAF5-6E9C9F51E67A}
 		{2B75A9C8-F891-4F78-9E27-8B6FE972DE6C} = {87A17015-9338-431E-B338-57BDA03984C1}
 		{C9710C8A-2FA9-47FE-812C-992C283471CC} = {BA5E7D16-23AB-44B5-BAF5-6E9C9F51E67A}
 	EndGlobalSection
