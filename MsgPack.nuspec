@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
-  <metadata>
+  <metadata minClientVersion="2.12">
     <id>MsgPack.Cli</id>
     <title>MessagePack for CLI</title>
     <version>0.0.0-development</version>
