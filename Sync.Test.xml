@@ -29,7 +29,7 @@
     <Preserve File="*.plist" />
     <Preserve Path="linker.xml" />
     <Preserve Path="Main.cs" />
-    <Preserve Path="UnitTestAppDelegate.cs" />
+    <Preserve Path="*AppDelegate.cs" />
     <Preserve Path="Serialization\AotTest.cs" />
     <Exclude File="_SetUpFixture.cs" />
     <Exclude File="ReadMe.txt" />
@@ -56,7 +56,7 @@
     <Preserve File="*.snk" />
     <Exclude File="*.plist" />
     <Exclude Path="Main.cs" />
-    <Exclude Path="UnitTestAppDelegate.cs" />
+    <Exclude Path="*AppDelegate.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.Uwp" Base="MsgPack.UnitTest.Xamarin.iOS">
@@ -73,7 +73,7 @@
     <Preserve Path="TimeoutAttribute.cs" />
     <Exclude File="*.plist" />
     <Exclude Path="Main.cs" />
-    <Exclude Path="UnitTestAppDelegate.cs" />
+    <Exclude Path="*AppDelegate.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.Uwp.Aot" Base="MsgPack.UnitTest.Uwp">

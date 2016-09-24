@@ -25,8 +25,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchDebug>true</MtouchDebug>
     <AssemblyName>MsgPackUnitTestXamariniOS</AssemblyName>
-    <MtouchI18n>
-    </MtouchI18n>
+    <MtouchI18n></MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
@@ -52,8 +51,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
     <AssemblyName>MsgPackUnitTestXamariniOS</AssemblyName>
-    <IpaPackageName>
-    </IpaPackageName>
+    <IpaPackageName></IpaPackageName>
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchSdkVersion>9.3</MtouchSdkVersion>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -119,7 +117,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="..\MsgPack.UnitTest\cases.mpac">
       <Link>cases.mpac</Link>
@@ -1894,15 +1891,15 @@
     <BundleResource Include="..\MsgPack.UnitTest\cases.json">
       <Link>cases.json</Link>
     </BundleResource>
+    <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Resources\Default.png" />
+    <BundleResource Include="Resources\Default%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\MsgPack.UnitTest\gen\_ReadMe.txt">
       <Link>gen\_ReadMe.txt</Link>
     </Content>
     <Content Include="linker.xml" />
-    <BundleResource Include="Resources\Default-568h%402x.png" />
-    <BundleResource Include="Resources\Default.png" />
-    <BundleResource Include="Resources\Default%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MsgPack.Xamarin.iOS\MsgPack.Xamarin.iOS.csproj">
