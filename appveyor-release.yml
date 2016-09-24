@@ -4,15 +4,6 @@ branches:
   - master
   - 0.7
 configuration: Release
-init:
-- cmd: >-
-    cd \
-
-@rem    appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.3.4-windows.zip
-
-@rem    7z x android-sdk_r24.3.4-windows.zip > nul
-
-    cd %APPVEYOR_BUILD_FOLDER%
 assembly_info:
   patch: true
   file: '**\*AssemblyInfo.cs'
@@ -26,8 +17,6 @@ install:
     cd ./build
 
     ./SetBuildEnv.ps1
-
-#    ./UpdateAndroidSdk.cmd
 
     cd ..
 build_script:
