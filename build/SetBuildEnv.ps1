@@ -23,4 +23,4 @@ else
 	$env:PackageVersion = $version
 }
 
-Write-Host "version:'${version}', AssemblyBaseVersion:'${AssemblyBaseVersion}', PackageVersion:'${PackageVersion}'"
+Write-Host "version:'${version}', AssemblyBaseVersion:'${env:AssemblyBaseVersion}', PackageVersion:'${env:PackageVersion}'"
