@@ -27,11 +27,11 @@
 #endif // NETFX_35 || UNITY || SILVERLIGHT
 
 using System;
-#if CORE_CLR || UNITY
+#if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Threading;
 
 namespace MsgPack.Serialization

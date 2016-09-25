@@ -22,7 +22,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 #if DEBUG
+#if NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_1
 #endif // DEBUG
 using System.Reflection;
 

@@ -174,7 +174,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY || CORE_CLR
+#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY || CORE_CLR || NETSTANDARD1_1
 		private sealed class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
 		{
 			private readonly IDictionary<TKey, TValue> _underlying;

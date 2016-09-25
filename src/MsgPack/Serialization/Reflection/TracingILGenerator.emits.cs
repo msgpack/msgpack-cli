@@ -23,7 +23,11 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+#if NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_1
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
