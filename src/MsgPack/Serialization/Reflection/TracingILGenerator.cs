@@ -197,20 +197,19 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( methodBuilder != null );
 		}
+#endif // DEBUG
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
 		/// <param name="dynamicMethod">The dynamic method.</param>
 		/// <param name="traceWriter">The trace writer.</param>
-		public TracingILGenerator( DynamicMethod dynamicMethod, TextWriter traceWriter )
-			: this( dynamicMethod != null ? dynamicMethod.GetILGenerator() : null, true, traceWriter, false )
+		/// <param name="isDebuggable"><c>true</c> if the underlying builders are debuggable; othersie <c>false</c>.</param>
+		public TracingILGenerator( DynamicMethod dynamicMethod, TextWriter traceWriter, bool isDebuggable )
+			: this( dynamicMethod != null ? dynamicMethod.GetILGenerator() : null, true, traceWriter, isDebuggable )
 		{
 			Contract.Assert( dynamicMethod != null );
 		}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
-#endif // DEBUG
 
 		// TODO: NLIblet
 

@@ -146,6 +146,155 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#warning TODO: Split multiple files
+#warning TODO: Remove System.Linq.Expressions
+		public static Type[] GetParameterTypes( this MethodBase source )
+		{
+			var parameters = source.GetParameters();
+			Type[] parameterTypes = new Type[ parameters.Length ];
+			for ( var i = 0; i < parameters.Length; i++ )
+			{
+				parameterTypes[ i ] = parameters[ i ].ParameterType;
+			}
+
+			return parameterTypes;
+		}
+
+		public static Func<T> CreateConstructorDelegate<T>()
+		{
+			return CreateConstructorDelegate<T>( typeof( T ) );
+		}
+
+		public static Func<T> CreateConstructorDelegate<T>( this Type source )
+		{
+			ValidateInstanceType( source, typeof( T ) );
+
+			ConstructorInfo defaultConstructor = null;
+
+			if ( !typeof( T ).GetIsValueType() )
+			{
+				foreach ( var candidate in typeof( T ).GetTypeInfo().DeclaredConstructors )
+				{
+					if ( candidate.GetParameters().Length == 0 )
+					{
+						defaultConstructor = candidate;
+						break;
+					}
+				}
+
+				if ( defaultConstructor == null )
+				{
+					throw new InvalidOperationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"There are no default constructors in type '{0}'.",
+							typeof( T )
+						)
+					);
+				}
+			}
+
+			return ( Func<T> )CreateDelegate( typeof( Func<T> ), typeof( T ), defaultConstructor, ReflectionAbstractions.EmptyTypes );
+		}
+
+
+		public static Func<TArg, T> CreateConstructorDelegate<T, TArg>()
+		{
+			return CreateConstructorDelegate<T, TArg>( typeof( T ) );
+		}
+
+		public static Func<TArg, T> CreateConstructorDelegate<T, TArg>( this Type source )
+		{
+			ValidateInstanceType( source, typeof( T ) );
+			var parameterTypes = new[] { typeof( TArg ) };
+			return ( Func<TArg, T> )CreateDelegate( typeof( Func<TArg, T> ), typeof( T ), GetConstructor( typeof( T ), parameterTypes ), parameterTypes );
+		}
+
+		private static void ValidateInstanceType( Type source, Type returnType )
+		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException( "source" );
+			}
+
+			if ( !returnType.IsAssignableFrom( source ) )
+			{
+				throw new InvalidOperationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"The instance type '{0}' is not assignable to return type '{1}'.",
+						source,
+						returnType
+					)
+				);
+			}
+
+		}
+
+		private static ConstructorInfo GetConstructor( Type source, Type[] parameterTypes )
+		{
+			// Avoid LINQ for performance here.
+			foreach ( var candidate in source.GetTypeInfo().DeclaredConstructors )
+			{
+				var parameters = candidate.GetParameters();
+				if ( parameters.Length == parameterTypes.Length )
+				{
+					bool typesAreMatch = true;
+					for ( var i = 0; i < parameterTypes.Length; i++ )
+					{
+						if ( parameters[ i ].ParameterType != parameterTypes[ i ] )
+						{
+							typesAreMatch = false;
+							break;
+						}
+					}
+
+					if ( typesAreMatch )
+					{
+						return candidate;
+					}
+				}
+			}
+
+			throw new InvalidOperationException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"There are no constructors in type '{0}' which matches parameter types '{1}'.",
+					source,
+					String.Join<Type>( ", ", parameterTypes )
+				)
+			);
+		}
+
+		private static Delegate CreateDelegate( Type delegateType, Type targetType, ConstructorInfo constructor, Type[] parameterTypes )
+		{
+			// TODO: AOT check and fallback.
+
+			var dynamicMethod =
+				new DynamicMethod( "Create" + targetType.Name, targetType, parameterTypes, restrictedSkipVisibility: true );
+			var il = new TracingILGenerator( dynamicMethod, NullTextWriter.Instance, isDebuggable: false );
+			if ( constructor == null )
+			{
+				// Value type's init.
+				il.DeclareLocal( targetType );
+				il.EmitAnyLdloca( 0 );
+				il.EmitInitobj( targetType );
+				il.EmitAnyLdloc( 0 );
+			}
+			else
+			{
+				for ( var i = 0; i < parameterTypes.Length; i++ )
+				{
+					il.EmitAnyLdarg( i );
+				}
+
+				il.EmitNewobj( constructor );
+			}
+
+			il.EmitRet();
+			return dynamicMethod.CreateDelegate( delegateType );
+		}
+
 		public static Type GetMemberValueType( this MemberInfo source )
 		{
 			if ( source == null )
