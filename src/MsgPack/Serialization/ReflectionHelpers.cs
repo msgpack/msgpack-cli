@@ -28,11 +28,11 @@
 
 using System;
 using System.Linq;
-#if UNITY
+#if UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // UNITY
+#endif // UNITY || NETSTANDARD1_1
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL

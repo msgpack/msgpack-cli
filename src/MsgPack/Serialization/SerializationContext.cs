@@ -32,11 +32,11 @@ using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NETFX_35 && !UNITY
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if CORE_CLR || UNITY
+#if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 #if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Linq;
 #endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3

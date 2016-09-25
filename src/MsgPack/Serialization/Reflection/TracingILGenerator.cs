@@ -21,11 +21,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if CORE_CLR
+#if CORE_CLR || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || NETSTANDARD1_1
 using System.Globalization;
 using System.IO;
 using System.Reflection;
