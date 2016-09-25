@@ -27,6 +27,7 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 
 using MsgPack.Serialization.Reflection;
 
@@ -38,6 +39,27 @@ namespace MsgPack.Serialization.AbstractSerializers
 	internal class TypeDefinition
 	{
 		private static readonly TypeDefinition[] EmptyArray = new TypeDefinition[ 0 ];
+
+		public static readonly TypeDefinition ObjectType = TypeDefinition.Object( typeof( object ) );
+		public static readonly TypeDefinition ByteType = TypeDefinition.Object( typeof( byte ) );
+		public static readonly TypeDefinition SByteType = TypeDefinition.Object( typeof( sbyte ) );
+		public static readonly TypeDefinition Int16Type = TypeDefinition.Object( typeof( short ) );
+		public static readonly TypeDefinition UInt16Type = TypeDefinition.Object( typeof( ushort ) );
+		public static readonly TypeDefinition Int32Type = TypeDefinition.Object( typeof( int ) );
+		public static readonly TypeDefinition UInt32Type = TypeDefinition.Object( typeof( uint ) );
+		public static readonly TypeDefinition Int64Type = TypeDefinition.Object( typeof( long ) );
+		public static readonly TypeDefinition UInt64Type = TypeDefinition.Object( typeof( ulong ) );
+		public static readonly TypeDefinition SingleType = TypeDefinition.Object( typeof( float ) );
+		public static readonly TypeDefinition DoubleType = TypeDefinition.Object( typeof( double ) );
+		public static readonly TypeDefinition BooleanType = TypeDefinition.Object( typeof( bool ) );
+		public static readonly TypeDefinition CharType = TypeDefinition.Object( typeof( char ) );
+		public static readonly TypeDefinition StringType = TypeDefinition.Object( typeof( string ) );
+		public static readonly TypeDefinition TypeType = TypeDefinition.Object( typeof( Type ) );
+		public static readonly TypeDefinition MethodBaseType = TypeDefinition.Object( typeof( MethodBase ) );
+		public static readonly TypeDefinition FieldInfoType = TypeDefinition.Object( typeof( FieldInfo ) );
+		public static readonly TypeDefinition SerializationContextType = TypeDefinition.Object( typeof( SerializationContext ) );
+
+
 
 		private readonly Flags _flags;
 
