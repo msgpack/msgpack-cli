@@ -140,6 +140,7 @@
     <Preserve Path="Volatile.cs" />
     <Preserve Path="Serialization\Metadata\_MessagePackSerializer.cs" />
     <Preserve Path="Serialization\Metadata\_SerializationContext.cs" />
+    <Preserve Path="Serialization\Reflection\TracingILGenerator.*" />
     <Preserve Path="Serialization\FromExpression*.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />
