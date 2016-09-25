@@ -32,7 +32,6 @@ using System.Linq;
 using System.Reflection;
 #if FEATURE_TAP
 using System.Threading;
-using System.Threading.Tasks;
 #endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.AbstractSerializers
@@ -243,7 +242,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			context.BeginMethodOverride( MethodName.AddItem );
 			context.EndMethodOverride(
 				MethodName.AddItem,
-				this.EmitSequentialStatements( context, typeof( void ) ) // nop
+				this.EmitSequentialStatements( context, TypeDefinition.VoidType ) // nop
 			);
 		}
 
@@ -282,7 +281,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					? this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker )
 					: this.EmitCheckIsMapHeaderExpression( context, context.Unpacker );
 
-			var itemsCount = this.DeclareLocal( context, typeof( int ), "itemsCount" );
+			var itemsCount = this.DeclareLocal( context, TypeDefinition.Int32Type, "itemsCount" );
 
 			// Unpack items count and store it
 			yield return itemsCount;
@@ -317,9 +316,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.MakeNullLiteral(
 						context,
 #if FEATURE_TAP
-						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,> ), typeof( Unpacker ), this.TargetType, typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
+						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,> ), TypeDefinition.UnpackerType, this.TargetType, TypeDefinition.Int32Type, TypeDefinition.CancellationTokenType, TypeDefinition.TaskType ) :
 #endif // FEATURE_TAP
-						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), typeof( Unpacker ), this.TargetType, typeof( int ) )
+						TypeDefinition.GenericReferenceType( typeof( Action<,,> ), TypeDefinition.UnpackerType, this.TargetType, TypeDefinition.Int32Type )
 					);
 
 				var indexOfItemParameter = context.IndexOfItem;
@@ -339,9 +338,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 						AdjustName( MethodName.UnpackCollectionItem, isAsync ),
 						false, // isStatic
 #if FEATURE_TAP
-						isAsync ? typeof( Task ) :
+						isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-						typeof( void ),
+						TypeDefinition.VoidType,
 						() => this.EmitUnpackItemValueStatement(	
 							context,
 							traitsOfTheCollection.ElementType,
@@ -357,7 +356,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context,
 								MethodName.AppendUnpackedItem,
 								false, // isStatic
-								typeof( void ),
+								TypeDefinition.VoidType,
 								() => this.EmitAppendCollectionItem(
 									context,
 									null,
@@ -382,9 +381,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.MakeNullLiteral(
 						context,
 #if FEATURE_TAP
-						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,,> ), typeof( Unpacker ), this.TargetType, typeof( int ), typeof( int ), typeof( CancellationToken ), typeof( Task ) ) :
+						isAsync ? TypeDefinition.GenericReferenceType( typeof( Func<,,,,,> ), TypeDefinition.UnpackerType, this.TargetType, TypeDefinition.Int32Type, TypeDefinition.Int32Type, TypeDefinition.CancellationTokenType, TypeDefinition.TaskType ) :
 #endif // FEATURE_TAP
-						TypeDefinition.GenericReferenceType( typeof( Action<,,,> ), typeof( Unpacker ), this.TargetType, typeof( int ), typeof( int ) )
+						TypeDefinition.GenericReferenceType( typeof( Action<,,,> ), TypeDefinition.UnpackerType, this.TargetType, TypeDefinition.Int32Type, TypeDefinition.Int32Type )
 					);
 			}
 
@@ -492,19 +491,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildRestoreSchema( TContext context, PolymorphismSchema schema )
 		{
-			context.BeginPrivateMethod( MethodName.RestoreSchema, true, typeof( PolymorphismSchema ) );
+			context.BeginPrivateMethod( MethodName.RestoreSchema, true, TypeDefinition.PolymorphismSchemaType );
 
 			var storage =
 				this.DeclareLocal(
 					context,
-					typeof( PolymorphismSchema ),
+					TypeDefinition.PolymorphismSchemaType	,
 					"schema"
 				);
 			context.EndPrivateMethod(
 				MethodName.RestoreSchema,
 				this.EmitSequentialStatements(
 					context,
-					typeof( PolymorphismSchema ),
+					TypeDefinition.PolymorphismSchemaType,
 					new[] { storage }
 					.Concat( this.EmitConstructPolymorphismSchema( context, storage, schema ) )
 					.Concat( new[] { this.EmitRetrunStatement( context, this.EmitLoadVariableExpression( context, storage ) ) } )
@@ -547,7 +546,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						)
 					);
 
-				return this.EmitSequentialStatements( context, typeof( void ), initUnpackTo, initAsyncUnpackTo );
+				return this.EmitSequentialStatements( context, TypeDefinition.VoidType, initUnpackTo, initAsyncUnpackTo );
 			}
 #endif // FEATURE_TAP
 

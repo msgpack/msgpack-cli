@@ -265,17 +265,18 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this._cachedPropertyAccessors.Clear();
 			this._buildingType = declaringType;
 
-			this.Packer = CodeDomConstruct.Parameter( typeof( Packer ), "packer" );
-			this.PackToTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
-			this.NullCheckTarget = CodeDomConstruct.Parameter( targetType, "objectTree" );
-			this.Unpacker = CodeDomConstruct.Parameter( typeof( Unpacker ), "unpacker" );
-			this.IndexOfItem = CodeDomConstruct.Parameter( typeof( int ), "indexOfItem" );
-			this.ItemsCount = CodeDomConstruct.Parameter( typeof( int ), "itemsCount" );
-			this.UnpackToTarget = CodeDomConstruct.Parameter( targetType, "collection" );
+			var targetTypeDefinition = TypeDefinition.Object( targetType );
+			this.Packer = CodeDomConstruct.Parameter( TypeDefinition.PackerType, "packer" );
+			this.PackToTarget = CodeDomConstruct.Parameter( targetTypeDefinition, "objectTree" );
+			this.NullCheckTarget = CodeDomConstruct.Parameter( targetTypeDefinition, "objectTree" );
+			this.Unpacker = CodeDomConstruct.Parameter( TypeDefinition.UnpackerType, "unpacker" );
+			this.IndexOfItem = CodeDomConstruct.Parameter( TypeDefinition.Int32Type, "indexOfItem" );
+			this.ItemsCount = CodeDomConstruct.Parameter( TypeDefinition.Int32Type, "itemsCount" );
+			this.UnpackToTarget = CodeDomConstruct.Parameter( targetTypeDefinition, "collection" );
 			var traits = targetType.GetCollectionTraits( CollectionTraitOptions.Full, this.SerializationContext.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
 			if ( traits.ElementType != null )
 			{
-				this.CollectionToBeAdded = CodeDomConstruct.Parameter( targetType, "collection" );
+				this.CollectionToBeAdded = CodeDomConstruct.Parameter( targetTypeDefinition, "collection" );
 				this.ItemToAdd = CodeDomConstruct.Parameter( traits.ElementType, "item" );
 				if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
 #if !NETFX_35 && !NETFX_40
@@ -291,13 +292,13 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					this.KeyToAdd = null;
 					this.ValueToAdd = null;
 				}
-				this.InitialCapacity = CodeDomConstruct.Parameter( typeof( int ), "initialCapacity" );
+				this.InitialCapacity = CodeDomConstruct.Parameter( TypeDefinition.Int32Type, "initialCapacity" );
 			}
 		}
 
 		public override void BeginMethodOverride( string name )
 		{
-			this._methodContextStack.Push( new MethodContext( name, false, typeof( object ), SerializerBuilderHelper.EmptyParameters ) );
+			this._methodContextStack.Push( new MethodContext( name, false, TypeDefinition.ObjectType, SerializerBuilderHelper.EmptyParameters ) );
 		}
 
 		public override void BeginPrivateMethod( string name, bool isStatic, TypeDefinition returnType, params CodeDomConstruct[] parameters )
@@ -541,7 +542,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		// For stack
 		public void BeginConstructor()
 		{
-			this._methodContextStack.Push( new MethodContext( ".ctor", false, typeof( object ), SerializerBuilderHelper.EmptyParameters ) );
+			this._methodContextStack.Push( new MethodContext( ".ctor", false, TypeDefinition.ObjectType, SerializerBuilderHelper.EmptyParameters ) );
 		}
 
 		public void EndConstructor()

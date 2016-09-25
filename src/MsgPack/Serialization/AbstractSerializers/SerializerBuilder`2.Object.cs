@@ -138,7 +138,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.PackToTarget,
 						new MethodDefinition( packTo, @interface ),
 						context.Packer,
-						this.MakeNullLiteral( context, typeof( PackingOptions ) )
+						this.MakeNullLiteral( context, TypeDefinition.PackingOptionsType )
 					);
 			}
 			else
@@ -153,7 +153,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							context.PackToTarget,
 							new MethodDefinition( packTo, @interface ),
 							context.Packer,
-							this.MakeNullLiteral( context, typeof( PackingOptions ) ),
+							this.MakeNullLiteral( context, TypeDefinition.PackingOptionsType ),
 							this.ReferCancellationToken( context, 3 )
 						)
 					);
@@ -178,7 +178,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				methodName,
 				this.EmitSequentialStatements(
 					context,
-					typeof( void ),
+					TypeDefinition.VoidType,
 					this.BuildObjectPackToCore( context, targetInfo.Members, isAsync )
 				)
 			);
@@ -225,9 +225,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 							AdjustName( MethodName.PackMemberPlaceHolder, isAsync ),
 							false, // isStatic
 #if FEATURE_TAP
-							isAsync ? typeof( Task ) :
+							isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-							typeof( void ),
+							TypeDefinition.VoidType,
 							() => isAsync
 								? this.EmitRetrunStatement( context, this.EmitInvokeMethodExpression( context, context.Packer, methodForNull, argumentsForNull ) )
 								: this.EmitInvokeVoidMethod( context, context.Packer, methodForNull, argumentsForNull ),
@@ -243,12 +243,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 							GetPackValueMethodName( entries[ i ], isAsync ),
 							false, // isStatic
 #if FEATURE_TAP
-							isAsync ? typeof( Task ) :
+							isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-							typeof( void ),
+							TypeDefinition.VoidType,
 							() => this.EmitSequentialStatements(
 								context,
-								typeof( void ),
+								TypeDefinition.VoidType,
 								this.EmitPackItemStatements(
 									context,
 									context.Packer,
@@ -275,12 +275,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context,
 								GetCheckNullMethodName( entries[ i ] ),
 								false, // isStatic
-								typeof( bool ),
+								TypeDefinition.BooleanType,
 								() =>
 									nullCheckTargetType.GetIsValueType() // Is Nullable<T> ?
 									? this.EmitSequentialStatements(
 										context,
-										typeof( bool ),
+										TypeDefinition.BooleanType,
 										this.EmitHasValueCore( context, nullCheckTarget, nullCheckTargetType )
 									) : this.EmitRetrunStatement(
 										context,
@@ -348,12 +348,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					new MethodDefinition(
 						packHelperMethodName,
 						new TypeDefinition[] { this.TargetType },
-						typeof( PackHelpers ),
+						TypeDefinition.PackHelpersType,
 						true, // isStatic
 #if FEATURE_TAP
-						isAsync ? typeof( Task ) :
+						isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-						typeof( void ),
+						TypeDefinition.VoidType,
 						packHelperParameterType
 					);
 
@@ -402,7 +402,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							),
 							Metadata._SerializationContext.SerializationMethod
 						),
-						this.MakeEnumLiteral( context, typeof( SerializationMethod ), SerializationMethod.Array )
+						this.MakeEnumLiteral( context, TypeDefinition.SerializationMethodType, SerializationMethod.Array )
 					),
 					forArray,
 					forMap
@@ -451,7 +451,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected internal TConstruct EmitPackOperationTableInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
 			var actionType = this.GetPackOperationType( context, isAsync );
-			var listType = TypeDefinition.GenericReferenceType( typeof( Dictionary<,> ), typeof( string ), actionType );
+			var listType = TypeDefinition.GenericReferenceType( typeof( Dictionary<,> ), TypeDefinition.StringType, actionType );
 			return
 				this.EmitSequentialStatements(
 					context,
@@ -511,7 +511,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					: this.EmitCreateNewObjectExpression(
 						context,
 						actionCollection,
-						new ConstructorDefinition( actionCollection.ContextType, typeof( int ) ),
+						new ConstructorDefinition( actionCollection.ContextType, TypeDefinition.Int32Type ),
 						this.MakeInt32Literal( context, knownActions.Length )
 					)
 				);
@@ -598,7 +598,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitCreateNewObjectExpression(
 						context,
 						actionCollection,
-						new ConstructorDefinition( actionCollection.ContextType, typeof( int ) ),
+						new ConstructorDefinition( actionCollection.ContextType, TypeDefinition.Int32Type ),
 						this.MakeInt32Literal( context, knownActions.Length )
 					)
 				);
@@ -901,7 +901,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									null,
 									null,
 									false, // isStatic
-									typeof( void ),
+									TypeDefinition.VoidType,
 									unpackingContext.VariableType,
 									targetInfo.Members[ count ].Member.GetMemberValueType()
 								),
@@ -918,9 +918,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					GetUnpackValueMethodName( targetInfo.Members[ i ], isAsync ),
 					false, // isStatic
 #if FEATURE_TAP
-					isAsync ? typeof( Task ) :
+					isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-					typeof( void ),
+					TypeDefinition.VoidType,
 					() => privateMethodBody,
 					unpackOperationParameters
 				);
@@ -959,7 +959,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						new MethodDefinition(
 							AdjustName( MethodNamePrefix.UnpackFrom + method, isAsync ),
 							new[] { unpackingContext.Type, this.TargetType },
-							typeof( UnpackHelpers ),
+							TypeDefinition.UnpackHelpersType,
 							true, // isStatic
 							this.TargetType,
 							unpackHelperArguments.Select( a => a.ContextType ).ToArray()
@@ -1117,7 +1117,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
 				? this.EmitSequentialStatements(
 					context,
-					typeof( void ),
+					TypeDefinition.VoidType,
 					new[]
 					{
 						this.EmitStoreVariableStatement(
@@ -1259,7 +1259,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		protected internal TConstruct EmitUnpackOperationTableInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
 			var actionType = this.GetUnpackOperationType( context, isAsync );
-			var dictionaryType = TypeDefinition.GenericReferenceType( typeof( Dictionary<,> ), typeof( string ), actionType );
+			var dictionaryType = TypeDefinition.GenericReferenceType( typeof( Dictionary<,> ), TypeDefinition.StringType, actionType );
 			return
 				this.EmitSequentialStatements(
 					context,
@@ -1282,20 +1282,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 				isAsync
 				? TypeDefinition.GenericReferenceType(
 					typeof( Func<,,,,,> ),
-					typeof( Unpacker ),
+					TypeDefinition.UnpackerType,
 					context.UnpackingContextType ?? this.TargetType,
-					typeof( int ),
-					typeof( int ),
-					typeof( CancellationToken ),
-					typeof( Task )
+					TypeDefinition.Int32Type,
+					TypeDefinition.Int32Type,
+					TypeDefinition.CancellationTokenType,
+					TypeDefinition.TaskType
 				) :
 #endif // FEATURE_TAP
 				TypeDefinition.GenericReferenceType(
 					typeof( Action<,,,> ),
-					typeof( Unpacker ),
+					TypeDefinition.UnpackerType,
 					context.UnpackingContextType ?? this.TargetType,
-					typeof( int ),
-					typeof( int )
+					TypeDefinition.Int32Type,
+					TypeDefinition.Int32Type
 				);
 		}
 
@@ -1343,7 +1343,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					: this.EmitCreateNewObjectExpression(
 						context,
 						actionCollection,
-						new ConstructorDefinition( actionCollection.ContextType, typeof( int ) ),
+						new ConstructorDefinition( actionCollection.ContextType, TypeDefinition.Int32Type ),
 						this.MakeInt32Literal( context, knownActions.Length )
 					)
 				);
@@ -1519,12 +1519,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					FieldName.MemberNames,
 					this.EmitCreateNewArrayExpression(
 						context,
-						typeof( string ),
+						TypeDefinition.StringType,
 						targetInfo.Members.Count,
 						targetInfo.Members.Select(
 							m =>
 								m.MemberName == null
-								? this.MakeNullLiteral( context, typeof( string ) )
+								? this.MakeNullLiteral( context, TypeDefinition.StringType )
 								: this.MakeStringLiteral( context, m.MemberName )
 						).ToArray()
 					)

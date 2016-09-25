@@ -21,6 +21,7 @@
 using System;
 using System.Globalization;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -31,7 +32,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly ILConstruct _value;
 
 		public StoreVariableILConstruct( ILConstruct variable, ILConstruct value )
-			: base( typeof( void ) )
+			: base( TypeDefinition.VoidType )
 		{
 			this._variable = variable;
 			this._value = value;

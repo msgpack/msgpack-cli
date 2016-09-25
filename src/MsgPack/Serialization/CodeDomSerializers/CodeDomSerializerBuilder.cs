@@ -112,62 +112,62 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomConstruct MakeByteLiteral( CodeDomContext context, byte constant )
 		{
-			return CodeDomConstruct.Expression( typeof( byte ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.ByteType, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeSByteLiteral( CodeDomContext context, sbyte constant )
 		{
-			return CodeDomConstruct.Expression( typeof( sbyte ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.SByteType, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeInt16Literal( CodeDomContext context, short constant )
 		{
-			return CodeDomConstruct.Expression( typeof( short ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.Int16Type, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeUInt16Literal( CodeDomContext context, ushort constant )
 		{
-			return CodeDomConstruct.Expression( typeof( ushort ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.UInt16Type, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeInt32Literal( CodeDomContext context, int constant )
 		{
-			return CodeDomConstruct.Expression( typeof( int ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.Int32Type, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeUInt32Literal( CodeDomContext context, uint constant )
 		{
-			return CodeDomConstruct.Expression( typeof( uint ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.UInt32Type, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeInt64Literal( CodeDomContext context, long constant )
 		{
-			return CodeDomConstruct.Expression( typeof( long ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.Int64Type, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeUInt64Literal( CodeDomContext context, ulong constant )
 		{
-			return CodeDomConstruct.Expression( typeof( ulong ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.UInt64Type, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeReal32Literal( CodeDomContext context, float constant )
 		{
-			return CodeDomConstruct.Expression( typeof( float ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.SingleType, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeReal64Literal( CodeDomContext context, double constant )
 		{
-			return CodeDomConstruct.Expression( typeof( double ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.DoubleType, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeBooleanLiteral( CodeDomContext context, bool constant )
 		{
-			return CodeDomConstruct.Expression( typeof( bool ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.BooleanType, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct MakeCharLiteral( CodeDomContext context, char constant )
 		{
-			return CodeDomConstruct.Expression( typeof( char ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.CharType, new CodePrimitiveExpression( constant ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
@@ -208,7 +208,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomConstruct MakeStringLiteral( CodeDomContext context, string constant )
 		{
-			return CodeDomConstruct.Expression( typeof( string ), new CodePrimitiveExpression( constant ) );
+			return CodeDomConstruct.Expression( TypeDefinition.StringType, new CodePrimitiveExpression( constant ) );
 		}
 
 		protected override CodeDomConstruct EmitThisReferenceExpression( CodeDomContext context )
@@ -219,7 +219,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override CodeDomConstruct EmitBoxExpression( CodeDomContext context, TypeDefinition valueType, CodeDomConstruct value )
 		{
-			return CodeDomConstruct.Expression( typeof( object ), new CodeCastExpression( typeof( object ), value.AsExpression() ) );
+			return CodeDomConstruct.Expression( TypeDefinition.ObjectType, new CodeCastExpression( typeof( object ), value.AsExpression() ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
@@ -237,7 +237,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 			return
 				CodeDomConstruct.Expression(
-					typeof( bool ),
+					TypeDefinition.BooleanType,
 					new CodeBinaryOperatorExpression(
 						booleanExpression.AsExpression(),
 						CodeBinaryOperatorType.ValueEquality,
@@ -252,7 +252,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 			return
 				CodeDomConstruct.Expression(
-					typeof( bool ),
+					TypeDefinition.BooleanType,
 					new CodeBinaryOperatorExpression(
 						left.AsExpression(),
 						CodeBinaryOperatorType.ValueEquality,
@@ -267,7 +267,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 			return
 				CodeDomConstruct.Expression(
-					typeof( bool ),
+					TypeDefinition.BooleanType,
 					new CodeBinaryOperatorExpression(
 						left.AsExpression(),
 						CodeBinaryOperatorType.GreaterThan,
@@ -282,7 +282,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 			return
 				CodeDomConstruct.Expression(
-					typeof( bool ),
+					TypeDefinition.BooleanType,
 					new CodeBinaryOperatorExpression(
 						left.AsExpression(),
 						CodeBinaryOperatorType.LessThan,
@@ -309,7 +309,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomConstruct EmitTypeOfExpression( CodeDomContext context, TypeDefinition type )
 		{
-			return CodeDomConstruct.Expression( typeof( Type ), new CodeTypeOfExpression( ToCodeTypeReference( type ) ) );
+			return CodeDomConstruct.Expression( TypeDefinition.TypeType, new CodeTypeOfExpression( ToCodeTypeReference( type ) ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
@@ -317,7 +317,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 			return
 				CodeDomConstruct.Expression(
-					typeof( FieldInfo ),
+					TypeDefinition.FieldInfoType,
 					new CodeFieldReferenceExpression(
 						new CodeThisReferenceExpression(),
 						context.RegisterCachedFieldInfo(
@@ -332,7 +332,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 			return
 				CodeDomConstruct.Expression(
-					typeof( MethodBase ),
+					TypeDefinition.MethodBaseType,
 					new CodeFieldReferenceExpression(
 						new CodeThisReferenceExpression(),
 						context.RegisterCachedMethodBase(
@@ -787,20 +787,20 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							isAsync ? 
 							TypeDefinition.GenericReferenceType(
 								typeof( Func<,,,,,> ),
-								typeof( Unpacker ),
+								TypeDefinition.UnpackerType,
 								context.UnpackingContextType ?? this.TargetType,
-								typeof( int ),
-								typeof( int ),
-								typeof( CancellationToken ),
-								typeof( Task )
+								TypeDefinition.Int32Type,
+								TypeDefinition.Int32Type,
+								TypeDefinition.CancellationTokenType,
+								TypeDefinition.TaskType
 							) :
 #endif // FEATURE_TAP
 							TypeDefinition.GenericReferenceType(
 								typeof( Action<,,,> ),
-								typeof( Unpacker ),
+								TypeDefinition.UnpackerType,
 								context.UnpackingContextType ?? this.TargetType,
-								typeof( int ),
-								typeof( int )
+								TypeDefinition.Int32Type,
+								TypeDefinition.Int32Type
 							)
 						);
 					name = FieldName.UnpackOperationList;
@@ -811,25 +811,25 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					type =
 						TypeDefinition.GenericReferenceType(
 							typeof( IDictionary<,> ),
-							typeof( string ),
+							TypeDefinition.StringType,
 #if FEATURE_TAP
 							isAsync ? 
 							TypeDefinition.GenericReferenceType(
 								typeof( Func<,,,,,> ),
-								typeof( Unpacker ),
+								TypeDefinition.UnpackerType,
 								context.UnpackingContextType ?? this.TargetType,
-								typeof( int ),
-								typeof( int ),
-								typeof( CancellationToken ),
-								typeof( Task )
+								TypeDefinition.Int32Type,
+								TypeDefinition.Int32Type,
+								TypeDefinition.CancellationTokenType,
+								TypeDefinition.TaskType
 							) :
 #endif // FEATURE_TAP
 							TypeDefinition.GenericReferenceType(
 								typeof( Action<,,,> ),
-								typeof( Unpacker ),
+								TypeDefinition.UnpackerType,
 								context.UnpackingContextType ?? this.TargetType,
-								typeof( int ),
-								typeof( int )
+								TypeDefinition.Int32Type,
+								TypeDefinition.Int32Type
 							)
 						);
 					name = FieldName.UnpackOperationTable;
@@ -871,11 +871,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override CodeDomConstruct EmitGetMemberNamesExpression( CodeDomContext context )
 		{
-			var field = context.DeclarePrivateField( FieldName.MemberNames, typeof( IList<string> ) );
+			var field = context.DeclarePrivateField( FieldName.MemberNames, TypeDefinition.IListOfStringType );
 
 			return
 				CodeDomConstruct.Expression(
-					typeof( IList<string> ),
+					TypeDefinition.IListOfStringType,
 					new CodeFieldReferenceExpression(
 						new CodeThisReferenceExpression(),
 						field.FieldName
@@ -1090,7 +1090,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			return
 				this.EmitSequentialStatements(
 					context,
-					typeof( void ),
+					TypeDefinition.VoidType,
 					statements.ToArray()
 				);
 		}
@@ -1458,7 +1458,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 							{
 								schemaNumber++;
 								var variableName = "schema" + schemaNumber;
-								var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
+								var schema = this.DeclareLocal( context, TypeDefinition.PolymorphismSchemaType, variableName );
 								ctor.Statements.AddRange( schema.AsStatements().ToArray() );
 								ctor.Statements.AddRange(
 									this.EmitConstructPolymorphismSchema(

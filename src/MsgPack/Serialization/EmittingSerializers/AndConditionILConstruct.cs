@@ -24,6 +24,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection.Emit;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -33,7 +34,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly IList<ILConstruct> _expressions;
 
 		public AndConditionILConstruct( IList<ILConstruct> expressions )
-			: base( typeof( bool ) )
+			: base( TypeDefinition.BooleanType )
 		{
 			if ( expressions.Count == 0 )
 			{

@@ -27,6 +27,11 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 using MsgPack.Serialization.Reflection;
 
@@ -38,6 +43,48 @@ namespace MsgPack.Serialization.AbstractSerializers
 	internal class TypeDefinition
 	{
 		private static readonly TypeDefinition[] EmptyArray = new TypeDefinition[ 0 ];
+
+		public static readonly TypeDefinition ObjectType = Object( typeof( object ) );
+		public static readonly TypeDefinition ByteType = Object( typeof( byte ) );
+		public static readonly TypeDefinition SByteType = Object( typeof( sbyte ) );
+		public static readonly TypeDefinition Int16Type = Object( typeof( short ) );
+		public static readonly TypeDefinition UInt16Type = Object( typeof( ushort ) );
+		public static readonly TypeDefinition Int32Type = Object( typeof( int ) );
+		public static readonly TypeDefinition UInt32Type = Object( typeof( uint ) );
+		public static readonly TypeDefinition Int64Type = Object( typeof( long ) );
+		public static readonly TypeDefinition UInt64Type = Object( typeof( ulong ) );
+		public static readonly TypeDefinition SingleType = Object( typeof( float ) );
+		public static readonly TypeDefinition DoubleType = Object( typeof( double ) );
+		public static readonly TypeDefinition BooleanType = Object( typeof( bool ) );
+		public static readonly TypeDefinition CharType = Object( typeof( char ) );
+		public static readonly TypeDefinition StringType = Object( typeof( string ) );
+		public static readonly TypeDefinition VoidType = Object( typeof( void ) );
+		public static readonly TypeDefinition ObjectArrayType = Array( ObjectType );
+		public static readonly TypeDefinition TypeType = Object( typeof( Type ) );
+		public static readonly TypeDefinition MethodBaseType = Object( typeof( MethodBase ) );
+		public static readonly TypeDefinition FieldInfoType = Object( typeof( FieldInfo ) );
+		// ReSharper disable once InconsistentNaming
+		public static readonly TypeDefinition IListOfStringType = Object( typeof( IList<string> ) );
+		public static readonly TypeDefinition DictionaryOfStringAndTypeType = Object( typeof( Dictionary<string, Type> ) );
+		public static readonly TypeDefinition MessagePackObjectType = Object( typeof( MessagePackObject ) );
+		public static readonly TypeDefinition SerializationContextType = Object( typeof( SerializationContext ) );
+		public static readonly TypeDefinition PackerType = Object( typeof( Packer ) );
+		public static readonly TypeDefinition UnpackerType = Object( typeof( Unpacker ) );
+		public static readonly TypeDefinition PackHelpersType = Object( typeof( PackHelpers ) );
+		public static readonly TypeDefinition UnpackHelpersType = Object( typeof( UnpackHelpers ) );
+		public static readonly TypeDefinition NilImplicationType = Object( typeof( NilImplication ) );
+		public static readonly TypeDefinition SerializationMethodType = Object( typeof( SerializationMethod ) );
+		public static readonly TypeDefinition EnumSerializationMethodType = Object( typeof( EnumSerializationMethod ) );
+		public static readonly TypeDefinition EnumMemberSerializationMethodType = Object( typeof( EnumMemberSerializationMethod ) );
+		public static readonly TypeDefinition DateTimeConversionMethodType = Object( typeof( DateTimeConversionMethod ) );
+		public static readonly TypeDefinition DateTimeMemberConversionMethodType = Object( typeof( DateTimeMemberConversionMethod ) );
+		public static readonly TypeDefinition PackingOptionsType = Object( typeof( PackingOptions ) );
+		public static readonly TypeDefinition PolymorphismSchemaType = Object( typeof( PolymorphismSchema ) );
+		public static readonly TypeDefinition PolymorphismSchemaArrayType = Array( PolymorphismSchemaType );
+#if FEATURE_TAP
+		public static readonly TypeDefinition CancellationTokenType = Object( typeof( CancellationToken ) );
+		public static readonly TypeDefinition TaskType = Object( typeof( Task ) );
+#endif // FEATURE_TAP
 
 		private readonly Flags _flags;
 

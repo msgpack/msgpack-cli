@@ -83,7 +83,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				methodName,
 				this.EmitSequentialStatements(
 					context,
-					typeof( void ),
+					TypeDefinition.VoidType,
 					this.BuildTuplePackToCore( context, itemTypes, itemSchemaList, isAsync )
 				)
 			);
@@ -133,12 +133,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					AdjustName( MethodNamePrefix.PackValue + SerializationTarget.GetTupleItemNameFromIndex( i ), isAsync ),
 					false, // isStatic
 #if FEATURE_TAP
-					isAsync ? typeof( Task ) :
+					isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-					typeof( void ),
+					TypeDefinition.VoidType,
 					() => this.EmitSequentialStatements(
 						context,
-						typeof( void ),
+						TypeDefinition.VoidType,
 						this.EmitPackTupleItemStatements(
 							context,
 							itemTypes[ count ],
@@ -182,12 +182,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					new MethodDefinition(
 						AdjustName( MethodName.PackToArray, isAsync ),
 						new [] { TypeDefinition.Object( this.TargetType ) },
-						typeof( PackHelpers ),
+						TypeDefinition.PackHelpersType,
 						true, // isStatic
 #if FEATURE_TAP
-						isAsync ? typeof( Task ) :
+						isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-						typeof( void ),
+						TypeDefinition.VoidType,
 						packHelperParameterType
 					);
 
@@ -326,9 +326,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					AdjustName( MethodNamePrefix.UnpackValue + propertyName, isAsync ),
 					false, // isStatic
 #if FEATURE_TAP
-					isAsync ? typeof( Task ) :
+					isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-					typeof( void ),
+					TypeDefinition.VoidType,
 					() => this.EmitUnpackItemValueStatement(
 						context,
 						itemTypes[ index ],
@@ -349,7 +349,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context,
 								setUnpackValueOfMethodName,
 								false, // isStatic
-								typeof( void ),
+								TypeDefinition.VoidType,
 								() => unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
 									? this.EmitInvokeVoidMethod(
 										context,
@@ -462,7 +462,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						new MethodDefinition(
 							AdjustName( MethodName.UnpackFromArray, isAsync ),
 							new [] { unpackingContext.Type, this.TargetType },
-							typeof( UnpackHelpers ),
+							TypeDefinition.UnpackHelpersType,
 							true, // isStatic
 #if FEATURE_TAP
 							isAsync ? typeof( Task<> ).MakeGenericType( this.TargetType ) :
