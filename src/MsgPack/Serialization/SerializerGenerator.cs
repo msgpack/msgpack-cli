@@ -22,16 +22,26 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
+#if NETSTANDARD1_3
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_1
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
+#if NETSTANDARD1_3
+
+#else
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
+#endif // NETSTANDARD1_3
 
 namespace MsgPack.Serialization
 {
@@ -57,6 +67,7 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	public class SerializerGenerator
 	{
+#if !NETSTANDARD1_3
 		/// <summary>
 		///		Gets the type of the root object which will be serialized/deserialized.
 		/// </summary>
@@ -283,6 +294,9 @@ namespace MsgPack.Serialization
 		{
 			return new SerializerAssemblyGenerationLogic().Generate( targetTypes, configuration );
 		}
+
+#endif // !NETSTANDARD1_3
+
 		/// <summary>
 		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
 		/// </summary>
@@ -412,10 +426,42 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public static IEnumerable<SerializerCodeGenerationResult> GenerateSerializerSourceCodes( SerializerCodeGenerationConfiguration configuration, IEnumerable<Type> targetTypes )
 		{
-			return new SerializerCodesGenerationLogic().Generate( targetTypes, configuration ?? new SerializerCodeGenerationConfiguration() );
+			var providerName =
+				configuration == null
+					? String.Empty
+					: configuration.ProviderName;
+			SerializerCodeGeneratorFactory factory;
+			if ( !CodeGeneratorFactories.TryGetValue( providerName, out factory ) )
+			{
+				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Unknown provider name '{0}'", providerName ) );
+			}
+
+			return factory.Create( configuration ).Generate( targetTypes, configuration ?? new SerializerCodeGenerationConfiguration() );
 		}
 
-		private abstract class SerializerGenerationLogic<TConfig>
+		private static readonly ConcurrentDictionary<string, SerializerCodeGeneratorFactory> CodeGeneratorFactories = InitializeCodeGeneratorFactories();
+
+		private static ConcurrentDictionary<string, SerializerCodeGeneratorFactory> InitializeCodeGeneratorFactories()
+		{
+			var factories = new ConcurrentDictionary<string, SerializerCodeGeneratorFactory>( StringComparer.OrdinalIgnoreCase );
+#if !NETSTANDARD1_3
+			factories[ String.Empty ] = SerializerCodesGenerationLogicFactory.Instance;
+			factories[ "codedom" ] = SerializerCodesGenerationLogicFactory.Instance;
+#endif // !NETSTANDARD1_3
+			return factories;
+		}
+
+
+		internal static void RegisterGenerator( string[] keys, SerializerCodeGeneratorFactory factory )
+		{
+			foreach ( var key in keys )
+			{
+				CodeGeneratorFactories[ key ] = factory;
+			}
+		}
+
+#warning TODO: Move out
+		internal abstract class SerializerGenerationLogic<TConfig>
 			where TConfig : class, ISerializerGeneratorConfiguration
 		{
 			protected abstract EmitterFlavor EmitterFlavor { get; }
@@ -436,7 +482,9 @@ namespace MsgPack.Serialization
 				var context =
 					new SerializationContext
 					{
+#if !NETSTANDARD1_3
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+#endif // !NETSTANDARD1_3
 						EnumSerializationMethod = configuration.EnumSerializationMethod,
 						SerializationMethod = configuration.SerializationMethod
 					};
@@ -520,7 +568,7 @@ namespace MsgPack.Serialization
 					yield break;
 				}
 
-				if ( type.IsGenericType )
+				if ( type.GetIsGenericType() )
 				{
 					// Search generic arguments recursively.
 					foreach ( var elementType in type.GetGenericArguments().SelectMany( g => ExtractElementTypes( context, configuration, g ) ) )
@@ -541,6 +589,8 @@ namespace MsgPack.Serialization
 			protected abstract Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context );
 		}
 
+#if !NETSTANDARD1_3
+#warning TODO: Move out
 		private sealed class SerializerAssemblyGenerationLogic : SerializerGenerationLogic<SerializerAssemblyGenerationConfiguration>
 		{
 			protected override EmitterFlavor EmitterFlavor
@@ -571,14 +621,17 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#warning TODO: Move out
 		private sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
 		{
+			public static readonly SerializerCodesGenerationLogic Instance = new SerializerCodesGenerationLogic();
+
 			protected override EmitterFlavor EmitterFlavor
 			{
 				get { return EmitterFlavor.CodeDomBased; }
 			}
 
-			public SerializerCodesGenerationLogic() { }
+			private SerializerCodesGenerationLogic() { }
 
 			protected override ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, SerializerCodeGenerationConfiguration configuration )
 			{
@@ -590,5 +643,19 @@ namespace MsgPack.Serialization
 				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
 			}
 		}
+
+		private sealed class SerializerCodesGenerationLogicFactory : SerializerCodeGeneratorFactory
+		{
+			public static readonly SerializerCodesGenerationLogicFactory Instance = new SerializerCodesGenerationLogicFactory();
+
+			private SerializerCodesGenerationLogicFactory() { }
+
+			internal override SerializerGenerationLogic<SerializerCodeGenerationConfiguration> Create( SerializerCodeGenerationConfiguration configuration )
+			{
+				return SerializerCodesGenerationLogic.Instance;
+			}
+		}
+
+#endif // !NETSTANDARD1_3
 	}
 }

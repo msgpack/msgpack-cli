@@ -37,6 +37,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 
 using MsgPack.Serialization.Reflection;
 
@@ -1115,6 +1116,186 @@ namespace MsgPack.Serialization
 #endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 #endif // !NETFX_35 && !UNITY
 			// ReSharper restore InconsistentNaming
+		}
+	}
+
+#warning TODO: Move out
+	internal sealed class FieldInfoEqualityComparer : EqualityComparer<FieldInfo>
+	{
+		public static readonly FieldInfoEqualityComparer Instance = new FieldInfoEqualityComparer();
+
+		private FieldInfoEqualityComparer() { }
+
+		public override bool Equals( FieldInfo left, FieldInfo right )
+		{
+			if ( ReferenceEquals( left, right ) )
+			{
+				return true;
+			}
+
+			if ( left == null )
+			{
+				return right == null;
+			}
+			else if ( right == null )
+			{
+				return false;
+			}
+
+			// This assembly should work in netstandard1.3,
+			// so we cannot use MemberInfo.MetadataToken here.
+			// Therefore, it compares honestly referring ECMA-335 I.8.6.1.6 Signature Matching.
+			// "For signatures other than method signatures two signatures are said to match if and only if every 
+			//  component type of the signature is identical in the two signatures."
+
+			if ( !Object.Equals( left.DeclaringType, right.DeclaringType ) )
+			{
+				return false;
+			}
+
+			if ( !Object.Equals( left.FieldType, right.FieldType ) )
+			{
+				return false;
+			}
+
+			if ( left.Name != right.Name )
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		public override int GetHashCode( FieldInfo obj )
+		{
+			if ( obj == null )
+			{
+				return 0;
+			}
+
+			var hashCode = obj.DeclaringType.GetHashCode();
+			hashCode ^= obj.Name.GetHashCode();
+			return hashCode;
+		}
+	}
+
+	internal sealed class MethodBaseEqualityComparer : EqualityComparer<MethodBase>
+	{
+		public static readonly MethodBaseEqualityComparer Instance = new MethodBaseEqualityComparer();
+
+		private MethodBaseEqualityComparer() { }
+
+		public sealed override bool Equals( MethodBase left, MethodBase right )
+		{
+			if ( ReferenceEquals( left, right ) )
+			{
+				return true;
+			}
+
+			if ( left == null )
+			{
+				return right == null;
+			}
+			else if ( right == null )
+			{
+				return false;
+			}
+
+			// This assembly should work in netstandard1.3,
+			// so we cannot use MemberInfo.MetadataToken here.
+			// Therefore, it compares honestly referring ECMA-335 I.8.6.1.6 Signature Matching.
+			// " Two method signatures are said to match if and only if: 
+			//   * the calling conventions are identical; 
+			//   * both signatures are either static or instance; 
+			//   * the number of generic parameters is identical, if the method is generic; 
+			//   * for instance signatures the type of the this pointer of the overriding / hiding signature is assignable-to(ÅòI.8.7)
+			//     the type of the this pointer of the overridden / hidden signature; 
+			//   * the number and type signatures of the parameters are identical; and
+			//   * the type signatures for the result are identical"
+
+			if ( !Object.Equals( left.DeclaringType, right.DeclaringType ) )
+			{
+				return false;
+			}
+
+			var leftMethodInfo = left as MethodInfo;
+			if ( leftMethodInfo != null )
+			{
+				var rightMethodInfo = right as MethodInfo;
+				if ( rightMethodInfo == null )
+				{
+					return false;
+				}
+
+				if ( !Object.Equals( leftMethodInfo.ReturnType, rightMethodInfo.ReturnType ) )
+				{
+					return false;
+				}
+			}
+
+			if ( left.CallingConvention != right.CallingConvention )
+			{
+				return false;
+			}
+
+			if ( left.IsStatic != right.IsStatic )
+			{
+				return false;
+			}
+
+			if ( left.Name != right.Name )
+			{
+				return false;
+			}
+
+			var leftGenericParameters = left.GetGenericArguments();
+			var rightGenericParameters = right.GetGenericArguments();
+			if ( leftGenericParameters.Length != rightGenericParameters.Length )
+			{
+				return false;
+			}
+
+			for ( int i = 0; i < leftGenericParameters.Length; i++ )
+			{
+				if ( !Object.Equals( leftGenericParameters[ i ], rightGenericParameters[ i ] ) )
+				{
+					return false;
+				}
+			}
+
+			var leftParameters = left.GetParameters();
+			var rightParameters = right.GetParameters();
+			if ( leftParameters.Length != rightParameters.Length )
+			{
+				return false;
+			}
+
+			for ( int i = 0; i < leftParameters.Length; i++ )
+			{
+				if ( !Object.Equals( leftParameters[ i ].ParameterType, rightParameters[ i ].ParameterType ) )
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public sealed override int GetHashCode( MethodBase obj )
+		{
+			if ( obj == null )
+			{
+				return 0;
+			}
+
+			var hashCode = obj.DeclaringType.GetHashCode();
+			hashCode ^= obj.Name.GetHashCode();
+			foreach ( ParameterInfo parameter in obj.GetParameters() )
+			{
+				hashCode ^= parameter.ParameterType.GetHashCode();
+			}
+
+			return hashCode;
 		}
 	}
 }

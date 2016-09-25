@@ -1,0 +1,9 @@
+﻿{
+  "supports": {},
+  "dependencies": {
+    "Microsoft.CodeAnalysis.Common": "1.3.2"
+  },
+  "frameworks": {
+    "netstandard1.3": {}
+  }
+}

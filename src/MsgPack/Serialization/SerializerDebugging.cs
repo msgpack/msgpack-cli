@@ -65,7 +65,6 @@ namespace MsgPack.Serialization
 			set { _traceEnabled = value; }
 		}
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[ThreadStatic]
 		private static bool _dumpEnabled;
 
@@ -81,7 +80,6 @@ namespace MsgPack.Serialization
 			get { return _dumpEnabled; }
 			set { _dumpEnabled = value; }
 		}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // !AOT
 
 		[ThreadStatic]
@@ -220,152 +218,62 @@ namespace MsgPack.Serialization
 			_moduleBuilder =
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
-		[ThreadStatic]
-		private static IList<string> _runtimeAssemblies;
+		private static DependentAssemblyManager _dependentAssemblyManager = DependentAssemblyManager.Default;
 
-		[ThreadStatic]
-		private static IList<string> _compiledCodeDomSerializerAssemblies;
+		public static DependentAssemblyManager DependentAssemblyManager
+		{
+			get { return Volatile.Read( ref _dependentAssemblyManager ); }
+			set { Volatile.Write( ref _dependentAssemblyManager, value ); }
+		}
 
+		[Obsolete( "TODO: CodeSerializerDependentAssemblies" )]
 		public static IEnumerable<string> CodeDomSerializerDependentAssemblies
 		{
-			get
-			{
-				EnsureDependentAssembliesListsInitialized();
-#if DEBUG
-				Contract.Assert( _compiledCodeDomSerializerAssemblies != null );
-#endif // DEBUG
-				// FCL dependencies and msgpack core libs
-				foreach ( var runtimeAssembly in _runtimeAssemblies )
-				{
-					yield return runtimeAssembly;
-				}
-
-				// dependents
-				foreach ( var compiledAssembly in _compiledCodeDomSerializerAssemblies )
-				{
-					yield return compiledAssembly;
-				}
-			}
+			get { return _dependentAssemblyManager.CodeSerializerDependentAssemblies; }
 		}
-#endif // !SILVERLIGHT
-#if NETSTANDARD1_1 || NETSTANDARD1_3
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
-			EnsureDependentAssembliesListsInitialized();
-			_runtimeAssemblies.Add( pathToAssembly );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+			_dependentAssemblyManager.AddRuntimeAssembly( pathToAssembly );
 		}
 
-#if NETSTANDARD1_1 || NETSTANDARD1_3
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddCompiledCodeDomAssembly( string pathToAssembly )
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
-			EnsureDependentAssembliesListsInitialized();
-			_compiledCodeDomSerializerAssemblies.Add( pathToAssembly );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+			_dependentAssemblyManager.AddCompiledCodeDomAssembly( pathToAssembly );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void ResetDependentAssemblies()
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
-			EnsureDependentAssembliesListsInitialized();
-
-#if !NETFX_35
-			File.AppendAllLines( GetHistoryFilePath(), _compiledCodeDomSerializerAssemblies );
-#else
-			File.AppendAllText( GetHistoryFilePath(), String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() ) + Environment.NewLine );
-#endif // !NETFX_35
-			_compiledCodeDomSerializerAssemblies.Clear();
-			ResetRuntimeAssemblies();
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+			_dependentAssemblyManager.ResetDependentAssemblies();
 		}
-
-		private static string _dumpDirectory;
 
 		public static string DumpDirectory
 		{
-			get { return Interlocked.CompareExchange( ref _dumpDirectory, null, null ); }
-			set { Interlocked.Exchange( ref _dumpDirectory, value ); }
+			get { return _dependentAssemblyManager.DumpDirectory; }
+			set { _dependentAssemblyManager.DumpDirectory = value; }
 		}
-
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
-		private static int _wasDeleted;
-		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void DeletePastTemporaries()
 		{
-			if ( Interlocked.CompareExchange( ref _wasDeleted, 1, 0 ) != 0 )
-			{
-				return;
-			}
-
-			try
-			{
-				var historyFilePath = GetHistoryFilePath();
-				if ( !File.Exists( historyFilePath ) )
-				{
-					return;
-				}
-
-				foreach ( var pastAssembly in File.ReadAllLines( historyFilePath ) )
-				{
-					if ( !String.IsNullOrEmpty( pastAssembly ) )
-					{
-						File.Delete( pastAssembly );
-					}
-				}
-
-				new FileStream( historyFilePath, FileMode.Truncate ).Close();
-			}
-			catch ( IOException ) { }
+			_dependentAssemblyManager.DeletePastTemporaries();
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
-		private static string GetHistoryFilePath()
+		public static Assembly LoadAssembly( string path )
 		{
-			return Path.Combine( Path.GetTempPath(), HistoryFile );
+			return _dependentAssemblyManager.LoadAssembly( path );
 		}
-
-		private static void EnsureDependentAssembliesListsInitialized()
-		{
-			if ( _runtimeAssemblies == null )
-			{
-				_runtimeAssemblies = new List<string>();
-				ResetRuntimeAssemblies();
-			}
-
-			if ( _compiledCodeDomSerializerAssemblies == null )
-			{
-				_compiledCodeDomSerializerAssemblies = new List<string>();
-			}
-		}
-
-		private static void ResetRuntimeAssemblies()
-		{
-			_runtimeAssemblies.Add( "System.dll" );
-#if NETFX_35
-			_runtimeAssemblies.Add( typeof( Enumerable ).Assembly.Location );
-#else
-			_runtimeAssemblies.Add( "System.Core.dll" );
-			_runtimeAssemblies.Add( "System.Numerics.dll" );
-#endif // NETFX_35
-			_runtimeAssemblies.Add( typeof( SerializerDebugging ).Assembly.Location );
-		}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
 
+		[Obsolete( "OnTheFlyCodeGenerationEnabled" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static bool OnTheFlyCodeDomEnabled
 		{
@@ -478,4 +386,169 @@ namespace MsgPack.Serialization
 
 #endif // DEBUG && FEATURE_TAP
 	}
+
+	internal abstract class DependentAssemblyManager
+	{
+		public static readonly DependentAssemblyManager Default =
+#if NETSTANDARD1_1
+			new NullDependentAssemblyManager();
+#else
+			new TempFileDependentAssemblyManager();
+#endif
+
+		private readonly ConcurrentDictionary<string, object> _runtimeAssemblies;
+
+		private readonly ConcurrentDictionary<string, object> _compiledCodeDomSerializerAssemblies;
+
+		public IEnumerable<string> CodeSerializerDependentAssemblies
+		{
+			get
+			{
+				// FCL dependencies and msgpack core libs
+				foreach ( var runtimeAssembly in this._runtimeAssemblies.Keys )
+				{
+					yield return runtimeAssembly;
+				}
+
+				// dependents
+				foreach ( var compiledAssembly in this._compiledCodeDomSerializerAssemblies.Keys )
+				{
+					yield return compiledAssembly;
+				}
+			}
+		}
+
+		private string _dumpDirectory;
+
+		public string DumpDirectory
+		{
+			get { return Volatile.Read( ref _dumpDirectory ); }
+			set { Volatile.Write( ref _dumpDirectory, value ); }
+		}
+
+		protected DependentAssemblyManager()
+		{
+			this._runtimeAssemblies = new ConcurrentDictionary<string, object>( StringComparer.OrdinalIgnoreCase );
+			this.ResetRuntimeAssemblies();
+			this._compiledCodeDomSerializerAssemblies = new ConcurrentDictionary<string, object>( StringComparer.OrdinalIgnoreCase );
+		}
+
+		private void ResetRuntimeAssemblies()
+		{
+#if NETSTANDARD1_1
+			this._runtimeAssemblies[ "System.Runtime.dll" ] = null;
+			this._runtimeAssemblies[ "System.Runtime.Extensions.dll" ] = null;
+			this._runtimeAssemblies[ "System.Runtime.Numerics.dll" ] = null;
+			this._runtimeAssemblies[ "System.Linq.dll" ] = null;
+			this._runtimeAssemblies[ "System.Globalization.dll" ] = null;
+			this._runtimeAssemblies[ "System.Collections.dll" ] = null;
+			this._runtimeAssemblies[ "System.Collections.NonGeneric.dll" ] = null;
+			this._runtimeAssemblies[ "System.Collectinos.Specialized.dll" ] = null;
+			this._runtimeAssemblies[ "System.Numerics.Vectors.dll" ] = null;
+			this._runtimeAssemblies[ "MsgPack.Core.dll" ] = null;
+			this._runtimeAssemblies[ "MsgPack.Serialization.dll" ] = null;
+#else
+			this._runtimeAssemblies[ "System.dll" ] = null;
+#if NETFX_35
+			this._runtimeAssemblies[ typeof( Enumerable ).Assembly.Location ] = null;
+#else
+			this._runtimeAssemblies[ "System.Core.dll" ] = null;
+			this._runtimeAssemblies[ "System.Numerics.dll" ] = null;
+#endif // NETFX_35
+			this._runtimeAssemblies[ typeof( SerializerDebugging ).Assembly.Location ] = null;
+#endif // NETSTANDARD1_1
+		}
+
+		public void AddRuntimeAssembly( string pathToAssembly )
+		{
+			this._runtimeAssemblies[ pathToAssembly ] = null;
+		}
+
+		public void AddCompiledCodeDomAssembly( string pathToAssembly )
+		{
+			this._compiledCodeDomSerializerAssemblies[ pathToAssembly ] = null;
+		}
+
+		public void ResetDependentAssemblies()
+		{
+			this.Record( this._compiledCodeDomSerializerAssemblies.Keys );
+			this._compiledCodeDomSerializerAssemblies.Clear();
+			this.ResetRuntimeAssemblies();
+		}
+
+		protected abstract void Record( IEnumerable<string> assemblies );
+
+		public abstract void DeletePastTemporaries();
+
+		public virtual Assembly LoadAssembly( string path )
+		{
+			throw new NotSupportedException();
+		}
+
+		private sealed class NullDependentAssemblyManager : DependentAssemblyManager
+		{
+			public NullDependentAssemblyManager() : base() { }
+
+			protected override void Record( IEnumerable<string> assemblies ) { }
+
+			public override void DeletePastTemporaries() { }
+		}
+	}
+
+#if !NETSTANDARD1_1
+	internal sealed class TempFileDependentAssemblyManager : DependentAssemblyManager
+	{
+#warning TODO: Move to Test Project
+		private static int _wasDeleted;
+		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
+
+		protected override void Record( IEnumerable<string> assemblies )
+		{
+#if !NETFX_35
+			File.AppendAllLines( GetHistoryFilePath(), assemblies );
+#else
+			File.AppendAllText( GetHistoryFilePath(), String.Join( Environment.NewLine, _compiledCodeDomSerializerAssemblies.ToArray() ) + Environment.NewLine );
+#endif // !NETFX_35
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
+		private static string GetHistoryFilePath()
+		{
+			return Path.Combine( Path.GetTempPath(), HistoryFile );
+		}
+
+		public override void DeletePastTemporaries()
+		{
+			if ( Interlocked.CompareExchange( ref _wasDeleted, 1, 0 ) != 0 )
+			{
+				return;
+			}
+
+			try
+			{
+				var historyFilePath = GetHistoryFilePath();
+				if ( !File.Exists( historyFilePath ) )
+				{
+					return;
+				}
+
+				foreach ( var pastAssembly in File.ReadAllLines( historyFilePath ) )
+				{
+					if ( !String.IsNullOrEmpty( pastAssembly ) )
+					{
+						File.Delete( pastAssembly );
+					}
+				}
+
+				new FileStream( historyFilePath, FileMode.Truncate ).Close();
+			}
+			catch ( IOException ) { }
+		}
+
+		public override Assembly LoadAssembly( string path )
+		{
+			return Assembly.LoadFrom( path );
+		}
+	}
+#endif // !NETSTANDARD1_1
 }

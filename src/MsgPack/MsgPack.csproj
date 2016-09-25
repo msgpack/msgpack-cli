@@ -407,6 +407,7 @@
     <Compile Include="Serialization\IMessagePackSingleObjectSerializer.cs" />
     <Compile Include="Serialization\Metadata\_CultureInfo.cs" />
     <Compile Include="Serialization\SerializerCodeGenerationResult.cs" />
+    <Compile Include="Serialization\SerializerCodeGeneratorFactory.cs" />
     <Compile Include="Serialization\SerializerDebugging.cs" />
     <Compile Include="Serialization\SerializerOptions.cs" />
     <Compile Include="Serialization\SerializerRegistrationOptions.cs" />
