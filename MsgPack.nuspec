@@ -19,6 +19,7 @@ This package provides MessagePack serialization/deserialization APIs. This pacak
       <group targetFramework=".NETFramework4.6" />
       <group targetFramework=".NETFramework4.5" />
       <group targetFramework=".NETFramework3.5" />
+      <group targetFramework="Silverlight5" />
       <group targetFramework="WindowsPhone8.0" />
       <group targetFramework="MonoAndroid1.0" />
       <group targetFramework="Xamarin.iOS1.0" />
