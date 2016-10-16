@@ -248,9 +248,6 @@
     <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
       <Link>UnsafeNativeMethods.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Validation.cs">
-      <Link>Validation.cs</Link>
-    </Compile>
     <Compile Include="BufferedStream.cs" />
     <Compile Include="MPContract.cs" />
     <Compile Include="NetStandardCompatibility.cs" />

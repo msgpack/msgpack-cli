@@ -576,6 +576,11 @@
     <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
     <Compile Include="gen\System_DayOfWeekSerializer.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
     <Compile Include="Serialization\KeyNameTransformersTest.cs" />
     <Compile Include="Serialization\InheritanceTest.cs" />
     <Compile Include="MessagePackConvertTest.cs" />
@@ -656,11 +661,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\AddOnlyCollection`1.cs" />
-    <Compile Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
-      <DependentUpon>ArrayReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
       <DependentUpon>ArrayReflectionBasedEnumSerializationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -770,6 +770,7 @@
     <Compile Include="Serialization\SerializerGeneratorTest.cs" />
     <Compile Include="Serialization\SimpleCollection`1.cs" />
     <Compile Include="Serialization\StringKeyedCollection.cs" />
+    <Compile Include="Serialization\TempFileDependentAssemblyManager.cs" />
     <Compile Include="Serialization\TestValueType.cs" />
     <Compile Include="Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" />
     <Compile Include="Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs" />
@@ -794,6 +795,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="SplittingStream.cs" />
+    <Compile Include="StreamExtensions.cs" />
     <Compile Include="SubtreeUnpackerTest.cs" />
     <Compile Include="UnpackerTest.cs">
       <AutoGen>True</AutoGen>

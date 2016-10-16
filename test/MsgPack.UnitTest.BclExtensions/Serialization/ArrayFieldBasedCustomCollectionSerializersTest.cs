@@ -28,10 +28,12 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !AOT && !SILVERLIGHT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
-#endif // SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !AOT && !SILVERLIGHT
 #if !NETFX_CORE
 using Microsoft.FSharp.Collections;
 #endif // !NETFX_CORE
@@ -66,6 +68,7 @@ namespace MsgPack.Serialization
 		[SetUp]
 		public void SetUp()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -75,14 +78,15 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
 			SerializerDebugging.AddRuntimeAssembly( typeof( ImmutableList ).Assembly.Location );
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
@@ -98,9 +102,9 @@ namespace MsgPack.Serialization
 					SerializationMethodGeneratorManager.Refresh();
 				}
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif
 

@@ -22,7 +22,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
+#if CSHARP
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+#elif VISUAL_BASIC
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using VariableDeclarationSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.LocalDeclarationStatementSyntax;
+#endif
 
 using MsgPack.Serialization.AbstractSerializers;
 

@@ -35,6 +35,7 @@
     <Exclude File="ReadMe.txt" />
     <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
     <Exclude Path="TestSuite.cs" />
     <Exclude Path="Serialization\CompositeTest.cs" />
     <!-- Generator related -->
@@ -119,6 +120,7 @@
   <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />
+    <Exclude File="*CodeTree*.cs" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
@@ -191,6 +193,7 @@
     <Exclude Path="Serialization\MapContextBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs" />
     <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
     <Exclude Path="Serialization\FromExpressionTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
   </Project>

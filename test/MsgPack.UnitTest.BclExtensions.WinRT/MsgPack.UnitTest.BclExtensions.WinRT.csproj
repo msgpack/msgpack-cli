@@ -155,9 +155,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\netstandard\build\NetStandardProjectBuilder.csproj">
-      <Project>{a1b322fc-aa39-4894-afa8-ab427a3fba09}</Project>
-      <Name>NetStandardProjectBuilder</Name>
+    <ProjectReference Include="..\..\src\MsgPack.Serialization\MsgPack.Serialization.csproj">
+      <Project>{153ced68-9905-4b1f-9790-f463840895e2}</Project>
+      <Name>MsgPack.Serialization</Name>
     </ProjectReference>
     <ProjectReference Include="..\MsgPack.NUnitPortable\MsgPack.NUnitPortable.csproj">
       <Project>{fc521316-ebcd-4ef1-8235-c976b2a31eb0}</Project>

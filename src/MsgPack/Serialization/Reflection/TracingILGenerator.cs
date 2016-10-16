@@ -276,7 +276,6 @@ namespace MsgPack.Serialization.Reflection
 
 		#region -- Locals --
 
-#if DEBUG
 		/// <summary>
 		///		Declare local without pinning and name for debugging.
 		/// </summary>
@@ -291,6 +290,7 @@ namespace MsgPack.Serialization.Reflection
 			return this.DeclareLocalCore( localType, null );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Declare local without name for debugging.
 		/// </summary>

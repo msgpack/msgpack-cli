@@ -26,7 +26,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#else
+using MsgPack.Serialization.CodeTreeSerializers;
+#endif // !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
 #if !MSTEST
 using NUnit.Framework;
@@ -41,7 +45,11 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack.Serialization
 {
 	[TestFixture]
+#if !NETSTANDARD1_3
 	public class CompositeTest
+#else
+	public class CodeTreeCompositeTest
+#endif
 	{
 		[SetUp]
 		public void SetUp()
@@ -55,8 +63,12 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
-	
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+
+#if !NETSTANDARD1_3
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CodeDomSerializerBuilder( t, c ) );
+#else
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CodeTreeSerializerBuilder( t, c ) );
+#endif
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 		}
 
@@ -76,7 +88,7 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( null );
 		}
 
 		[Test]

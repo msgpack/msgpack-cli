@@ -1799,6 +1799,9 @@
     <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
       <Link>SplittingStream.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamExtensions.cs">
+      <Link>StreamExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
       <Link>SubtreeUnpackerTest.cs</Link>
     </Compile>

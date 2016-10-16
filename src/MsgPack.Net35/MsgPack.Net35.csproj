@@ -23,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Debug\MsgPack.xml</DocumentationFile>
+    <NoWarn>1574</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>..\..\bin\net35-client\MsgPack.XML</DocumentationFile>
+    <NoWarn>1574</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -51,6 +53,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <NoWarn>1574</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -294,6 +297,21 @@
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs">
       <Link>Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerators\SerializerAssemblyGenerationLogic.cs">
+      <Link>Serialization\CodeGenerators\SerializerAssemblyGenerationLogic.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerators\SerializerCodeGeneratorFactory.cs">
+      <Link>Serialization\CodeGenerators\SerializerCodeGeneratorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerators\SerializerCodesGenerationLogic.cs">
+      <Link>Serialization\CodeGenerators\SerializerCodesGenerationLogic.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerators\SerializerCodesGenerationLogicFactory.cs">
+      <Link>Serialization\CodeGenerators\SerializerCodesGenerationLogicFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerators\SerializerGenerationLogic`1.cs">
+      <Link>Serialization\CodeGenerators\SerializerGenerationLogic`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -509,6 +527,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DependentAssemblyManager.cs">
+      <Link>Serialization\DependentAssemblyManager.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DictionaryKeyTransformers.cs">
       <Link>Serialization\DictionaryKeyTransformers.cs</Link>

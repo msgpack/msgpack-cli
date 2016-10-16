@@ -19,8 +19,15 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 
+#if CSHARP
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+#elif VISUAL_BASIC
+using Microsoft.CodeAnalysis.VisualBasic;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+#endif
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -39,5 +46,9 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		}
 
 		public override ExpressionSyntax AsExpression() => this._expression;
+
+		public override IEnumerable<StatementSyntax> AsStatements() => new StatementSyntax[] { SyntaxFactory.ExpressionStatement( this._expression ) };
+
+		public override string ToString() => this._expression.ToString();
 	}
 }

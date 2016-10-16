@@ -25,8 +25,15 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
+#if CSHARP
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+#elif VISUAL_BASIC
+using Microsoft.CodeAnalysis.VisualBasic;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using static Microsoft.CodeAnalysis.VisualBasic.SyntaxFactory;
+#endif
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -37,45 +44,72 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 	/// </summary>
 	internal static class Syntax
 	{
-		public static readonly ExpressionSyntax NullLiteralSyntax = SyntaxFactory.LiteralExpression( SyntaxKind.NullLiteralExpression );
-
+		public static readonly ExpressionSyntax NullLiteralSyntax =
+#if CSHARP
+			LiteralExpression( SyntaxKind.NullLiteralExpression );
+#elif VISUAL_BASIC
+			NothingLiteralExpression( Token( SyntaxKind.NothingKeyword ) );
+#endif
 		public static readonly SyntaxTokenList PublicKeyword =
-			SyntaxFactory.TokenList( SyntaxFactory.Token( SyntaxKind.PublicKeyword ) );
+			TokenList( Token( SyntaxKind.PublicKeyword ) );
 
 		public static readonly SyntaxTokenList PrivateInstanceKeyword =
-			SyntaxFactory.TokenList( SyntaxFactory.Token( SyntaxKind.PrivateKeyword ) );
+			TokenList( Token( SyntaxKind.PrivateKeyword ) );
 
 		public static readonly SyntaxTokenList PrivateReadOnlyKeyword =
-			SyntaxFactory.TokenList( SyntaxFactory.Token( SyntaxKind.PrivateKeyword ), SyntaxFactory.Token( SyntaxKind.ReadOnlyKeyword ) );
+			TokenList( Token( SyntaxKind.PrivateKeyword ), Token( SyntaxKind.ReadOnlyKeyword ) );
 
 		public static readonly SyntaxTokenList PrivateStaticKeyword =
-			SyntaxFactory.TokenList( SyntaxFactory.Token( SyntaxKind.PrivateKeyword ), SyntaxFactory.Token( SyntaxKind.StaticKeyword ) );
+#if CSHARP
+			TokenList( Token( SyntaxKind.PrivateKeyword ), Token( SyntaxKind.StaticKeyword ) );
+#elif VISUAL_BASIC
+			TokenList( Token( SyntaxKind.PrivateKeyword ), Token( SyntaxKind.SharedKeyword ) );
+#endif
 
 		public static readonly SyntaxTokenList ProtectedOverrideKeyword =
-			SyntaxFactory.TokenList( SyntaxFactory.Token( SyntaxKind.ProtectedKeyword ), SyntaxFactory.Token( SyntaxKind.InternalKeyword ), SyntaxFactory.Token( SyntaxKind.OverrideKeyword ) );
+#if CSHARP
+			TokenList( Token( SyntaxKind.ProtectedKeyword ), Token( SyntaxKind.OverrideKeyword ) );
+#elif VISUAL_BASIC
+			TokenList( Token( SyntaxKind.ProtectedKeyword ), Token( SyntaxKind.OverridesKeyword ) );
+#endif
 
 		public static readonly SyntaxTokenList ProtectedInternalOverrideKeyword =
-			SyntaxFactory.TokenList( SyntaxFactory.Token( SyntaxKind.ProtectedKeyword ), SyntaxFactory.Token( SyntaxKind.OverrideKeyword ) );
+#if CSHARP
+			TokenList( Token( SyntaxKind.ProtectedKeyword ), Token( SyntaxKind.InternalKeyword ), Token( SyntaxKind.OverrideKeyword ) );
+#elif VISUAL_BASIC
+			TokenList( Token( SyntaxKind.ProtectedKeyword ), Token( SyntaxKind.AssemblyKeyword ), Token( SyntaxKind.OverridesKeyword ) );
+#endif
 
-		public static readonly TypeSyntax VoidTypeSyntax = SyntaxFactory.IdentifierName( SyntaxFactory.Token( SyntaxKind.VoidKeyword ) );
+		public static readonly TypeSyntax VoidTypeSyntax =
+#if CSHARP
+			IdentifierName( Token( SyntaxKind.VoidKeyword ) );
+#elif VISUAL_BASIC
+			null;
+#endif
 
-		public static readonly TypeSyntax Int32TypeSyntax = SyntaxFactory.IdentifierName( SyntaxFactory.Token( SyntaxKind.IntKeyword ) );
+		public static readonly TypeSyntax Int32TypeSyntax =
+#if CSHARP
+			IdentifierName( Token( SyntaxKind.IntKeyword ) );
+#elif VISUAL_BASIC
+			PredefinedType( Token( SyntaxKind.IntegerKeyword ) );
+#endif
 
-		public static readonly TypeSyntax MessagePackObjectTypeSyntax = SyntaxFactory.IdentifierName( typeof( MessagePackObject ).Name );
 
-		public static readonly TypeSyntax TaskTypeSyntax = SyntaxFactory.IdentifierName( typeof( Task ).Name );
+		public static readonly TypeSyntax MessagePackObjectTypeSyntax = IdentifierName( typeof( MessagePackObject ).Name );
 
-		public static readonly TypeSyntax CancellationTokenTypeSyntax = SyntaxFactory.IdentifierName( typeof( CancellationToken ).Name );
+		public static readonly TypeSyntax TaskTypeSyntax = IdentifierName( typeof( Task ).Name );
 
-		public static readonly TypeSyntax MethodInfoTypeSyntax = SyntaxFactory.IdentifierName( typeof( MethodInfo ).Name );
+		public static readonly TypeSyntax CancellationTokenTypeSyntax = IdentifierName( typeof( CancellationToken ).Name );
 
-		public static readonly TypeSyntax FieldInfoTypeSyntax = SyntaxFactory.IdentifierName( typeof( FieldInfo ).Name );
+		public static readonly TypeSyntax MethodInfoTypeSyntax = IdentifierName( typeof( MethodInfo ).Name );
+
+		public static readonly TypeSyntax FieldInfoTypeSyntax = IdentifierName( typeof( FieldInfo ).Name );
 
 		public static readonly TypeSyntax ObjectTypeSyntax = ToTypeSyntax( TypeDefinition.ObjectType );
 
 		public static readonly TypeSyntax SerializationContextTypeSyntax = ToTypeSyntax( TypeDefinition.SerializationContextType );
 
-		public static readonly SyntaxTrivia BlankLine = SyntaxFactory.SyntaxTrivia( SyntaxKind.EndOfLineTrivia, "\r\n" );
+		public static readonly SyntaxTrivia BlankLine = SyntaxTrivia( SyntaxKind.EndOfLineTrivia, "\r\n" );
 
 
 		private static string GetGenericTypeBaseName( TypeDefinition genericType )
@@ -90,21 +124,21 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		{
 			if ( type.IsArray )
 			{
-				return SyntaxFactory.ArrayType( ToTypeSyntax( type.ElementType ) );
+				return ArrayType( ToTypeSyntax( type.ElementType ) );
 			}
 
 			if ( type.HasRuntimeTypeFully() )
 			{
 				if ( type.GenericArguments.Length == 0 )
 				{
-					return SyntaxFactory.IdentifierName( type.ResolveRuntimeType().FullName );
+					return IdentifierName( type.ResolveRuntimeType().FullName );
 				}
 				else
 				{
 					return
-						SyntaxFactory.GenericName(
-							SyntaxFactory.Identifier( GetGenericTypeBaseName( type ) ),
-							SyntaxFactory.TypeArgumentList(
+						GenericName(
+							Identifier( GetGenericTypeBaseName( type ) ),
+							TypeArgumentList(
 								new SeparatedSyntaxList<TypeSyntax>().AddRange(
 									type.GenericArguments.Select( ToTypeSyntax )
 								)
@@ -116,14 +150,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			{
 				if ( type.GenericArguments.Length == 0 )
 				{
-					return SyntaxFactory.IdentifierName( type.TypeName );
+					return IdentifierName( type.TypeName );
 				}
 				else
 				{
 					return
-						SyntaxFactory.GenericName(
-							SyntaxFactory.Identifier( type.TypeName ),
-							SyntaxFactory.TypeArgumentList(
+						GenericName(
+							Identifier( type.TypeName ),
+							TypeArgumentList(
 								new SeparatedSyntaxList<TypeSyntax>().AddRange(
 									type.GenericArguments.Select( ToTypeSyntax )
 								)

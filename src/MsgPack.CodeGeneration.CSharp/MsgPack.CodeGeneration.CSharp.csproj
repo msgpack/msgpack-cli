@@ -57,7 +57,8 @@
     <Compile Include="Serialization\CodeTreeSerializers\CodeTreeConstruct.cs" />
     <Compile Include="Serialization\CodeTreeSerializers\CodeTreeContext.cs" />
     <Compile Include="Serialization\CodeTreeSerializers\CodeTreeSerializerBuilder.cs" />
-    <Compile Include="Serialization\CSharpCodeTreeBasedSerializerCodeGenerator.cs" />
+    <Compile Include="Serialization\CodeTreeSerializers\SyntaxCompatibilities.cs" />
+    <Compile Include="Serialization\CodeGenerators\CSharpCodeTreeBasedSerializerCodeGenerator.cs" />
     <Compile Include="Serialization\CodeTreeSerializers\ExpressionCodeTreeConstruct.cs" />
     <Compile Include="Serialization\CodeTreeSerializers\ParameterCodeTreeConstruct.cs" />
     <Compile Include="Serialization\CodeTreeSerializers\StatementCodeTreeConstruct.cs" />

@@ -147,7 +147,6 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#warning TODO: Split multiple files
 #warning TODO: Remove System.Linq.Expressions
 		public static Type[] GetParameterTypes( this MethodBase source )
 		{
@@ -174,14 +173,7 @@ namespace MsgPack.Serialization
 
 			if ( !typeof( T ).GetIsValueType() )
 			{
-				foreach ( var candidate in typeof( T ).GetTypeInfo().DeclaredConstructors )
-				{
-					if ( candidate.GetParameters().Length == 0 )
-					{
-						defaultConstructor = candidate;
-						break;
-					}
-				}
+				defaultConstructor = typeof( T ).GetConstructor( ReflectionAbstractions.EmptyTypes );
 
 				if ( defaultConstructor == null )
 				{
@@ -195,7 +187,11 @@ namespace MsgPack.Serialization
 				}
 			}
 
+#if AOT || SILVERLIGHT
+			return new Func<T>( () => ( T ) defaultConstructor.InvokePreservingExceptionType() );
+#else
 			return ( Func<T> )CreateDelegate( typeof( Func<T> ), typeof( T ), defaultConstructor, ReflectionAbstractions.EmptyTypes );
+#endif // AOT || SILVERLIGHT
 		}
 
 
@@ -208,7 +204,12 @@ namespace MsgPack.Serialization
 		{
 			ValidateInstanceType( source, typeof( T ) );
 			var parameterTypes = new[] { typeof( TArg ) };
+
+#if AOT || SILVERLIGHT
+			return new Func<TArg, T>( a => ( T )GetConstructor( typeof( T ), parameterTypes ).InvokePreservingExceptionType( a ) );
+#else
 			return ( Func<TArg, T> )CreateDelegate( typeof( Func<TArg, T> ), typeof( T ), GetConstructor( typeof( T ), parameterTypes ), parameterTypes );
+#endif // AOT || SILVERLIGHT
 		}
 
 		private static void ValidateInstanceType( Type source, Type returnType )
@@ -235,7 +236,7 @@ namespace MsgPack.Serialization
 		private static ConstructorInfo GetConstructor( Type source, Type[] parameterTypes )
 		{
 			// Avoid LINQ for performance here.
-			foreach ( var candidate in source.GetTypeInfo().DeclaredConstructors )
+			foreach ( var candidate in source.GetConstructors() )
 			{
 				var parameters = candidate.GetParameters();
 				if ( parameters.Length == parameterTypes.Length )
@@ -262,15 +263,15 @@ namespace MsgPack.Serialization
 					CultureInfo.CurrentCulture,
 					"There are no constructors in type '{0}' which matches parameter types '{1}'.",
 					source,
-					String.Join<Type>( ", ", parameterTypes )
+					String.Join( ", ", parameterTypes.Select( t => t.GetFullName() ).ToArray() )
 				)
 			);
 		}
 
+#if !AOT && !SILVERLIGHT
+
 		private static Delegate CreateDelegate( Type delegateType, Type targetType, ConstructorInfo constructor, Type[] parameterTypes )
 		{
-			// TODO: AOT check and fallback.
-
 			var dynamicMethod =
 				new DynamicMethod( "Create" + targetType.Name, targetType, parameterTypes, restrictedSkipVisibility: true );
 			var il = new TracingILGenerator( dynamicMethod, NullTextWriter.Instance, isDebuggable: false );
@@ -295,6 +296,8 @@ namespace MsgPack.Serialization
 			il.EmitRet();
 			return dynamicMethod.CreateDelegate( delegateType );
 		}
+
+#endif // !AOT && !SILVERLIGHT
 
 		public static Type GetMemberValueType( this MemberInfo source )
 		{

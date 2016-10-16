@@ -52,6 +52,7 @@
     <Exclude Path="Serialization\ExpressionSerializers\*" />
     <Exclude Path="Serialization\AbstractSerializers\*" />
     <Exclude Path="Serialization\CodeDomSerializers\*" />
+    <Exclude Path="Serialization\CodeGenerators\*" />
     <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\EmittingSerializers\*" />
     <Exclude Path="Serialization\Metadata\*" />
@@ -59,7 +60,7 @@
     <Exclude Path="Serialization\CallbackEnumMessagePackSerializer.cs" />
     <Exclude Path="Serialization\CallbackMessagePackSerializer`1.cs" />
     <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
-    <Exclude Path="Serialization\FromExpression.cs" />
+    <Exclude Path="Serialization\DependentAssemblyManager.cs" />
     <Exclude Path="Serialization\FromExpression.*.cs" />
     <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />

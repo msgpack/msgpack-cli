@@ -23,11 +23,11 @@
 #endif
 
 using System;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if CORE_CLR || UNITY || NETSTANDARD1_3
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // CORE_CLR || UNITY || NETSTANDARD1_3
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -42,24 +42,6 @@ namespace MsgPack
 	// [ArgumentValidator]
 	internal static class Validation
 	{
-#if DEBUG
-		public static void ValidateIsNotNullNorEmpty( string value, string parameterName )
-		{
-			if ( value == null )
-			{
-				throw new ArgumentNullException( parameterName );
-			}
-
-			if ( value.Length == 0 )
-			{
-				throw new ArgumentException(
-					String.Format( CultureInfo.CurrentCulture, "'{0}' cannot be empty.", parameterName ),
-					parameterName
-				);
-			}
-		}
-#endif // DEBUG
-
 		private const string UnicodeTr15Annex7Idneifier =
 			@"[\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}][\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]*";
 

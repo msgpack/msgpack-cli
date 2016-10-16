@@ -24,9 +24,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -53,7 +56,7 @@ namespace MsgPack.Serialization
 		{
 			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 		}
-#if !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !UNITY
 
 #if MSTEST
 		[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitialize]
@@ -66,6 +69,7 @@ namespace MsgPack.Serialization
 #endif
 		public void SetUp()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -75,8 +79,9 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CodeDomSerializerBuilder( t, c ) );
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 			if ( this.GetType().Assembly != typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly )
 			{
@@ -87,6 +92,7 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( SerializerDebugging.DumpEnabled )
 			{
 				try
@@ -98,9 +104,10 @@ namespace MsgPack.Serialization
 					SerializationMethodGeneratorManager.Refresh();
 				}
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( null );
 		}
 #endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
 

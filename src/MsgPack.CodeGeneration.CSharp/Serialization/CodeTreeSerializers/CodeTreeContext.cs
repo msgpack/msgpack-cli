@@ -22,7 +22,11 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if NETSTANDARD1_3
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_3
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -31,12 +35,30 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
+#if CSHARP
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using CodeTreeSerializerBuilder = MsgPack.Serialization.CodeTreeSerializers.CSharpCodeTreeSerializerBuilder;
+#elif VISUAL_BASIC
+using Microsoft.CodeAnalysis.VisualBasic;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using static Microsoft.CodeAnalysis.VisualBasic.SyntaxFactory;
+using CodeTreeSerializerBuilder = MsgPack.Serialization.CodeTreeSerializers.VisualBasicCodeTreeSerializerBuilder;
+#endif
 
 using MsgPack.Serialization.AbstractSerializers;
 using static MsgPack.Serialization.CodeTreeSerializers.Syntax;
+using static MsgPack.Serialization.CodeTreeSerializers.SyntaxCompatibilities;
+
+#if VISUAL_BASIC
+using AttributeArgumentSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.ArgumentSyntax;
+using ClassDeclarationSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.ClassStatementSyntax;
+using ConstructorDeclarationSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.SubNewStatementSyntax;
+using MemberDeclarationSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.DeclarationStatementSyntax;
+using TypeDeclarationSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.TypeBlockSyntax;
+using UsingDirectiveSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.ImportsStatementSyntax;
+#endif // VISUAL_BASIC
 
 #warning Fix Samuel Cragg spreading
 
@@ -44,6 +66,12 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 {
 	internal class CodeTreeContext : SerializerGenerationContext<CodeTreeConstruct>, ISerializerCodeGenerationContext
 	{
+#if VISUAL_BASIC
+
+		private static ModifiedIdentifierSyntax Identifier( string identifier ) => ModifiedIdentifier( identifier );
+
+#endif // VISUAL_BASIC
+
 		private static readonly ParameterSyntax MessagePackObjectParameterSyntax = Parameter( Identifier( "messagePackObject" ) ).WithType( MessagePackObjectTypeSyntax );
 
 		private static readonly ParameterSyntax InitialCapacityParameterSyntax = Parameter( Identifier( "initialCapacity" ) ).WithType( Int32TypeSyntax );
@@ -69,8 +97,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			new SyntaxList<AttributeListSyntax>().Add(
 				AttributeList().AddAttributes(
 					Attribute(
+#if CSHARP
 						IdentifierName( typeof( GeneratedCodeAttribute ).FullName ),
 						AttributeArgumentList(
+#elif VISUAL_BASIC
+						Syntax.ToTypeSyntax( typeof( GeneratedCodeAttribute ) )
+					).WithArgumentList(
+						ArgumentList(
+#endif
 							new SeparatedSyntaxList<AttributeArgumentSyntax>().Add(
 								AttributeArgument(
 									LiteralExpression( SyntaxKind.StringLiteralExpression, Literal( typeof( CodeTreeSerializerBuilder ).FullName ) )
@@ -92,12 +126,16 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 				)
 			);
 
+#if CSHARP
 		private static readonly ClassDeclarationSyntax UnpackingContextTypeTemplate =
 			ClassDeclaration( SerializerBuilderHelper.UnpackingContextTypeName );
+#elif VISUAL_BASIC
+		private static readonly ClassBlockSyntax UnpackingContextTypeTemplate =
+			ClassBlock( ClassDeclaration( SerializerBuilderHelper.UnpackingContextTypeName ) );
+#endif
 
 		private static readonly ConstructorDeclarationSyntax UnpackingContextConstructorTemplate =
-			ConstructorDeclaration( SerializerBuilderHelper.UnpackingContextTypeName )
-				.WithModifiers( PublicKeyword );
+			ConstructorDeclaration( SerializerBuilderHelper.UnpackingContextTypeName, PublicKeyword );
 
 		private static readonly CodeTreeConstruct SingletonPacker = CodeTreeConstruct.Parameter( typeof( Packer ), IdentifierName( "packer" ) );
 
@@ -171,13 +209,11 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 				this._dependentSerializers.Add( key, fieldName );
 				this._buildingType.AddMembers(
 					FieldDeclaration(
-						VariableDeclaration(
-							GenericName(
-								"MessagePackSerializer"
-							).AddTypeArgumentListArguments(
-								ToTypeSyntax( Type.GetTypeFromHandle( key.TypeHandle ) )
-							)
-						).AddVariables( VariableDeclarator( fieldName ) )
+						GenericName(
+							"MessagePackSerializer",
+							ToTypeSyntax( Type.GetTypeFromHandle( key.TypeHandle ) )
+						),
+						fieldName
 					).WithModifiers( PrivateReadOnlyKeyword )
 				);
 			}
@@ -204,9 +240,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					);
 				this._cachedTargetFields.Add( field, cachedField );
 				this._buildingType.AddMembers(
-					FieldDeclaration(
-						VariableDeclaration( FieldInfoTypeSyntax ).AddVariables( VariableDeclarator( cachedField.StorageFieldName ) )
-					).WithModifiers( PrivateReadOnlyKeyword )
+					FieldDeclaration( FieldInfoTypeSyntax, cachedField.StorageFieldName ).WithModifiers( PrivateReadOnlyKeyword )
 				);
 			}
 
@@ -218,9 +252,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			if ( !this._buildingType.ContainsField( name ) )
 			{
 				this._buildingType.AddMembers(
-					FieldDeclaration(
-						VariableDeclaration( MethodInfoTypeSyntax ).AddVariables( VariableDeclarator( name ) )
-					).WithModifiers( PrivateReadOnlyKeyword )
+					FieldDeclaration( MethodInfoTypeSyntax, name ).WithModifiers( PrivateReadOnlyKeyword )
 				);
 			}
 
@@ -246,9 +278,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					);
 				this._cachedPropertyAccessors.Add( method, cachedMethod );
 				this._buildingType.AddMembers(
-					FieldDeclaration(
-						VariableDeclaration( MethodInfoTypeSyntax ).AddVariables( VariableDeclarator( cachedMethod.StorageFieldName ) )
-					).WithModifiers( PrivateReadOnlyKeyword )
+					FieldDeclaration( MethodInfoTypeSyntax, cachedMethod.StorageFieldName ).WithModifiers( PrivateReadOnlyKeyword )
 				);
 			}
 
@@ -304,14 +334,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					ClassDeclaration( IdentifierUtility.EscapeTypeName( targetType ) + "Serializer" )
 						.WithAttributeLists( attributes )
 						.WithModifiers( PublicKeyword )
-						.WithBaseList(
-							BaseList(
-								new SeparatedSyntaxList<BaseTypeSyntax>().Add(
-									SimpleBaseType( ToTypeSyntax( baseClass ) )
-								)
-							)
-						)
-				);
+				).WithBaseList( baseClass );
 			this._declaringTypes.Add( targetType, this._buildingType );
 
 			this.PackToTarget = CodeTreeConstruct.Parameter( targetType, IdentifierName( "objectTree" ) );
@@ -358,7 +381,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					isStatic,
 					returnType,
 					parameters
-						.Select( p => new KeyValuePair<string, TypeDefinition>( p.AsParameter().Identifier.ValueText, p.ContextType ) )
+						.Select( p => new KeyValuePair<string, TypeDefinition>( p.AsParameter().GetIdentifierText(), p.ContextType ) )
 						.ToArray()
 				)
 			);
@@ -378,6 +401,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 			SyntaxTokenList modifiers;
 			TypeSyntax returnType = VoidTypeSyntax;
+
 			var parameters = new SeparatedSyntaxList<ParameterSyntax>();
 
 			switch ( name )
@@ -481,8 +505,8 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 				{
 					returnType =
 						GenericName(
-							Identifier( typeof( Task ).Name ),
-							TypeArgumentList().AddArguments( ToTypeSyntax( this._targetType ) )
+							typeof( Task ).Name,
+							ToTypeSyntax( this._targetType )
 						);
 					parameters =
 						parameters.Add(
@@ -528,11 +552,11 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			}
 
 			this._buildingType.AddMembers(
-					MethodDeclaration( returnType, name )
-						.WithModifiers( modifiers )
-						.WithParameterList( ParameterList( parameters ) )
-						.WithBody( Block( body.AsStatements() ) )
-				);
+				MethodDeclaration( returnType, name )
+				.WithModifiers( modifiers )
+				.WithParameterList( ParameterList( parameters ) )
+				.WithBody( Block( body.AsStatements() ) )
+			);
 
 			return
 				new MethodDefinition(
@@ -619,12 +643,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 				var fieldTypeSyntax = ToTypeSyntax( kv.Value );
 				fieldDeclarations =
 					fieldDeclarations.Add(
-						FieldDeclaration(
-							VariableDeclaration( fieldTypeSyntax )
-							.AddVariables(
-								VariableDeclarator( kv.Key )
-							)
-						).WithModifiers( PublicKeyword )
+						FieldDeclaration( fieldTypeSyntax, kv.Key ).WithModifiers( PublicKeyword )
 					);
 
 				parameters =
@@ -634,16 +653,12 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 				statements =
 					statements.Add(
-						ExpressionStatement(
-							AssignmentExpression(
-								SyntaxKind.SimpleAssignmentExpression,
-								MemberAccessExpression(
-									SyntaxKind.SimpleMemberAccessExpression,
-									ThisExpression(),
-									IdentifierName( kv.Key )
-								),
+						SimpleAssignmentStatement(
+							SimpleMemberAccessExpression(
+								ThisExpression(),
 								IdentifierName( kv.Key )
-							)
+							),
+							IdentifierName( kv.Key )
 						)
 					);
 			}
@@ -702,8 +717,19 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			foreach ( var kv in this._declaringTypes )
 			{
 				var declaringType = kv.Value.Build();
-				var typeFileName = declaringType.Identifier.ValueText;
-				var genericArity = declaringType.TypeParameterList?.Parameters.Count;
+				var declaringTypeIdentifier =
+#if CSHARP
+					declaringType.Identifier;
+#elif VISUAL_BASIC
+					declaringType.ClassStatement.Identifier;
+#endif
+				var typeFileName = declaringTypeIdentifier.ValueText;
+				var genericArity =
+#if CSHARP
+					declaringType.TypeParameterList?.Parameters.Count;
+#elif VISUAL_BASIC
+					declaringType.ClassStatement.TypeParameterList?.Parameters.Count;
+#endif
 				if ( genericArity != null )
 				{
 					typeFileName += "`" + genericArity.Value.ToString( "D", CultureInfo.InvariantCulture );
@@ -718,10 +744,10 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 						kv.Key,
 						filePath,
 						String.IsNullOrEmpty( this._configuration.Namespace )
-						? declaringType.Identifier.ValueText
-						: this._configuration.Namespace + "." + declaringType.Identifier.ValueText,
+						? declaringTypeIdentifier.ValueText
+						: this._configuration.Namespace + "." + declaringTypeIdentifier.ValueText,
 						this._configuration.Namespace,
-						declaringType.Identifier.ValueText
+						declaringTypeIdentifier.ValueText
 					)
 				);
 
@@ -743,7 +769,12 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					IdentifierName( this._configuration.Namespace )
 				).WithLeadingTrivia( BlankLine )
 				.WithMembers(
-					new SyntaxList<MemberDeclarationSyntax>().Add(
+#if CSHARP
+					new SyntaxList<MemberDeclarationSyntax>()
+#elif VISUAL_BASIC
+					new SyntaxList<StatementSyntax>()
+#endif
+					.Add(
 						targetType
 					)
 				)
@@ -800,18 +831,54 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 		private sealed class ClassDeclarationSyntaxBuilder
 		{
+#if CSHARP
 			private ClassDeclarationSyntax _syntax;
 
 			public SyntaxToken Identifier => this._syntax.Identifier;
 
+#elif VISUAL_BASIC
+
+			private ClassBlockSyntax _syntax;
+
+			public SyntaxToken Identifier => this._syntax.ClassStatement.Identifier;
+
+#endif
+
 			public ClassDeclarationSyntaxBuilder( ClassDeclarationSyntax syntax )
 			{
+#if CSHARP
 				this._syntax = syntax;
+#elif VISUAL_BASIC
+				this._syntax = ClassBlock( syntax );
+#endif
+			}
+
+			public ClassDeclarationSyntaxBuilder WithBaseList( TypeDefinition baseClass )
+			{
+				this._syntax =
+#if CSHARP
+					this._syntax.WithBaseList(
+						BaseList(
+							new SeparatedSyntaxList<BaseTypeSyntax>().Add(
+								SimpleBaseType( ToTypeSyntax( baseClass ) )
+							)
+						)
+					);
+#elif VISUAL_BASIC
+					this._syntax.AddInherits(
+						InheritsStatement( ToTypeSyntax( baseClass ) )
+					);
+#endif
+				return this;
 			}
 
 			public ClassDeclarationSyntaxBuilder WithMembers( SyntaxList<MemberDeclarationSyntax> members )
 			{
+#if CSHARP
 				this._syntax = this._syntax.WithMembers( members );
+#elif VISUAL_BASIC
+				this._syntax = this._syntax.WithMembers( new SyntaxList<StatementSyntax>().AddRange( members ) );
+#endif
 				return this;
 			}
 
@@ -824,9 +891,18 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 			public bool ContainsField( string name )
 				=> this._syntax.Members.OfType<FieldDeclarationSyntax>()
+#if CSHARP
 					.Any( x => x.Declaration.Variables.Any( v => v.Identifier.ValueText == name ) );
+#elif VISUAL_BASIC
+					.Any( x => x.Declarators.Any( d => d.Names.Any( n => n.Identifier.ValueText == name ) ) );
+#endif
 
+#if CSHARP
 			public ClassDeclarationSyntax Build() => this._syntax;
+#elif VISUAL_BASIC
+			public ClassBlockSyntax Build() => this._syntax;
+#endif
 		}
 	}
 }
+

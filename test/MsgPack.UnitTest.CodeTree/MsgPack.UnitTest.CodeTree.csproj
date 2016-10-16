@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D5A4E386-E418-4407-916E-A65092B78693}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsgPack</RootNamespace>
+    <AssemblyName>MsgPack.UnitTest.CodeTree</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;FEATURE_TAP;NETSTANDARD1_3</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;FEATURE_TAP;NETSTANDARD1_3</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.1.3.2\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.VisualBasic.1.3.2\lib\net45\Microsoft.CodeAnalysis.VisualBasic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.AppContext.4.1.0\lib\net46\System.AppContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Console, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Console.4.0.0\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.FileVersionInfo, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.FileVersionInfo.4.0.0\lib\net46\System.Diagnostics.FileVersionInfo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Diagnostics.Process, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.Process.4.1.0\lib\net461\System.Diagnostics.Process.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.StackTrace.4.0.1\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.FileSystem.4.0.1\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.1.1\lib\net46\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=1.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reflection.Metadata.1.3.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.Serialization.Primitives.4.1.1\lib\net46\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Algorithms.4.2.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Encoding.4.0.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.Primitives.4.0.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Cryptography.X509Certificates.4.1.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Encoding.CodePages.4.0.1\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Thread.4.0.0\lib\net46\System.Threading.Thread.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.XmlDocument, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Xml.XmlDocument.4.0.1\lib\net46\System.Xml.XmlDocument.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XPath, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Xml.XPath.4.0.1\lib\net46\System.Xml.XPath.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XPath.XDocument, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Xml.XPath.XDocument.4.0.1\lib\net46\System.Xml.XPath.XDocument.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\Image.cs">
+      <Link>Image.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
+      <Link>Serialization\AddOnlyCollection`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AppendableReadOnlyCollections.cs">
+      <Link>Serialization\AppendableReadOnlyCollections.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
+      <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.Types.cs">
+      <Link>Serialization\AutoMessagePackSerializerTest.Types.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\BaseCollections.cs">
+      <Link>Serialization\BaseCollections.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexType.cs">
+      <Link>Serialization\ComplexType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContract.cs">
+      <Link>Serialization\ComplexTypeWithDataContract.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContractWithOrder.cs">
+      <Link>Serialization\ComplexTypeWithDataContractWithOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithNonSerialized.cs">
+      <Link>Serialization\ComplexTypeWithNonSerialized.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithOneBaseOrder.cs">
+      <Link>Serialization\ComplexTypeWithOneBaseOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithoutAnyAttribute.cs">
+      <Link>Serialization\ComplexTypeWithoutAnyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithTwoMember.cs">
+      <Link>Serialization\ComplexTypeWithTwoMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
+      <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
+      <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs">
+      <Link>Serialization\IVerifiable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
+      <Link>Serialization\IVerifiable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
+      <Link>Serialization\NilImplicationTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargets.cs">
+      <Link>Serialization\SerializationTargets.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
+      <Link>Serialization\SimpleCollection`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs">
+      <Link>Serialization\StringKeyedCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TempFileDependentAssemblyManager.cs">
+      <Link>Serialization\TempFileDependentAssemblyManager.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs">
+      <Link>Serialization\TestValueType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamExtensions.cs">
+      <Link>StreamExtensions.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\ArrayCSharpCodeTreeBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayCSharpCodeTreeBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayCSharpCodeTreeBasedCustomCollectionSerializersTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayCSharpCodeTreeBasedCustomCollectionSerializersTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayCSharpCodeTreeBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayCSharpCodeTreeBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayVisualBasicCodeTreeBasedCustomCollectionSerializersTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayVisualBasicCodeTreeBasedCustomCollectionSerializersTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\ArrayVisualBasicCodeTreeBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArrayVisualBasicCodeTreeBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\CSharpCodeTreeBasedNilImplicationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharpCodeTreeBasedNilImplicationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\MapCSharpCodeTreeBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapCSharpCodeTreeBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\MapCSharpCodeTreeBasedCustomCollectionSerializersTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapCSharpCodeTreeBasedCustomCollectionSerializersTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\MapCSharpCodeTreeBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapCSharpCodeTreeBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\MapVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\MapVisualBasicCodeTreeBasedCustomCollectionSerializersTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapVisualBasicCodeTreeBasedCustomCollectionSerializersTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\MapVisualBasicCodeTreeBasedEnumSerializationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapVisualBasicCodeTreeBasedEnumSerializationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\VisualBasicCodeTreeBasedNilImplicationTest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VisualBasicCodeTreeBasedNilImplicationTest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\_SetUpFixture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Serialization\ArrayCSharpCodeTreeBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayCSharpCodeTreeBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\ArrayCSharpCodeTreeBasedCustomCollectionSerializersTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayCSharpCodeTreeBasedCustomCollectionSerializersTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\ArrayCSharpCodeTreeBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayCSharpCodeTreeBasedEnumSerializationTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\ArrayVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\ArrayVisualBasicCodeTreeBasedCustomCollectionSerializersTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayVisualBasicCodeTreeBasedCustomCollectionSerializersTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\ArrayVisualBasicCodeTreeBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArrayVisualBasicCodeTreeBasedEnumSerializationTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\CSharpCodeTreeBasedNilImplicationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CSharpCodeTreeBasedNilImplicationTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\MapCSharpCodeTreeBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapCSharpCodeTreeBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\MapCSharpCodeTreeBasedCustomCollectionSerializersTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapCSharpCodeTreeBasedCustomCollectionSerializersTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\MapCSharpCodeTreeBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapCSharpCodeTreeBasedEnumSerializationTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\MapVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapVisualBasicCodeTreeBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\MapVisualBasicCodeTreeBasedCustomCollectionSerializersTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapVisualBasicCodeTreeBasedCustomCollectionSerializersTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\MapVisualBasicCodeTreeBasedEnumSerializationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MapVisualBasicCodeTreeBasedEnumSerializationTest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\VisualBasicCodeTreeBasedNilImplicationTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VisualBasicCodeTreeBasedNilImplicationTest.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MsgPack.CodeGeneration.Core\MsgPack.CodeGeneration.Core.csproj">
+      <Project>{efe532ea-77c8-4877-96c2-e79fd101b2ab}</Project>
+      <Name>MsgPack.CodeGeneration.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\MsgPack.CodeGeneration.CSharp\MsgPack.CodeGeneration.CSharp.csproj">
+      <Project>{b10240c1-bb07-47a3-b056-ce52b5194d86}</Project>
+      <Name>MsgPack.CodeGeneration.CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\MsgPack.CodeGeneration.VisualBasic\MsgPack.CodeGeneration.VisualBasic.csproj">
+      <Project>{a88d64db-de14-4b77-80d8-b765f45ebb8b}</Project>
+      <Name>MsgPack.CodeGeneration.VisualBasic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\MsgPack.Core\MsgPack.Core.csproj">
+      <Project>{08d9a49d-736e-4cad-919e-72ca8c1d4a9f}</Project>
+      <Name>MsgPack.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\MsgPack.Serialization\MsgPack.Serialization.csproj">
+      <Project>{153ced68-9905-4b1f-9790-f463840895e2}</Project>
+      <Name>MsgPack.Serialization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

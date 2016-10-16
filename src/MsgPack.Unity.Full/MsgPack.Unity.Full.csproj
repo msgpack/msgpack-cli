@@ -21,7 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
-    <NoWarn>3001,3002</NoWarn>
+    <NoWarn>3001,3002,1574</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,14 +31,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\MsgPack-CLI\unity-full\MsgPack.XML</DocumentationFile>
-    <NoWarn>3001,3002</NoWarn>
+    <NoWarn>3001,3002,1574</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT;CODE_ANALYSIS</DefineConstants>
     <DocumentationFile></DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>3001,3002</NoWarn>
+    <NoWarn>3001,3002,1574</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -426,6 +426,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ExtTypeCodeMapping.cs">
       <Link>Serialization\ExtTypeCodeMapping.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
+      <Link>Serialization\FromExpression.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ICustomizableEnumSerializer.cs">
       <Link>Serialization\ICustomizableEnumSerializer.cs</Link>

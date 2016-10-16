@@ -22,7 +22,9 @@
 #endregion -- License Terms --
 
 using System;
+#if FEATURE_CONCURRENT
 using System.Collections.Concurrent;
+#endif // FEATURE_CONCURRENT
 using System.Collections.Generic;
 using System.Globalization;
 #if NETSTANDARD1_3
@@ -33,14 +35,12 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 
-using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.CodeGenerators;
 #if NETSTANDARD1_3
 
 #else
-using MsgPack.Serialization.CodeDomSerializers;
-using MsgPack.Serialization.EmittingSerializers;
+
 #endif // NETSTANDARD1_3
 
 namespace MsgPack.Serialization
@@ -65,8 +65,51 @@ namespace MsgPack.Serialization
 	///			If you want to get such fine grained control for them, you should implement own hand made serializers.
 	///		</note>
 	/// </remarks>
-	public class SerializerGenerator
+	public partial class SerializerGenerator
 	{
+#if FEATURE_CONCURRENT
+
+		private static readonly ConcurrentDictionary<string, SerializerCodeGeneratorFactory> CodeGeneratorFactories = InitializeCodeGeneratorFactories();
+
+#else
+
+		private static readonly Dictionary<string, SerializerCodeGeneratorFactory> CodeGeneratorFactories = InitializeCodeGeneratorFactories();
+		private static readonly object SyncRoot = new object();
+
+#endif // FEATURE_CONCURRENT
+
+#if FEATURE_CONCURRENT
+		private static ConcurrentDictionary<string, SerializerCodeGeneratorFactory> InitializeCodeGeneratorFactories()
+		{
+			var factories = new ConcurrentDictionary<string, SerializerCodeGeneratorFactory>( StringComparer.OrdinalIgnoreCase );
+#else
+		private static Dictionary<string, SerializerCodeGeneratorFactory> InitializeCodeGeneratorFactories()
+		{
+			var factories = new Dictionary<string, SerializerCodeGeneratorFactory>( StringComparer.OrdinalIgnoreCase );
+#endif // FEATURE_CONCURRENT
+#if !NETSTANDARD1_3
+			factories[ String.Empty ] = SerializerCodesGenerationLogicFactory.Instance;
+			factories[ "codedom" ] = SerializerCodesGenerationLogicFactory.Instance;
+#endif // !NETSTANDARD1_3
+			return factories;
+		}
+
+
+		internal static void RegisterGenerator( string[] keys, SerializerCodeGeneratorFactory factory )
+		{
+#if !FEATURE_CONCURRENT
+			lock ( SyncRoot )
+			{
+#endif // !FEATURE_CONCURRENT
+			foreach ( var key in keys )
+			{
+				CodeGeneratorFactories[ key ] = factory;
+			}
+#if !FEATURE_CONCURRENT
+			}
+#endif // !FEATURE_CONCURRENT
+		}
+
 #if !NETSTANDARD1_3
 		/// <summary>
 		///		Gets the type of the root object which will be serialized/deserialized.
@@ -431,231 +474,20 @@ namespace MsgPack.Serialization
 					? String.Empty
 					: configuration.ProviderName;
 			SerializerCodeGeneratorFactory factory;
+
+#if !FEATURE_CONCURRENT
+			lock ( SyncRoot )
+			{
+#endif // !FEATURE_CONCURRENT
 			if ( !CodeGeneratorFactories.TryGetValue( providerName, out factory ) )
 			{
 				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Unknown provider name '{0}'", providerName ) );
 			}
+#if !FEATURE_CONCURRENT
+			}
+#endif // !FEATURE_CONCURRENT
 
 			return factory.Create( configuration ).Generate( targetTypes, configuration ?? new SerializerCodeGenerationConfiguration() );
 		}
-
-		private static readonly ConcurrentDictionary<string, SerializerCodeGeneratorFactory> CodeGeneratorFactories = InitializeCodeGeneratorFactories();
-
-		private static ConcurrentDictionary<string, SerializerCodeGeneratorFactory> InitializeCodeGeneratorFactories()
-		{
-			var factories = new ConcurrentDictionary<string, SerializerCodeGeneratorFactory>( StringComparer.OrdinalIgnoreCase );
-#if !NETSTANDARD1_3
-			factories[ String.Empty ] = SerializerCodesGenerationLogicFactory.Instance;
-			factories[ "codedom" ] = SerializerCodesGenerationLogicFactory.Instance;
-#endif // !NETSTANDARD1_3
-			return factories;
-		}
-
-
-		internal static void RegisterGenerator( string[] keys, SerializerCodeGeneratorFactory factory )
-		{
-			foreach ( var key in keys )
-			{
-				CodeGeneratorFactories[ key ] = factory;
-			}
-		}
-
-#warning TODO: Move out
-		internal abstract class SerializerGenerationLogic<TConfig>
-			where TConfig : class, ISerializerGeneratorConfiguration
-		{
-			protected abstract EmitterFlavor EmitterFlavor { get; }
-
-			public IEnumerable<SerializerCodeGenerationResult> Generate( IEnumerable<Type> targetTypes, TConfig configuration )
-			{
-				if ( targetTypes == null )
-				{
-					throw new ArgumentNullException( "targetTypes" );
-				}
-
-				if ( configuration == null )
-				{
-					throw new ArgumentNullException( "configuration" );
-				}
-
-				configuration.Validate();
-				var context =
-					new SerializationContext
-					{
-#if !NETSTANDARD1_3
-						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
-#endif // !NETSTANDARD1_3
-						EnumSerializationMethod = configuration.EnumSerializationMethod,
-						SerializationMethod = configuration.SerializationMethod
-					};
-				context.SerializerOptions.EmitterFlavor = this.EmitterFlavor;
-				context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = configuration.CompatibilityOptions.AllowNonCollectionEnumerableTypes;
-				context.CompatibilityOptions.IgnorePackabilityForCollection = configuration.CompatibilityOptions.IgnorePackabilityForCollection;
-				context.CompatibilityOptions.OneBoundDataMemberOrder = configuration.CompatibilityOptions.OneBoundDataMemberOrder;
-				context.CompatibilityOptions.PackerCompatibilityOptions = configuration.CompatibilityOptions.PackerCompatibilityOptions;
-#if !NETFX_35
-				context.SerializerOptions.WithAsync = configuration.WithAsync;
-#endif // !NETFX_35
-
-				IEnumerable<Type> realTargetTypes;
-				if ( configuration.IsRecursive )
-				{
-					realTargetTypes =
-						targetTypes
-						.SelectMany( t => ExtractElementTypes( context, configuration, t ) );
-				}
-				else
-				{
-					realTargetTypes =
-						targetTypes
-						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) ) );
-				}
-
-				var generationContext = this.CreateGenerationContext( context, configuration );
-				var generatorFactory = this.CreateGeneratorFactory( context );
-
-				foreach ( var targetType in realTargetTypes.Distinct() )
-				{
-					var generator = generatorFactory( targetType );
-
-					var concreteType = default( Type );
-					if ( targetType.GetIsInterface() || targetType.GetIsAbstract() )
-					{
-						concreteType = context.DefaultCollectionTypes.GetConcreteType( targetType );
-					}
-
-					generator.BuildSerializerCode( generationContext, concreteType, null );
-				}
-
-				Directory.CreateDirectory( configuration.OutputDirectory );
-
-				return generationContext.Generate();
-			}
-
-			private static IEnumerable<Type> ExtractElementTypes( SerializationContext context, ISerializerGeneratorConfiguration configuration, Type type )
-			{
-				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) ) )
-				{
-					yield return type;
-
-					// Search dependents recursively if the type is NOT enum.
-					if ( !type.GetIsEnum() )
-					{
-						foreach (
-							var dependentType in
-								SerializationTarget.Prepare( context, type )
-								.Members.Where( m => m.Member != null ).SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) 
-						)
-						{
-							yield return dependentType;
-						}
-					}
-				}
-
-				if ( type.IsArray )
-				{
-					var elementType = type.GetElementType();
-					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits( CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false ) ) )
-					{
-						foreach ( var descendant in ExtractElementTypes( context, configuration, elementType ) )
-						{
-							yield return descendant;
-						}
-
-						yield return elementType;
-					}
-
-					yield break;
-				}
-
-				if ( type.GetIsGenericType() )
-				{
-					// Search generic arguments recursively.
-					foreach ( var elementType in type.GetGenericArguments().SelectMany( g => ExtractElementTypes( context, configuration, g ) ) )
-					{
-						yield return elementType;
-					}
-				}
-
-				if ( configuration.WithNullableSerializers && type.GetIsValueType() && Nullable.GetUnderlyingType( type ) == null )
-				{
-					// Retrun nullable companion even if they always have built-in serializers.
-					yield return typeof( Nullable<> ).MakeGenericType( type );
-				}
-			}
-
-			protected abstract ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, TConfig configuration );
-
-			protected abstract Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context );
-		}
-
-#if !NETSTANDARD1_3
-#warning TODO: Move out
-		private sealed class SerializerAssemblyGenerationLogic : SerializerGenerationLogic<SerializerAssemblyGenerationConfiguration>
-		{
-			protected override EmitterFlavor EmitterFlavor
-			{
-				get { return EmitterFlavor.FieldBased; }
-			}
-
-			public SerializerAssemblyGenerationLogic() { }
-
-			[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
-			protected override ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, SerializerAssemblyGenerationConfiguration configuration )
-			{
-				return
-					new AssemblyBuilderCodeGenerationContext(
-						context,
-						AppDomain.CurrentDomain.DefineDynamicAssembly(
-							configuration.AssemblyName,
-							AssemblyBuilderAccess.RunAndSave,
-							configuration.OutputDirectory
-						),
-						configuration
-					);
-			}
-
-			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context )
-			{
-				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
-			}
-		}
-
-#warning TODO: Move out
-		private sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
-		{
-			public static readonly SerializerCodesGenerationLogic Instance = new SerializerCodesGenerationLogic();
-
-			protected override EmitterFlavor EmitterFlavor
-			{
-				get { return EmitterFlavor.CodeDomBased; }
-			}
-
-			private SerializerCodesGenerationLogic() { }
-
-			protected override ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, SerializerCodeGenerationConfiguration configuration )
-			{
-				return new CodeDomContext( context, configuration );
-			}
-
-			protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context )
-			{
-				return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
-			}
-		}
-
-		private sealed class SerializerCodesGenerationLogicFactory : SerializerCodeGeneratorFactory
-		{
-			public static readonly SerializerCodesGenerationLogicFactory Instance = new SerializerCodesGenerationLogicFactory();
-
-			private SerializerCodesGenerationLogicFactory() { }
-
-			internal override SerializerGenerationLogic<SerializerCodeGenerationConfiguration> Create( SerializerCodeGenerationConfiguration configuration )
-			{
-				return SerializerCodesGenerationLogic.Instance;
-			}
-		}
-
-#endif // !NETSTANDARD1_3
 	}
 }

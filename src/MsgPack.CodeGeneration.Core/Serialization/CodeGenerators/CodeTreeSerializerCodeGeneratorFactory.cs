@@ -24,7 +24,7 @@ using System.Globalization;
 
 using MsgPack.Serialization.AbstractSerializers;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.CodeGenerators
 {
 	internal sealed class CodeTreeSerializerCodeGeneratorFactory : SerializerCodeGeneratorFactory
 	{
@@ -51,7 +51,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		internal override SerializerGenerator.SerializerGenerationLogic<SerializerCodeGenerationConfiguration> Create( SerializerCodeGenerationConfiguration configuration )
+		internal override SerializerGenerationLogic<SerializerCodeGenerationConfiguration> Create( SerializerCodeGenerationConfiguration configuration )
 		{
 			Factories factories;
 			if ( !this._factories.TryGetValue( configuration.Language, out factories ) )

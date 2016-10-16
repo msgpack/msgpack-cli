@@ -22,7 +22,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+#if CSHARP
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+#elif VISUAL_BASIC
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+#endif
 
 namespace MsgPack.Serialization.CodeTreeSerializers
 {
@@ -39,5 +43,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		}
 
 		public override IEnumerable<StatementSyntax> AsStatements() => this._statements;
+
+		public override string ToString() => $"[{String.Join( ", ", this._statements as IEnumerable<StatementSyntax> )}]";
 	}
 }

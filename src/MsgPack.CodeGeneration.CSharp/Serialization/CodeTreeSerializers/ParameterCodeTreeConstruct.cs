@@ -20,8 +20,14 @@
 
 using System;
 
+#if CSHARP
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+#elif VISUAL_BASIC
+using Microsoft.CodeAnalysis.VisualBasic;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using static Microsoft.CodeAnalysis.VisualBasic.SyntaxFactory;
+#endif
 
 using MsgPack.Serialization.AbstractSerializers;
 
@@ -37,12 +43,20 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		public ParameterCodeTreeConstruct( TypeDefinition contextType, IdentifierNameSyntax expression )
 			: base( contextType )
 		{
-			this._parameter = SyntaxFactory.Parameter( this._identifierName.Identifier ).WithType( Syntax.ToTypeSyntax( contextType ) );
 			this._identifierName = expression;
+			this._parameter =
+#if CSHARP
+				SyntaxFactory.Parameter( this._identifierName.Identifier )
+#elif VISUAL_BASIC
+				SyntaxFactory.Parameter( ModifiedIdentifier( this._identifierName.Identifier ) )
+#endif
+				.WithType( Syntax.ToTypeSyntax( contextType ) );
 		}
 
 		public override ParameterSyntax AsParameter() => this._parameter;
 
 		public override ExpressionSyntax AsExpression() => this._identifierName;
+
+		public override string ToString() => this._parameter.ToString();
 	}
 }

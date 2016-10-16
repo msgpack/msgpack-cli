@@ -24,9 +24,14 @@ using System.Diagnostics;
 #endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 using System.IO;
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+using MsgPack.Serialization.CodeDomSerializers;
+#else
+using MsgPack.Serialization.CodeTreeSerializers;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT
 
 #if !MSTEST
 using NUnit.Framework;
@@ -58,7 +63,10 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+#if !NETSTANDARD1_3
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CodeDomSerializerBuilder( t, c ) );
+#else
+#endif // NETSTANDARD1_3
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
 			if ( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
 			{
@@ -86,7 +94,7 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( null );
 		}
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 

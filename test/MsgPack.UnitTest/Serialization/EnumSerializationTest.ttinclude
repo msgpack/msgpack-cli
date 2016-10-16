@@ -1,5 +1,5 @@
 ﻿<#+ 
-private void GenerateCore( string serializationMethod, string emitterFlavor, bool canDump, bool forIos )
+private void GenerateCore( string serializationMethod, string emitterFlavor, bool canDump, bool forIos, string language = "" )
 {
 	var testCases =
 		new []
@@ -99,9 +99,14 @@ using System.Threading.Tasks;
 	if ( !forIos )
 	{
 #>
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+using MsgPack.Serialization.CodeDomSerializers;
+#else
+using MsgPack.Serialization.CodeTreeSerializers;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT
 <#+
 	}
 #>
@@ -120,7 +125,7 @@ namespace MsgPack.Serialization
 {
 	[TestFixture]
 	[Timeout( 30000 )]
-	public class <#= serializationMethod #><#= emitterFlavor #>EnumSerializerTest
+	public class <#= serializationMethod #><#= language #><#= emitterFlavor #>EnumSerializerTest
 	{
 		private SerializationContext GetSerializationContext()
 		{
@@ -150,7 +155,7 @@ namespace MsgPack.Serialization
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
 		}
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
 		[SetUp]
 		public void SetUp()
 		{
@@ -163,6 +168,7 @@ namespace MsgPack.Serialization
 <#+
 		}
 #>
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -172,8 +178,22 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+<#+
+		if ( emitterFlavor == "CodeTreeBased" )
+		{
+#>
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new <#= language #>CodeTreeSerializerBuilder( t, c ) );
+<#+
+		}
+		else if ( emitterFlavor == "CodeDomBased" )
+		{
+#>
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CodeDomSerializerBuilder( t, c ) );
+<#+
+		}
+#>
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
 			if( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
 			{
@@ -184,6 +204,7 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
@@ -199,9 +220,17 @@ namespace MsgPack.Serialization
 					SerializationMethodGeneratorManager.Refresh();
 				}
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+<#+
+		if ( emitterFlavor == "CodeDomBased" || emitterFlavor == "CodeTreeBased" )
+		{
+#>
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( null );
+<#+
+		}
+#>
 		}
 #endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
 <#+

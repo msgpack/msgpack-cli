@@ -25,7 +25,9 @@ namespace MsgPack
 	// For Unity and Xamarin
 	internal sealed class PreserveAttribute : Attribute
 	{
+#pragma warning disable CS0649
 		public bool AllMembers;
 		public bool Conditional;
+#pragma warning restore CS0649
 	}
 }

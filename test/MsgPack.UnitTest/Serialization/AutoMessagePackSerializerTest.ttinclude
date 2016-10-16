@@ -1,18 +1,18 @@
 ﻿<#@include file="AutoMessagePackSerializerTest.Polymorphism.ttinclude" #>
 <#+ 
-void Geneate( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump )
+void Geneate( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump, string language = "" )
 {
-	GenerateCore( serializationMethod, emitterFlavor, builderTypeName, canDump, false );
+	GenerateCore( serializationMethod, emitterFlavor, builderTypeName, language, canDump, false );
 }
 
 void GeneateForIos( string serializationMethod )
 {
-	GenerateCore( serializationMethod, "GenerationBased", null, false, true );
+	GenerateCore( serializationMethod, "GenerationBased", null, String.Empty, false, true );
 }
 
-private void GenerateCore( string serializationMethod, string emitterFlavor, string builderTypeName, bool canDump, bool forIos )
+private void GenerateCore( string serializationMethod, string emitterFlavor, string builderTypeName, string language, bool canDump, bool forIos )
 {
-	var testClassName = serializationMethod + emitterFlavor + ( String.IsNullOrWhiteSpace( builderTypeName ) ? "Reflection" : "Auto" ) + "MessagePackSerializerTest";
+	var testClassName = serializationMethod + language + emitterFlavor + ( String.IsNullOrWhiteSpace( builderTypeName ) ? "Reflection" : "Auto" ) + "MessagePackSerializerTest";
 
 	var constructorParamterSpecs =
 		new []
@@ -88,10 +88,14 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#else
+using MsgPack.Serialization.CodeTreeSerializers;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -200,7 +204,7 @@ namespace MsgPack.Serialization
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
 		}
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
 		[SetUp]
 		public void SetUp()
 		{
@@ -213,7 +217,10 @@ namespace MsgPack.Serialization
 <#+
 		}
 #>
+
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			SerializerDebugging.DeletePastTemporaries();
+
 			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.WorkDirectory;
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -224,7 +231,16 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+
+<#+
+		if ( emitterFlavor == "CodeTreeBased" || emitterFlavor == "CodeDomBased" )
+		{
+#>
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new <#= language #><#= builderTypeName #>( t, c ) );
+<#+
+		}
+#>
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
 			if( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
 			{
@@ -235,6 +251,8 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
@@ -251,8 +269,17 @@ namespace MsgPack.Serialization
 				}
 			}
 
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+<#+
+		if ( emitterFlavor == "CodeDomBased" || emitterFlavor == "CodeTreeBased" )
+		{
+#>
+			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( null );
+<#+
+		}
+#>
 		}
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 <#+

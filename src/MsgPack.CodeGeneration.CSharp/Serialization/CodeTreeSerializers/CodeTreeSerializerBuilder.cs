@@ -20,7 +20,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+#if NETSTANDARD1_3
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_3
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -29,25 +34,36 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis;
+
+using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.CollectionSerializers;
+using static MsgPack.Serialization.CodeTreeSerializers.Syntax;
+using static MsgPack.Serialization.CodeTreeSerializers.SyntaxCompatibilities;
+
 #if CSHARP
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using CompilationFactory = Microsoft.CodeAnalysis.CSharp.CSharpCompilation;
+using CompilationOptionsImpl = Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions;
 #elif VISUAL_BASIC
 using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using static Microsoft.CodeAnalysis.VisualBasic.Syntax.SyntaxFactory;
+using static Microsoft.CodeAnalysis.VisualBasic.SyntaxFactory;
+using CatchClauseSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.CatchBlockSyntax;
+using CompilationFactory = Microsoft.CodeAnalysis.VisualBasic.VisualBasicCompilation;
+using CompilationOptionsImpl = Microsoft.CodeAnalysis.VisualBasic.VisualBasicCompilationOptions;
+using ConstructorInitializerSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.ExpressionStatementSyntax;
+using NamespaceDeclarationSyntax = Microsoft.CodeAnalysis.VisualBasic.Syntax.NamespaceBlockSyntax;
 #endif
-
-using MsgPack.Serialization.AbstractSerializers;
-using MsgPack.Serialization.CollectionSerializers;
-using System.Diagnostics;
-
-using static MsgPack.Serialization.CodeTreeSerializers.Syntax;
 
 namespace MsgPack.Serialization.CodeTreeSerializers
 {
-	internal sealed class CodeTreeSerializerBuilder :
+#if CSHARP
+	internal sealed class CSharpCodeTreeSerializerBuilder :
+#elif VISUAL_BASIC
+	internal sealed class VisualBasicCodeTreeSerializerBuilder :
+#endif
 		SerializerBuilder<CodeTreeContext, CodeTreeConstruct>,
 		ISerializerCodeGenerator
 	{
@@ -55,8 +71,13 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		private const string Extension = "cs";
 #elif VISUAL_BASIC
 		private const string Extension = "vb";
-#else
 #endif
+
+#if VISUAL_BASIC
+
+		private static ModifiedIdentifierSyntax Identifier( string identifier ) => ModifiedIdentifier( identifier );
+
+#endif // VISUAL_BASIC
 
 		private static readonly int ProcessId = GetCurrentProcessId();
 
@@ -93,8 +114,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			);
 
 		private static readonly ConstructorInitializerSyntax ContextAndEnumSerializationMethodConstructorInitializerSyntax =
-			ConstructorInitializer(
-				SyntaxKind.BaseConstructorInitializer,
+			BaseConstructorInitializer(
 				ArgumentList(
 					// ReSharper disable once ImpureMethodCallOnReadonlyValueField
 					ContextArgumentListTemplate.Add(
@@ -112,16 +132,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		private static readonly SimpleNameSyntax SerializerCapabilitiesTypeIdentifierSyntax = IdentifierName( typeof( SerializerCapabilities ).FullName );
 
 		private static readonly ExpressionSyntax SerializerCapabilitiesNoneSyntax =
-			MemberAccessExpression(
-				SyntaxKind.SimpleMemberAccessExpression,
+			SimpleMemberAccessExpression(
 				SerializerCapabilitiesTypeIdentifierSyntax,
 				IdentifierName( "None" )
 			);
 
 		private static readonly InvocationExpressionSyntax EnumMessagePackSerializerHelpersDetermineEnumSerializationMethodMethodTemplate =
 			InvocationExpression(
-				MemberAccessExpression(
-					SyntaxKind.SimpleMemberAccessExpression,
+				SimpleMemberAccessExpression(
 					ToTypeSyntax( typeof( EnumMessagePackSerializerHelpers ) ),
 					IdentifierName( nameof( EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod ) )
 				)
@@ -129,8 +147,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 		private static readonly InvocationExpressionSyntax DateTimeMessagePackSerializerHelpersDetermineDateTimeConversionMethodTemplate =
 			InvocationExpression(
-				MemberAccessExpression(
-					SyntaxKind.SimpleMemberAccessExpression,
+				SimpleMemberAccessExpression(
 					ToTypeSyntax( typeof( DateTimeMessagePackSerializerHelpers ) ),
 					IdentifierName( nameof( DateTimeMessagePackSerializerHelpers.DetermineDateTimeConversionMethod ) )
 				)
@@ -140,8 +157,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 		private static readonly InvocationExpressionSyntax ReflectionHelpersGetFieldMethodTemplate =
 			InvocationExpression(
-				MemberAccessExpression(
-					SyntaxKind.SimpleMemberAccessExpression,
+				SimpleMemberAccessExpression(
 					ToTypeSyntax( typeof( ReflectionHelpers ) ),
 					IdentifierName( nameof( ReflectionHelpers.GetField ) )
 				)
@@ -149,22 +165,48 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 		private static readonly InvocationExpressionSyntax ReflectionHelpersGetMethodMethodTemplate =
 			InvocationExpression(
-				MemberAccessExpression(
-					SyntaxKind.SimpleMemberAccessExpression,
+				SimpleMemberAccessExpression(
 					ToTypeSyntax( typeof( ReflectionHelpers ) ),
 					IdentifierName( nameof( ReflectionHelpers.GetMethod ) )
 				)
 			);
 
+#if CSHARP
+
 		private static readonly ArrayCreationExpressionSyntax TypeArrayCreationTemplate =
 			ArrayCreationExpression( ArrayType( ToTypeSyntax( TypeDefinition.TypeType ) ) );
+
+		private static ArrayCreationExpressionSyntax TypeArrayCreation( IEnumerable<ExpressionSyntax> typeExpresions ) =>
+			TypeArrayCreationTemplate.WithInitializer(
+				InitializerExpression(
+					SyntaxKind.ArrayInitializerExpression,
+					new SeparatedSyntaxList<ExpressionSyntax>().AddRange( typeExpresions )
+				)
+			);
+
+#elif VISUAL_BASIC
+
+		private static readonly ArrayCreationExpressionSyntax TypeArrayCreationTemplate =
+			ArrayCreationExpression( ToTypeSyntax( TypeDefinition.TypeType ), CollectionInitializer() );
+
+		private static ArrayCreationExpressionSyntax TypeArrayCreation( IEnumerable<ExpressionSyntax> typeExpressions ) =>
+			TypeArrayCreationTemplate.AddInitializerInitializers( typeExpressions.ToArray() );
+
+#endif
 
 		private static readonly SyntaxList<CatchClauseSyntax> EmptyCatches = new SyntaxList<CatchClauseSyntax>();
 
 
 		private readonly TypeDefinition _thisType;
 
-		public CodeTreeSerializerBuilder( Type targetType, CollectionTraits collectionTraits )
+#if CSHARP
+		public CSharpCodeTreeSerializerBuilder(
+#elif VISUAL_BASIC
+		public VisualBasicCodeTreeSerializerBuilder(
+#endif
+			Type targetType,
+			CollectionTraits collectionTraits
+		)
 			: base( targetType, collectionTraits )
 		{
 			this._thisType = typeof( MessagePackSerializer<> ).MakeGenericType( this.TargetType );
@@ -213,7 +255,11 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			=> CodeTreeConstruct.Expression( TypeDefinition.DoubleType, LiteralExpression( SyntaxKind.NumericLiteralExpression, Literal( constant ) ) );
 
 		protected override CodeTreeConstruct MakeBooleanLiteral( CodeTreeContext context, bool constant )
+#if CSHARP
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, LiteralExpression( constant ? SyntaxKind.TrueLiteralExpression : SyntaxKind.FalseLiteralExpression ) );
+#elif VISUAL_BASIC
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, constant ? TrueLiteralExpression( Token( SyntaxKind.TrueKeyword ) ) : FalseLiteralExpression( Token( SyntaxKind.FalseKeyword ) ) );
+#endif
 
 		protected override CodeTreeConstruct MakeCharLiteral( CodeTreeContext context, char constant )
 			=> CodeTreeConstruct.Expression( TypeDefinition.CharType, LiteralExpression( SyntaxKind.CharacterLiteralExpression, Literal( constant ) ) );
@@ -256,7 +302,11 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		}
 
 		protected override CodeTreeConstruct MakeDefaultLiteral( CodeTreeContext context, TypeDefinition type )
+#if CSHARP
 			=> CodeTreeConstruct.Expression( type, DefaultExpression( ToTypeSyntax( type ) ) );
+#elif VISUAL_BASIC
+			=> CodeTreeConstruct.Expression( type, NothingLiteralExpression( Token( SyntaxKind.NothingKeyword ) ) );
+#endif
 
 		protected override CodeTreeConstruct EmitThisReferenceExpression( CodeTreeContext context )
 			=> CodeTreeConstruct.Expression( this._thisType, ThisExpression() );
@@ -268,19 +318,39 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			=> CodeTreeConstruct.Expression( targetType, CastExpression( ToTypeSyntax( targetType ), value.AsExpression() ) );
 
 		protected override CodeTreeConstruct EmitNotExpression( CodeTreeContext context, CodeTreeConstruct booleanExpression )
+#if CSHARP
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, PrefixUnaryExpression( SyntaxKind.LogicalNotExpression, booleanExpression.AsExpression() ) );
+#elif VISUAL_BASIC
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, NotExpression( booleanExpression.AsExpression() ) );
+#endif
 
 		protected override CodeTreeConstruct EmitEqualsExpression( CodeTreeContext context, CodeTreeConstruct left, CodeTreeConstruct right )
+#if CSHARP
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.EqualsEqualsToken, left.AsExpression(), right.AsExpression() ) );
+#elif VISUAL_BASIC
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, EqualsExpression( left.AsExpression(), right.AsExpression() ) );
+#endif
 
 		protected override CodeTreeConstruct EmitGreaterThanExpression( CodeTreeContext context, CodeTreeConstruct left, CodeTreeConstruct right )
+#if CSHARP
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.GreaterThanToken, left.AsExpression(), right.AsExpression() ) );
+#elif VISUAL_BASIC
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, GreaterThanExpression( left.AsExpression(), right.AsExpression() ) );
+#endif
 
 		protected override CodeTreeConstruct EmitLessThanExpression( CodeTreeContext context, CodeTreeConstruct left, CodeTreeConstruct right )
+#if CSHARP
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.LessThanToken, left.AsExpression(), right.AsExpression() ) );
+#elif VISUAL_BASIC
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, LessThanExpression( left.AsExpression(), right.AsExpression() ) );
+#endif
 
 		protected override CodeTreeConstruct EmitIncrement( CodeTreeContext context, CodeTreeConstruct int32Value )
+#if CSHARP
 			=> CodeTreeConstruct.Expression( TypeDefinition.Int32Type, PostfixUnaryExpression( SyntaxKind.PostIncrementExpression, int32Value.AsExpression() ) );
+#elif VISUAL_BASIC
+			=> CodeTreeConstruct.Statement( AddAssignmentStatement( int32Value.AsExpression(), NumericLiteralExpression( Literal( 1 ) ) ) );
+#endif
 
 		protected override CodeTreeConstruct EmitTypeOfExpression( CodeTreeContext context, TypeDefinition type )
 			=> CodeTreeConstruct.Expression( TypeDefinition.TypeType, TypeOfExpression( ToTypeSyntax( type ) ) );
@@ -322,7 +392,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		{
 #if DEBUG
 			statements = statements.ToArray();
-			Contract.Assert( statements.All( c => c.IsStatement ) );
+			Contract.Assert( statements.All( c => c.IsStatement ), $"[{String.Join( ", ", statements.Select( ( c, i ) => new { c, i } ).Where( x => !x.c.IsStatement ).Select( x => $"[{x.i}]{x.c}" ) )}]" );
 #endif
 			return CodeTreeConstruct.Statement( statements.SelectMany( s => s.AsStatements() ) );
 		}
@@ -434,15 +504,12 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 			return
 				InvocationExpression(
-					MemberAccessExpression(
-						SyntaxKind.SimpleAssignmentExpression,
+					SimpleMemberAccessExpression(
 						target,
 						( method.TryGetRuntimeMethod() != null && method.TryGetRuntimeMethod().IsGenericMethod )
 							? GenericName(
-								Identifier( methodName ),
-								TypeArgumentList(
-									new SeparatedSyntaxList<TypeSyntax>().AddRange( method.TryGetRuntimeMethod().GetGenericArguments().Select( t => ToTypeSyntax( t ) ) )
-								)
+								methodName,
+								method.TryGetRuntimeMethod().GetGenericArguments().Select( t => ToTypeSyntax( t ) )
 							) : IdentifierName( methodName ) as SimpleNameSyntax
 					),
 					ArgumentList(
@@ -480,8 +547,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			return
 				CodeTreeConstruct.Expression(
 					property.PropertyType,
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
+					SimpleMemberAccessExpression(
 						instance == null
 							? ToTypeSyntax( property.DeclaringType )
 							: instance.AsExpression(),
@@ -499,8 +565,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			return
 				CodeTreeConstruct.Expression(
 					field.FieldType,
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
+					SimpleMemberAccessExpression(
 						instance == null
 							? ToTypeSyntax( field.DeclaringType )
 							: instance.AsExpression(),
@@ -520,18 +585,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 #endif
 			return
 				CodeTreeConstruct.Statement(
-					ExpressionStatement(
-						AssignmentExpression(
-							SyntaxKind.SimpleAssignmentExpression,
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
-								instance == null
-									? ToTypeSyntax( property.DeclaringType )
-									: instance.AsExpression(),
-								IdentifierName( property.Name )
-							),
-							value.AsExpression()
-						)
+					SimpleAssignmentStatement(
+						SimpleMemberAccessExpression(
+							instance == null
+								? ToTypeSyntax( property.DeclaringType )
+								: instance.AsExpression(),
+							IdentifierName( property.Name )
+						),
+						value.AsExpression()
 					)
 				);
 		}
@@ -549,18 +610,15 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 #endif
 			return
 				CodeTreeConstruct.Statement(
-					ExpressionStatement(
-						AssignmentExpression(
-							SyntaxKind.SimpleAssignmentExpression,
-							ElementAccessExpression(
-								instance == null
-									? ToTypeSyntax( declaringType.ResolveRuntimeType() )
-									: instance.AsExpression()
-							).WithExpression(
-								key.AsExpression()
-							),
-							value.AsExpression()
-						)
+					SimpleAssignmentStatement(
+						ElementAccessExpression(
+							instance == null
+								? ToTypeSyntax( declaringType.ResolveRuntimeType() )
+								: instance.AsExpression()
+						).AddArgumentListArguments(
+							Argument( key.AsExpression() )
+						),
+						value.AsExpression()
 					)
 				);
 		}
@@ -576,18 +634,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 #endif
 			return
 				CodeTreeConstruct.Statement(
-					ExpressionStatement(
-						AssignmentExpression(
-							SyntaxKind.SimpleAssignmentExpression,
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
-								instance == null
-									? ToTypeSyntax( field.DeclaringType )
-									: instance.AsExpression(),
-								IdentifierName( field.FieldName )
-							),
-							value.AsExpression()
-						)
+					SimpleAssignmentStatement(
+						SimpleMemberAccessExpression(
+							instance == null
+								? ToTypeSyntax( field.DeclaringType )
+								: instance.AsExpression(),
+							IdentifierName( field.FieldName )
+						),
+						value.AsExpression()
 					)
 				);
 		}
@@ -601,18 +655,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 #endif
 			return
 				CodeTreeConstruct.Statement(
-					ExpressionStatement(
-						AssignmentExpression(
-							SyntaxKind.SimpleAssignmentExpression,
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
-								instance == null
-									? ToTypeSyntax( nestedType )
-									: instance.AsExpression(),
-								IdentifierName( fieldName )
-							),
-							value.AsExpression()
-						)
+					SimpleAssignmentStatement(
+						SimpleMemberAccessExpression(
+							instance == null
+								? ToTypeSyntax( nestedType )
+								: instance.AsExpression(),
+							IdentifierName( fieldName )
+						),
+						value.AsExpression()
 					)
 				);
 		}
@@ -631,12 +681,9 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 #endif
 			return
 				CodeTreeConstruct.Statement(
-					ExpressionStatement(
-						AssignmentExpression(
-							SyntaxKind.SimpleAssignmentExpression,
-							variable.AsExpression(),
-							value.AsExpression()
-						)
+					SimpleAssignmentStatement(
+						variable.AsExpression(),
+						value.AsExpression()
 					)
 				);
 		}
@@ -669,15 +716,9 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		protected override CodeTreeConstruct EmitCreateNewArrayExpression( CodeTreeContext context, TypeDefinition elementType, int length )
 			=> CodeTreeConstruct.Expression(
 				TypeDefinition.Array( elementType ),
-				ArrayCreationExpression(
-					ArrayType(
-						ToTypeSyntax( elementType ),
-						new SyntaxList<ArrayRankSpecifierSyntax>().Add(
-							ArrayRankSpecifier(
-								new SeparatedSyntaxList<ExpressionSyntax>().Add( LiteralExpression( SyntaxKind.NumericLiteralExpression, Literal( length ) ) )
-							)
-						)
-					)
+				SZArrayCreationExpression(
+					ToTypeSyntax( elementType ),
+					LiteralExpression( SyntaxKind.NumericLiteralExpression, Literal( length ) )
 				)
 			);
 
@@ -691,19 +732,10 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			return
 				CodeTreeConstruct.Expression(
 					TypeDefinition.Array( elementType ),
-					ArrayCreationExpression(
-						ArrayType(
-							ToTypeSyntax( elementType ),
-							new SyntaxList<ArrayRankSpecifierSyntax>().Add(
-								ArrayRankSpecifier(
-									new SeparatedSyntaxList<ExpressionSyntax>().Add( LiteralExpression( SyntaxKind.NumericLiteralExpression, Literal( length ) ) )
-								)
-							)
-						),
-						InitializerExpression(
-							SyntaxKind.ArrayInitializerExpression,
-							new SeparatedSyntaxList<ExpressionSyntax>().AddRange( initialElements.Select( i => i.AsExpression() ) )
-						)
+					SZArrayCreationExpression(
+						ToTypeSyntax( elementType ),
+						LiteralExpression( SyntaxKind.NumericLiteralExpression, Literal( length ) ),
+						initialElements.Select( i => i.AsExpression() )
 					)
 				);
 		}
@@ -722,16 +754,13 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
 		protected override CodeTreeConstruct EmitSetArrayElementStatement( CodeTreeContext context, CodeTreeConstruct array, CodeTreeConstruct index, CodeTreeConstruct value )
 			=> CodeTreeConstruct.Statement(
-				ExpressionStatement(
-					AssignmentExpression(
-						SyntaxKind.SimpleAssignmentExpression,
-						ElementAccessExpression(
-							array.AsExpression()
-						).WithExpression(
-							index.AsExpression()
-						),
-						value.AsExpression()
-					)
+				SimpleAssignmentStatement(
+					ElementAccessExpression(
+						array.AsExpression()
+					).WithExpression(
+						index.AsExpression()
+					),
+					value.AsExpression()
 				)
 			);
 
@@ -739,8 +768,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		protected override CodeTreeConstruct EmitGetSerializerExpression( CodeTreeContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 			=> CodeTreeConstruct.Expression(
 				typeof( MessagePackSerializer<> ).MakeGenericType( targetType ),
-				MemberAccessExpression(
-					SyntaxKind.SimpleMemberAccessExpression,
+				SimpleMemberAccessExpression(
 					ThisExpression(),
 					IdentifierName(
 						context.RegisterSerializer(
@@ -859,8 +887,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			return
 				CodeTreeConstruct.Expression(
 					type,
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
+					SimpleMemberAccessExpression(
 						ThisExpression(),
 						IdentifierName( field.FieldName )
 					)
@@ -875,8 +902,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			return
 				CodeTreeConstruct.Expression(
 					typeof( IList<string> ),
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
+					SimpleMemberAccessExpression(
 						ThisExpression(),
 						IdentifierName( field.FieldName )
 					)
@@ -886,16 +912,12 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
 		protected override CodeTreeConstruct EmitFinishFieldInitializationStatement( CodeTreeContext context, string name, CodeTreeConstruct value )
 			=> CodeTreeConstruct.Statement(
-				ExpressionStatement(
-					AssignmentExpression(
-						SyntaxKind.SimpleAssignmentExpression,
-						MemberAccessExpression(
-							SyntaxKind.SimpleMemberAccessExpression,
-							ThisExpression(),
-							IdentifierName( name )
-						),
-						value.AsExpression()
-					)
+				SimpleAssignmentStatement(
+					SimpleMemberAccessExpression(
+						ThisExpression(),
+						IdentifierName( name )
+					),
+					value.AsExpression()
 				)
 			);
 
@@ -925,23 +947,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					? CodeTreeConstruct.Statement(
 						IfStatement(
 							conditionExpression.AsExpression(),
-							Block(
-								thenExpression.AsStatements()
-							)
+							Block( thenExpression.AsStatements() )
 						)
-					)
-					: thenExpression.ContextType.TryGetRuntimeType() == typeof( void ) || thenExpression.IsStatement
+					) : thenExpression.ContextType.TryGetRuntimeType() == typeof( void ) || thenExpression.IsStatement
 						? CodeTreeConstruct.Statement(
-							IfStatement(
+							IfElseStatement(
 								conditionExpression.AsExpression(),
-								Block(
-									thenExpression.AsStatements()
-								),
-								ElseClause(
-									Block(
-										elseExpression.AsStatements()
-									)
-								)
+								thenExpression.AsStatements(),
+								elseExpression.AsStatements()
 							)
 						)
 						: CodeTreeConstruct.Expression(
@@ -966,20 +979,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 			return
 				CodeTreeConstruct.Statement(
-					IfStatement(
+					IfElseStatement(
 						conditionExpressions
 							.Select( c => c.AsExpression() )
 							.Aggregate( ( l, r ) =>
-												BinaryExpression( SyntaxKind.LogicalAndExpression, l, r )
+								AndAlsoExpression( l, r )
 							),
-						Block(
-							thenExpression.AsStatements()
-						),
-						ElseClause(
-							Block(
-								elseExpression.AsStatements()
-							)
-						)
+						thenExpression.AsStatements(),
+						elseExpression.AsStatements()
 					)
 				);
 		}
@@ -1059,8 +1066,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 						ToTypeSyntax( delegateType )
 					).AddArgumentListArguments(
 						Argument(
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
+							SimpleMemberAccessExpression(
 								method.IsStatic ? IdentifierName( context.DeclaringTypeName ) : ThisExpression() as ExpressionSyntax,
 								IdentifierName( method.MethodName )
 							)
@@ -1141,7 +1147,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 		private static Type PrepareSerializerConstructorCreation( CodeTreeContext codeGenerationContext )
 		{
-			if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
+			if ( !SerializerDebugging.OnTheFlyCodeGenerationEnabled )
 			{
 				throw new NotSupportedException();
 			}
@@ -1158,11 +1164,11 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			var assemblyName = $"CodeAssembly{DateTime.Now:yyyyMMddHHmmssfff}{ProcessId}{Environment.CurrentManagedThreadId}";
 
 			var compilation =
-				CSharpCompilation.Create(
+				CompilationFactory.Create(
 					assemblyName,
 					new[] { cu.SyntaxTree },
-					SerializerDebugging.CodeDomSerializerDependentAssemblies.Select( x => MetadataReference.CreateFromFile( x ) ),
-					new CSharpCompilationOptions(
+					SerializerDebugging.CodeSerializerDependentAssemblies.Select( x => MetadataReference.CreateFromFile( x ) ),
+					new CompilationOptionsImpl(
 						OutputKind.DynamicallyLinkedLibrary
 #if !DEBUG || PERFORMANCE_TEST
 						, optimizationLevel: OptimizationLevel.Release
@@ -1191,7 +1197,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			}
 #if DEBUG
 			// Check warning except ambigious type reference.
-			var warnings = 
+			var warnings =
 				result.Diagnostics.Where( e => e.Id != "CS0436" ).ToArray();
 			Contract.Assert( !warnings.Any(), BuildCompilationError( result.Diagnostics ) );
 #endif
@@ -1253,8 +1259,9 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 		{
 			var publicConstructorTemplate =
 				ConstructorDeclaration(
-					Identifier( context.DeclaringTypeName )
-				).WithModifiers( SyntaxTokenList.Create( Token( SyntaxKind.PublicKeyword ) ) );
+					context.DeclaringTypeName,
+					SyntaxTokenList.Create( Token( SyntaxKind.PublicKeyword ) )
+				);
 
 			// ctor
 			if ( isEnum )
@@ -1264,13 +1271,11 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					publicConstructorTemplate.WithParameterList(
 						ContextParameterListSyntax
 					).WithInitializer(
-						ConstructorInitializer(
-							SyntaxKind.BaseConstructorInitializer,
+						BaseConstructorInitializer(
 							ArgumentList(
 								ContextArgumentListTemplate.Add(
 									Argument(
-										MemberAccessExpression(
-											SyntaxKind.SimpleMemberAccessExpression,
+										SimpleMemberAccessExpression(
 											EnumSerializationMethodTypeIdentifierSyntax,
 											IdentifierName(
 												EnumMessagePackSerializerHelpers.DetermineEnumSerializationMethod(
@@ -1337,13 +1342,12 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 						publicConstructorTemplate.WithParameterList(
 							ContextParameterListSyntax
 						).WithInitializer(
-							ConstructorInitializer(
-								SyntaxKind.BaseConstructorInitializer,
+							BaseConstructorInitializer(
 								ArgumentList(
 									this.BuildBaseConstructorArgs( context, capabilities )
 								)
 							)
-						).WithBody( Block( statements ) )
+						).AddBodyStatements( statements.ToArray() )
 					);
 				}
 				finally
@@ -1359,25 +1363,20 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			{
 				statements =
 					statements.Add(
-						ExpressionStatement(
-							AssignmentExpression(
-								SyntaxKind.SimpleAssignmentExpression,
-								MemberAccessExpression(
-									SyntaxKind.SimpleMemberAccessExpression,
-									ThisExpression(),
-									IdentifierName( cachedDelegateInfo.BackingField.FieldName )
-								),
-								ObjectCreationExpression(
-									ToTypeSyntax( cachedDelegateInfo.BackingField.FieldType )
-								).AddArgumentListArguments(
-									Argument(
-										MemberAccessExpression(
-											SyntaxKind.SimpleMemberAccessExpression,
-											cachedDelegateInfo.IsThisInstance
-												? ThisExpression() as ExpressionSyntax
-												: ToTypeSyntax( cachedDelegateInfo.TargetMethod.DeclaringType ),
-											IdentifierName( cachedDelegateInfo.TargetMethod.MethodName )
-										)
+						SimpleAssignmentStatement(
+							SimpleMemberAccessExpression(
+								ThisExpression(),
+								IdentifierName( cachedDelegateInfo.BackingField.FieldName )
+							),
+							ObjectCreationExpression(
+								ToTypeSyntax( cachedDelegateInfo.BackingField.FieldType )
+							).AddArgumentListArguments(
+								Argument(
+									SimpleMemberAccessExpression(
+										cachedDelegateInfo.IsThisInstance
+											? ThisExpression() as ExpressionSyntax
+											: ToTypeSyntax( cachedDelegateInfo.TargetMethod.DeclaringType ),
+										IdentifierName( cachedDelegateInfo.TargetMethod.MethodName )
 									)
 								)
 							)
@@ -1404,8 +1403,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 					baseConstructorArgs.Add(
 						Argument(
 							InvocationExpression(
-								MemberAccessExpression(
-									SyntaxKind.SimpleMemberAccessExpression,
+								SimpleMemberAccessExpression(
 									IdentifierName( context.DeclaringTypeName ),
 									RestoreSchemaMethodIdentifierSyntax
 								)
@@ -1448,8 +1446,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 								ContextArgumentSyntax,
 								Argument( TypeOfExpression( targetTypeSyntax ) ),
 								Argument(
-									MemberAccessExpression(
-										SyntaxKind.SimpleMemberAccessExpression,
+									SimpleMemberAccessExpression(
 										EnumSerializationMethodTypeIdentifierSyntax,
 										IdentifierName( dependentSerializer.Key.EnumSerializationMethod.ToString() )
 									)
@@ -1464,8 +1461,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 							.AddArgumentListArguments(
 								ContextArgumentSyntax,
 								Argument(
-									MemberAccessExpression(
-										SyntaxKind.SimpleMemberAccessExpression,
+									SimpleMemberAccessExpression(
 										DateTimeMemberConversionMethodIdentifierSyntax,
 										IdentifierName( dependentSerializer.Key.DateTimeConversionMethod.ToString() )
 									)
@@ -1499,25 +1495,20 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 				}
 
 				statements.Add(
-					ExpressionStatement(
-						AssignmentExpression(
-							SyntaxKind.SimpleAssignmentExpression,
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
-								ThisExpression(),
-								IdentifierName( dependentSerializer.Value )
-							),
-							InvocationExpression(
-								MemberAccessExpression(
-									SyntaxKind.SimpleMemberAccessExpression,
-									ContextArgumentReferenceSyntax,
-									GenericName( "GetSerializer" )
-										.AddTypeArgumentListArguments(
-											targetTypeSyntax
-										)
-								)
-							).AddArgumentListArguments( Argument( getSerializerArgument ) )
-						)
+					SimpleAssignmentStatement(
+						SimpleMemberAccessExpression(
+							ThisExpression(),
+							IdentifierName( dependentSerializer.Value )
+						),
+						InvocationExpression(
+							SimpleMemberAccessExpression(
+								ContextArgumentReferenceSyntax,
+								GenericName( "GetSerializer" )
+									.AddTypeArgumentListArguments(
+										targetTypeSyntax
+									)
+							)
+						).AddArgumentListArguments( Argument( getSerializerArgument ) )
 					)
 				);
 			} // foreach ( in context.GetDependentSerializers() )
@@ -1536,18 +1527,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 #endif // DEBUG
 				statements =
 					statements.Add(
-						ExpressionStatement(
-							AssignmentExpression(
-								SyntaxKind.SimpleAssignmentExpression,
-								MemberAccessExpression(
-									SyntaxKind.SimpleMemberAccessExpression,
-									ThisExpression(),
-									IdentifierName( cachedFieldInfo.Value.StorageFieldName )
-								),
-								ReflectionHelpersGetFieldMethodTemplate.AddArgumentListArguments(
-									Argument( TypeOfExpression( ToTypeSyntax( fieldInfo.DeclaringType ) ) ),
-									Argument( LiteralExpression( SyntaxKind.StringLiteralExpression, Literal( fieldInfo.Name ) ) )
-								)
+						SimpleAssignmentStatement(
+							SimpleMemberAccessExpression(
+								ThisExpression(),
+								IdentifierName( cachedFieldInfo.Value.StorageFieldName )
+							),
+							ReflectionHelpersGetFieldMethodTemplate.AddArgumentListArguments(
+								Argument( TypeOfExpression( ToTypeSyntax( fieldInfo.DeclaringType ) ) ),
+								Argument( LiteralExpression( SyntaxKind.StringLiteralExpression, Literal( fieldInfo.Name ) ) )
 							)
 						)
 					);
@@ -1564,28 +1551,15 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 				var parameterTypes = methodBase.GetParameterTypes();
 				statements =
 					statements.Add(
-						ExpressionStatement(
-							AssignmentExpression(
-								SyntaxKind.SimpleAssignmentExpression,
-								MemberAccessExpression(
-									SyntaxKind.SimpleMemberAccessExpression,
-									ThisExpression(),
-									IdentifierName( cachedMethodBase.Value.StorageFieldName )
-								),
-								ReflectionHelpersGetMethodMethodTemplate.AddArgumentListArguments(
-									Argument( TypeOfExpression( ToTypeSyntax( methodBase.DeclaringType ) ) ),
-									Argument( LiteralExpression( SyntaxKind.StringLiteralExpression, Literal( methodBase.Name ) ) ),
-									Argument(
-										TypeArrayCreationTemplate.WithInitializer(
-											InitializerExpression(
-												SyntaxKind.ArrayInitializerExpression,
-												new SeparatedSyntaxList<ExpressionSyntax>().AddRange(
-													parameterTypes.Select( t => TypeOfExpression( ToTypeSyntax( t ) ) )
-												)
-											)
-										)
-									)
-								)
+						SimpleAssignmentStatement(
+							SimpleMemberAccessExpression(
+								ThisExpression(),
+								IdentifierName( cachedMethodBase.Value.StorageFieldName )
+							),
+							ReflectionHelpersGetMethodMethodTemplate.AddArgumentListArguments(
+								Argument( TypeOfExpression( ToTypeSyntax( methodBase.DeclaringType ) ) ),
+								Argument( LiteralExpression( SyntaxKind.StringLiteralExpression, Literal( methodBase.Name ) ) ),
+								Argument( TypeArrayCreation( parameterTypes.Select( t => TypeOfExpression( ToTypeSyntax( t ) ) ) ) )
 							)
 						)
 					);
@@ -1701,8 +1675,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 			if ( ( capabilities & value ) != 0 )
 			{
 				var capabilityExpression =
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
+					SimpleMemberAccessExpression(
 						SerializerCapabilitiesTypeIdentifierSyntax,
 						IdentifierName( value.ToString() )
 					);
@@ -1714,8 +1687,7 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 				else
 				{
 					return
-						BinaryExpression(
-							SyntaxKind.BitwiseOrExpression,
+						OrExpression(
 							expression,
 							capabilityExpression
 						);

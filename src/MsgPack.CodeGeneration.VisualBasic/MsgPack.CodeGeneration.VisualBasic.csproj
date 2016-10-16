@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A88D64DB-DE14-4B77-80D8-B765F45EBB8B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsgPack</RootNamespace>
+    <AssemblyName>MsgPack.CodeGeneration.VisualBasic</AssemblyName>
+    <DefaultLanguage>ja-JP</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_3;VISUAL_BASIC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MsgPack.CodeGeneration.VisualBasic.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETSTANDARD1_3;VISUAL_BASIC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MsgPack.CodeGeneration.VisualBasic.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="..\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\CodeTreeConstruct.cs">
+      <Link>Serialization\CodeTreeSerializers\CodeTreeConstruct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\CodeTreeContext.cs">
+      <Link>Serialization\CodeTreeSerializers\CodeTreeContext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\CodeTreeSerializerBuilder.cs">
+      <Link>Serialization\CodeTreeSerializers\CodeTreeSerializerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\ExpressionCodeTreeConstruct.cs">
+      <Link>Serialization\CodeTreeSerializers\ExpressionCodeTreeConstruct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\ParameterCodeTreeConstruct.cs">
+      <Link>Serialization\CodeTreeSerializers\ParameterCodeTreeConstruct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\StatementCodeTreeConstruct.cs">
+      <Link>Serialization\CodeTreeSerializers\StatementCodeTreeConstruct.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\Syntax.cs">
+      <Link>Serialization\CodeTreeSerializers\Syntax.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.CodeGeneration.CSharp\Serialization\CodeTreeSerializers\VariableCodeTreeConstruct.cs">
+      <Link>Serialization\CodeTreeSerializers\VariableCodeTreeConstruct.cs</Link>
+    </Compile>
+    <Compile Include="Serialization\CodeTreeSerializers\SyntaxCompatibilities.cs" />
+    <Compile Include="Serialization\CodeGenerators\VisualBasicCodeTreeBasedSerializerCodeGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MsgPack.CodeGeneration.Core\MsgPack.CodeGeneration.Core.csproj">
+      <Project>{efe532ea-77c8-4877-96c2-e79fd101b2ab}</Project>
+      <Name>MsgPack.CodeGeneration.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MsgPack.Core\MsgPack.Core.csproj">
+      <Project>{08d9a49d-736e-4cad-919e-72ca8c1d4a9f}</Project>
+      <Name>MsgPack.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MsgPack.Serialization\MsgPack.Serialization.csproj">
+      <Project>{153ced68-9905-4b1f-9790-f463840895e2}</Project>
+      <Name>MsgPack.Serialization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualC">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6\Microsoft.VisualC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

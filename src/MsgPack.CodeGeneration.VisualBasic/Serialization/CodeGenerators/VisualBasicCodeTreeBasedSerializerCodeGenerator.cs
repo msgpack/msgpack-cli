@@ -22,7 +22,7 @@ using System;
 
 using MsgPack.Serialization.CodeTreeSerializers;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.CodeGenerators
 {
 	/// <summary>
 	///		Provides front-end for Roslyn Code Analyzer based, portable C# serializer source code generator.
@@ -31,13 +31,11 @@ namespace MsgPack.Serialization
 	///		You must call <see cref="Configure()"/> in advance to use Roslyn Code Analyzer based C# source code generation.
 	///		If you miss it, Code DOM based legacy generator is used in desktop .NET Framework build (including Mono), or failed on other (.NET Core, etc.) based build.
 	/// </remarks>
-	public static class CSharpCodeTreeBasedSerializerCodeGenerator
+	public static class VisualBasicCodeTreeBasedSerializerCodeGenerator
 	{
 		// based on <system.codedom> in root web.config.
 		private static readonly string[] LanguageIdentifiers =
-			new[] { "C#", "CSharp", "CS" };
-
-		// TODO: VisualBasic are vb;vbs;visualbasic;vbscript
+			new[] { "VB", "VBS", "VisualBasic", "VBScript" };
 
 		/// <summary>
 		///		Configures C# generator and enables in <see cref="SerializerGenerator"/>.
@@ -48,7 +46,7 @@ namespace MsgPack.Serialization
 			CodeTreeSerializerCodeGeneratorFactory.RegisterFactory(
 				LanguageIdentifiers,
 				( context, configuration ) => new CodeTreeContext( context, configuration, "cs" ),
-				context => type => new CodeTreeSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) )
+				context => type => new VisualBasicCodeTreeSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) )
 			);
 		}
 	}

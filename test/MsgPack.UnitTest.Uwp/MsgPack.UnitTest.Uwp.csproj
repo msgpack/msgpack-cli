@@ -1784,6 +1784,9 @@
     <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
       <Link>SplittingStream.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamExtensions.cs">
+      <Link>StreamExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
       <Link>SubtreeUnpackerTest.cs</Link>
     </Compile>
@@ -1897,11 +1900,6 @@
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MsgPack">
-      <HintPath>..\..\src\MsgPack.CoreClr\bin\Debug\netstandard1.3\MsgPack.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
@@ -1915,6 +1913,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MsgPack.Core\MsgPack.Core.csproj">
+      <Project>{08d9a49d-736e-4cad-919e-72ca8c1d4a9f}</Project>
+      <Name>MsgPack.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\MsgPack.Serialization\MsgPack.Serialization.csproj">
+      <Project>{153ced68-9905-4b1f-9790-f463840895e2}</Project>
+      <Name>MsgPack.Serialization</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -1206,7 +1206,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif // !NETFX_35
 		private static Type PrepareSerializerConstructorCreation( CodeDomContext codeGenerationContext )
 		{
-			if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
+			if ( !SerializerDebugging.OnTheFlyCodeGenerationEnabled )
 			{
 				throw new NotSupportedException();
 			}
@@ -1224,7 +1224,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 				cr =
 					codeProvider.CompileAssemblyFromDom(
-						new CompilerParameters( SerializerDebugging.CodeDomSerializerDependentAssemblies.ToArray() )
+						new CompilerParameters( SerializerDebugging.CodeSerializerDependentAssemblies.ToArray() )
 #if PERFORMANCE_TEST
 						{
 							IncludeDebugInformation = false,

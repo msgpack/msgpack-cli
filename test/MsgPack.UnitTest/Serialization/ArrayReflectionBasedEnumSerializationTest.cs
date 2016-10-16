@@ -29,9 +29,12 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT
 
 #if !MSTEST
 using NUnit.Framework;
@@ -60,10 +63,11 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
 		[SetUp]
 		public void SetUp()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -73,8 +77,8 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
 			if( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
 			{
@@ -85,6 +89,7 @@ namespace MsgPack.Serialization
 		[TearDown]
 		public void TearDown()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
@@ -100,9 +105,9 @@ namespace MsgPack.Serialization
 					SerializationMethodGeneratorManager.Refresh();
 				}
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
 		}
 #endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private static void TestEnumForByNameCore<T>( Stream stream, T value, T deserialized, string property )

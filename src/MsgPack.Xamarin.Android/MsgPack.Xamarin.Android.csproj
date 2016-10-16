@@ -455,6 +455,9 @@
     <Compile Include="..\MsgPack\Serialization\ExtTypeCodeMapping.cs">
       <Link>Serialization\ExtTypeCodeMapping.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\FromExpression.cs">
+      <Link>Serialization\FromExpression.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ICustomizableEnumSerializer.cs">
       <Link>Serialization\ICustomizableEnumSerializer.cs</Link>
     </Compile>

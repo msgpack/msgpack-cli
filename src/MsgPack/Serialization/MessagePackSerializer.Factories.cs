@@ -26,9 +26,9 @@
 #define AOT
 #endif
 
-#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !AOT && !SILVERLIGHT
 #define FEATURE_EMIT
-#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !AOT && !SILVERLIGHT
 
 using System;
 using System.IO;
@@ -52,7 +52,9 @@ using System.Linq.Expressions;
 #endif
 #if FEATURE_EMIT
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETSTANDARD1_1
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
 #endif // FEATURE_EMIT
 
@@ -255,20 +257,12 @@ namespace MsgPack.Serialization
 			ISerializerBuilder builder;
 			switch ( context.SerializerOptions.EmitterFlavor )
 			{
+#if !NETSTANDARD1_1
 				case EmitterFlavor.CodeDomBased:
+#endif // !NETSTANDARD1_!
+				case EmitterFlavor.CodeTreeBased:
 				{
-					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
-					{
-						throw new NotSupportedException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Flavor '{0:G}'({0:D}) is not supported for serializer instance creation.",
-								context.SerializerOptions.EmitterFlavor
-							)
-						);
-					}
-
-					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
+					builder = SerializerDebugging.CreateOnTheFlyCodeGenerationSerializerBuilder( typeof( T ), collectionTraits, context.SerializerOptions.EmitterFlavor );
 					break;
 				}
 				case EmitterFlavor.FieldBased:
@@ -279,7 +273,7 @@ namespace MsgPack.Serialization
 				default: // EmitterFlavor.ReflectionBased
 				{
 #endif // FEATURE_EMIT
-					return
+			return
 						GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
 						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
 #if FEATURE_EMIT

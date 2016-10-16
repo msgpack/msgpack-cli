@@ -20,10 +20,17 @@
 
 using System;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.CodeGenerators
 {
-	internal abstract class SerializerCodeGeneratorFactory
+	internal sealed class SerializerCodesGenerationLogicFactory : SerializerCodeGeneratorFactory
 	{
-		internal abstract SerializerGenerator.SerializerGenerationLogic<SerializerCodeGenerationConfiguration> Create( SerializerCodeGenerationConfiguration configuration );
+		public static readonly SerializerCodesGenerationLogicFactory Instance = new SerializerCodesGenerationLogicFactory();
+
+		private SerializerCodesGenerationLogicFactory() { }
+
+		internal override SerializerGenerationLogic<SerializerCodeGenerationConfiguration> Create( SerializerCodeGenerationConfiguration configuration )
+		{
+			return SerializerCodesGenerationLogic.Instance;
+		}
 	}
 }

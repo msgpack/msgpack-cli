@@ -21,30 +21,29 @@
 using System;
 
 using MsgPack.Serialization.AbstractSerializers;
+using MsgPack.Serialization.CodeDomSerializers;
 
-namespace MsgPack.Serialization
+namespace MsgPack.Serialization.CodeGenerators
 {
-	internal sealed class CodeTreeSerializerGenerationLogic : SerializerGenerator.SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
+	internal sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
 	{
-		private readonly Func<SerializationContext, SerializerCodeGenerationConfiguration, ISerializerCodeGenerationContext> _contextFactory;
-		private readonly Func<SerializationContext, Func<Type, ISerializerCodeGenerator>> _generatorFactory;
+		public static readonly SerializerCodesGenerationLogic Instance = new SerializerCodesGenerationLogic();
 
-		public CodeTreeSerializerGenerationLogic(
-			Func<SerializationContext, SerializerCodeGenerationConfiguration, ISerializerCodeGenerationContext> contextFactory,
-			Func<SerializationContext, Func<Type, ISerializerCodeGenerator>> generatorFactory
-		)
+		protected override EmitterFlavor EmitterFlavor
 		{
-			this._contextFactory = contextFactory;
-			this._generatorFactory = generatorFactory;
+			get { return EmitterFlavor.CodeDomBased; }
 		}
 
-		// Just returns random stuff.
-		protected override EmitterFlavor EmitterFlavor => EmitterFlavor.FieldBased;
+		private SerializerCodesGenerationLogic() {}
 
 		protected override ISerializerCodeGenerationContext CreateGenerationContext( SerializationContext context, SerializerCodeGenerationConfiguration configuration )
-			=> this._contextFactory( context, configuration );
+		{
+			return new CodeDomContext( context, configuration );
+		}
 
 		protected override Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context )
-			=> this._generatorFactory( context );
+		{
+			return type => new CodeDomSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
+		}
 	}
 }

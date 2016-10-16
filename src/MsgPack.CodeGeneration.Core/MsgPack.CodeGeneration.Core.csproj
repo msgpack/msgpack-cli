@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_3</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_CONCURRENT;NETSTANDARD1_3</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.CodeGeneration.Core.XML</DocumentationFile>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NETSTANDARD1_3</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_CONCURRENT;NETSTANDARD1_3</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\MsgPack.CodeGeneration.Core.XML</DocumentationFile>
@@ -59,25 +59,29 @@
     <Compile Include="..\MsgPack\Serialization\AbstractSerializers\ISerializerCodeGenerator.cs">
       <Link>Serialization\AbstractSerializers\ISerializerCodeGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerators\SerializerCodeGeneratorFactory.cs">
+      <Link>Serialization\CodeGenerators\SerializerCodeGeneratorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerators\SerializerGenerationLogic`1.cs">
+      <Link>Serialization\CodeGenerators\SerializerGenerationLogic`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationConfiguration.cs">
       <Link>Serialization\SerializerCodeGenerationConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationResult.cs">
       <Link>Serialization\SerializerCodeGenerationResult.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\SerializerCodeGeneratorFactory.cs">
-      <Link>Serialization\SerializerCodeGeneratorFactory.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerGenerator.cs">
       <Link>Serialization\SerializerGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Validation.cs">
+      <Link>Validation.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\CodeTreeSerializerCodeGeneratorFactory.cs" />
-    <Compile Include="Serialization\CodeTreeSerializerGenerationLogic.cs" />
+    <Compile Include="Serialization\CodeGenerators\CodeTreeSerializerCodeGeneratorFactory.cs" />
+    <Compile Include="Serialization\CodeGenerators\CodeTreeSerializerGenerationLogic.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Serialization\CodeTreeSerializers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\MsgPack.Core\MsgPack.Core.csproj">
       <Project>{08d9a49d-736e-4cad-919e-72ca8c1d4a9f}</Project>

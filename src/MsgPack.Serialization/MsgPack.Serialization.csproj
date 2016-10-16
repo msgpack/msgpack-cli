@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FEATURE_TAP;NETSTANDARD1_1</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_TAP;FEATURE_CONCURRENT;NETSTANDARD1_1</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.Serialization.XML</DocumentationFile>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP;NETSTANDARD1_1</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT;NETSTANDARD1_1</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\MsgPack.Serialization.XML</DocumentationFile>
@@ -352,6 +352,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DependentAssemblyManager.cs">
+      <Link>Serialization\DependentAssemblyManager.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DictionaryKeyTransformers.cs">
       <Link>Serialization\DictionaryKeyTransformers.cs</Link>
