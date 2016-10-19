@@ -130,12 +130,14 @@ namespace MsgPack.Serialization
 		if ( emitterFlavor == "CodeTreeBased" )
 		{
 #>
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new <#= language #>CodeTreeSerializerBuilder( t, c ) );
 <#+
 		}
 		else if ( emitterFlavor == "CodeDomBased" )
 		{
 #>
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CodeDomSerializerBuilder( t, c ) );
 <#+
 		}

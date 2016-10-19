@@ -55,6 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TempFileDependentAssemblyManager.cs">
+      <Link>Serialization\TempFileDependentAssemblyManager.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ArrayCodeDomBasedEnumSerializationTest.cs">
       <AutoGen>True</AutoGen>

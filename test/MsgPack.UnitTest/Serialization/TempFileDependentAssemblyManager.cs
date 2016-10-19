@@ -31,6 +31,17 @@ namespace MsgPack.Serialization
 		private static int _wasDeleted;
 		private const string HistoryFile = "MsgPack.Serialization.SerializationGenerationDebugging.CodeDOM.History.txt";
 
+#if NETSTANDARD1_3
+		private readonly string _baseDirectory;
+
+		public TempFileDependentAssemblyManager( string baseDirectory )
+		{
+			this._baseDirectory = baseDirectory;
+			this.ResetDependentAssemblies();
+		}
+
+#endif // NETSTANDARD1_3
+
 		protected override void Record( IEnumerable<string> assemblies )
 		{
 #if !NETFX_35 && !UNITY
@@ -77,6 +88,46 @@ namespace MsgPack.Serialization
 		public override Assembly LoadAssembly( string path )
 		{
 			return Assembly.LoadFrom( path );
+		}
+
+		protected override IEnumerable<string> GetRuntimeAssemblies()
+		{
+#if NETSTANDARD1_3
+			if ( this._baseDirectory == null )
+			{
+				yield break;
+			}
+
+			// TODO: X-Plat
+			var referenceAssemblyDirectory = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ProgramFilesX86 ), @"Reference Assemblies\Microsoft\Framework\.NETCore\v4.5.1" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Collections.dll" );
+			yield return Path.Combine( this._baseDirectory, "System.Collections.NonGeneric.dll" );
+			yield return Path.Combine( this._baseDirectory, "System.Collections.Specialized.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Diagnostics.Debug.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Diagnostics.Tools.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Globalization.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Linq.dll" );
+			yield return Path.Combine( this._baseDirectory, "System.Numerics.Vectors.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Reflection.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Reflection.Extensions.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Reflection.Primitives.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.Extensions.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.Numerics.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.Serialization.Primitives.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Threading.dll" );
+			yield return Path.Combine( referenceAssemblyDirectory, "System.Threading.Tasks.dll" );
+			yield return Path.Combine( this._baseDirectory, "MsgPack.Core.dll" );
+			yield return Path.Combine( this._baseDirectory, "MsgPack.Serialization.dll" );
+#else
+			yield return typeof( Stack<> ).Assembly.Location; // System.dll
+#if NETFX_35
+			yield return typeof( Enumerable ).Assembly.Location ]; // System.Core.dll
+#else
+			yield return typeof( Action<,,,,,,,,,,> ).Assembly.Location; // System.Core.dll
+			yield return typeof( System.Numerics.BigInteger ).Assembly.Location; // System.Numerics.dll
+#endif // NETFX_35
+#endif // NETSTANDARD1_1
 		}
 	}
 }

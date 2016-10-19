@@ -42,12 +42,9 @@ namespace MsgPack.Serialization
 		[SetUp]
 		public void SetupCurrentNamespaceTests()
 		{
+			var b = "a" == "A";
 			Contract.ContractFailed += ( sender, e ) => e.SetUnwind();
 			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager();
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Numerics.BigInteger ).GetAssembly().ManifestModule.FullyQualifiedName );
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Numerics.Vector2 ).GetAssembly().ManifestModule.FullyQualifiedName );
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Collections.ArrayList ).GetAssembly().ManifestModule.FullyQualifiedName );
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Collections.Specialized.NameValueCollection ).GetAssembly().ManifestModule.FullyQualifiedName );
 		}
 	}
 #endif

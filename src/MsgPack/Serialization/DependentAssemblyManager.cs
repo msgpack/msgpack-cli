@@ -137,38 +137,20 @@ namespace MsgPack.Serialization
 #endif // FEATURE_CONCURRENT
 		}
 
+		protected abstract IEnumerable<string> GetRuntimeAssemblies();
+
 		private void ResetRuntimeAssemblies()
 		{
+			var assemblies = this.GetRuntimeAssemblies();
 #if !FEATURE_CONCURRENT
 			lock ( this._syncRoot )
 			{
 #endif // !FEATURE_CONCURRENT
-
-#if NETSTANDARD1_1
-			this._runtimeAssemblies[ typeof( object ).GetAssembly().ManifestModule.FullyQualifiedName ] = null; // System.Runtime
-			this._runtimeAssemblies[ typeof( Math ).GetAssembly().ManifestModule.FullyQualifiedName ] = null; // System.Runtime
-			this._runtimeAssemblies[ typeof( System.Linq.Enumerable ).GetAssembly().ManifestModule.FullyQualifiedName ] = null; // System.Linq.dll
-			this._runtimeAssemblies[ typeof( System.Globalization.CultureInfo ).GetAssembly().ManifestModule.FullyQualifiedName ] = null; // System.Globalization.dll
-			this._runtimeAssemblies[ typeof( IEnumerable<> ).GetAssembly().ManifestModule.FullyQualifiedName ] = null; // System.Collections.dll
-			this._runtimeAssemblies[ typeof( MessagePackObject ).GetAssembly().ManifestModule.FullyQualifiedName ] = null; // MsgPack.Core.dll
-			this._runtimeAssemblies[ typeof( SerializationContext ).GetAssembly().ManifestModule.FullyQualifiedName ] = null; // MsgPack.Serialization.dll
-			// They should be registered with extensions or test assembly:
-			// System.Runtime.Numerics
-			// System.Collections.NonGeneric
-			// System.Collections.Specialized
-			// System.Numeric.Vectors
-#else
-			this._runtimeAssemblies[ "System.dll" ] = null; // GAC
-#if NETFX_35
-			this._runtimeAssemblies[ typeof( Enumerable ).Assembly.Location ] = null;
-#else
-			this._runtimeAssemblies[ "System.Core.dll" ] = null; // GAC
-			this._runtimeAssemblies[ "System.Numerics.dll" ] = null; // GAC
-#endif // NETFX_35
-			this._runtimeAssemblies[ typeof( SerializerDebugging ).Assembly.Location ] = null;
-#endif // NETSTANDARD1_1
-			this._runtimeAssemblies[ typeof( SerializerDebugging ).GetAssembly().ManifestModule.FullyQualifiedName ] = null;
-
+			this._runtimeAssemblies.Clear();
+			foreach ( var assembly in assemblies )
+			{
+				this._runtimeAssemblies[ assembly ] = null;
+			}
 #if !FEATURE_CONCURRENT
 			}
 #endif // !FEATURE_CONCURRENT
@@ -228,6 +210,11 @@ namespace MsgPack.Serialization
 			protected override void Record( IEnumerable<string> assemblies ) { }
 
 			public override void DeletePastTemporaries() { }
+
+			protected override IEnumerable<string> GetRuntimeAssemblies()
+			{
+				yield break;
+			}
 		}
 	}
 }

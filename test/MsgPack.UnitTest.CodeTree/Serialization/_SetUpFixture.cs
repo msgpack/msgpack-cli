@@ -43,11 +43,7 @@ namespace MsgPack.Serialization
 		public void SetupCurrentNamespaceTests()
 		{
 			Contract.ContractFailed += ( sender, e ) => e.SetUnwind();
-			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager();
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Numerics.BigInteger ).GetAssembly().ManifestModule.FullyQualifiedName );
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Numerics.Vector2 ).GetAssembly().ManifestModule.FullyQualifiedName );
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Collections.ArrayList ).GetAssembly().ManifestModule.FullyQualifiedName );
-			SerializerDebugging.AddRuntimeAssembly( typeof( System.Collections.Specialized.NameValueCollection ).GetAssembly().ManifestModule.FullyQualifiedName );
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 		}
 	}
 #endif

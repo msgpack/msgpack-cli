@@ -83,6 +83,7 @@ namespace MsgPack.Serialization
 			}
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CSharpCodeTreeSerializerBuilder( t, c ) );
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 			if ( this.GetType().Assembly != typeof( NilImplicationTestTargetForValueTypeMemberDefault ).Assembly )

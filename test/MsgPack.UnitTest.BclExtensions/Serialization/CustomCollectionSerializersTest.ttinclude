@@ -87,9 +87,10 @@ namespace MsgPack.Serialization
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 <#+
-		if ( emitterFlavor == "CodeTreeBased" )
+		if ( emitterFlavor == "CodeTreeBased" || emitterFlavor == "CodeDomBased" )
 		{
 #>
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new <#= language #><#= builderTypeName #>( t, c ) );
 <#+
 		}

@@ -117,6 +117,7 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
+
   <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />
@@ -152,6 +153,7 @@
     <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
     <Exclude Path="Serialization\SerializationTargetTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
     <Exclude Path="Serialization\CompositeTest.cs" />
     <!-- Generator related -->
     <Exclude File="*ContextBased*.cs" />

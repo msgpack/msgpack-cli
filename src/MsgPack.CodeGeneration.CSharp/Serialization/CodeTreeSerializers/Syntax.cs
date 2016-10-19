@@ -82,14 +82,14 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 		public static readonly TypeSyntax VoidTypeSyntax =
 #if CSHARP
-			IdentifierName( Token( SyntaxKind.VoidKeyword ) );
+			PredefinedType( Token( SyntaxKind.VoidKeyword ) );
 #elif VISUAL_BASIC
 			null;
 #endif
 
 		public static readonly TypeSyntax Int32TypeSyntax =
 #if CSHARP
-			IdentifierName( Token( SyntaxKind.IntKeyword ) );
+			PredefinedType( Token( SyntaxKind.IntKeyword ) );
 #elif VISUAL_BASIC
 			PredefinedType( Token( SyntaxKind.IntegerKeyword ) );
 #endif

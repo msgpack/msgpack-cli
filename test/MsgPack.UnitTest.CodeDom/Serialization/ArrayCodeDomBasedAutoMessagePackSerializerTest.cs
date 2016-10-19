@@ -51,6 +51,8 @@ using System.Threading.Tasks;
 #if !SILVERLIGHT && !AOT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#else
+using MsgPack.Serialization.CodeTreeSerializers;
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT
@@ -142,6 +144,7 @@ namespace MsgPack.Serialization
 
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.SetOnTheFlyCodeGenerationBuilderFactory( ( t, c ) => new CodeDomSerializerBuilder( t, c ) );
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
 			if( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )

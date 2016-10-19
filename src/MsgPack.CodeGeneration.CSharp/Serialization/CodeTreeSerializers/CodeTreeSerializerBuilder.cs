@@ -326,21 +326,21 @@ namespace MsgPack.Serialization.CodeTreeSerializers
 
 		protected override CodeTreeConstruct EmitEqualsExpression( CodeTreeContext context, CodeTreeConstruct left, CodeTreeConstruct right )
 #if CSHARP
-			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.EqualsEqualsToken, left.AsExpression(), right.AsExpression() ) );
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.EqualsExpression, left.AsExpression(), right.AsExpression() ) );
 #elif VISUAL_BASIC
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, EqualsExpression( left.AsExpression(), right.AsExpression() ) );
 #endif
 
 		protected override CodeTreeConstruct EmitGreaterThanExpression( CodeTreeContext context, CodeTreeConstruct left, CodeTreeConstruct right )
 #if CSHARP
-			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.GreaterThanToken, left.AsExpression(), right.AsExpression() ) );
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.GreaterThanExpression, left.AsExpression(), right.AsExpression() ) );
 #elif VISUAL_BASIC
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, GreaterThanExpression( left.AsExpression(), right.AsExpression() ) );
 #endif
 
 		protected override CodeTreeConstruct EmitLessThanExpression( CodeTreeContext context, CodeTreeConstruct left, CodeTreeConstruct right )
 #if CSHARP
-			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.LessThanToken, left.AsExpression(), right.AsExpression() ) );
+			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, BinaryExpression( SyntaxKind.LessThanExpression, left.AsExpression(), right.AsExpression() ) );
 #elif VISUAL_BASIC
 			=> CodeTreeConstruct.Expression( TypeDefinition.BooleanType, LessThanExpression( left.AsExpression(), right.AsExpression() ) );
 #endif
