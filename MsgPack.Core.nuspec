@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata minClientVersion="2.12">
+    <id>MsgPack.Cli.Core</id>
+    <title>MessagePack for CLI Core</title>
+    <version>0.0.0-development</version>
+    <authors>FUJIWARA, Yusuke</authors>
+    <owners>FUJIWARA, Yusuke</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/msgpack/msgpack-cli</projectUrl>
+    <iconUrl>http://cli.msgpack.org/images/msgpack.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MessagePack is fast, compact, and interoperable binary serialization format.
+This package provides MessagePack core libraries only. This pacakge also supports Mono, Xamarin, .NET Core and Unity.</description>
+    <releaseNotes>This release includes new code generators and package reorganization to reduce entire size in most cases.</releaseNotes>
+    <copyright>Copyright 2010-2016 FUJIWARA, Yusuke, all rights reserved.</copyright>
+    <tags>MsgPack MessagePack</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework3.5" />
+      <group targetFramework="Silverlight5" />
+      <group targetFramework="MonoAndroid1.0" />
+      <group targetFramework="Xamarin.iOS1.0" />
+      <group targetFramework=".NETStandard1.1">
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+        <dependency id="System.Diagnostics.Tools" version="4.0.1" />
+        <dependency id="System.Globalization" version="4.0.11" />
+        <dependency id="System.IO" version="4.1.0" />
+        <dependency id="System.Linq" version="4.1.0" />
+        <dependency id="System.Reflection" version="4.1.0" />
+        <dependency id="System.Reflection.Extensions" version="4.0.1" />
+        <dependency id="System.Reflection.Primitives" version="4.0.1" />
+        <dependency id="System.Resources.ResourceManager" version="4.0.1" />
+        <dependency id="System.Runtime" version="4.1.0" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" />
+        <dependency id="System.Runtime.InteropServices" version="4.1.0" />
+        <dependency id="System.Runtime.Serialization.Primitives" version="4.1.0" />
+        <dependency id="System.Text.Encoding" version="4.0.11" />
+        <dependency id="System.Text.Encoding.Extensions" version="4.0.11" />
+        <dependency id="System.Text.RegularExpressions" version="4.1.0" />
+        <dependency id="System.Threading" version="4.0.11" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\**\*.dll" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />
+    <file src="bin\**\*.XML" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />
+  </files>
+</package>
