@@ -156,21 +156,29 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			var packHelperArguments =
-				new[]
-				{
-					context.Packer,
-					context.PackToTarget,
-					this.EmitGetActionsExpression( context, ActionType.PackToArray, isAsync )
-				}
-#if FEATURE_TAP
-				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } : NoConstructs ).ToArray()
-#endif // FEATURE_TAP
-				;
+					new Dictionary<string, TConstruct>
+					{
+						{ "Packer", context.Packer },
+						{ "Target", context.PackToTarget },
+						{ "Operations", this.EmitGetActionsExpression( context, ActionType.PackToArray, isAsync ) }
+					};
 
-			var packToArray =
-				this.EmitInvokeMethodExpression(
-					context,
-					null,
+#if FEATURE_TAP
+			if ( isAsync )
+			{
+				packHelperArguments.Add( "CancellationToken", this.ReferCancellationToken( context, 3 ) );
+			}
+#endif // FEATURE_TAP
+
+			var packHelperParameterTypeDefinition =
+#if FEATURE_TAP
+				isAsync ? typeof( PackToArrayAsyncParameters<> ) :
+#endif // FEATURE_TAP
+				typeof( PackToArrayParameters<> );
+
+			var packHelperParameterType =
+					TypeDefinition.GenericValueType( packHelperParameterTypeDefinition, this.TargetType );
+			var packHelperMethod =
 					new MethodDefinition(
 						AdjustName( MethodName.PackToArray, isAsync ),
 						new [] { TypeDefinition.Object( this.TargetType ) },
@@ -180,18 +188,31 @@ namespace MsgPack.Serialization.AbstractSerializers
 						isAsync ? typeof( Task ) :
 #endif // FEATURE_TAP
 						typeof( void ),
-						packHelperArguments.Select( a => a.ContextType ).ToArray()
-					),
-					packHelperArguments
-				);
+						packHelperParameterType
+					);
+
+			var packHelperParameters = this.DeclareLocal( context, packHelperParameterType, "packHelperParameters" );
+			yield return packHelperParameters;
+			foreach ( var construct in this.CreatePackUnpackHelperArgumentInitialization( context, packHelperParameters, packHelperArguments ) )
+			{
+				yield return construct;
+			}
+
+			var methodInvocation =
+					this.EmitInvokeMethodExpression(
+						context,
+						null,
+						packHelperMethod,
+						this.EmitMakeRef( context, packHelperParameters )
+					);
 
 			if ( isAsync )
 			{
 				// Wrap with return to return Task
-				packToArray = this.EmitRetrunStatement( context, packToArray );
+				methodInvocation = this.EmitRetrunStatement( context, methodInvocation );
 			}
 
-			yield return packToArray;
+			yield return methodInvocation;
 		}
 
 		private IEnumerable<TConstruct> EmitPackTupleItemStatements(
