@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Polymorphic;
@@ -346,9 +347,37 @@ namespace MsgPack.Serialization
 			return new SerializerRepository( InitializeDefaultTable( ownerContext ) );
 		}
 
-		internal bool Contains( Type rootType )
+		/// <summary>
+		///		Determines whether this repository contains serializer for the specified target type.
+		/// </summary>
+		/// <param name="targetType">Type of the target.</param>
+		/// <returns>
+		///		<c>true</c> if this repository contains serializer for the specified target type; otherwise, <c>false</c>.
+		///		This method returns <c>false</c> for <c>null</c>.
+		/// </returns>
+		public bool ContainsFor( Type targetType )
 		{
-			return this._repository.Contains( rootType );
+			return this._repository.Contains( targetType );
+		}
+		/// <summary>pick 6b8d511 FIX ConstructorDelegate
+
+		///		Gets the copy of registered serializer entries.
+		/// </summary>
+		/// <returns>
+		///		The copy of registered serializer entries.
+		///		This value will not be <c>null</c> and consistent in the invoked timing.
+		/// </returns>
+		/// <remarks>
+		///		This method returns snapshot of the invoked timing, so the result may not reflect latest status.
+		///		You should use the result for debugging or tooling purpose only.
+		///		Use <c>Get()</c> overloads to get proper serializer.
+		/// </remarks>
+		public IEnumerable<KeyValuePair<Type, MessagePackSerializer>> GetRegisteredSerializers()
+		{
+			return
+				this._repository.GetEntries()
+					.Select( kv => new KeyValuePair<Type, MessagePackSerializer>( kv.Key, kv.Value as MessagePackSerializer ) )
+					.Where( kV => kV.Value != null );
 		}
 	}
 }

@@ -563,8 +563,8 @@ namespace MsgPack.Serialization
 		internal bool ContainsSerializer( Type rootType )
 		{
 			return
-				this._serializers.Contains( rootType )
-				|| ( rootType.GetIsGenericType() && this._serializers.Contains( rootType.GetGenericTypeDefinition() ) );
+				this._serializers.ContainsFor( rootType )
+				|| ( rootType.GetIsGenericType() && this._serializers.ContainsFor( rootType.GetGenericTypeDefinition() ) );
 		}
 
 		/// <summary>
