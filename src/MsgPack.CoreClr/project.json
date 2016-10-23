@@ -52,6 +52,7 @@
         "../MsgPack/Serialization/Metadata/_UnpackHelpers.direct.cs",
         "../MsgPack/Serialization/Reflection/TracingILGenerator*.cs",
         "../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
+        "../MsgPack/Serialization/ReflectionExtensions.ConstructorDelegate.cs",
         "../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
         "../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
         "../MsgPack/Serialization/SerializerGenerator.cs",

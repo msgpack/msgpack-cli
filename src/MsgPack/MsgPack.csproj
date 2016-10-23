@@ -282,6 +282,9 @@
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Metadata\_DynamicUnpackingContext.cs" />
     <Compile Include="Serialization\Metadata\_Object.cs" />
+    <Compile Include="Serialization\ReflectionExtensions.CollectionTraits.cs" />
+    <Compile Include="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
+    <Compile Include="Serialization\ReflectionExtensions.InvokePreservingExtension.cs" />
     <Compile Include="Serialization\PackHelperParameters.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

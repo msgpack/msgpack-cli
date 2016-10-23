@@ -61,6 +61,7 @@
     <Exclude Path="Serialization\DefaultSerializerNameResolver.cs" />
     <Exclude Path="Serialization\FromExpression.cs" />
     <Exclude Path="Serialization\FromExpression.*.cs" />
+    <Exclude Path="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
     <Exclude Path="Serialization\ISerializerGeneratorConfiguration.cs" />
     <Exclude Path="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
     <Exclude Path="Serialization\SerializerCodeGenerationConfiguration.cs" />
@@ -82,6 +83,7 @@
     <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
     <Exclude File="*.snk" />
     <Exclude Path="BufferedStream.cs" />
     <Exclude Path="NetStandardCompatibility.cs" />
@@ -141,6 +143,7 @@
     <Preserve Path="Serialization\Metadata\_MessagePackSerializer.cs" />
     <Preserve Path="Serialization\Metadata\_SerializationContext.cs" />
     <Preserve Path="Serialization\Reflection\TracingILGenerator.*" />
+    <Preserve Path="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
     <Preserve Path="Serialization\FromExpression*.cs" />
     <Preserve Path="Serialization\LockRecursionPolicy.cs" />
     <Preserve Path="Serialization\ReaderWriterLockSlim.cs" />

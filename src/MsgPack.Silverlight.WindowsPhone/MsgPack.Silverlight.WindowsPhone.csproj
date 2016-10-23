@@ -644,8 +644,14 @@
     <Compile Include="..\MsgPack\Serialization\PolymorphismType.cs">
       <Link>Serialization\PolymorphismType.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.CollectionTraits.cs">
+      <Link>Serialization\ReflectionExtensions.CollectionTraits.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.InvokePreservingExtension.cs">
+      <Link>Serialization\ReflectionExtensions.InvokePreservingExtension.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionHelpers.cs">
       <Link>Serialization\ReflectionHelpers.cs</Link>
