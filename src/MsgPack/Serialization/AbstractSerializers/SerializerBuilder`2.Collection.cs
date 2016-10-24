@@ -213,6 +213,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		private void BuildCollectionAddItem( TContext context, CollectionTraits traits )
 		{
 			var addItem = this.BaseClass.GetRuntimeMethod( MethodName.AddItem );
+			var addItemParametersTypes = addItem.GetParameterTypes();
 			context.BeginMethodOverride( MethodName.AddItem );
 			context.EndMethodOverride(
 				MethodName.AddItem,
@@ -221,9 +222,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					traits,
 					context.CollectionToBeAdded,
-					addItem.GetParameters()[ 0 ].ParameterType,
+					addItemParametersTypes[ 0 ],
 					context.KeyToAdd,
-					addItem.GetParameters()[ 1 ].ParameterType,
+					addItemParametersTypes[ 1 ],
 					context.ValueToAdd,
 					false
 				)

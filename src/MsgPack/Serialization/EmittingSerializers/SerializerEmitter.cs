@@ -173,7 +173,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 						( baseMethod.Attributes | MethodAttributes.Final ) & ( ~MethodAttributes.Abstract ),
 						baseMethod.CallingConvention,
 						baseMethod.ReturnType,
-						baseMethod.GetParameters().Select( p => p.ParameterType ).ToArray()
+						baseMethod.GetParameterTypes()
 					);
 				this._typeBuilder.DefineMethodOverride(
 					builder,

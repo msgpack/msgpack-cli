@@ -153,7 +153,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					il.EmitCallvirt(
 						this._interface.GetRuntimeMethod(
 							this._method.Name.Substring( this._method.Name.LastIndexOf( '.' ) + 1 ),
-							this._method.GetParameters().Select( p => p.ParameterType ).ToArray()
+							this._method.GetParameterTypes()
 						)
 					);
 				}

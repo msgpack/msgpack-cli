@@ -45,8 +45,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this._runtimeConstructor =
 					this.DeclaringType.ResolveRuntimeType().GetConstructors()
 						.SingleOrDefault( c =>
-							c.GetParameters()
-								.Select( p => p.ParameterType )
+							c.GetParameterTypes()
 								.SequenceEqual( this.ParameterTypes.Select( t => t.ResolveRuntimeType() ) )
 					);
 			}
