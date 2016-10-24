@@ -1,5 +1,5 @@
 ﻿<#+ 
-private void GenerateCore( string serializationMethod, string emitterFlavor, bool canDump, bool forIos )
+private void GenerateCore( string serializationMethod, string emitterFlavor, bool canDump, bool forIos, string language = "" )
 {
 	var testCases =
 		new []
@@ -100,6 +100,7 @@ using System.Threading.Tasks;
 	{
 #>
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 <#+
@@ -111,6 +112,8 @@ using NUnit.Framework;
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using SetUpAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitializeAttribute;
+using TearDownAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestCleanupAttribute;
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
@@ -120,7 +123,7 @@ namespace MsgPack.Serialization
 {
 	[TestFixture]
 	[Timeout( 30000 )]
-	public class <#= serializationMethod #><#= emitterFlavor #>EnumSerializerTest
+	public class <#= serializationMethod #><#= language #><#= emitterFlavor #>EnumSerializerTest
 	{
 		private SerializationContext GetSerializationContext()
 		{
@@ -150,7 +153,7 @@ namespace MsgPack.Serialization
 			get { return <#= canDump.ToString().ToLowerInvariant() #>; }
 		}
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT
 		[SetUp]
 		public void SetUp()
 		{
@@ -163,6 +166,7 @@ namespace MsgPack.Serialization
 <#+
 		}
 #>
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -173,17 +177,28 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
+			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
+
+#if NETFX_35
+			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
+#else
+			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
+#endif // NETFX_35
+
+			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.TestDirectory;
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
 			if( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
 			{
 				SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 			}
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
@@ -201,9 +216,10 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT
 <#+
 	} // if !forIos
 #>

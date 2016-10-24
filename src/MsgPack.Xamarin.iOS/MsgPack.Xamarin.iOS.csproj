@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;__UNIFIED__;__MOBILE__;__IOS__;AOT;NETSTANDARD1_3;XAMARIN;FEATURE_TAP;</DefineConstants>
+    <DefineConstants>DEBUG;__UNIFIED__;__MOBILE__;__IOS__;AOT;NETSTANDARD1_3;XAMARIN;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -30,7 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;AOT;NETSTANDARD1_3;XAMARIN;FEATURE_TAP;</DefineConstants>
+    <DefineConstants>__UNIFIED__;__MOBILE__;__IOS__;AOT;NETSTANDARD1_3;XAMARIN;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
     <DocumentationFile>..\..\bin\Xamarin.iOS10\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>

@@ -53,7 +53,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		public const string ConditionalExpressionHelperWhenFalseParameterName = "whenFalse";
 
 		private readonly Dictionary<SerializerFieldKey, string> _dependentSerializers = new Dictionary<SerializerFieldKey, string>();
-		private readonly Dictionary<RuntimeFieldHandle, CachedFieldInfo> _cachedTargetFields = 
+		private readonly Dictionary<RuntimeFieldHandle, CachedFieldInfo> _cachedTargetFields =
 			new Dictionary<RuntimeFieldHandle, CachedFieldInfo>();
 		private readonly Dictionary<RuntimeMethodHandle, CachedMethodBase> _cachedPropertyAccessors =
 			new Dictionary<RuntimeMethodHandle, CachedMethodBase>();
@@ -61,6 +61,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		private readonly Dictionary<Type, CodeTypeDeclaration> _declaringTypes = new Dictionary<Type, CodeTypeDeclaration>();
 
 		private readonly SerializerCodeGenerationConfiguration _configuration;
+
+		internal string Namespace
+		{
+			get { return this._configuration.Namespace; }
+		}
 
 		private Type _targetType;
 
@@ -100,14 +105,14 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				fieldName = "_serializer" + this._dependentSerializers.Count.ToString( CultureInfo.InvariantCulture );
 				this._dependentSerializers.Add( key, fieldName );
-				this._buildingType.Members.Add( 
-					new CodeMemberField( 
-						typeof( MessagePackSerializer<> ).MakeGenericType( Type.GetTypeFromHandle( key.TypeHandle ) ), 
+				this._buildingType.Members.Add(
+					new CodeMemberField(
+						typeof( MessagePackSerializer<> ).MakeGenericType( Type.GetTypeFromHandle( key.TypeHandle ) ),
 						fieldName
 					)
 					{
 						Attributes = MemberAttributes.Private
-					} 
+					}
 				);
 			}
 
@@ -127,7 +132,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			{
 				Contract.Assert( field.DeclaringType != null, "field.DeclaringType != null" );
 
-				cachedField = 
+				cachedField =
 					new CachedFieldInfo(
 						field,
 						"_field" + field.DeclaringType.Name.Replace( '`', '_' ) + "_" + field.Name + this._cachedTargetFields.Count.ToString( CultureInfo.InvariantCulture )
@@ -311,7 +316,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					parameters
 						.Select( p => new KeyValuePair<string, TypeDefinition>( p.AsParameter().Name, p.ContextType ) )
 						.ToArray()
-				) 
+				)
 			);
 		}
 
@@ -355,7 +360,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					codeMethod.Parameters.Add( this.Unpacker.AsParameter() );
 					codeMethod.Parameters.Add( this.UnpackToTarget.AsParameter() );
 					// ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
+					codeMethod.Attributes = ( this.IsInternalToMsgPackLibrary ? MemberAttributes.FamilyOrAssembly : MemberAttributes.Family ) | MemberAttributes.Override;
 					// ReSharper restore BitwiseOperatorOnEnumWithoutFlags
 
 					break;
@@ -386,24 +391,24 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					if ( this.IsDictionary )
 					{
 						codeMethod.Parameters.Add(
-							new CodeParameterDeclarationExpression( 
-								CodeDomSerializerBuilder.ToCodeTypeReference( this.KeyToAdd.ContextType ), 
+							new CodeParameterDeclarationExpression(
+								CodeDomSerializerBuilder.ToCodeTypeReference( this.KeyToAdd.ContextType ),
 								"key"
 							)
 						);
 						codeMethod.Parameters.Add(
-							new CodeParameterDeclarationExpression( 
+							new CodeParameterDeclarationExpression(
 								CodeDomSerializerBuilder.ToCodeTypeReference( this.ValueToAdd.ContextType ),
-								"value" 
+								"value"
 							)
 						);
 					}
 					else
 					{
-						codeMethod.Parameters.Add( 
-							new CodeParameterDeclarationExpression( 
+						codeMethod.Parameters.Add(
+							new CodeParameterDeclarationExpression(
 								CodeDomSerializerBuilder.ToCodeTypeReference( this.ItemToAdd.ContextType ),
-								"item" 
+								"item"
 							)
 						);
 					}
@@ -521,7 +526,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 			codeMethod.Parameters.AddRange(
 				context.Parameters.Select( kv =>
-					new CodeParameterDeclarationExpression(CodeDomSerializerBuilder.ToCodeTypeReference( kv.Value ), kv.Key ) 
+					new CodeParameterDeclarationExpression( CodeDomSerializerBuilder.ToCodeTypeReference( kv.Value ), kv.Key )
 				).ToArray()
 			);
 
@@ -645,62 +650,62 @@ namespace MsgPack.Serialization.CodeDomSerializers
 					Path.Combine(
 						this._configuration.OutputDirectory,
 						this._configuration.Namespace.Replace( Type.Delimiter, Path.DirectorySeparatorChar )
-						);
-				Directory.CreateDirectory( directory );
+					);
+
+				var sink = this._configuration.CodeGenerationSink ?? CodeGenerationSink.ForIndividualFile();
 
 				var result = new List<SerializerCodeGenerationResult>( this._declaringTypes.Count );
+				var extension = "." + provider.FileExtension;
 
 				foreach ( var declaringType in this._declaringTypes )
 				{
-					var typeFileName = declaringType.Value.Name;
-					if ( declaringType.Value.TypeParameters.Count > 0 )
-					{
-						typeFileName += "`" + declaringType.Value.TypeParameters.Count.ToString( CultureInfo.InvariantCulture );
-					}
-
-					typeFileName += "." + provider.FileExtension;
+					Contract.Assert( declaringType.Value.TypeParameters.Count == 0, declaringType.Value.TypeParameters.Count + "!= 0" );
 
 					var cn = new CodeNamespace( this._configuration.Namespace );
 					cn.Types.Add( declaringType.Value );
 					var cu = new CodeCompileUnit();
 					cu.Namespaces.Add( cn );
 
-					var filePath = Path.Combine( directory, typeFileName );
-					result.Add( 
-						new SerializerCodeGenerationResult( 
-							declaringType.Key, 
-							filePath, 
+					var codeInfo = new SerializerCodeInformation( declaringType.Value.Name, directory, extension );
+					sink.AssignTextWriter( codeInfo );
+
+					result.Add(
+						new SerializerCodeGenerationResult(
+							declaringType.Key,
+							codeInfo.FilePath,
 							String.IsNullOrEmpty( cn.Name )
 							? declaringType.Value.Name
-							: cn.Name + "." + declaringType.Value.Name, 
-							cn.Name, 
+							: cn.Name + "." + declaringType.Value.Name,
+							cn.Name,
 							declaringType.Value.Name
 						)
 					);
 
-					using ( var writer = new StreamWriter( filePath, false, Encoding.UTF8 ) )
+					if ( SerializerDebugging.DumpEnabled )
+					{
+						SerializerDebugging.TraceEmitEvent( "Compile {0}", declaringType.Value.Name );
+					}
+
+					using ( var writer =
+						SerializerDebugging.DumpEnabled
+							? new TeeTextWriter( codeInfo.TextWriter ?? NullTextWriter.Instance, SerializerDebugging.ILTraceWriter )
+							: codeInfo.TextWriter ?? NullTextWriter.Instance
+					)
 					{
 						provider.GenerateCodeFromCompileUnit( cu, writer, options );
+						writer.WriteLine();
+						writer.Flush();
+
+						if ( SerializerDebugging.DumpEnabled )
+						{
+							SerializerDebugging.TraceEmitEvent( "Compile {0}", declaringType.Value.Name );
+							SerializerDebugging.FlushTraceData();
+						}
 					}
 				}
 
 				return result;
 			}
-		}
-
-		/// <summary>
-		///		Creates the <see cref="CodeCompileUnit"/> for on-the-fly code generation for execution.
-		/// </summary>
-		/// <returns>
-		///		The newly created <see cref="CodeCompileUnit"/> for on-the-fly code generation for execution.
-		/// </returns>
-		public CodeCompileUnit CreateCodeCompileUnit()
-		{
-			var cn = new CodeNamespace( this._configuration.Namespace );
-			cn.Types.Add( this._buildingType );
-			var cu = new CodeCompileUnit();
-			cu.Namespaces.Add( cn );
-			return cu;
 		}
 
 		public struct CachedFieldInfo

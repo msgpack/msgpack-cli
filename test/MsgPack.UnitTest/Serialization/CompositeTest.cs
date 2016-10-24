@@ -55,8 +55,14 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Switch.Level = SourceLevels.All;
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
-	
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
+			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
+#if NETFX_35
+			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
+#else
+			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
+#endif // NETFX_35
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 		}
 
@@ -76,7 +82,7 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
 		}
 
 		[Test]

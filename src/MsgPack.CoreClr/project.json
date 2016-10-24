@@ -15,7 +15,7 @@
         }
       }
     },
-    "define": [ "TRACE", "FEATURE_TAP" ],
+    "define": [ "TRACE", "FEATURE_TAP", "FEATURE_CONCURRENT" ],
     "xmlDoc": true,
     "compile": {
       "include": [
@@ -51,13 +51,19 @@
         "../MsgPack/Serialization/Metadata/_UnpackHelpers.cs",
         "../MsgPack/Serialization/Metadata/_UnpackHelpers.direct.cs",
         "../MsgPack/Serialization/Reflection/TracingILGenerator*.cs",
+        "../MsgPack/Serialization/CodeGenerationSink.cs",
+        "../MsgPack/Serialization/DependentAssemblyManager.cs",
+        "../MsgPack/Serialization/IndividualFileCodeGenerationSink.cs",
         "../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
         "../MsgPack/Serialization/ReflectionExtensions.ConstructorDelegate.cs",
         "../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
         "../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
+        "../MsgPack/Serialization/SerializerCodeInformation.cs",
         "../MsgPack/Serialization/SerializerGenerator.cs",
         "../MsgPack/Serialization/SerializerCodeGenerationContext.cs",
-        "../MsgPack/Serialization/SerializerCodeGenerationResult.cs"
+        "../MsgPack/Serialization/SerializerCodeGenerationResult.cs",
+        "../MsgPack/Serialization/SingleTextWriterCodeGenerationSink.cs",
+        "../MsgPack/Serialization/TeeTextWriter.cs",
       ]
     }
   },

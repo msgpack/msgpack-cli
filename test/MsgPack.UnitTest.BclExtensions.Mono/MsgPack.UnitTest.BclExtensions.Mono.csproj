@@ -71,6 +71,12 @@
     <Compile Include="..\MsgPack.UnitTest.BclExtensions\Serialization\MapReflectionBasedCustomCollectionSerializersTest.cs">
       <Link>Serialization\MapReflectionBasedCustomCollectionSerializersTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RoslynCodeGeneration.cs">
+      <Link>Serialization\RoslynCodeGeneration.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TempFileDependentAssemblyManager.cs">
+      <Link>Serialization\TempFileDependentAssemblyManager.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

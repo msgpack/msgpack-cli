@@ -294,6 +294,9 @@
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs">
       <Link>Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerationSink.cs">
+      <Link>Serialization\CodeGenerationSink.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -510,6 +513,9 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DependentAssemblyManager.cs">
+      <Link>Serialization\DependentAssemblyManager.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DictionaryKeyTransformers.cs">
       <Link>Serialization\DictionaryKeyTransformers.cs</Link>
     </Compile>
@@ -626,6 +632,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\IMessagePackSingleObjectSerializer.cs">
       <Link>Serialization\IMessagePackSingleObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\IndividualFileCodeGenerationSink.cs">
+      <Link>Serialization\IndividualFileCodeGenerationSink.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\INilImplicationHandlerOnUnpackedParameter.cs">
       <Link>Serialization\INilImplicationHandlerOnUnpackedParameter.cs</Link>
@@ -906,6 +915,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationResult.cs">
       <Link>Serialization\SerializerCodeGenerationResult.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerCodeInformation.cs">
+      <Link>Serialization\SerializerCodeInformation.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
       <Link>Serialization\SerializerDebugging.cs</Link>
     </Compile>
@@ -929,6 +941,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SingleTextWriterCodeGenerationSink.cs">
+      <Link>Serialization\SingleTextWriterCodeGenerationSink.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\TeeTextWriter.cs">
+      <Link>Serialization\TeeTextWriter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Tracer.cs">
       <Link>Serialization\Tracer.cs</Link>

@@ -35,11 +35,12 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializationCompatibilityOptions
 	{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 		private volatile bool _oneBoundDataMemberOrder;
 #else
 		private bool _oneBoundDataMemberOrder;
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
+
 		/// <summary>
 		///		Gets or sets a value indicating whether <c>System.Runtime.Serialization.DataMemberAttribute.Order</c> should be started with 1 instead of 0.
 		/// </summary>
@@ -54,19 +55,19 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				return this._oneBoundDataMemberOrder;
 #else
 				return Volatile.Read( ref this._oneBoundDataMemberOrder );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				this._oneBoundDataMemberOrder = value;
 #else
 				Volatile.Write( ref this._oneBoundDataMemberOrder, value );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 
@@ -91,11 +92,11 @@ namespace MsgPack.Serialization
 			set { Volatile.Write( ref this._packerCompatibilityOptions, ( int )value ); }
 		}
 
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 		private volatile bool _ignorePackabilityForCollection;
 #else
 		private bool _ignorePackabilityForCollection;
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 
 		/// <summary>
 		///		Gets or sets a value indicating whether serializer generator ignores packability interfaces for collections or not.
@@ -113,27 +114,27 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				return this._ignorePackabilityForCollection;
 #else
 				return Volatile.Read( ref this._ignorePackabilityForCollection );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				this._ignorePackabilityForCollection = value;
 #else
 				Volatile.Write( ref this._ignorePackabilityForCollection, value );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 		private volatile bool _allowNonCollectionEnumerableTypes;
 #else
 		private bool _allowNonCollectionEnumerableTypes;
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 
 		/// <summary>
 		///		Gets or sets a value indicating whether the serializer generator should serialize types that implement IEnumerable but do not have an Add method.
@@ -150,28 +151,28 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				return this._allowNonCollectionEnumerableTypes;
 #else
 				return Volatile.Read( ref this._allowNonCollectionEnumerableTypes );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				this._allowNonCollectionEnumerableTypes = value;
 #else
 				Volatile.Write( ref this._allowNonCollectionEnumerableTypes, value );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 
 
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 		private volatile bool _allowAsymmetricSerializer;
 #else
 		private bool _allowAsymmetricSerializer;
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 
 		/// <summary>
 		///		Gets or sets a value indicating whether the serializer generator generates serializer types even when the generator determines that feature complete serializer cannot be generated due to lack of some requirement.
@@ -189,19 +190,19 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				return this._allowAsymmetricSerializer;
 #else
 				return Volatile.Read( ref this._allowAsymmetricSerializer );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				this._allowAsymmetricSerializer = value;
 #else
 				Volatile.Write( ref this._allowAsymmetricSerializer, value );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 

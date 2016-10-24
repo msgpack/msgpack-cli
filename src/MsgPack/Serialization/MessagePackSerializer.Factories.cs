@@ -257,7 +257,7 @@ namespace MsgPack.Serialization
 			{
 				case EmitterFlavor.CodeDomBased:
 				{
-					if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
+					if ( !SerializerDebugging.OnTheFlyCodeGenerationEnabled )
 					{
 						throw new NotSupportedException(
 							String.Format(

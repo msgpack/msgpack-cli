@@ -25,6 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -37,6 +38,7 @@ using System.Threading.Tasks;
 
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.CollectionSerializers;
+using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.CodeDomSerializers
 {
@@ -1206,71 +1208,61 @@ namespace MsgPack.Serialization.CodeDomSerializers
 #endif // !NETFX_35
 		private static Type PrepareSerializerConstructorCreation( CodeDomContext codeGenerationContext )
 		{
-			if ( !SerializerDebugging.OnTheFlyCodeDomEnabled )
+			if ( !SerializerDebugging.OnTheFlyCodeGenerationEnabled )
 			{
 				throw new NotSupportedException();
 			}
 
-			var cu = codeGenerationContext.CreateCodeCompileUnit();
-			CompilerResults cr;
-			using ( var codeProvider = CodeDomProvider.CreateProvider( "cs" ) )
+			codeGenerationContext.Generate();
+			Assembly assembly;
+			IList<string> errors;
+			IList<string> warnings;
+
+			SerializerDebugging.CompileAssembly(
+#if PERFORMANCE_TEST
+				false,
+#else
+				true,
+#endif // PERFORMANCE_TEST
+				out assembly,
+				out errors,
+				out warnings
+			);
+
+			SerializerDebugging.ClearCodeBuffer();
+
+			if ( errors.Any() )
 			{
-				if ( SerializerDebugging.DumpEnabled )
+				if ( SerializerDebugging.TraceEnabled && !SerializerDebugging.DumpEnabled )
 				{
-					SerializerDebugging.TraceEmitEvent( "Compile {0}", codeGenerationContext.DeclaringType.Name );
-					codeProvider.GenerateCodeFromCompileUnit( cu, SerializerDebugging.ILTraceWriter, new CodeGeneratorOptions() );
+					SerializerDebugging.ILTraceWriter.WriteLine( SerializerDebugging.CodeWriter.ToString() );
 					SerializerDebugging.FlushTraceData();
 				}
 
-				cr =
-					codeProvider.CompileAssemblyFromDom(
-						new CompilerParameters( SerializerDebugging.CodeDomSerializerDependentAssemblies.ToArray() )
-#if PERFORMANCE_TEST
-						{
-							IncludeDebugInformation = false,
-							CompilerOptions = "/optimize+"
-						}
-#endif
-						,
-						cu
-					);
-				var errors = cr.Errors.OfType<CompilerError>().Where( e => !e.IsWarning ).ToArray();
-				if ( errors.Length > 0 )
-				{
-					if ( SerializerDebugging.TraceEnabled && !SerializerDebugging.DumpEnabled )
-					{
-						codeProvider.GenerateCodeFromCompileUnit( cu, SerializerDebugging.ILTraceWriter, new CodeGeneratorOptions() );
-						SerializerDebugging.FlushTraceData();
-					}
-
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Failed to compile assembly. Details:{0}{1}",
-							Environment.NewLine,
-							BuildCompilationError( cr )
-							)
-						);
-				}
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						"Failed to compile assembly. Details:{0}{1}",
+						Environment.NewLine,
+						String.Join( Environment.NewLine, errors.ToArray() )
+					)
+				);
 			}
 #if DEBUG
 			// Check warning except ambigious type reference.
-			var warnings = cr.Errors.OfType<CompilerError>().Where( e => e.ErrorNumber != "CS0436" ).ToArray();
-			Contract.Assert( !warnings.Any(), BuildCompilationError( cr ) );
+			Contract.Assert( !warnings.Any(), String.Join( Environment.NewLine, warnings.ToArray() ) );
 #endif
 
 			if ( SerializerDebugging.TraceEnabled )
 			{
-				SerializerDebugging.TraceEmitEvent( "Build assembly '{0}' from dom.", cr.PathToAssembly );
+				SerializerDebugging.TraceEmitEvent( "Build assembly '{0}' from dom.", assembly.ManifestModule.FullyQualifiedName );
 			}
 
-			SerializerDebugging.AddCompiledCodeDomAssembly( cr.PathToAssembly );
-
 			var targetType =
-				cr.CompiledAssembly.GetTypes()
+				assembly.GetTypes()
 					.SingleOrDefault(
 						t =>
-							t.Namespace == cu.Namespaces[ 0 ].Name
+							t.Namespace == codeGenerationContext.Namespace
 							&& t.Name == codeGenerationContext.DeclaringType.Name
 					);
 
@@ -1278,38 +1270,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				targetType != null,
 				String.Join(
 					Environment.NewLine,
-					cr.CompiledAssembly.GetTypes()
-						.Where(
-				// ReSharper disable once ImplicitlyCapturedClosure
-							t => t.Namespace == cu.Namespaces[ 0 ].Name
-						).Select( t => t.FullName ).ToArray()
+					assembly.GetTypes().Select( t => t.GetFullName() ).ToArray()
 				)
 			);
 			return targetType;
 
-		}
-
-		private static string BuildCompilationError( CompilerResults cr )
-		{
-			return
-				String.Join(
-					Environment.NewLine,
-					cr.Errors.OfType<CompilerError>()
-					  .Select(
-						( error, i ) =>
-							String.Format(
-								CultureInfo.InvariantCulture,
-								"[{0}]{1}:{2}:(File:{3}, Line:{4}, Column:{5}):{6}",
-								i,
-								error.IsWarning ? "Warning" : "Error   ",
-								error.ErrorNumber,
-								error.FileName,
-								error.Line,
-								error.Column,
-								error.ErrorText
-							)
-					).ToArray()
-				);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
@@ -1735,7 +1700,15 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		protected override CodeDomContext CreateCodeGenerationContextForSerializerCreation( SerializationContext context )
 		{
-			var result = new CodeDomContext( context, new SerializerCodeGenerationConfiguration() );
+			var result =
+				new CodeDomContext(
+					context,
+					new SerializerCodeGenerationConfiguration
+					{
+						OutputDirectory = SerializerDebugging.DumpDirectory,
+						CodeGenerationSink = CodeGenerationSink.ForSpecifiedTextWriter( SerializerDebugging.CodeWriter )
+					}
+				);
 			result.Reset( this.TargetType, this.BaseClass );
 			return result;
 		}
