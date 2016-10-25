@@ -850,6 +850,7 @@
     <Compile Include="Serialization\SerializerGeneratorTest.cs" />
     <Compile Include="Serialization\SimpleCollection`1.cs" />
     <Compile Include="Serialization\StringKeyedCollection.cs" />
+    <Compile Include="Serialization\StructWithDataContractTest.cs" />
     <Compile Include="Serialization\TempFileDependentAssemblyManager.cs" />
     <Compile Include="Serialization\TestValueType.cs" />
     <Compile Include="Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" />
