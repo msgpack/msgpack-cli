@@ -69,7 +69,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentNullException( "enumType" );
 			}
 
-			EnumSerializationMethod method = context.EnumSerializationMethod;
+			EnumSerializationMethod method = context.EnumSerializationOptions.SerializationMethod;
 			switch ( enumMemberSerializationMethod )
 			{
 				case EnumMemberSerializationMethod.ByName:

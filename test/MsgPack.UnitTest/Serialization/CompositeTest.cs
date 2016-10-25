@@ -126,12 +126,15 @@ namespace MsgPack.Serialization
 			root.Files = new FileItem[ 0 ];
 
 			var context =
-					new SerializationContext
+				new SerializationContext
+				{
+					SerializationMethod = serializationMethod,
+					SerializerOptions =
 					{
-						SerializationMethod = serializationMethod,
-						GeneratorOption = SerializationMethodGeneratorOption.CanDump
-					};
-			context.SerializerOptions.EmitterFlavor = emittingFlavor;
+						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+						EmitterFlavor = emittingFlavor
+					}
+				};
 
 			var serializer =
 				( MessagePackSerializer<DirectoryItem> ) generator.BuildSerializerInstance(

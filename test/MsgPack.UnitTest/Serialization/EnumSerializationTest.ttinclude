@@ -415,7 +415,7 @@ namespace MsgPack.Serialization
 		if ( testCase.Item1 != null )
 		{
 #>
-			context.EnumSerializationMethod = EnumSerializationMethod.<#= testCase.Item1 #>;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.<#= testCase.Item1 #>;
 			try
 			{
 <#+
@@ -429,7 +429,7 @@ namespace MsgPack.Serialization
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 <#+
 		}
@@ -452,7 +452,7 @@ namespace MsgPack.Serialization
 		if ( testCase.Item1 != null )
 		{
 #>
-			context.EnumSerializationMethod = EnumSerializationMethod.<#= testCase.Item1 #>;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.<#= testCase.Item1 #>;
 			try
 			{
 <#+
@@ -466,7 +466,7 @@ namespace MsgPack.Serialization
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 <#+
 		}
@@ -638,7 +638,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 		public void TestEnum<#= underlyingType.Name #>_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 <#+
@@ -658,7 +658,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -666,7 +666,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 		public void TestEnum<#= underlyingType.Name #>_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 <#+
@@ -686,7 +686,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 <#+
@@ -698,7 +698,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 		public void TestEnum<#= underlyingType.Name #>_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 <#+
@@ -718,7 +718,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -726,7 +726,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 		public void TestEnum<#= underlyingType.Name #>_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 <#+
@@ -746,7 +746,7 @@ private void CreateEnumTest( Type underlyingType, bool useBuilder, bool canBeFla
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 <#+

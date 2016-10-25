@@ -438,18 +438,27 @@ namespace MsgPack.Serialization
 				var context =
 					new SerializationContext
 					{
-						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
-						EnumSerializationMethod = configuration.EnumSerializationMethod,
-						SerializationMethod = configuration.SerializationMethod
-					};
-				context.SerializerOptions.EmitterFlavor = this.EmitterFlavor;
-				context.CompatibilityOptions.AllowNonCollectionEnumerableTypes = configuration.CompatibilityOptions.AllowNonCollectionEnumerableTypes;
-				context.CompatibilityOptions.IgnorePackabilityForCollection = configuration.CompatibilityOptions.IgnorePackabilityForCollection;
-				context.CompatibilityOptions.OneBoundDataMemberOrder = configuration.CompatibilityOptions.OneBoundDataMemberOrder;
-				context.CompatibilityOptions.PackerCompatibilityOptions = configuration.CompatibilityOptions.PackerCompatibilityOptions;
+						SerializationMethod = configuration.SerializationMethod,
+						SerializerOptions =
+						{
 #if !NETFX_35
-				context.SerializerOptions.WithAsync = configuration.WithAsync;
+							WithAsync = configuration.WithAsync,
 #endif // !NETFX_35
+							GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+							EmitterFlavor = this.EmitterFlavor
+						},
+						EnumSerializationOptions =
+						{
+							SerializationMethod = configuration.EnumSerializationMethod
+						},
+						CompatibilityOptions =
+						{
+							AllowNonCollectionEnumerableTypes = configuration.CompatibilityOptions.AllowNonCollectionEnumerableTypes,
+							IgnorePackabilityForCollection = configuration.CompatibilityOptions.IgnorePackabilityForCollection,
+							OneBoundDataMemberOrder = configuration.CompatibilityOptions.OneBoundDataMemberOrder,
+							PackerCompatibilityOptions = configuration.CompatibilityOptions.PackerCompatibilityOptions
+						}
+					};
 
 				IEnumerable<Type> realTargetTypes;
 				if ( configuration.IsRecursive )

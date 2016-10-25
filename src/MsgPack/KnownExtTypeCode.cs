@@ -35,7 +35,7 @@ namespace MsgPack
 		///		Gets the ext type code which represents multidimensional array.
 		/// </summary>
 		/// <value>
-		///		0x1.
+		///		0x71.
 		/// </value>
 		public static byte MultidimensionalArray
 		{

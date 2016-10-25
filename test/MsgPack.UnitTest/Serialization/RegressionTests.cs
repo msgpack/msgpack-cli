@@ -177,12 +177,16 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext
 			{
 				SerializationMethod = SerializationMethod.Map,
-				EnumSerializationMethod = EnumSerializationMethod.ByName,
+				EnumSerializationOptions =
+				{
+					SerializationMethod = EnumSerializationMethod.ByName
+				},
 				CompatibilityOptions =
 				{
 					PackerCompatibilityOptions = PackerCompatibilityOptions.None
 				}
 			};
+
 			var serializer = context.GetSerializer<Dictionary<string, object>>();
 
 			var dict = new Dictionary<string, object>();

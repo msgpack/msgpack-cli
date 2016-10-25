@@ -274,6 +274,7 @@ namespace MsgPack.Serialization
 		/// 	</list>
 		///		Note that the default value of this property is <see cref="T:EnumSerializationMethod.ByName"/>, it is not size efficient but tolerant to unexpected enum definition change.
 		/// </remarks>
+		[Obsolete( "Use EnumSerializationOptions.SerializationMethod instead." )]
 		public EnumSerializationMethod EnumSerializationMethod
 		{
 			get { return this._enumSerializationOptions.SerializationMethod; }
@@ -289,6 +290,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The <see cref="SerializationMethodGeneratorOption"/>.
 		/// </value>
+		[Obsolete( "Use SerializerOptions.GeneratorOption instead." )]
 		public SerializationMethodGeneratorOption GeneratorOption
 		{
 
@@ -319,7 +321,6 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		<c>true</c> if runtime generation is disabled; otherwise, <c>false</c>.
 		/// </value>
-		[Obsolete]
 		internal bool IsRuntimeGenerationDisabled
 		{
 			get { return this._serializerGeneratorOptions.IsRuntimeGenerationDisabled; }
@@ -643,7 +644,7 @@ namespace MsgPack.Serialization
 
 				try
 				{
-					try {}
+					try { }
 					finally
 					{
 #if !FEATURE_CONCURRENT

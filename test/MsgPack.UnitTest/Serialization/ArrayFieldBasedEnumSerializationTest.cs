@@ -376,14 +376,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsNone_MemberIsNone()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumDefault.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -391,14 +391,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsNone_MemberIsDefault()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "DefaultDefaultProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -406,14 +406,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsNone_MemberIsByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "DefaultByNameProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -421,14 +421,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsNone_MemberIsByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "DefaultByUnderlyingValueProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -436,14 +436,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByName_MemberIsNone()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumByName.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -451,14 +451,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByName_MemberIsDefault()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "ByNameDefaultProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -466,14 +466,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByName_MemberIsByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "ByNameByNameProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -481,14 +481,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByName_MemberIsByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "ByNameByUnderlyingValueProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -496,14 +496,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByUnderlyingValue_MemberIsNone()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumByUnderlyingValue.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -511,14 +511,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByUnderlyingValue_MemberIsDefault()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "ByUnderlyingValueDefaultProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -526,14 +526,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByUnderlyingValue_MemberIsByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "ByUnderlyingValueByNameProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -541,14 +541,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByName_TypeIsByUnderlyingValue_MemberIsByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "ByUnderlyingValueByUnderlyingValueProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -556,14 +556,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsNone_MemberIsNone()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumDefault.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -571,14 +571,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsNone_MemberIsDefault()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "DefaultDefaultProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -586,14 +586,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsNone_MemberIsByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "DefaultByNameProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -601,14 +601,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsNone_MemberIsByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "DefaultByUnderlyingValueProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -616,14 +616,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByName_MemberIsNone()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByName( context, EnumByName.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -631,14 +631,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByName_MemberIsDefault()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "ByNameDefaultProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -646,14 +646,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByName_MemberIsByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "ByNameByNameProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -661,14 +661,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByName_MemberIsByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "ByNameByUnderlyingValueProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -676,14 +676,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByUnderlyingValue_MemberIsNone()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumByUnderlyingValue.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -691,14 +691,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByUnderlyingValue_MemberIsDefault()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "ByUnderlyingValueDefaultProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -706,14 +706,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByUnderlyingValue_MemberIsByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByName( context, new EnumMemberObject(), "ByUnderlyingValueByNameProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -721,14 +721,14 @@ namespace MsgPack.Serialization
 		public void TestSerializationMethod_ContextIsByUnderlyingValue_TypeIsByUnderlyingValue_MemberIsByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, new EnumMemberObject(), "ByUnderlyingValueByUnderlyingValueProperty" );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -736,14 +736,14 @@ namespace MsgPack.Serialization
 		public void TestEnumByte_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumByte.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -751,14 +751,14 @@ namespace MsgPack.Serialization
 		public void TestEnumByte_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumByte.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -766,14 +766,14 @@ namespace MsgPack.Serialization
 		public void TestEnumByte_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumByteFlags.Foo | EnumByteFlags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -781,14 +781,14 @@ namespace MsgPack.Serialization
 		public void TestEnumByte_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumByteFlags.Foo | EnumByteFlags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -796,14 +796,14 @@ namespace MsgPack.Serialization
 		public void TestEnumSByte_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumSByte.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -811,14 +811,14 @@ namespace MsgPack.Serialization
 		public void TestEnumSByte_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumSByte.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -826,14 +826,14 @@ namespace MsgPack.Serialization
 		public void TestEnumSByte_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumSByteFlags.Foo | EnumSByteFlags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -841,14 +841,14 @@ namespace MsgPack.Serialization
 		public void TestEnumSByte_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumSByteFlags.Foo | EnumSByteFlags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -856,14 +856,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt16_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumInt16.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -871,14 +871,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt16_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumInt16.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -886,14 +886,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt16_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumInt16Flags.Foo | EnumInt16Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -901,14 +901,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt16_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumInt16Flags.Foo | EnumInt16Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -916,14 +916,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt16_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumUInt16.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -931,14 +931,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt16_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumUInt16.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -946,14 +946,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt16_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumUInt16Flags.Foo | EnumUInt16Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -961,14 +961,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt16_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumUInt16Flags.Foo | EnumUInt16Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -976,14 +976,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt32_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumInt32.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -991,14 +991,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt32_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumInt32.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1006,14 +1006,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt32_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumInt32Flags.Foo | EnumInt32Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1021,14 +1021,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt32_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumInt32Flags.Foo | EnumInt32Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1036,14 +1036,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt32_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumUInt32.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1051,14 +1051,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt32_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumUInt32.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1066,14 +1066,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt32_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumUInt32Flags.Foo | EnumUInt32Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1081,14 +1081,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt32_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumUInt32Flags.Foo | EnumUInt32Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1096,14 +1096,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt64_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumInt64.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1111,14 +1111,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt64_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumInt64.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1126,14 +1126,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt64_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumInt64Flags.Foo | EnumInt64Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1141,14 +1141,14 @@ namespace MsgPack.Serialization
 		public void TestEnumInt64_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumInt64Flags.Foo | EnumInt64Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1156,14 +1156,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt64_WithoutFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumUInt64.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1171,14 +1171,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt64_WithoutFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumUInt64.Foo, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1186,14 +1186,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt64_WithFlags_ByName()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			try
 			{
 				TestEnumForByName( context, EnumUInt64Flags.Foo | EnumUInt64Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 
@@ -1201,14 +1201,14 @@ namespace MsgPack.Serialization
 		public void TestEnumUInt64_WithFlags_ByUnderlyingValue()
 		{
 			var context = this.GetSerializationContext();
-			context.EnumSerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
+			context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByUnderlyingValue;
 			try
 			{
 				TestEnumForByUnderlyingValue( context, EnumUInt64Flags.Foo | EnumUInt64Flags.Bar, null );
 			}
 			finally
 			{
-				context.EnumSerializationMethod = EnumSerializationMethod.ByName;
+				context.EnumSerializationOptions.SerializationMethod = EnumSerializationMethod.ByName;
 			}
 		}
 

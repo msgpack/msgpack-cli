@@ -53,7 +53,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, "Create {0}", specification.SerializerTypeFullName );
 
-			this._defaultEnumSerializationMethod = context.EnumSerializationMethod;
+			this._defaultEnumSerializationMethod = context.EnumSerializationOptions.SerializationMethod;
 		}
 
 		/// <summary>

@@ -205,9 +205,9 @@ namespace MsgPack.Serialization
 		{
 			Assert.That( SerializationContext.Default, Is.Not.Null );
 			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
-			Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+			Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
-			Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+			Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
 #endif // !AOT && !UNITY && !SILVERLIGHT
 			Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 		}
@@ -218,9 +218,9 @@ namespace MsgPack.Serialization
 			var context = SerializationContext.CreateClassicContext();
 			Assert.That( context, Is.Not.Null );
 			Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
-			Assert.That( context.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+			Assert.That( context.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
-			Assert.That( context.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+			Assert.That( context.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
 #endif // !AOT && !UNITY && !SILVERLIGHT
 			Assert.That( context.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 		}
@@ -238,18 +238,18 @@ namespace MsgPack.Serialization
 				// result is default settings.
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
-				Assert.That( result.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+				Assert.That( result.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
-				Assert.That( result.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+				Assert.That( result.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
 #endif // !AOT && !UNITY && !SILVERLIGHT
 				Assert.That( result.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 
 				// default is now classic
 				Assert.That( SerializationContext.Default, Is.Not.Null );
 				Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
-				Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+				Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
-				Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+				Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
 #endif // !AOT && !UNITY && !SILVERLIGHT
 				Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 			}
@@ -260,9 +260,9 @@ namespace MsgPack.Serialization
 
 			// Verify restore
 			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
-			Assert.That( SerializationContext.Default.EnumSerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+			Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
-			Assert.That( SerializationContext.Default.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+			Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
 #endif // !AOT && !UNITY && !SILVERLIGHT
 			Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 		}
