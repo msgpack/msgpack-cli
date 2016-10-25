@@ -128,8 +128,6 @@ namespace MsgPack.Serialization
 		{
 
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
-			SerializerDebugging.DeletePastTemporaries();
-
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
@@ -140,6 +138,7 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
+			SerializerDebugging.DeletePastTemporaries();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
 
 #if NETFX_35
