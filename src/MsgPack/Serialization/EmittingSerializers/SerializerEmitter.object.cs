@@ -416,9 +416,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 #if DEBUG
 			Contract.Assert( ctor != null, "ctor != null" );
 #endif
-			return ctor.CreateConstructorDelegate<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer>>();
+			var actualFunc = ctor.CreateConstructorDelegate<Func<SerializationContext, MessagePackSerializer>>();
+			return ( c, _ ) => actualFunc( c );
 		}
-	
+
 		private static void CreateDefaultObjectConstructor( ConstructorBuilder contextfulConstructorBuilder, TracingILGenerator il )
 		{
 			/*
