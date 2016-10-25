@@ -112,7 +112,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry && !SerializerDebugging.UseLegacyNullMapEntryHandling )
+				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry
+#if DEBUG
+					&& !SerializerDebugging.UseLegacyNullMapEntryHandling
+#endif // DEBUG
+				)
 				{
 					// Skipping causes the entries count header reducing, so count up null entries first.
 					var nullCount = 0;
@@ -210,7 +214,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry && !SerializerDebugging.UseLegacyNullMapEntryHandling )
+				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry
+#if DEBUG
+					&& !SerializerDebugging.UseLegacyNullMapEntryHandling
+#endif // DEBUG
+				)
 				{
 					// Skipping causes the entries count header reducing, so count up null entries first.
 					var nullCount = 0;

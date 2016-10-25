@@ -688,6 +688,7 @@ foreach ( var withCancel in new [] { false, true } )
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By design" )]
 		public <#= AsyncReturn( "MessagePackObject", withCancel ) #> ReadObjectAsync(<#= Parameter( withCancel ) #>)
 		{
 <#

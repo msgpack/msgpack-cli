@@ -140,7 +140,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			this._ilGeneratorStack.Push( this.Emitter.DefineOverrideMethod( name ) );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		public override void BeginPrivateMethod( string name, bool isStatic, TypeDefinition returnType, params ILConstruct[] parameters )
 		{
 			Contract.Assert( returnType != null );
@@ -183,14 +183,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 			finally
 			{
 				this.IL.FlushTrace();
+#if DEBUG
 				SerializerDebugging.FlushTraceData();
+#endif // DEBUG
 				lastMethod = this._ilGeneratorStack.Pop();
 			}
 
 			return new MethodDefinition( lastMethod.Method, null, lastMethod.ParameterTypes );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override FieldDefinition DeclarePrivateFieldCore( string name, TypeDefinition type )
 		{
 			Contract.Assert( type != null );

@@ -37,7 +37,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_Numerics_ComplexMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override void PackToCore( Packer packer, Complex objectTree )
 		{
 			packer.PackArrayHeader( 2 );
@@ -45,7 +45,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.Pack( objectTree.Imaginary );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override Complex UnpackFromCore( Unpacker unpacker )
 		{
 			double real, imaginary;

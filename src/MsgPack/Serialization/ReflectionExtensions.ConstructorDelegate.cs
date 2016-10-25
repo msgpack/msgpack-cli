@@ -19,8 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -30,88 +28,12 @@ namespace MsgPack.Serialization
 {
 	partial class ReflectionExtensions
 	{
-		public static Func<T> CreateConstructorDelegate<T>()
+		public static TDelegate CreateConstructorDelegate<TDelegate>( this ConstructorInfo constructor )
 		{
-			return CreateConstructorDelegate<T>( typeof( T ) );
+			return ( TDelegate )CreateDelegate( typeof( TDelegate ), constructor.DeclaringType, constructor, constructor.GetParameterTypes() );
 		}
 
-		public static Func<T> CreateConstructorDelegate<T>( this Type source )
-		{
-			ValidateInstanceType( source, typeof( T ) );
-
-			ConstructorInfo defaultConstructor = null;
-
-			if ( !typeof( T ).GetIsValueType() )
-			{
-				defaultConstructor = GetConstructor( typeof( T ), ReflectionAbstractions.EmptyTypes );
-
-				if ( defaultConstructor == null )
-				{
-					throw new InvalidOperationException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"There are no default constructors in type '{0}'.",
-								typeof( T )
-							)
-						);
-				}
-			}
-
-			return ( Func<T> ) CreateDelegate( typeof( Func<T> ), typeof( T ), defaultConstructor, ReflectionAbstractions.EmptyTypes );
-		}
-
-		public static Func<TArg, T> CreateConstructorDelegate<T, TArg>()
-		{
-			return CreateConstructorDelegate<T, TArg>( typeof( T ) );
-		}
-
-		public static Func<TArg, T> CreateConstructorDelegate<T, TArg>( this Type source )
-		{
-			ValidateInstanceType( source, typeof( T ) );
-			var parameterTypes = new[] { typeof( TArg ) };
-			return ( Func<TArg, T> ) CreateDelegate( typeof( Func<TArg, T> ), typeof( T ), GetConstructor( typeof( T ), parameterTypes ), parameterTypes );
-		}
-
-		private static void ValidateInstanceType( Type source, Type returnType )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			if ( !returnType.IsAssignableFrom( source ) )
-			{
-				throw new InvalidOperationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"The instance type '{0}' is not assignable to return type '{1}'.",
-							source,
-							returnType
-						)
-					);
-			}
-
-		}
-
-		private static ConstructorInfo GetConstructor( Type source, Type[] parameterTypes )
-		{
-			var constructor = source.GetRuntimeConstructor( parameterTypes );
-			if ( constructor != null )
-			{
-				return constructor;
-			}
-
-			throw new InvalidOperationException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"There are no constructors in type '{0}' which matches parameter types '{1}'.",
-						source,
-						String.Join( ", ", parameterTypes.Select( t => t.GetFullName() ).ToArray() )
-					)
-				);
-		}
-
-		private static Delegate CreateDelegate( Type delegateType, Type targetType, ConstructorInfo constructor, Type[] parameterTypes )
+		private static object CreateDelegate( Type delegateType, Type targetType, ConstructorInfo constructor, Type[] parameterTypes )
 		{
 			var dynamicMethod =
 #if !SILVERLIGHT

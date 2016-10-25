@@ -33,15 +33,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_Text_StringBuilderMessagePackSerializer( SerializationContext ownerContext )
 			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom | SerializerCapabilities.UnpackTo ) { }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected internal override void PackToCore( Packer packer, StringBuilder value )
 		{
 			// NOTE: More efficient?
 			packer.PackString( value.ToString() );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override StringBuilder UnpackFromCore( Unpacker unpacker )
 		{
 			// NOTE: More efficient?
@@ -49,6 +49,8 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return result.IsNil ? null : new StringBuilder( result.DeserializeAsString() );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally." )]
 		protected internal override void UnpackToCore( Unpacker unpacker, StringBuilder collection )
 		{
 			// NOTE: More efficient?
@@ -83,6 +85,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return tcs.Task;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transferring exception." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally." )]
 		protected internal override Task UnpackToAsyncCore( Unpacker unpacker, StringBuilder collection, CancellationToken cancellationToken )
 		{
 			// NOTE: More efficient?

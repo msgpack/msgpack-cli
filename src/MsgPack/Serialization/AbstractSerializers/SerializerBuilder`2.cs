@@ -184,7 +184,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Newly created serializer object.
 		///		This value will not be <c>null</c>.
 		/// </returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		public MessagePackSerializer BuildSerializerInstance( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
 #if DEBUG

@@ -128,7 +128,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 #endif
 				var count = i;
-				this.DefinePrivateMethod(
+				DefinePrivateMethod(
 					context,
 					AdjustName( MethodNamePrefix.PackValue + SerializationTarget.GetTupleItemNameFromIndex( i ), isAsync ),
 					false, // isStatic

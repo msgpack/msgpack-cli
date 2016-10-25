@@ -33,13 +33,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 		public System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer(SerializationContext ownerContext)
 			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom ) { }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override void PackToCore( Packer packer, HashAlgorithmName objectTree )
 		{
 			packer.PackString( objectTree.Name );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override HashAlgorithmName UnpackFromCore( Unpacker unpacker )
 		{
 			return new HashAlgorithmName( unpacker.LastReadData.AsString() );
@@ -47,13 +47,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 #if FEATURE_TAP
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override Task PackToAsyncCore( Packer packer, HashAlgorithmName objectTree, CancellationToken cancellationToken )
 		{
 			return packer.PackStringAsync( objectTree.Name, cancellationToken );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
 		protected internal override Task<HashAlgorithmName> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{

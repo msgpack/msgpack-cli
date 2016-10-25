@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.Globalization;
 #if CORE_CLR || UNITY || NETSTANDARD1_1
 using MPContract = MsgPack.MPContract;
 #else
@@ -128,7 +129,7 @@ namespace MsgPack.Serialization
 				return String.Empty;
 			}
 
-			return String.Format( "{{\"Name\": \"{0}\", \"Id\": {1}, \"Member\": \"{2}\", \"NilImplication\": \"{3}\" }}", this.MemberName, this.Contract.Id, this.MemberName, this.Contract.NilImplication );
+			return String.Format( CultureInfo.InvariantCulture, "{{\"Name\": \"{0}\", \"Id\": {1}, \"Member\": \"{2}\", \"NilImplication\": \"{3}\" }}", this.MemberName, this.Contract.Id, this.MemberName, this.Contract.NilImplication );
 		}
 	}
 }

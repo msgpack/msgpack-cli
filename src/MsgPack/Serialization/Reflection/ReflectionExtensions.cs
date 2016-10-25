@@ -62,6 +62,7 @@ namespace MsgPack.Serialization.Reflection
 			return target.IsAssignableFrom( source );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Get IL friendly attributes string.
 		/// </summary>
@@ -249,7 +250,6 @@ namespace MsgPack.Serialization.Reflection
 			return result.ToString();
 		}
 
-
 		private static void AddString( StringBuilder buffer, MethodImplAttributes source, MethodImplAttributes flag, string stringified )
 		{
 			// ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
@@ -258,5 +258,6 @@ namespace MsgPack.Serialization.Reflection
 				buffer.Append( ' ' ).Append( stringified );
 			}
 		}
+#endif // DEBUG
 	}
 }

@@ -31,6 +31,7 @@ using System;
 using System.Collections.Concurrent;
 #endif // !NETFX_35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Generic;
+using System.Diagnostics;
 #if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
@@ -53,6 +54,7 @@ namespace MsgPack.Serialization
 	internal static class SerializerDebugging
 	{
 #if !AOT
+#if DEBUG
 		[ThreadStatic]
 		private static bool _traceEnabled;
 
@@ -84,8 +86,10 @@ namespace MsgPack.Serialization
 			get { return _dumpEnabled; }
 			set { _dumpEnabled = value; }
 		}
+#endif // DEBUG
 #endif // !AOT
 
+#if DEBUG
 		[ThreadStatic]
 		private static bool _avoidsGenericSerializer;
 
@@ -102,10 +106,13 @@ namespace MsgPack.Serialization
 			get { return _avoidsGenericSerializer; }
 			set { _avoidsGenericSerializer = value; }
 		}
+#endif // DEBUG
 
 #if !AOT && !SILVERLIGHT
+#if DEBUG
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
+#endif // DEBUG
 
 		/// <summary>
 		///		Gets the <see cref="TextWriter"/> for IL tracing.
@@ -118,6 +125,7 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
+#if DEBUG
 				if ( !_traceEnabled )
 				{
 					return NullTextWriter.Instance;
@@ -129,9 +137,13 @@ namespace MsgPack.Serialization
 				}
 
 				return _ilTraceWriter;
+#else
+				return NullTextWriter.Instance;
+#endif // DEBUG
 			}
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Traces the emitting event.
 		/// </summary>
@@ -148,6 +160,7 @@ namespace MsgPack.Serialization
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
 		}
+#endif // DEBUG
 #endif // !AOT && !SILVERLIGHT
 
 		/// <summary>
@@ -156,9 +169,10 @@ namespace MsgPack.Serialization
 		/// <param name="format">The format string.</param>
 		/// <param name="memberInfo">The target of schema.</param>
 		/// <param name="schema">The schema.</param>
-
+		[Conditional( "DEBUG" )]
 		public static void TracePolimorphicSchemaEvent( string format, MemberInfo memberInfo, PolymorphismSchema schema )
 		{
+#if DEBUG
 #if !AOT && !SILVERLIGHT
 			if ( !_traceEnabled )
 			{
@@ -167,7 +181,10 @@ namespace MsgPack.Serialization
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.PolimorphicSchema, Tracer.EventId.PolimorphicSchema, format, memberInfo, schema == null ? "(null)" : schema.DebugString );
 #endif // !AOT && !SILVERLIGHT
+#endif
 		}
+
+#if DEBUG
 
 #if !AOT && !SILVERLIGHT
 		/// <summary>
@@ -246,21 +263,16 @@ namespace MsgPack.Serialization
 			get { return _dependentAssemblyManager.CodeSerializerDependentAssemblies; }
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddRuntimeAssembly( string pathToAssembly )
 		{
 			_dependentAssemblyManager.AddRuntimeAssembly( pathToAssembly );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddCompiledCodeAssembly( string pathToAssembly )
 		{
 			_dependentAssemblyManager.AddCompiledCodeAssembly( pathToAssembly );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "pathToAssembly", Justification = "For API compatibility" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void AddCompiledCodeAssembly( string name, byte[] image )
 		{
 			_dependentAssemblyManager.AddCompiledCodeAssembly( name, image );
@@ -275,7 +287,9 @@ namespace MsgPack.Serialization
 		public static string DumpDirectory
 		{
 			get { return _dependentAssemblyManager.DumpDirectory; }
+#if DEBUG
 			set { _dependentAssemblyManager.DumpDirectory = value; }
+#endif // DEBUG
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
@@ -412,7 +426,7 @@ namespace MsgPack.Serialization
 			{
 				if ( _codeWriter == null )
 				{
-					_codeWriter = new StringWriter();
+					_codeWriter = new StringWriter( CultureInfo.InvariantCulture );
 				}
 
 				return _codeWriter;
@@ -447,5 +461,6 @@ namespace MsgPack.Serialization
 
 		public delegate void CodeCompiler( string code, bool isDebug, out Assembly compiledAssembly, out IList<string> errors, out IList<string> warnings );
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // DEBUG
 	}
 }

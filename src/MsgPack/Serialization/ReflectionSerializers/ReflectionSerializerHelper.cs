@@ -337,7 +337,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		}
 
 #if !UNITY
-		public static Func<int, T> CreateCollectionInstanceFactory<T, TKey>( Type targetType, ConstructorInfo constructor )
+		public static Func<int, T> CreateCollectionInstanceFactory<T, TKey>( ConstructorInfo constructor )
 #else
 		public static Func<int, object> CreateCollectionInstanceFactory( Type abstractType, Type targetType, Type comparisonType, ConstructorInfo constructor )
 #endif // !UNITY

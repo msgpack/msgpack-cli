@@ -312,6 +312,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static void UnpackValueTypeValue<TContext, TValue>(
 			ref UnpackValueTypeValueParameters<TContext, TValue> parameter
 		)
@@ -539,6 +540,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static Task UnpackValueTypeValueAsync<TContext, TValue>(
 			ref UnpackValueTypeValueAsyncParameters<TContext, TValue> parameter
 		)
@@ -767,6 +769,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static void UnpackReferenceTypeValue<TContext, TValue>(
 			ref UnpackReferenceTypeValueParameters<TContext, TValue> parameter
 		)
@@ -1010,6 +1013,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static Task UnpackReferenceTypeValueAsync<TContext, TValue>(
 			ref UnpackReferenceTypeValueAsyncParameters<TContext, TValue> parameter
 		)
@@ -1251,6 +1255,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static void UnpackNullableTypeValue<TContext, TValue>(
 			ref UnpackNullableTypeValueParameters<TContext, TValue> parameter
 		)
@@ -1494,6 +1499,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static Task UnpackNullableTypeValueAsync<TContext, TValue>(
 			ref UnpackNullableTypeValueAsyncParameters<TContext, TValue> parameter
 		)
@@ -1960,6 +1966,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static void UnpackMessagePackObjectValue<TContext>(
 			ref UnpackMessagePackObjectValueParameters<TContext> parameter
 		)
@@ -2076,6 +2083,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static Task UnpackMessagePackObjectValueAsync<TContext>(
 			ref UnpackMessagePackObjectValueAsyncParameters<TContext> parameter
 		)
@@ -2256,6 +2264,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static TResult UnpackFromArray<TContext, TResult>(
 			ref UnpackFromArrayParameters<TContext, TResult> parameter
 		)
@@ -2285,6 +2294,7 @@ namespace MsgPack.Serialization
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemNames", Justification = "For DEBUG build." )]
 		private static TResult UnpackFromArrayCore<TContext, TResult>(
 			Unpacker unpacker, TContext unpackingContext,
 			Func<TContext, TResult> factory, 
@@ -2411,6 +2421,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static Task<TResult> UnpackFromArrayAsync<TContext, TResult>(
 			ref UnpackFromArrayAsyncParameters<TContext, TResult> parameter
 		)
@@ -2441,6 +2452,7 @@ namespace MsgPack.Serialization
 				);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemNames", Justification = "For DEBUG build." )]
 		private static async Task<TResult> UnpackFromArrayAsyncCore<TContext, TResult>(
 			Unpacker unpacker, TContext unpackingContext,
 			Func<TContext, TResult> factory, 
@@ -2559,6 +2571,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static TResult UnpackFromMap<TContext, TResult>(
 			ref UnpackFromMapParameters<TContext, TResult> parameter
 		)
@@ -2722,6 +2735,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static Task<TResult> UnpackFromMapAsync<TContext, TResult>(
 			ref UnpackFromMapAsyncParameters<TContext, TResult> parameter
 		)
@@ -2866,6 +2880,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static T UnpackCollection<T>(
 			ref UnpackCollectionParameters<T> parameter
 		)
@@ -2997,6 +3012,7 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static Task<T> UnpackCollectionAsync<T>(
 			ref UnpackCollectionAsyncParameters<T> parameter
 		)

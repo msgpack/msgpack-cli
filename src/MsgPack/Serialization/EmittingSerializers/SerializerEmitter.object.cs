@@ -26,7 +26,6 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // NETSTANDARD1_1
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -266,7 +265,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 			finally
 			{
 				il.FlushTrace();
+#if DEBUG
 				SerializerDebugging.FlushTraceData();
+#endif // DEBUG
 			}
 
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
@@ -277,7 +278,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			constructor = type.GetConstructors().Single();
 		}
 
-		#endregion -- UnpackingContext Management --
+#endregion -- UnpackingContext Management --
 
 		/// <summary>
 		///		Creates the serializer type built now and returns its new instance.
@@ -359,8 +360,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 							hasPackActions
 								? packActionTableInitialization( false )
 								: default( Func<ILConstruct> ),
-							!SerializerDebugging.UseLegacyNullMapEntryHandling
-							&& hasPackActions
+#if DEBUG
+							!SerializerDebugging.UseLegacyNullMapEntryHandling &&
+#endif // DEBUG
+							hasPackActions
 #if FEATURE_TAP
 							|| hasPackAsyncActions
 #endif // FEATURE_TAP
@@ -409,20 +412,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 #else
 			var ctor = this._typeBuilder.CreateTypeInfo().GetConstructor( ConstructorParameterTypesWithoutCapabilities );
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
-			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
-			var schemaParameter = Expression.Parameter( typeof( PolymorphismSchema ), "schema" );
+
 #if DEBUG
 			Contract.Assert( ctor != null, "ctor != null" );
 #endif
-			return
-				Expression.Lambda<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer>>(
-					Expression.New(
-						ctor,
-						contextParameter
-					),
-					contextParameter,
-					schemaParameter
-				).Compile();
+			return ctor.CreateConstructorDelegate<Func<SerializationContext, PolymorphismSchema, MessagePackSerializer>>();
 		}
 	
 		private static void CreateDefaultObjectConstructor( ConstructorBuilder contextfulConstructorBuilder, TracingILGenerator il )

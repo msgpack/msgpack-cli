@@ -43,22 +43,27 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "This struct is not intended for value." )]
 	public struct PackToArrayParameters<T>
 	{
 		/// <summary>
 		///		The packer.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Packer Packer;
 
 		/// <summary>
 		///		The object to be packed.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public T Target;
 
 		/// <summary>
 		///		Delegates each ones unpack single member in order.
 		///		The 1st argument will be <see cref="Packer"/> and 2nd argument will be <see cref="Target"/>.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IList<Action<Packer, T>> Operations;
 	}
 
@@ -70,16 +75,19 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "This struct is not intended for value." )]
 	public struct PackToArrayAsyncParameters<T>
 	{
 		/// <summary>
 		///		The packer.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Packer Packer;
 
 		/// <summary>
 		///		The object to be packed.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public T Target;
 
 		/// <summary>
@@ -87,11 +95,14 @@ namespace MsgPack.Serialization
 		///		The 1st argument will be <see cref="Packer"/>, 2nd argument will be <see cref="Target"/>,
 		///		3rd argument will be <see cref="CancellationToken"/> and returns <see cref="Task"/> represents async operation.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IList<Func<Packer, T, CancellationToken, Task>> Operations;
 
 		/// <summary>
 		///		The token to monitor for cancellation requests. The default value is <see cref="P:CancellationToken.None" />.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public CancellationToken CancellationToken;
 	}
 
@@ -103,21 +114,25 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "This struct is not intended for value." )]
 	public struct PackToMapParameters<T>
 	{
 		/// <summary>
 		///		The packer.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Packer Packer;
 
 		/// <summary>
 		///		The object to be packed.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public T Target;
 
 		/// <summary>
 		///		The <see cref="SerializationContext" /> which contains dictionary based serialization related options.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public SerializationContext SerializationContext;
 
 		/// <summary>
@@ -125,12 +140,16 @@ namespace MsgPack.Serialization
 		///		The argument will be <see cref="Target"/> and returns <c>true</c> if the argument value is <c>null</c>.
 		///		This dictionary should not contain for value type members except <see cref="Nullable{T}" />.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IDictionary<string, Func<T, bool>> NullCheckers;
 
 		/// <summary>
 		///		Delegates table each ones unpack single member and their keys correspond to unpacking membmer names.
 		///		The 1st argument will be <see cref="Packer"/> and 2nd argument will be <see cref="Target"/>.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IDictionary<string, Action<Packer, T>> Operations;
 	}
 
@@ -142,21 +161,25 @@ namespace MsgPack.Serialization
 #if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "This struct is not intended for value." )]
 	public struct PackToMapAsyncParameters<T>
 	{
 		/// <summary>
 		///		The packer.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Packer Packer;
 
 		/// <summary>
 		///		The object to be packed.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public T Target;
 
 		/// <summary>
 		///		The <see cref="SerializationContext" /> which contains dictionary based serialization related options.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public SerializationContext SerializationContext;
 
 		/// <summary>
@@ -164,6 +187,8 @@ namespace MsgPack.Serialization
 		///		The argument will be <see cref="Target"/> and returns <c>true</c> if the argument value is <c>null</c>.
 		///		This dictionary should not contain for value type members except <see cref="Nullable{T}" />.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IDictionary<string, Func<T, bool>> NullCheckers;
 
 		/// <summary>
@@ -171,11 +196,14 @@ namespace MsgPack.Serialization
 		///		The 1st argument will be <see cref="Packer"/>, 2nd argument will be <see cref="Target"/>,
 		///		3rd argument will be <see cref="CancellationToken"/> and returns <see cref="Task"/> represents async operation.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IDictionary<string, Func<Packer, T, CancellationToken, Task>> Operations;
 
 		/// <summary>
 		///		The token to monitor for cancellation requests. The default value is <see cref="P:CancellationToken.None" />.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public CancellationToken CancellationToken;
 	}
 

@@ -40,7 +40,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.PackString( objectTree.Name );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override CultureInfo UnpackFromCore( Unpacker unpacker )
 		{
 #if SILVERLIGHT || NETSTANDARD1_1 || NETSTANDARD1_3

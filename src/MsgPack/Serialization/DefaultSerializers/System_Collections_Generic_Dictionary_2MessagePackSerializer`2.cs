@@ -64,7 +64,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			PackerUnpackerExtensions.PackDictionaryCore( packer, objectTree, this._keySerializer, this._valueSerializer );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override Dictionary<TKey, TValue> UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -78,7 +78,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return collection;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, Dictionary<TKey, TValue> collection )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -248,7 +248,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
 			if ( !unpacker.IsMapHeader )
@@ -262,7 +262,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			return collection;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override void UnpackToCore( Unpacker unpacker, object collection )
 		{
 			if ( !unpacker.IsMapHeader )

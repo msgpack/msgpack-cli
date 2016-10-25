@@ -78,12 +78,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // DEBUG
 			this._isDebuggable = isDebuggable;
 
-#if !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if DEBUG && !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( isDebuggable && SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump( host.Assembly as AssemblyBuilder );
 			}
-#endif // !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // DEBUG && !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		#region -- Field --
@@ -202,12 +202,14 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-#endregion -- Method --
+		#endregion -- Method --
 
-#region -- IL Generation --
+		#region -- IL Generation --
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "parameterTypes", Justification = "For DEBUG build." )]
 		private TracingILGenerator GetILGenerator( ConstructorBuilder builder, Type[] parameterTypes )
 		{
+#if DEBUG
 			if ( SerializerDebugging.TraceEnabled )
 			{
 				SerializerDebugging.ILTraceWriter.WriteLine();
@@ -224,12 +226,15 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // !NETFX_35 && !NETFX_40
 				);
 			}
+#endif // DEBUG
 
 			return new TracingILGenerator( builder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "parameterTypes", Justification = "For DEBUG build." )]
 		private TracingILGenerator GetILGenerator( MethodBuilder builder, Type[] parameterTypes )
 		{
+#if DEBUG
 			if ( SerializerDebugging.TraceEnabled )
 			{
 				SerializerDebugging.ILTraceWriter.WriteLine();
@@ -248,6 +253,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // !NETFX_35 && !NETFX_40
 				);
 			}
+#endif // DEBUG
 
 			return new TracingILGenerator( builder, SerializerDebugging.ILTraceWriter, this._isDebuggable );
 		}
@@ -266,10 +272,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 			var builder = this.DefineConstructor( attributes, parameterTypes );
 			emitter( this._typeBuilder.BaseType, this.GetILGenerator( builder, parameterTypes ) );
 
+#if DEBUG
 			if ( SerializerDebugging.TraceEnabled )
 			{
 				SerializerDebugging.FlushTraceData();
 			}
+#endif // DEBUG
 
 			return builder;
 		}

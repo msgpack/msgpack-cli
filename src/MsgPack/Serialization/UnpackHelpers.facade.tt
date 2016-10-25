@@ -423,6 +423,7 @@ foreach ( var kind in new [] { TypeKind.Value, TypeKind.Reference, TypeKind.Null
 			else // isExpandedParametrs
 			{
 #>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static <#= TaskVoid( isAsync ) #> <#= methodName #><TContext, TValue>(
 			ref <#= methodName #>Parameters<TContext, TValue> parameter
 		)
@@ -745,6 +746,7 @@ foreach ( var isAsync in new [] { false, true } )
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static <#= TaskVoid( isAsync ) #> <#=  methodName #><TContext>(
 			ref <#= methodName #>Parameters<TContext> parameter
 		)
@@ -1058,6 +1060,7 @@ foreach ( var forMap in new [] { false, true } )
 			else // isExpandedParameters
 			{
 #>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static <#= TaskTResult( isAsync ) #> <#= methodName #><TContext, TResult>(
 			ref <#= methodName #>Parameters<TContext, TResult> parameter
 		)
@@ -1102,6 +1105,14 @@ foreach ( var forMap in new [] { false, true } )
 				);
 		}
 
+<#
+				if ( !forMap )
+				{
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "itemNames", Justification = "For DEBUG build." )]
+<#
+				}
+#>
 		private static <#= AsyncTResult( isAsync ) #> <#= methodName #>Core<TContext, TResult>(
 			Unpacker unpacker, TContext unpackingContext,
 			Func<TContext, TResult> factory, 
@@ -1318,6 +1329,7 @@ foreach ( var isAsync in new [] { false, true } )
 		else // isExpandedParameters
 		{
 #>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Avoiding memcpy is critical here." )]
 		public static <#= TaskT( isAsync ) #> <#= methodName #><T>(
 			ref <#= methodName #>Parameters<T> parameter
 		)

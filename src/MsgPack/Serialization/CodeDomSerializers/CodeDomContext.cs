@@ -62,10 +62,12 @@ namespace MsgPack.Serialization.CodeDomSerializers
 
 		private readonly SerializerCodeGenerationConfiguration _configuration;
 
+#if DEBUG
 		internal string Namespace
 		{
 			get { return this._configuration.Namespace; }
 		}
+#endif // DEBUG
 
 		private Type _targetType;
 
@@ -555,7 +557,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			this._methodContextStack.Pop();
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected override void DefineUnpackingContextCore(
 			IList<KeyValuePair<string, TypeDefinition>> fields,
 			out TypeDefinition type,
@@ -681,26 +683,32 @@ namespace MsgPack.Serialization.CodeDomSerializers
 						)
 					);
 
+#if DEBUG
 					if ( SerializerDebugging.DumpEnabled )
 					{
 						SerializerDebugging.TraceEmitEvent( "Compile {0}", declaringType.Value.Name );
 					}
+#endif // DEBUG
 
 					using ( var writer =
+#if DEBUG
 						SerializerDebugging.DumpEnabled
-							? new TeeTextWriter( codeInfo.TextWriter ?? NullTextWriter.Instance, SerializerDebugging.ILTraceWriter )
-							: codeInfo.TextWriter ?? NullTextWriter.Instance
+							? new TeeTextWriter( codeInfo.TextWriter ?? NullTextWriter.Instance, SerializerDebugging.ILTraceWriter ) :
+#endif // DEBUG
+							codeInfo.TextWriter ?? NullTextWriter.Instance
 					)
 					{
 						provider.GenerateCodeFromCompileUnit( cu, writer, options );
 						writer.WriteLine();
 						writer.Flush();
 
+#if DEBUG
 						if ( SerializerDebugging.DumpEnabled )
 						{
 							SerializerDebugging.TraceEmitEvent( "Compile {0}", declaringType.Value.Name );
 							SerializerDebugging.FlushTraceData();
 						}
+#endif // DEBUG
 					}
 				}
 

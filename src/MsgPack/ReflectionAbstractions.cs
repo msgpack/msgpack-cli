@@ -232,7 +232,6 @@ namespace MsgPack
 					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
 				);
 		}
-#endif // DEBUG
 
 		public static FieldInfo GetRuntimeField( this Type source, string name )
 		{
@@ -242,6 +241,7 @@ namespace MsgPack
 					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
 				);
 		}
+#endif // DEBUG
 
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3
 

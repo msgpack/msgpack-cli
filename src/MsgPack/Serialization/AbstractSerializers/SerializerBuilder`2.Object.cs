@@ -220,7 +220,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						}
 
 						// missing member, always nil
-						this.DefinePrivateMethod(
+						DefinePrivateMethod(
 							context,
 							AdjustName( MethodName.PackMemberPlaceHolder, isAsync ),
 							false, // isStatic
@@ -238,7 +238,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					{
 						var itemType = entries[ count ].Member.GetMemberValueType();
 						// PackValue
-						this.DefinePrivateMethod(
+						DefinePrivateMethod(
 							context,
 							GetPackValueMethodName( entries[ i ], isAsync ),
 							false, // isStatic
@@ -264,14 +264,17 @@ namespace MsgPack.Serialization.AbstractSerializers
 							parameters
 						);
 
-						if ( !SerializerDebugging.UseLegacyNullMapEntryHandling
-							&& ( !itemType.GetIsValueType() || Nullable.GetUnderlyingType( itemType ) != null ) )
+						if ( ( !itemType.GetIsValueType() || Nullable.GetUnderlyingType( itemType ) != null )
+#if DEBUG
+							&& !SerializerDebugging.UseLegacyNullMapEntryHandling
+#endif // DEBUG
+						)
 						{
 							var nullCheckTarget = this.EmitGetMemberValueExpression( context, context.NullCheckTarget, entries[ count ].Member );
 							// Trying uses nullCheckTarget.ContextType because it may be Object when using reflection.
 							var nullCheckTargetType = nullCheckTarget.ContextType.TryGetRuntimeType() ?? itemType;
 							// CheckNull
-							this.DefinePrivateMethod(
+							DefinePrivateMethod(
 								context,
 								GetCheckNullMethodName( entries[ i ] ),
 								false, // isStatic
@@ -309,7 +312,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 						}
 					};
 
-				if ( method == SerializationMethod.Map && !SerializerDebugging.UseLegacyNullMapEntryHandling )
+				if ( method == SerializationMethod.Map
+#if DEBUG
+					&& !SerializerDebugging.UseLegacyNullMapEntryHandling
+#endif // DEBUG
+				)
 				{
 					packHelperArguments.Add(
 						"SerializationContext",
@@ -425,9 +432,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		#endregion -- IPackable --
+#endregion -- IPackable --
 
-		#region -- Pack Operation Initialization --
+#region -- Pack Operation Initialization --
 
 		protected internal TConstruct EmitPackOperationListInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
@@ -644,9 +651,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return "Is" + member.MemberName + "Null";
 		}
 
-		#endregion -- Pack Operation Initialization --
+#endregion -- Pack Operation Initialization --
 
-		#region -- IUnpackable --
+#region -- IUnpackable --
 
 		private void BuildIUnpackableUnpackFrom( TContext context, TConstruct objectCreation, bool canDeserialize )
 		{
@@ -673,11 +680,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		#endregion -- IUnpackable --
+#endregion -- IUnpackable --
 
 #if FEATURE_TAP
 
-		#region -- IAsyncUnpackable --
+#region -- IAsyncUnpackable --
 
 		private void BuildIAsyncUnpackableUnpackFrom( TContext context, TConstruct objectCreation, bool canDeserialize )
 		{
@@ -693,11 +700,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 			);
 		}
 
-		#endregion -- IAsyncUnpackable --
+#endregion -- IAsyncUnpackable --
 
 #endif // FEATURE_TAP
 
-		#region -- UnpackFrom --
+#region -- UnpackFrom --
 
 		private IEnumerable<TConstruct> BuildIUnpackableUnpackFromCore( TContext context, Type @interface, TConstruct objectCreation )
 		{
@@ -913,7 +920,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						);
 				}
 
-				this.DefinePrivateMethod(
+				DefinePrivateMethod(
 					context,
 					GetUnpackValueMethodName( targetInfo.Members[ i ], isAsync ),
 					false, // isStatic
@@ -969,9 +976,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		#endregion -- UnpackFrom --
+#endregion -- UnpackFrom --
 
-		#region -- UnpackingContext Initialization --
+#region -- UnpackingContext Initialization --
 
 		private UnpackingContextInfo EmitObjectUnpackingContextInitialization( TContext context, SerializationTarget targetInfo )
 		{
@@ -1161,9 +1168,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return unpackingContext;
 		}
 
-		#endregion -- UnpackingContext Initialization --
+#endregion -- UnpackingContext Initialization --
 
-		#region -- CreateObjectFromContext --
+#region -- CreateObjectFromContext --
 
 		private IEnumerable<TConstruct> EmitCreateObjectFromContextCore(
 			TContext context, SerializationTarget targetInfo, UnpackingContextInfo unpackingContext, KeyValuePair<string, TypeDefinition>[] fields
@@ -1233,9 +1240,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		#endregion -- CreateObjectFromContext --
+#endregion -- CreateObjectFromContext --
 
-		#region -- Unpack Operation Initialization --
+#region -- Unpack Operation Initialization --
 
 		protected internal TConstruct EmitUnpackOperationListInitialization( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
@@ -1533,9 +1540,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		protected abstract TConstruct EmitGetMemberNamesExpression( TContext context );
 
-		#endregion -- Unpack Operation Initialization --
+#endregion -- Unpack Operation Initialization --
 
-		#region -- Operation Helpers --
+#region -- Operation Helpers --
 
 		protected abstract TConstruct EmitGetActionsExpression( TContext context, ActionType actionType, bool isAsync );
 
@@ -1586,7 +1593,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		}
 
-		#endregion -- Operation Helpers --
+#endregion -- Operation Helpers --
 	}
 }
 

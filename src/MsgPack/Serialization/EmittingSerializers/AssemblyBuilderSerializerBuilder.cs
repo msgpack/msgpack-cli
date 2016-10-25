@@ -52,13 +52,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 		public AssemblyBuilderSerializerBuilder( Type targetType, CollectionTraits collectionTraits )
 			: base( targetType, collectionTraits ) { }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitSequentialStatements( AssemblyBuilderEmittingContext context, TypeDefinition contextType, IEnumerable<ILConstruct> statements )
 		{
 			return ILConstruct.Sequence( contextType.ResolveRuntimeType(), statements );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct MakeNullLiteral( AssemblyBuilderEmittingContext context, TypeDefinition contextType )
 		{
 			return ILConstruct.Literal( contextType.ResolveRuntimeType(), default( object ), il => il.EmitLdnull() );
@@ -188,7 +188,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Literal( TypeDefinition.StringType, constant, il => il.EmitLdstr( constant ) );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct MakeEnumLiteral( AssemblyBuilderEmittingContext context, TypeDefinition type, object constant )
 		{
 			var underyingType = Enum.GetUnderlyingType( type.ResolveRuntimeType() );
@@ -253,7 +253,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct MakeDefaultLiteral( AssemblyBuilderEmittingContext context, TypeDefinition type )
 		{
 			return
@@ -270,7 +270,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected override ILConstruct EmitThisReferenceExpression( AssemblyBuilderEmittingContext context )
 		{
 			return ILConstruct.Literal( context.GetSerializerType( this.TargetType ), "(this)", il => il.EmitLdarg_0() );
@@ -304,7 +304,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitNotExpression( AssemblyBuilderEmittingContext context, ILConstruct booleanExpression )
 		{
 			if ( booleanExpression.ContextType.ResolveRuntimeType() != typeof( bool ) )
@@ -333,7 +333,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitEqualsExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 			var equality = left.ContextType.ResolveRuntimeType().GetMethod( "op_Equality" );
@@ -374,7 +374,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitGreaterThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG && !CORE_CLR
@@ -417,7 +417,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitLessThanExpression( AssemblyBuilderEmittingContext context, ILConstruct left, ILConstruct right )
 		{
 #if DEBUG && !CORE_CLR
@@ -487,7 +487,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected override ILConstruct EmitMethodOfExpression( AssemblyBuilderEmittingContext context, MethodBase method )
 		{
 			var instructions =
@@ -505,7 +505,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected override ILConstruct EmitFieldOfExpression( AssemblyBuilderEmittingContext context, FieldInfo field )
 		{
 			var instructions =
@@ -523,8 +523,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitThrowStatement( AssemblyBuilderEmittingContext context, ILConstruct exception )
 		{
 			return
@@ -549,13 +549,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct ReferArgument( AssemblyBuilderEmittingContext context, TypeDefinition type, string name, int index )
 		{
 			return ILConstruct.Argument( index, type.ResolveRuntimeType(), name );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitInvokeVoidMethod( AssemblyBuilderEmittingContext context, ILConstruct instance, MethodDefinition method, params ILConstruct[] arguments )
 		{
 			return
@@ -571,7 +571,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitCreateNewObjectExpression( AssemblyBuilderEmittingContext context, ILConstruct variable, ConstructorDefinition constructor, params ILConstruct[] arguments )
 		{
 #if DEBUG
@@ -585,8 +585,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.MakeRef( target );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Validated internally" )]
 		protected override ILConstruct EmitCreateNewArrayExpression( AssemblyBuilderEmittingContext context, TypeDefinition elementType, int length )
 		{
 			var array =
@@ -618,8 +618,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "3", Justification = "Validated internally" )]
 		protected override ILConstruct EmitCreateNewArrayExpression( AssemblyBuilderEmittingContext context, TypeDefinition elementType, int length, IEnumerable<ILConstruct> initialElements )
 		{
 			var array =
@@ -660,7 +660,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitGetArrayElementExpression( AssemblyBuilderEmittingContext context, ILConstruct array, ILConstruct index )
 		{
 			return
@@ -679,7 +679,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitSetArrayElementStatement( AssemblyBuilderEmittingContext context, ILConstruct array, ILConstruct index, ILConstruct value )
 		{
 			return
@@ -704,25 +704,25 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, method, arguments );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitInvokeDelegateExpression( AssemblyBuilderEmittingContext context, TypeDefinition delegateReturnType, ILConstruct @delegate, params ILConstruct[] arguments )
 		{
 			return ILConstruct.Invoke( @delegate, @delegate.ContextType.ResolveRuntimeType().GetMethod( "Invoke" ), arguments );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitGetPropertyExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, PropertyInfo property )
 		{
 			return ILConstruct.Invoke( instance, property.GetGetMethod( true ), ILConstruct.NoArguments );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitGetFieldExpression( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldDefinition field )
 		{
 			return ILConstruct.LoadField( instance, field.ResolveRuntimeField() );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitSetProperty( AssemblyBuilderEmittingContext context, ILConstruct instance, PropertyInfo property, ILConstruct value )
 		{
 #if DEBUG
@@ -736,7 +736,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, property.GetSetMethod( true ), new[] { value } );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "4", Justification = "Validated by caller in base class" )]
 		protected override ILConstruct EmitSetIndexedProperty( AssemblyBuilderEmittingContext context, ILConstruct instance, TypeDefinition declaringType, string proeprtyName, ILConstruct key, ILConstruct value )
 		{
@@ -748,19 +748,19 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.Invoke( instance, indexer.GetSetMethod( true ), new[] { key, value } );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitSetField( AssemblyBuilderEmittingContext context, ILConstruct instance, FieldDefinition field, ILConstruct value )
 		{
 			return ILConstruct.StoreField( instance, field.ResolveRuntimeField(), value );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitSetField( AssemblyBuilderEmittingContext context, ILConstruct instance, TypeDefinition nestedType, string fieldName, ILConstruct value )
 		{
 			return ILConstruct.StoreField( instance, nestedType.ResolveRuntimeType().GetField( fieldName ), value );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitLoadVariableExpression( AssemblyBuilderEmittingContext context, ILConstruct variable )
 		{
 			return ILConstruct.Instruction( "load", variable.ContextType, false, il => variable.LoadValue( il, false ) );
@@ -771,7 +771,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return ILConstruct.StoreLocal( variable, value );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitTryFinally( AssemblyBuilderEmittingContext context, ILConstruct tryStatement, ILConstruct finallyStatement )
 		{
 			return
@@ -945,7 +945,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected override ILConstruct EmitGetSerializerExpression( AssemblyBuilderEmittingContext context, Type targetType, SerializingMember? memberInfo, PolymorphismSchema itemsSchema )
 		{
 			var realSchema = itemsSchema ?? PolymorphismSchema.Create( targetType, memberInfo );
@@ -982,7 +982,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			yield return this.EmitLoadVariableExpression( context, schema );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected override ILConstruct EmitGetActionsExpression( AssemblyBuilderEmittingContext context, ActionType actionType, bool isAsync )
 		{
 			Type type;
@@ -1100,7 +1100,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected override ILConstruct EmitGetMemberNamesExpression( AssemblyBuilderEmittingContext context )
 		{
 			var field = context.DeclarePrivateField( FieldName.MemberNames, TypeDefinition.IListOfStringType );
@@ -1108,8 +1108,8 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "2", Justification = "Validated internally" )]
 		protected override ILConstruct EmitFinishFieldInitializationStatement( AssemblyBuilderEmittingContext context, string name, ILConstruct value )
 		{
 			var field = context.DeclarePrivateField( name, value.ContextType.ResolveRuntimeType() );
@@ -1181,7 +1181,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 #endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )
 		{
 			var delegateType = SerializerBuilderHelper.GetResolvedDelegateType( method.ReturnType, method.ParameterTypes );

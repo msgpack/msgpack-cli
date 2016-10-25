@@ -67,7 +67,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 		public static readonly TypeDefinition IListOfStringType = Object( typeof( IList<string> ) );
 		public static readonly TypeDefinition DictionaryOfStringAndTypeType = Object( typeof( Dictionary<string, Type> ) );
 		public static readonly TypeDefinition MessagePackObjectType = Object( typeof( MessagePackObject ) );
-		public static readonly TypeDefinition SerializationContextType = Object( typeof( SerializationContext ) );
 		public static readonly TypeDefinition PackerType = Object( typeof( Packer ) );
 		public static readonly TypeDefinition UnpackerType = Object( typeof( Unpacker ) );
 		public static readonly TypeDefinition PackHelpersType = Object( typeof( PackHelpers ) );
@@ -98,11 +97,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 			get { return ( this._runtimeType != null && this._runtimeType.GetIsValueType() ) || ( this._flags & Flags.ValueType ) != 0; }
 		}
 
+#if DEBUG
 		public bool IsRef
 		{
 			get { return ( this._runtimeType != null && this._runtimeType.IsByRef ) || ( this._flags & Flags.Ref ) != 0; }
 		}
-
+#endif // DEBUG
 
 		public readonly string TypeName;
 

@@ -24,7 +24,6 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // NETSTANDARD1_1
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -95,21 +94,10 @@ namespace MsgPack.Serialization.EmittingSerializers
 				.CreateTypeInfo().AsType()
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 				.GetRuntimeConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes );
-			var contextParameter = Expression.Parameter( typeof( SerializationContext ), "context" );
-			var methodParameter = Expression.Parameter( typeof( EnumSerializationMethod ), "method" );
 #if DEBUG
 			Contract.Assert( ctor != null, "ctor != null" );
 #endif
-			return
-				Expression.Lambda<Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer>>(
-					Expression.New(
-						ctor,
-						contextParameter,
-						methodParameter
-					),
-					contextParameter,
-					methodParameter
-				).Compile();
+			return ctor.CreateConstructorDelegate<Func<SerializationContext, EnumSerializationMethod, MessagePackSerializer>>();
 		}
 
 		private void EmitDefaultEnumConstructor( ConstructorBuilder methodConstructor, TracingILGenerator il )

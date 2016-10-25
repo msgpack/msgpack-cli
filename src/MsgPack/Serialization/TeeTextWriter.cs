@@ -5,6 +5,7 @@
 //     the code is regenerated.
 // </auto-generated>
 
+#if DEBUG
 using System.IO;
 using System.Text;
 
@@ -21,6 +22,7 @@ namespace MsgPack.Serialization
 		}
 
 		public TeeTextWriter( TextWriter main, TextWriter sub )
+			: base( main.FormatProvider )
 		{
 			this._main = main;
 			this._sub = sub;
@@ -264,3 +266,4 @@ namespace MsgPack.Serialization
 		}
 	}
 }
+#endif // DEBUG

@@ -372,6 +372,8 @@ namespace MsgPack.Serialization
 		///		You should use the result for debugging or tooling purpose only.
 		///		Use <c>Get()</c> overloads to get proper serializer.
 		/// </remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "This method causes collection copying." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By design" )]
 		public IEnumerable<KeyValuePair<Type, MessagePackSerializer>> GetRegisteredSerializers()
 		{
 			return

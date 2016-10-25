@@ -47,9 +47,6 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
-#if NETFX_CORE || WINDOWS_PHONE
-using System.Linq.Expressions;
-#endif
 #if FEATURE_EMIT
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.CodeDomSerializers;
@@ -257,6 +254,7 @@ namespace MsgPack.Serialization
 			{
 				case EmitterFlavor.CodeDomBased:
 				{
+#if DEBUG
 					if ( !SerializerDebugging.OnTheFlyCodeGenerationEnabled )
 					{
 						throw new NotSupportedException(
@@ -270,6 +268,9 @@ namespace MsgPack.Serialization
 
 					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
 					break;
+#else
+					throw new NotSupportedException();
+#endif
 				}
 				case EmitterFlavor.FieldBased:
 				{

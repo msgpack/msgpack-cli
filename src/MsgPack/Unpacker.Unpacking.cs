@@ -2371,6 +2371,7 @@ namespace MsgPack
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By design" )]
 		public Task<AsyncReadResult<MessagePackObject>> ReadObjectAsync()
 		{
 			return this.ReadObjectAsync( CancellationToken.None );
@@ -2389,6 +2390,7 @@ namespace MsgPack
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		Cannot read a value because the underlying stream unexpectedly ends.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By design" )]
 		public virtual async Task<AsyncReadResult<MessagePackObject>> ReadObjectAsync( CancellationToken cancellationToken )
 		{
 			if( !( await this.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )

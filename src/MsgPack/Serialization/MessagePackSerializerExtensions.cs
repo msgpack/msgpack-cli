@@ -125,6 +125,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to serialize.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "obj", Justification = "obj is appropriate for this context." )]
 		public static MessagePackObject ToMessagePackObject( this MessagePackSerializer source, object obj )
 		{
 			if ( source == null )
@@ -180,6 +181,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "ownsStream: false" )]
 		public static object FromMessagePackObject( this MessagePackSerializer source, MessagePackObject mpo )
 		{
 			if ( source == null )
@@ -214,6 +216,7 @@ namespace MsgPack.Serialization
 		/// <exception cref="System.Runtime.Serialization.SerializationException">
 		///		Failed to deserialize.
 		/// </exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2202:DoNotDisposeObjectsMultipleTimes", Justification = "ownsStream: false" )]
 		public static T FromMessagePackObject<T>( this MessagePackSerializer<T> source, MessagePackObject mpo )
 		{
 			if ( source == null )

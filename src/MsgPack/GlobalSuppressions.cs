@@ -22,6 +22,7 @@ using System.Diagnostics.CodeAnalysis;
 
 [module: SuppressMessage( "Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "MsgPack.Collections", Justification = "Under construction." )]
 [assembly: SuppressMessage( "Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Scope = "type", Target = "MsgPack.Serialization.UnpackHelpers+UnpackerTraceContext" )]
+[assembly: SuppressMessage( "Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.IO.TextWriter.#ctor", Scope = "member", Target = "MsgPack.Serialization.NullTextWriter.#.ctor()", Justification = "NullTextWriter does not do any action." )]
 #if SILVERLIGHT && WINDOWS_PHONE
 [assembly: SuppressMessage( "Microsoft.Design", "CA2210:AssembliesShouldHaveValidStrongNames" )]
 #endif // SILVERLIGHT && WINDOWS_PHONE

@@ -103,7 +103,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+		///		Determines whether the specified <see cref="System.Object" /> is equal to this instance.
 		/// </summary>
 		/// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
 		/// <returns>
@@ -120,7 +120,7 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Determines whether the specified <see cref="PolymorphicTypeVerificationContext" />, is equal to this instance.
+		///		Determines whether the specified <see cref="PolymorphicTypeVerificationContext" /> is equal to this instance.
 		/// </summary>
 		/// <param name="other">The <see cref="PolymorphicTypeVerificationContext" /> to compare with this instance.</param>
 		/// <returns>
@@ -145,6 +145,32 @@ namespace MsgPack.Serialization
 			}
 
 			return this._loadingTypeFullName.GetHashCode() ^ this._loadingAssemblyFullName.GetHashCode();
+		}
+
+		/// <summary>
+		///		Determines whether the specified <see cref="PolymorphicTypeVerificationContext" />s are equal.
+		/// </summary>
+		/// <param name="left">The <see cref="PolymorphicTypeVerificationContext" />.</param>
+		/// <param name="right">The <see cref="PolymorphicTypeVerificationContext" />.</param>
+		/// <returns>
+		///		<c>true</c> if the specified <see cref="PolymorphicTypeVerificationContext" />s are equal to each other; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool operator ==( PolymorphicTypeVerificationContext left, PolymorphicTypeVerificationContext right )
+		{
+			return left.Equals( right );
+		}
+
+		/// <summary>
+		///		Determines whether the specified <see cref="PolymorphicTypeVerificationContext" />s are not equal.
+		/// </summary>
+		/// <param name="left">The <see cref="PolymorphicTypeVerificationContext" />.</param>
+		/// <param name="right">The <see cref="PolymorphicTypeVerificationContext" />.</param>
+		/// <returns>
+		///		<c>true</c> if the specified <see cref="PolymorphicTypeVerificationContext" />s are not equal; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool operator !=( PolymorphicTypeVerificationContext left, PolymorphicTypeVerificationContext right )
+		{
+			return !left.Equals( right );
 		}
 	}
 }

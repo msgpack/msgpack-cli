@@ -48,11 +48,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 		///	</returns>
 		public static SerializationMethodGeneratorManager Get()
 		{
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if DEBUG && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			return Get( SerializerDebugging.DumpEnabled ? SerializationMethodGeneratorOption.CanDump : SerializationMethodGeneratorOption.Fast );
 #else
 			return Get( SerializationMethodGeneratorOption.Fast );
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // DEBUG && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		/// <summary>

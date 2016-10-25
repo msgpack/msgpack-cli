@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if DEBUG
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace MsgPack.Serialization
 
 #else
 
-		private static volatile DependentAssemblyManager _default = new NullDependentAssemblyManager();
+private static volatile DependentAssemblyManager _default = new NullDependentAssemblyManager();
 
 		public static DependentAssemblyManager Default
 		{
@@ -118,6 +119,7 @@ namespace MsgPack.Serialization
 
 #endif // FEATURE_CONCURRENT
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "It is by design for internal utilities." )]
 		protected DependentAssemblyManager()
 		{
 #if FEATURE_CONCURRENT
@@ -229,3 +231,4 @@ namespace MsgPack.Serialization
 		}
 	}
 }
+#endif // DEBUG

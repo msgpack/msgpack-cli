@@ -69,7 +69,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			if ( targetInfo.CanDeserialize )
 			{
-				this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TList, object>( targetType, targetInfo.DeserializationConstructor );
+				this._factory = ReflectionSerializerHelper.CreateCollectionInstanceFactory<TList, object>( targetInfo.DeserializationConstructor );
 			}
 			else
 			{

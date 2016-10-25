@@ -743,7 +743,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </returns>
 		private TConstruct ExtractPrivateMethod( TContext context, string name, bool isStatic, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] parameters )
 		{
-			return this.EmitGetPrivateMethodDelegateExpression( context, this.DefinePrivateMethod( context, name, isStatic, returnType, bodyFactory, parameters ) );
+			return this.EmitGetPrivateMethodDelegateExpression( context, DefinePrivateMethod( context, name, isStatic, returnType, bodyFactory, parameters ) );
 		}
 
 		/// <summary>
@@ -758,7 +758,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>
 		///		The generated metadata of the private method.
 		/// </returns>
-		private MethodDefinition DefinePrivateMethod( TContext context, string name, bool isStatic, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] parameters )
+		private static MethodDefinition DefinePrivateMethod( TContext context, string name, bool isStatic, TypeDefinition returnType, Func<TConstruct> bodyFactory, params TConstruct[] parameters )
 		{
 			if ( context.IsDeclaredMethod( name ) )
 			{
@@ -1435,7 +1435,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				? TypeKind.ValueType
 				: TypeKind.NullableType;
 
-			var unpackHelperParameterTypeDefinition = this.DetermineUnpackHelperMethodParameterTypeDefinition( typeKind, isAsync );
+			var unpackHelperParameterTypeDefinition = DetermineUnpackHelperMethodParameterTypeDefinition( typeKind, isAsync );
 			var unpackHelperParameterType =
 				typeKind == TypeKind.MessagePackObject
 				? TypeDefinition.GenericValueType( unpackHelperParameterTypeDefinition, unpackingContext.ContextType )
@@ -1540,7 +1540,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		private Type DetermineUnpackHelperMethodParameterTypeDefinition( TypeKind typeKind, bool isAsync )
+		private static Type DetermineUnpackHelperMethodParameterTypeDefinition( TypeKind typeKind, bool isAsync )
 		{
 			switch ( typeKind )
 			{
@@ -1731,7 +1731,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <remarks>
 		///		The serializer reference methodology is implication specific.
 		/// </remarks>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected virtual TConstruct EmitGetSerializerExpression(
 			TContext context,
 			Type targetType,
@@ -1866,7 +1866,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			var parameterType = helperArguments.ContextType;
 
+#if DEBUG
 			Contract.Assert( !parameterType.IsRef, parameterType + " is not ref" );
+#endif // DEBUG
 			Type parameterTypeDefinition;
 			if ( ( parameterType.TryGetRuntimeType()?.GetIsGenericType() ).GetValueOrDefault() )
 			{
@@ -1888,9 +1890,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 		}
 		
-		#endregion -- Helper Funcs --
+#endregion -- Helper Funcs --
 
-		#region -- Collection Helpers --
+#region -- Collection Helpers --
 
 		/// <summary>
 		///		Determines the collection constructor arguments.
@@ -2472,9 +2474,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 				);
 		}
 
-		#endregion -- Collection Helpers --
+#endregion -- Collection Helpers --
 
-		#region -- Async Helpers --
+#region -- Async Helpers --
 
 		private static string AdjustName( string methodName, bool isAsync )
 		{
@@ -2501,7 +2503,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 #endif // !FEATURE_TAP
 
-		#endregion -- Async Helpers --
+#endregion -- Async Helpers --
 
 		private enum TypeKind
 		{

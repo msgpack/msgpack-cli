@@ -153,6 +153,7 @@ void WriteParameters( string suffix, bool isAsync, IDictionary<string, string> g
 #if !UNITY || MSGPACK_UNITY_FULL
 	[EditorBrowsable( EditorBrowsableState.Never )]
 #endif // !UNITY || MSGPACK_UNITY_FULL
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes", Justification = "This struct is not intended for value." )]
 	public struct <#= methodName #>Parameters<<#= genericParameterTokens #>>
 <#+
 	foreach ( var genericContraint in genericConstraints )
@@ -166,6 +167,7 @@ void WriteParameters( string suffix, bool isAsync, IDictionary<string, string> g
 		/// <summary>
 		///		The unpacker.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Unpacker Unpacker;
 <#+
 	differenceGenerator( isAsync );
@@ -177,6 +179,7 @@ void WriteParameters( string suffix, bool isAsync, IDictionary<string, string> g
 		/// <summary>
 		///		The token to monitor for cancellation requests. The default value is <see cref="P:CancellationToken.None" />.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public CancellationToken CancellationToken;
 <#+
 	}
@@ -199,31 +202,39 @@ void WriteUnpackValueMembers( bool isAsync, string tvalue )
 		/// <summary>
 		///		The context which will store deserialized value.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public TContext UnpackingContext;
 
 		/// <summary>
 		///		The serializer to deserialize current item.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public MessagePackSerializer<<#= tvalue #>> Serializer;
 
 		/// <summary>
 		///		The items count to be unpacked.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public int ItemsCount;
 
 		/// <summary>
 		///		The current unpacked count for debugging.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public int Unpacked;
 
 		/// <summary>
 		///		The current unpacked count for debugging.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public string MemberName;
 
 		/// <summary>
 		///		The delegate which takes <see cref="UnpackingContext" /> and unpacked value, and then set the value to the context.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Action<TContext, <#= tvalue #>> Setter;
 <#+
 }
@@ -235,11 +246,14 @@ void WriteAnyTypeValueMembers( bool isAsync, string tvalue )
 		/// <summary>
 		///		The current unpacked count for debugging.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Type TargetObjectType;
 
 		/// <summary>
 		///		The delegate which refers direct reading. This field should be <c>null</c> when <see cref="Serializer" /> is specified.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 <#+
 	if ( !isAsync )
 	{
@@ -263,6 +277,7 @@ void WriteUnpackNullableValueMembers()
 		/// <summary>
 		///		The nil implication of current item.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public NilImplication NilImplication;
 <#+
 }
@@ -300,11 +315,15 @@ void WriteUnpackObjectMembers()
 		/// <summary>
 		///		The context which will store deserialized value.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public TContext UnpackingContext;
 
 		/// <summary>
 		///		A delegate to the factory method which creates the result from the context.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public Func<TContext, TResult> Factory;
 <#+
 }
@@ -317,6 +336,8 @@ void WriteUnpackObjectFromArrayMembers( bool isAsync )
 		/// <summary>
 		///		The names of the members for pretty exception message.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IList<string> ItemNames;
 <#+
 	if ( !isAsync )
@@ -328,6 +349,8 @@ void WriteUnpackObjectFromArrayMembers( bool isAsync )
 		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
 		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IList<Action<Unpacker, TContext, int, int>> Operations;
 <#+
 	}
@@ -340,6 +363,8 @@ void WriteUnpackObjectFromArrayMembers( bool isAsync )
 		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
 		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IList<Func<Unpacker, TContext, int, int, CancellationToken, Task>> Operations;
 <#+
 	}
@@ -359,6 +384,8 @@ void WriteUnpackObjectFromMapMembers( bool isAsync )
 		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
 		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IDictionary<string, Action<Unpacker, TContext, int, int>> Operations;
 <#+
 	}
@@ -372,6 +399,8 @@ void WriteUnpackObjectFromMapMembers( bool isAsync )
 		///		The 1st argument will be <see cref="Unpacker"/>, 2nd argument will be <see cref="UnpackingContext"/>,
 		///		3rd argument is index of current item, and 4th argument is total items count in the array or map stream.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public IDictionary<string, Func<Unpacker, TContext, int, int, CancellationToken, Task>> Operations;
 <#+
 	}
@@ -384,11 +413,13 @@ void WriteUnpackCollectionMembers( bool isAsync )
 		/// <summary>
 		///		The items count to be unpacked.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public int ItemsCount;
 
 		/// <summary>
 		///		The collection instance to be added unpacked items.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 		public T Collection;
 
 		/// <summary>
@@ -397,6 +428,8 @@ void WriteUnpackCollectionMembers( bool isAsync )
 		///		and 3rd argument will be <see cref="ItemsCount"/>.
 		///		If this field is <c>null</c>, <see cref="EachOperation"/> will be used.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 <#+
 	if ( !isAsync )
 	{
@@ -418,6 +451,8 @@ void WriteUnpackCollectionMembers( bool isAsync )
 		///		and 3rd argument will be index of the current item.
 		///		If <see cref="BulkOperation"/> field is not <c>null</c>, this field will be ignored.
 		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By Design" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Performance critical effectively internal structure for ref access.")]
 <#+
 	if ( !isAsync )
 	{

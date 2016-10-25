@@ -46,7 +46,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			packer.PackObject( value, this.OwnerContext );
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override object UnpackFromCore( Unpacker unpacker )
 		{
 			if ( unpacker.IsArrayHeader )

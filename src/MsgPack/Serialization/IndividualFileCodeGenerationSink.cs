@@ -31,6 +31,7 @@ namespace MsgPack.Serialization
 		
 		private IndividualFileCodeGenerationSink() { }
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally." )]
 		protected override void AssignTextWriterCore( SerializerCodeInformation codeInformation )
 		{
 			Directory.CreateDirectory( codeInformation.Directory );

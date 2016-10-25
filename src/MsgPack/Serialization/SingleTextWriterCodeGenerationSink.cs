@@ -40,6 +40,7 @@ namespace MsgPack.Serialization
 			this._writer = writer;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally." )]
 		protected override void AssignTextWriterCore( SerializerCodeInformation codeInformation )
 		{
 			codeInformation.SetNonFileWriter( this._writer );

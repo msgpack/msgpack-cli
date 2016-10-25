@@ -978,7 +978,7 @@ namespace MsgPack.Serialization
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN
-			Delegate.CreateDelegate(
+				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
