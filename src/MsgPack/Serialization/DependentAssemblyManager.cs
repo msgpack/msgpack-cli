@@ -25,8 +25,6 @@ using System.Reflection;
 #if FEATURE_CONCURRENT
 using System.Collections.Concurrent;
 using System.Threading;
-#else
-using System.Linq;
 #endif // FEATURE_CONCURRENT
 
 namespace MsgPack.Serialization

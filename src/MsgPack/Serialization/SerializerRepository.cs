@@ -359,8 +359,8 @@ namespace MsgPack.Serialization
 		{
 			return this._repository.Contains( targetType );
 		}
-		/// <summary>pick 6b8d511 FIX ConstructorDelegate
 
+		/// <summary>
 		///		Gets the copy of registered serializer entries.
 		/// </summary>
 		/// <returns>
