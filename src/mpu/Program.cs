@@ -182,12 +182,12 @@ namespace mpu
 						value => excludingPattern = value
 					},
 					{
-						"treatWarningsAsErrors", "[serializer, optional] Specify to generate error for compiler warnings for serialization target types.",
+						"treat-warning-as-errors|treatWarningsAsErrors", "[serializer, optional] Specify to generate error for compiler warnings for serialization target types.",
 						_ => treatWarningsAsErrors = true
 					},
 					{
-						"warningLevel=", "[serializer, optional] Specify compiler warning level for serialization target types. Default is '4'.",
-						(int value) => warningLevel = value
+						"warning-level|warningLevel=", "[serializer, optional] Specify compiler warning level for serialization target types. Default is '4'.",
+						( int value ) => warningLevel = value
 					}
 				};
 
