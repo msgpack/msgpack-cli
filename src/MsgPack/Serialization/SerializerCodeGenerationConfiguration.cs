@@ -236,20 +236,6 @@ namespace MsgPack.Serialization
 		/// </value>
 		public bool WithAsync { get; set; }
 
-		private string _providerName;
-
-#warning TODO: mpu
-		/// <summary>
-		///		Gets or sets a code provider name.
-		/// </summary>
-		/// <value>
-		///		A code provider name. Setting <c>null</c> causes setting empty string which represents default provider.
-		/// </value>
-		public string ProviderName
-		{
-			get { return this._providerName; }
-			set { this._providerName = value ?? String.Empty; }
-		}
 
 #warning TODO: mpu
 		/// <summary>
