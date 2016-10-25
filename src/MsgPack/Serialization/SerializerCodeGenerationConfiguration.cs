@@ -236,8 +236,6 @@ namespace MsgPack.Serialization
 		/// </value>
 		public bool WithAsync { get; set; }
 
-
-#warning TODO: mpu
 		/// <summary>
 		///		Gets or sets a value indicating whether  generated serializers will not be qualified with <see cref="System.Diagnostics.DebuggerNonUserCodeAttribute"/> or not.
 		/// </summary>

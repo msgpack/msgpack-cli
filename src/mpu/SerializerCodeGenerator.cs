@@ -72,7 +72,7 @@ namespace mpu
 			string sourceAssemblyFile,
 			string includingPattern,
 			string excludingPattern
-			)
+		)
 		{
 			return
 				this.GenerateSerializers(
@@ -96,7 +96,7 @@ namespace mpu
 			Assembly sourceAssembly,
 			string includingPattern,
 			string excludingPattern
-			)
+		)
 		{
 			if ( sourceAssembly == null )
 			{

@@ -188,6 +188,10 @@ namespace mpu
 					{
 						"warning-level|warningLevel=", "[serializer, optional] Specify compiler warning level for serialization target types. Default is '4'.",
 						( int value ) => warningLevel = value
+					},
+					{
+						"suppress-debugger-non-user-code-attr", "[serializer, optional] Specify supressing DebuggerNonUserCodeAttribute in the output code to enable debugger stepping.",
+						_ => configuration.SuppressDebuggerNonUserCodeAttribute = true
 					}
 				};
 
