@@ -1736,6 +1736,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs">
       <Link>Serialization\StringKeyedCollection.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\StructWithDataContractTest.cs">
+      <Link>Serialization\StructWithDataContractTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\TempFileDependentAssemblyManager.cs">
       <Link>Serialization\TempFileDependentAssemblyManager.cs</Link>
     </Compile>
