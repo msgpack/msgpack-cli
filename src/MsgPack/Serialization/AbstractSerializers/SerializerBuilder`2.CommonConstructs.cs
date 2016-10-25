@@ -335,6 +335,18 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// <returns>The generated construct.</returns>
 		protected abstract TConstruct EmitUnboxAnyExpression( TContext context, TypeDefinition targetType, TConstruct value );
 
+		private TConstruct BoxIfRequired( TContext context, TConstruct instance )
+		{
+			if ( instance.ContextType.ResolveRuntimeType().GetIsValueType() )
+			{
+				return this.EmitBoxExpression( context, instance.ContextType, instance );
+			}
+			else
+			{
+				return instance;
+			}
+		}
+
 		#endregion -- Boxing/Unboxing/Cast --
 
 		#region -- Operations --
@@ -892,7 +904,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitFieldOfExpression( context, field.ResolveRuntimeField() ),
 						Metadata._FieldInfo.GetValue,
-						instance
+						this.BoxIfRequired( context, instance )
 					)
 				);
 		}
@@ -1219,7 +1231,23 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				return this.EmitSetField( context, instance, field, value );
 			}
+			else if ( instance.ContextType.ResolveRuntimeType().GetIsValueType() )
+			{
+				return this.EmitSetFieldOnValueType( context, instance, field, value );
+			}
+			else
+			{
+				return this.EmitSetFieldOnReferenceType( context, instance, field, value );
+			}
+		}
 
+		private TConstruct EmitSetFieldOnReferenceType(
+			TContext context,
+			TConstruct instance,
+			FieldDefinition field,
+			TConstruct value
+		)
+		{
 			/*
 			 * _field_of(f).SetValue( instance, value );
 			 */
@@ -1229,9 +1257,42 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitFieldOfExpression( context, field.ResolveRuntimeField() ),
 					Metadata._FieldInfo.SetValue,
 					instance,
-					value.ContextType.IsValueType
-					? this.EmitBoxExpression( context, value.ContextType, value )
-					: value
+					this.BoxIfRequired( context, value )
+				);
+		}
+
+		private TConstruct EmitSetFieldOnValueType(
+			TContext context,
+			TConstruct instance,
+			FieldDefinition field,
+			TConstruct value
+		)
+		{
+			// SetValue takes in an object for the first parameter, meaning that
+			// the value gets boxed and, therefore, copied. Since it will set
+			// the field value on the boxed copy, the changes won't be visible
+			// after the call, hence the need to box/unbox it.
+			string boxedName = context.GetUniqueVariableName( "boxed" );
+			TConstruct boxed = this.DeclareLocal( context, typeof(object), boxedName );
+			return
+				this.EmitSequentialStatements(
+					context,
+					typeof( void ),
+
+					// object boxed = instance;
+					boxed,
+					this.EmitStoreVariableStatement( context, boxed, this.EmitBoxExpression( context, instance.ContextType, instance ) ),
+
+					// _field_of(f).SetValue( boxed, value );
+					this.EmitInvokeVoidMethod(
+						context,
+						this.EmitFieldOfExpression( context, field.ResolveRuntimeField() ),
+						Metadata._FieldInfo.SetValue,
+						boxed,
+						this.BoxIfRequired( context, value )),
+
+					// instance = (T)boxed;
+					this.EmitStoreVariableStatement( context, instance, this.EmitUnboxAnyExpression( context, instance.ContextType, boxed ) )
 				);
 		}
 
