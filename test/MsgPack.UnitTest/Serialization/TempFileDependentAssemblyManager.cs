@@ -127,9 +127,9 @@ namespace MsgPack.Serialization
 #else
 			yield return typeof( Action<,,,,,,,,,,> ).Assembly.Location; // System.Core.dll
 			yield return typeof( System.Numerics.BigInteger ).Assembly.Location; // System.Numerics.dll
+#endif // NETFX_35
 			yield return typeof( MessagePackObject ).Assembly.Location;
 			yield return typeof( SerializationContext ).Assembly.Location;
-#endif // NETFX_35
 #endif // NETSTANDARD1_1
 		}
 	}

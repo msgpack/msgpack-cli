@@ -125,6 +125,7 @@ namespace MsgPack.Serialization
 #if FEATURE_CONCURRENT
 			this._runtimeAssemblies = new ConcurrentDictionary<string, byte[]>( StringComparer.OrdinalIgnoreCase );
 #else
+			this._syncRoot = new object();
 			this._runtimeAssemblies = new Dictionary<string, byte[]>( StringComparer.OrdinalIgnoreCase );
 #endif // FEATURE_CONCURRENT
 
@@ -134,7 +135,6 @@ namespace MsgPack.Serialization
 			this._compiledCodeDomSerializerAssemblies = new ConcurrentDictionary<string, byte[]>( StringComparer.OrdinalIgnoreCase );
 #else
 			this._compiledCodeDomSerializerAssemblies = new Dictionary<string, byte[]>( StringComparer.OrdinalIgnoreCase );
-			this._syncRoot = new object();
 #endif // FEATURE_CONCURRENT
 		}
 

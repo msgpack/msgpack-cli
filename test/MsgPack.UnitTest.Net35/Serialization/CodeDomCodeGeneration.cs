@@ -46,12 +46,13 @@ namespace MsgPack.Serialization
 				var parameters =
 					new CompilerParameters
 					{
-						GenerateInMemory = !SerializerDebugging.DumpEnabled,
+						GenerateInMemory = false,
 						OutputAssembly = assemblyPath
 					};
+
 				foreach ( var assembly in SerializerDebugging.CodeSerializerDependentAssemblies )
 				{
-					parameters.ReferencedAssemblies.Add( assemblyName );
+					parameters.ReferencedAssemblies.Add( ( string ) assembly );
 				}
 
 				var result =
@@ -60,10 +61,18 @@ namespace MsgPack.Serialization
 						code
 					);
 
-				SerializerDebugging.AddCompiledCodeAssembly( result.PathToAssembly );
-				compiledAssembly = result.CompiledAssembly;
 				errors = BuildCompilationError( result.Errors.OfType<CompilerError>().Where( d => !d.IsWarning ) );
 				warnings = BuildCompilationError( result.Errors.OfType<CompilerError>().Where( d => d.IsWarning ) );
+
+				if ( !errors.Any() )
+				{
+					SerializerDebugging.AddCompiledCodeAssembly( result.PathToAssembly );
+					compiledAssembly = result.CompiledAssembly;
+				}
+				else
+				{
+					compiledAssembly = null;
+				}
 			}
 		}
 
