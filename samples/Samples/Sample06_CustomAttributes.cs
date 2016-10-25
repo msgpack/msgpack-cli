@@ -56,8 +56,14 @@ namespace Samples
 		public string Title { get; set; }
 	}
 
-	// MessagePackMember
-	// MessagePackEnumMember
+	// ... You can "opt-out" with MessagePackIgnore
+	public class OptOutSample
+	{
+		[MessagePackIgnore]
+		public string ShouldNotEmit { get; set; }
+
+		public int ShouldEmit { get; set; }
+	}
 }
 
 namespace System.Runtime.Serialization
@@ -68,4 +74,6 @@ namespace System.Runtime.Serialization
 		public string Name { get; set; }
 		public int Order { get; set; }
 	}
+
+	// This is also about MessagePackIgnoreAttribute, MessagePackMemberAttribute, and MessagePackDeserializationConstructorAttribute.
 }

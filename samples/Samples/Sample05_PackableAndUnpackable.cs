@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.Serialization;
 
 using MsgPack;
 using MsgPack.Serialization;
@@ -85,26 +86,26 @@ namespace Samples
 			// It should be packed as array because we use hand-made packing implementation above.
 			if ( !unpacker.IsArrayHeader )
 			{
-				throw SerializationExceptions.NewIsNotArrayHeader();
+				throw new SerializationException( "Is not in array header." );
 			}
 
 			// Check items count.
 			if ( UnpackHelpers.GetItemsCount( unpacker ) != 2 )
 			{
-				throw SerializationExceptions.NewUnexpectedArrayLength( 2, UnpackHelpers.GetItemsCount( unpacker ) );
+				throw new SerializationException( $"Array length should be 2, but {UnpackHelpers.GetItemsCount( unpacker )}" );
 			}
 
 			// Unpack fields here:
 			if ( !unpacker.ReadInt64( out id ) )
 			{
-				throw SerializationExceptions.NewMissingProperty( "Id" );
+				throw new SerializationException( "Property Id is not found." );
 			}
 
 			this.Id = id;
 
 			if ( !unpacker.ReadString( out name ) )
 			{
-				throw SerializationExceptions.NewMissingProperty( "Name" );
+				throw new SerializationException( "Property Name is not found." );
 			}
 
 			this.Name = name;

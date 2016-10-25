@@ -68,8 +68,11 @@ namespace Samples
 
 			// 3. Unpack MessagePackObject to get raw representation.
 			var rawObject = Unpacking.UnpackObject( stream );
-			// You can read MPO tree via Unpacker
+			// 3-b. You can read MPO tree via Unpacker
 			// var unpacker = Unpacker.Create( stream );
+
+			// 3-c. Or, you can get it from serializer directly.
+			// var rawObject = MessagePackSerializer.UnpackMessagePackObject( stream );
 
 			// Check its type
 			Debug.WriteLine( "Is array? {0}", rawObject.IsArray ); // IsList is alias
@@ -87,6 +90,23 @@ namespace Samples
 			Debug.WriteLine( "Date : {0}({1})", asDictionary[ "Date" ], asDictionary[ "Date" ].UnderlyingType );
 			// byte[] is byte[], as you know.
 			Debug.WriteLine( "Image : {0}({1})", asDictionary[ "Image" ], asDictionary[ "Image" ].UnderlyingType );
+
+			// 4. Now MessagePackSerializer handle MessagePackObject directly.
+			var mpo = serializer.ToMessagePackObject( targetObject );
+			var asDictionary2 = mpo.AsDictionary();
+			Debug.WriteLine( "---- ToMessagePackObject ----" );
+			Debug.WriteLine( "Id : {0}({1})", asDictionary2[ "Id" ], asDictionary2[ "Id" ].UnderlyingType );
+			Debug.WriteLine( "Title : {0}({1})", asDictionary2[ "Title" ], asDictionary2[ "Title" ].UnderlyingType );
+			Debug.WriteLine( "Date : {0}({1})", asDictionary2[ "Date" ], asDictionary2[ "Date" ].UnderlyingType );
+			Debug.WriteLine( "Image : {0}({1})", asDictionary2[ "Image" ], asDictionary2[ "Image" ].UnderlyingType );
+
+			// reversing
+			var targetObject2 = serializer.FromMessagePackObject( mpo );
+			Debug.WriteLine( "---- FromMessagePackObject ----" );
+			Debug.WriteLine( "Id : {0}", targetObject2.Id );
+			Debug.WriteLine( "Title : {0}", targetObject2.Title );
+			Debug.WriteLine( "Date : {0}", targetObject2.Date );
+			Debug.WriteLine( "Image : {0}", Convert.ToBase64String( targetObject2.Image ) );
 		}
 	}
 }
