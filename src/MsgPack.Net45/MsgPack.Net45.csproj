@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FEATURE_TAP;NETFX_45</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_TAP;FEATURE_CONCURRENT;NETFX_45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\net45\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP;NETFX_45</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT;NETFX_45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\bin\net45\MsgPack.XML</DocumentationFile>
@@ -40,7 +40,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP;NETFX_45;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT;NETFX_45;CODE_ANALYSIS</DefineConstants>
     <DocumentationFile></DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -295,6 +295,9 @@
     <Compile Include="..\MsgPack\Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs">
       <Link>Serialization\CodeDomSerializers\VariableCodeDomConstruct.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\CodeGenerationSink.cs">
+      <Link>Serialization\CodeGenerationSink.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -541,6 +544,9 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DependentAssemblyManager.cs">
+      <Link>Serialization\DependentAssemblyManager.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DictionaryKeyTransformers.cs">
       <Link>Serialization\DictionaryKeyTransformers.cs</Link>
     </Compile>
@@ -657,6 +663,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\IMessagePackSingleObjectSerializer.cs">
       <Link>Serialization\IMessagePackSingleObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\IndividualFileCodeGenerationSink.cs">
+      <Link>Serialization\IndividualFileCodeGenerationSink.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\INilImplicationHandlerOnUnpackedParameter.cs">
       <Link>Serialization\INilImplicationHandlerOnUnpackedParameter.cs</Link>
@@ -832,8 +841,17 @@
     <Compile Include="..\MsgPack\Serialization\PolymorphismType.cs">
       <Link>Serialization\PolymorphismType.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.CollectionTraits.cs">
+      <Link>Serialization\ReflectionExtensions.CollectionTraits.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.ConstructorDelegate.cs">
+      <Link>Serialization\ReflectionExtensions.ConstructorDelegate.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs">
       <Link>Serialization\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.InvokePreservingExtension.cs">
+      <Link>Serialization\ReflectionExtensions.InvokePreservingExtension.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionHelpers.cs">
       <Link>Serialization\ReflectionHelpers.cs</Link>
@@ -931,6 +949,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializerCodeGenerationResult.cs">
       <Link>Serialization\SerializerCodeGenerationResult.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializerCodeInformation.cs">
+      <Link>Serialization\SerializerCodeInformation.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializerDebugging.cs">
       <Link>Serialization\SerializerDebugging.cs</Link>
     </Compile>
@@ -954,6 +975,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\SingleTextWriterCodeGenerationSink.cs">
+      <Link>Serialization\SingleTextWriterCodeGenerationSink.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\TeeTextWriter.cs">
+      <Link>Serialization\TeeTextWriter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Tracer.cs">
       <Link>Serialization\Tracer.cs</Link>

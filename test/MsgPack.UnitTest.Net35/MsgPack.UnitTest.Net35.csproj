@@ -326,6 +326,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs">
       <Link>Serialization\StringKeyedCollection.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TempFileDependentAssemblyManager.cs">
+      <Link>Serialization\TempFileDependentAssemblyManager.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs">
       <Link>Serialization\TestValueType.cs</Link>
     </Compile>
@@ -788,6 +791,7 @@
     <Compile Include="Mono\System\Threading\ManualResetEventSlim.cs" />
     <Compile Include="Mono\System\Threading\SpinWait.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\CodeDomCodeGeneration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">

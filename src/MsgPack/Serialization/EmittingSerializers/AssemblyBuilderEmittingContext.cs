@@ -23,12 +23,13 @@
 
 using System;
 using System.Collections.Generic;
+#if NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_1
 using System.Linq;
 using System.Reflection;
-#if FEATURE_TAP
-using System.Threading;
-#endif // FEATURE_TAP
 
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
@@ -105,17 +106,18 @@ namespace MsgPack.Serialization.EmittingSerializers
 		protected sealed override void ResetCore( Type targetType, Type baseClass )
 		{
 			// Note: baseClass is always null this class hiearchy.
-			this.Packer = ILConstruct.Argument( 1, typeof( Packer ), "packer" );
-			this.PackToTarget = ILConstruct.Argument( 2, targetType, "objectTree" );
-			this.NullCheckTarget = ILConstruct.Argument( 1, targetType, "objectTree" );
-			this.Unpacker = ILConstruct.Argument( 1, typeof( Unpacker ), "unpacker" );
-			this.IndexOfItem = ILConstruct.Argument( 3, typeof( int ), "indexOfItem" );
-			this.ItemsCount = ILConstruct.Argument( 4, typeof( int ), "itemsCount" );
-			this.UnpackToTarget = ILConstruct.Argument( 2, targetType, "collection" );
+			var targetTypeDefinition = TypeDefinition.Object( targetType );
+			this.Packer = ILConstruct.Argument( 1, TypeDefinition.PackerType, "packer" );
+			this.PackToTarget = ILConstruct.Argument( 2, targetTypeDefinition, "objectTree" );
+			this.NullCheckTarget = ILConstruct.Argument( 1, targetTypeDefinition, "objectTree" );
+			this.Unpacker = ILConstruct.Argument( 1, TypeDefinition.UnpackerType, "unpacker" );
+			this.IndexOfItem = ILConstruct.Argument( 3, TypeDefinition.Int32Type, "indexOfItem" );
+			this.ItemsCount = ILConstruct.Argument( 4, TypeDefinition.Int32Type, "itemsCount" );
+			this.UnpackToTarget = ILConstruct.Argument( 2, targetTypeDefinition, "collection" );
 			var traits = targetType.GetCollectionTraits( CollectionTraitOptions.Full, this.SerializationContext.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
 			if ( traits.ElementType != null )
 			{
-				this.CollectionToBeAdded = ILConstruct.Argument( 1, targetType, "collection" );
+				this.CollectionToBeAdded = ILConstruct.Argument( 1, targetTypeDefinition, "collection" );
 				this.ItemToAdd = ILConstruct.Argument( 2, traits.ElementType, "item" );
 				if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
 #if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
@@ -126,7 +128,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					this.KeyToAdd = ILConstruct.Argument( 2, traits.ElementType.GetGenericArguments()[ 0 ], "key" );
 					this.ValueToAdd = ILConstruct.Argument( 3, traits.ElementType.GetGenericArguments()[ 1 ], "value" );
 				}
-				this.InitialCapacity = ILConstruct.Argument( 1, typeof( int ), "initialCapacity" );
+				this.InitialCapacity = ILConstruct.Argument( 1, TypeDefinition.Int32Type, "initialCapacity" );
 			}
 
 			this._emitter = null;

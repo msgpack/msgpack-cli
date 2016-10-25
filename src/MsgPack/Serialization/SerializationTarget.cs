@@ -31,11 +31,11 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY
+#if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -712,12 +712,12 @@ namespace MsgPack.Serialization
 		}
 #endif // !NETFX_35
 
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{
-			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.Contains( type );
+			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.ContainsFor( type );
 		}
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		private sealed class MemberConstructorParameterEqualityComparer : EqualityComparer<KeyValuePair<string, Type>>
 		{

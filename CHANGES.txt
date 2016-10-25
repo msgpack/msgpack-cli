@@ -613,3 +613,14 @@ Release 0.9.0 beta1 2016/09/24
 
   BUG FIXES
   * Fix nuspec to prevent old NuGet clients which do not support .NET Standard TFMs. Issue #177.
+
+Release 0.9.0 (planned)
+
+  NEW FEATURES
+  * Users of serializer code generator API can specify TextWriter to output. This may improve tooling chain.
+  * Users of serializer code generator API can suppress [DebuggerNonUserCode] attribute to enable debugger step in.
+  * SerializerRepository API now expose ContainsFor and GetRegisteredSerializers methods to investigate registered serializers.
+
+  BUG FIXES
+  * The generated code for the type which has Tuple typed member uses old PackHelper API.
+

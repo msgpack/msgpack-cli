@@ -24,11 +24,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if CORE_CLR
+#if CORE_CLR || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -872,7 +872,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitMethodOfExpression( context, property.GetGetMethod( true ) ),
 						Metadata._MethodBase.Invoke_2,
 						instance,
-						this.MakeNullLiteral( context, typeof( object[] ) )
+						this.MakeNullLiteral( context, TypeDefinition.ObjectArrayType )
 					)
 				);
 		}
@@ -1185,7 +1185,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					instance,
 					this.EmitCreateNewArrayExpression(
 						context,
-						typeof( object ),
+						TypeDefinition.ObjectType,
 						1,
 						new[]
 						{
@@ -1468,7 +1468,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						{ "ItemsCount", countOfItem },
 						{ "Unpacked", indexOfItem },
 						{ "MemberName", memberName },
-						{ "NilImplication", this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ) },
+						{ "NilImplication", this.MakeEnumLiteral( context, TypeDefinition.NilImplicationType, nilImplication ) },
 						{ "Setter", setterDelegate }
 					};
 #if FEATURE_TAP
@@ -1494,7 +1494,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 				if ( typeKind != TypeKind.ValueType )
 				{
-					unpackHelperArguments.Add( "NilImplication", this.MakeEnumLiteral( context, typeof( NilImplication ), nilImplication ) );
+					unpackHelperArguments.Add( "NilImplication", this.MakeEnumLiteral( context, TypeDefinition.NilImplicationType, nilImplication ) );
 				}
 
 				var directReadMethod = Metadata._UnpackHelpers.GetDirectUnpackMethod( memberType, isAsync );
@@ -1525,7 +1525,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			return
 				this.EmitSequentialStatements(
 					context,
-					typeof( void ),
+					TypeDefinition.VoidType,
 					new [] { unpackHelperParameters }
 					.Concat(
 						this.CreatePackUnpackHelperArgumentInitialization( context, unpackHelperParameters, unpackHelperArguments )
@@ -1713,7 +1713,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.MakeStringLiteral( context, format ),
 					this.EmitCreateNewArrayExpression(
 						context,
-						typeof( object ),
+						TypeDefinition.ObjectType,
 						arguments.Length,
 						arguments.Select( a => a.ContextType.IsValueType ? this.EmitBoxExpression( context, a.ContextType, a ) : a )
 					)
@@ -1748,7 +1748,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
 						this.EmitBoxExpression(
 							context,
-							typeof( EnumSerializationMethod ),
+							TypeDefinition.EnumSerializationMethodType,
 							this.EmitInvokeMethodExpression(
 								context,
 								null,
@@ -1757,7 +1757,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								this.EmitTypeOfExpression( context, targetType ),
 								this.MakeEnumLiteral(
 									context,
-									typeof( EnumMemberSerializationMethod ),
+									TypeDefinition.EnumMemberSerializationMethodType,
 									memberInfo.Value.GetEnumMemberSerializationMethod()
 								)
 							)
@@ -1773,7 +1773,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( targetType ),
 						this.EmitBoxExpression(
 							context,
-							typeof( DateTimeConversionMethod ),
+							TypeDefinition.DateTimeConversionMethodType,
 							this.EmitInvokeMethodExpression(
 								context,
 								null,
@@ -1781,7 +1781,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context.Context,
 								this.MakeEnumLiteral(
 									context,
-									typeof( DateTimeMemberConversionMethod ),
+									TypeDefinition.DateTimeMemberConversionMethodType,
 									memberInfo.Value.GetDateTimeMemberConversionMethod()
 								)
 							)
@@ -1797,7 +1797,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 										: PolymorphismSchema.Default );
 				context.SerializationContext.GetSerializer( targetType, schemaForMember );
 
-				var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), "__schema" );
+				var schema = this.DeclareLocal( context, TypeDefinition.PolymorphismSchemaType, "__schema" );
 				return
 					this.EmitSequentialStatements(
 						context,
@@ -2016,7 +2016,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitStoreVariableStatement(
 						context,
 						storage,
-						this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+						this.MakeNullLiteral( context, TypeDefinition.PolymorphismSchemaType )
 					);
 				yield break;
 			}
@@ -2038,8 +2038,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 					var itemsSchemaVariableName = context.GetUniqueVariableName( "itemsSchema" );
 					var itemsSchema =
 						schema.ItemSchema.UseDefault
-							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
-							: this.DeclareLocal( context, typeof( PolymorphismSchema ), itemsSchemaVariableName );
+							? this.MakeNullLiteral( context, TypeDefinition.PolymorphismSchemaType )
+							: this.DeclareLocal( context, TypeDefinition.PolymorphismSchemaType, itemsSchemaVariableName );
 					if ( !schema.ItemSchema.UseDefault )
 					{
 						yield return itemsSchema;
@@ -2088,7 +2088,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						var typeMap =
 							this.DeclareLocal(
 								context,
-								typeof( Dictionary<string, Type> ),
+								TypeDefinition.DictionaryOfStringAndTypeType,
 								context.GetUniqueVariableName( "typeMap" )
 							);
 
@@ -2146,8 +2146,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 					var keysSchemaVariableName = context.GetUniqueVariableName( "keysSchema" );
 					var keysSchema =
 						schema.KeySchema.UseDefault
-							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
-							: this.DeclareLocal( context, typeof( PolymorphismSchema ), keysSchemaVariableName );
+							? this.MakeNullLiteral( context, TypeDefinition.PolymorphismSchemaType )
+							: this.DeclareLocal( context, TypeDefinition.PolymorphismSchemaType, keysSchemaVariableName );
 					if ( !schema.KeySchema.UseDefault )
 					{
 						yield return keysSchema;
@@ -2163,8 +2163,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 					var valuesSchemaVariableName = context.GetUniqueVariableName( "valuesSchema" );
 					var valuesSchema =
 						schema.ItemSchema.UseDefault
-							? this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
-							: this.DeclareLocal( context, typeof( PolymorphismSchema ), valuesSchemaVariableName );
+							? this.MakeNullLiteral( context, TypeDefinition.PolymorphismSchemaType )
+							: this.DeclareLocal( context, TypeDefinition.PolymorphismSchemaType, valuesSchemaVariableName );
 					if ( !schema.ItemSchema.UseDefault )
 					{
 						yield return valuesSchema;
@@ -2214,7 +2214,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						var typeMap =
 							this.DeclareLocal(
 								context,
-								typeof( Dictionary<string, Type> ),
+								TypeDefinition.DictionaryOfStringAndTypeType,
 								context.GetUniqueVariableName( "typeMap" )
 							);
 
@@ -2262,7 +2262,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitStoreVariableStatement(
 								context,
 								storage,
-								this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+								this.MakeNullLiteral( context, TypeDefinition.PolymorphismSchemaType )
 							);
 					}
 
@@ -2285,7 +2285,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					var tupleItemsSchema =
 						this.DeclareLocal(
 							context,
-							typeof( PolymorphismSchema[] ),
+							TypeDefinition.PolymorphismSchemaArrayType,
 							context.GetUniqueVariableName( "tupleItemsSchema" )
 						);
 
@@ -2295,12 +2295,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.EmitStoreVariableStatement(
 							context,
 							tupleItemsSchema,
-							this.EmitCreateNewArrayExpression( context, typeof( PolymorphismSchema ), tupleItems.Count )
+							this.EmitCreateNewArrayExpression( context, TypeDefinition.PolymorphismSchemaType, tupleItems.Count )
 						);
 					for ( var i = 0; i < tupleItems.Count; i++ )
 					{
 						var variableName = context.GetUniqueVariableName( "tupleItemSchema" );
-						var itemSchema = this.DeclareLocal( context, typeof( PolymorphismSchema ), variableName );
+						var itemSchema = this.DeclareLocal( context, TypeDefinition.PolymorphismSchemaType, variableName );
 						yield return itemSchema;
 						foreach ( var statement in this.EmitConstructLeafPolymorphismSchema( context, itemSchema, schema.ChildSchemaList[ i ], variableName ) )
 						{
@@ -2356,7 +2356,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					this.EmitStoreVariableStatement(
 						context,
 						storage,
-						this.MakeNullLiteral( context, typeof( PolymorphismSchema ) )
+						this.MakeNullLiteral( context, TypeDefinition.PolymorphismSchemaType )
 					);
 			}
 			else if ( currentSchema.UseTypeEmbedding )
@@ -2378,7 +2378,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				var typeMap =
 					this.DeclareLocal(
 						context,
-						typeof( Dictionary<string, Type> ),
+						TypeDefinition.DictionaryOfStringAndTypeType,
 						context.GetUniqueVariableName( String.IsNullOrEmpty( prefix ) ? "typeMap" : ( prefix + "TypeMap" ) )
 					);
 
@@ -2496,7 +2496,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private TConstruct ReferCancellationToken( TContext context, int index )
 		{
-			return this.ReferArgument( context, typeof( CancellationToken ), "cancellationToken", index );
+			return this.ReferArgument( context, TypeDefinition.CancellationTokenType, "cancellationToken", index );
 		}
 
 #endif // !FEATURE_TAP

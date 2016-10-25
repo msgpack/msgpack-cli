@@ -27,16 +27,16 @@ using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if !SILVERLIGHT && !NETFX_35 && !UNITY
+#if FEATURE_CONCURRENT
 using System.Collections.Concurrent;
-#else // !SILVERLIGHT && !NETFX_35 && !UNITY
+#else // !FEATURE_CONCURRENT
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if CORE_CLR || UNITY
+#if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 #if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Linq;
 #endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
@@ -58,6 +58,7 @@ namespace MsgPack.Serialization
 	public sealed partial class SerializationContext
 	{
 #if UNITY
+#warning WORKAROUND
 		private static readonly object DefaultContextSyncRoot = new object();
 #endif // UNITY
 
@@ -109,11 +110,11 @@ namespace MsgPack.Serialization
 		}
 
 		private readonly SerializerRepository _serializers;
-#if SILVERLIGHT || NETFX_35 || UNITY
+#if !FEATURE_CONCURRENT
 		private readonly Dictionary<Type, object> _typeLock;
 #else
 		private readonly ConcurrentDictionary<Type, object> _typeLock;
-#endif // SILVERLIGHT || NETFX_35 || UNITY
+#endif // !FEATURE_CONCURRENT
 
 		private readonly object _generationLock;
 
@@ -366,6 +367,7 @@ namespace MsgPack.Serialization
 		}
 
 #if UNITY
+#warning WORKAROUND
 		private readonly object _resolveSerializerSyncRoot = new object();
 #endif // UNITY
 
@@ -546,11 +548,11 @@ namespace MsgPack.Serialization
 
 			this._serializers = new SerializerRepository( SerializerRepository.GetDefault( this ) );
 
-#if SILVERLIGHT || NETFX_35 || UNITY
+#if !FEATURE_CONCURRENT
 			this._typeLock = new Dictionary<Type, object>();
 #else
 			this._typeLock = new ConcurrentDictionary<Type, object>();
-#endif // SILVERLIGHT || NETFX_35 || UNITY
+#endif // !FEATURE_CONCURRENT
 			this._generationLock = new object();
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 			this._serializerGeneratorOptions = new SerializerOptions();
@@ -561,8 +563,8 @@ namespace MsgPack.Serialization
 		internal bool ContainsSerializer( Type rootType )
 		{
 			return
-				this._serializers.Contains( rootType )
-				|| ( rootType.GetIsGenericType() && this._serializers.Contains( rootType.GetGenericTypeDefinition() ) );
+				this._serializers.ContainsFor( rootType )
+				|| ( rootType.GetIsGenericType() && this._serializers.ContainsFor( rootType.GetGenericTypeDefinition() ) );
 		}
 
 		/// <summary>
@@ -644,7 +646,7 @@ namespace MsgPack.Serialization
 					try {}
 					finally
 					{
-#if SILVERLIGHT || NETFX_35 || UNITY
+#if !FEATURE_CONCURRENT
 						lock ( this._typeLock )
 						{
 							var typeLock = new object();
@@ -659,7 +661,7 @@ namespace MsgPack.Serialization
 						var typeLock = new object();
 						var aquiredTypeLock = this._typeLock.GetOrAdd( typeof( T ), _ => typeLock );
 						lockTaken = typeLock == aquiredTypeLock;
-#endif // if  SILVERLIGHT || NETFX_35 || UNITY
+#endif // !FEATURE_CONCURRENT
 					}
 
 					if ( lockTaken )
@@ -757,7 +759,7 @@ namespace MsgPack.Serialization
 				{
 					if ( lockTaken )
 					{
-#if SILVERLIGHT || NETFX_35 || UNITY
+#if !FEATURE_CONCURRENT
 					lock ( this._typeLock )
 					{
 						this._typeLock.Remove( typeof( T ) );
@@ -765,7 +767,7 @@ namespace MsgPack.Serialization
 #else
 						object dummy;
 						this._typeLock.TryRemove( typeof( T ), out dummy );
-#endif // if SILVERLIGHT || NETFX_35 || UNITY
+#endif // !FEATURE_CONCURRENT
 					}
 				}
 			}
@@ -912,7 +914,7 @@ namespace MsgPack.Serialization
 		{
 			public static readonly SerializerGetter Instance = new SerializerGetter();
 
-#if !SILVERLIGHT && !NETFX_35 && !UNITY
+#if FEATURE_CONCURRENT
 			private readonly ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>> _cache =
 				new ConcurrentDictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>>();
 #elif UNITY
@@ -921,7 +923,7 @@ namespace MsgPack.Serialization
 #else
 			private readonly Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>> _cache =
 				new Dictionary<RuntimeTypeHandle, Func<SerializationContext, object, MessagePackSerializer>>();
-#endif // !SILVERLIGHT && !NETFX_35 && !UNITY
+#endif // FEATURE_CONCURRENT
 
 			private SerializerGetter() { }
 
@@ -938,10 +940,10 @@ namespace MsgPack.Serialization
 				return ( MessagePackSerializer )method.InvokePreservingExceptionType( context, providerParameter );
 #else
 				Func<SerializationContext, object, MessagePackSerializer> func;
-#if SILVERLIGHT || NETFX_35 || UNITY
+#if !FEATURE_CONCURRENT
 				lock ( this._cache )
 				{
-#endif // SILVERLIGHT || NETFX_35 || UNITY
+#endif // !FEATURE_CONCURRENT
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
@@ -961,9 +963,9 @@ namespace MsgPack.Serialization
 
 					this._cache[ targetType.TypeHandle ] = func;
 				}
-#if SILVERLIGHT || NETFX_35 || UNITY
+#if !FEATURE_CONCURRENT
 				}
-#endif // SILVERLIGHT || NETFX_35 || UNITY
+#endif // !FEATURE_CONCURRENT
 				return func( context, providerParameter );
 #endif // UNITY
 			}

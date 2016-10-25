@@ -19,11 +19,11 @@
 #endregion -- License Terms --
 
 using System;
-#if CORE_CLR
+#if CORE_CLR || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || NETSTANDARD1_1
 #if FEATURE_TAP
 using System.Threading;
 #endif // FEATURE_TAP
@@ -70,16 +70,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						this.EmitInvokeMethodExpression(
 							context,
-							this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
+							this.ReferArgument( context, TypeDefinition.PackerType, "packer", 1 ),
 							typeof( Packer ).GetMethod( "PackAsync", new[] { underlyingType, typeof( CancellationToken) } ),
 							this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, this.TargetType, "enumValue", 2 ) ),
-							this.ReferArgument( context, typeof( CancellationToken ), "cancellationToken", 3 )
+							this.ReferArgument( context,TypeDefinition.CancellationTokenType, "cancellationToken", 3 )
 						)
 					) :
 #endif // FEATURE_TAP
 					this.EmitInvokeVoidMethod(
 						context,
-						this.ReferArgument( context, typeof( Packer ), "packer", 1 ),
+						this.ReferArgument( context, TypeDefinition.PackerType, "packer", 1 ),
 						typeof( Packer ).GetMethod( "Pack", new[] { underlyingType } ),
 						this.EmitEnumToUnderlyingCastExpression( context, underlyingType, this.ReferArgument( context, this.TargetType, "enumValue", 2 ) )
 					);
@@ -100,7 +100,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						this.TargetType,
 						this.EmitInvokeMethodExpression(
 							context,
-							this.ReferArgument( context, typeof( MessagePackObject ), "messagePackObject", 1 ),
+							this.ReferArgument( context, TypeDefinition.MessagePackObjectType, "messagePackObject", 1 ),
 							typeof( MessagePackObject ).GetMethod( "As" + underlyingType.Name, ReflectionAbstractions.EmptyTypes )
 						)
 					)

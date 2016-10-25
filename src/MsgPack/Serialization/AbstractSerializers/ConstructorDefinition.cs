@@ -20,11 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR
+#if CORE_CLR || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -45,8 +45,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this._runtimeConstructor =
 					this.DeclaringType.ResolveRuntimeType().GetConstructors()
 						.SingleOrDefault( c =>
-							c.GetParameters()
-								.Select( p => p.ParameterType )
+							c.GetParameterTypes()
 								.SequenceEqual( this.ParameterTypes.Select( t => t.ResolveRuntimeType() ) )
 					);
 			}

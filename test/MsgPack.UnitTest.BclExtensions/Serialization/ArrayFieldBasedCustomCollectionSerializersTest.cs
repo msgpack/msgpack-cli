@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,10 +28,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif // SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 #if !NETFX_CORE
 using Microsoft.FSharp.Collections;
 #endif // !NETFX_CORE
@@ -40,6 +40,8 @@ using NUnit.Framework;
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using SetUpAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitializeAttribute;
+using TearDownAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestCleanupAttribute;
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
@@ -62,10 +64,11 @@ namespace MsgPack.Serialization
 			get { return true; }
 		}
 
-#if !NETFX_CORE
+#if !NETFX_CORE && !SILVERLIGHT && !AOT
 		[SetUp]
 		public void SetUp()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			SerializerDebugging.DeletePastTemporaries();
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
@@ -76,13 +79,24 @@ namespace MsgPack.Serialization
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
 			}
 
-			SerializerDebugging.OnTheFlyCodeDomEnabled = true;
+			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
+			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
+
+#if NETFX_35
+			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
+#else
+			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
+#endif // NETFX_35
+
+			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.TestDirectory;
 			SerializerDebugging.AddRuntimeAssembly( typeof( ImmutableList ).Assembly.Location );
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
@@ -100,9 +114,10 @@ namespace MsgPack.Serialization
 			}
 
 			SerializerDebugging.Reset();
-			SerializerDebugging.OnTheFlyCodeDomEnabled = false;
+			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
-#endif
+#endif // !NETFX_CORE && !SDILVERLIGHT && !AOT
 
 		[Test]
 		public void QueueSerializationTest()

@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FEATURE_TAP;FEATURE_ET</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\net46\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\bin\net46\MsgPack.XML</DocumentationFile>
@@ -39,7 +39,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU' ">
     <OutputPath>bin\Performance Test\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP;PERFORMANCE_TEST</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT;PERFORMANCE_TEST</DefineConstants>
     <DocumentationFile>bin\Release\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -59,7 +59,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Instrument|AnyCPU'">
     <OutputPath>bin\Instrument\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP;PERFORMANCE_TEST</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT;PERFORMANCE_TEST</DefineConstants>
     <DocumentationFile>bin\Instrument\MsgPack.XML</DocumentationFile>
     <Optimize>false</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -73,7 +73,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT;CODE_ANALYSIS</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
@@ -89,7 +89,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CoreProfile|AnyCPU'">
     <OutputPath>bin\CoreProfile\</OutputPath>
-    <DefineConstants>TRACE;FEATURE_TAP;CORE_PROFILE</DefineConstants>
+    <DefineConstants>TRACE;FEATURE_TAP;FEATURE_CONCURRENT;CORE_PROFILE</DefineConstants>
     <DocumentationFile>bin\CoreProfile\MsgPack.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -200,6 +200,7 @@
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.Collection.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerBuilder`2.Nullable.cs" />
     <Compile Include="Serialization\AbstractSerializers\SerializerSpecification.cs" />
+    <Compile Include="Serialization\CodeGenerationSink.cs" />
     <Compile Include="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs" />
     <Compile Include="Serialization\CollectionSerializers\CollectionSerializerHelpers.cs" />
@@ -258,8 +259,10 @@
     <Compile Include="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DependentAssemblyManager.cs" />
     <Compile Include="Serialization\DictionaryKeyTransformers.cs" />
     <Compile Include="Serialization\EnumNameTransformers.cs" />
+    <Compile Include="Serialization\IndividualFileCodeGenerationSink.cs" />
     <Compile Include="Serialization\KeyNameTransformers.cs" />
     <Compile Include="Serialization\DictionarySerlaizationOptions.cs" />
     <Compile Include="Serialization\EmittingSerializers\ILMethodConctext.cs" />
@@ -282,6 +285,16 @@
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Metadata\_DynamicUnpackingContext.cs" />
     <Compile Include="Serialization\Metadata\_Object.cs" />
+    <Compile Include="Serialization\ReflectionExtensions.CollectionTraits.cs" />
+    <Compile Include="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
+    <Compile Include="Serialization\ReflectionExtensions.InvokePreservingExtension.cs" />
+    <Compile Include="Serialization\SerializerCodeInformation.cs" />
+    <Compile Include="Serialization\SingleTextWriterCodeGenerationSink.cs" />
+    <Compile Include="Serialization\TeeTextWriter.cs">
+      <DependentUpon>TeeTextWriter.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Serialization\PackHelperParameters.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -636,6 +649,10 @@
     <Content Include="PackerUnpackerExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerUnpackerExtensions.cs</LastGenOutput>
+    </Content>
+    <Content Include="Serialization\TeeTextWriter.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TeeTextWriter.cs</LastGenOutput>
     </Content>
     <Content Include="Serialization\NullTextWriter.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

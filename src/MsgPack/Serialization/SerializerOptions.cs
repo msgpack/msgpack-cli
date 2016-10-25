@@ -25,11 +25,11 @@
 
 using System;
 using System.Threading;
-#if CORE_CLR || UNITY
+#if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 
 namespace MsgPack.Serialization
 {
@@ -104,11 +104,11 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 		private volatile bool _isRuntimeGenerationDisabled;
 #else
 		private bool _isRuntimeGenerationDisabled;
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 
 		/// <summary>
 		///		Gets or sets a value indicating whether runtime generation is disabled or not.
@@ -120,19 +120,19 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				return this._isRuntimeGenerationDisabled;
 #else
 				return Volatile.Read( ref this._isRuntimeGenerationDisabled );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if !FEATURE_CONCURRENT
 				this._isRuntimeGenerationDisabled = value;
 #else
 				Volatile.Write( ref this._isRuntimeGenerationDisabled, value );
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 #endif // !AOT

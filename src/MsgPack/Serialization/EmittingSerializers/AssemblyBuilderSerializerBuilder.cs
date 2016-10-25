@@ -20,7 +20,11 @@
 
 using System;
 using System.Collections.Generic;
+#if NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -62,36 +66,36 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct MakeByteLiteral( AssemblyBuilderEmittingContext context, byte constant )
 		{
-			return MakeIntegerLiteral( typeof( byte ), constant );
+			return MakeIntegerLiteral( TypeDefinition.ByteType, constant );
 		}
 
 		protected override ILConstruct MakeSByteLiteral( AssemblyBuilderEmittingContext context, sbyte constant )
 		{
-			return MakeIntegerLiteral( typeof( sbyte ), constant );
+			return MakeIntegerLiteral( TypeDefinition.SByteType, constant );
 		}
 
 		protected override ILConstruct MakeInt16Literal( AssemblyBuilderEmittingContext context, short constant )
 		{
-			return MakeIntegerLiteral( typeof( short ), constant );
+			return MakeIntegerLiteral( TypeDefinition.Int16Type, constant );
 		}
 
 		protected override ILConstruct MakeUInt16Literal( AssemblyBuilderEmittingContext context, ushort constant )
 		{
-			return MakeIntegerLiteral( typeof( ushort ), constant );
+			return MakeIntegerLiteral( TypeDefinition.UInt16Type, constant );
 		}
 
 		protected override ILConstruct MakeInt32Literal( AssemblyBuilderEmittingContext context, int constant )
 		{
-			return MakeIntegerLiteral( typeof( int ), constant );
+			return MakeIntegerLiteral( TypeDefinition.Int32Type, constant );
 		}
 
 		protected override ILConstruct MakeUInt32Literal( AssemblyBuilderEmittingContext context, uint constant )
 		{
-			return MakeIntegerLiteral( typeof( uint ), unchecked( ( int )constant ) );
+			return MakeIntegerLiteral( TypeDefinition.UInt32Type, unchecked( ( int )constant ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Many case switch" )]
-		private static ILConstruct MakeIntegerLiteral( Type contextType, int constant )
+		private static ILConstruct MakeIntegerLiteral( TypeDefinition contextType, int constant )
 		{
 			switch ( constant )
 			{
@@ -151,37 +155,37 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 		protected override ILConstruct MakeInt64Literal( AssemblyBuilderEmittingContext context, long constant )
 		{
-			return ILConstruct.Literal( typeof( long ), constant, il => il.EmitLdc_I8( constant ) );
+			return ILConstruct.Literal( TypeDefinition.Int64Type, constant, il => il.EmitLdc_I8( constant ) );
 		}
 
 		protected override ILConstruct MakeUInt64Literal( AssemblyBuilderEmittingContext context, ulong constant )
 		{
-			return ILConstruct.Literal( typeof( ulong ), constant, il => il.EmitLdc_I8( unchecked( ( long )constant ) ) );
+			return ILConstruct.Literal( TypeDefinition.UInt64Type, constant, il => il.EmitLdc_I8( unchecked( ( long )constant ) ) );
 		}
 
 		protected override ILConstruct MakeReal32Literal( AssemblyBuilderEmittingContext context, float constant )
 		{
-			return ILConstruct.Literal( typeof( float ), constant, il => il.EmitLdc_R4( constant ) );
+			return ILConstruct.Literal( TypeDefinition.SingleType, constant, il => il.EmitLdc_R4( constant ) );
 		}
 
 		protected override ILConstruct MakeReal64Literal( AssemblyBuilderEmittingContext context, double constant )
 		{
-			return ILConstruct.Literal( typeof( double ), constant, il => il.EmitLdc_R8( constant ) );
+			return ILConstruct.Literal( TypeDefinition.DoubleType, constant, il => il.EmitLdc_R8( constant ) );
 		}
 
 		protected override ILConstruct MakeBooleanLiteral( AssemblyBuilderEmittingContext context, bool constant )
 		{
-			return MakeIntegerLiteral( typeof( bool ), constant ? 1 : 0 );
+			return MakeIntegerLiteral( TypeDefinition.BooleanType, constant ? 1 : 0 );
 		}
 
 		protected override ILConstruct MakeCharLiteral( AssemblyBuilderEmittingContext context, char constant )
 		{
-			return MakeIntegerLiteral( typeof( char ), constant );
+			return MakeIntegerLiteral( TypeDefinition.CharType, constant );
 		}
 
 		protected override ILConstruct MakeStringLiteral( AssemblyBuilderEmittingContext context, string constant )
 		{
-			return ILConstruct.Literal( typeof( string ), constant, il => il.EmitLdstr( constant ) );
+			return ILConstruct.Literal( TypeDefinition.StringType, constant, il => il.EmitLdstr( constant ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Asserted internally" )]
@@ -336,7 +340,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				ILConstruct.BinaryOperator(
 					"==",
-					typeof( bool ),
+					TypeDefinition.BooleanType,
 					left,
 					right,
 					( il, l, r ) =>
@@ -380,7 +384,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				ILConstruct.BinaryOperator(
 					">",
-					typeof( bool ),
+					TypeDefinition.BooleanType,
 					left,
 					right,
 					( il, l, r ) =>
@@ -423,7 +427,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				ILConstruct.BinaryOperator(
 					"<",
-					typeof( bool ),
+					TypeDefinition.BooleanType,
 					left,
 					right,
 					( il, l, r ) =>
@@ -477,7 +481,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		{
 			return
 				ILConstruct.Literal(
-					typeof( Type ),
+					TypeDefinition.TypeType,
 					type,
 					il => il.EmitTypeOf( type.ResolveRuntimeType() )
 				);
@@ -494,7 +498,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				ILConstruct.Instruction(
 					"getsetter",
-					typeof( MethodBase ),
+					TypeDefinition.MethodBaseType,
 					false,
 				// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
 					il => instructions( il, 0 )
@@ -512,7 +516,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				ILConstruct.Instruction(
 					"getfield",
-					typeof( FieldInfo ),
+					TypeDefinition.FieldInfoType,
 					false,
 				// Both of this pointer for FieldBasedSerializerEmitter and context argument of methods for ContextBasedSerializerEmitter are 0.
 					il => instructions( il, 0 )
@@ -526,7 +530,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				ILConstruct.Instruction(
 					"throw",
-					typeof( void ),
+					TypeDefinition.VoidType,
 					true,
 					il =>
 					{
@@ -558,11 +562,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				method.ResolveRuntimeMethod().ReturnType == typeof( void )
 					? ILConstruct.Invoke( instance, method, arguments )
 					: ILConstruct.Sequence(
-						typeof( void ),
+						TypeDefinition.VoidType,
 						new[]
 						{
 							ILConstruct.Invoke( instance, method, arguments ),
-							ILConstruct.Instruction( "pop", typeof( void ), false, il => il.EmitPop() )
+							ILConstruct.Instruction( "pop", TypeDefinition.VoidType, false, il => il.EmitPop() )
 						}
 					);
 		}
@@ -811,7 +815,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			return
 				ILConstruct.Instruction(
 					"foreach",
-					typeof( void ),
+					TypeDefinition.VoidType,
 					false,
 					il =>
 					{
@@ -966,7 +970,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			PolymorphismSchema currentSchema 
 		)
 		{
-			var schema = this.DeclareLocal( context, typeof( PolymorphismSchema ), "schema" );
+			var schema = this.DeclareLocal( context, TypeDefinition.PolymorphismSchemaType, "schema" );
 			
 			yield return schema;
 			
@@ -1099,7 +1103,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Asserted internally" )]
 		protected override ILConstruct EmitGetMemberNamesExpression( AssemblyBuilderEmittingContext context )
 		{
-			var field = context.DeclarePrivateField( FieldName.MemberNames, typeof( IList<string> ) );
+			var field = context.DeclarePrivateField( FieldName.MemberNames, TypeDefinition.IListOfStringType );
 
 			return this.EmitGetFieldExpression( context, this.EmitThisReferenceExpression( context ), field );
 		}

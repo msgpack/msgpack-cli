@@ -23,6 +23,8 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 
+using MsgPack.Serialization.AbstractSerializers;
+
 namespace MsgPack.Serialization.CodeDomSerializers
 {
 	internal class StatementCodeDomConstruct : CodeDomConstruct
@@ -45,7 +47,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 		public StatementCodeDomConstruct( IEnumerable<CodeStatement> statements )
-			: base( typeof( void ) )
+			: base( TypeDefinition.VoidType )
 		{
 			this._statements = statements.ToArray();
 		}

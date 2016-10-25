@@ -22,6 +22,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 
+using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization.EmittingSerializers
@@ -33,7 +34,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly FieldInfo _field;
 
 		public StoreFieldILConstruct( ILConstruct instance, FieldInfo field, ILConstruct value )
-			: base( typeof( void ) )
+			: base( TypeDefinition.VoidType )
 		{
 			this._instance = instance;
 			this._field = field;

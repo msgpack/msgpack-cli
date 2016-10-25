@@ -44,6 +44,8 @@
     <Exclude Path="Serialization\FromExpressionTest.cs" />
     <Exclude Path="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
     <Exclude Path="Serialization\MessagePackMemberAttributeTest.cs" />
+    <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.Xamarin.Android" Base="MsgPack.UnitTest.Xamarin.iOS">
@@ -95,11 +97,8 @@
     <Preserve Path="gen\array\*" />
     <Preserve Path="gen\map\*" />
     <Exclude Path="Serialization\AppendableReadOnlyCollections.cs" />
-    <Exclude Path="Serialization\ArrayExpressionBasedAutoMessagePackSerializerTest.cs" />
-    <Exclude Path="Serialization\ArrayExpressionBasedEnumSerializationTest.cs" />
-    <Exclude Path="Serialization\ExpressionBasedNilImplicationTest.cs" />
-    <Exclude Path="Serialization\MapExpressionBasedAutoMessagePackSerializerTest.cs" />
-    <Exclude Path="Serialization\MapExpressionBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
+    <Preserve Path="Serialization\CodeDomCodeGeneration.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />
     <Preserve Path="Mono\System\AggregateException.cs" />
@@ -116,6 +115,7 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
+
   <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve File="*.config" />
@@ -147,9 +147,11 @@
     <Exclude Path="ExceptionTest.cs" />
     <Exclude Path="TestSuite.cs" />
     <Exclude Path="UnpackingTest.Combinations*" />
+    <Exclude Path="Serialization\CodeDomCodeGeneration.cs" />
     <Exclude Path="Serialization\PreGeneratedSerializerGenerator.cs" />
     <Exclude Path="Serialization\SerializationTargetTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
     <Exclude Path="Serialization\CompositeTest.cs" />
     <!-- Generator related -->
     <Exclude File="*ContextBased*.cs" />
@@ -193,6 +195,8 @@
     <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
     <Exclude Path="Serialization\FromExpressionTest.cs" />
     <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.BclExtensions.WinRT" Base="MsgPack.UnitTest.BclExtensions">
@@ -208,6 +212,8 @@
     <Exclude Path="Serialization\MapFieldBasedCustomCollectionSerializersTest.cs" />
     <Exclude Path="Serialization\MapContextBasedCustomCollectionSerializersTest.cs" />
     <Exclude Path="Serialization\MapCodeDomBasedCustomCollectionSerializersTest.cs" />
+    <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.Silverlight.WindowsPhone" Base="MsgPack.UnitTest.WinRT">

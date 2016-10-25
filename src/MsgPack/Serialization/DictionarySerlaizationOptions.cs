@@ -22,10 +22,6 @@
 #define UNITY
 #endif
 
-#if NETFX_35 || UNITY || SILVERLIGHT
-#define NO_THREADING_VOLATILE
-#endif // NETFX_35 || UNITY || SILVERLIGHT
-
 using System;
 using System.Threading;
 
@@ -41,11 +37,11 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	public sealed class DictionarySerlaizationOptions
 	{
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 		private volatile bool _omitNullEntry;
 #else
 		private bool _omitNullEntry;
-#endif
+#endif // !FEATURE_CONCURRENT
 
 		/// <summary>
 		///		Gets or sets a value indicating whether omit key-value entry itself when the value is <c>null</c>.
@@ -68,27 +64,27 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 				return this._omitNullEntry;
 #else
 				return Volatile.Read( ref this._omitNullEntry );
-#endif
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 				this._omitNullEntry = value;
 #else
 				Volatile.Write( ref this._omitNullEntry, value );
-#endif
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 		private volatile Func<string, string> _keyNameHandler;
 #else
 		private Func<string, string> _keyTransformer;
-#endif
+#endif // !FEATURE_CONCURRENT
 
 
 		/// <summary>
@@ -103,19 +99,19 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 				return this._keyNameHandler;
 #else
 				return Volatile.Read( ref this._keyTransformer );
-#endif
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 				this._keyNameHandler = value;
 #else
 				Volatile.Write( ref this._keyTransformer, value );
-#endif
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 

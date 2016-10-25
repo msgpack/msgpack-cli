@@ -1715,6 +1715,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\RegressionTests.cs">
       <Link>Serialization\RegressionTests.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RoslynCodeGeneration.cs">
+      <Link>Serialization\RoslynCodeGeneration.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
       <Link>Serialization\SerializationContextTest.cs</Link>
     </Compile>
@@ -1732,6 +1735,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs">
       <Link>Serialization\StringKeyedCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TempFileDependentAssemblyManager.cs">
+      <Link>Serialization\TempFileDependentAssemblyManager.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs">
       <Link>Serialization\TestValueType.cs</Link>

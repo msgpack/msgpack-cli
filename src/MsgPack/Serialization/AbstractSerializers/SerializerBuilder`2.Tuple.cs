@@ -20,11 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR
+#if CORE_CLR || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || NETSTANDARD1_1
 using System.Linq;
 using System.Reflection;
 #if FEATURE_TAP
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 				methodName,
 				this.EmitSequentialStatements(
 					context,
-					typeof( void ),
+					TypeDefinition.VoidType,
 					this.BuildTuplePackToCore( context, itemTypes, itemSchemaList, isAsync )
 				)
 			);
@@ -133,12 +133,12 @@ namespace MsgPack.Serialization.AbstractSerializers
 					AdjustName( MethodNamePrefix.PackValue + SerializationTarget.GetTupleItemNameFromIndex( i ), isAsync ),
 					false, // isStatic
 #if FEATURE_TAP
-					isAsync ? typeof( Task ) :
+					isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-					typeof( void ),
+					TypeDefinition.VoidType,
 					() => this.EmitSequentialStatements(
 						context,
-						typeof( void ),
+						TypeDefinition.VoidType,
 						this.EmitPackTupleItemStatements(
 							context,
 							itemTypes[ count ],
@@ -156,42 +156,63 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			var packHelperArguments =
-				new[]
-				{
-					context.Packer,
-					context.PackToTarget,
-					this.EmitGetActionsExpression( context, ActionType.PackToArray, isAsync )
-				}
-#if FEATURE_TAP
-				.Concat( isAsync ? new[] { this.ReferCancellationToken( context, 3 ) } : NoConstructs ).ToArray()
-#endif // FEATURE_TAP
-				;
+					new Dictionary<string, TConstruct>
+					{
+						{ "Packer", context.Packer },
+						{ "Target", context.PackToTarget },
+						{ "Operations", this.EmitGetActionsExpression( context, ActionType.PackToArray, isAsync ) }
+					};
 
-			var packToArray =
-				this.EmitInvokeMethodExpression(
-					context,
-					null,
+#if FEATURE_TAP
+			if ( isAsync )
+			{
+				packHelperArguments.Add( "CancellationToken", this.ReferCancellationToken( context, 3 ) );
+			}
+#endif // FEATURE_TAP
+
+			var packHelperParameterTypeDefinition =
+#if FEATURE_TAP
+				isAsync ? typeof( PackToArrayAsyncParameters<> ) :
+#endif // FEATURE_TAP
+				typeof( PackToArrayParameters<> );
+
+			var packHelperParameterType =
+					TypeDefinition.GenericValueType( packHelperParameterTypeDefinition, this.TargetType );
+			var packHelperMethod =
 					new MethodDefinition(
 						AdjustName( MethodName.PackToArray, isAsync ),
 						new [] { TypeDefinition.Object( this.TargetType ) },
-						typeof( PackHelpers ),
+						TypeDefinition.PackHelpersType,
 						true, // isStatic
 #if FEATURE_TAP
-						isAsync ? typeof( Task ) :
+						isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-						typeof( void ),
-						packHelperArguments.Select( a => a.ContextType ).ToArray()
-					),
-					packHelperArguments
-				);
+						TypeDefinition.VoidType,
+						packHelperParameterType
+					);
+
+			var packHelperParameters = this.DeclareLocal( context, packHelperParameterType, "packHelperParameters" );
+			yield return packHelperParameters;
+			foreach ( var construct in this.CreatePackUnpackHelperArgumentInitialization( context, packHelperParameters, packHelperArguments ) )
+			{
+				yield return construct;
+			}
+
+			var methodInvocation =
+					this.EmitInvokeMethodExpression(
+						context,
+						null,
+						packHelperMethod,
+						this.EmitMakeRef( context, packHelperParameters )
+					);
 
 			if ( isAsync )
 			{
 				// Wrap with return to return Task
-				packToArray = this.EmitRetrunStatement( context, packToArray );
+				methodInvocation = this.EmitRetrunStatement( context, methodInvocation );
 			}
 
-			yield return packToArray;
+			yield return methodInvocation;
 		}
 
 		private IEnumerable<TConstruct> EmitPackTupleItemStatements(
@@ -305,9 +326,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					AdjustName( MethodNamePrefix.UnpackValue + propertyName, isAsync ),
 					false, // isStatic
 #if FEATURE_TAP
-					isAsync ? typeof( Task ) :
+					isAsync ? TypeDefinition.TaskType :
 #endif // FEATURE_TAP
-					typeof( void ),
+					TypeDefinition.VoidType,
 					() => this.EmitUnpackItemValueStatement(
 						context,
 						itemTypes[ index ],
@@ -328,7 +349,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 								context,
 								setUnpackValueOfMethodName,
 								false, // isStatic
-								typeof( void ),
+								TypeDefinition.VoidType,
 								() => unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
 									? this.EmitInvokeVoidMethod(
 										context,
@@ -441,7 +462,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						new MethodDefinition(
 							AdjustName( MethodName.UnpackFromArray, isAsync ),
 							new [] { unpackingContext.Type, this.TargetType },
-							typeof( UnpackHelpers ),
+							TypeDefinition.UnpackHelpersType,
 							true, // isStatic
 #if FEATURE_TAP
 							isAsync ? typeof( Task<> ).MakeGenericType( this.TargetType ) :

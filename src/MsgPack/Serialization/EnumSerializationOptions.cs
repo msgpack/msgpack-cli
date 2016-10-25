@@ -22,16 +22,12 @@
 #define UNITY
 #endif
 
-#if NETFX_35 || UNITY || SILVERLIGHT
-#define NO_THREADING_VOLATILE
-#endif // NETFX_35 || UNITY || SILVERLIGHT
-
 using System;
-#if CORE_CLR || UNITY
+#if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Threading;
 
 namespace MsgPack.Serialization
@@ -91,11 +87,11 @@ namespace MsgPack.Serialization
 		}
 
 
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 		private volatile Func<string, string> _nameTransformer;
 #else
 		private Func<string, string> _nameTransformer;
-#endif
+#endif // !FEATURE_CONCURRENT
 
 		/// <summary>
 		///		Gets or sets the key name handler which enables dictionary key name customization.
@@ -109,19 +105,19 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 				return this._nameTransformer;
 #else
 				return Volatile.Read( ref this._nameTransformer );
-#endif
+#endif // !FEATURE_CONCURRENT
 			}
 			set
 			{
-#if NO_THREADING_VOLATILE
+#if !FEATURE_CONCURRENT
 				this._nameTransformer = value;
 #else
 				Volatile.Write( ref this._nameTransformer, value );
-#endif
+#endif // !FEATURE_CONCURRENT
 			}
 		}
 

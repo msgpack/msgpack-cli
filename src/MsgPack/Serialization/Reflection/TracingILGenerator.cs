@@ -2,7 +2,7 @@
 //
 // NLiblet
 //
-// Copyright (C) 2011-2016 FUJIWARA, Yusuke
+// Copyright (C) 2011-2016 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -16,16 +16,19 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
+// Contributors:
+//    Samuel Cragg
+//
 #endregion -- License Terms --
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if CORE_CLR
+#if CORE_CLR || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // CORE_CLR || NETSTANDARD1_1
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -197,20 +200,19 @@ namespace MsgPack.Serialization.Reflection
 		{
 			Contract.Assert( methodBuilder != null );
 		}
+#endif // DEBUG
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TracingILGenerator"/> class.
 		/// </summary>
 		/// <param name="dynamicMethod">The dynamic method.</param>
 		/// <param name="traceWriter">The trace writer.</param>
-		public TracingILGenerator( DynamicMethod dynamicMethod, TextWriter traceWriter )
-			: this( dynamicMethod != null ? dynamicMethod.GetILGenerator() : null, true, traceWriter, false )
+		/// <param name="isDebuggable"><c>true</c> if the underlying builders are debuggable; othersie <c>false</c>.</param>
+		public TracingILGenerator( DynamicMethod dynamicMethod, TextWriter traceWriter, bool isDebuggable )
+			: this( dynamicMethod != null ? dynamicMethod.GetILGenerator() : null, true, traceWriter, isDebuggable )
 		{
 			Contract.Assert( dynamicMethod != null );
 		}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
-#endif // DEBUG
 
 		// TODO: NLIblet
 
@@ -277,7 +279,6 @@ namespace MsgPack.Serialization.Reflection
 
 		#region -- Locals --
 
-#if DEBUG
 		/// <summary>
 		///		Declare local without pinning and name for debugging.
 		/// </summary>
@@ -292,6 +293,7 @@ namespace MsgPack.Serialization.Reflection
 			return this.DeclareLocalCore( localType, null );
 		}
 
+#if DEBUG
 		/// <summary>
 		///		Declare local without name for debugging.
 		/// </summary>

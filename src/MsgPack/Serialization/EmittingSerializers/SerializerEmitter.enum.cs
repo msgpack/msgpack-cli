@@ -19,7 +19,11 @@
 #endregion -- License Terms --
 
 using System;
+#if NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_1
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;

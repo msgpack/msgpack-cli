@@ -24,11 +24,12 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY
+using System.Linq;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 #if NETFX_CORE
 using System.Reflection;
 #endif
@@ -302,6 +303,37 @@ namespace MsgPack.Serialization
 					holdsReadLock = true;
 				}
 				return this._table.ContainsKey( type.TypeHandle );
+			}
+			finally
+			{
+				if ( holdsReadLock )
+				{
+					this._lock.ExitReadLock();
+				}
+			}
+		}
+
+#if !NETFX_35 && !UNITY
+		[SecuritySafeCritical]
+#endif
+		internal IEnumerable<KeyValuePair<Type, object>> GetEntries()
+		{
+			bool holdsReadLock = false;
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+			RuntimeHelpers.PrepareConstrainedRegions();
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+			try
+			{
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+				RuntimeHelpers.PrepareConstrainedRegions();
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+				try { }
+				finally
+				{
+					this._lock.EnterReadLock();
+					holdsReadLock = true;
+				}
+				return this._table.Select( kv => new KeyValuePair<Type, object>( Type.GetTypeFromHandle( kv.Key ), kv.Value ) ).ToArray();
 			}
 			finally
 			{
