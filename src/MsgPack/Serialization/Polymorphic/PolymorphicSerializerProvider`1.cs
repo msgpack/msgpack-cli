@@ -34,11 +34,13 @@ namespace MsgPack.Serialization.Polymorphic
 	{
 		// This may be null for abstract typed collection which does not have corresponding concrete type.
 		private readonly MessagePackSerializer<T> _defaultSerializer;
+		private readonly PolymorphismSchema _defaultSchema;
 
 #if !UNITY
 		public PolymorphicSerializerProvider( MessagePackSerializer<T> defaultSerializer )
 		{
 			this._defaultSerializer = defaultSerializer;
+			this._defaultSchema = PolymorphismSchema.Create( typeof( T ), null );
 		}
 #else
 		public PolymorphicSerializerProvider( SerializationContext context, MessagePackSerializer defaultSerializer )
@@ -49,7 +51,7 @@ namespace MsgPack.Serialization.Polymorphic
 
 		public override object Get( SerializationContext context, object providerParameter )
 		{
-			var schema = providerParameter as PolymorphismSchema;
+			var schema = ( providerParameter ?? this._defaultSchema ) as PolymorphismSchema;
 
 			if ( schema == null || schema.UseDefault || schema.TargetType != typeof( T ) )
 			{

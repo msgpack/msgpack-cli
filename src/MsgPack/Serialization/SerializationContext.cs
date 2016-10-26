@@ -616,13 +616,10 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public MessagePackSerializer<T> GetSerializer<T>( object providerParameter )
 		{
-			// Set default schema if provider parameter is not specified.
-			providerParameter = providerParameter ?? PolymorphismSchema.Create( typeof( T ), null );
 #if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // DEBUG
 
-			var schema = providerParameter as PolymorphismSchema;
 			// Explicitly generated serializer should always used, so get it first.
 			MessagePackSerializer<T> serializer = this._serializers.Get<T>( this, providerParameter );
 
@@ -668,6 +665,7 @@ namespace MsgPack.Serialization
 					if ( lockTaken )
 					{
 						// First try to create generic serializer w/o code generation.
+						var schema = ( providerParameter ?? PolymorphismSchema.Create( typeof( T ), null ) ) as PolymorphismSchema;
 						serializer = GenericSerializer.Create<T>( this, schema );
 
 						if ( serializer == null )
