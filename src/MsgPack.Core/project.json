@@ -1,7 +1,6 @@
 ﻿{
   "supports": {},
   "dependencies": {
-    "System.Collections": "4.0.11",
     "System.Diagnostics.Debug": "4.0.11",
     "System.Diagnostics.Tools": "4.0.1",
     "System.Globalization": "4.0.11",
@@ -17,10 +16,44 @@
     "System.Runtime.Serialization.Primitives": "4.1.1",
     "System.Text.Encoding": "4.0.11",
     "System.Text.Encoding.Extensions": "4.0.11",
-    "System.Text.RegularExpressions": "4.1.0",
     "System.Threading": "4.0.11"
   },
   "frameworks": {
     "netstandard1.1": {}
+  },
+  "buildOptions": {
+    "outputName": "MsgPack.Core",
+    "keyFile": "../MsgPack.snk",
+    "configurations": {
+      "Debug": {
+        "buildOptions": {
+          "define": [ "DEBUG" ],
+          "optimize": false
+        }
+      },
+      "Release": {
+        "buildOptions": {
+          "optimize": true
+        }
+      }
+    },
+    "define": [ "TRACE", "FEATURE_TAP", "FEATURE_CONCURRENT" ],
+    "xmlDoc": true,
+    "compile": {
+      "include": [
+        "../MsgPack/**/*.cs",
+        "../CommonAssemblyInfo.cs",
+        "BufferedStream.cs",
+        "MPContract.cs",
+        "NetStandardCompatibility.cs",
+        "./**/*.cs"
+      ],
+      "exclude": [
+        "../MsgPack/Properties/AssemblyInfo.cs",
+        "../MsgPack/Serialization/**/*.*",
+        "../MsgPack/PackerUnpackerExtensions.cs",
+        "../MsgPack/Validation.cs"
+      ]
+    }
   }
 }
