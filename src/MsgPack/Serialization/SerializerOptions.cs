@@ -111,12 +111,12 @@ namespace MsgPack.Serialization
 #endif // !FEATURE_CONCURRENT
 
 		/// <summary>
-		///		Gets or sets a value indicating whether runtime generation is disabled or not.
+		///		Gets or sets a value indicating whether runtime generation should be disabled or not.
 		/// </summary>
 		/// <value>
-		///		<c>true</c> if runtime generation is disabled; otherwise, <c>false</c>.
+		///		<c>true</c> if runtime generation is disabled; otherwise, <c>false</c>. Defaults to <c>false</c>.
 		/// </value>
-		internal bool IsRuntimeGenerationDisabled
+		public bool DisableRuntimeCodeGeneration
 		{
 			get
 			{

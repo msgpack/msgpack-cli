@@ -106,7 +106,7 @@ namespace MsgPack.Serialization
 			}
 
 #if !AOT
-			context.SerializerOptions.IsRuntimeGenerationDisabled = true;
+			context.SerializerOptions.DisableRuntimeCodeGeneration = true;
 #endif // !AOT
 			return context;
 		}

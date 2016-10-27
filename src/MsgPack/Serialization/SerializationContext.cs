@@ -313,22 +313,6 @@ namespace MsgPack.Serialization
 			get { return this._defaultCollectionTypes; }
 		}
 
-#if !AOT
-
-		/// <summary>
-		///		Gets or sets a value indicating whether runtime generation is disabled or not.
-		/// </summary>
-		/// <value>
-		///		<c>true</c> if runtime generation is disabled; otherwise, <c>false</c>.
-		/// </value>
-		internal bool IsRuntimeGenerationDisabled
-		{
-			get { return this._serializerGeneratorOptions.IsRuntimeGenerationDisabled; }
-			set { this._serializerGeneratorOptions.IsRuntimeGenerationDisabled = value; }
-		}
-
-#endif // !AOT
-
 		private int _defaultDateTimeConversionMethod;
 
 		/// <summary>
@@ -671,7 +655,7 @@ namespace MsgPack.Serialization
 						if ( serializer == null )
 						{
 #if !AOT
-							if ( this._serializerGeneratorOptions.IsRuntimeGenerationDisabled )
+							if ( this._serializerGeneratorOptions.DisableRuntimeCodeGeneration )
 							{
 #endif // AOT
 								// On debugging, or AOT only envs, use reflection based aproach.
