@@ -24,11 +24,11 @@
 
 using System;
 #if DEBUG
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // UNITY || NETSTANDARD1_1
 #endif // DEBUG
 using System.Globalization;
 using System.IO;
