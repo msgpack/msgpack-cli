@@ -18,6 +18,8 @@
 //
 #endregion -- License Terms --
 
+#if !AOT
+
 using System;
 #if NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
@@ -1023,3 +1025,4 @@ namespace MsgPack.Serialization.Reflection
 #endif // DEBUG
 	}
 }
+#endif // !AOT

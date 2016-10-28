@@ -22,14 +22,12 @@
 #define UNITY
 #endif
 
-#if !NETSTANDARD1_1
-
 using System;
-#if CORE_CLR || UNITY
+#if CORE_CLR || UNITY || NETSTANDARD1_2
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY
+#endif // CORE_CLR || UNITY || NETSTANDARD1_2
 using System.Runtime.Serialization;
 #if FEATURE_TAP
 using System.Threading;
@@ -83,4 +81,3 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 	}
 }
-#endif // !NETSTANDARD1_1

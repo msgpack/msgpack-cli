@@ -340,7 +340,7 @@ namespace MsgPack.Serialization.Polymorphic
 
 		private static AssemblyName BuildAssemblyName( string assemblySimpleName, byte[] version, string culture, byte[] publicKeyToken )
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 			var assemblyName =
 				new AssemblyName
 				{
@@ -380,7 +380,7 @@ namespace MsgPack.Serialization.Polymorphic
 						( publicKeyToken == null || publicKeyToken.Length == 0 ) ? "null" : Binary.ToHexString( publicKeyToken, false )
 					)
 				);
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 		}
 
 		private static string DecompressTypeName( string assemblySimpleName, string compressedTypeName )
@@ -401,9 +401,9 @@ namespace MsgPack.Serialization.Polymorphic
 #endif // SILVERLIGHT
 				).GetType(
 					typeFullName
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 					, throwOnError: true
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 				);
 		}
 

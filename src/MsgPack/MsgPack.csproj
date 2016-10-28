@@ -256,6 +256,7 @@
     </Compile>
     <Compile Include="Serialization\DefaultSerializers\System_DBNullMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Globalization_CultureInfoMessagePackSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializers\System_Numerics_BigIntegerMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs" />
     <Compile Include="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />

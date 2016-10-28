@@ -24,11 +24,11 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETFX_CORE || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 #if !NETFX_35 && !UNITY
 using System.Security;
 #endif // !NETFX_35 && !UNITY

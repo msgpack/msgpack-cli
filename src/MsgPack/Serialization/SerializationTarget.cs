@@ -31,11 +31,11 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETFX_CORE || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -238,7 +238,7 @@ namespace MsgPack.Serialization
 			while ( type != typeof( object ) && type != null )
 			{
 				var members = 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 					type.FindMembers(
 						MemberTypes.Field | MemberTypes.Property,
 						BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
@@ -248,7 +248,7 @@ namespace MsgPack.Serialization
 #else
 					type.GetTypeInfo().DeclaredFields.Where( f => !f.IsStatic ).OfType<MemberInfo>()
 						.Concat( type.GetTypeInfo().DeclaredProperties.Where( p => p.GetMethod != null && !p.GetMethod.IsStatic ) );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 				foreach ( var memberInfo in members )
 				{
 					if ( returningMemberNamesSet.Add( memberInfo.Name ) ) //HashSet returns true is new key was added

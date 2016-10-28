@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+#if !AOT
 // This code is generated from T4Template TracingILGenerator.emits.tt.
 // Do not modify this source code directly.
 
@@ -3603,3 +3604,4 @@ namespace MsgPack.Serialization.Reflection
 #endif // DEBUG
 	}
 }
+#endif // !AOT

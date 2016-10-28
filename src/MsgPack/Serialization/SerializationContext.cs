@@ -32,11 +32,11 @@ using System.Collections.Concurrent;
 #else // !FEATURE_CONCURRENT
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NETFX_35 && !UNITY
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETFX_CORE || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 #if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Linq;
 #endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
@@ -929,7 +929,7 @@ namespace MsgPack.Serialization
 #endif // !FEATURE_CONCURRENT
 				if ( !this._cache.TryGetValue( targetType.TypeHandle, out func ) || func == null )
 				{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 					func =
 						Delegate.CreateDelegate(
 							typeof( Func<SerializationContext, object, MessagePackSerializer> ),
@@ -940,7 +940,7 @@ namespace MsgPack.Serialization
 						typeof( SerializerGetter<> ).MakeGenericType( targetType ).GetMethod( "Get" ).CreateDelegate(
 							typeof( Func<SerializationContext, object, MessagePackSerializer> )
 						) as Func<SerializationContext, object, MessagePackSerializer>;
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 
 					Contract.Assert( func != null, "func != null" );
 
@@ -959,7 +959,7 @@ namespace MsgPack.Serialization
 		private static class SerializerGetter<T>
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN && !NETFX_CORE
 				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
@@ -973,7 +973,7 @@ namespace MsgPack.Serialization
 				.MakeGenericMethod( typeof( T ) ).CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN && !NETFX_CORE
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().

@@ -39,6 +39,7 @@ var excludes =
 		typeof( System.ArraySegment<> ),
 		typeof( System.Collections.DictionaryEntry ),
 		typeof( System.Collections.Generic.KeyValuePair<,> ),
+		typeof( System.Collections.Specialized.BitVector32 ),
 		// Special(manual) handlings on builtin serializer:
 		typeof( System.DateTime ),
 		// Special(manual) handlings on builtin serializer:
@@ -144,8 +145,6 @@ var types =
 		typeof( TraceListener ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Concat(
 		typeof( Enumerable ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
-	).Concat(
-		typeof( BigInteger ).Assembly.GetTypes().Where( type => type.IsValueType && type.IsPublic && !Attribute.IsDefined( type, typeof( ObsoleteAttribute ) ) )
 	).Except( excludes )
 	.ToArray();
 	
@@ -155,7 +154,6 @@ var workArounds =
 		{ typeof( char ), new WorkAround(){ PackCode = "packer.Pack( ( System.UInt16 )value );", UnpackCode = "return ( System.Char ) unpacker.LastReadData.AsUInt16(); " } },
 		{ typeof( decimal ), new WorkAround(){ PackCode = "packer.PackString( value.ToString( \"G\", CultureInfo.InvariantCulture ) );", UnpackCode = "return System.Decimal.Parse( unpacker.LastReadData.AsString(), CultureInfo.InvariantCulture ); " } },
 		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.LastReadData.AsBinary() ); " } },
-		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); " } },
 	};
 
 var asyncWorkArounds =
@@ -164,33 +162,7 @@ var asyncWorkArounds =
 		{ typeof( char ), "packer.PackAsync( ( System.UInt16 )value, cancellationToken ).ConfigureAwait( false );" },
 		{ typeof( decimal ), "packer.PackStringAsync( value.ToString( \"G\", CultureInfo.InvariantCulture ), cancellationToken ).ConfigureAwait( false );" },
 		{ typeof( Guid ), "packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
-		{ typeof( BigInteger ), "packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
 	};
-
-var notInSLs =
-	new HashSet<Type>()
-	{
-		typeof( System.Collections.Specialized.BitVector32 ),
-	};
-
-var notInWP8SLs =
-	new HashSet<Type>()
-	{
-		typeof( System.Numerics.BigInteger ),
-	};
-
-var notInNetStandard1_1 =
-	new HashSet<Type>()
-	{
-		typeof( System.Collections.Specialized.BitVector32 ),
-	};
-
-var notInNetFX35 =
-	new HashSet<Type>()
-	{
-		typeof( System.Numerics.BigInteger ),
-	};
-
 #>
 #region -- License Terms --
 //
@@ -251,34 +223,6 @@ foreach( Type type in types )
 	}
 	
 	var ctors = type.GetConstructors( BindingFlags.Public | BindingFlags.Instance ).Where( item => item.GetParameters().Length == 1 ).Where( item => IsMessagePackPrimitive( item.GetParameters()[ 0 ].ParameterType ) ).ToArray();
-	
-	if ( notInSLs.Contains( type ) )
-	{
-#>
-#if !SILVERLIGHT
-<#
-	}
-	
-	if ( notInNetStandard1_1.Contains( type ) )
-	{
-#>
-#if !NETSTANDARD1_1
-<#
-	}
-
-	if ( notInWP8SLs.Contains( type ) )
-	{
-#>
-#if !WINDOWS_PHONE
-<#
-	}
-
-	if ( notInNetFX35.Contains( type ) )
-	{
-#>
-#if !NETFX_35 && !UNITY
-<#
-	}
 
 	var typeName = type.FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) + "MessagePackSerializer";
 
@@ -519,33 +463,6 @@ foreach( var ctor in ctors )
 
 	}
 <#
-	if ( notInNetFX35.Contains( type ) )
-	{
-#>
-#endif // !NETFX_35 && !UNITY
-<#
-	}
-
-	if ( notInWP8SLs.Contains( type ) )
-	{
-#>
-#endif // !WINDOWS_PHONE
-<#
-	}
-
-	if ( notInNetStandard1_1.Contains( type ) )
-	{
-#>
-#endif // !NETSTANDARD1_1
-<#
-	}
-
-	if ( notInSLs.Contains( type ) )
-	{
-#>
-#endif // !SILVERLIGHT
-<#
-	}
 
 	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{

@@ -18,6 +18,13 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#define AOT
+#endif
+
+#if !AOT
+
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -65,3 +72,4 @@ namespace MsgPack.Serialization
 		}
 	}
 }
+#endif // !AOT

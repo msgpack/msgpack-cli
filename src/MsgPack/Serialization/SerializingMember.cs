@@ -24,11 +24,11 @@
 
 using System;
 using System.Globalization;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETFX_CORE || UNITY || NETSTANDARD1_1
 using MPContract = MsgPack.MPContract;
 #else
 using MPContract = System.Diagnostics.Contracts.Contract;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 using System.Reflection;
 
 namespace MsgPack.Serialization
@@ -80,7 +80,7 @@ namespace MsgPack.Serialization
 
 		public EnumMemberSerializationMethod GetEnumMemberSerializationMethod()
 		{
-#if NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 			var messagePackEnumMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackEnumMemberAttribute>();
 			if ( messagePackEnumMemberAttribute != null)
@@ -94,7 +94,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackEnumMemberAttributes[ 0 ] as MessagePackEnumMemberAttribute ).SerializationMethod;
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 			}
 
 			return EnumMemberSerializationMethod.Default;
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 
 		public DateTimeMemberConversionMethod GetDateTimeMemberConversionMethod()
 		{
-#if NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 			var messagePackDateTimeMemberAttribute = 
 				this.Member.GetCustomAttribute<MessagePackDateTimeMemberAttribute>();
 			if ( messagePackDateTimeMemberAttribute != null)
@@ -116,7 +116,7 @@ namespace MsgPack.Serialization
 				return
 					// ReSharper disable once PossibleNullReferenceException
 					( messagePackDateTimeMemberAttribute[ 0 ] as MessagePackDateTimeMemberAttribute ).DateTimeConversionMethod;
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 			}
 
 			return DateTimeMemberConversionMethod.Default;

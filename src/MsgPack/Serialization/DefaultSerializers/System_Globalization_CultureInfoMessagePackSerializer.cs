@@ -43,11 +43,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override CultureInfo UnpackFromCore( Unpacker unpacker )
 		{
-#if SILVERLIGHT || NETSTANDARD1_1 || NETSTANDARD1_3
+#if SILVERLIGHT || NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 			return new CultureInfo( unpacker.LastReadData.AsString() );
 #else
 			return CultureInfo.GetCultureInfo( unpacker.LastReadData.AsString() );
-#endif // SILVERLIGHT || NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // SILVERLIGHT || NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 		}
 
 #if FEATURE_TAP

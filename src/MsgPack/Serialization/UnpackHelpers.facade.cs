@@ -33,11 +33,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if ASSERT
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETFX_CORE || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 #endif // ASSERT
 #if FEATURE_TAP
 using System.Threading;

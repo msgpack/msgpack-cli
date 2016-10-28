@@ -26,9 +26,9 @@ using System;
 #if !UNITY || MSGPACK_UNITY_FULL
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#if NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 using System.Reflection;
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 
 namespace MsgPack.Serialization
 {
@@ -84,7 +84,7 @@ namespace MsgPack.Serialization
 				}
 				default:
 				{
-#if NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 					var messagePackEnumAttribute = 
 						enumType.GetTypeInfo().GetCustomAttribute<MessagePackEnumAttribute>();
 					if ( messagePackEnumAttribute != null)
@@ -97,7 +97,7 @@ namespace MsgPack.Serialization
 					{
 						// ReSharper disable once PossibleNullReferenceException
 						method = ( messagePackEnumAttributes[ 0 ] as MessagePackEnumAttribute ).SerializationMethod;
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || NETFX_CORE
 					}
 
 					break;

@@ -11,21 +11,45 @@
     <iconUrl>http://cli.msgpack.org/images/msgpack.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MessagePack is fast, compact, and interoperable binary serialization format.
-This package provides MessagePack serialization APIs. This pacakge also supports Mono, Xamarin, .NET Core and Unity.</description>
+This package provides MessagePack serialization APIs.
+If you want to use built-in serializers for known structures and collections, check MsgPack.Cli.*.Serializers packages.
+You can also install all packages with MsgPack.Cli (meta) package.
+</description>
     <releaseNotes>This release includes new code generators and package reorganization to reduce entire size in most cases.</releaseNotes>
     <copyright>Copyright 2010-2016 FUJIWARA, Yusuke, all rights reserved.</copyright>
     <tags>MsgPack MessagePack Serialization Formatter Serializer</tags>
     <dependencies>
       <group>
         <dependency id="MsgPack.Cli.Core" version="${VERSION}" />
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.Collections.Concurrent" version="4.0.12" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+        <dependency id="System.Diagnostics.Tools" version="4.0.1" />
+        <dependency id="System.Globalization" version="4.0.11" />
+        <dependency id="System.IO" version="4.1.0" />
+        <dependency id="System.Linq" version="4.1.0" />
+        <dependency id="System.Reflection" version="4.1.0" />
+        <dependency id="System.Reflection.Emit" version="4.0.1" />
+        <dependency id="System.Reflection.Emit.Lightweight" version="4.0.1" />
+        <dependency id="System.Reflection.Extensions" version="4.0.1" />
+        <dependency id="System.Reflection.Primitives" version="4.0.1" />
+        <dependency id="System.Resources.ResourceManager" version="4.0.1" />
+        <dependency id="System.Runtime" version="4.1.0" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" />
+        <dependency id="System.Runtime.InteropServices" version="4.1.0" />
+        <dependency id="System.Runtime.Serialization.Primitives" version="4.1.1" />
+        <dependency id="System.Text.Encoding" version="4.0.11" />
+        <dependency id="System.Text.Encoding.Extensions" version="4.0.11" />
+        <dependency id="System.Text.RegularExpressions" version="4.1.0" />
+        <dependency id="System.Threading" version="4.0.11" />
+        <dependency id="System.Threading.Tasks" version="4.0.11" />
       </group>
-      <group targetFramework=".NETFramework3.5" />
-      <group targetFramework="Silverlight5" />
+      <group targetFramework="MonoAndroid1.0" />
+      <group targetFramework="UAP10.0" />
+      <group targetFramework="Xamarin.iOS1.0" />
       <group targetFramework="MonoAndroid1.0" />
       <group targetFramework="Xamarin.iOS1.0" />
-      <group targetFramework=".NETStandard1.1">
-        <dependency id="System.Collections.Concurrent" version="4.0.12" />
-      </group>
+      <group targetFramework=".NETStandard1.1" />
     </dependencies>
   </metadata>
   <files>

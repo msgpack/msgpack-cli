@@ -22,9 +22,131 @@
     "System.Text.Encoding.Extensions": "4.0.11",
     "System.Text.RegularExpressions": "4.1.0",
     "System.Threading": "4.0.11",
-    "System.Linq.Expressions": "4.1.0"
+    "System.Threading.Tasks": "4.0.11",
+    "System.Linq.Expressions": "4.1.0",
+    "MsgPack.Core": {
+        "version": "*",
+        "target": "project"
+    }
   },
   "frameworks": {
-    "netstandard1.1": {}
+    "netstandard1.1": {},
+    "MonoAndroid10": {
+        "buildOptions": {
+            "define": [ "AOT" ]
+        },
+        "frameworkAssemblies": {
+            "mscorlib": {
+                "type": "build",
+                "version": "2.0.5.0"
+            },
+            "System": {
+                "type": "build",
+                "version": "2.0.5.0"
+            },
+            "System.Core": {
+                "type": "build",
+                "version": "2.0.5.0"
+            }
+        }
+    },
+    "Xamarin.iOS10": {
+        "buildOptions": {
+            "define": [ "AOT" ]
+        },
+        "frameworkAssemblies": {
+            "mscorlib": {
+                "type": "build",
+                "version": "2.0.5.0"
+            },
+            "System": {
+                "type": "build",
+                "version": "2.0.5.0"
+            },
+            "System.Core": {
+                "type": "build",
+                "version": "2.0.5.0"
+            }
+        }
+    },
+    "uap10.0": {
+        "buildOptions": {
+            "define": [ "NETFX_CORE", "AOT" ]
+        }
+    }
+  },
+  "buildOptions": {
+    "outputName": "MsgPack.Serialization",
+    "keyFile": "../MsgPack.snk",
+    "configurations": {
+      "Debug": {
+        "buildOptions": {
+          "define": [ "DEBUG" ],
+          "optimize": false
+        }
+      },
+      "Release": {
+        "buildOptions": {
+          "optimize": true
+        }
+      }
+    },
+    "define": [ "TRACE", "FEATURE_TAP", "FEATURE_CONCURRENT" ],
+    "xmlDoc": true,
+    "compile": {
+      "include": [
+        "../MsgPack/Serialization/**/*.cs",
+        "../MsgPack/PackerUnpackerExtensions.cs",
+        "../MsgPack/Validation.cs",
+        "../CommonAssemblyInfo.cs",
+        "./**/*.cs"
+      ],
+      "exclude": [
+        "../MsgPack/Serialization/AbstractSerializers/**/*.*",
+        "../MsgPack/Serialization/CodeDomSerializers/**/*.*",
+        "../MsgPack/Serialization/DefaultSerializers/SimdTypeSerializers.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Collections_QueueMessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Collections_StackMessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Collections_Specialized_BitVector32MessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Collections_StackMessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_DBNullMessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Numerics_BigIntegerMessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Numerics_ComplexMessagePackSerializer.cs",
+        "../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
+        "../MsgPack/Serialization/EmittingSerializers/**/*.*",
+        "../MsgPack/Serialization/Metadata/_CultureInfo.cs",
+        "../MsgPack/Serialization/Metadata/_DateTimeMessagePackSerializerHelpers.cs",
+        "../MsgPack/Serialization/Metadata/_Decimal.cs",
+        "../MsgPack/Serialization/Metadata/_DictionaryEntry.cs",
+        "../MsgPack/Serialization/Metadata/_DynamicUnpackingContext.cs",
+        "../MsgPack/Serialization/Metadata/_EnumMessagePackSerializerHelpers.cs",
+        "../MsgPack/Serialization/Metadata/_FieldInfo.cs",
+        "../MsgPack/Serialization/Metadata/_IDictionaryEnumerator.cs",
+        "../MsgPack/Serialization/Metadata/_IDisposable.cs",
+        "../MsgPack/Serialization/Metadata/_IEnumreator.cs",
+        "../MsgPack/Serialization/Metadata/_MessagePackObject.cs",
+        "../MsgPack/Serialization/Metadata/_MethodBase.cs",
+        "../MsgPack/Serialization/Metadata/_Object.cs",
+        "../MsgPack/Serialization/Metadata/_Packer.cs",
+        "../MsgPack/Serialization/Metadata/_String.cs",
+        "../MsgPack/Serialization/Metadata/_Unpacker.cs",
+        "../MsgPack/Serialization/Metadata/_UnpackHelpers.cs",
+        "../MsgPack/Serialization/Metadata/_UnpackHelpers.direct.cs",
+        "../MsgPack/Serialization/CodeGenerationSink.cs",
+        "../MsgPack/Serialization/DependentAssemblyManager.cs",
+        "../MsgPack/Serialization/IndividualFileCodeGenerationSink.cs",
+        "../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
+        "../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",
+        "../MsgPack/Serialization/SerializerCodeGenerationConfiguration.cs",
+        "../MsgPack/Serialization/SerializerCodeInformation.cs",
+        "../MsgPack/Serialization/SerializerGenerator.cs",
+        "../MsgPack/Serialization/SerializerCodeGenerationContext.cs",
+        "../MsgPack/Serialization/SerializerCodeGenerationResult.cs",
+        "../MsgPack/Serialization/SerializerRepository.defaults.cs",
+        "../MsgPack/Serialization/SingleTextWriterCodeGenerationSink.cs",
+        "../MsgPack/Serialization/TeeTextWriter.cs",
+      ]
+    }
   }
 }

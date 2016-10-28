@@ -26,9 +26,9 @@
 #define ASSERT
 #endif // DEBUG
 
-#if DEBUG && !NETFX_CORE
+#if DEBUG && !NETFX_CORE && !AOT
 #define TRACING
-#endif // DEBUG && !NETFX_CORE
+#endif // DEBUG && !NETFX_CORE && !AOT
 
 using System;
 using System.Collections;
@@ -38,11 +38,11 @@ using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
 #if ASSERT
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETFX_CORE || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 #endif // ASSERT
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -1041,9 +1041,9 @@ namespace MsgPack.Serialization
 		[Conditional( "TRACING" )]
 		private static void TraceCore( string format, params object[] args )
 		{
-#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT
 			Tracer.Tracing.TraceEvent( Tracer.EventType.Trace, Tracer.EventId.Trace, format, args );
-#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT
 		}
 
 		private sealed class UnpackerTraceContext

@@ -28,11 +28,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETFX_CORE || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 using System.Linq;
 using System.Reflection;
 
@@ -775,17 +775,17 @@ namespace MsgPack.Serialization
 			PropertyInfo asProperty;
 			FieldInfo asField;
 			MethodBase asMethod;
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 			Type asType;
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 			if ( ( asProperty = source as PropertyInfo ) != null )
 			{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 				return asProperty.GetAccessors( true ).Where( a => a.ReturnType != typeof( void ) ).All( a => a.IsPublic );
 #else
 				return
 					( asProperty.GetMethod == null || asProperty.GetMethod.IsPublic );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 			}
 			else if ( ( asField = source as FieldInfo ) != null )
 			{
@@ -795,12 +795,12 @@ namespace MsgPack.Serialization
 			{
 				return asMethod.IsPublic;
 			}
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 			else if ( ( asType = source as Type ) != null )
 			{
 				return asType.IsPublic;
 			}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 			else
 			{
 				throw new NotSupportedException( source.GetType() + " is not supported." );

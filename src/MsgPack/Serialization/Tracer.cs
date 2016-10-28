@@ -18,6 +18,8 @@
 //
 #endregion -- License Terms --
 
+#if !AOT
+
 using System;
 using System.Diagnostics;
 #if NETSTANDARD1_1 || NETSTANDARD1_3
@@ -89,3 +91,4 @@ namespace MsgPack.Serialization
 	}
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3
 }
+#endif // !AOT

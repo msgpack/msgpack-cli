@@ -21,6 +21,8 @@
 //
 #endregion -- License Terms --
 
+#if !AOT
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -1443,3 +1445,5 @@ namespace MsgPack.Serialization.Reflection
 #endregion
 	}
 }
+
+#endif // !AOT
