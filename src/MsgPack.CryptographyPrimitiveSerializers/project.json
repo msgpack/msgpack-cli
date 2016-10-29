@@ -1,0 +1,44 @@
+﻿{
+  "supports": {},
+  "dependencies": {
+    "System.Runtime": "4.1.0",
+    "System.Security.Cryptography.Primitives": "4.0.0",
+    "MsgPack.Core": {
+        "version": "*",
+        "target": "project"
+    },
+    "MsgPack.Serialization": {
+        "version": "*",
+        "target": "project"
+    }
+  },
+  "frameworks": {
+    "netstandard1.3": {}
+  },
+  "buildOptions": {
+    "outputName": "MsgPack.CryptographyPrimitiveSerializers",
+    "keyFile": "../MsgPack.snk",
+    "configurations": {
+      "Debug": {
+        "buildOptions": {
+          "define": [ "DEBUG" ],
+          "optimize": false
+        }
+      },
+      "Release": {
+        "buildOptions": {
+          "optimize": true
+        }
+      }
+    },
+    "define": [ "TRACE", "FEATURE_TAP", "FEATURE_CONCURRENT" ],
+    "xmlDoc": true,
+    "compile": {
+      "include": [
+        "../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs",
+        "../CommonAssemblyInfo.cs",
+        "./**/*.cs"
+      ]
+    }
+  }
+}
