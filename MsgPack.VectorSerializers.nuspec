@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata minClientVersion="2.12">
+    <id>MsgPack.Cli.VectorSerializers</id>
+    <title>MessagePack for CLI SIMD ready vector types serializers</title>
+    <version>0.0.0-development</version>
+    <authors>FUJIWARA, Yusuke</authors>
+    <owners>FUJIWARA, Yusuke</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/msgpack/msgpack-cli</projectUrl>
+    <iconUrl>http://cli.msgpack.org/images/msgpack.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MessagePack is fast, compact, and interoperable binary serialization format.
+This package contains MessagePack out-of-box serializers for SIMD ready vector types namely:
+- System.Numerics.Vectors.Vector2
+- System.Numerics.Vectors.Vector3
+- System.Numerics.Vectors.Vector4
+- System.Numerics.Vectors.Plane
+- System.Numerics.Vectors.Quaternion
+- System.Numerics.Vectors.Matrix3x2
+- System.Numerics.Vectors.Matrix4x4
+
+</description>
+    <releaseNotes>This release includes new code generators and package reorganization to reduce entire size in most cases.</releaseNotes>
+    <copyright>Copyright 2010-2016 FUJIWARA, Yusuke, all rights reserved.</copyright>
+    <tags>MsgPack MessagePack Serialization Formatter Serializer</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard1.3">
+        <dependency id="MsgPack.Cli.Core" version="${VERSION}" />
+        <dependency id="MsgPack.Cli.Serialization" version="${VERSION}" />
+        <dependency id="System.Runtime" version="4.1.0" />
+        <dependency id="System.Numerics.Vectors" version="4.1.1" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\**\*.dll" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />
+    <file src="bin\**\*.XML" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />
+  </files>
+</package>
