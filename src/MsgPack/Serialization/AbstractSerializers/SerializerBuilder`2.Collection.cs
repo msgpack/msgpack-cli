@@ -23,11 +23,11 @@
 
 using System;
 using System.Collections.Generic;
-#if NETFX_CORE || UNITY || NETSTANDARD1_1
+#if NETSTANDARD1_3
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // NETFX_CORE || UNITY || NETSTANDARD1_1
+#endif // NETSTANDARD1_3
 using System.Linq;
 using System.Reflection;
 #if FEATURE_TAP

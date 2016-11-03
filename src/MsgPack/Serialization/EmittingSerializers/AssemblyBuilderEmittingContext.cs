@@ -23,11 +23,11 @@
 
 using System;
 using System.Collections.Generic;
-#if NETSTANDARD1_1
+#if NETSTANDARD1_3
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // NETSTANDARD1_1
+#endif // NETSTANDARD1_3
 using System.Linq;
 using System.Reflection;
 

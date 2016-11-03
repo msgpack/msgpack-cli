@@ -19,11 +19,11 @@
 #endregion -- License Terms --
 
 using System;
-#if CORE_CLR || NETSTANDARD1_1
+#if NETSTANDARD1_3
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || NETSTANDARD1_1
+#endif // NETSTANDARD1_3
 #if FEATURE_TAP
 using System.Threading;
 #endif // FEATURE_TAP

@@ -40,11 +40,11 @@ Type[] _valueTypes =
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR
+#if NETSTANDARD1_3
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // NETSTANDARD1_3
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata

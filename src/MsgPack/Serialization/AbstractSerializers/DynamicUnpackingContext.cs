@@ -20,8 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 #if FEATURE_TAP
 using System.Threading;
 #endif // FEATURE_TAP

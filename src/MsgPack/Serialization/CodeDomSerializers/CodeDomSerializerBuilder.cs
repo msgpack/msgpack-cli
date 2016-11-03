@@ -45,6 +45,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 	/// </summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
 	internal class CodeDomSerializerBuilder : SerializerBuilder<CodeDomContext, CodeDomConstruct>
+#if NETSTANARD1_7
+		, ISerializerCodeGenerator
+#endif // NETSTANARD1_7
 	{
 		private static readonly CodeTypeReference[] EmptyGenericArguments = new CodeTypeReference[ 0 ];
 

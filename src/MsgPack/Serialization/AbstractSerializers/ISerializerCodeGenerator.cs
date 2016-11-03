@@ -19,7 +19,6 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 
 namespace MsgPack.Serialization.AbstractSerializers
 {

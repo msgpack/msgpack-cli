@@ -19,11 +19,11 @@
 #endregion -- License Terms --
 
 using System;
-#if CORE_CLR || NETSTANDARD1_1
+#if NETSTANDARD1_3
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || NETSTANDARD1_1
+#endif // NETSTANDARD1_3
 
 using MsgPack.Serialization.CollectionSerializers;
 
@@ -35,9 +35,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <typeparam name="TContext">The type of the context which holds global information for generating serializer.</typeparam>
 	/// <typeparam name="TConstruct">The type of the construct which abstracts code constructs.</typeparam>
 	internal abstract partial class SerializerBuilder<TContext, TConstruct> :
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_3
 		ISerializerCodeGenerator,
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_3
 		ISerializerBuilder
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
@@ -318,8 +318,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 			TContext codeGenerationContext
 		);
 
+#if !NETSTANDARD1_3
 
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		///		Builds the serializer code using specified code generation context.
 		/// </summary>
@@ -361,7 +361,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			throw new NotSupportedException();
 		}
 
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_3
 
 		internal class SerializerBuilderNilImplicationHandler :
 			NilImplicationHandler<TConstruct, TConstruct, SerializerBuilderOnPackingParameter, SerializerBuilderOnUnpacedParameter>
