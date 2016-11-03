@@ -26,6 +26,8 @@
 #define AOT
 #endif
 
+#warning This class should exist in DEBUG build only, and should be public and then RuntimeGeneration and CodeGeneration should not depend InternalsVisibleTo
+
 using System;
 #if !NETFX_35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Concurrent;
@@ -240,6 +242,8 @@ namespace MsgPack.Serialization
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
 
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+
 #if !FERATURE_CONCURRENT
 		private static volatile DependentAssemblyManager _dependentAssemblyManager = DependentAssemblyManager.Default;
 
@@ -302,8 +306,6 @@ namespace MsgPack.Serialization
 		{
 			return _dependentAssemblyManager.LoadAssembly( path );
 		}
-
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
@@ -420,7 +422,6 @@ namespace MsgPack.Serialization
 
 #endif // DEBUG && FEATURE_TAP
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[ThreadStatic]
 		private static StringWriter _codeWriter;
 
@@ -464,7 +465,6 @@ namespace MsgPack.Serialization
 		}
 
 		public delegate void CodeCompiler( string code, bool isDebug, out Assembly compiledAssembly, out IList<string> errors, out IList<string> warnings );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // DEBUG
 	}
 }

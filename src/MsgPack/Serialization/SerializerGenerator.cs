@@ -24,7 +24,11 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+#if NETSTANDARD1_7
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_7
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -59,6 +63,8 @@ namespace MsgPack.Serialization
 	/// </remarks>
 	public class SerializerGenerator
 	{
+#if !NETSTANDARD1_7
+
 		/// <summary>
 		///		Gets the type of the root object which will be serialized/deserialized.
 		/// </summary>
@@ -285,6 +291,9 @@ namespace MsgPack.Serialization
 		{
 			return new SerializerAssemblyGenerationLogic().Generate( targetTypes, configuration );
 		}
+
+#endif // !NETSTANDARD1_7
+
 		/// <summary>
 		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
 		/// </summary>
@@ -444,7 +453,9 @@ namespace MsgPack.Serialization
 #if !NETFX_35
 							WithAsync = configuration.WithAsync,
 #endif // !NETFX_35
+#if !NETSTANDARD1_7
 							GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+#endif // !NETSTANDARD1_7
 							EmitterFlavor = this.EmitterFlavor
 						},
 						EnumSerializationOptions =
@@ -471,7 +482,7 @@ namespace MsgPack.Serialization
 				{
 					realTargetTypes =
 						targetTypes
-						.Where( t => !SerializationTarget.BuiltInSerializerExists( configuration, t, t.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) ) );
+						.Where( t => !SerializationTarget.BuiltInSerializerExists( t, t.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ), configuration.PreferReflectionBasedSerializer ) );
 				}
 
 				var generationContext = this.CreateGenerationContext( context, configuration );
@@ -497,7 +508,7 @@ namespace MsgPack.Serialization
 
 			private static IEnumerable<Type> ExtractElementTypes( SerializationContext context, ISerializerGeneratorConfiguration configuration, Type type )
 			{
-				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) ) )
+				if ( !SerializationTarget.BuiltInSerializerExists( type, type.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ), configuration.PreferReflectionBasedSerializer ) )
 				{
 					yield return type;
 
@@ -518,7 +529,7 @@ namespace MsgPack.Serialization
 				if ( type.IsArray )
 				{
 					var elementType = type.GetElementType();
-					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits( CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false ) ) )
+					if ( !SerializationTarget.BuiltInSerializerExists( elementType, elementType.GetCollectionTraits( CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false ), configuration.PreferReflectionBasedSerializer ) )
 					{
 						foreach ( var descendant in ExtractElementTypes( context, configuration, elementType ) )
 						{
@@ -552,6 +563,7 @@ namespace MsgPack.Serialization
 			protected abstract Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context );
 		}
 
+#if !NETSTANDARD1_7
 		private sealed class SerializerAssemblyGenerationLogic : SerializerGenerationLogic<SerializerAssemblyGenerationConfiguration>
 		{
 			protected override EmitterFlavor EmitterFlavor
@@ -581,6 +593,7 @@ namespace MsgPack.Serialization
 				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
 			}
 		}
+#endif // !NETSTANDARD1_7
 
 		private sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
 		{

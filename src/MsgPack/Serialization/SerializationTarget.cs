@@ -712,12 +712,12 @@ namespace MsgPack.Serialization
 		}
 #endif // !NETFX_35
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
-		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
+#if !SILVERLIGHT && !AOT
+		public static bool BuiltInSerializerExists( Type type, CollectionTraits traits, bool preferReflectionBasedSerializer )
 		{
-			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.ContainsFor( type );
+			return GenericSerializer.IsSupported( type, traits, preferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.ContainsFor( type );
 		}
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT
 
 		private sealed class MemberConstructorParameterEqualityComparer : EqualityComparer<KeyValuePair<string, Type>>
 		{

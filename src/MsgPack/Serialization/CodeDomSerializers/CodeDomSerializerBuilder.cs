@@ -22,7 +22,11 @@ using System;
 using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
+#if NETSTANDARD1_7
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_7
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -45,9 +49,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 	/// </summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "CodeDOM" )]
 	internal class CodeDomSerializerBuilder : SerializerBuilder<CodeDomContext, CodeDomConstruct>
-#if NETSTANARD1_7
+#if NETSTANDARD1_7
 		, ISerializerCodeGenerator
-#endif // NETSTANARD1_7
+#endif // NETSTANDARD1_7
 	{
 		private static readonly CodeTypeReference[] EmptyGenericArguments = new CodeTypeReference[ 0 ];
 
@@ -1143,7 +1147,25 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				);
 		}
 
-		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
+
+#if NETSTANDARD1_7
+		public void BuildSerializerCode( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
+		{
+			if ( context == null )
+			{
+				throw new ArgumentNullException( "context" );
+			}
+
+			this.BuildSerializerCodeCore( context, concreteType, itemSchema );
+		}
+#endif // NETSTANDARD1_7
+
+#if !NETSTANDARD1_7
+		protected override
+#else
+		private
+#endif // !NETSTANDARD1_7
+		void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
 			var asCodeDomContext = context as CodeDomContext;
 			if ( asCodeDomContext == null )

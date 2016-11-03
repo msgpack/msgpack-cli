@@ -158,7 +158,6 @@
         "../MsgPack/Serialization/Metadata/_UnpackHelpers.cs",
         "../MsgPack/Serialization/Metadata/_UnpackHelpers.direct.cs",
         "../MsgPack/Serialization/CodeGenerationSink.cs",
-        "../MsgPack/Serialization/DependentAssemblyManager.cs",
         "../MsgPack/Serialization/IndividualFileCodeGenerationSink.cs",
         "../MsgPack/Serialization/ISerializerGeneratorConfiguration.cs",
         "../MsgPack/Serialization/SerializerAssemblyGenerationConfiguration.cs",

@@ -102,7 +102,7 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		public void SetFileWriter( string path )
 		{
-			this.TextWriter = new StreamWriter( path, false, Encoding.UTF8 );
+			this.TextWriter = File.CreateText( path );
 			this.FilePath = Path.GetFullPath( path );
 		}
 

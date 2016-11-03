@@ -26,7 +26,11 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if NETSTANDARD1_7
+using Contract = MsgPack.MPContract;
+#else
 using System.Diagnostics.Contracts;
+#endif // NETSTANDARD1_7
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -637,7 +641,11 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		{
 			Contract.Assert( this._declaringTypes != null, "_declaringTypes != null" );
 
+#if !NETSTANDARD1_7
 			using ( var provider = CodeDomProvider.CreateProvider( this._configuration.Language ) )
+#else
+			var provider = CodeDomProvider.CreateProvider( this._configuration.Language );
+#endif // NETSTANDARD1_7
 			{
 				var options =
 					new CodeGeneratorOptions
