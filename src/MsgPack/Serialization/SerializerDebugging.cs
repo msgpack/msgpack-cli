@@ -303,6 +303,8 @@ namespace MsgPack.Serialization
 			return _dependentAssemblyManager.LoadAssembly( path );
 		}
 
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+
 		[ThreadStatic]
 		private static bool _onTheFlyCodeDomEnabled;
 
@@ -312,6 +314,8 @@ namespace MsgPack.Serialization
 			get { return _onTheFlyCodeDomEnabled; }
 			set { _onTheFlyCodeDomEnabled = value; }
 		}
+
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		/// <summary>
 		///		Creates the new type builder for the serializer.

@@ -654,23 +654,11 @@ namespace MsgPack.Serialization
 
 						if ( serializer == null )
 						{
-#if !AOT
-							if ( this._serializerGeneratorOptions.DisableRuntimeCodeGeneration )
-							{
-#endif // AOT
-								// On debugging, or AOT only envs, use reflection based aproach.
-								serializer =
-									this.GetSerializerWithoutGeneration<T>( schema )
-									?? this.OnResolveSerializer<T>( schema )
-									?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
-#if !AOT
-							}
-							else
-							{
-								// This thread creating new type serializer.
-								serializer = this.OnResolveSerializer<T>( schema ) ?? MessagePackSerializer.CreateInternal<T>( this, schema );
-							}
-#endif // !AOT
+							// This thread creating new type serializer.
+							serializer =
+								this.GetSerializerWithoutGeneration<T>( schema )
+								?? this.OnResolveSerializer<T>( schema )
+								?? MessagePackSerializer.CreateInternal<T>( this, schema );
 						}
 					}
 					else

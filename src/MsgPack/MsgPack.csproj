@@ -282,6 +282,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackKnownTypeAttributes.tt</DependentUpon>
     </Compile>
+    <Compile Include="Serialization\MessagePackSerializer.Builder.cs" />
     <Compile Include="Serialization\MessagePackSerializer.cs" />
     <Compile Include="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Include="Serialization\Metadata\_DynamicUnpackingContext.cs" />

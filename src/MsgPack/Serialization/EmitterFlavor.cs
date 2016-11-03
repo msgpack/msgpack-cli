@@ -27,21 +27,17 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal enum EmitterFlavor
 	{
-#if !SILVERLIGHT
 		/// <summary>
 		///		Caches serializers for the members (de)serialization.
 		///		It is default.
 		/// </summary>
 		FieldBased,
-#endif // SILVERLIGHT
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !SILVERLIGHT
 		/// <summary>
 		///		Uses code DOM code generation to (de)serialization.
 		///		It requires a long time but prevents runtime code generation at all.
 		/// </summary>
 		CodeDomBased,
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !SILVERLIGHT
 
 		/// <summary>
 		///		Uses reflection to (de)serialization.

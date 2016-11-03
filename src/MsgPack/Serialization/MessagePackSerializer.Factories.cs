@@ -26,9 +26,9 @@
 #define AOT
 #endif
 
-#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !AOT && !SILVERLIGHT
 #define FEATURE_EMIT
-#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !AOT && !SILVERLIGHT
 
 using System;
 using System.IO;
@@ -49,8 +49,6 @@ using System.Diagnostics.Contracts;
 #endif // NETFX_CORE || UNITY || NETSTANDARD1_1
 #if FEATURE_EMIT
 using MsgPack.Serialization.AbstractSerializers;
-using MsgPack.Serialization.CodeDomSerializers;
-using MsgPack.Serialization.EmittingSerializers;
 #endif // FEATURE_EMIT
 
 namespace MsgPack.Serialization
@@ -205,7 +203,6 @@ namespace MsgPack.Serialization
 
 		internal static MessagePackSerializer<T> CreateInternal<T>( SerializationContext context, PolymorphismSchema schema )
 		{
-
 #if DEBUG
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // DEBUG
@@ -249,45 +246,37 @@ namespace MsgPack.Serialization
 			}
 
 #if FEATURE_EMIT
-			ISerializerBuilder builder;
-			switch ( context.SerializerOptions.EmitterFlavor )
+			ISerializerBuilder builder = null;
+			if ( !context.SerializerOptions.DisableRuntimeCodeGeneration )
 			{
-				case EmitterFlavor.CodeDomBased:
-				{
 #if DEBUG
-					if ( !SerializerDebugging.OnTheFlyCodeGenerationEnabled )
-					{
-						throw new NotSupportedException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Flavor '{0:G}'({0:D}) is not supported for serializer instance creation.",
-								context.SerializerOptions.EmitterFlavor
-							)
-						);
-					}
-
-					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
-					break;
-#else
-					throw new NotSupportedException();
+				if ( context.SerializerOptions.EmitterFlavor == EmitterFlavor.CodeDomBased && !SerializerDebugging.OnTheFlyCodeGenerationEnabled )
+				{
 #endif
+					throw new NotSupportedException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"Flavor '{0:G}'({0:D}) is not supported for serializer instance creation.",
+							context.SerializerOptions.EmitterFlavor
+						)
+					);
+#if DEBUG
 				}
-				case EmitterFlavor.FieldBased:
-				{
-					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
-					break;
-				}
-				default: // EmitterFlavor.ReflectionBased
-				{
-#endif // FEATURE_EMIT
-					return
-						GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
-						?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
-#if FEATURE_EMIT
-				}
+#endif
+				builder = GetSerializerBuilder( typeof( T ), context, collectionTraits );
 			}
 
-			return ( MessagePackSerializer<T> ) builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
+			if ( builder == null )
+			{
+#endif // FEATURE_EMIT
+
+				return
+					GenericSerializer.TryCreateAbstractCollectionSerializer( context, typeof( T ), concreteType, schema ) as MessagePackSerializer<T>
+					?? CreateReflectionInternal<T>( context, concreteType ?? typeof( T ), schema );
+#if FEATURE_EMIT
+			}
+
+			return ( MessagePackSerializer<T> )builder.BuildSerializerInstance( context, concreteType, schema == null ? null : schema.FilterSelf() );
 #endif // FEATURE_EMIT
 		}
 
@@ -556,7 +545,7 @@ namespace MsgPack.Serialization
 		}
 #endif // AOT
 
-		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
+		private static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{
 			if ( concreteType.GetIsAbstract() || concreteType.GetIsInterface() )
 			{
@@ -585,7 +574,7 @@ namespace MsgPack.Serialization
 				case CollectionKind.Array:
 				case CollectionKind.Map:
 				{
-					return 
+					return
 #if !UNITY
 						ReflectionSerializerHelper.CreateCollectionSerializer<T>( context, concreteType, traits, ( schema ?? PolymorphismSchema.Default ) );
 #else
