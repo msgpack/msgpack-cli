@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 #if !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
 using System.Diagnostics;
 #endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
@@ -120,7 +121,7 @@ namespace MsgPack.Serialization
 			{
 				if ( method == SerializationMethod.Array )
 				{
-					stream.Write( new byte[] { 0x94, 0x1, 0xFF, 0xA1, ( byte )'a', 0xC0 } );
+					stream.Write( new byte[] { 0x94, 0x1, 0xFF, 0xA1, ( byte )'a', 0xA1, 0xC0 } );
 				}
 				else
 				{
@@ -141,6 +142,7 @@ namespace MsgPack.Serialization
 					packer.PackString( "Field3" );
 					packer.PackString( "a" );
 					packer.PackString( "Extra4" );
+					packer.PackArrayHeader( 1 );
 					packer.PackNull();
 				}
 
@@ -238,6 +240,44 @@ namespace MsgPack.Serialization
 				Assert.That( result.Field2, Is.EqualTo( -1 ) );
 				Assert.That( result.Field3, Is.Null );
 			}
+		}
+
+		[Test]
+		public void Issue199()
+		{
+
+			using ( var memStream = new MemoryStream() )
+			{
+				SerializationContext.Default.GetSerializer<Obj1>().Pack( memStream, new Obj1
+				{
+					Id = "1",
+					Items = new List<string> { "a", "b" }
+				} );
+
+				memStream.Seek( 0, SeekOrigin.Begin );
+
+				var serializer2 = SerializationContext.Default.GetSerializer<Obj2>();
+
+				// this call throws
+				Obj2 obj = serializer2.Unpack(memStream);
+			}
+		}
+
+		public class Obj1
+		{
+			[MessagePackMember( 0 )]
+			public string Id { get; set; }
+
+			[MessagePackMember( 1 )]
+			public List<string> Items { get; set; }
+		}
+
+		public class Obj2
+		{
+			[MessagePackMember( 0 )]
+			public string Id { get; set; }
+
+			// doesn't know about Items
 		}
 	}
 
