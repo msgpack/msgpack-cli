@@ -245,7 +245,7 @@ namespace MsgPack
 		/// </summary>
 		protected TestDriver()
 		{
-			this.TestClasses = new List<TestClass>( 48 );
+			this.TestClasses = new List<TestClass>( 49 );
 			InitializeTestClasses( this.TestClasses );
 		}
 
@@ -271,7 +271,7 @@ testClass.FixtureSetup = new Action( AotTest.SetupFixture );
 					new TestClass( 
 						"ArrayGenerationBasedEnumSerializerTest", 
 						ArrayGenerationBasedEnumSerializerTestInitializer.CreateInstance, 
-						62,
+						66,
 						ArrayGenerationBasedEnumSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -282,7 +282,7 @@ testClass.FixtureSetup = new Action( AotTest.SetupFixture );
 					new TestClass( 
 						"ArrayGenerationBasedReflectionMessagePackSerializerTest", 
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						338,
+						405,
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -294,7 +294,7 @@ testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSe
 					new TestClass( 
 						"ArrayReflectionBasedEnumSerializerTest", 
 						ArrayReflectionBasedEnumSerializerTestInitializer.CreateInstance, 
-						68,
+						72,
 						ArrayReflectionBasedEnumSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -305,7 +305,7 @@ testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSe
 					new TestClass( 
 						"ArrayReflectionBasedReflectionMessagePackSerializerTest", 
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						518,
+						585,
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -319,17 +319,6 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 						BigEndianBinaryTestInitializer.CreateInstance, 
 						10,
 						BigEndianBinaryTestInitializer.InitializeInstance
-					 );
-				testClasses.Add( testClass );
-			}
-
-			{
-				var testClass = 
-					new TestClass( 
-						"DictionaryKeyTransformersTest", 
-						DictionaryKeyTransformersTestInitializer.CreateInstance, 
-						1,
-						DictionaryKeyTransformersTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
 			}
@@ -381,9 +370,20 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 			{
 				var testClass = 
 					new TestClass( 
+						"KeyNameTransformersTest", 
+						KeyNameTransformersTestInitializer.CreateInstance, 
+						2,
+						KeyNameTransformersTestInitializer.InitializeInstance
+					 );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
 						"MapGenerationBasedEnumSerializerTest", 
 						MapGenerationBasedEnumSerializerTestInitializer.CreateInstance, 
-						62,
+						66,
 						MapGenerationBasedEnumSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -394,7 +394,7 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 					new TestClass( 
 						"MapGenerationBasedReflectionMessagePackSerializerTest", 
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						338,
+						405,
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -406,7 +406,7 @@ testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSeri
 					new TestClass( 
 						"MapReflectionBasedEnumSerializerTest", 
 						MapReflectionBasedEnumSerializerTestInitializer.CreateInstance, 
-						68,
+						72,
 						MapReflectionBasedEnumSerializerTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -417,7 +417,7 @@ testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSeri
 					new TestClass( 
 						"MapReflectionBasedReflectionMessagePackSerializerTest", 
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						523,
+						590,
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -658,6 +658,17 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			{
 				var testClass = 
 					new TestClass( 
+						"StructWithDataContractTest", 
+						StructWithDataContractTestInitializer.CreateInstance, 
+						2,
+						StructWithDataContractTestInitializer.InitializeInstance
+					 );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
 						"SubtreeUnpackerTest", 
 						SubtreeUnpackerTestInitializer.CreateInstance, 
 						7,
@@ -781,7 +792,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 					new TestClass( 
 						"VersioningTest", 
 						VersioningTestInitializer.CreateInstance, 
-						9,
+						10,
 						VersioningTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -838,6 +849,10 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByName", new Action( instance.TestEnumInt64_WithoutFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithoutFlags_ByUnderlyingValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_AllUpper", new Action( instance.TestEnumKeyTransformer_AllUpper ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Custom", new Action( instance.TestEnumKeyTransformer_Custom ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Default_AsIs", new Action( instance.TestEnumKeyTransformer_Default_AsIs ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_LowerCamel", new Action( instance.TestEnumKeyTransformer_LowerCamel ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByName", new Action( instance.TestEnumSByte_WithFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumSByte_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithoutFlags_ByName", new Action( instance.TestEnumSByte_WithoutFlags_ByName ) ) );
@@ -932,6 +947,21 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentDecimalFieldArray", new Action( instance.TestArraySegmentDecimalFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32Field", new Action( instance.TestArraySegmentInt32Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32FieldArray", new Action( instance.TestArraySegmentInt32FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoDefaultConstructor_Packable", new Action( instance.TestAsymmetric_PackOnly_NoDefaultConstructor_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable", new Action( instance.TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownCollectionItem_Fail", new Action( instance.TestAttribute_DuplicatedKnownCollectionItem_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownDictionaryKey_Fail", new Action( instance.TestAttribute_DuplicatedKnownDictionaryKey_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownMember_Fail", new Action( instance.TestAttribute_DuplicatedKnownMember_Fail ) ) );
@@ -1105,6 +1135,24 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue25_SelfComposite", new Action( instance.TestIssue25_SelfComposite ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetField", new Action( instance.TestKeyValuePairStringDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetFieldArray", new Action( instance.TestKeyValuePairStringDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Field_Known", new Action( instance.TestKnownType_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Property_Known", new Action( instance.TestKnownType_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Field_Known", new Action( instance.TestKnownType_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Property_Known", new Action( instance.TestKnownType_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectField", new Action( instance.TestList_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArray", new Action( instance.TestList_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArrayNull", new Action( instance.TestList_MessagePackObjectFieldArrayNull ) ) );
@@ -1194,6 +1242,29 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldNull", new Action( instance.TestObjectFieldNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphismAttributesInType", new Action( instance.TestPolymorphismAttributesInType ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
@@ -1222,8 +1293,19 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyInt64FieldArray", new Action( instance.TestTinyInt64FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16Field", new Action( instance.TestTinyUInt16Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16FieldArray", new Action( instance.TestTinyUInt16FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_Complex", new Action( instance.TestToFromMessagePackObject_Complex ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_ComplexGenerated", new Action( instance.TestToFromMessagePackObject_ComplexGenerated ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueField", new Action( instance.TestTrueField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueFieldArray", new Action( instance.TestTrueFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierDoesNotLoadTypeItself", new Action( instance.TestTypeVerifierDoesNotLoadTypeItself ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUnpackTo", new Action( instance.TestUnpackTo ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUri", new Action( instance.TestUri ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUriField", new Action( instance.TestUriField ) ) );
@@ -1264,6 +1346,10 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByName", new Action( instance.TestEnumInt64_WithoutFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithoutFlags_ByUnderlyingValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_AllUpper", new Action( instance.TestEnumKeyTransformer_AllUpper ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Custom", new Action( instance.TestEnumKeyTransformer_Custom ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Default_AsIs", new Action( instance.TestEnumKeyTransformer_Default_AsIs ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_LowerCamel", new Action( instance.TestEnumKeyTransformer_LowerCamel ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByName", new Action( instance.TestEnumSByte_WithFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumSByte_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithoutFlags_ByName", new Action( instance.TestEnumSByte_WithoutFlags_ByName ) ) );
@@ -1368,6 +1454,21 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentDecimalFieldArray", new Action( instance.TestArraySegmentDecimalFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32Field", new Action( instance.TestArraySegmentInt32Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32FieldArray", new Action( instance.TestArraySegmentInt32FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoDefaultConstructor_Packable", new Action( instance.TestAsymmetric_PackOnly_NoDefaultConstructor_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable", new Action( instance.TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownCollectionItem_Fail", new Action( instance.TestAttribute_DuplicatedKnownCollectionItem_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownDictionaryKey_Fail", new Action( instance.TestAttribute_DuplicatedKnownDictionaryKey_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownMember_Fail", new Action( instance.TestAttribute_DuplicatedKnownMember_Fail ) ) );
@@ -1697,6 +1798,24 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue25_SelfComposite", new Action( instance.TestIssue25_SelfComposite ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetField", new Action( instance.TestKeyValuePairStringDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetFieldArray", new Action( instance.TestKeyValuePairStringDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Field_Known", new Action( instance.TestKnownType_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Property_Known", new Action( instance.TestKnownType_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Field_Known", new Action( instance.TestKnownType_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Property_Known", new Action( instance.TestKnownType_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectField", new Action( instance.TestList_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArray", new Action( instance.TestList_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArrayNull", new Action( instance.TestList_MessagePackObjectFieldArrayNull ) ) );
@@ -1802,6 +1921,29 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed", new Action( instance.TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphismAttributesInType", new Action( instance.TestPolymorphismAttributesInType ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
@@ -1830,8 +1972,19 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyInt64FieldArray", new Action( instance.TestTinyInt64FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16Field", new Action( instance.TestTinyUInt16Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16FieldArray", new Action( instance.TestTinyUInt16FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_Complex", new Action( instance.TestToFromMessagePackObject_Complex ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_ComplexGenerated", new Action( instance.TestToFromMessagePackObject_ComplexGenerated ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueField", new Action( instance.TestTrueField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueFieldArray", new Action( instance.TestTrueFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierDoesNotLoadTypeItself", new Action( instance.TestTypeVerifierDoesNotLoadTypeItself ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeWithDuplicatedMessagePackMemberAttributeMember", new Action( instance.TestTypeWithDuplicatedMessagePackMemberAttributeMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeWithInvalidMessagePackMemberAttributeMember", new Action( instance.TestTypeWithInvalidMessagePackMemberAttributeMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeWithMissingMessagePackMemberAttributeMember", new Action( instance.TestTypeWithMissingMessagePackMemberAttributeMember ) ) );
@@ -1870,35 +2023,6 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestToUInt16", new Action( instance.TestToUInt16 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestToUInt32", new Action( instance.TestToUInt32 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestToUInt64", new Action( instance.TestToUInt64 ) ) );
-		}
-	} 
-
-	internal static class DictionaryKeyTransformersTestInitializer
-	{
-		public static object CreateInstance()
-		{
-			return new DictionaryKeyTransformersTest();
-		}
-
-		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
-		{
-			var instance = ( ( DictionaryKeyTransformersTest )testFixtureInstance );
-			testClassInstance.TestMethods.Add(
-				new TestMethod(
-					"TestToLowerCamel",
-					() => {
-						instance.TestToLowerCamel( null, null );
-						instance.TestToLowerCamel( @"", @"" );
-						instance.TestToLowerCamel( @"a", @"a" );
-						instance.TestToLowerCamel( @"A", @"a" );
-						instance.TestToLowerCamel( @"AA", @"aA" );
-						instance.TestToLowerCamel( @"Aa", @"aa" );
-						instance.TestToLowerCamel( @"aa", @"aa" );
-						instance.TestToLowerCamel( @"_a", @"_a" );
-						instance.TestToLowerCamel( @"_A", @"_A" );
-					}
-				)
-			);
 		}
 	} 
 
@@ -2006,6 +2130,55 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 		}
 	} 
 
+	internal static class KeyNameTransformersTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new KeyNameTransformersTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( KeyNameTransformersTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add(
+				new TestMethod(
+					"TestToLowerCamel",
+					() => {
+						instance.TestToLowerCamel( null, null );
+						instance.TestToLowerCamel( @"", @"" );
+						instance.TestToLowerCamel( @"a", @"a" );
+						instance.TestToLowerCamel( @"A", @"a" );
+						instance.TestToLowerCamel( @"AA", @"aA" );
+						instance.TestToLowerCamel( @"Aa", @"aa" );
+						instance.TestToLowerCamel( @"aa", @"aa" );
+						instance.TestToLowerCamel( @"_a", @"_a" );
+						instance.TestToLowerCamel( @"_A", @"_A" );
+					}
+				)
+			);
+			testClassInstance.TestMethods.Add(
+				new TestMethod(
+					"TestToUpperSnake",
+					() => {
+						instance.TestToUpperSnake( null, null );
+						instance.TestToUpperSnake( @"", @"" );
+						instance.TestToUpperSnake( @"a", @"A" );
+						instance.TestToUpperSnake( @"A", @"A" );
+						instance.TestToUpperSnake( @"AA", @"AA" );
+						instance.TestToUpperSnake( @"Aa", @"AA" );
+						instance.TestToUpperSnake( @"aa", @"AA" );
+						instance.TestToUpperSnake( @"aA", @"A_A" );
+						instance.TestToUpperSnake( @"AAa", @"AAA" );
+						instance.TestToUpperSnake( @"AaA", @"AA_A" );
+						instance.TestToUpperSnake( @"aaA", @"AA_A" );
+						instance.TestToUpperSnake( @"_a", @"_A" );
+						instance.TestToUpperSnake( @"_A", @"_A" );
+					}
+				)
+			);
+		}
+	} 
+
 	internal static class MapGenerationBasedEnumSerializerTestInitializer
 	{
 		public static object CreateInstance()
@@ -2032,6 +2205,10 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByName", new Action( instance.TestEnumInt64_WithoutFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithoutFlags_ByUnderlyingValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_AllUpper", new Action( instance.TestEnumKeyTransformer_AllUpper ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Custom", new Action( instance.TestEnumKeyTransformer_Custom ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Default_AsIs", new Action( instance.TestEnumKeyTransformer_Default_AsIs ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_LowerCamel", new Action( instance.TestEnumKeyTransformer_LowerCamel ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByName", new Action( instance.TestEnumSByte_WithFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumSByte_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithoutFlags_ByName", new Action( instance.TestEnumSByte_WithoutFlags_ByName ) ) );
@@ -2126,6 +2303,21 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentDecimalFieldArray", new Action( instance.TestArraySegmentDecimalFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32Field", new Action( instance.TestArraySegmentInt32Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32FieldArray", new Action( instance.TestArraySegmentInt32FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoDefaultConstructor_Packable", new Action( instance.TestAsymmetric_PackOnly_NoDefaultConstructor_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable", new Action( instance.TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownCollectionItem_Fail", new Action( instance.TestAttribute_DuplicatedKnownCollectionItem_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownDictionaryKey_Fail", new Action( instance.TestAttribute_DuplicatedKnownDictionaryKey_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownMember_Fail", new Action( instance.TestAttribute_DuplicatedKnownMember_Fail ) ) );
@@ -2299,6 +2491,24 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue25_SelfComposite", new Action( instance.TestIssue25_SelfComposite ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetField", new Action( instance.TestKeyValuePairStringDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetFieldArray", new Action( instance.TestKeyValuePairStringDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Field_Known", new Action( instance.TestKnownType_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Property_Known", new Action( instance.TestKnownType_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Field_Known", new Action( instance.TestKnownType_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Property_Known", new Action( instance.TestKnownType_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectField", new Action( instance.TestList_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArray", new Action( instance.TestList_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArrayNull", new Action( instance.TestList_MessagePackObjectFieldArrayNull ) ) );
@@ -2388,6 +2598,29 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestObjectFieldNull", new Action( instance.TestObjectFieldNull ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphismAttributesInType", new Action( instance.TestPolymorphismAttributesInType ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
@@ -2416,8 +2649,19 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyInt64FieldArray", new Action( instance.TestTinyInt64FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16Field", new Action( instance.TestTinyUInt16Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16FieldArray", new Action( instance.TestTinyUInt16FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_Complex", new Action( instance.TestToFromMessagePackObject_Complex ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_ComplexGenerated", new Action( instance.TestToFromMessagePackObject_ComplexGenerated ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueField", new Action( instance.TestTrueField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueFieldArray", new Action( instance.TestTrueFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierDoesNotLoadTypeItself", new Action( instance.TestTypeVerifierDoesNotLoadTypeItself ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUnpackTo", new Action( instance.TestUnpackTo ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUri", new Action( instance.TestUri ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestUriField", new Action( instance.TestUriField ) ) );
@@ -2458,6 +2702,10 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByName", new Action( instance.TestEnumInt64_WithoutFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumInt64_WithoutFlags_ByUnderlyingValue", new Action( instance.TestEnumInt64_WithoutFlags_ByUnderlyingValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_AllUpper", new Action( instance.TestEnumKeyTransformer_AllUpper ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Custom", new Action( instance.TestEnumKeyTransformer_Custom ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_Default_AsIs", new Action( instance.TestEnumKeyTransformer_Default_AsIs ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumKeyTransformer_LowerCamel", new Action( instance.TestEnumKeyTransformer_LowerCamel ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByName", new Action( instance.TestEnumSByte_WithFlags_ByName ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithFlags_ByUnderlyingValue", new Action( instance.TestEnumSByte_WithFlags_ByUnderlyingValue ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestEnumSByte_WithoutFlags_ByName", new Action( instance.TestEnumSByte_WithoutFlags_ByName ) ) );
@@ -2562,6 +2810,21 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentDecimalFieldArray", new Action( instance.TestArraySegmentDecimalFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32Field", new Action( instance.TestArraySegmentInt32Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestArraySegmentInt32FieldArray", new Action( instance.TestArraySegmentInt32FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoDefaultConstructor_Packable", new Action( instance.TestAsymmetric_PackOnly_NoDefaultConstructor_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableMultipleConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable", new Action( instance.TestAsymmetric_PackOnly_NoSettableNoConstructors_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnappendableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericCollection_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericDictionary_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericEnumerable_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable", new Action( instance.TestAsymmetric_PackOnly_UnconstructableNonGenericList_Packable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable", new Action( instance.TestAsymmetric_PackOnly_UnsettableArrayMemberObject_Packable ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownCollectionItem_Fail", new Action( instance.TestAttribute_DuplicatedKnownCollectionItem_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownDictionaryKey_Fail", new Action( instance.TestAttribute_DuplicatedKnownDictionaryKey_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestAttribute_DuplicatedKnownMember_Fail", new Action( instance.TestAttribute_DuplicatedKnownMember_Fail ) ) );
@@ -2894,6 +3157,24 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue25_SelfComposite", new Action( instance.TestIssue25_SelfComposite ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetField", new Action( instance.TestKeyValuePairStringDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestKeyValuePairStringDateTimeOffsetFieldArray", new Action( instance.TestKeyValuePairStringDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Field_Known", new Action( instance.TestKnownType_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsKnown_Property_Known", new Action( instance.TestKnownType_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Field_Known", new Action( instance.TestKnownType_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsNothing_Property_Known", new Action( instance.TestKnownType_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeCollection_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsKnown_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsKnown_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Field_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Field_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsNothing_Property_Known", new Action( instance.TestKnownTypeDictionary_AttributeIsNothing_Property_Known ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectField", new Action( instance.TestList_MessagePackObjectField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArray", new Action( instance.TestList_MessagePackObjectFieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestList_MessagePackObjectFieldArrayNull", new Action( instance.TestList_MessagePackObjectFieldArrayNull ) ) );
@@ -3001,6 +3282,29 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed", new Action( instance.TestPackableUnpackable_PackToMessageAndUnpackFromMessageUsed ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Null_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Null_Success ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphicMemberTypeMixed_Success", new Action( instance.TestPolymorphicMemberTypeMixed_Success ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestPolymorphismAttributesInType", new Action( instance.TestPolymorphismAttributesInType ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeType_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeType_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeType_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail", new Action( instance.TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime", new Action( instance.TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail", new Action( instance.TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStaticMembersDoNotCausePrepareError", new Action( instance.TestStaticMembersDoNotCausePrepareError ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestString", new Action( instance.TestString ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestStringField", new Action( instance.TestStringField ) ) );
@@ -3029,8 +3333,19 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyInt64FieldArray", new Action( instance.TestTinyInt64FieldArray ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16Field", new Action( instance.TestTinyUInt16Field ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTinyUInt16FieldArray", new Action( instance.TestTinyUInt16FieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_Complex", new Action( instance.TestToFromMessagePackObject_Complex ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToFromMessagePackObject_ComplexGenerated", new Action( instance.TestToFromMessagePackObject_ComplexGenerated ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueField", new Action( instance.TestTrueField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTrueFieldArray", new Action( instance.TestTrueFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierDoesNotLoadTypeItself", new Action( instance.TestTypeVerifierDoesNotLoadTypeItself ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK", new Action( instance.TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeWithDuplicatedMessagePackMemberAttributeMember", new Action( instance.TestTypeWithDuplicatedMessagePackMemberAttributeMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeWithInvalidMessagePackMemberAttributeMember", new Action( instance.TestTypeWithInvalidMessagePackMemberAttributeMember ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestTypeWithMissingMessagePackMemberAttributeMember", new Action( instance.TestTypeWithMissingMessagePackMemberAttributeMember ) ) );
@@ -5690,6 +6005,21 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestResolveSerializer_SetFound_CanCustomizeSerializer", new Action( instance.TestResolveSerializer_SetFound_CanCustomizeSerializer ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestResolveSerializer_SetNull_Generated", new Action( instance.TestResolveSerializer_SetNull_Generated ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestResolveSerializer_WrongSerializer_Fail", new Action( instance.TestResolveSerializer_WrongSerializer_Fail ) ) );
+		}
+	} 
+
+	internal static class StructWithDataContractTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new StructWithDataContractTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( StructWithDataContractTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "ShouldDeserializeStructsWithDataContracts", new Action( instance.ShouldDeserializeStructsWithDataContracts ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "ShouldSerializeStructsWithDataContracts", new Action( instance.ShouldSerializeStructsWithDataContracts ) ) );
 		}
 	} 
 
@@ -8446,6 +8776,7 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
 		{
 			var instance = ( ( VersioningTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "Issue199", new Action( instance.Issue199 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Array_ReflectionBased_Classic_Fail", new Action( instance.TestExtraField_NotExtensible_Array_ReflectionBased_Classic_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Array_ReflectionBased_None_Fail", new Action( instance.TestExtraField_NotExtensible_Array_ReflectionBased_None_Fail ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestExtraField_NotExtensible_Map_ReflectionBased_Classic_Fail", new Action( instance.TestExtraField_NotExtensible_Map_ReflectionBased_Classic_Fail ) ) );
