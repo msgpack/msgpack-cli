@@ -82,10 +82,14 @@ namespace MsgPack
 			this._stream.Flush();
 		}
 
+#if FEATURE_TAP
+
 		public override Task FlushAsync( CancellationToken cancellationToken )
 		{
 			return this._stream.FlushAsync( cancellationToken );
 		}
+
+#endif // FEATURE_TAP
 
 		protected sealed override void SeekTo( long offset )
 		{
