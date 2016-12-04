@@ -20,6 +20,7 @@
 
 using System;
 using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -1544,6 +1545,64 @@ namespace MsgPack.Serialization
 			}
 		}
 		#endregion -- Issue 138 --
+
+		#region -- Issue 203 --
+
+		[Test]
+		public void TestRecursiveAbstractCollection_GenericList_OK()
+		{
+			TestRecursiveAbstractCollectionCore( typeof( IList<int> ), "System_Collections_Generic_IList_1_System_Int32_Serializer" );
+		}
+
+		[Test]
+		public void TestRecursiveAbstractCollection_GenericDictionary_OK()
+		{
+			TestRecursiveAbstractCollectionCore(
+				typeof( IDictionary<string, int> ),
+				"System_Collections_Generic_IDictionary_2_System_String_System_Int32_Serializer",
+				"System_Collections_Generic_KeyValuePair_2_System_String_System_Int32_Serializer"
+			);
+		}
+
+		[Test]
+		public void TestRecursiveAbstractCollection_NonGenericList_OK()
+		{
+			TestRecursiveAbstractCollectionCore( typeof( IList ), "System_Collections_IListSerializer" );
+		}
+
+		[Test]
+		public void TestRecursiveAbstractCollection_NonGenericDictionary_OK()
+		{
+			TestRecursiveAbstractCollectionCore( typeof( IDictionary ), "System_Collections_IDictionarySerializer" );
+		}
+
+		private static void TestRecursiveAbstractCollectionCore( Type targetType, params string[] expectedSerializerNames )
+		{
+			var configuration = new SerializerCodeGenerationConfiguration { IsRecursive = true, OutputDirectory = TestContext.CurrentContext.WorkDirectory };
+			var results =
+				SerializerGenerator.GenerateSerializerSourceCodes(
+					configuration,
+					targetType
+				).ToArray();
+			try
+			{
+				// Assert is not polluted.
+				Assert.That( SerializationContext.Default.ContainsSerializer( targetType ), Is.False );
+
+				Assert.That( results.Length, Is.EqualTo( expectedSerializerNames.Length ) );
+
+				Assert.That( results.Select( x => x.SerializerTypeName ), Is.EquivalentTo( expectedSerializerNames ) );
+			}
+			finally
+			{
+				foreach ( var result in results )
+				{
+					File.Delete( result.FilePath );
+				}
+			}
+		}
+
+		#endregion -- Issue 203 --
 
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, SerializationMethod method, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{

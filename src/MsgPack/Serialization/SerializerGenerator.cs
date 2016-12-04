@@ -497,17 +497,18 @@ namespace MsgPack.Serialization
 
 			private static IEnumerable<Type> ExtractElementTypes( SerializationContext context, ISerializerGeneratorConfiguration configuration, Type type )
 			{
-				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, type.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) ) )
+				var traits = type.GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
+				if ( !SerializationTarget.BuiltInSerializerExists( configuration, type, traits ) )
 				{
 					yield return type;
 
-					// Search dependents recursively if the type is NOT enum.
-					if ( !type.GetIsEnum() )
+					// Search dependents recursively if the type is NOT enum nand NOT collection.
+					if ( !type.GetIsEnum() && traits.CollectionType == CollectionKind.NotCollection )
 					{
 						foreach (
 							var dependentType in
 								SerializationTarget.Prepare( context, type )
-								.Members.Where( m => m.Member != null ).SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) ) 
+								.Members.Where( m => m.Member != null ).SelectMany( m => ExtractElementTypes( context, configuration, m.Member.GetMemberValueType() ) )
 						)
 						{
 							yield return dependentType;
@@ -515,9 +516,20 @@ namespace MsgPack.Serialization
 					}
 				}
 
-				if ( type.IsArray )
+				var elementTypes = new List<Type>();
+
+				if ( traits.ElementType != null )
 				{
-					var elementType = type.GetElementType();
+					elementTypes.Add( traits.ElementType );
+				}
+				else if ( type.IsGenericType )
+				{
+					// Search generic arguments recursively.
+					elementTypes.AddRange( type.GetGenericArguments().SelectMany( g => ExtractElementTypes( context, configuration, g ) ) );
+				}
+
+				foreach ( var elementType in elementTypes )
+				{
 					if ( !SerializationTarget.BuiltInSerializerExists( configuration, elementType, elementType.GetCollectionTraits( CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false ) ) )
 					{
 						foreach ( var descendant in ExtractElementTypes( context, configuration, elementType ) )
@@ -525,17 +537,6 @@ namespace MsgPack.Serialization
 							yield return descendant;
 						}
 
-						yield return elementType;
-					}
-
-					yield break;
-				}
-
-				if ( type.IsGenericType )
-				{
-					// Search generic arguments recursively.
-					foreach ( var elementType in type.GetGenericArguments().SelectMany( g => ExtractElementTypes( context, configuration, g ) ) )
-					{
 						yield return elementType;
 					}
 				}
