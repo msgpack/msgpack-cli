@@ -1,21 +1,36 @@
 ﻿{
   "supports": {},
   "dependencies": {
-    "System.Runtime": "4.4.0-beta-00000-00",
-    "System.CodeDom": "4.4.0-beta-00000-00",
-    "System.IO.FileSystem": "4.4.0-beta-00000-00",
-    "System.Runtime.Serialization.Primitives": "4.4.0-beta-00000-00",
+    "System.Runtime": {
+      "version": "4.4.0-beta-00000-00",
+      "suppressParent": "all"
+    },
+    "System.CodeDom": {
+      "version": "4.4.0-beta-00000-00",
+      "suppressParent": "all"
+    },
+    "System.IO.FileSystem": {
+      "version": "4.4.0-beta-00000-00",
+      "suppressParent": "all"
+    },
+    "System.Runtime.Serialization.Primitives": {
+      "version": "4.4.0-beta-00000-00",
+      "suppressParent": "all"
+    },
     "MsgPack.Core": {
         "version": "*",
-        "target": "project"
+        "target": "project",
+        "suppressParent": "all"
     },
     "MsgPack.Serialization": {
         "version": "*",
-        "target": "project"
+        "target": "project",
+        "suppressParent": "all"
     },
     "MsgPack.RuntimeGeneration": {
         "version": "*",
-        "target": "project"
+        "target": "project",
+        "suppressParent": "all"
     }
   },
   "frameworks": {
