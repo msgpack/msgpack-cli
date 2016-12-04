@@ -251,6 +251,37 @@ namespace MsgPack
 		}
 
 		/// <summary>
+		///		Flushes internal buffer (including underlying stream).
+		/// </summary>
+		public virtual void Flush()
+		{
+			// nop
+		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Flushes internal buffer (including underlying stream) asynchronously.
+		/// </summary>
+		/// <returns>A <see cref="Task"/> to represent pending asynchronous operation.</returns>
+		public Task FlushAsync()
+		{
+			return this.FlushAsync( CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Flushes internal buffer (including underlying stream) asynchronously.
+		/// </summary>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> to represent pending asynchronous operation.</returns>
+		public virtual Task FlushAsync( CancellationToken cancellationToken )
+		{
+			return Task.FromResult( default( object ) );
+		}
+
+#endif // FEATURE_TAP
+
+		/// <summary>
 		///		When overridden by derived class, change current position to specified offset.
 		/// </summary>
 		/// <param name="offset">Offset. You shoud not specify the value which causes underflow or overflow.</param>

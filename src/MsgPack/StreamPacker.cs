@@ -66,12 +66,25 @@ namespace MsgPack
 
 		protected sealed override void Dispose( bool disposing )
 		{
-			if ( this._ownsStream )
+			if ( disposing )
 			{
-				this._stream.Dispose();
+				if ( this._ownsStream )
+				{
+					this._stream.Dispose();
+				}
 			}
 
 			base.Dispose( disposing );
+		}
+
+		public override void Flush()
+		{
+			this._stream.Flush();
+		}
+
+		public override Task FlushAsync( CancellationToken cancellationToken )
+		{
+			return this._stream.FlushAsync( cancellationToken );
 		}
 
 		protected sealed override void SeekTo( long offset )

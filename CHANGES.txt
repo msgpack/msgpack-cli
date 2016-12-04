@@ -624,4 +624,5 @@ Release 0.9.0 (planned)
   BUG FIXES
   * The generated code for the type which has Tuple typed member uses old PackHelper API.
   * Fix struct deserialization. Issue #189. Thank you @samcragg!
+  * Fix asynchronous packing is not be emitted correctly. Issue #201
 

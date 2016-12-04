@@ -218,9 +218,17 @@ namespace MsgPack.Serialization
 		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
 		/// </exception>
 		/// <seealso cref="P:Capabilities"/>
-		public Task PackAsync( Stream stream, T objectTree, CancellationToken cancellationToken )
+		public async Task PackAsync( Stream stream, T objectTree, CancellationToken cancellationToken )
 		{
-			return this.PackToAsync( Packer.Create( stream, this.PackerCompatibilityOptions, PackerUnpackerStreamOptions.SingletonForAsync ), objectTree, cancellationToken );
+			var packer = Packer.Create( stream, this.PackerCompatibilityOptions, PackerUnpackerStreamOptions.SingletonForAsync );
+			try
+			{
+				await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
+			}
+			finally
+			{
+				await packer.FlushAsync( cancellationToken ).ConfigureAwait( false );
+			}
 		}
 
 #endif // FEATURE_TAP
@@ -316,7 +324,7 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task<T> UnpackAsync( Stream stream, CancellationToken cancellationToken )
 		{
-			var unpacker = Unpacker.Create( stream );
+			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.SingletonForAsync );
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );

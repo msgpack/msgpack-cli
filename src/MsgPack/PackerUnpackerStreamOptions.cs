@@ -38,6 +38,28 @@ namespace MsgPack
 				"System.IO.FileStream"
 			};
 
+#if DEBUG
+		private static bool _alwaysWrap = false;
+
+		internal static bool AlwaysWrap
+		{
+			get { return _alwaysWrap; }
+			set { _alwaysWrap = value; }
+		}
+
+#endif // DEBUG
+
+		private static bool ShouldWrapStream( Stream stream )
+		{
+			return
+				( stream != null
+				&& !_knownMemoryOrBufferingStreams.Contains( stream.GetType().FullName ) )
+#if DEBUG
+				|| _alwaysWrap
+#endif // DEBUG
+				;
+		}
+
 		internal static readonly PackerUnpackerStreamOptions SingletonOwnsStream =
 			new PackerUnpackerStreamOptions { OwnsStream = true };
 
@@ -115,7 +137,7 @@ namespace MsgPack
 			}
 
 #if !SILVERLIGHT
-			if ( stream == null || _knownMemoryOrBufferingStreams.Contains( stream.GetType().FullName ) )
+			if ( !ShouldWrapStream( stream ) )
 			{
 				// They have in-memory based synchronous read/write optimization.
 				return stream;

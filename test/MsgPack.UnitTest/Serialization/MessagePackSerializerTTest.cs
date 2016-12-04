@@ -25,6 +25,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 using MsgPack.Serialization.DefaultSerializers;
 #if !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
@@ -74,6 +77,51 @@ namespace MsgPack.Serialization
 			var target = CreateTarget<int>();
 			Assert.Throws<ArgumentNullException>( () => target.PackTo( null, 0 ) );
 		}
+
+#if FEATURE_TAP
+
+		// Issue 201
+		[Test]
+		public async Task TestPackAsync_BufferIsFlushed()
+		{
+			PackerUnpackerStreamOptions.AlwaysWrap = true;
+			try
+			{
+				var target = CreateTarget<string>();
+				using ( var stream = new MemoryStream() )
+				{
+					await target.PackAsync( stream, null );
+					Assert.That( stream.Position, Is.EqualTo( 1 ) );
+				}
+			}
+			finally
+			{
+				PackerUnpackerStreamOptions.AlwaysWrap = false;
+			}
+		}
+
+		[Test]
+		public async Task TestUnpackAsync_BufferingIsHarmless()
+		{
+			PackerUnpackerStreamOptions.AlwaysWrap = true;
+			try
+			{
+				var target = CreateTarget<string>();
+				using ( var stream = new MemoryStream() )
+				{
+					await target.PackAsync( stream, "a" );
+					stream.Position = 0;
+					var result = await target.UnpackAsync( stream );
+					Assert.That( result, Is.EqualTo( "a" ) );
+				}
+			}
+			finally
+			{
+				PackerUnpackerStreamOptions.AlwaysWrap = false;
+			}
+		}
+
+#endif // FEATURE_TAP
 
 
 		[Test]
