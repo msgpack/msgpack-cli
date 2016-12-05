@@ -100,17 +100,18 @@ namespace MsgPack.Serialization
 
 		private static MessagePackSerializer<T> CreateSerializer<T>( EmitterFlavor flavor )
 		{
-#if NETFX_35 || NETFX_CORE || SILVERLIGHT
-			var context = new SerializationContext();
-#else
-			var context = PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
-#endif
-#if !XAMIOS && !UNITY_IPHONE
+			var context =
+#if AOT
+				flavor != EmitterFlavor.ReflectionBased
+				? PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions ) :
+#endif // AOT
+				new SerializationContext();
+#if !AOT
 			context.SerializerOptions.EmitterFlavor = flavor;
 			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 #else
 			return context.GetSerializer<T>();
-#endif // !XAMIOS && !UNITY_IPHONE
+#endif // !AOT
 		}
 
 		private static void TestExtraFieldCore( SerializationMethod method, EmitterFlavor flavor, PackerCompatibilityOptions compat )
