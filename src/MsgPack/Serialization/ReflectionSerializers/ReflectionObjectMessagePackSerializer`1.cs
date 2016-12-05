@@ -388,7 +388,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					{
 						nullable = this.UnpackSingleValue( unpacker, index );
 					}
-					else if ( this._getters[ index ] != null ) // null getter supposes undeclared member (should be treated as nil)
+					else if ( index < this._getters.Length && this._getters[ index ] != null ) // null getter supposes undeclared member (should be treated as nil)
 					{
 						this.UnpackAndAddCollectionItem( objectGraph, unpacker, index );
 					}
