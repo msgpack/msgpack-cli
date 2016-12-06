@@ -627,3 +627,4 @@ Release 0.9.0 (planned)
   * Fix asynchronous packing is not be emitted correctly. Issue #201
   * Fix SerializerCodeGenerator does not handle collections correctly for IsRecursive = true. Issue #203
   * Fix extra field causes IndexOutOfBoundException when reflection based serializers are used. Issue #199
+  * Fix some built-in serializers throws InvalidOperationException instead of SerializationException for type errors. Issue #204
