@@ -342,6 +342,28 @@ namespace MsgPack.Serialization
 			Assert.That( serialized[ 0 ], Is.EqualTo( MessagePackCode.Bin8 ) );
 		}
 
+		// Issue 204
+		[Test]
+		public void TestDateTimeTypeError_SerializationException()
+		{
+			using ( var data = new MemoryStream( new byte[] { 0xA0 } ) )
+			{
+				var context = new SerializationContext();
+				foreach ( var method in new[] { DateTimeConversionMethod.UnixEpoc, DateTimeConversionMethod.Native } )
+				{
+					context.DefaultDateTimeConversionMethod = method;
+					data.Position = 0;
+					Assert.Throws<SerializationException>( () => context.GetSerializer<DateTime>().Unpack( data ) );
+					data.Position = 0;
+					Assert.Throws<SerializationException>( () => context.GetSerializer<DateTime?>().Unpack( data ) );
+					data.Position = 0;
+					Assert.Throws<SerializationException>( () => context.GetSerializer<DateTimeOffset>().Unpack( data ) );
+					data.Position = 0;
+					Assert.Throws<SerializationException>( () => context.GetSerializer<DateTimeOffset?>().Unpack( data ) );
+				}
+			}
+		}
+
 		public class Issue152
 		{
 			[MessagePackMember( 0 )]
