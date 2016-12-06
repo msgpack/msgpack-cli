@@ -96,7 +96,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 			else
 			{
-				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.AsInt64() );
+				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.DeserializeAsInt64() );
 			}
 		}
 

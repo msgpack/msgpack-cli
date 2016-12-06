@@ -92,7 +92,7 @@ foreach( var type in types )
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( <#= type.Name #> ), <#= type.Fields.Length #> );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != <#= type.Fields.Length #> )
 			{

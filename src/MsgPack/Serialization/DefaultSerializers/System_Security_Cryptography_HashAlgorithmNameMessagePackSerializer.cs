@@ -42,7 +42,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override HashAlgorithmName UnpackFromCore( Unpacker unpacker )
 		{
-			return new HashAlgorithmName( unpacker.LastReadData.AsString() );
+			return new HashAlgorithmName( unpacker.LastReadData.DeserializeAsString() );
 		}
 
 #if FEATURE_TAP

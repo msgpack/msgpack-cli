@@ -44,9 +44,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 		protected internal override CultureInfo UnpackFromCore( Unpacker unpacker )
 		{
 #if SILVERLIGHT || NETSTANDARD1_1 || NETSTANDARD1_3
-			return new CultureInfo( unpacker.LastReadData.AsString() );
+			return new CultureInfo( unpacker.LastReadData.DeserializeAsString() );
 #else
-			return CultureInfo.GetCultureInfo( unpacker.LastReadData.AsString() );
+			return CultureInfo.GetCultureInfo( unpacker.LastReadData.DeserializeAsString() );
 #endif // SILVERLIGHT || NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 

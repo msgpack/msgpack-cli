@@ -51,7 +51,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Version ), 4 );
 			}
 
-			long length = unpacker.LastReadData.AsInt64();
+			long length = UnpackHelpers.GetItemsCount( unpacker );
 			if ( length != 4 )
 			{
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Version ), 4 );

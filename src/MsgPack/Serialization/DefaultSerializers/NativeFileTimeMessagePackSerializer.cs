@@ -43,7 +43,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override FILETIME UnpackFromCore( Unpacker unpacker )
 		{
-			return DateTime.FromBinary( unpacker.LastReadData.AsInt64() ).ToWin32FileTimeUtc();
+			return DateTime.FromBinary( unpacker.LastReadData.DeserializeAsInt64() ).ToWin32FileTimeUtc();
 		}
 
 #if FEATURE_TAP

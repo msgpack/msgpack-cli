@@ -19,6 +19,8 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
+using System.Runtime.Serialization;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,7 +43,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override MessagePackExtendedTypeObject UnpackFromCore( Unpacker unpacker )
 		{
-			return unpacker.LastReadData.AsMessagePackExtendedTypeObject();
+			try
+			{
+				return unpacker.LastReadData.AsMessagePackExtendedTypeObject();
+			}
+			catch ( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
 		}
 
 #if FEATURE_TAP

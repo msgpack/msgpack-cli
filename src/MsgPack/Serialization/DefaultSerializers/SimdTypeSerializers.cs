@@ -61,7 +61,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Vector2 ), 2 );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != 2 )
 			{
@@ -150,7 +150,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Vector3 ), 3 );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != 3 )
 			{
@@ -253,7 +253,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Vector4 ), 4 );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != 4 )
 			{
@@ -369,7 +369,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Plane ), 4 );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != 4 )
 			{
@@ -485,7 +485,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Quaternion ), 4 );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != 4 )
 			{
@@ -603,7 +603,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Matrix3x2 ), 6 );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != 6 )
 			{
@@ -757,7 +757,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Matrix4x4 ), 16 );
 			}
 
-			var length = unpacker.LastReadData.AsInt64();
+			var length = UnpackHelpers.GetItemsCount( unpacker );
 
 			if ( length != 16 )
 			{

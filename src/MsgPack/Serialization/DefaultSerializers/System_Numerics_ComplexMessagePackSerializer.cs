@@ -48,6 +48,17 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
 		protected internal override Complex UnpackFromCore( Unpacker unpacker )
 		{
+			if ( !unpacker.IsArrayHeader )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Complex ), 2 );
+			}
+
+			long length = UnpackHelpers.GetItemsCount( unpacker );
+			if ( length != 2 )
+			{
+				SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( Complex ), 2 );
+			}
+
 			double real, imaginary;
 			if ( !unpacker.ReadDouble( out real ) )
 			{
