@@ -331,6 +331,23 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		public class Issue152
+		{
+			[MessagePackMember( 0 )]
+			private List<int> Items { get; set; }
+
+			public List<int> GetItems()
+			{
+				return this.Items;
+			}
+
+			public void SetItems( List<int> items )
+			{
+				this.Items = items;
+			}
+		}
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+
 		// Issue 168
 		[Test]
 		public void TestMessagePackObject_Binary_PackToMessage_ToBianry()
@@ -363,22 +380,5 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-
-		public class Issue152
-		{
-			[MessagePackMember( 0 )]
-			private List<int> Items { get; set; }
-
-			public List<int> GetItems()
-			{
-				return this.Items;
-			}
-
-			public void SetItems( List<int> items )
-			{
-				this.Items = items;
-			}
-		}
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }
