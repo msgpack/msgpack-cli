@@ -209,6 +209,12 @@ namespace MsgPack.Serialization
 				canDeserialize = true;
 			}
 
+			if ( constructor != null && constructor.GetParameters().Any() )
+			{
+				// Recalculate members because getter-only/readonly members should be included for constructor deserialization.
+				memberCandidates = getters;
+			}
+
 			// Because members' order is equal to declared order is NOT guaranteed, so explicit ordering is required.
 			IList<SerializingMember> members;
 			if ( memberCandidates.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
