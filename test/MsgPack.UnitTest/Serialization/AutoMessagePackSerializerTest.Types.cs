@@ -13704,6 +13704,36 @@ namespace MsgPack.Serialization
 		}
 	}
 
+	#region -- Issue 207 --
+
+	public class ReadOnlyAndConstructor
+	{
+		public readonly Guid Id;
+
+		public readonly List<int> Ints;
+
+		public ReadOnlyAndConstructor( Guid id, List<int> ints )
+		{
+			this.Id = id;
+			this.Ints = ints;
+		}
+	}
+
+	public class GetOnlyAndConstructor
+	{
+		public Guid Id { get; }
+
+		public List<int> Ints { get; }
+
+		public GetOnlyAndConstructor( Guid id, List<int> ints )
+		{
+			this.Id = id;
+			this.Ints = ints;
+		}
+	}
+
+	#endregion -- Issue 207 --
+
 	#region -- Asymmetric --
 
 	public partial class NoSettableNoConstructorsForAsymmetricTest

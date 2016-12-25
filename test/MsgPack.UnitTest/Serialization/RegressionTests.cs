@@ -346,6 +346,7 @@ namespace MsgPack.Serialization
 				this.Items = items;
 			}
 		}
+
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		// Issue 168

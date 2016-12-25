@@ -5451,6 +5451,36 @@ namespace MsgPack.Serialization
 		}
 
 		#endregion -- Object Packing/Unpacking --
+
+		#region -- Issue 207 --
+
+		[Test]
+		public void TestReadOnlyAndConstructor()
+		{
+			var context = new SerializationContext();
+			var serializer = context.GetSerializer<ReadOnlyAndConstructor>();
+			var item = new ReadOnlyAndConstructor( Guid.NewGuid(), new List<int>() { 5, 11 } );
+			var serializedItem = serializer.PackSingleObject( item );
+			Assert.That( serializedItem, Is.EqualTo( new byte[] { 0x92, 0xB0 }.Concat( item.Id.ToByteArray() ).Concat( new byte[] { 0x92, 5, 11 } ).ToArray() ) );
+			var deserializedItem = serializer.UnpackSingleObject( serializedItem );
+			Assert.That( deserializedItem.Id, Is.EqualTo( item.Id ) );
+			Assert.That( deserializedItem.Ints, Is.EqualTo( item.Ints ) );
+		}
+
+		[Test]
+		public void TestGetOnlyAndConstructor()
+		{
+			var context = new SerializationContext();
+			var serializer = context.GetSerializer<GetOnlyAndConstructor>();
+			var item = new GetOnlyAndConstructor( Guid.NewGuid(), new List<int>() { 5, 11 } );
+			var serializedItem = serializer.PackSingleObject( item );
+			Assert.That( serializedItem, Is.EqualTo( new byte[] { 0x92, 0xB0 }.Concat( item.Id.ToByteArray() ).Concat( new byte[] { 0x92, 5, 11 } ).ToArray() ) );
+			var deserializedItem = serializer.UnpackSingleObject( serializedItem );
+			Assert.That( deserializedItem.Id, Is.EqualTo( item.Id ) );
+			Assert.That( deserializedItem.Ints, Is.EqualTo( item.Ints ) );
+		}
+
+		#endregion -- Issue 207 --
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 
