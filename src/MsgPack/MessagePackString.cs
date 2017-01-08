@@ -266,30 +266,21 @@ namespace MsgPack
 				return false;
 			}
 
-#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
-			if ( _isFastEqualsDisabled == 0 )
-			{
-				try
-				{
-					return UnsafeFastEquals( left._encoded, right._encoded );
-				}
-				catch ( SecurityException )
-				{
-					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
-				}
-				catch ( MemberAccessException )
-				{
-					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
-				}
-			}
-#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
-
 			return SlowEquals( left._encoded, right._encoded );
 		}
 
+		// It is 1.8x(not-aligned) - 11.1x (well-aligned) slower than memcmp, but this call is rare and it is acceptable in most cases.
+		// It is roughly equal to String.Equals(String).
 		private static bool SlowEquals( byte[] x, byte[] y )
 		{
-			for ( int i = 0; i < x.Length; i++ )
+			if ( x.Length != y.Length )
+			{
+				return false;
+			}
+
+			// This looks naive, but loop expansion or unsafe code is not effect here (unsafe is more slower).
+
+			for ( var i = 0; i < x.Length; i++ )
 			{
 				if ( x[ i ] != y[ i ] )
 				{
@@ -299,44 +290,6 @@ namespace MsgPack
 
 			return true;
 		}
-
-#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
-#if SILVERLIGHT
-		private static int _isFastEqualsDisabled =
-			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
-#else
-		private static int _isFastEqualsDisabled;
-#endif // if SILVERLIGHT
-
-#if DEBUG
-		// for testing
-		internal static bool IsFastEqualsDisabled
-		{
-			get { return _isFastEqualsDisabled != 0; }
-		}
-#endif
-
-#if !NETFX_35 && !UNITY
-		[SecuritySafeCritical]
-#endif // !NETFX_35 && !UNITY
-		private static bool UnsafeFastEquals( byte[] x, byte[] y )
-		{
-#if DEBUG
-			Contract.Assert( x != null, "x != null" );
-			Contract.Assert( y != null, "y != null" );
-			Contract.Assert( 0 < x.Length, "0 < x.Length" );
-			Contract.Assert( x.Length == y.Length, "x.Length == y.Length" );
-#endif // if DEBUG
-			int result;
-			if ( !UnsafeNativeMethods.TryMemCmp( x, y, new UIntPtr( unchecked( ( uint )x.Length ) ), out result ) )
-			{
-				Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
-				return SlowEquals( x, y );
-			}
-
-			return result == 0;
-		}
-#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[Serializable]
