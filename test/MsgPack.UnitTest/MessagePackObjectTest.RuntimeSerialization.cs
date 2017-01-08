@@ -18,7 +18,7 @@
 //
 #endregion -- License Terms --
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !SILVERLIGHT
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;

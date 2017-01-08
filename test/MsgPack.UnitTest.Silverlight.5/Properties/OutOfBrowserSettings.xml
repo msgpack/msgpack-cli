@@ -1,0 +1,7 @@
+<OutOfBrowserSettings ShortName="MsgPack.UnitTest.Silverlight.5 アプリケーション" EnableGPUAcceleration="False" ShowInstallMenuItem="True">
+  <OutOfBrowserSettings.Blurb>デスクトップの MsgPack.UnitTest.Silverlight.5 アプリケーションを、自宅でも、職場でも、外出先でも利用できます。</OutOfBrowserSettings.Blurb>
+  <OutOfBrowserSettings.WindowSettings>
+    <WindowSettings Title="MsgPack.UnitTest.Silverlight.5 アプリケーション" />
+  </OutOfBrowserSettings.WindowSettings>
+  <OutOfBrowserSettings.Icons />
+</OutOfBrowserSettings>

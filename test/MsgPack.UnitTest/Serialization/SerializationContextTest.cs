@@ -99,18 +99,18 @@ namespace MsgPack.Serialization
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ISet<> ) ), Is.EqualTo( typeof( HashSet<> ) ) );
 #endif
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
-#if !NETFX_35 && !UNITY && !NETFX_40
+#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyCollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
-#endif // !NETFX_35 && !UNITY && !NETFX_40
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
-#if !NETFX_35 && !UNITY && !NETFX_40
+#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
-#endif // !NETFX_35 && !UNITY && !NETFX_40
-		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
-#if !NETFX_35 && !UNITY && !NETFX_40
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
+#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyList<> ) ), Is.EqualTo( typeof( List<> ) ) );
-#endif // !NETFX_35 && !UNITY && !NETFX_40
+#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary ) ), Is.EqualTo( typeof( MessagePackObjectDictionary ) ) );
@@ -566,6 +566,47 @@ namespace MsgPack.Serialization
 #endif
 				}
 			}
+
+#if SILVERLIGHT
+
+			private sealed class Barrier : IDisposable
+			{
+				private int _participants;
+				private int _waiting;
+				// This is too naive for ping-pong
+				private readonly ManualResetEvent _waitSignal;
+
+				public Barrier( int participants )
+				{
+					Interlocked.Exchange( ref this._participants, participants );
+					this._waitSignal = new ManualResetEvent( false );
+				}
+
+				public void Dispose()
+				{
+					this._waitSignal.Dispose();
+				}
+
+				public void AddParticipant()
+				{
+					Interlocked.Increment( ref this._participants );
+				}
+
+				public void SignalAndWait()
+				{
+					if ( Interlocked.Increment( ref this._waiting ) == Interlocked.CompareExchange( ref this._waiting, 0, 0 ) )
+					{
+						this._waitSignal.Set();
+						Interlocked.Exchange( ref this._waiting, 0 );
+					}
+					else
+					{
+						this._waitSignal.WaitOne();
+					}
+				}
+			}
+
+#endif // SILVERLIGHT
 		}
 #endif // !AOT
 

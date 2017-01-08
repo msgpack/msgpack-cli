@@ -41,7 +41,9 @@ using System.Linq;
 using System.Numerics;
 #endif // !NETFX_35 && !WINDOWS_PHONE
 using System.Reflection;
+#if !SILVERLIGHT
 using System.Runtime.InteropServices.ComTypes;
+#endif // !SILVERLIGHT
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -53,6 +55,10 @@ using System.Threading.Tasks;
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if SILVERLIGHT
+// For DateTime.ToBinary() extension method
+using MsgPack.Serialization.DefaultSerializers;
+#endif // SILVERLIGHT
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -948,7 +954,11 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEnum()
 		{
+#if !SILVERLIGHT
 			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ) ), ( x, y ) => x == y );
+#else
+			TestCore( DayOfWeek.Sunday, stream => ( DayOfWeek )Enum.Parse( typeof( DayOfWeek ), Unpacking.UnpackString( stream ), false ), ( x, y ) => x == y );
+#endif // !SILVERLIGHT
 		}
 
 #if !NETFX_CORE && !SILVERLIGHT
@@ -1477,6 +1487,8 @@ namespace MsgPack.Serialization
 			}
 		}
 
+#if !SILVERLIGHT
+
 		[Test]
 #if UNITY_WORKAROUND
 		[Ignore( "Unity's Array.SetValue is buggy for non-SZArray" )]
@@ -1548,6 +1560,8 @@ namespace MsgPack.Serialization
 				Assert.That( result.GetValue( 2, 2 ), Is.EqualTo( 22 ) );
 			}
 		}
+
+#endif // !SILVERLIGHT
 
 
 		[Test]
@@ -4272,7 +4286,8 @@ namespace MsgPack.Serialization
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NETFX_35 && !UNITY && !SILVERLIGHT
+
 		[Test]
 		public void TestReadOnlyCollectionInterfaceDefault()
 		{
@@ -4354,7 +4369,8 @@ namespace MsgPack.Serialization
 				assertion( result );
 			}
 		}
-#endif // !NETFX_35 && !UNITY
+
+#endif // !NETFX_35 && !UNITY && !SILVERLIGHT
 
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
@@ -20689,6 +20705,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Version[] ), GetSerializationContext() );
 		}	
 		
+#if !SILVERLIGHT
 		[Test]
 		public void TestFILETIMEField()
 		{
@@ -20701,6 +20718,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
+#endif // !SILVERLIGHT
 		[Test]
 		public void TestTimeSpanField()
 		{
@@ -22103,11 +22121,15 @@ namespace MsgPack.Serialization
 				}
 			}
 		}	
-		
+
+#if !SILVERLIGHT
+
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
 			var fileTime = dateTime.ToFileTimeUtc();
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
 		}
+
+#endif // !SILVERLIGHT
 	}
 }

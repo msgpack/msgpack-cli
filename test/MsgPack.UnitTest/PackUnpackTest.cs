@@ -235,7 +235,15 @@ namespace MsgPack
 						cp /= 2;
 					}
 
+#if !SILVERLIGHT
 					sb.Append( Char.ConvertFromUtf32( cp ) );
+#else
+					cp -= 0x10000;
+					var address = new char[ 2 ];
+					address[ 0 ] = ( char )( ( cp / 0x400 ) + 0xd800 );
+					address[ 1 ] = ( char )( ( cp % 0x400 ) + 0xdc00 );
+					sb.Append( address );
+#endif // !SILVERLIGHT
 				}
 				avg = ( avg + sb.Length ) / 2.0;
 				TestString( sb.ToString() );
@@ -294,7 +302,8 @@ namespace MsgPack
 				}
 			)
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				var output = new MemoryStream();
 				Packer.Create( output ).PackCollection( Enumerable.Range( 0, count ).ToArray() );
 				Assert.That(
@@ -304,7 +313,7 @@ namespace MsgPack
 				sw.Stop();
 			}
 
-			Console.WriteLine( "Array: {0:0.###} msec/item", sw.Elapsed.TotalMilliseconds / 0x10000 );
+			Console.WriteLine( "Array: {0:0.###} msec/item", sw.ElapsedMilliseconds / 0x10000 );
 		}
 
 		[Test]
@@ -510,7 +519,8 @@ namespace MsgPack
 				}
 			)
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				var output = new MemoryStream();
 				Packer.Create( output ).PackDictionary( Enumerable.Range( 0, count ).ToDictionary( item => item.ToString(), item => item ) );
 				Assert.That(
@@ -520,7 +530,7 @@ namespace MsgPack
 				sw.Stop();
 			}
 
-			Console.WriteLine( "Map: {0:0.###} msec/item", sw.Elapsed.TotalMilliseconds / 0x10000 );
+			Console.WriteLine( "Map: {0:0.###} msec/item", sw.ElapsedMilliseconds / 0x10000 );
 		}
 
 		[Test]
@@ -577,7 +587,8 @@ namespace MsgPack
 				}
 			)
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				var output = new MemoryStream();
 				Packer.Create( output ).PackBinary( Enumerable.Range( 0, count ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray() );
 				Assert.That(
@@ -587,7 +598,7 @@ namespace MsgPack
 				sw.Stop();
 			}
 
-			Console.WriteLine( "Bytes: {0:0.###} msec/byte", sw.Elapsed.TotalMilliseconds / 0x10000 );
+			Console.WriteLine( "Bytes: {0:0.###} msec/byte", sw.ElapsedMilliseconds / 0x10000 );
 		}
 
 		[Test]
@@ -644,7 +655,8 @@ namespace MsgPack
 					}
 			)
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				var output = new MemoryStream();
 				Packer.Create( output ).PackString( String.Concat( Enumerable.Range( 0, count ).Select( i => ( i % 10 ).ToString() ).ToArray() ) );
 				Assert.AreEqual(
@@ -654,7 +666,7 @@ namespace MsgPack
 				sw.Stop();
 			}
 
-			Console.WriteLine( "String: {0:0.###} msec/char", sw.Elapsed.TotalMilliseconds / 0x10000 );
+			Console.WriteLine( "String: {0:0.###} msec/char", sw.ElapsedMilliseconds / 0x10000 );
 		}
 
 		[Test]
@@ -715,7 +727,8 @@ namespace MsgPack
 					}
 			)
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				var output = new MemoryStream();
 				var value = new MessagePackExtendedTypeObject(
 					1, Enumerable.Range( 0, count ).Select( i => ( byte ) ( i % 0x100 ) ).ToArray() );
@@ -727,7 +740,7 @@ namespace MsgPack
 				sw.Stop();
 			}
 
-			Console.WriteLine( "Ext: {0:0.###} msec/byte", sw.Elapsed.TotalMilliseconds / 0x10000 );
+			Console.WriteLine( "Ext: {0:0.###} msec/byte", sw.ElapsedMilliseconds / 0x10000 );
 		}
 
 		[Test]

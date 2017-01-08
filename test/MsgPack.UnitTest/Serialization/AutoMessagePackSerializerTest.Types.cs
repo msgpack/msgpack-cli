@@ -38,7 +38,9 @@ using System.Linq;
 using System.Numerics;
 #endif
 using System.Reflection;
+#if !SILVERLIGHT
 using System.Runtime.InteropServices.ComTypes;
+#endif // !SILVERLIGHT
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -221,6 +223,7 @@ namespace MsgPack.Serialization
 			get { return this._CurrentCultureField; }
 			set { this._CurrentCultureField = value; }
 		}
+#if !SILVERLIGHT
 		private FILETIME _FILETIMEField;
 		
 		public FILETIME FILETIMEField
@@ -228,6 +231,7 @@ namespace MsgPack.Serialization
 			get { return this._FILETIMEField; }
 			set { this._FILETIMEField = value; }
 		}
+#endif // !SILVERLIGHT
 		private TimeSpan _TimeSpanField;
 		
 		public TimeSpan TimeSpanField
@@ -632,7 +636,9 @@ namespace MsgPack.Serialization
 			this._VersionField = new Version( 1, 2, 3, 4 );
 			this._InvariantCultureField = CultureInfo.InvariantCulture;
 			this._CurrentCultureField = CultureInfo.CurrentCulture;
+#if !SILVERLIGHT
 			this._FILETIMEField = ToFileTime( DateTime.UtcNow );
+#endif // !SILVERLIGHT
 			this._TimeSpanField = TimeSpan.FromMilliseconds( 123456789 );
 			this._GuidField = Guid.NewGuid();
 			this._CharField = '　';
@@ -715,13 +721,17 @@ namespace MsgPack.Serialization
 			this._AddOnlyCollection_MessagePackObjectField = new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			return this;
 		}
-		
+
+#if !SILVERLIGHT
+
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
 			var fileTime = dateTime.ToFileTimeUtc();
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
 		}
-	
+
+#endif // !SILVERLIGHT
+
 		public void Verify( ComplexTypeGenerated expected )
 		{
 			AutoMessagePackSerializerTest.Verify( expected._NullField, this._NullField );
@@ -744,7 +754,9 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._VersionField, this._VersionField );
 			AutoMessagePackSerializerTest.Verify( expected._InvariantCultureField, this._InvariantCultureField );
 			AutoMessagePackSerializerTest.Verify( expected._CurrentCultureField, this._CurrentCultureField );
+#if !SILVERLIGHT
 			AutoMessagePackSerializerTest.Verify( expected._FILETIMEField, this._FILETIMEField );
+#endif // !SILVERLIGHT
 			AutoMessagePackSerializerTest.Verify( expected._TimeSpanField, this._TimeSpanField );
 			AutoMessagePackSerializerTest.Verify( expected._GuidField, this._GuidField );
 			AutoMessagePackSerializerTest.Verify( expected._CharField, this._CharField );
@@ -1140,6 +1152,7 @@ namespace MsgPack.Serialization
 			}
 #endif
 
+#if !SILVERLIGHT
 			if ( expected is FILETIME )
 			{
 				var expectedFileTime = ( FILETIME )( object )expected;
@@ -1150,15 +1163,16 @@ namespace MsgPack.Serialization
 				);
 				return;
 			}
+#endif // !SILVERLIGHT
 
 			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 			{
-#if !NETFX_35 && !AOT
+#if !NETFX_35 && !AOT && !SILVERLIGHT
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 #else
 				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
-#endif // !NETFX_35 && !AOT
+#endif // !NETFX_35 && !AOT && !SILVERLIGHT
 				return;
 			}
 

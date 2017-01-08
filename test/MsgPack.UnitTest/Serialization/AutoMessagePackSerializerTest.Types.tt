@@ -124,6 +124,12 @@ var desktopOnly =
 		typeof( Hashtable )
 	};
 
+var notInSL =
+	new HashSet<Type>()
+	{
+		typeof( FILETIME )
+	};
+
 var notInSLWP =
 	new HashSet<String>()
 	{
@@ -187,7 +193,9 @@ using System.Linq;
 using System.Numerics;
 #endif
 using System.Reflection;
+#if !SILVERLIGHT
 using System.Runtime.InteropServices.ComTypes;
+#endif // !SILVERLIGHT
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -264,6 +272,12 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 <#
 		}
 	}
+	else if( asType != null && notInSL.Contains( asType ) )
+	{
+#>
+#if !SILVERLIGHT
+<#
+	}
 #>
 		private <#= typeName #> _<#= ToFieldName( item ) #><#= item.Item4 ? String.Empty : " = " + GetSimpleInitializer( item ) #>;
 		
@@ -300,6 +314,12 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 #endif // !NETFX_35
 <#
 		}
+	}
+	else if( asType != null && notInSL.Contains( asType ) )
+	{
+#>
+#endif // !SILVERLIGHT
+<#
 	}
 }
 #>
@@ -340,6 +360,12 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 <#
 		}
 	}
+	else if( asType != null && notInSL.Contains( asType ) )
+	{
+#>
+#if !SILVERLIGHT
+<#
+	}
 #>
 			this._<#= ToFieldName( item ) #> = <#= item.Item3 #>;
 <#
@@ -364,17 +390,27 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 <#
 		}
 	}
+	else if( asType != null && notInSL.Contains( asType ) )
+	{
+#>
+#endif // !SILVERLIGHT
+<#
+	}
 }
 #>
 			return this;
 		}
-		
+
+#if !SILVERLIGHT
+
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
 			var fileTime = dateTime.ToFileTimeUtc();
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
 		}
-	
+
+#endif // !SILVERLIGHT
+
 		public void Verify( ComplexTypeGenerated expected )
 		{
 <#
@@ -411,6 +447,12 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 <#
 		}
 	}
+	else if( asType != null && notInSL.Contains( asType ) )
+	{
+#>
+#if !SILVERLIGHT
+<#
+	}
 #>
 			AutoMessagePackSerializerTest.Verify( expected._<#= ToFieldName( item ) #>, this._<#= ToFieldName( item ) #> );
 <#
@@ -434,6 +476,12 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 #endif // !NETFX_35
 <#
 		}
+	}
+	else if( asType != null && notInSL.Contains( asType ) )
+	{
+#>
+#endif // !SILVERLIGHT
+<#
 	}
 }
 #>		
@@ -751,6 +799,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 			}
 #endif
 
+#if !SILVERLIGHT
 			if ( expected is FILETIME )
 			{
 				var expectedFileTime = ( FILETIME )( object )expected;
@@ -761,15 +810,16 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 				);
 				return;
 			}
+#endif // !SILVERLIGHT
 
 			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 			{
-#if !NETFX_35 && !AOT
+#if !NETFX_35 && !AOT && !SILVERLIGHT
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 #else
 				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
-#endif // !NETFX_35 && !AOT
+#endif // !NETFX_35 && !AOT && !SILVERLIGHT
 				return;
 			}
 

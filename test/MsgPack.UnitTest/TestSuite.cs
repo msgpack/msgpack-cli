@@ -78,4 +78,4 @@ namespace MsgPack
 		}
 	}
 #endif
-}
+			}

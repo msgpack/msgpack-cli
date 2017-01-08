@@ -670,10 +670,28 @@ namespace MsgPack
 			}
 		}
 
+		private static string ConvertFromUtf32( int cp )
+		{
+#if !SILVERLIGHT
+			return Char.ConvertFromUtf32( cp );
+#else
+			if ( cp < 0x10000 )
+			{
+				return new string( ( char ) cp, 1 );
+			}
+
+			cp -= 0x10000;
+			var address = new char[ 2 ];
+			address[ 0 ] = ( char )( ( cp / 0x400 ) + 0xd800 );
+			address[ 1 ] = ( char )( ( cp % 0x400 ) + 0xdc00 );
+			return new string( address );
+#endif // !SILVERLIGHT
+		}
+
 		[Test]
 		public void TestReadString_Clob()
 		{
-			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( Char.ConvertFromUtf32 ) );
+			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( ConvertFromUtf32 ) );
 			var encoded = Encoding.UTF8.GetBytes( str );
 			using ( var buffer =
 				new MemoryStream(
@@ -780,7 +798,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream( new byte[] { 0x93, 0x1, 0x2, 0x3 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 				Assert.That( await rootUnpacker.ReadAsync(), "1st" );
 				Assert.That( rootUnpacker.IsArrayHeader );
 				Assert.That( rootUnpacker.IsMapHeader, Is.False );
@@ -795,7 +813,7 @@ namespace MsgPack
 				Assert.That( await rootUnpacker.ReadAsync(), "4th" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
 				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 			}
 		}
 
@@ -806,7 +824,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream( new byte[] { 0x83, 0x1, 0x1, 0x2, 0x2, 0x3, 0x3 } ) )
 			using ( var rootUnpacker = Unpacker.Create( buffer ) )
 			{
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 				Assert.That( await rootUnpacker.ReadAsync(), "1st" );
 				Assert.That( rootUnpacker.IsArrayHeader, Is.False );
 				Assert.That( rootUnpacker.IsMapHeader );
@@ -830,7 +848,7 @@ namespace MsgPack
 				Assert.That( await rootUnpacker.ReadAsync(), "7th" );
 				Assert.That( rootUnpacker.Data, Is.Not.Null );
 				Assert.That( rootUnpacker.LastReadData.Equals( 3 ) );
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 			}
 		}
 

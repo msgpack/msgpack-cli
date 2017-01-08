@@ -17,6 +17,45 @@
     <Exclude File="*.ttinclude" />
   </Project>
 
+  <Project Name="MsgPack.UnitTest.Silverlight.5" Base="MsgPack.UnitTest">
+    <Preserve Path="Properties\*" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve Path="System\*" />
+    <Preserve Path="System\Collections\Generic\*" />
+    <Preserve Path="App.xaml" />
+    <Preserve Path="App.xaml.cs" />
+    <Exclude Path="gen\*" />
+    <Exclude Path="Serialization\PreGenerated*" />
+    <Exclude Path="Serialization\_SetUpFixture.cs" />
+    <Exclude Path="Serialization\AppendableReadOnlyCollections.cs" />
+    <Exclude Path="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayFieldBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\ArrayContextBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayContextBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\ArrayGenerationBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\CompositeTest.cs" />
+    <Exclude Path="Serialization\FieldBasedNilImplicationTest.cs" />
+    <Exclude Path="Serialization\GenerationBasedNilImplicationTest.cs" />
+    <Exclude Path="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapFieldBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\MapContextBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapContextBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs" />
+    <Exclude Path="Serialization\MapGenerationBasedEnumSerializationTest.cs" />
+    <Exclude Path="Serialization\FromExpressionTest.cs" />
+    <Exclude Path="Serialization\SerializerGeneratorTest.cs" />
+    <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
+    <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
+    <Exclude Path="_SetUpFixture.cs" />
+    <Exclude Path="TestSuite.cs" />
+    <Exclude File="*.ps1" />
+    <Exclude File="*.tt" />
+    <Exclude File="*.ttinclude" />
+  </Project>
+
   <Project Name="MsgPack.UnitTest.Xamarin.iOS" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\*" />
     <Preserve File="*.config" />

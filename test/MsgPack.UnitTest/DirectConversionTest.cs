@@ -87,6 +87,7 @@ namespace MsgPack
 			Assert.AreEqual( value, Unpacking.UnpackBoolean( output.ToArray() ).Value );
 		}
 
+#if !SILVERLIGHT
 		[Test]
 		[Explicit] // FIXME : split
 		public void TestString()
@@ -191,6 +192,7 @@ namespace MsgPack
 			Assert.AreEqual( value, Unpacking.UnpackString( new MemoryStream( output.ToArray() ) ) );
 			Assert.AreEqual( value, Unpacking.UnpackString( output.ToArray() ).Value );
 		}
+#endif // !SILVERLIGHT
 
 		[Test]
 		[Timeout( 30000 )]

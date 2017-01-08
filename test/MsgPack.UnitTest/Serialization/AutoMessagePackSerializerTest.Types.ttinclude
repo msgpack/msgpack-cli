@@ -107,6 +107,12 @@ private void GenerateTypesCore( bool forIos )
 			typeof( Hashtable )
 		};
 
+	var __notInSL =
+		new HashSet<Type>()
+		{
+			typeof( FILETIME )
+		};
+
 	var __notInSLWP =
 		new HashSet<String>()
 		{
@@ -177,6 +183,12 @@ private void GenerateTypesCore( bool forIos )
 <#+
 			}
 		}
+		else if ( __notInSL.Contains( __asType ) )
+		{
+#>
+#if !SILVERLIGHT
+<#+
+		}
 #>
 		[Test]
 		public void Test<#= ToFieldName( __item ) #>()
@@ -229,6 +241,12 @@ private void GenerateTypesCore( bool forIos )
 #endif // !NETFX_35
 <#+
 			}
+		}
+		else if ( __notInSL.Contains( __asType ) )
+		{
+#>
+#endif // !SILVERLIGHT
+<#+
 		}
 	}
 	// In object
@@ -421,12 +439,16 @@ private void GenerateTypesCore( bool forIos )
 				}
 			}
 		}	
-		
+
+#if !SILVERLIGHT
+
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
 			var fileTime = dateTime.ToFileTimeUtc();
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
 		}
+
+#endif // !SILVERLIGHT
 	}
 }
 <#+
