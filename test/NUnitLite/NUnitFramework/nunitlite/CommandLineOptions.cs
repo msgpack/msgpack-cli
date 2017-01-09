@@ -24,6 +24,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Security;
+
 using NUnit.Options;
 
 namespace NUnit.Common
@@ -39,14 +42,7 @@ namespace NUnit.Common
     /// </summary>
     public class CommandLineOptions : OptionSet
     {
-        private static readonly string DEFAULT_WORK_DIRECTORY =
-#if NETCF || PORTABLE
-            @"\My Documents";
-#elif SILVERLIGHT
-            Environment.GetFolderPath(Environment.SpecialFolder.Personal);   
-#else
-            Environment.CurrentDirectory;
-#endif
+        private static readonly string DEFAULT_WORK_DIRECTORY = GetDefaultWorkDirectory();
 
         private bool validated;
 #if !PORTABLE
@@ -73,10 +69,35 @@ namespace NUnit.Common
             if (args != null)
                 Parse(args);
         }
-        
-#endregion
-        
-#region Properties
+
+        private static string GetDefaultWorkDirectory()
+        {
+            try
+            {
+                return GetDefaultWorkDirectoryCore();
+            }
+            catch ( SecurityException )
+            {
+                // For restricted Silverlight environment.
+                return null;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static string GetDefaultWorkDirectoryCore()
+        {
+#if NETCF || PORTABLE
+            return @"\My Documents";
+#elif SILVERLIGHT
+            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+#else
+            return Environment.CurrentDirectory;
+#endif
+        }
+
+        #endregion
+
+        #region Properties
 
         // Action to Perform
 

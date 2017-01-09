@@ -175,7 +175,7 @@ namespace NUnitLite.Runner.Silverlight
         public override void WriteLabel(string label, object option, ColorStyle valueStyle)
         {
             Write(ColorStyle.Label, label);
-            Write(valueStyle, option.ToString());
+            Write(valueStyle, option == null ? "<null>" : option.ToString());
         }
 
         /// <summary>

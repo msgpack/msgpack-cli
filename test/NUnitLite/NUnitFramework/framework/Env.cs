@@ -22,6 +22,8 @@
 // ***********************************************************************
 
 using System;
+using System.Runtime.CompilerServices;
+using System.Security;
 using System.Text;
 
 namespace NUnit
@@ -47,18 +49,56 @@ namespace NUnit
         /// <summary>
         /// Path to the 'My Documents' folder
         /// </summary>
-#if PocketPC || WindowsCE || NETCF || PORTABLE
-        public static string DocumentFolder = @"\My Documents";
-#else
-        public static string DocumentFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-#endif
+        public static string DocumentFolder = GetDocumentFolder();
+
         /// <summary>
         /// Directory used for file output if not specified on commandline.
         /// </summary>
-#if SILVERLIGHT || PocketPC || WindowsCE || NETCF || PORTABLE
-        public static readonly string DefaultWorkDirectory = DocumentFolder;
+        public static readonly string DefaultWorkDirectory = GetDefaultWorkDirectory();
+
+        private static string GetDocumentFolder()
+        {
+            try
+            {
+                return GetDocumentFolderCore();
+            }
+            catch ( SecurityException )
+            {
+                // For restricted Silverlight environment.
+                return null;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static string GetDocumentFolderCore()
+        {
+#if PocketPC || WindowsCE || NETCF || PORTABLE
+            return @"\My Documents";
 #else
-        public static readonly string DefaultWorkDirectory = Environment.CurrentDirectory;
+            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 #endif
+        }
+        private static string GetDefaultWorkDirectory()
+        {
+            try
+            {
+                return GetDefaultWorkDirectoryCore();
+            }
+            catch ( SecurityException )
+            {
+                // For restricted Silverlight environment.
+                return null;
+            }
+        }
+
+        [MethodImpl( MethodImplOptions.NoInlining )]
+        private static string GetDefaultWorkDirectoryCore()
+        {
+#if PocketPC || WindowsCE || NETCF || PORTABLE
+            return @"\My Documents";
+#else
+            return Environment.GetFolderPath( Environment.SpecialFolder.Personal );
+#endif
+        }
     }
 }
