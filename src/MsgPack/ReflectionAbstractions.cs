@@ -427,7 +427,7 @@ namespace MsgPack
 		public static string GetCultureName( this AssemblyName source )
 		{
 #if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
-			return source.CultureInfo.Name;
+			return source.CultureInfo == null ? null : source.CultureInfo.Name;
 #else
 			return source.CultureName;
 #endif
