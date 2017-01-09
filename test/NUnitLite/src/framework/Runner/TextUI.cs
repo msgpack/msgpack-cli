@@ -48,8 +48,12 @@ namespace NUnitLite.Runner
     /// as Windows Phone, the results will simply not appear if
     /// you fail to specify a file in the call itself or as an option.
     /// </summary>
-    public class TextUI : ITestListener
+    public class TextUI
+#if !SILVERLIGHT
+        : ITestListener
+#endif // !SILVERLIGHT
     {
+#if !SILVERLIGHT
         private CommandLineOptions commandLineOptions;
 
         private NUnit.ObjectList assemblies = new NUnit.ObjectList();
@@ -60,7 +64,7 @@ namespace NUnitLite.Runner
 
         private ITestAssemblyRunner runner;
 
-        #region Constructors
+#region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextUI"/> class.
@@ -86,9 +90,13 @@ namespace NUnitLite.Runner
             this.listener = listener;
         }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#endif // !SILVERLIGHT
+
+#region Public Methods
+
+#if !SILVERLIGHT
 
         /// <summary>
         /// Execute a test run based on the aruments passed
@@ -124,11 +132,11 @@ namespace NUnitLite.Runner
                 if (commandLineOptions.Wait && commandLineOptions.OutFile != null)
                     writer.WriteLine("Ignoring /wait option - only valid for Console");
 
-#if SILVERLIGHT
-                IDictionary loadOptions = new System.Collections.Generic.Dictionary<string, string>();
-#else
+//#if SILVERLIGHT
+//                IDictionary loadOptions = new System.Collections.Generic.Dictionary<string, string>();
+//#else
                 IDictionary loadOptions = new Hashtable();
-#endif
+//#endif
                 //if (options.Load.Count > 0)
                 //    loadOptions["LOAD"] = options.Load;
 
@@ -214,6 +222,7 @@ namespace NUnitLite.Runner
                 }
             }
         }
+#endif // !SILVERLIGHT
 
         /// <summary>
         /// Write the standard header information to a TextWriter.
@@ -273,9 +282,11 @@ namespace NUnitLite.Runner
             writer.WriteLine();
         }
 
-        #endregion
+#endregion
 
-        #region Helper Methods
+#if !SILVERLIGHT
+
+#region Helper Methods
 
         private void RunTests(ITestFilter filter)
         {
@@ -327,9 +338,9 @@ namespace NUnitLite.Runner
             Console.WriteLine("Test info saved as {0}.", listFile);
         }
 
-        #endregion
+#endregion
 
-        #region ITestListener Members
+#region ITestListener Members
 
         /// <summary>
         /// A test has just started
@@ -357,6 +368,8 @@ namespace NUnitLite.Runner
         {
         }
 
-        #endregion
+#endregion
+
+#endif // !SILVERLIGHT
     }
 }
