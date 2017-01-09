@@ -623,6 +623,7 @@ Release 0.9.0 (planned)
   * Users of serializer code generator API can specify TextWriter to output. This may improve tooling chain.
   * Users of serializer code generator API can suppress [DebuggerNonUserCode] attribute to enable debugger step in.
   * SerializerRepository API now expose ContainsFor and GetRegisteredSerializers methods to investigate registered serializers.
+  * SerializationContext.DisablePrivilegedAccess for restricted environment like Silverlight to select between granting permission or relinquish non-public access.
 
   BUG FIXES
   * The generated code for the type which has Tuple typed member uses old PackHelper API.
@@ -633,4 +634,5 @@ Release 0.9.0 (planned)
   * Fix some built-in serializers throws InvalidOperationException instead of SerializationException for type errors. Issue #204
   * Fix a combination of readonly members and collection members incorrect code generation when the type also have deserialization constructor. Issue #207.
   * Fix Windows Native build error. Issue #206.
+  * Fix built-in collection serializers such as List<T> serializer causes SecurityException when the program run in restricted environment like Silverlight. Issue #205.
 

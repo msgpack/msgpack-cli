@@ -743,6 +743,17 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 	}
 	else
 	{
+		var mustBePrivileged =
+			member.AsObject.GetValueOrDefault() && ( member.Name.StartsWith( "List" ) || member.Name.StartsWith( "Dict" ) ) // For comatibility, list and dict will be required privilege
+			&& ( kind & TypeKind.HasSetter ) != 0 && ( kind & TypeKind.IsPublicSetter ) == 0;
+		if ( mustBePrivileged )
+		{
+#>
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Throws<SerializationException>( () => context.GetSerializer<#= "<" + targetType + ">" #>() );
+#else
+<#+
+		}
 #>
 			var serializer = context.GetSerializer<#= "<" + targetType + ">" #>();
 				
@@ -782,6 +793,12 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 #>
 			}
 <#+
+		if ( mustBePrivileged )
+		{
+#>
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+<#+
+		}
 	}
 #>
 		}
@@ -1558,11 +1575,11 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 		{
 #>
 
-#if !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 	<#= typeSpec.IsPublicType ? "public" : "internal" #>
 #else
 	public
-#endif // !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 	sealed class <#= typeSpec.VerifierTypeName #>
 	{
 		private static readonly Regex VerificationRegex =
@@ -1571,7 +1588,12 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 			foreach ( var methodSpec in typeSpec.Methods )
 			{
 #>
-		<#= methodSpec.IsPublicMethod ? "public" : "private" #><#= methodSpec.IsStaticMethod ? " static" : String.Empty #> bool <#= methodSpec.VerifierMethodName #>( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		<#= methodSpec.IsPublicMethod ? "public" : "private" #>
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		<#= methodSpec.IsStaticMethod ? " static" : String.Empty #> bool <#= methodSpec.VerifierMethodName #>( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -1891,11 +1913,11 @@ private enum TypeKind
 	ReadWriteProperty = Property | HasSetter | IsPublicSetter | NameIndicator,
 	ReadWriteField= Field| NameIndicator,
 	GetOnlyCollectionProperty = Property| NameIndicator,
-	PrivateSetterCollectionProperty = Property | HasSetter| NameIndicator,
+	PrivateSetterCollectionProperty = Property | HasSetter | NameIndicator,
 	ReadOnlyCollectionField = Field | IsReadOnly| NameIndicator,
-	GetOnlyPropertyAndConstructor = Property | HasConstructor| NameIndicator,
-	PrivateSetterPropertyAndConstructor = Property | HasSetter | HasConstructor| NameIndicator,
-	ReadOnlyFieldAndConstructor = Field | IsReadOnly | HasConstructor| NameIndicator,
+	GetOnlyPropertyAndConstructor = Property | HasConstructor | NameIndicator,
+	PrivateSetterPropertyAndConstructor = Property | HasSetter | HasConstructor | NameIndicator,
+	ReadOnlyFieldAndConstructor = Field | IsReadOnly | HasConstructor | NameIndicator,
 }
 
 private enum PolymorphismTargets

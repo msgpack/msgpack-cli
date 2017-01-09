@@ -137,6 +137,47 @@ namespace MsgPack.Serialization
 		}
 #endif // !AOT
 
+#if !FEATURE_CONCURRENT
+		private volatile bool _isNonPublicAccessDisabled;
+#else
+		private bool _isNonPublicAccessDisabled;
+#endif // !FEATURE_CONCURRENT
+
+		/// <summary>
+		///		Gets or sets a value indicating whether generated and/or reflection serializers should not access non public members via privileged reflection.
+		/// </summary>
+		/// <value>
+		///		<c>true</c> if privileged reflection access is disabled; otherwise, <c>false</c>. Defaults to <c>false</c>.
+		/// </value>
+		/// <remarks>
+		///		The privileged reflection means:
+		///		<list type="bullet">
+		///			<item>Access for non-public fields or property accessors via reflection. This operation requires <c>ReflectionPermission</c> of <c>MemberAccess</c> or <c>RestrictedMemberAccess</c>.</item>
+		///			<item>Writing values for init only fields via reflection. This operation requires <c>SecurityPermission</c> of <c>SerializationFormatter</c>.</item>
+		///		</list>
+		///		If the program run on non-privileged Silverlight environment or restricted desktop CLR,
+		///		serialization and deserialization should fail with <c>SecurityException</c>.
+		/// </remarks>
+		public bool DisablePrivilegedAccess
+		{
+			get
+			{
+#if !FEATURE_CONCURRENT
+				return this._isNonPublicAccessDisabled;
+#else
+				return Volatile.Read( ref this._isNonPublicAccessDisabled );
+#endif // !FEATURE_CONCURRENT
+			}
+			set
+			{
+#if !FEATURE_CONCURRENT
+				this._isNonPublicAccessDisabled = value;
+#else
+				Volatile.Write( ref this._isNonPublicAccessDisabled, value );
+#endif // !FEATURE_CONCURRENT
+			}
+		}
+
 #if FEATURE_TAP
 
 		private bool _withAsync;

@@ -82,6 +82,9 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext { SerializationMethod = SerializationMethod.Array };
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ReflectionBased;
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			context.SerializerOptions.DisablePrivilegedAccess = true;
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			return context;
 		}
 
@@ -89,6 +92,9 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.Array };
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ReflectionBased;
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			context.SerializerOptions.DisablePrivilegedAccess = true;
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			return context;
 		}
 
@@ -2098,6 +2104,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestHasPrivateSetterPropertyWithDefaultConstructor_Success()
 		{
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
 
 			using ( var stream = new MemoryStream() )
@@ -2110,11 +2117,15 @@ namespace MsgPack.Serialization
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
 			}
+#else
+			Assert.Throws<SerializationException>( () => this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 		}
 
 		[Test]
 		public void TestHasPrivateSetterPropertyWithDefaultConstructor_DeserializeWithMissingMember_Success()
 		{
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
 
 			using ( var stream = new MemoryStream() )
@@ -2125,11 +2136,15 @@ namespace MsgPack.Serialization
 				// Default constructor was called and was nothing to be set.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
 			}
+#else
+			Assert.Throws<SerializationException>( () => this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 		}
 
 		[Test]
 		public void TestHasPrivateSetterPropertyWithDefaultConstructor_DeseriaizeWithExtraMember_Success()
 		{
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 			var serializer = this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() );
 
 			using ( var stream = new MemoryStream() )
@@ -2146,6 +2161,9 @@ namespace MsgPack.Serialization
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
 			}
+#else
+			Assert.Throws<SerializationException>( () => this.CreateTarget<HasPrivateSetterPropertyWithDefaultConstructor>( GetSerializationContext() ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 		}
 
 		[Test]
@@ -2213,7 +2231,12 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( stream );
 				// check the member value deserialized properly.
 				Assert.That( result.Member, Is.EqualTo( "123" ) );
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 				Assert.That( result.WasProperConstructorUsed() );
+#else
+				// Parameterized should be called because private setters are completely ignored in non-priviledged mode.
+				Assert.That( result.WasProperConstructorUsed(), Is.False );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 			}
 		}
 
@@ -2227,8 +2250,13 @@ namespace MsgPack.Serialization
 				stream.Write( new byte[]{ 0x90 } );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
+#if !SILVERLIGHT && !SILVERLIGHT_PREVILEGED
 				// Default constructor was called and was nothing to be set.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
+#else
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+#endif // !SILVERLIGHT && !SILVERLIGHT_PREVILEGED
 			}
 		}
 
@@ -4417,6 +4445,7 @@ namespace MsgPack.Serialization
 
 #region -- ReadOnly / Private Members --
 
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 		// ReSharper disable UnusedMember.Local
 		// member names
 		private const string PublicProperty = "PublicProperty";
@@ -4519,32 +4548,44 @@ namespace MsgPack.Serialization
 				foreach ( var memberName in expectedMemberNames )
 				{
 					Func<T, Object> getter = null;
-#if !NETFX_CORE
-					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
-#else
-					var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
-#endif
-					if ( property != null )
-					{
-#if !UNITY
-						getter = obj => property.GetValue( obj, null );
-#else
-						getter = obj => property.GetGetMethod( true ).InvokePreservingExceptionType( obj );
-#endif // !UNITY
-					}
-					else
-					{
-#if !NETFX_CORE
-						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
-#else
-						var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
-#endif
-						if ( field == null )
-						{
-							Assert.Fail( memberName + " is not found." );
-						}
 
-						getter = obj => field.GetValue( obj );
+					try
+					{
+#if !NETFX_CORE
+						var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#else
+						var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
+#endif
+						if ( property != null )
+						{
+#if !UNITY
+							getter = obj => property.GetValue( obj, null );
+#else
+							getter = obj => property.GetGetMethod( true ).InvokePreservingExceptionType( obj );
+#endif // !UNITY
+						}
+						else
+						{
+#if !NETFX_CORE
+							var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#else
+							var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
+#endif
+							if ( field == null )
+							{
+								Assert.Fail( memberName + " is not found." );
+							}
+
+							getter = obj => field.GetValue( obj );
+						}
+					}
+					catch ( MemberAccessException )
+					{
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+						Assert.Inconclusive( "Cannot run this test in Silverlight because of CAS" );
+#else
+						throw;
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 					}
 
 					// Naive, but OK
@@ -4571,6 +4612,7 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 
 #endregion -- ReadOnly / Private Members --
 
@@ -7691,7 +7733,11 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( buffer );
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+#else
+				Assert.That( result.GenericProperty, Is.EqualTo( 0 ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 			}
 		}
 
@@ -7714,7 +7760,11 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( buffer );
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+#else
+				Assert.That( result.GenericProperty, Is.EqualTo( null ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 			}
 		}
 
@@ -10722,6 +10772,9 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty.Initialize();
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>() );
+#else
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -10735,6 +10788,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
 				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
 			}
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 		}
 
 #endif // !UNITY
@@ -11871,6 +11925,9 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty.Initialize();
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty>() );
+#else
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -11884,6 +11941,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
 				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
 			}
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 		}
 
 #endif // !UNITY
@@ -15351,6 +15409,9 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty.Initialize();
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>() );
+#else
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -15364,6 +15425,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.ListObjectItself, Is.EqualTo( target.ListObjectItself ) );
 				Assert.That( result.ListObjectItself, Is.InstanceOf( target.ListObjectItself.GetType() ) );
 			}
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 		}
 
 #endif // !UNITY
@@ -16500,6 +16562,9 @@ namespace MsgPack.Serialization
 		{
 			var context = NewSerializationContext( PackerCompatibilityOptions.None );
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty.Initialize();
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty>() );
+#else
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty>();
 				
 			using ( var buffer = new MemoryStream() )
@@ -16513,6 +16578,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.DictObjectItself, Is.EqualTo( target.DictObjectItself ) );
 				Assert.That( result.DictObjectItself, Is.InstanceOf( target.DictObjectItself.GetType() ) );
 			}
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 		}
 
 #endif // !UNITY

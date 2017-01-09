@@ -1362,6 +1362,10 @@ foreach( var spec in
 
 		public void InitializeMember( <#= spec.Type #> member )
 		{
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Inconclusive( "Cannot run this test in restricted Silverlight because of CAS." );
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+
 			this.GetType().GetRuntimeField( "Member" ).SetValue( this, member );
 		}
 

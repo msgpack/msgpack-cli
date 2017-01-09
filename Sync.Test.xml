@@ -55,6 +55,15 @@
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
   </Project>
+  
+  <Project Name="MsgPack.UnitTest.Silverlight.5.FullTrust" Base="MsgPack.UnitTest.Silverlight.5">
+    <Preserve Path="Properties\*" />
+    <Preserve File="*.config" />
+    <Preserve File="*.json" />
+    <Preserve File="*.mpac" />
+    <Preserve Path="App.xaml" />
+    <Preserve Path="App.xaml.cs" />
+  </Project>
 
   <Project Name="MsgPack.UnitTest.Xamarin.iOS" Base="MsgPack.UnitTest">
     <Preserve Path="Properties\*" />

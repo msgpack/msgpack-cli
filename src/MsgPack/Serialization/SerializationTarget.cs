@@ -56,6 +56,7 @@ namespace MsgPack.Serialization
 		private static readonly string MessagePackDeserializationConstructorAttributeTypeName = typeof( MessagePackDeserializationConstructorAttribute ).FullName;
 		private static readonly string[] EmptyStrings = new string[ 0 ];
 		private static readonly SerializingMember[] EmptyMembers = new SerializingMember[ 0 ];
+		private static readonly Assembly ThisAssembly = typeof( SerializationTarget ).GetAssembly();
 
 		public IList<SerializingMember> Members { get; private set; }
 
@@ -155,8 +156,18 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		public static void VerifyCanSerializeTargetType( SerializationContext context, Type targetType )
+		{
+			if ( context.SerializerOptions.DisablePrivilegedAccess && !targetType.GetIsPublic() && !targetType.GetIsNestedPublic() && !ThisAssembly.Equals( targetType.GetAssembly() ) )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it is not public to the serializer.", targetType ) );
+			}
+		}
+
 		public static SerializationTarget Prepare( SerializationContext context, Type targetType )
 		{
+			VerifyCanSerializeTargetType( context, targetType );
+
 			var getters = GetTargetMembers( targetType ).OrderBy( entry => entry.Contract.Id ).ToArray();
 
 			if ( getters.Length == 0 )
@@ -164,8 +175,8 @@ namespace MsgPack.Serialization
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", targetType ) );
 			}
 
-			var memberCandidates = getters.Where( entry => CheckTargetEligibility( entry.Member ) ).ToArray();
 			bool? canDeserialize;
+			var memberCandidates = getters.Where( entry => CheckTargetEligibility( context, entry.Member ) ).ToArray();
 
 			if ( memberCandidates.Length == 0 )
 			{
@@ -495,7 +506,7 @@ namespace MsgPack.Serialization
 		}
 
 
-		private static bool CheckTargetEligibility( MemberInfo member )
+		private static bool CheckTargetEligibility( SerializationContext context, MemberInfo member )
 		{
 			var asProperty = member as PropertyInfo;
 			var asField = member as FieldInfo;
@@ -510,12 +521,22 @@ namespace MsgPack.Serialization
 				}
 
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
-				if ( asProperty.GetSetMethod( true ) != null )
+				var setter = asProperty.GetSetMethod( true );
 #else
-				if ( asProperty.SetMethod != null )
+				var setter = asProperty.SetMethod;
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+				if ( setter != null )
 				{
-					return true;
+					if ( setter.GetIsPublic() )
+					{
+						return true;
+					}
+
+					if ( !context.SerializerOptions.DisablePrivilegedAccess )
+					{
+						// Can deserialize non-public setter if privileged.
+						return true;
+					}
 				}
 
 				returnType = asProperty.PropertyType;

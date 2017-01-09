@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{26A3F930-FDAF-4886-9111-D326A6F68E82}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsgPack</RootNamespace>
+    <AssemblyName>MsgPack.Silverlight.UnitTest</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>ja</SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>MsgPack.Silverlight.FullTrust.UnitTest.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>MsgPack.App</SilverlightAppEntry>
+    <TestPageFileName>MsgPack.UnitTest.Silverlight._5.FullTrustTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>true</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject></LinkedServerProject>
+    <InBrowserSettingsFile>Properties\InBrowserSettings.xml</InBrowserSettingsFile>
+    <RequireInBrowserElevation>true</RequireInBrowserElevation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;SILVERLIGHT_PRIVILEGED</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;SILVERLIGHT_PRIVILEGED</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Numerics, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest.Silverlight.5\System\Collections\Generic\BigHelper.cs">
+      <Link>System\Collections\Generic\BigHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Silverlight.5\System\Collections\Generic\EnumerableHelpers.cs">
+      <Link>System\Collections\Generic\EnumerableHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Silverlight.5\System\Collections\Generic\SortedDictionary`2.cs">
+      <Link>System\Collections\Generic\SortedDictionary`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Silverlight.5\System\Collections\Generic\SortedSet`1.cs">
+      <Link>System\Collections\Generic\SortedSet`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Silverlight.5\System\MidpointRouding.cs">
+      <Link>System\MidpointRouding.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
+      <Link>BigEndianBinaryTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
+      <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.cs">
+      <Link>DirectConversionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.Scalar.cs">
+      <Link>DirectConversionTest.Scalar.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\EqualsTest.cs">
+      <Link>EqualsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ExceptionTest.cs">
+      <Link>ExceptionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
+      <Link>GenericExceptionTester.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Image.cs">
+      <Link>Image.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackConvertTest.cs">
+      <Link>MessagePackConvertTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackExtendedTypeObjectTest.cs">
+      <Link>MessagePackExtendedTypeObjectTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectDictionaryTest.cs">
+      <Link>MessagePackObjectDictionaryTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Conversion.cs">
+      <Link>MessagePackObjectTest.Conversion.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Equals.cs">
+      <Link>MessagePackObjectTest.Equals.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Equals.Integer.cs">
+      <Link>MessagePackObjectTest.Equals.Integer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Equals.Real.cs">
+      <Link>MessagePackObjectTest.Equals.Real.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Exceptionals.Conversion.cs">
+      <Link>MessagePackObjectTest.Exceptionals.Conversion.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Exceptionals.cs">
+      <Link>MessagePackObjectTest.Exceptionals.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.IPackable.cs">
+      <Link>MessagePackObjectTest.IPackable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.IsTypeOf.Array.cs">
+      <Link>MessagePackObjectTest.IsTypeOf.Array.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.IsTypeOf.cs">
+      <Link>MessagePackObjectTest.IsTypeOf.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.IsTypeOf.Integer.cs">
+      <Link>MessagePackObjectTest.IsTypeOf.Integer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.IsTypeOf.Map.cs">
+      <Link>MessagePackObjectTest.IsTypeOf.Map.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.IsTypeOf.Raw.cs">
+      <Link>MessagePackObjectTest.IsTypeOf.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Miscs.cs">
+      <Link>MessagePackObjectTest.Miscs.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Objects.cs">
+      <Link>MessagePackObjectTest.Objects.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.RuntimeSerialization.cs">
+      <Link>MessagePackObjectTest.RuntimeSerialization.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackObjectTest.Strings.cs">
+      <Link>MessagePackObjectTest.Strings.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackStringTest.cs">
+      <Link>MessagePackStringTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessageUnpackableTest.cs">
+      <Link>MessageUnpackableTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.cs">
+      <Link>PackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.Miscs.cs">
+      <Link>PackerTest.Miscs.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.cs">
+      <Link>PackerTest.Pack.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.Miscs.cs">
+      <Link>PackerTest.Pack.Miscs.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.PackBinary.cs">
+      <Link>PackerTest.PackBinary.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.PackExtendedType.cs">
+      <Link>PackerTest.PackExtendedType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.PackObject.cs">
+      <Link>PackerTest.PackObject.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerTest.PackT.cs">
+      <Link>PackerTest.PackT.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackUnpackTest.cs">
+      <Link>PackUnpackTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackUnpackTest.Scalar.cs">
+      <Link>PackUnpackTest.Scalar.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
+      <Link>Serialization\AddOnlyCollection`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayReflectionBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
+      <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.Types.cs">
+      <Link>Serialization\AutoMessagePackSerializerTest.Types.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\BaseCollections.cs">
+      <Link>Serialization\BaseCollections.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexType.cs">
+      <Link>Serialization\ComplexType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContract.cs">
+      <Link>Serialization\ComplexTypeWithDataContract.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContractWithOrder.cs">
+      <Link>Serialization\ComplexTypeWithDataContractWithOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithNonSerialized.cs">
+      <Link>Serialization\ComplexTypeWithNonSerialized.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithOneBaseOrder.cs">
+      <Link>Serialization\ComplexTypeWithOneBaseOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithoutAnyAttribute.cs">
+      <Link>Serialization\ComplexTypeWithoutAnyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithTwoMember.cs">
+      <Link>Serialization\ComplexTypeWithTwoMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs">
+      <Link>Serialization\DataContractAndNonSerializedMixedTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
+      <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs">
+      <Link>Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
+      <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\InheritanceTest.cs">
+      <Link>Serialization\InheritanceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs">
+      <Link>Serialization\IVerifiable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
+      <Link>Serialization\IVerifiable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\KeyNameTransformersTest.cs">
+      <Link>Serialization\KeyNameTransformersTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedEnumSerializationTest.cs">
+      <Link>Serialization\MapReflectionBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
+      <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAttributeTest.cs">
+      <Link>Serialization\MessagePackMemberAttributeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackSerializerTest.cs">
+      <Link>Serialization\MessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackSerializerTTest.cs">
+      <Link>Serialization\MessagePackSerializerTTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeComparer.cs">
+      <Link>Serialization\MillisecondsDateTimeComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeOffsetComparer.cs">
+      <Link>Serialization\MillisecondsDateTimeOffsetComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
+      <Link>Serialization\NilImplicationTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\PerformanceTest.cs">
+      <Link>Serialization\PerformanceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ReflectionBasedNilImplicationTest.cs">
+      <Link>Serialization\ReflectionBasedNilImplicationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RegressionTests.cs">
+      <Link>Serialization\RegressionTests.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationContextTest.cs">
+      <Link>Serialization\SerializationContextTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargets.cs">
+      <Link>Serialization\SerializationTargets.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargetTest.cs">
+      <Link>Serialization\SerializationTargetTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
+      <Link>Serialization\SimpleCollection`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs">
+      <Link>Serialization\StringKeyedCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\StructWithDataContractTest.cs">
+      <Link>Serialization\StructWithDataContractTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs">
+      <Link>Serialization\TestValueType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.Cases.cs">
+      <Link>Serialization\VersioningTest.Cases.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.cs">
+      <Link>Serialization\VersioningTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
+      <Link>SplittingStream.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
+      <Link>SubtreeUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
+      <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.cs">
+      <Link>UnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Ext.cs">
+      <Link>UnpackerTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Object.cs">
+      <Link>UnpackerTest.Object.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Raw.cs">
+      <Link>UnpackerTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Scalar.cs">
+      <Link>UnpackerTest.Scalar.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Skip.cs">
+      <Link>UnpackerTest.Skip.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Skip.Variations.cs">
+      <Link>UnpackerTest.Skip.Variations.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Array.cs">
+      <Link>UnpackingTest.Combinations.Array.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Boolean.cs">
+      <Link>UnpackingTest.Combinations.Boolean.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Byte.cs">
+      <Link>UnpackingTest.Combinations.Byte.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Double.cs">
+      <Link>UnpackingTest.Combinations.Double.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Int16.cs">
+      <Link>UnpackingTest.Combinations.Int16.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Int32.cs">
+      <Link>UnpackingTest.Combinations.Int32.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Int64.cs">
+      <Link>UnpackingTest.Combinations.Int64.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Map.cs">
+      <Link>UnpackingTest.Combinations.Map.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Nil.cs">
+      <Link>UnpackingTest.Combinations.Nil.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Raw.cs">
+      <Link>UnpackingTest.Combinations.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.SByte.cs">
+      <Link>UnpackingTest.Combinations.SByte.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Single.cs">
+      <Link>UnpackingTest.Combinations.Single.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.UInt16.cs">
+      <Link>UnpackingTest.Combinations.UInt16.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.UInt32.cs">
+      <Link>UnpackingTest.Combinations.UInt32.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.UInt64.cs">
+      <Link>UnpackingTest.Combinations.UInt64.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.cs">
+      <Link>UnpackingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Ext.cs">
+      <Link>UnpackingTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Raw.cs">
+      <Link>UnpackingTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Scalar.cs">
+      <Link>UnpackingTest.Scalar.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\InBrowserSettings.xml" />
+    <None Include="Properties\OutOfBrowserSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MsgPack.Silverlight.5\MsgPack.Silverlight.5.csproj">
+      <Project>{f9477829-6a6d-4540-9f0d-68f8c6d8e18b}</Project>
+      <Name>MsgPack.Silverlight.5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NUnitLite\NUnitFramework\framework\nunit.framework-sl-5.0.csproj">
+      <Project>{3deb15f9-e7da-403f-b6d3-a8499310397f}</Project>
+      <Name>nunit.framework-sl-5.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NUnitLite\NUnitFramework\nunitlite\nunitlite-sl-5.0.csproj">
+      <Project>{0a5f920a-1bf5-4dac-b799-0c618b203797}</Project>
+      <Name>nunitlite-sl-5.0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

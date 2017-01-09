@@ -126,6 +126,9 @@ namespace MsgPack.Serialization
 #>
 			var context = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #>;
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			context.SerializerOptions.DisablePrivilegedAccess = true;
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			return context;
 <#+
 	}
@@ -151,6 +154,9 @@ namespace MsgPack.Serialization
 #>
 			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#= emitterFlavor #>;
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			context.SerializerOptions.DisablePrivilegedAccess = true;
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			return context;
 <#+
 	}
@@ -1621,26 +1627,26 @@ namespace MsgPack.Serialization
 			foreach ( var spec in
 				new []
 				{
-					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Default",	Exception = ( !type.IsCollection ? "SerializationException" : null ) }, // cannot be deserialized
-					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Record",		Exception = default( string ) },
-					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Both",		Exception = default( string ) },
-					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Annotated",	Exception = default( string ) },
-					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Default",	Exception = default( string ) },
-					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Record",		Exception = default( string ) },
-					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Both",		Exception = default( string ) },
-					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Annotated",	Exception = default( string ) },
-					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Default",	Exception = ( !type.IsCollection ? "SerializationException" : null ) }, // cannot be deserialized
-					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Record",		Exception = default( string ) },
-					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Both",		Exception = default( string ) },
-					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Annotated",	Exception = default( string ) },
-					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Default",	Exception = default( string ) }, // via reflection
-					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Record",		Exception = default( string ) },
-					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Both",		Exception = default( string ) }, // via reflection
-					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Annotated",	Exception = default( string ) },
-					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Default",	Exception = default( string ) },
-					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Record",		Exception = default( string ) },
-					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Both",		Exception = default( string ) },
-					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Annotated",	Exception = default( string ) },
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Default",	IsPrivilegeRequired = !type.IsCollection,		Exception = ( !type.IsCollection ? "SerializationException" : null ) }, // cannot be deserialized
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Record",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Both",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "InitOnly",		Suffix = "Field",		Constructor = "Annotated",	IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Default",	IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Record",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Both",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "ReadWrite",		Suffix = "Field",		Constructor = "Annotated",	IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Default",	IsPrivilegeRequired = !type.IsCollection,		Exception = ( !type.IsCollection ? "SerializationException" : null ) }, // cannot be deserialized
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Record",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Both",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "GetOnly",		Suffix = "Property",	Constructor = "Annotated",	IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Default",	IsPrivilegeRequired = !type.IsCollection,		Exception = default( string ) }, // via reflection
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Record",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Both",		IsPrivilegeRequired = false,					Exception = default( string ) }, // via reflection
+					new { Prefix = "PrivateSetter",	Suffix = "Property",	Constructor = "Annotated",	IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Default",	IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Record",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Both",		IsPrivilegeRequired = false,					Exception = default( string ) },
+					new { Prefix = "PublicSetter",	Suffix = "Property",	Constructor = "Annotated",	IsPrivilegeRequired = false,					Exception = default( string ) },
 			}
 			)
 			{
@@ -1659,6 +1665,12 @@ namespace MsgPack.Serialization
 				}
 				else
 				{
+					if ( spec.IsPrivilegeRequired )
+					{
+#>
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+<#+
+					}
 #>
 			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
 
@@ -1696,6 +1708,260 @@ namespace MsgPack.Serialization
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
 <#+
+					switch ( spec.Constructor )
+					{
+						case "Annotated":
+						{
+#>
+				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+							break;
+						}
+						default:
+						{
+#>
+				// check the member value deserialized properly.
+				Assert.That( result.Member, Is.EqualTo( <#= type.TestValue #> ) );
+<#+
+							break;
+						}
+					} // switch( spec.Constructor )
+
+					switch ( spec.Constructor )
+					{
+						case "Both":
+						{
+							if ( spec.Prefix != "PrivateSetter" || type.IsCollection )
+							{
+								goto case "Annotated";
+							}
+#>
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+				Assert.That( result.WasProperConstructorUsed() );
+#else
+				// Parameterized should be called because private setters are completely ignored in non-priviledged mode.
+				Assert.That( result.WasProperConstructorUsed(), Is.False );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+<#+
+							break;
+						}
+						case "Annotated":
+						{
+#>
+				Assert.That( result.WasProperConstructorUsed() );
+<#+
+							break;
+						}
+					} // switch ( spec.Constructor )
+#>
+			}
+<#+
+					if ( spec.IsPrivilegeRequired )
+					{
+#>
+#else
+			Assert.Throws<SerializationException>( () => this.CreateTarget<<#= typeName #>>( GetSerializationContext() ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+<#+
+					}
+				} // if ( Exception != null )
+#>
+		}
+<#+
+				if ( spec.Exception == null )
+				{
+#>
+
+		[Test]
+		public void Test<#= typeName #>_DeserializeWithMissingMember_Success()
+		{
+<#+
+					if ( spec.IsPrivilegeRequired )
+					{
+#>
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+<#+
+					}
+#>
+			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+<#+
+					if ( serializationMethod == "Array" )
+					{
+#>
+				stream.Write( new byte[]{ 0x90 } );
+<#+
+					}
+					else
+					{
+#>
+				stream.Write( new byte[]{ 0x80 } );
+<#+
+					} // if ( serializationMethod == "Array" )
+#>
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+<#+
+					if ( type.IsCollection )
+					{
+						switch ( spec.Constructor )
+						{
+							case "Default":
+							case "Both":
+							case "Annotated":
+							{
+#>
+				// Default constructor was called and nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+								break;
+							}
+							case "Record":
+							{
+#>
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+<#+
+								break;
+							}
+						}
+					}
+					else
+					{
+						switch ( spec.Constructor )
+						{
+							case "Default":
+							case "Annotated":
+							{
+#>
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+								break;
+							}
+							case "Record":
+							{
+#>
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+<#+
+								break;
+							}
+							case "Both":
+							{
+								switch ( spec.Prefix )
+								{
+									case "PrivateSetter":
+									{
+										if ( type.IsCollection )
+										{
+											goto case "PublicSetter";
+										}
+#>
+#if !SILVERLIGHT && !SILVERLIGHT_PREVILEGED
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+#else
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+#endif // !SILVERLIGHT && !SILVERLIGHT_PREVILEGED
+<#+
+										break;
+									}
+									case "PublicSetter":
+									case "ReadWrite":
+									{
+#>
+				// Default constructor was called and was nothing to be set.
+				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+<#+
+										break;
+									}
+									default:
+									{
+#>
+				// Set null via deserialization constructor.
+				Assert.That( result.Member, Is.Null );
+<#+
+										break;
+									}
+								}
+
+								break;
+							}
+						}
+					}
+#>
+			}
+<#+
+					if ( spec.IsPrivilegeRequired )
+					{
+#>
+#else
+			Assert.Throws<SerializationException>( () => this.CreateTarget<<#= typeName #>>( GetSerializationContext() ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+<#+
+					}
+#>
+		}
+
+		[Test]
+		public void Test<#= typeName #>_DeseriaizeWithExtraMember_Success()
+		{
+<#+
+					if ( spec.IsPrivilegeRequired )
+					{
+#>
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+<#+
+					}
+#>
+			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
+
+			using ( var stream = new MemoryStream() )
+			{
+				using ( var packer = Packer.Create( stream, false ) )
+				{
+<#+
+					if ( serializationMethod == "Array" )
+					{
+#>
+					packer.PackArrayHeader( 2 );
+<#+
+					}
+					else
+					{
+#>
+					packer.PackMapHeader( 2 );
+					packer.PackString( "Member" );
+<#+
+					}
+
+					if ( type.IsCollection )
+					{
+#>
+					packer.PackArrayHeader( 1 );
+<#+
+					}
+#>
+					packer.PackString( <#= testValue #> );
+<#+
+					if ( serializationMethod == "Map" )
+					{
+#>
+					packer.PackString( "Extra" );
+<#+
+					}
+#>
+					packer.PackNull();
+				}
+
+				stream.Position = 0;
+				var result = serializer.Unpack( stream );
+<#+
 					if ( spec.Constructor == "Annotated" )
 					{
 #>
@@ -1710,192 +1976,18 @@ namespace MsgPack.Serialization
 				Assert.That( result.Member, Is.EqualTo( <#= type.TestValue #> ) );
 <#+
 					} // if spec.Constructor == "Annotated"
-
-					switch ( spec.Constructor )
-					{
-						case "Both":
-						case "Annotated":
-						{
-#>
-				Assert.That( result.WasProperConstructorUsed() );
-<#+
-							break;
-						}
-					} // switch ( spec.Constructor )
 #>
 			}
 <#+
-				} // if ( Exception != null )
-#>
-		}
-<#+
-				if ( spec.Exception == null )
-				{
-#>
-
-		[Test]
-		public void Test<#= typeName #>_DeserializeWithMissingMember_Success()
-		{
-			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
-
-			using ( var stream = new MemoryStream() )
-			{
-<#+
-		if ( serializationMethod == "Array" )
-		{
-#>
-				stream.Write( new byte[]{ 0x90 } );
-<#+
-		}
-		else
-		{
-#>
-				stream.Write( new byte[]{ 0x80 } );
-<#+
-		}
-#>
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-<#+
-		if ( type.IsCollection )
-		{
-			switch ( spec.Constructor )
-			{
-				case "Default":
-				case "Both":
-				case "Annotated":
-				{
-#>
-				// Default constructor was called and nothing to be set.
-				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
-<#+
-					break;
-				}
-				case "Record":
-				{
-#>
-				// Set null via deserialization constructor.
-				Assert.That( result.Member, Is.Null );
-<#+
-					break;
-				}
-			}
-		}
-		else
-		{
-			switch ( spec.Constructor )
-			{
-				case "Default":
-				case "Annotated":
-				{
-#>
-				// Default constructor was called and was nothing to be set.
-				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
-<#+
-					break;
-				}
-				case "Record":
-				{
-#>
-				// Set null via deserialization constructor.
-				Assert.That( result.Member, Is.Null );
-<#+
-					break;
-				}
-				case "Both":
-				{
-					switch ( spec.Prefix )
+					if ( spec.IsPrivilegeRequired )
 					{
-						case "PrivateSetter":
-						case "PublicSetter":
-						case "ReadWrite":
-						{
 #>
-				// Default constructor was called and was nothing to be set.
-				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
+#else
+			Assert.Throws<SerializationException>( () => this.CreateTarget<<#= typeName #>>( GetSerializationContext() ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 <#+
-							break;
-						}
-						default:
-						{
-#>
-				// Set null via deserialization constructor.
-				Assert.That( result.Member, Is.Null );
-<#+
-							break;
-						}
 					}
-
-					break;
-				}
-			}
-		}
 #>
-			}
-		}
-
-		[Test]
-		public void Test<#= typeName #>_DeseriaizeWithExtraMember_Success()
-		{
-			var serializer = this.CreateTarget<<#= typeName #>>( GetSerializationContext() );
-
-			using ( var stream = new MemoryStream() )
-			{
-				using ( var packer = Packer.Create( stream, false ) )
-				{
-<#+
-		if ( serializationMethod == "Array" )
-		{
-#>
-					packer.PackArrayHeader( 2 );
-<#+
-		}
-		else
-		{
-#>
-					packer.PackMapHeader( 2 );
-					packer.PackString( "Member" );
-<#+
-		}
-
-		if ( type.IsCollection )
-		{
-#>
-					packer.PackArrayHeader( 1 );
-<#+
-		}
-#>
-					packer.PackString( <#= testValue #> );
-<#+
-		if ( serializationMethod == "Map" )
-		{
-#>
-					packer.PackString( "Extra" );
-<#+
-		}
-#>
-					packer.PackNull();
-				}
-
-				stream.Position = 0;
-				var result = serializer.Unpack( stream );
-<#+
-		if ( spec.Constructor == "Annotated" )
-		{
-#>
-				// dummy annotated constructor does not take the value, so the deserialized value should be "default" of the type.
-				Assert.That( result.Member, Is.EqualTo( <#= type.DefaultValue #> ) );
-<#+
-		}
-		else
-		{
-#>
-				// check the member value deserialized properly.
-				Assert.That( result.Member, Is.EqualTo( <#= type.TestValue #> ) );
-<#+
-		} // if spec.Constructor == "Annotated"
-#>
-			}
 		}
 <#+
 				} // if spec.Exception == null
@@ -2586,6 +2678,7 @@ namespace MsgPack.Serialization
 
 #region -- ReadOnly / Private Members --
 
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 		// ReSharper disable UnusedMember.Local
 		// member names
 		private const string PublicProperty = "PublicProperty";
@@ -2688,32 +2781,44 @@ namespace MsgPack.Serialization
 				foreach ( var memberName in expectedMemberNames )
 				{
 					Func<T, Object> getter = null;
-#if !NETFX_CORE
-					var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
-#else
-					var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
-#endif
-					if ( property != null )
-					{
-#if !UNITY
-						getter = obj => property.GetValue( obj, null );
-#else
-						getter = obj => property.GetGetMethod( true ).InvokePreservingExceptionType( obj );
-#endif // !UNITY
-					}
-					else
-					{
-#if !NETFX_CORE
-						var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
-#else
-						var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
-#endif
-						if ( field == null )
-						{
-							Assert.Fail( memberName + " is not found." );
-						}
 
-						getter = obj => field.GetValue( obj );
+					try
+					{
+#if !NETFX_CORE
+						var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#else
+						var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
+#endif
+						if ( property != null )
+						{
+#if !UNITY
+							getter = obj => property.GetValue( obj, null );
+#else
+							getter = obj => property.GetGetMethod( true ).InvokePreservingExceptionType( obj );
+#endif // !UNITY
+						}
+						else
+						{
+#if !NETFX_CORE
+							var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+#else
+							var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
+#endif
+							if ( field == null )
+							{
+								Assert.Fail( memberName + " is not found." );
+							}
+
+							getter = obj => field.GetValue( obj );
+						}
+					}
+					catch ( MemberAccessException )
+					{
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+						Assert.Inconclusive( "Cannot run this test in Silverlight because of CAS" );
+#else
+						throw;
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 					}
 
 					// Naive, but OK
@@ -2740,6 +2845,7 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 
 #endregion -- ReadOnly / Private Members --
 
@@ -3106,6 +3212,7 @@ namespace MsgPack.Serialization
 <#+
 				var field = type == "Value" ? "1" : "\"1\"";
 				var property = type == "Value" ? "2" : "\"2\"";
+				var defaultValue = type == "Value" ? "0" : "null";
 				var targetType = target + type + "Class";
 
 				if( target == "Generic" )
@@ -3134,7 +3241,24 @@ namespace MsgPack.Serialization
 				var result = serializer.Unpack( buffer );
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result.GenericField, Is.EqualTo( target.GenericField ) );
+<#+
+				if ( target == "Generic" )
+				{
+#>
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+#else
+				Assert.That( result.GenericProperty, Is.EqualTo( <#= defaultValue #> ) );
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+<#+
+				}
+				else
+				{
+#>
+				Assert.That( result.GenericProperty, Is.EqualTo( target.GenericProperty ) );
+<#+
+				}
+#>
 			}
 		}
 <#+

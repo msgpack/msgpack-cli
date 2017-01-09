@@ -34,6 +34,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack.Serialization
 {
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+
 	[TestFixture]
 	public class StructWithDataContractTest
 	{
@@ -75,4 +77,6 @@ namespace MsgPack.Serialization
 			}
 		}
 	}
+
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 }

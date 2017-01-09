@@ -12299,16 +12299,21 @@ namespace MsgPack.Serialization
 		public PolymorphicHolder() { }
 	}  // PolymorphicHolder
 
-#if !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 	public
 #else
 	public
-#endif // !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 	sealed class PublicTypeVerifier
 	{
 		private static readonly Regex VerificationRegex =
 			new Regex( 	"^" + Regex.Escape( typeof( PublicTypeVerifier ).Namespace ) + @"\.(Known|Runtime)Polymorphic(Collection|Dictionary)?$" );
-		public static bool PublicStaticAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		public
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 static bool PublicStaticAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12319,7 +12324,12 @@ namespace MsgPack.Serialization
 			return true;
 		}
 
-		private static bool PrivateStaticAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		private
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 static bool PrivateStaticAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12330,7 +12340,12 @@ namespace MsgPack.Serialization
 			return true;
 		}
 
-		public bool PublicInstanceAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		public
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 bool PublicInstanceAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12341,7 +12356,12 @@ namespace MsgPack.Serialization
 			return true;
 		}
 
-		private bool PrivateInstanceAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		private
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 bool PrivateInstanceAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12371,16 +12391,21 @@ namespace MsgPack.Serialization
 	} // PublicTypeVerifier
 	
 
-#if !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 	internal
 #else
 	public
-#endif // !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 	sealed class NonPublicTypeVerifier
 	{
 		private static readonly Regex VerificationRegex =
 			new Regex( 	"^" + Regex.Escape( typeof( NonPublicTypeVerifier ).Namespace ) + @"\.(Known|Runtime)Polymorphic(Collection|Dictionary)?$" );
-		public static bool PublicStaticAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		public
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 static bool PublicStaticAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12391,7 +12416,12 @@ namespace MsgPack.Serialization
 			return true;
 		}
 
-		private static bool PrivateStaticAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		private
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 static bool PrivateStaticAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12402,7 +12432,12 @@ namespace MsgPack.Serialization
 			return true;
 		}
 
-		public bool PublicInstanceAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		public
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 bool PublicInstanceAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12413,7 +12448,12 @@ namespace MsgPack.Serialization
 			return true;
 		}
 
-		private bool PrivateInstanceAllowAll( PolymorphicTypeVerificationContext context )
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		private
+#else
+		public
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
+		 bool PrivateInstanceAllowAll( PolymorphicTypeVerificationContext context )
 		{
 			Assert.NotNull( context );
 			Assert.That( context.LoadingTypeFullName, Is.Not.Empty );
@@ -12529,6 +12569,10 @@ namespace MsgPack.Serialization
 
 		public void InitializeMember( string member )
 		{
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Inconclusive( "Cannot run this test in restricted Silverlight because of CAS." );
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+
 			this.GetType().GetRuntimeField( "Member" ).SetValue( this, member );
 		}
 
@@ -12903,6 +12947,10 @@ namespace MsgPack.Serialization
 
 		public void InitializeMember( List<string> member )
 		{
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.Inconclusive( "Cannot run this test in restricted Silverlight because of CAS." );
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+
 			this.GetType().GetRuntimeField( "Member" ).SetValue( this, member );
 		}
 

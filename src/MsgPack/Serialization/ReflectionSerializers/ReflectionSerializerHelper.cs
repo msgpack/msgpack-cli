@@ -237,6 +237,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			out DataMemberContract[] contracts,
 			out MessagePackSerializer[] serializers )
 		{
+			SerializationTarget.VerifyCanSerializeTargetType( context, targetType );
+
 			getters = new Func<object, object>[ members.Count ];
 			setters = new Action<object, object>[ members.Count ];
 			memberInfos = new MemberInfo[ members.Count ];
@@ -259,8 +261,16 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				FieldInfo asField;
 				if ( ( asField = member.Member as FieldInfo ) != null )
 				{
+					if ( context.SerializerOptions.DisablePrivilegedAccess && !asField.GetIsPublic() )
+					{
+						continue;
+					}
+
 					getters[ i ] = asField.GetValue;
-					setters[ i ] = asField.SetValue;
+					if ( !asField.IsInitOnly )
+					{
+						setters[ i ] = asField.SetValue;
+					}
 				}
 				else
 				{
@@ -268,6 +278,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if DEBUG
 					Contract.Assert( property != null, "member.Member is PropertyInfo" );
 #endif // DEBUG
+					if ( context.SerializerOptions.DisablePrivilegedAccess && !property.GetIsPublic() )
+					{
+						continue;
+					}
+
 					var getter = property.GetGetMethod( true );
 					if ( getter == null )
 					{
@@ -276,7 +291,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 					getters[ i ] = target => getter.InvokePreservingExceptionType( target, null );
 					var setter = property.GetSetMethod( true );
-					if ( setter != null )
+					if ( setter != null && ( !context.SerializerOptions.DisablePrivilegedAccess || setter.GetIsPublic() ) )
 					{
 						setters[ i ] = ( target, value ) => setter.InvokePreservingExceptionType( target, new[] { value } );
 					}

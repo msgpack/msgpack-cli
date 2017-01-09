@@ -134,6 +134,16 @@ namespace MsgPack
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Wrong detection" )]
+		public static bool GetIsNestedPublic( this Type source )
+		{
+#if NETSTANDARD1_1 || NETSTANDARD1_3
+			return source.GetTypeInfo().IsNestedPublic;
+#else
+			return source.IsNestedPublic;
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+		}
+
 #if DEBUG
 		public static bool GetIsPrimitive( this Type source )
 		{
