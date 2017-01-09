@@ -124,16 +124,9 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 #>
-#if !UNITY
 			var context = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #>;
 			return context;
-#else
-			var context = new SerializationContext { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
-			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#=  emitterFlavor #>;
-			return context;
-
-#endif // !UNITY
 <#+
 	}
 	else

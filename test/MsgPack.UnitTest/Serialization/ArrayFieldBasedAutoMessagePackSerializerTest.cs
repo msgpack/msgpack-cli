@@ -80,16 +80,9 @@ namespace MsgPack.Serialization
 	{
 		private static SerializationContext GetSerializationContext()
 		{
-#if !UNITY
 			var context = new SerializationContext { SerializationMethod = SerializationMethod.Array };
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.FieldBased;
 			return context;
-#else
-			var context = new SerializationContext { SerializationMethod = SerializationMethod.Array };
-			context.SerializerOptions.EmitterFlavor = EmitterFlavor.FieldBased;
-			return context;
-
-#endif // !UNITY
 		}
 
 		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
