@@ -164,8 +164,8 @@ namespace MsgPack.Serialization
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", targetType ) );
 			}
 
-			bool? canDeserialize = null;
 			var memberCandidates = getters.Where( entry => CheckTargetEligibility( entry.Member ) ).ToArray();
+			bool? canDeserialize;
 
 			if ( memberCandidates.Length == 0 )
 			{
@@ -484,7 +484,7 @@ namespace MsgPack.Serialization
 
 		private static SerializationException NewTypeCannotBeSerializedException( Type targetType )
 		{
-			return 
+			return
 				new SerializationException(
 					String.Format(
 						CultureInfo.CurrentCulture,
