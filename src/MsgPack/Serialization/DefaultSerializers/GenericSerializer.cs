@@ -538,13 +538,23 @@ namespace MsgPack.Serialization.DefaultSerializers
 		/// <summary>
 		///		Defines non-generic factory method for built-in serializers which require generic type argument.
 		/// </summary>
-		private interface IGenericBuiltInSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		interface IGenericBuiltInSerializerFactory
 		{
 			MessagePackSerializer Create( SerializationContext context, PolymorphismSchema schema );
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class NullableInstanceFactory<T> : IGenericBuiltInSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class NullableInstanceFactory<T> : IGenericBuiltInSerializerFactory
 			where T : struct
 		{
 			public NullableInstanceFactory() { }
@@ -556,7 +566,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class ListInstanceFactory<T> : IGenericBuiltInSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class ListInstanceFactory<T> : IGenericBuiltInSerializerFactory
 		{
 			public ListInstanceFactory() { }
 
@@ -568,7 +583,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class DictionaryInstanceFactory<TKey, TValue> : IGenericBuiltInSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class DictionaryInstanceFactory<TKey, TValue> : IGenericBuiltInSerializerFactory
 		{
 			public DictionaryInstanceFactory() { }
 
@@ -656,14 +676,24 @@ namespace MsgPack.Serialization.DefaultSerializers
 		/// <summary>
 		///		Defines non-generic factory method for 'universal' serializers which use general collection features.
 		/// </summary>
-		private interface IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		interface IVariantSerializerFactory
 		{
 			MessagePackSerializer Create( SerializationContext context, Type targetType, PolymorphismSchema schema );
 		}
 
 		// ReSharper disable MemberHidesStaticFromOuterClass
 		[Preserve( AllMembers = true )]
-		private sealed class NonGenericEnumerableSerializerFactory<T> : IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class NonGenericEnumerableSerializerFactory<T> : IVariantSerializerFactory
 			where T : IEnumerable
 		{
 			public NonGenericEnumerableSerializerFactory() { }
@@ -675,7 +705,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class NonGenericCollectionSerializerFactory<T> : IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class NonGenericCollectionSerializerFactory<T> : IVariantSerializerFactory
 			where T : ICollection
 		{
 			public NonGenericCollectionSerializerFactory() { }
@@ -687,7 +722,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class NonGenericListSerializerFactory<T> : IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class NonGenericListSerializerFactory<T> : IVariantSerializerFactory
 			where T : IList
 		{
 			public NonGenericListSerializerFactory() { }
@@ -699,7 +739,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class NonGenericDictionarySerializerFactory<T> : IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class NonGenericDictionarySerializerFactory<T> : IVariantSerializerFactory
 			where T : IDictionary
 		{
 			public NonGenericDictionarySerializerFactory() { }
@@ -711,7 +756,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class EnumerableSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class EnumerableSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
 			where TCollection : IEnumerable<TItem>
 		{
 			public EnumerableSerializerFactory() { }
@@ -723,7 +773,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 		}
 
 		[Preserve( AllMembers = true )]
-		private sealed class CollectionSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class CollectionSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
 			where TCollection : ICollection<TItem>
 		{
 			public CollectionSerializerFactory() { }
@@ -749,7 +804,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 
 		[Preserve( AllMembers = true )]
-		private sealed class DictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantSerializerFactory
+#if SILVERLIGHT
+		internal
+#else
+		private
+#endif // SILVERLIGHT
+		sealed class DictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantSerializerFactory
 			where TDictionary : IDictionary<TKey, TValue>
 		{
 			public DictionarySerializerFactory() { }
