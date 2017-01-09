@@ -1558,7 +1558,12 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 		{
 #>
 
-	<#= typeSpec.IsPublicType ? "public" : "internal" #> sealed class <#= typeSpec.VerifierTypeName #>
+#if !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+	<#= typeSpec.IsPublicType ? "public" : "internal" #>
+#else
+	public
+#endif // !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+	sealed class <#= typeSpec.VerifierTypeName #>
 	{
 		private static readonly Regex VerificationRegex =
 			new Regex( 	"^" + Regex.Escape( typeof( <#= typeSpec.VerifierTypeName #> ).Namespace ) + @"\.(Known|Runtime)Polymorphic(Collection|Dictionary)?$" );

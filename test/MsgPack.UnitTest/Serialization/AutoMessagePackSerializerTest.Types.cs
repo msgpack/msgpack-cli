@@ -12299,7 +12299,12 @@ namespace MsgPack.Serialization
 		public PolymorphicHolder() { }
 	}  // PolymorphicHolder
 
-	public sealed class PublicTypeVerifier
+#if !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+	public
+#else
+	public
+#endif // !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+	sealed class PublicTypeVerifier
 	{
 		private static readonly Regex VerificationRegex =
 			new Regex( 	"^" + Regex.Escape( typeof( PublicTypeVerifier ).Namespace ) + @"\.(Known|Runtime)Polymorphic(Collection|Dictionary)?$" );
@@ -12366,7 +12371,12 @@ namespace MsgPack.Serialization
 	} // PublicTypeVerifier
 	
 
-	internal sealed class NonPublicTypeVerifier
+#if !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+	internal
+#else
+	public
+#endif // !SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+	sealed class NonPublicTypeVerifier
 	{
 		private static readonly Regex VerificationRegex =
 			new Regex( 	"^" + Regex.Escape( typeof( NonPublicTypeVerifier ).Namespace ) + @"\.(Known|Runtime)Polymorphic(Collection|Dictionary)?$" );
