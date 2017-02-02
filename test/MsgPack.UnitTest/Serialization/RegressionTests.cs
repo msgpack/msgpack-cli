@@ -381,5 +381,70 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
+
+		[Test]
+		public void TestIssue211_ListOfT()
+		{
+			var target = new SerializationContext().GetSerializer<List<SingleValueObject>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, new List<SingleValueObject> { null } );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result[ 0 ], Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestIssue211_DictionaryOfT()
+		{
+			var target = new SerializationContext().GetSerializer<Dictionary<string, SingleValueObject>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				target.Pack( buffer, new Dictionary<string, SingleValueObject> { { String.Empty, null } } );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result.First().Value, Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestIssue211_StackOfT()
+		{
+			var target = new SerializationContext().GetSerializer<Stack<SingleValueObject>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				var obj = new Stack<SingleValueObject>();
+				obj.Push( null );
+				target.Pack( buffer, obj );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result.Pop(), Is.Null );
+			}
+		}
+
+		[Test]
+		public void TestIssue211_QueueOfT()
+		{
+			var target = new SerializationContext().GetSerializer<Queue<SingleValueObject>>();
+			using ( var buffer = new MemoryStream() )
+			{
+				var obj = new Queue<SingleValueObject>();
+				obj.Enqueue( null );
+				target.Pack( buffer, obj );
+				buffer.Position = 0;
+				var result = target.Unpack( buffer );
+				Assert.That( result.Count, Is.EqualTo( 1 ) );
+				Assert.That( result.Dequeue(), Is.Null );
+			}
+		}
+
+		public class SingleValueObject
+		{
+			public string Value { get; set; }
+		}
 	}
 }

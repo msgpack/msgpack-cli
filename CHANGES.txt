@@ -599,6 +599,11 @@ Release 0.8.0
 
   Nothing from 0.8.0 beta.
 
+Release 0.8.1 2017/02/02
+
+  BUG FIXES
+  * Fix null items of complex type in List<T> or Dictionary<TKey, TValue> will not be deserialized as null. Issue #211.
+
 Release 0.9.0 beta1 2016/09/24
 
   NEW FEATURES
@@ -635,4 +640,5 @@ Release 0.9.0 (planned)
   * Fix a combination of readonly members and collection members incorrect code generation when the type also have deserialization constructor. Issue #207.
   * Fix Windows Native build error. Issue #206.
   * Fix built-in collection serializers such as List<T> serializer causes SecurityException when the program run in restricted environment like Silverlight. Issue #205.
+  * Fix null items of complex type in List<T> or Dictionary<TKey, TValue> will not be deserialized as null. Issue #211. (from 0.8.1)
 

@@ -61,14 +61,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFromCore( unpacker );
+			var key = unpacker.LastReadData.IsNil ? default( TKey ) : this._keySerializer.UnpackFrom( unpacker );
 
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFromCore( unpacker );
+			var value = unpacker.LastReadData.IsNil ? default( TValue ) : this._valueSerializer.UnpackFrom( unpacker );
 
 			return new KeyValuePair<TKey, TValue>( key, value );
 		}
@@ -89,14 +89,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var key = unpacker.LastReadData.IsNil ? default( TKey ) : await this._keySerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+			var key = unpacker.LastReadData.IsNil ? default( TKey ) : await this._keySerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
 
 			if ( !await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
 
-			var value = unpacker.LastReadData.IsNil ? default( TValue ) : await this._valueSerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+			var value = unpacker.LastReadData.IsNil ? default( TValue ) : await this._valueSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
 
 			return new KeyValuePair<TKey, TValue>( key, value );
 		}

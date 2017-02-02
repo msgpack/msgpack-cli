@@ -103,12 +103,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						key = this._keySerializer.UnpackFromCore( subTreeUnpacker );
+						key = this._keySerializer.UnpackFrom( subTreeUnpacker );
 					}
 				}
 				else
 				{
-					key = this._keySerializer.UnpackFromCore( unpacker );
+					key = this._keySerializer.UnpackFrom( unpacker );
 				}
 
 				if ( !unpacker.Read() )
@@ -120,12 +120,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						collection.Add( key, this._valueSerializer.UnpackFromCore( subTreeUnpacker ) );
+						collection.Add( key, this._valueSerializer.UnpackFrom( subTreeUnpacker ) );
 					}
 				}
 				else
 				{
-					collection.Add( key, this._valueSerializer.UnpackFromCore( unpacker ) );
+					collection.Add( key, this._valueSerializer.UnpackFrom( unpacker ) );
 				}
 			}
 		}
@@ -180,12 +180,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						key = await this._keySerializer.UnpackFromAsyncCore( subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
+						key = await this._keySerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false );
 					}
 				}
 				else
 				{
-					key = await this._keySerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false );
+					key = await this._keySerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false );
 				}
 
 				if ( !unpacker.Read() )
@@ -197,12 +197,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						collection.Add( key, await this._valueSerializer.UnpackFromAsyncCore( subTreeUnpacker, cancellationToken ).ConfigureAwait( false ) );
+						collection.Add( key, await this._valueSerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false ) );
 					}
 				}
 				else
 				{
-					collection.Add( key, await this._valueSerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false ) );
+					collection.Add( key, await this._valueSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) );
 				}
 			}
 		}
