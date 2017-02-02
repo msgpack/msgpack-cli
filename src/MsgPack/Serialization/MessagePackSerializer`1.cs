@@ -491,6 +491,10 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
+		/// <remarks>
+		///		You must call <see cref="Unpacker.Read()"/> at least once in advance.
+		///		Or, you will get a default value of <typeparamref name="T"/>.
+		/// </remarks>
 		/// <seealso cref="P:Capabilities"/>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
 		public new T UnpackFrom( Unpacker unpacker )
@@ -582,6 +586,10 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		<typeparamref name="T"/> is not serializable even if it can be serialized.
 		/// </exception>
+		/// <remarks>
+		///		You must call <see cref="Unpacker.Read()"/> at least once in advance.
+		///		Or, you will get a default value of <typeparamref name="T"/>.
+		/// </remarks>
 		/// <seealso cref="P:Capabilities"/>
 		public Task<T> UnpackFromAsync( Unpacker unpacker )
 		{

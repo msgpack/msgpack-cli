@@ -120,6 +120,10 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		The deserialized object.
 		/// </returns>
+		/// <remarks>
+		///		You must call <see cref="Unpacker.Read()"/> at least once in advance.
+		///		Or, you will get a default value of the object.
+		/// </remarks>
 		/// <seealso cref="Capabilities" />
 		public object UnpackFrom( Unpacker unpacker )
 		{
@@ -235,6 +239,10 @@ namespace MsgPack.Serialization
 		/// <exception cref="NotSupportedException">
 		///		The type of deserializing is not serializable even if it can be serialized.
 		/// </exception>
+		/// <remarks>
+		///		You must call <see cref="Unpacker.Read()"/> at least once in advance.
+		///		Or, you will get a default value of the object.
+		/// </remarks>
 		/// <seealso cref="Capabilities"/>
 		public Task<object> UnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken )
 		{
