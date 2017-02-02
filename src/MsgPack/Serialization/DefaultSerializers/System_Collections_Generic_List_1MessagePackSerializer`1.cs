@@ -99,12 +99,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						collection.Add( this._itemSerializer.UnpackFromCore( subTreeUnpacker ) );
+						collection.Add( this._itemSerializer.UnpackFrom( subTreeUnpacker ) );
 					}
 				}
 				else
 				{
-					collection.Add( this._itemSerializer.UnpackFromCore( unpacker ) );
+					collection.Add( this._itemSerializer.UnpackFrom( unpacker ) );
 				}
 			}
 		}
@@ -158,12 +158,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 				{
 					using ( var subTreeUnpacker = unpacker.ReadSubtree() )
 					{
-						collection.Add( await this._itemSerializer.UnpackFromAsyncCore( subTreeUnpacker, cancellationToken ).ConfigureAwait( false ) );
+						collection.Add( await this._itemSerializer.UnpackFromAsync( subTreeUnpacker, cancellationToken ).ConfigureAwait( false ) );
 					}
 				}
 				else
 				{
-					collection.Add( await this._itemSerializer.UnpackFromAsyncCore( unpacker, cancellationToken ).ConfigureAwait( false ) );
+					collection.Add( await this._itemSerializer.UnpackFromAsync( unpacker, cancellationToken ).ConfigureAwait( false ) );
 				}
 			}
 		}

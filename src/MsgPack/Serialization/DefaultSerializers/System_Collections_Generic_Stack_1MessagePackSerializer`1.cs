@@ -111,7 +111,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			await packer.PackArrayHeaderAsync( objectTree.Count, cancellationToken ).ConfigureAwait( false );
 			foreach ( var item in objectTree )
 			{
-				await this._itemSerializer.PackToAsyncCore( packer, item, cancellationToken ).ConfigureAwait( false );
+				await this._itemSerializer.PackToAsync( packer, item, cancellationToken ).ConfigureAwait( false );
 			}
 		}
 

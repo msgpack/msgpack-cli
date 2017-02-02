@@ -594,3 +594,8 @@ Release 0.8.0 beta 2016/07/24
   IMPROVEMENTS
   * Relax constructor based deserialization condition. It will be used even if there are any settable members(including private property setters). Part of issue #178 and fixes issue #135.
   * PackHelpers and UnpackHelpers APIs are now backward compatible.
+
+Release 0.8.1 2017/02/02
+
+  BUG FIXES
+  * Fix null items of complex type in List<T> or Dictionary<TKey, TValue> will not be deserialized as null. Issue #211.
