@@ -14142,6 +14142,559 @@ namespace MsgPack.Serialization
 
 	#endregion -- Asymmetric --
 
+	#region -- Empty interfaces --
+
+	// issue 202
+#if FEATURE_TAP
+
+	public sealed class NoMembersPackableUnpackableAsyncPackableAsyncUnpackable : IPackable, IUnpackable, IAsyncPackable, IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersPackableUnpackableAsyncPackableAsyncUnpackable() { }
+
+		public NoMembersPackableUnpackableAsyncPackableAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersPackableUnpackableAsyncPackable : IPackable, IUnpackable, IAsyncPackable
+	{
+		private string _value;
+
+		public NoMembersPackableUnpackableAsyncPackable() { }
+
+		public NoMembersPackableUnpackableAsyncPackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersPackableUnpackableAsyncUnpackable : IPackable, IUnpackable, IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersPackableUnpackableAsyncUnpackable() { }
+
+		public NoMembersPackableUnpackableAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+	public sealed class NoMembersPackableUnpackable : IPackable, IUnpackable
+	{
+		private string _value;
+
+		public NoMembersPackableUnpackable() { }
+
+		public NoMembersPackableUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+#if FEATURE_TAP
+
+	public sealed class NoMembersPackableAsyncPackableAsyncUnpackable : IPackable, IAsyncPackable, IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersPackableAsyncPackableAsyncUnpackable() { }
+
+		public NoMembersPackableAsyncPackableAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersPackableAsyncPackable : IPackable, IAsyncPackable
+	{
+		private string _value;
+
+		public NoMembersPackableAsyncPackable() { }
+
+		public NoMembersPackableAsyncPackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersPackableAsyncUnpackable : IPackable, IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersPackableAsyncUnpackable() { }
+
+		public NoMembersPackableAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+	public sealed class NoMembersPackable : IPackable
+	{
+		private string _value;
+
+		public NoMembersPackable() { }
+
+		public NoMembersPackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+	}
+#if FEATURE_TAP
+
+	public sealed class NoMembersUnpackableAsyncPackableAsyncUnpackable : IUnpackable, IAsyncPackable, IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersUnpackableAsyncPackableAsyncUnpackable() { }
+
+		public NoMembersUnpackableAsyncPackableAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersUnpackableAsyncPackable : IUnpackable, IAsyncPackable
+	{
+		private string _value;
+
+		public NoMembersUnpackableAsyncPackable() { }
+
+		public NoMembersUnpackableAsyncPackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersUnpackableAsyncUnpackable : IUnpackable, IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersUnpackableAsyncUnpackable() { }
+
+		public NoMembersUnpackableAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+	public sealed class NoMembersUnpackable : IUnpackable
+	{
+		private string _value;
+
+		public NoMembersUnpackable() { }
+
+		public NoMembersUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+#if FEATURE_TAP
+
+	public sealed class NoMembersAsyncPackableAsyncUnpackable : IAsyncPackable, IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersAsyncPackableAsyncUnpackable() { }
+
+		public NoMembersAsyncPackableAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersAsyncPackable : IAsyncPackable
+	{
+		private string _value;
+
+		public NoMembersAsyncPackable() { }
+
+		public NoMembersAsyncPackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+	}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+	public sealed class NoMembersAsyncUnpackable : IAsyncUnpackable
+	{
+		private string _value;
+
+		public NoMembersAsyncUnpackable() { }
+
+		public NoMembersAsyncUnpackable( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+	}
+
+#endif // FEATURE_TAP
+
+	public sealed class NoMembers  
+	{
+		private string _value;
+
+		public NoMembers() { }
+
+		public NoMembers( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+	}
+
+	#endregion -- Empty interfaces --
 }
 
 // Issue #108

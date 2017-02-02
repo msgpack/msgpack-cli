@@ -57,7 +57,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			return
 				ReflectionExtensions.CreateInstancePreservingExceptionType<MessagePackSerializer<T>>(
 					typeof( ReflectionEnumMessagePackSerializer<> ).MakeGenericType( typeof( T ) ),
-					context 
+					context
 				);
 #else
 			return MessagePackSerializer.Wrap<T>( context, new ReflectionEnumMessagePackSerializer( context, typeof( T ) ) );
@@ -221,7 +221,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			catch ( ArgumentException )
 			{
 #endif // !AOT || AOT_CHECK
-			return ( collection, item ) => collectionTraits.AddMethod.InvokePreservingExceptionType( collection, item );
+				return ( collection, item ) => collectionTraits.AddMethod.InvokePreservingExceptionType( collection, item );
 #if !AOT || AOT_CHECK
 			}
 #endif // !AOT || AOT_CHECK
@@ -235,9 +235,64 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			out Action<object, object>[] setters,
 			out MemberInfo[] memberInfos,
 			out DataMemberContract[] contracts,
-			out MessagePackSerializer[] serializers )
+			out MessagePackSerializer[] serializers
+		)
 		{
 			SerializationTarget.VerifyCanSerializeTargetType( context, targetType );
+
+			if ( members.Count == 0 )
+			{
+				if ( !typeof( IPackable ).IsAssignableFrom( targetType ) )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"At least one serializable member is required because type '{0}' does not implement IPackable interface.",
+							targetType
+						)
+					);
+				}
+
+				if ( !typeof( IUnpackable ).IsAssignableFrom( targetType ) )
+				{
+					throw new SerializationException(
+						String.Format(
+							CultureInfo.CurrentCulture,
+							"At least one serializable member is required because type '{0}' does not implement IUnpackable interface.",
+							targetType
+						)
+					);
+				}
+
+#if FEATURE_TAP
+				if ( context.SerializerOptions.WithAsync )
+				{
+					if ( !typeof( IAsyncPackable ).IsAssignableFrom( targetType ) )
+					{
+						throw new SerializationException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"At least one serializable member is required because type '{0}' does not implement IAsyncPackable interface.",
+								targetType
+							)
+						);
+					}
+
+					if ( !typeof( IAsyncUnpackable ).IsAssignableFrom( targetType ) )
+					{
+						throw new SerializationException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"At least one serializable member is required because type '{0}' does not implement IAsyncUnpackable interface.",
+								targetType
+							)
+						);
+					}
+				}
+
+#endif // FEATURE_TAP
+
+			}
 
 			getters = new Func<object, object>[ members.Count ];
 			setters = new Action<object, object>[ members.Count ];
@@ -364,7 +419,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			{
 				case 0:
 				{
-					return _ => 
+					return _ =>
 #if !UNITY
 						( T )
 #endif // !UNITY

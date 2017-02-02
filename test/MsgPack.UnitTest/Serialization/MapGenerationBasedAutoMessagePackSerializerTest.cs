@@ -5487,7 +5487,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestReadOnlyAndConstructor()
 		{
-			var context = new SerializationContext();
+			var context = GetSerializationContext();
 			var serializer = context.GetSerializer<ReadOnlyAndConstructor>();
 			var item = new ReadOnlyAndConstructor( Guid.NewGuid(), new List<int>() { 5, 11 } );
 			var serializedItem = serializer.PackSingleObject( item );
@@ -5500,7 +5500,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGetOnlyAndConstructor()
 		{
-			var context = new SerializationContext();
+			var context = GetSerializationContext();
 			var serializer = context.GetSerializer<GetOnlyAndConstructor>();
 			var item = new GetOnlyAndConstructor( Guid.NewGuid(), new List<int>() { 5, 11 } );
 			var serializedItem = serializer.PackSingleObject( item );
@@ -5511,6 +5511,332 @@ namespace MsgPack.Serialization
 		}
 
 		#endregion -- Issue 207 --
+
+
+		#region -- Issue 202 --
+
+		private static SerializationContext GetSerializationContextWithAsyncEnabled( bool withAsync )
+		{
+			var context = GetSerializationContext();
+
+#if FEATURE_TAP
+			context.SerializerOptions.WithAsync = withAsync;
+#endif // FEATURE_TAP
+
+			return context;
+		}
+
+		private static void TestNoMembersPackableLikeCore<T>( Func<T> factory, Action<MessagePackSerializer<T>, MemoryStream, T> pack, Func<MessagePackSerializer<T>, MemoryStream, T> unpack, Action<T, T> assertion, bool withAsync )
+		{
+			var context = GetSerializationContextWithAsyncEnabled( withAsync );
+			var serializer = context.GetSerializer<T>();
+			using ( var buffer = new MemoryStream() )
+			{
+				var expected = factory();
+				pack( serializer, buffer, expected );
+				buffer.Position = 0L;
+				var actual = unpack( serializer, buffer );
+				assertion( expected, actual );
+			}
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableUnpackableAsyncPackableAsyncUnpackable_AsyncEnabledSuccess()
+		{
+			TestNoMembersPackableLikeCore(
+				() => new NoMembersPackableUnpackableAsyncPackableAsyncUnpackable("ABC"),
+				( s, b, x ) => s.Pack( b, x ),
+				( s, b ) => s.Unpack( b ),
+				( expected, actual ) => Assert.That( actual.GetValue(), Is.EqualTo( expected.GetValue() ) ),
+				true
+			);
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableUnpackableAsyncPackableAsyncUnpackable_AsyncDisabledSuccess()
+		{
+			TestNoMembersPackableLikeCore(
+				() => new NoMembersPackableUnpackableAsyncPackableAsyncUnpackable("ABC"),
+				( s, b, x ) => s.Pack( b, x ),
+				( s, b ) => s.Unpack( b ),
+				( expected, actual ) => Assert.That( actual.GetValue(), Is.EqualTo( expected.GetValue() ) ),
+				false
+			);
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableUnpackableAsyncPackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersPackableUnpackableAsyncPackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableUnpackableAsyncPackable_AsyncDisabledSuccess()
+		{
+			TestNoMembersPackableLikeCore(
+				() => new NoMembersPackableUnpackableAsyncPackable("ABC"),
+				( s, b, x ) => s.Pack( b, x ),
+				( s, b ) => s.Unpack( b ),
+				( expected, actual ) => Assert.That( actual.GetValue(), Is.EqualTo( expected.GetValue() ) ),
+				false
+			);
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableUnpackableAsyncUnpackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersPackableUnpackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableUnpackableAsyncUnpackable_AsyncDisabledSuccess()
+		{
+			TestNoMembersPackableLikeCore(
+				() => new NoMembersPackableUnpackableAsyncUnpackable("ABC"),
+				( s, b, x ) => s.Pack( b, x ),
+				( s, b ) => s.Unpack( b ),
+				( expected, actual ) => Assert.That( actual.GetValue(), Is.EqualTo( expected.GetValue() ) ),
+				false
+			);
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableUnpackableSuccess()
+		{
+			TestNoMembersPackableLikeCore(
+				() => new NoMembersPackableUnpackable("ABC"),
+				( s, b, x ) => s.Pack( b, x ),
+				( s, b ) => s.Unpack( b ),
+				( expected, actual ) => Assert.That( actual.GetValue(), Is.EqualTo( expected.GetValue() ) ),
+				false
+			);
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableAsyncPackableAsyncUnpackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersPackableAsyncPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableAsyncPackableAsyncUnpackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersPackableAsyncPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableAsyncPackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersPackableAsyncPackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableAsyncPackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersPackableAsyncPackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableAsyncUnpackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableAsyncUnpackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_PackableFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersPackable>() );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_UnpackableAsyncPackableAsyncUnpackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersUnpackableAsyncPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_UnpackableAsyncPackableAsyncUnpackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersUnpackableAsyncPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_UnpackableAsyncPackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersUnpackableAsyncPackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_UnpackableAsyncPackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersUnpackableAsyncPackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_UnpackableAsyncUnpackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersUnpackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_UnpackableAsyncUnpackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersUnpackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_UnpackableFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersUnpackable>() );
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_AsyncPackableAsyncUnpackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersAsyncPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_AsyncPackableAsyncUnpackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersAsyncPackableAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_AsyncPackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersAsyncPackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_AsyncPackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersAsyncPackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_AsyncUnpackable_AsyncEnabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( true ).GetSerializer<NoMembersAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+#if FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_AsyncUnpackable_AsyncDisabledFail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembersAsyncUnpackable>() );
+		}
+
+#endif // FEATURE_TAP
+
+		[Test]
+		public void TestNoMembers_Fail()
+		{
+			Assert.Throws<SerializationException>( () => GetSerializationContextWithAsyncEnabled( false ).GetSerializer<NoMembers>() );
+		}
+
+
+		#endregion -- Issue 202 --
+
 		#region -- Polymorphism --
 		#region ---- KnownType ----
 

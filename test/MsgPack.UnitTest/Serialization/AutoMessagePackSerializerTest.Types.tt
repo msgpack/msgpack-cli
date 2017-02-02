@@ -2324,6 +2324,129 @@ foreach ( var spec in
 
 	#endregion -- Asymmetric --
 
+	#region -- Empty interfaces --
+
+	// issue 202
+<#
+	foreach ( var isPackable in new [] { true, false } )
+	{
+		foreach ( var isUnpackable in new [] { true, false } )
+		{
+			foreach ( var isAsyncPackable in new [] { true, false } )
+			{
+				foreach ( var isAsyncUnpackable in new [] { true, false } )
+				{
+					var suffix =
+						( isPackable ? "Packable" : String.Empty ) +
+						( isUnpackable ? "Unpackable" : String.Empty ) +
+						( isAsyncPackable ? "AsyncPackable" : String.Empty ) +
+						( isAsyncUnpackable ? "AsyncUnpackable" : String.Empty );
+					var interfaces =
+						String.Join(
+							", ",
+							new []
+							{
+								( isPackable ? "IPackable" : String.Empty ),
+								( isUnpackable ? "IUnpackable" : String.Empty ),
+								( isAsyncPackable ? "IAsyncPackable" : String.Empty ),
+								( isAsyncUnpackable ? "IAsyncUnpackable" : String.Empty )
+							}.Where( x => x.Length > 0 ).ToArray()
+						);
+					var isAsync = isAsyncPackable || isAsyncUnpackable;
+
+if ( isAsync )
+{
+#>
+#if FEATURE_TAP
+
+<#
+}
+#>
+	public sealed class NoMembers<#= suffix #> <#= interfaces.Any() ? ":" : String.Empty #> <#= interfaces #>
+	{
+		private string _value;
+
+		public NoMembers<#= suffix #>() { }
+
+		public NoMembers<#= suffix #>( string value )
+		{
+			this._value = value;
+		}
+
+		public string GetValue()
+		{
+			return this._value;
+		}
+
+<#
+					if ( isPackable )
+					{
+#>
+		public void PackToMessage( Packer packer, PackingOptions options )
+		{
+			packer.PackArrayHeader( 1 );
+			packer.PackString( this._value );
+		}
+
+<#
+					}
+
+					if ( isAsyncPackable )
+					{
+#>
+
+		public async Task PackToMessageAsync( Packer packer, PackingOptions options, CancellationToken cancellationToken )
+		{
+			await packer.PackArrayHeaderAsync( 1, cancellationToken );
+			await packer.PackStringAsync( this._value, cancellationToken );
+		}
+
+<#
+					}
+
+					if ( isUnpackable )
+					{
+#>
+		public void UnpackFromMessage( Unpacker unpacker )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( unpacker.Read() );
+			this._value = unpacker.LastReadData.AsString();
+		}
+<#
+					}
+
+					if ( isAsyncUnpackable )
+					{
+#>
+		public async Task UnpackFromMessageAsync( Unpacker unpacker, CancellationToken cancellationToken )
+		{
+			Assert.That( unpacker.IsArrayHeader );
+			Assert.That( unpacker.LastReadData.AsInt32(), Is.EqualTo( 1 ) );
+			Assert.That( await unpacker.ReadAsync( cancellationToken ) );
+			this._value = unpacker.LastReadData.AsString();
+		}
+<#
+					}
+#>
+	}
+<#
+if ( isAsync )
+{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+}
+				}
+			}
+		}
+	}
+#>
+
+	#endregion -- Empty interfaces --
 }
 
 // Issue #108

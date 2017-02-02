@@ -68,12 +68,12 @@ namespace MsgPack.Serialization
 
 		public bool CanDeserialize { get; private set; }
 
-		private SerializationTarget( IList<SerializingMember> members, ConstructorInfo constructor, string[] correspondingMemberNames, bool? canDeserialize )
+		private SerializationTarget( IList<SerializingMember> members, ConstructorInfo constructor, string[] correspondingMemberNames, bool canDeserialize )
 		{
 			this.Members = members;
 			this.DeserializationConstructor = constructor;
 			this.IsConstructorDeserialization = constructor != null && constructor.GetParameters().Any();
-			this.CanDeserialize = canDeserialize.GetValueOrDefault( constructor == null || correspondingMemberNames.Count( x => !String.IsNullOrEmpty( x ) ) > 0 );
+			this.CanDeserialize = canDeserialize;
 			this._correspondingMemberNames = correspondingMemberNames ?? EmptyStrings;
 		}
 
@@ -170,17 +170,27 @@ namespace MsgPack.Serialization
 
 			var getters = GetTargetMembers( targetType ).OrderBy( entry => entry.Contract.Id ).ToArray();
 
-			if ( getters.Length == 0 )
+			if ( getters.Length == 0
+				&& !typeof( IPackable ).IsAssignableFrom( targetType )
+				&& !typeof( IUnpackable ).IsAssignableFrom( targetType )
+#if FEATURE_TAP
+				&& ( context.SerializerOptions.WithAsync
+					&& ( !typeof( IAsyncPackable ).IsAssignableFrom( targetType )
+						&& !typeof( IAsyncUnpackable ).IsAssignableFrom( targetType )
+					)
+				)
+#endif // FEATURE_TAP
+			)
 			{
 				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "Cannot serialize type '{0}' because it does not have any serializable fields nor properties.", targetType ) );
 			}
 
-			bool? canDeserialize;
 			var memberCandidates = getters.Where( entry => CheckTargetEligibility( context, entry.Member ) ).ToArray();
 
 			if ( memberCandidates.Length == 0 )
 			{
-				var deserializationConstructor = FindDeserializationConstructor( context, targetType, out canDeserialize );
+				ConstructorKind constructorKind;
+				var deserializationConstructor = FindDeserializationConstructor( context, targetType, out constructorKind );
 				var complementedMembers = ComplementMembers( getters, context, targetType );
 				var correspondingMemberNames = FindCorrespondingMemberNames( complementedMembers, deserializationConstructor );
 				return
@@ -188,64 +198,117 @@ namespace MsgPack.Serialization
 						complementedMembers,
 						deserializationConstructor,
 						correspondingMemberNames,
-						canDeserialize
+						DetermineCanDeserialize( constructorKind, context, targetType, correspondingMemberNames, allowDefault: false )
 					);
 			}
-
-			// Try to get default constructor.
-			var constructor = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
-			if ( constructor == null && !targetType.GetIsValueType() )
-			{
-				// Try to get deserialization constructor.
-				var deserializationConstructor = FindDeserializationConstructor( context, targetType, out canDeserialize );
-				if ( deserializationConstructor == null && !context.CompatibilityOptions.AllowAsymmetricSerializer )
-				{
-					throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( targetType );
-				}
-
-				constructor = deserializationConstructor;
-			}
 			else
 			{
-				// Let's prefer annotated constructor here.
-				var markedConstructors = FindExplicitDeserializationConstructors( targetType.GetConstructors() );
-				if ( markedConstructors.Count == 1 )
+				bool? canDeserialize;
+				ConstructorKind constructorKind;
+
+				// Try to get default constructor.
+				var constructor = targetType.GetConstructor( ReflectionAbstractions.EmptyTypes );
+				if ( constructor == null && !targetType.GetIsValueType() )
 				{
-					// For backward compatibility, no exceptions are thrown here even if mulitiple deserialization constructor attributes in the type
-					// just use default constructor for it.
-					constructor = markedConstructors[ 0 ];
+					// Try to get deserialization constructor.
+					var deserializationConstructor = FindDeserializationConstructor( context, targetType, out constructorKind );
+					if ( deserializationConstructor == null && !context.CompatibilityOptions.AllowAsymmetricSerializer )
+					{
+						throw SerializationExceptions.NewTargetDoesNotHavePublicDefaultConstructor( targetType );
+					}
+
+					constructor = deserializationConstructor;
+					canDeserialize = null;
+				}
+				else
+				{
+					constructorKind = ConstructorKind.Default;
+					// Let's prefer annotated constructor here.
+					var markedConstructors = FindExplicitDeserializationConstructors( targetType.GetConstructors() );
+					if ( markedConstructors.Count == 1 )
+					{
+						// For backward compatibility, no exceptions are thrown here even if mulitiple deserialization constructor attributes in the type
+						// just use default constructor for it.
+						constructor = markedConstructors[ 0 ];
+						constructorKind = ConstructorKind.Marked;
+					}
+
+					// OK, appropriate constructor and setters are found.
+					canDeserialize = true;
 				}
 
-				// OK, appropriate constructor and setters are found.
-				canDeserialize = true;
-			}
+				if ( constructor != null && constructor.GetParameters().Any() )
+				{
+					// Recalculate members because getter-only/readonly members should be included for constructor deserialization.
+					memberCandidates = getters;
+				}
 
-			if ( constructor != null && constructor.GetParameters().Any() )
-			{
-				// Recalculate members because getter-only/readonly members should be included for constructor deserialization.
-				memberCandidates = getters;
-			}
+				// Because members' order is equal to declared order is NOT guaranteed, so explicit ordering is required.
+				IList<SerializingMember> members;
+				if ( memberCandidates.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
+				{
+					// Alphabetical order.
+					members = memberCandidates.OrderBy( item => item.Contract.Name ).ToArray();
+				}
+				else
+				{
+					// ID order.
+					members = ComplementMembers( memberCandidates, context, targetType );
+				}
 
-			// Because members' order is equal to declared order is NOT guaranteed, so explicit ordering is required.
-			IList<SerializingMember> members;
-			if ( memberCandidates.All( item => item.Contract.Id == DataMemberContract.UnspecifiedId ) )
-			{
-				// Alphabetical order.
-				members = memberCandidates.OrderBy( item => item.Contract.Name ).ToArray();
+				var correspondingMemberNames = FindCorrespondingMemberNames( members, constructor );
+				return
+					new SerializationTarget(
+						members,
+						constructor,
+						correspondingMemberNames,
+						canDeserialize ?? DetermineCanDeserialize( constructorKind, context, targetType, correspondingMemberNames, allowDefault: true )
+					);
 			}
-			else
-			{
-				// ID order.
-				members = ComplementMembers( memberCandidates, context, targetType );
-			}
+		}
 
+		private static bool HasAnyCorrespondingMembers( IEnumerable<string> correspondingMemberNames )
+		{
+			return correspondingMemberNames.Count( x => !String.IsNullOrEmpty( x ) ) > 0;
+		}
+
+		private static bool HasUnpackableInterface( Type targetType, SerializationContext context )
+		{
 			return
-				new SerializationTarget(
-					members,
-					constructor,
-					FindCorrespondingMemberNames( members, constructor ),
-					canDeserialize
-				);
+				typeof( IUnpackable ).IsAssignableFrom( targetType )
+#if FEATURE_TAP
+						&& ( !context.SerializerOptions.WithAsync || typeof( IAsyncUnpackable ).IsAssignableFrom( targetType ) )
+#endif // FEATURE_TAP
+						;
+		}
+
+		private static bool DetermineCanDeserialize( ConstructorKind kind, SerializationContext context, Type targetType, IEnumerable<string> correspondingMemberNames, bool allowDefault )
+		{
+			if ( HasUnpackableInterface( targetType, context ) )
+			{
+				return true;
+			}
+
+			switch ( kind )
+			{
+				case ConstructorKind.Marked:
+				{
+					return true;
+				}
+				case ConstructorKind.Parameterful:
+				{
+					return HasAnyCorrespondingMembers( correspondingMemberNames );
+				}
+				case ConstructorKind.Default:
+				{
+					return allowDefault;
+				}
+				default:
+				{
+					Contract.Assert( kind == ConstructorKind.None || kind == ConstructorKind.Ambiguous, "kind == ConstructorKind.None || kind == ConstructorKind.Ambiguous : " + kind );
+					return false;
+				}
+			}
 		}
 
 		private static MemberInfo[] GetDistinctMembers( Type type )
@@ -398,8 +461,7 @@ namespace MsgPack.Serialization
 				).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
 		}
 
-
-		private static ConstructorInfo FindDeserializationConstructor( SerializationContext context, Type targetType, out bool? canDeserialize )
+		private static ConstructorInfo FindDeserializationConstructor( SerializationContext context, Type targetType, out ConstructorKind constructorKind )
 		{
 			var constructors = targetType.GetConstructors().ToArray();
 
@@ -407,7 +469,7 @@ namespace MsgPack.Serialization
 			{
 				if ( context.CompatibilityOptions.AllowAsymmetricSerializer )
 				{
-					canDeserialize = false;
+					constructorKind = ConstructorKind.None;
 					return null;
 				}
 				else
@@ -427,7 +489,7 @@ namespace MsgPack.Serialization
 				case 1:
 				{
 					// OK use it for deserialization.
-					canDeserialize = true;
+					constructorKind = ConstructorKind.Marked;
 					return markedConstructors[ 0 ];
 				}
 				default:
@@ -453,8 +515,8 @@ namespace MsgPack.Serialization
 					{
 						if ( context.CompatibilityOptions.AllowAsymmetricSerializer )
 						{
-							canDeserialize = false;
-							return null;
+							constructorKind = ConstructorKind.Default;
+							return mostRichConstructors[ 0 ];
 						}
 						else
 						{
@@ -463,14 +525,14 @@ namespace MsgPack.Serialization
 					}
 
 					// OK try use it but it may not handle deserialization correctly.
-					canDeserialize = null;
+					constructorKind = ConstructorKind.Parameterful;
 					return mostRichConstructors[ 0 ];
 				}
 				default:
 				{
 					if ( context.CompatibilityOptions.AllowAsymmetricSerializer )
 					{
-						canDeserialize = false;
+						constructorKind = ConstructorKind.Ambiguous;
 						return null;
 					}
 					else
@@ -576,6 +638,11 @@ namespace MsgPack.Serialization
 
 		private static IList<SerializingMember> ComplementMembers( IList<SerializingMember> candidates, SerializationContext context, Type targetType )
 		{
+			if ( candidates.Count == 0 )
+			{
+				return candidates;
+			}
+
 			if ( candidates[ 0 ].Contract.Id < 0 )
 			{
 				return candidates;
@@ -761,6 +828,15 @@ namespace MsgPack.Serialization
 			{
 				return ( obj.Key == null ? 0 : StringComparer.OrdinalIgnoreCase.GetHashCode( obj.Key ) ) ^ ( obj.Value == null ? 0 : obj.Value.GetHashCode() );
 			}
+		}
+
+		private enum ConstructorKind
+		{
+			None = 0,
+			Marked,
+			Default,
+			Parameterful,
+			Ambiguous
 		}
 	}
 }

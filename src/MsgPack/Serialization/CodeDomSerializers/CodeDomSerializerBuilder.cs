@@ -1605,7 +1605,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 								ctor.Statements.AddRange(
 									this.EmitMemberListInitialization( context, targetInfo ).AsStatements().ToArray()
 								);
-}
+							}
 						}
 					} // if( targetInfo != null )
 

@@ -28,6 +28,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -168,6 +169,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildObjectPackTo( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
+			if ( targetInfo.Members.Count == 0 )
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						isAsync
+						? "At least one serializable member is required because type '{0}' does not implement IAsyncPackable interface."
+						: "At least one serializable member is required because type '{0}' does not implement IPackable interface.",
+						this.TargetType
+					)
+				);
+			}
+
 			var methodName = 
 #if FEATURE_TAP
 				isAsync ? MethodName.PackToAsyncCore : 
@@ -758,6 +772,19 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		private void BuildObjectUnpackFrom( TContext context, SerializationTarget targetInfo, bool isAsync )
 		{
+			if ( targetInfo.Members.Count == 0 )
+			{
+				throw new SerializationException(
+					String.Format(
+						CultureInfo.CurrentCulture,
+						isAsync
+						? "At least one serializable member is required because type '{0}' does not implement IAsyncUnpackable interface."
+						: "At least one serializable member is required because type '{0}' does not implement IUnpackable interface.",
+						this.TargetType
+					)
+				);
+			}
+
 			/*
 			 *	#if T is IUnpackable
 			 *  result.UnpackFromMessage( unpacker );

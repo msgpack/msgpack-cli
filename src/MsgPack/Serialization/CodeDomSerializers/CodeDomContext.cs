@@ -32,7 +32,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using System.Text;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
