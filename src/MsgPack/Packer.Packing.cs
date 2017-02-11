@@ -1023,6 +1023,7 @@ namespace MsgPack
 
 			var bits = new Float32Bits( value );
 
+			// Float32Bits usage is effectively pointer dereference operation rather than shifting operators, so we must consider endianness here.
 			if ( BitConverter.IsLittleEndian )
 			{
 				this.WriteByte( bits.Byte3 );
@@ -1070,6 +1071,7 @@ namespace MsgPack
 
 			var bits = new Float32Bits( value );
 
+			// Float32Bits usage is effectively pointer dereference operation rather than shifting operators, so we must consider endianness here.
 			if ( BitConverter.IsLittleEndian )
 			{
 				await this.WriteByteAsync( bits.Byte3, cancellationToken ).ConfigureAwait( false );
