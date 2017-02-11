@@ -39,8 +39,12 @@
       <Project>{30581b4a-bca5-4446-b5e7-4f890a3e9514}</Project>
       <Name>MsgPack.Unity.Full</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
-      <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>
+    <ProjectReference Include="..\NUnitLite\NUnitFramework\framework\nunit.framework-3.5.csproj">
+      <Project>{7fa125b4-e377-4d4c-aecb-17b934e3a4b3}</Project>
+      <Name>nunit.framework-3.5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NUnitLite\NUnitFramework\nunitlite\nunitlite-3.5.csproj">
+      <Project>{82f93f6e-5c10-4cc7-bc65-ac0b9ca6d39a}</Project>
       <Name>nunitlite-3.5</Name>
     </ProjectReference>
   </ItemGroup>

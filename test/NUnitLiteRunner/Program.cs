@@ -24,7 +24,9 @@ using System.Runtime.CompilerServices;
 
 using MsgPack.Serialization;
 
-using NUnitLite.Runner;
+using NUnit.Common;
+
+using NUnitLite;
 
 namespace MsgPack.NUnitLiteRunner
 {
@@ -41,7 +43,7 @@ namespace MsgPack.NUnitLiteRunner
 			adjustedArgs.AddRange( args );
 			adjustedArgs.Add( AssemblyName );
 			PreHeat();
-			new TextUI().Execute( adjustedArgs.ToArray() );
+			new TextRunner().Execute( adjustedArgs.ToArray() );
 		}
 
 		[MethodImpl( MethodImplOptions.NoOptimization )]

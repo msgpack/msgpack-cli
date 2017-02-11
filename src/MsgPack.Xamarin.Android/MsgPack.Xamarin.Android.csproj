@@ -758,9 +758,6 @@
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
-      <Link>UnsafeNativeMethods.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

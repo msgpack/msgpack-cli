@@ -50,8 +50,12 @@
       <Project>{46c5b3d9-45e8-46b6-89f7-837d52c6187a}</Project>
       <Name>MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NUnitLite\src\framework\nunitlite-3.5.csproj">
-      <Project>{43b24dc5-16d6-45ef-93f1-b021b785a892}</Project>
+    <ProjectReference Include="..\NUnitLite\NUnitFramework\framework\nunit.framework-3.5.csproj">
+      <Project>{7fa125b4-e377-4d4c-aecb-17b934e3a4b3}</Project>
+      <Name>nunit.framework-3.5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NUnitLite\NUnitFramework\nunitlite\nunitlite-3.5.csproj">
+      <Project>{82f93f6e-5c10-4cc7-bc65-ac0b9ca6d39a}</Project>
       <Name>nunitlite-3.5</Name>
     </ProjectReference>
   </ItemGroup>
