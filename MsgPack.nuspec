@@ -76,6 +76,35 @@ This package provides MessagePack serialization/deserialization APIs. This pacak
         <dependency id="System.Text.RegularExpressions" version="4.1.0" />
         <dependency id="System.Threading" version="4.0.11" />
       </group>
+      <group targetFramework="Universal Windows Platform">
+        <dependency id="System.Collections" version="4.0.11" />
+        <dependency id="System.Collections.Concurrent" version="4.0.12" />
+        <dependency id="System.Collections.NonGeneric" version="4.0.1" />
+        <dependency id="System.Collections.Specialized" version="4.0.1" />
+        <dependency id="System.Data.Common" version="4.1.0" />
+        <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+        <dependency id="System.Diagnostics.Tools" version="4.0.1" />
+        <dependency id="System.Globalization" version="4.0.11" />
+        <dependency id="System.IO" version="4.1.0" />
+        <dependency id="System.Linq" version="4.1.0" />
+        <dependency id="System.Linq.Expressions" version="4.1.0" />
+        <dependency id="System.Numerics.Vectors" version="4.1.1" />
+        <dependency id="System.ObjectModel" version="4.0.12" />
+        <dependency id="System.Reflection" version="4.1.0" />
+        <dependency id="System.Reflection.Extensions" version="4.0.1" />
+        <dependency id="System.Reflection.Primitives" version="4.0.1" />
+        <dependency id="System.Resources.ResourceManager" version="4.0.1" />
+        <dependency id="System.Runtime" version="4.1.0" />
+        <dependency id="System.Runtime.Extensions" version="4.1.0" />
+        <dependency id="System.Runtime.InteropServices" version="4.1.0" />
+        <dependency id="System.Runtime.Numerics" version="4.0.1" />
+        <dependency id="System.Runtime.Serialization.Primitives" version="4.1.1" />
+        <dependency id="System.Text.Encoding" version="4.0.11" />
+        <dependency id="System.Text.Encoding.Extensions" version="4.0.11" />
+        <dependency id="System.Text.RegularExpressions" version="4.1.0" />
+        <dependency id="System.Threading" version="4.0.11" />
+      </group>
     </dependencies>
   </metadata>
   <files>
