@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 		public static void Compile( string code, bool isDebug, out Assembly compiledAssembly, out IList<string> errors, out IList<string> warnings )
 		{
 			var assemblyName = "CodeGenerationAssembly" + Interlocked.Increment( ref _suffix );
-			var assemblyPath = Path.Combine( SerializerDebugging.DumpDirectory, assemblyName + ".dll" );
+			var assemblyPath = Path.Combine( SerializerDebugging.DumpDirectory ?? Path.GetTempPath(), assemblyName + ".dll" );
 
 			using ( var provider = CodeDomProvider.CreateProvider( "C#" ) )
 			{

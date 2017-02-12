@@ -48,7 +48,7 @@ namespace MsgPack.Serialization
 
 #else
 
-private static volatile DependentAssemblyManager _default = new NullDependentAssemblyManager();
+		private static volatile DependentAssemblyManager _default = new NullDependentAssemblyManager();
 
 		public static DependentAssemblyManager Default
 		{
