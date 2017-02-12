@@ -541,6 +541,7 @@
     <Compile Include="UnpackingMode.cs" />
     <Compile Include="UnpackingStream.cs" />
     <Compile Include="UnpackingStreamReader.cs" />
+    <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="UnpackingResult.cs" />
     <Compile Include="Unpacker.cs" />

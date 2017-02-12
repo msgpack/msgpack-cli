@@ -1020,6 +1020,9 @@
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\UnsafeNativeMethods.cs">
+      <Link>UnsafeNativeMethods.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Validation.cs">
       <Link>Validation.cs</Link>
     </Compile>
