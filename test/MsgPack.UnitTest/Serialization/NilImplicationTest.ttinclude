@@ -101,15 +101,7 @@ namespace MsgPack.Serialization
 #>
 #if !SILVERLIGHT && !AOT && !UNITY
 
-#if MSTEST
-		[Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestInitialize]
-		public void Initialize( Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestContext c )
-		{
-			this.SetUp();
-		}
-#else
 		[SetUp]
-#endif
 		public void SetUp()
 		{
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3

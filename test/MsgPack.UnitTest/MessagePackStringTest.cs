@@ -139,7 +139,7 @@ namespace MsgPack
 			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
-#if !UNITY && !SILVERLIGHT && !AOT
+#if !UNITY && !SILVERLIGHT && !AOT && !NETFX_CORE
 		[Test]
 		public void TestEqualsFullTrust()
 		{
@@ -159,7 +159,7 @@ namespace MsgPack
 
 #endif // !UNITY && !SILVERLIGHT && !AOT
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -241,7 +241,6 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{
@@ -369,5 +368,6 @@ namespace MsgPack
 
 			return Tuple.Create( tinyAvg, smallAvg, mediumAvg, largeAvg );
 		}
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }
