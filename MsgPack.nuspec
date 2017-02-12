@@ -76,7 +76,7 @@ This package provides MessagePack serialization/deserialization APIs. This pacak
         <dependency id="System.Text.RegularExpressions" version="4.1.0" />
         <dependency id="System.Threading" version="4.0.11" />
       </group>
-      <group targetFramework="Universal Windows Platform">
+      <group targetFramework="uap10.0">
         <dependency id="System.Collections" version="4.0.11" />
         <dependency id="System.Collections.Concurrent" version="4.0.12" />
         <dependency id="System.Collections.NonGeneric" version="4.0.1" />
