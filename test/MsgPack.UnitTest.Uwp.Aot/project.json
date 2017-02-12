@@ -1,13 +1,13 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.0",
-    "NUnit": "3.2.1",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "NUnit": "3.6.0",
     "nunit.xamarin": "3.0.1",
     "System.Collections.NonGeneric": "4.0.1",
     "System.Collections.Specialized": "4.0.1",
-    "System.Data.Common": "4.1.0",
+    "System.Data.Common": "4.3.0",
     "System.Numerics.Vectors": "4.1.1",
-    "Xamarin.Forms": "2.2.0.31"
+    "Xamarin.Forms": "2.3.3.180"
   },
   "frameworks": {
     "uap10.0": {}
