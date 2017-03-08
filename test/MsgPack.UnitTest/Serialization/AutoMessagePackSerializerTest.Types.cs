@@ -202,12 +202,26 @@ namespace MsgPack.Serialization
 			get { return this._UriField; }
 			set { this._UriField = value; }
 		}
-		private Version _VersionField;
+		private Version _VersionConstructorMajorMinor;
 		
-		public Version VersionField
+		public Version VersionConstructorMajorMinor
 		{
-			get { return this._VersionField; }
-			set { this._VersionField = value; }
+			get { return this._VersionConstructorMajorMinor; }
+			set { this._VersionConstructorMajorMinor = value; }
+		}
+		private Version _VersionConstructorMajorMinorBuild;
+		
+		public Version VersionConstructorMajorMinorBuild
+		{
+			get { return this._VersionConstructorMajorMinorBuild; }
+			set { this._VersionConstructorMajorMinorBuild = value; }
+		}
+		private Version _FullVersionConstructor;
+		
+		public Version FullVersionConstructor
+		{
+			get { return this._FullVersionConstructor; }
+			set { this._FullVersionConstructor = value; }
 		}
 		private CultureInfo _InvariantCultureField;
 		
@@ -633,7 +647,9 @@ namespace MsgPack.Serialization
 			this._DateTimeField = DateTime.UtcNow;
 			this._DateTimeOffsetField = DateTimeOffset.UtcNow;
 			this._UriField = new Uri( "http://example.com/" );
-			this._VersionField = new Version( 1, 2, 3, 4 );
+			this._VersionConstructorMajorMinor = new Version( 1, 2 );
+			this._VersionConstructorMajorMinorBuild = new Version( 1, 2, 3 );
+			this._FullVersionConstructor = new Version( 1, 2, 3, 4 );
 			this._InvariantCultureField = CultureInfo.InvariantCulture;
 			this._CurrentCultureField = CultureInfo.CurrentCulture;
 #if !SILVERLIGHT
@@ -751,7 +767,9 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._DateTimeField, this._DateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._DateTimeOffsetField, this._DateTimeOffsetField );
 			AutoMessagePackSerializerTest.Verify( expected._UriField, this._UriField );
-			AutoMessagePackSerializerTest.Verify( expected._VersionField, this._VersionField );
+			AutoMessagePackSerializerTest.Verify( expected._VersionConstructorMajorMinor, this._VersionConstructorMajorMinor );
+			AutoMessagePackSerializerTest.Verify( expected._VersionConstructorMajorMinorBuild, this._VersionConstructorMajorMinorBuild );
+			AutoMessagePackSerializerTest.Verify( expected._FullVersionConstructor, this._FullVersionConstructor );
 			AutoMessagePackSerializerTest.Verify( expected._InvariantCultureField, this._InvariantCultureField );
 			AutoMessagePackSerializerTest.Verify( expected._CurrentCultureField, this._CurrentCultureField );
 #if !SILVERLIGHT
