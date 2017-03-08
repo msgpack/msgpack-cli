@@ -78,6 +78,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
 			}
 
+			if (build < 0 && revision < 0)
+			{
+				return new Version(major, minor);
+			}
+			else if (revision < 0)
+			{
+				return new Version(major, minor, build);
+			}
+
 			return new Version( major, minor, build, revision );
 		}
 
@@ -127,6 +136,15 @@ namespace MsgPack.Serialization.DefaultSerializers
 			if ( !revision.Success )
 			{
 				SerializationExceptions.ThrowMissingItem( 3, unpacker );
+			}
+
+			if (build.Value < 0 && revision.Value < 0)
+			{
+				return new Version(major.Value, minor.Value);
+			}
+			else if (revision.Value < 0)
+			{
+				return new Version(major.Value, minor.Value, build.Value);
 			}
 
 			return new Version( major.Value, minor.Value, build.Value, revision.Value );
