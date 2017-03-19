@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -23,12 +23,35 @@ using System.Runtime.CompilerServices;
 using System.Security;
 
 [assembly: AssemblyTitle( "MessagePack for CLI(.NET/Mono)" )]
-[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library." )]
+[assembly: AssemblyDescription( "MessagePack for CLI(.NET/Mono) packing/unpacking library for" +
+#if NET4_5
+".NET Framework 4.5"
+#elif WINDOWS_UWP
+"UWP"
+#elif NETSTANDARD1_1
+".NET Standard 1.1"
+#elif NETSTANDARD1_3
+".NET Standard 1.3"
+#elif XAMARIN
+"Xamarin for " +
+#if __ANDROID__
+"Android"
+#elif __IOS__
+"iOS"
+#else
+#error Unexpected Xamarin!
+#endif // XAMARIN
+#else
+".NET Framework 4.6"
+#endif // NET4_5..
+ )]
 
-[assembly: AssemblyFileVersion( "0.7.2259.1047" )]
+[assembly: AssemblyFileVersion( "0.9.2259.1047" )]
 
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3
 [assembly: SecurityRules( SecurityRuleSet.Level2, SkipVerificationInFullTrust = true )]
 [assembly: AllowPartiallyTrustedCallers]
+#endif
 
 #if DEBUG || PERFORMANCE_TEST
 [assembly: InternalsVisibleTo( "MsgPack.UnitTest, PublicKey=0024000004800000940000000602000000240000525341310004000001000100a967de8de9d45380b93a6aa56f64fc2cb2d3c9d4b400e00de01f31ba9e15cf5ca95926dbf8760cce413eabd711e23df0c133193a570da8a3bb1bdc00ef170fccb2bc033266fa5346442c9cf0b071133d5b484845eab17095652aeafeeb71193506b8294d9c8c91e3fd01cc50bdbc2d0eb78dd655bb8cd0bd3cdbbcb192549cb4" )]

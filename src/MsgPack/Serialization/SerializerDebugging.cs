@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -108,7 +108,7 @@ namespace MsgPack.Serialization
 		}
 #endif // DEBUG
 
-#if !AOT && !SILVERLIGHT
+#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 #if DEBUG
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
@@ -161,7 +161,7 @@ namespace MsgPack.Serialization
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
 		}
 #endif // DEBUG
-#endif // !AOT && !SILVERLIGHT
+#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 
 		/// <summary>
 		///		Traces the polymorphic schema event.
@@ -186,7 +186,7 @@ namespace MsgPack.Serialization
 
 #if DEBUG
 
-#if !AOT && !SILVERLIGHT
+#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 		/// <summary>
 		///		Flushes the trace data.
 		/// </summary>
@@ -202,7 +202,7 @@ namespace MsgPack.Serialization
 			_ilTraceWriter.GetStringBuilder().Length = 0;
 		}
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_3
 		[ThreadStatic]
 		private static AssemblyBuilder _assemblyBuilder;
 
@@ -366,8 +366,8 @@ namespace MsgPack.Serialization
 			_codeWriter = null;
 			ResetDependentAssemblies();
 		}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
-#endif // !AOT && !SILVERLIGHT
+#endif // !NETSTANDARD1_3
+#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 
 #if NETFX_35 || UNITY || SILVERLIGHT
 		private static int _useLegacyNullMapEntryHandling;

@@ -210,7 +210,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // DEBUG
 
-#if DEBUG && !AOT && !SILVERLIGHT
+#if DEBUG && !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 			SerializerDebugging.TraceEmitEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
@@ -218,7 +218,7 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#endif // DEBUG && !AOT && !SILVERLIGHT
+#endif // DEBUG && !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 			Type concreteType = null;
 			CollectionTraits collectionTraits =
 #if AOT
