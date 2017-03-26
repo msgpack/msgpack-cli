@@ -25,7 +25,7 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2016" )]
+[assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010-2017" )]
 [assembly: AssemblyProduct( "MessagePack" )]
 [assembly: CLSCompliant( true )]
 [assembly: ComVisible( false )]
