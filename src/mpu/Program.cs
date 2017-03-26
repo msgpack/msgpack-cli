@@ -139,7 +139,7 @@ namespace mpu
 					},
 					{
 						"singular", "[serializer, optional] Specify avoid recursive serializer generation for target type(s).",
-						_ => configuration.PreferReflectionBasedSerializer = false
+						_ => configuration.IsRecursive = false
 					},
 					{
 						"avoid-reflection-based", "[serializer, optional] Specify avoid built-in reflection based serializer and generates alternative serializers.",
