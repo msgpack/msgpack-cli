@@ -41,6 +41,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
     <DocumentationFile>$(OutputPath)\MsgPack.XML</DocumentationFile>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\MsgPack.XML</DocumentationFile>

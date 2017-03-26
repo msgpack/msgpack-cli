@@ -72,26 +72,6 @@
     <Exclude File="*.ttinclude" />
   </Project>
 
-  <!-- TOOD: should be project.json -->
-  <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack.Uwp">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="UnsafeNativeMethods.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
-    <Exclude Path="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
-    <Exclude File="*.snk" />
-    <Exclude Path="BufferedStream.cs" />
-    <Exclude Path="NetStandardCompatibility.cs" />
-    <Exclude Path="project.json" />
-  </Project>
-
-  <!-- TOOD: should be project.json -->
-  <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-  </Project>
-
   <Project Name="MsgPack.Unity.Full" Base="MsgPack.Xamarin.iOS">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\AotHelper*.tt" />

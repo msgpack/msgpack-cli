@@ -55,12 +55,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Xamarin.Android\MsgPack.Xamarin.Android.csproj">
-      <Project>{A6210C9C-1614-46C5-97B2-6A37032AF143}</Project>
-      <Name>MsgPack.Xamarin.Android</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
@@ -1850,5 +1844,11 @@
     <Content Include="..\MsgPack.UnitTest\gen\_ReadMe.txt">
       <Link>gen\_ReadMe.txt</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
+      <Project>{5bcec32e-990e-4de5-945f-bd27326a7418}</Project>
+      <Name>MsgPack</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
