@@ -1,4 +1,5 @@
 version: '{branch}-{build}'
+image: Visual Studio 2017
 skip_tags: true
 configuration: Debug
 init:
