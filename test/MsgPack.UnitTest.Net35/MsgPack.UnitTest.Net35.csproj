@@ -815,9 +815,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Net35\MsgPack.Net35.csproj">
-      <Project>{c5490cdc-3b79-42dc-acfb-75a62e55862c}</Project>
-      <Name>MsgPack.Net35</Name>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
+      <Project>{5bcec32e-990e-4de5-945f-bd27326a7418}</Project>
+      <Name>MsgPack</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
