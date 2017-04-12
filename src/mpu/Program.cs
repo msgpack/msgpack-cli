@@ -83,6 +83,7 @@ namespace mpu
 			var excludingPattern = default( string );
 			var treatWarningsAsErrors = false;
 			var warningLevel = 4;
+			var admitNonPublicTypes = false;
 			var configuration =
 				new SerializerCodeGenerationConfiguration
 				{
@@ -182,6 +183,10 @@ namespace mpu
 						value => excludingPattern = value
 					},
 					{
+						"admit-non-public-types", "[serializer, optional] Specify to enable code generation for non-public types.",
+						_ => admitNonPublicTypes = true
+					},
+					{
 						"treat-warning-as-errors|treatWarningsAsErrors", "[serializer, optional] Specify to generate error for compiler warnings for serialization target types.",
 						_ => treatWarningsAsErrors = true
 					},
@@ -220,6 +225,7 @@ namespace mpu
 						excludingPattern,
 						treatWarningsAsErrors,
 						warningLevel,
+						admitNonPublicTypes,
 						configuration
 					);
 					return 0;
@@ -288,6 +294,7 @@ namespace mpu
 			string excludingPattern,
 			bool treatWarningsAsErrors,
 			int warningLevel,
+			bool admitNonPublicTypes,
 			SerializerCodeGenerationConfiguration configuration
 		)
 		{
@@ -311,7 +318,8 @@ namespace mpu
 							referenceAssemblies ?? new string[ 0 ]
 							),
 						includingPattern,
-						excludingPattern
+						excludingPattern,
+						admitNonPublicTypes
 					);
 			}
 			else
@@ -320,7 +328,8 @@ namespace mpu
 					generator.GenerateSerializers(
 						sourceFilePathes[ 0 ],
 						includingPattern,
-						excludingPattern
+						excludingPattern,
+						admitNonPublicTypes
 					);
 			}
 
