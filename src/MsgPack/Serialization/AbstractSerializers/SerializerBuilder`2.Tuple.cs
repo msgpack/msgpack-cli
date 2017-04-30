@@ -350,18 +350,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 								setUnpackValueOfMethodName,
 								false, // isStatic
 								TypeDefinition.VoidType,
-								() => unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-									? this.EmitInvokeVoidMethod(
-										context,
-										context.UnpackingContextInSetValueMethods,
-										Metadata._DynamicUnpackingContext.Set,
-										this.MakeStringLiteral( context, propertyName ),
-										this.EmitBoxExpression( 
-											context,
-											itemTypes[ index ],
-											unpackedItem
-										)
-									) : this.EmitSetField(
+								() =>
+									this.EmitSetField(
 										context,
 										context.UnpackingContextInSetValueMethods,
 										unpackingContext.VariableType,
@@ -383,25 +373,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 				var gets =
 					Enumerable.Range( nest * 7, Math.Min( itemTypes.Count - nest * 7, 7 ) )
 						.Select( i =>
-							unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-								? this.EmitUnboxAnyExpression(
-									context,
-									itemTypes[ i ],
-									this.EmitInvokeMethodExpression(
-										context,
-										context.UnpackingContextInCreateObjectFromContext,
-										Metadata._DynamicUnpackingContext.Get,
-										this.MakeStringLiteral( context, SerializationTarget.GetTupleItemNameFromIndex( i ) )
-									)
-								) : this.EmitGetFieldExpression(
-									context,
-									context.UnpackingContextInCreateObjectFromContext,
-									new FieldDefinition( 
-										unpackingContext.VariableType,
-										SerializationTarget.GetTupleItemNameFromIndex( i ),
-										itemTypes[ i ]
-									)
+							this.EmitGetFieldExpression(
+								context,
+								context.UnpackingContextInCreateObjectFromContext,
+								new FieldDefinition( 
+									unpackingContext.VariableType,
+									SerializationTarget.GetTupleItemNameFromIndex( i ),
+									itemTypes[ i ]
 								)
+							)
 						);
 				if ( currentTuple != null )
 				{
@@ -499,9 +479,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						unpackingContext.Variable,
 						unpackingContext.Constructor,
-						unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-							? new[] { this.MakeInt32Literal( context, itemTypes.Count ) }
-							: itemTypes.Select( t => this.MakeDefaultLiteral( context, t ) ).ToArray()
+						itemTypes.Select( t => this.MakeDefaultLiteral( context, t ) ).ToArray()
 					)
 				)
 			);
