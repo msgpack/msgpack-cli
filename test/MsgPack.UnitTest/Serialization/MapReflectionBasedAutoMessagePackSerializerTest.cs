@@ -3932,6 +3932,31 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		// Issue233
+		[Test]
+		public void TestConstructorDeserializationWithParametersNotInLexicalOrder()
+		{
+			var endpoints =
+				new EndpointList(
+					"Test String One",
+					new Dictionary<string, string[]>
+					{
+						{ "ConfigService", new [] { "ur1", "ur2" } },
+						{ "TestService", new [] { "ur1", "ur2" } }
+					},
+					"Test String Two"
+				);
+
+			var context = new SerializationContext();
+			var ser = context.GetSerializer<EndpointList>();
+			var bytes = ser.PackSingleObject( endpoints );
+			var endpointsDeser = ser.UnpackSingleObject( bytes );
+
+			Assert.That( endpointsDeser.StringOne, Is.EqualTo( endpoints.StringOne ) );
+			Assert.That( endpointsDeser.StringTwo, Is.EqualTo( endpoints.StringTwo ) );
+			Assert.That( endpointsDeser.Endpoints, Is.EqualTo( endpoints.Endpoints ) );
+		}
+
 		[Test]
 		public void TestCollection_Success()
 		{

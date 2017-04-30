@@ -3932,6 +3932,31 @@ namespace MsgPack.Serialization
 			}
 		}
 
+		// Issue233
+		[Test]
+		public void TestConstructorDeserializationWithParametersNotInLexicalOrder()
+		{
+			var endpoints =
+				new EndpointList(
+					"Test String One",
+					new Dictionary<string, string[]>
+					{
+						{ "ConfigService", new [] { "ur1", "ur2" } },
+						{ "TestService", new [] { "ur1", "ur2" } }
+					},
+					"Test String Two"
+				);
+
+			var context = new SerializationContext();
+			var ser = context.GetSerializer<EndpointList>();
+			var bytes = ser.PackSingleObject( endpoints );
+			var endpointsDeser = ser.UnpackSingleObject( bytes );
+
+			Assert.That( endpointsDeser.StringOne, Is.EqualTo( endpoints.StringOne ) );
+			Assert.That( endpointsDeser.StringTwo, Is.EqualTo( endpoints.StringTwo ) );
+			Assert.That( endpointsDeser.Endpoints, Is.EqualTo( endpoints.Endpoints ) );
+		}
+
 		[Test]
 		public void TestCollection_Success()
 		{
@@ -21081,25 +21106,73 @@ namespace MsgPack.Serialization
 		}	
 		
 		[Test]
-		public void TestVersionField()
+		public void TestVersionConstructorMajorMinor()
 		{
-			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( new Version( 1, 2 ), GetSerializationContext() );
 		}
 		
 		[Test]
-		public void TestVersionFieldArray()
+		public void TestVersionConstructorMajorMinorArray()
 		{
-			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray(), GetSerializationContext() );
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2 ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
 		[Test]
-		public void TestVersionFieldNull()
+		public void TestVersionConstructorMajorMinorNull()
 		{
 			this.TestCoreWithAutoVerify( default( Version ), GetSerializationContext() );
 		}
 		
 		[Test]
-		public void TestVersionFieldArrayNull()
+		public void TestVersionConstructorMajorMinorArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version[] ), GetSerializationContext() );
+		}	
+		
+		[Test]
+		public void TestVersionConstructorMajorMinorBuild()
+		{
+			this.TestCoreWithAutoVerify( new Version( 1, 2, 3 ), GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestVersionConstructorMajorMinorBuildArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3 ), 2 ).ToArray(), GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestVersionConstructorMajorMinorBuildNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version ), GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestVersionConstructorMajorMinorBuildArrayNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version[] ), GetSerializationContext() );
+		}	
+		
+		[Test]
+		public void TestFullVersionConstructor()
+		{
+			this.TestCoreWithAutoVerify( new Version( 1, 2, 3, 4 ), GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestFullVersionConstructorArray()
+		{
+			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Version( 1, 2, 3, 4 ), 2 ).ToArray(), GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestFullVersionConstructorNull()
+		{
+			this.TestCoreWithAutoVerify( default( Version ), GetSerializationContext() );
+		}
+		
+		[Test]
+		public void TestFullVersionConstructorArrayNull()
 		{
 			this.TestCoreWithAutoVerify( default( Version[] ), GetSerializationContext() );
 		}	

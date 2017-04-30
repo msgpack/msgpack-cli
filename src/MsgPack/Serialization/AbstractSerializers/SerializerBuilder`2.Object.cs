@@ -845,12 +845,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // FEATURE_TAP
 				;
 
-			int constructorParameterIndex = 0;
-			var fieldNames =
-				targetInfo.IsConstructorDeserialization
-					? targetInfo.DeserializationConstructor.GetParameters().Select( p => p.Name ).ToArray()
-					: targetInfo.Members.Where( m => m.MemberName != null ).Select( m => m.MemberName ).ToArray();
-
 			for ( int i = 0; i < targetInfo.Members.Count; i++ )
 			{
 				var count = i;
@@ -881,6 +875,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
+					var name = targetInfo.Members[ count ].MemberName;
+					Contract.Assert( !String.IsNullOrEmpty( name ), targetInfo.Members[ count ] + "@" + i + " does not have member name.");
 					var unpackedItem =
 						context.DefineUnpackedItemParameterInSetValueMethods( targetInfo.Members[ count ].Member.GetMemberValueType() );
 					Func<TConstruct> storeValueStatementEmitter;
@@ -892,7 +888,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 									context,
 									context.UnpackingContextInSetValueMethods,
 									Metadata._DynamicUnpackingContext.Set,
-									this.MakeStringLiteral( context, fieldNames[ count ] ),
+									this.MakeStringLiteral( context, name ),
 									targetInfo.Members[ count ].Member.GetMemberValueType().GetIsValueType()
 									? this.EmitBoxExpression(
 										context,
@@ -903,11 +899,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 					else if ( targetInfo.IsConstructorDeserialization || this.TargetType.GetIsValueType() )
 					{
-						var name = fieldNames[ constructorParameterIndex ];
 						storeValueStatementEmitter =
 							() =>
 								this.EmitSetField( context, context.UnpackingContextInSetValueMethods, unpackingContext.Type, name, unpackedItem );
-						constructorParameterIndex++;
 					}
 					else
 					{
@@ -1013,7 +1007,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				var constructorParameters = targetInfo.DeserializationConstructor.GetParameters();
 				var contextFields =
-					constructorParameters.Select( p => new KeyValuePair<string, TypeDefinition>( p.Name, p.ParameterType ) ).ToArray();
+					constructorParameters.Select( ( p, i ) => new KeyValuePair<string, TypeDefinition>( targetInfo.GetCorrespondingMemberName( i ) ?? ( "__OrphanParameter" + i.ToString( CultureInfo.InvariantCulture ) ), p.ParameterType ) ).ToArray();
 				var constructorArguments = new List<TConstruct>( constructorParameters.Length );
 				var mappableConstructorArguments = new HashSet<string>();
 				var initializationStatements =
