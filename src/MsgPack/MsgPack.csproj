@@ -11,7 +11,7 @@
     <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworks>net35;net45;net462;netstandard1.1;netstandard1.3;MonoAndroid10;Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks>net462;net35;net45;netstandard1.1;netstandard1.3;MonoAndroid10;Xamarin.iOS10</TargetFrameworks>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
