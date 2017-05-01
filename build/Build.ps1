@@ -1,18 +1,40 @@
 param([Switch]$Rebuild)
 
+[string]$msbuild = "msbuild"
+
 if ( $env:APPVEYOR -eq "True" )
 {
-	[string]$builder = "MSBuild.exe"
-	[string]$winBuilder = "MSBuild.exe"
-	[string]$nuget = "nuget"
-	[string]$nugetVerbosity = "quiet"
-	[string]$dotnetVerbosity = "Warning"
 	
 	# AppVeyor should have right MSBuild and dotnet-cli...
 	# Android SDK should be installed in init and ANDROID_HOME should be initialized before this script.
 }
 else
 {
+	[string]$VSMSBuildExtensionsPath = $null
+	
+	$msbuildCandidates = @(
+		"${env:ProgramFiles(x86)}\Microsoft Visual Studio\2017\Community\MSBuild\15.0\bin\MSBuild.exe",
+		"${env:ProgramFiles(x86)}\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\bin\MSBuild.exe",
+		"${env:ProgramFiles(x86)}\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\bin\MSBuild.exe",
+		"${env:ProgramFiles}\Microsoft Visual Studio\2017\Community\MSBuild\15.0\bin\MSBuild.exe",
+		"${env:ProgramFiles}\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\bin\MSBuild.exe",
+		"${env:ProgramFiles}\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\bin\MSBuild.exe"
+	)
+	foreach ( $msbuildCandidate in $msbuildCandidates )
+	{
+		if ( ( Test-Path $msbuildCandidate ) )
+		{
+			$VSMSBuildExtensionsPath = [IO.Path]::GetFullPath( [IO.Path]::GetDirectoryName( $msbuildCandidate ) + "\..\..\" )
+			break;
+		}
+	}
+	
+	if ( $VSMSBuildExtensionsPath -eq $null )
+	{
+		Write-Error "Failed to locate MSBuild.exe which can build .NET Core and .NET 3.5. VS2017 is required."
+		exit 1
+	}
+	
 	# Ensure Android SDK for API level 10 is installed.
 	# Thanks to https://github.com/googlesamples/android-ndk/pull/80
 
@@ -29,27 +51,6 @@ else
 	{
 		./UpdateAndroidSdk.cmd
 	}
-	[string]$builder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
-	[string]$winBuilder = "${env:ProgramFiles(x86)}\MSBuild\14.0\Bin\MSBuild.exe"
-	[string]$nuget = "../.nuget/nuget.exe"
-	[string]$nugetVerbosity = "normal"
-	[string]$dotnetVerbosity = "Information"
-
-	if ( !( Test-Path( "$winBuilder" ) ) )
-	{
-		$winBuilder = "${env:ProgramFiles}\MSBuild\14.0\Bin\MSBuild.exe"
-	}
-	if ( !( Test-Path( "$winBuilder" ) ) )
-	{
-		Write-Error "MSBuild v14 is required."
-		exit 1
-	}
-
-	if ( !( Test-Path( "${env:ProgramFiles}\dotnet\dotnet.exe" ) ) )
-	{
-		Write-Error "DotNet CLI is required."
-		exit 1
-	}
 }
 
 [string]$buildConfig = 'Release'
@@ -62,7 +63,6 @@ if ( ![String]::IsNullOrWhitespace( $env:CONFIGURATION ) )
 [string]$slnCompat = '../MsgPack.compats.sln'
 [string]$slnWindows = '../MsgPack.Windows.sln'
 [string]$slnXamarin = '../MsgPack.Xamarin.sln'
-[string]$projCoreClr = "../src/Msgpack.CoreClr"
 
 $buildOptions = @( '/v:minimal' )
 if( $Rebuild )
@@ -71,6 +71,7 @@ if( $Rebuild )
 }
 
 $buildOptions += "/p:Configuration=${buildConfig}"
+$restoreOptions = "/v:minimal"
 
 # Unity
 if ( !( Test-Path "./MsgPack-CLI" ) )
@@ -102,96 +103,53 @@ if ( !( Test-Path "./MsgPack-CLI/mpu" ) )
 }
 
 # build
-& $nuget restore $sln -Verbosity $nugetVerbosity
+& $msbuild /t:restore $sln $restoreOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $sln"
 	exit $LastExitCode
 }
 
-& $builder $sln $buildOptions
+& $msbuild $sln $buildOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to build $sln"
 	exit $LastExitCode
 }
 
-& $nuget restore $slnCompat -Verbosity $nugetVerbosity
+& $msbuild /t:restore $slnCompat $restoreOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnCompat"
 	exit $LastExitCode
 }
 
-& $builder $slnCompat $buildOptions
+& $msbuild $slnCompat $buildOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to build $slnCompat"
 	exit $LastExitCode
 }
 
-& $nuget restore $slnWindows -Verbosity $nugetVerbosity
+& $msbuild /t:restore $slnWindows $restoreOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnWindows"
 	exit $LastExitCode
 }
 
-& $winBuilder $slnWindows $buildOptions
+& $msbuild $slnWindows $buildOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to build $slnWindows"
 	exit $LastExitCode
 }
 
-& $nuget restore $slnXamarin -Verbosity $nugetVerbosity
-if ( $LastExitCode -ne 0 )
-{
-	Write-Error "Failed to restore $slnXamarin"
-	exit $LastExitCode
-}
-
-& $builder $slnXamarin $buildOptions
-if ( $LastExitCode -ne 0 )
-{
-	Write-Error "Failed to build $slnXamarin"
-	exit $LastExitCode
-}
-
-dotnet restore $projCoreClr
-if ( $LastExitCode -ne 0 )
-{
-	Write-Error "Failed to restore $projNetStandard11"
-	exit $LastExitCode
-}
-
-$netstandardBaseCommandLine = @("build", "$projCoreClr", "-c", "$buildConfig")
-$netstandard1_1CommandLine = $netstandardBaseCommandLine + @("-f", "netstandard1.1")
-$netstandard1_3CommandLine = $netstandardBaseCommandLine + @("-f", "netstandard1.3")
 if ( $buildConfig -eq 'Release' )
 {
-	$netstandard1_1CommandLine += @("-o", "../bin/netstandard1.1")
-	$netstandard1_3CommandLine += @("-o", "../bin/netstandard1.3")
-}
+	& $msbuild ../src/MsgPack/MsgPack.csproj /t:pack /p:Configuration=$buildConfig /p:NuspecProperties=version=$env:PackageVersion
 
-& "dotnet" $netstandard1_1CommandLine
-if ( $LastExitCode -ne 0 )
-{
-	Write-Error "Failed to build netstd1.1. $netstandard1_1CommandLine"
-	exit $LastExitCode
-}
-
-& "dotnet" $netstandard1_3CommandLine
-if ( $LastExitCode -ne 0 )
-{
-	Write-Error "Failed to build netstd1.3. $netstandard1_3CommandLine"
-	exit $LastExitCode
-}
-
-if ( $buildConfig -eq 'Release' )
-{
-	& $nuget pack ../MsgPack.nuspec -Symbols -Version $env:PackageVersion -OutputDirectory ../dist
-
+	Move-Item ../bin/*.nupkg ../dist/
 	Copy-Item ../bin/* ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
 	Copy-Item ../tools/mpu/bin/* ./MsgPack-CLI/mpu/ -Recurse -Exclude @("*.vshost.*")
 	[Reflection.Assembly]::LoadWithPartialName( "System.IO.Compression.FileSystem" ) | Out-Null
