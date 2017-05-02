@@ -55,14 +55,12 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
 
 ### For .NET Framework
 
-1. Install recent Windows SDK (at least, .NET Framework 4 Client Profile and MSBuild is needed.) <br/>
-   Or install Visual Studio or Visual Studio Express.
-    1. If you want to build unit test assemblies, install NuGet and then restore NUnit packages.
-2. Run:
+1. Install Visual Studio 2017 (Community edition is OK) and 2015 (for MsgPack.Windows.sln).
+2. Run with Visual Studio Developer Command Prompt:
 
     msbuild MsgPack.sln
 
-  Or (for .NET 3.5 drops and Unity 3D drops):
+  Or (for Unity 3D drops):
 
     msbuild MsgPack.compats.sln
 
@@ -70,7 +68,7 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
 
     msbuild MsgPack.Windows.sln
 
-  Or (for Xamarin drops, you must have Xamarin Business or upper license and Mac machine on the LAN to build on Windows):
+  Or (for Xamarin unit testing, you must have Xamarin Business or upper license and Mac machine on the LAN to build on Windows):
 
     msbuild MsgPack.Xamarin.sln
 
