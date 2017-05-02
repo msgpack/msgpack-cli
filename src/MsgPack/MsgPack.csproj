@@ -486,7 +486,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <!-- Platform specific imports -->
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition="'$(TargetFramework)' == 'uap10.0'" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10'" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10'" />
+  <PropertyGroup Condition="'$(VsInstallRoot)' != ''">
+    <!-- For VS, use $(MSBuildExtensionsPath) -->
+    <VSMSBuildExtensionsPath>$(MSBuildExtensionsPath)</VSMSBuildExtensionsPath>
+  </PropertyGroup>
+  <Import Project="$(VSMSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition="'$(TargetFramework)' == 'uap10.0'" />
+  <Import Project="$(VSMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10'" />
+  <Import Project="$(VSMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10'" />
 </Project>
