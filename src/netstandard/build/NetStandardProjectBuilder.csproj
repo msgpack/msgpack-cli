@@ -44,7 +44,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">$(ProjectDir)\build.cmd $(SolutionDir) $(ConfigurationName)</PreBuildEvent>
-    <PreBuildEvent Condition="'$(OS)' != 'Windows_NT'">bash $(ProjectDir)/build.sh $(SolutionDir) $(ConfigurationName)</PreBuildEvent>
+    <PreBuildEvent Condition="'$(OS)' != 'Windows_NT'">echo This project supports only Windows specific builds.</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
