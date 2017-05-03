@@ -28,11 +28,35 @@ build_script:
 
     ./Build.ps1
 
+    if ( $LastExitCode -ne 0 )
+    {
+        Write-Error "Failed to build."
+        exit 1
+    }
+
     appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.nupkg"
+
+    if ( $LastExitCode -ne 0 )
+    {
+        Write-Error "Failed to publish nupkg."
+        exit 1
+    }
 
     appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.symbols.nupkg"
 
+    if ( $LastExitCode -ne 0 )
+    {
+        Write-Error "Failed to publish symbol nupkg."
+        exit 1
+    }
+
     appveyor PushArtifact "../dist/MsgPack.Cli.${env:PackageVersion}.zip"
+
+    if ( $LastExitCode -ne 0 )
+    {
+        Write-Error "Failed to publish zip."
+        exit 1
+    }
 
     cd ..
 deploy:

@@ -25,11 +25,15 @@ build_script:
 
     ./Build.ps1
 
+    if ( $LastExitCode -ne 0 )
+    {
+        Write-Error "Failed to build."
+        exit 1
+    }
+
     cd ..
 test_script:
 - cmd: >-
     cd ./build
 
     ./RunUnitTests.cmd
-
-    cd ..
