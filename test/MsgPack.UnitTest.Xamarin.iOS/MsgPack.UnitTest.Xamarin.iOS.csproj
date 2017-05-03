@@ -1905,11 +1905,9 @@
     <Content Include="linker.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Xamarin.iOS\MsgPack.Xamarin.iOS.csproj">
-      <Project>{c9710c8a-2fa9-47fe-812c-992c283471cc}</Project>
-      <Name>MsgPack.Xamarin.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
+      <Project>{5bcec32e-990e-4de5-945f-bd27326a7418}</Project>
+      <Name>MsgPack</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

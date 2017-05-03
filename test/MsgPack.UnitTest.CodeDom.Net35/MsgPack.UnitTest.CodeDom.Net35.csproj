@@ -38,9 +38,8 @@
     <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.2.1\lib\net35\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.6.1\lib\net35\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,9 +71,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack.Net35\MsgPack.Net35.csproj">
-      <Project>{c5490cdc-3b79-42dc-acfb-75a62e55862c}</Project>
-      <Name>MsgPack.Net35</Name>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
+      <Project>{5bcec32e-990e-4de5-945f-bd27326a7418}</Project>
+      <Name>MsgPack</Name>
     </ProjectReference>
     <ProjectReference Include="..\MsgPack.UnitTest.Net35\MsgPack.UnitTest.Net35.csproj">
       <Project>{b8bdebcd-343c-42a9-8c17-c1318b42f011}</Project>

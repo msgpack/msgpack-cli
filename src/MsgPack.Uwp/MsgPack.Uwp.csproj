@@ -129,6 +129,9 @@
     <Compile Include="..\MsgPack\Binary.cs">
       <Link>Binary.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\BufferedStream.cs">
+      <Link>BufferedStream.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
     </Compile>
@@ -227,6 +230,9 @@
     </Compile>
     <Compile Include="..\MsgPack\MessageTypeException.cs">
       <Link>MessageTypeException.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\NetStandardCompatibility.cs">
+      <Link>NetStandardCompatibility.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Packer.cs">
       <Link>Packer.cs</Link>
@@ -836,12 +842,6 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
-    </Compile>
-    <Compile Include="..\netstandard\BufferedStream.cs">
-      <Link>BufferedStream.cs</Link>
-    </Compile>
-    <Compile Include="..\netstandard\NetStandardCompatibility.cs">
-      <Link>NetStandardCompatibility.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

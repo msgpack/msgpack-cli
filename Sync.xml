@@ -34,15 +34,6 @@
   </Project>
 
   <!-- TOOD: should be project.json -->
-  <Project Name="MsgPack.Net45" Base="MsgPack">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-  </Project>
-
-  <!-- TOOD: should be project.json -->
   <!-- .Uwp is testing purpose only, this is just .NET Native test target for .NET Standard 1.3 configuration -->
   <Project Name="MsgPack.Uwp" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
@@ -79,26 +70,6 @@
     <Exclude Path="Validation.cs" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
-  </Project>
-
-  <!-- TOOD: should be project.json -->
-  <Project Name="MsgPack.Xamarin.iOS" Base="MsgPack.Uwp">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Preserve Path="UnsafeNativeMethods.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
-    <Exclude Path="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
-    <Exclude File="*.snk" />
-    <Exclude Path="BufferedStream.cs" />
-    <Exclude Path="NetStandardCompatibility.cs" />
-    <Exclude Path="project.json" />
-  </Project>
-
-  <!-- TOOD: should be project.json -->
-  <Project Name="MsgPack.Xamarin.Android" Base="MsgPack.Xamarin.iOS">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
   </Project>
 
   <Project Name="MsgPack.Unity.Full" Base="MsgPack.Xamarin.iOS">

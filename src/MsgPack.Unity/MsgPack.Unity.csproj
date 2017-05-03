@@ -185,6 +185,9 @@
     <Compile Include="..\MsgPack\MessageTypeException.cs">
       <Link>MessageTypeException.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MPContract.cs">
+      <Link>MPContract.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Packer.cs">
       <Link>Packer.cs</Link>
     </Compile>
@@ -736,9 +739,6 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
-    </Compile>
-    <Compile Include="..\netstandard\MPContract.cs">
-      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

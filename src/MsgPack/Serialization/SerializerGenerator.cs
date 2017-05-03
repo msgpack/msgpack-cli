@@ -441,9 +441,9 @@ namespace MsgPack.Serialization
 						SerializationMethod = configuration.SerializationMethod,
 						SerializerOptions =
 						{
-#if !NETFX_35
+#if FEATURE_TAP
 							WithAsync = configuration.WithAsync,
-#endif // !NETFX_35
+#endif // FEATURE_TAP
 							GeneratorOption = SerializationMethodGeneratorOption.CanDump,
 							EmitterFlavor = this.EmitterFlavor
 						},

@@ -36,7 +36,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>3001,3002</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -162,6 +163,9 @@
     </Compile>
     <Compile Include="..\MsgPack\MessageTypeException.cs">
       <Link>MessageTypeException.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MPContract.cs">
+      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Packer.cs">
       <Link>Packer.cs</Link>
@@ -726,9 +730,6 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
-    </Compile>
-    <Compile Include="..\netstandard\MPContract.cs">
-      <Link>MPContract.cs</Link>
     </Compile>
     <Compile Include="CorLibOnlyHelper.cs">
       <AutoGen>True</AutoGen>
