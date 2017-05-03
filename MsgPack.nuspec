@@ -86,5 +86,7 @@ This package provides MessagePack serialization/deserialization APIs. This pacak
   <files>
     <file src="bin\**\*.dll" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />
     <file src="bin\**\*.XML" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />
+    <file src="bin\**\*.pdb" target="lib" exclude="**\System.*;**\Microsoft.*;**\Mono.*" />
+    <file src="src\**\*.cs" target="src" />
   </files>
 </package>
