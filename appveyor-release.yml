@@ -4,6 +4,8 @@ branches:
   only:
   - master
   - 0.7
+  - 0.8
+  - 0.9
 configuration: Release
 assembly_info:
   patch: true
