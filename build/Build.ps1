@@ -147,7 +147,7 @@ if ( $LastExitCode -ne 0 )
 
 if ( $buildConfig -eq 'Release' )
 {
-	& $msbuild ../src/MsgPack/MsgPack.csproj /t:pack /p:Configuration=$buildConfig /p:NuspecProperties=version=$env:PackageVersion
+	& $msbuild ../src/MsgPack/MsgPack.csproj /t:pack /p:Configuration=$buildConfig /p:IncludeSymbols=true /p:IncludeSource=true /p:NuspecProperties=version=$env:PackageVersion
 
 	Move-Item ../bin/*.nupkg ../dist/
 	Copy-Item ../bin/* ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
