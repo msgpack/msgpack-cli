@@ -845,12 +845,6 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // FEATURE_TAP
 				;
 
-			int constructorParameterIndex = 0;
-			var fieldNames =
-				targetInfo.IsConstructorDeserialization
-					? targetInfo.DeserializationConstructor.GetParameters().Select( p => p.Name ).ToArray()
-					: targetInfo.Members.Where( m => m.MemberName != null ).Select( m => m.MemberName ).ToArray();
-
 			for ( int i = 0; i < targetInfo.Members.Count; i++ )
 			{
 				var count = i;
@@ -881,33 +875,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 				}
 				else
 				{
+					var name = targetInfo.Members[ count ].MemberName;
+					Contract.Assert( !String.IsNullOrEmpty( name ), targetInfo.Members[ count ] + "@" + i + " does not have member name.");
 					var unpackedItem =
 						context.DefineUnpackedItemParameterInSetValueMethods( targetInfo.Members[ count ].Member.GetMemberValueType() );
 					Func<TConstruct> storeValueStatementEmitter;
-					if ( unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext ) )
+					if ( targetInfo.IsConstructorDeserialization || this.TargetType.GetIsValueType() )
 					{
-						storeValueStatementEmitter =
-							() =>
-								this.EmitInvokeVoidMethod(
-									context,
-									context.UnpackingContextInSetValueMethods,
-									Metadata._DynamicUnpackingContext.Set,
-									this.MakeStringLiteral( context, fieldNames[ count ] ),
-									targetInfo.Members[ count ].Member.GetMemberValueType().GetIsValueType()
-									? this.EmitBoxExpression(
-										context,
-										unpackedItem.ContextType,
-										unpackedItem
-									) : unpackedItem
-								);
-					}
-					else if ( targetInfo.IsConstructorDeserialization || this.TargetType.GetIsValueType() )
-					{
-						var name = fieldNames[ constructorParameterIndex ];
 						storeValueStatementEmitter =
 							() =>
 								this.EmitSetField( context, context.UnpackingContextInSetValueMethods, unpackingContext.Type, name, unpackedItem );
-						constructorParameterIndex++;
 					}
 					else
 					{
@@ -1013,7 +990,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			{
 				var constructorParameters = targetInfo.DeserializationConstructor.GetParameters();
 				var contextFields =
-					constructorParameters.Select( p => new KeyValuePair<string, TypeDefinition>( p.Name, p.ParameterType ) ).ToArray();
+					constructorParameters.Select( ( p, i ) => new KeyValuePair<string, TypeDefinition>( targetInfo.GetCorrespondingMemberName( i ) ?? ( "__OrphanParameter" + i.ToString( CultureInfo.InvariantCulture ) ), p.ParameterType ) ).ToArray();
 				var constructorArguments = new List<TConstruct>( constructorParameters.Length );
 				var mappableConstructorArguments = new HashSet<string>();
 				var initializationStatements =
@@ -1148,39 +1125,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			unpackingContext.Statements.AddRange( argumentInitializers );
 
 			unpackingContext.Statements.Add(
-				unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-				? this.EmitSequentialStatements(
-					context,
-					TypeDefinition.VoidType,
-					new[]
-					{
-						this.EmitStoreVariableStatement(
-							context,
-							unpackingContext.Variable,
-							this.EmitCreateNewObjectExpression(
-								context,
-								unpackingContext.Variable,
-								unpackingContext.Constructor,
-								this.MakeInt32Literal( context, constructorArguments.Count )
-							)
-						)
-					}.Concat(
-						constructorArguments.Select( ( a, i ) =>
-							this.EmitInvokeVoidMethod(
-								context,
-								unpackingContext.Variable,
-								Metadata._DynamicUnpackingContext.Set,
-								this.MakeStringLiteral( context, contextFields[ i ].Key ),
-								a.ContextType.ResolveRuntimeType().GetIsValueType()
-									? this.EmitBoxExpression(
-										context,
-										a.ContextType,
-										a
-									) : a
-							)
-						)
-					)
-				) : this.EmitStoreVariableStatement(
+				this.EmitStoreVariableStatement(
 					context,
 					unpackingContext.Variable,
 					this.EmitCreateNewObjectExpression(
@@ -1224,26 +1169,15 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context,
 						result,
 						member,
-						unpackingContext.VariableType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-							? this.EmitUnboxAnyExpression(
-								context,
-								field.Value,
-								this.EmitInvokeMethodExpression(
-									context,
-									context.UnpackingContextInCreateObjectFromContext,
-									Metadata._DynamicUnpackingContext.Get,
-									this.MakeStringLiteral( context, field.Key )
-									)
-								)
-							: this.EmitGetFieldExpression(
-								context,
-								context.UnpackingContextInCreateObjectFromContext,
-								new FieldDefinition(
-									unpackingContext.Type,
-									field.Key,
-									field.Value
-								)
+						this.EmitGetFieldExpression(
+							context,
+							context.UnpackingContextInCreateObjectFromContext,
+							new FieldDefinition(
+								unpackingContext.Type,
+								field.Key,
+								field.Value
 							)
+						)
 					);
 			}
 
@@ -1523,18 +1457,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						constructor,
 						fields.Select(
 							f =>
-								unpackingContext.ContextType.TryGetRuntimeType() == typeof( DynamicUnpackingContext )
-								? this.EmitUnboxAnyExpression(
-									context,
-									f.Value,
-									this.EmitInvokeMethodExpression(
-										context,
-										unpackingContext,
-										Metadata._DynamicUnpackingContext.Get,
-										this.MakeStringLiteral( context, f.Key )
-									)
-								)
-								: this.EmitGetFieldExpression( context, unpackingContext, new FieldDefinition( unpackingContext.ContextType, f.Key, f.Value ) )
+								this.EmitGetFieldExpression( context, unpackingContext, new FieldDefinition( unpackingContext.ContextType, f.Key, f.Value ) )
 						).ToArray()
 					)
 				);

@@ -40,7 +40,7 @@ namespace Samples
 		{
 			// As of 0.8, constructor based deserialization is relaxed.
 			// 1. If the type have a constructor with MessagePackDeserializationConstructorAttribute, then it will be used for deserialization.
-			// 2. Else, ff the type have a default public constructor then it will be used for deserialization.
+			// 2. Else, if the type have a default public constructor then it will be used for deserialization.
 			// 3. Otherwise, most parameterful constructor will be used.
 
 			var serializerForSimpleRecord = MessagePackSerializer.Get<MySimpleRecordClass>();

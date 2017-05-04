@@ -14713,6 +14713,26 @@ namespace MsgPack.Serialization
 	}
 
 	#endregion -- Empty interfaces --
+
+	#region -- Issue 233 (constructor based deserialization when the parameters are not in lexicol order) --
+
+	public class EndpointList
+	{
+		public string StringOne { get; }
+
+		public Dictionary<string, string[]> Endpoints { get; }
+
+		public string StringTwo { get; }
+
+		public EndpointList( string stringOne, Dictionary<string, string[]> endpoints, string stringTwo )
+		{
+			StringOne = stringOne;
+			Endpoints = endpoints;
+			StringTwo = stringTwo;
+		}
+	}
+
+	#endregion -- Issue 233 (constructor based deserialization when the parameters are not in lexicol order) --
 }
 
 // Issue #108
