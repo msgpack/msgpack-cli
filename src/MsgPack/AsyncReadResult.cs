@@ -1,8 +1,8 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2015-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,15 +18,10 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
 
 namespace MsgPack
 {
-#if FEATURE_TAP
 	/// <summary>
 	///		Provides static utility methods for <see cref="AsyncReadResult{T}"/>.
 	/// </summary>
@@ -54,5 +49,4 @@ namespace MsgPack
 			return default( AsyncReadResult<T> );
 		}
 	}
-#endif // FEATURE_TAP
 }

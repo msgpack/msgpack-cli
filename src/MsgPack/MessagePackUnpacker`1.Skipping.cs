@@ -34,19 +34,19 @@ using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
 
 namespace MsgPack
 {
-	// This file was generated from ItemsUnpacker.Skipping.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit ItemsUnpacker.Skipping.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from MessagePackUnpacker`1.Skipping.tt and Core.ttinclude T4Template.
+	// Do not modify this file. Edit MessagePackUnpacker`1.Skipping.tt and Core.ttinclude instead.
 
-	partial class ItemsUnpacker
+	partial class MessagePackUnpacker<TReader>
 	{
-		protected override long? SkipCore()
+		public override long? Skip()
 		{
 			long remainingItems = -1;
-			long startOffset = this._offset;
+			long startOffset = this.Reader.Offset;
 			Int64Stack remainingCollections = null;
 			do
 			{
-				var header = this.ReadByteFromSource();
+				var header = this.Reader.TryReadByte();
 				if ( header < 0 )
 				{
 					return null;
@@ -229,24 +229,14 @@ namespace MsgPack
 					case 0xA0:
 					case 0xB0:
 					{
-						var size = header & 0x1F;
+						var size = unchecked( ( uint )( header & 0x1F ) );
 						// <WriteDrainValue sizeVariable="size" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( size, Int32.MaxValue ) ) );
-						while( size > bytesRead )
+						
+						if ( !this.Reader.Drain( size ) )
 						{
-							var remaining = ( size - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -301,20 +291,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="1" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
-						while( 1 > bytesRead )
+						
+						if ( !this.Reader.Drain( 1 ) )
 						{
-							var remaining = ( 1 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -346,20 +326,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="2" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
-						while( 2 > bytesRead )
+						
+						if ( !this.Reader.Drain( 2 ) )
 						{
-							var remaining = ( 2 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -392,20 +362,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="4" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
-						while( 4 > bytesRead )
+						
+						if ( !this.Reader.Drain( 4 ) )
 						{
-							var remaining = ( 4 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -438,20 +398,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="8" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
-						while( 8 > bytesRead )
+						
+						if ( !this.Reader.Drain( 8 ) )
 						{
-							var remaining = ( 8 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -463,35 +413,23 @@ namespace MsgPack
 					{
 						byte length;
 						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
-							length = this._scalarBuffer[0];
+							return null;
 						}
 						else
 						{
-							return null;
+							length = unchecked( ( byte )read );
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !this.Reader.Drain( length ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -522,35 +460,22 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 2 );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt16();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
 						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !this.Reader.Drain( length ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -581,35 +506,22 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 4 );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt32();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
 						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !this.Reader.Drain( length ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -639,17 +551,14 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 2 );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt16();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -700,17 +609,14 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 4 );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt32();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -761,17 +667,14 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 2 );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt16();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -822,17 +725,14 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 4 );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt32();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -882,34 +782,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt1:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="1" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
-						while( 1 > bytesRead )
+						
+						if ( !this.Reader.Drain( 1 ) )
 						{
-							var remaining = ( 1 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -938,34 +826,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt2:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="2" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
-						while( 2 > bytesRead )
+						
+						if ( !this.Reader.Drain( 2 ) )
 						{
-							var remaining = ( 2 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -994,34 +870,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt4:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="4" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
-						while( 4 > bytesRead )
+						
+						if ( !this.Reader.Drain( 4 ) )
 						{
-							var remaining = ( 4 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1050,34 +914,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt8:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="8" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
-						while( 8 > bytesRead )
+						
+						if ( !this.Reader.Drain( 8 ) )
 						{
-							var remaining = ( 8 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1106,34 +958,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt16:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="16" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 16, Int32.MaxValue ) ) );
-						while( 16 > bytesRead )
+						
+						if ( !this.Reader.Drain( 16 ) )
 						{
-							var remaining = ( 16 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1163,47 +1003,33 @@ namespace MsgPack
 					{
 						byte length;
 						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
-							length = this._scalarBuffer[0];
+							return null;
 						}
 						else
 						{
-							return null;
+							length = unchecked( ( byte )read );
 						}
 						// </WriteUnpackByteCore>
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="False">
-						this._lastOffset = this._offset;
-						 read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !this.Reader.Drain( length ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1233,47 +1059,32 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 2 );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt16();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
-						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="False">
-						this._lastOffset = this._offset;
-						 read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !this.Reader.Drain( length ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1303,47 +1114,32 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
-						this._lastOffset = this._offset;
-						var read = this._source.Read( this._scalarBuffer, 0, 4 );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = this.Reader.TryReadUInt32();
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
-						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="False">
-						this._lastOffset = this._offset;
-						 read = this._source.Read( this._scalarBuffer, 0, 1 );
-						this._offset += read;
-						if ( read == 1 )
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
+						var read = this.Reader.TryReadByte();
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !this.Reader.Drain( length ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1377,18 +1173,18 @@ namespace MsgPack
 				}
 			} while ( remainingItems > 0 );
 
-			return this._offset - startOffset;
+			return this.Reader.Offset - startOffset;
 		}
 
 #if FEATURE_TAP
-		protected override async Task<long?> SkipAsyncCore( CancellationToken cancellationToken )
+		public override async Task<long?> SkipAsync( CancellationToken cancellationToken )
 		{
 			long remainingItems = -1;
-			long startOffset = this._offset;
+			long startOffset = this.Reader.Offset;
 			Int64Stack remainingCollections = null;
 			do
 			{
-				var header = await this.ReadByteFromSourceAsync( cancellationToken ).ConfigureAwait( false );
+				var header = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
 				if ( header < 0 )
 				{
 					return null;
@@ -1571,24 +1367,14 @@ namespace MsgPack
 					case 0xA0:
 					case 0xB0:
 					{
-						var size = header & 0x1F;
+						var size = unchecked( ( uint )( header & 0x1F ) );
 						// <WriteDrainValue sizeVariable="size" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( size, Int32.MaxValue ) ) );
-						while( size > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( size, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( size - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1643,20 +1429,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="1" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
-						while( 1 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 1, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 1 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1688,20 +1464,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="2" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
-						while( 2 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 2, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 2 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1734,20 +1500,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="4" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
-						while( 4 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 4, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 4 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1780,20 +1536,10 @@ namespace MsgPack
 						// <WriteDrainValue sizeVariable="8" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
-						while( 8 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 8, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 8 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1805,35 +1551,23 @@ namespace MsgPack
 					{
 						byte length;
 						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
-							length = this._scalarBuffer[0];
+							return null;
 						}
 						else
 						{
-							return null;
+							length = unchecked( ( byte )read );
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( length, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1864,35 +1598,22 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt16Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
 						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( length, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1923,35 +1644,22 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt32Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
 						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( length, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -1981,17 +1689,14 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt16Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -2042,17 +1747,14 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt32Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -2103,17 +1805,14 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt16Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -2164,17 +1863,14 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt32Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
 						if( length == 0 )
 						{
@@ -2224,34 +1920,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt1:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="1" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 1, Int32.MaxValue ) ) );
-						while( 1 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 1, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 1 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2280,34 +1964,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt2:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="2" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 2, Int32.MaxValue ) ) );
-						while( 2 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 2, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 2 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2336,34 +2008,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt4:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="4" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 4, Int32.MaxValue ) ) );
-						while( 4 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 4, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 4 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2392,34 +2052,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt8:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="8" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 8, Int32.MaxValue ) ) );
-						while( 8 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 8, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 8 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2448,34 +2096,22 @@ namespace MsgPack
 					case MessagePackCode.FixExt16:
 					{
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="16" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( 16, Int32.MaxValue ) ) );
-						while( 16 > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( 16, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( 16 - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2505,47 +2141,33 @@ namespace MsgPack
 					{
 						byte length;
 						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
-							length = this._scalarBuffer[0];
+							return null;
 						}
 						else
 						{
-							return null;
+							length = unchecked( ( byte )read );
 						}
 						// </WriteUnpackByteCore>
 						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="True">
-						this._lastOffset = this._offset;
-						 read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( length, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2575,47 +2197,32 @@ namespace MsgPack
 					{
 						ushort length;
 						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 2 )
-						{
-							length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt16Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt16  )lengthMayFail );
 						// </WriteUnpackLength>
-						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="True">
-						this._lastOffset = this._offset;
-						 read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( length, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2645,47 +2252,32 @@ namespace MsgPack
 					{
 						uint length;
 						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
-						this._lastOffset = this._offset;
-						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 4 )
-						{
-							length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-						}
-						else
+						
+						var lengthMayFail = await this.Reader.TryReadUInt32Async( cancellationToken ).ConfigureAwait( false );
+						if ( lengthMayFail < 0 )
 						{
 							return null;
 						}
+						
+						length = unchecked( ( UInt32  )lengthMayFail );
 						// </WriteUnpackLength>
-						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="True">
-						this._lastOffset = this._offset;
-						 read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
-						this._offset += read;
-						if ( read == 1 )
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
+						var read = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+						if ( read < 0 )
 						{
+							return null;
 						}
 						else
 						{
-							return null;
 						}
 						// </WriteUnpackByteCore>
 						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
-						long bytesRead = 0;
-						var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked( ( int )Math.Min( length, Int32.MaxValue ) ) );
-						while( length > bytesRead )
+						
+						if ( !await this.Reader.DrainAsync( length, cancellationToken ).ConfigureAwait( false ) )
 						{
-							var remaining = ( length - bytesRead );
-							var reading = remaining > dummyBufferForSkipping.Length ? dummyBufferForSkipping.Length : unchecked( ( int )remaining );
-							this._lastOffset = this._offset;
-							var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
-							this._offset += lastRead;
-							bytesRead += lastRead;
-							if ( lastRead == 0 )
-							{
-								return null;
-							}
+							return null;
 						}
 						
 						#endregion DrainValue
@@ -2719,7 +2311,7 @@ namespace MsgPack
 				}
 			} while ( remainingItems > 0 );
 
-			return this._offset - startOffset;
+			return this.Reader.Offset - startOffset;
 		}
 
 #endif // FEATURE_TAP

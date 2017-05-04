@@ -35,6 +35,11 @@
 #endif
 
 using System;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Text;
 #if FEATURE_TAP
 using System.Threading;
@@ -43,10 +48,10 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-	// This file was generated from ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit ItemsUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from MessagePackUnpacker`1.Unpacking.tt and Core.ttinclude T4Template.
+	// Do not modify this file. Edit MessagePackUnpacker`1.Unpacking.tt and Core.ttinclude instead.
 
-	partial class ItemsUnpacker
+	partial class MessagePackUnpacker<TReader>
 	{
 <#
 foreach ( var isAsync in new [] { false, true } )
@@ -58,7 +63,7 @@ foreach ( var isAsync in new [] { false, true } )
 #>
 		private ReadValueResult ReadValue( out byte header, out long integral, out float real32, out double real64 )
 		{
-			var readHeader = this.ReadByteFromSource();
+			var readHeader = this.Reader.TryReadByte();
 <#
 	}
 	else
@@ -68,7 +73,7 @@ foreach ( var isAsync in new [] { false, true } )
 
 		private async Task<AsyncReadValueResult> ReadValueAsync( CancellationToken cancellationToken )
 		{
-			var readHeader = await this.ReadByteFromSourceAsync( cancellationToken ).ConfigureAwait( false );
+			var readHeader = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
 <#
 	}
 
@@ -136,7 +141,7 @@ foreach ( var isAsync in new [] { false, true } )
 				case 0x7:
 				{
 					// PositiveFixNum
-					this.InternalCollectionType = CollectionType.None;
+					this.CollectionType = CollectionType.None;
 					<#= asyncPrefix #>integral = header;
 <#
 					ReturnValue( "Byte", isAsync );
@@ -171,7 +176,7 @@ foreach ( var isAsync in new [] { false, true } )
 				case 0xF:
 				{
 					// NegativeFixNum
-					this.InternalCollectionType = CollectionType.None;
+					this.CollectionType = CollectionType.None;
 					<#= asyncPrefix #>integral = header | unchecked( ( long )0xFFFFFFFFFFFFFF00 );
 <#
 					ReturnValue( "SByte", isAsync );
@@ -203,160 +208,140 @@ foreach ( var isAsync in new [] { false, true } )
 				}
 				case MessagePackCode.SignedInt8:
 				{
-					<#= ReadStrict( "sbyte", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToSByte( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "SByte", isAsync ) #>;
 <#
 					ReturnValue( "SByte", isAsync );
 #>
 				}
 				case MessagePackCode.SignedInt16:
 				{
-					<#= ReadStrict( "short", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToInt16( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "Int16", isAsync ) #>;
 <#
 					ReturnValue( "Int16", isAsync );
 #>
 				}
 				case MessagePackCode.SignedInt32:
 				{
-					<#= ReadStrict( "int", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToInt32( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "Int32", isAsync ) #>;
 <#
 					ReturnValue( "Int32", isAsync );
 #>
 				}
 				case MessagePackCode.SignedInt64:
 				{
-					<#= ReadStrict( "long", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToInt64( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "Int64", isAsync ) #>;
 <#
 					ReturnValue( "Int64", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt8:
 				{
-					<#= ReadStrict( "byte", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "Byte", isAsync ) #>;
 <#
 					ReturnValue( "Byte", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt16:
 				{
-					<#= ReadStrict( "ushort", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt16", isAsync ) #>;
 <#
 					ReturnValue( "UInt16", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt32:
 				{
-					<#= ReadStrict( "uint", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt32", isAsync ) #>;
 <#
 					ReturnValue( "UInt32", isAsync );
 #>
 				}
 				case MessagePackCode.UnsignedInt64:
 				{
-					<#= ReadStrict( "ulong", isAsync ) #>;
-					<#= asyncPrefix #>integral = unchecked( ( long )BigEndianBinary.ToUInt64( this._scalarBuffer, 0 ) );
+					<#= asyncPrefix #>integral = unchecked( ( long )<#= ReadScalarStrict( "UInt64", isAsync ) #> );
 <#
 					ReturnValue( "UInt64", isAsync );
 #>
 				}
 				case MessagePackCode.Real32:
 				{
-					<#= ReadStrict( "float", isAsync ) #>;
-					<#= asyncPrefix #>real32 = BigEndianBinary.ToSingle( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>real32 = <#= ReadScalarStrict( "Single", isAsync ) #>;
 <#
 					ReturnValue( "Single", isAsync );
 #>
 				}
 				case MessagePackCode.Real64:
 				{
-					<#= ReadStrict( "double", isAsync ) #>;
-					<#= asyncPrefix #>real64 = BigEndianBinary.ToDouble( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>real64 = <#= ReadScalarStrict( "Double", isAsync ) #>;
 <#
 					ReturnValue( "Double", isAsync );
 #>
 				}
 				case MessagePackCode.Bin8:
 				{
-					<#= ReadStrict( "byte", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "Byte", isAsync ) #>;
 <#
 					ReturnValue( "Binary", isAsync );
 #>
 				}
 				case MessagePackCode.Str8:
 				{
-					<#= ReadStrict( "byte", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "Byte", isAsync ) #>;
 <#
 					ReturnValue( "String", isAsync );
 #>
 				}
 				case MessagePackCode.Bin16:
 				{
-					<#= ReadStrict( "ushort", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt16", isAsync ) #>;
 <#
 					ReturnValue( "Binary", isAsync );
 #>
 				}
 				case MessagePackCode.Raw16:
 				{
-					<#= ReadStrict( "ushort", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt16", isAsync ) #>;
 <#
 					ReturnValue( "String", isAsync );
 #>
 				}
 				case MessagePackCode.Bin32:
 				{
-					<#= ReadStrict( "uint", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt32", isAsync ) #>;
 <#
 					ReturnValue( "Binary", isAsync );
 #>
 				}
 				case MessagePackCode.Raw32:
 				{
-					<#= ReadStrict( "uint", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt32", isAsync ) #>;
 <#
 					ReturnValue( "String", isAsync );
 #>
 				}
 				case MessagePackCode.Array16:
 				{
-					<#= ReadStrict( "ushort", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt16", isAsync ) #>;
 <#
 					ReturnValue( "ArrayLength", isAsync );
 #>
 				}
 				case MessagePackCode.Array32:
 				{
-					<#= ReadStrict( "uint", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt32", isAsync ) #>;
 <#
 					ReturnValue( "ArrayLength", isAsync );
 #>
 				}
 				case MessagePackCode.Map16:
 				{
-					<#= ReadStrict( "ushort", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt16", isAsync ) #>;
 <#
 					ReturnValue( "MapLength", isAsync );
 #>
 				}
 				case MessagePackCode.Map32:
 				{
-					<#= ReadStrict( "uint", isAsync ) #>;
-					<#= asyncPrefix #>integral = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "UInt32", isAsync ) #>;
 <#
 					ReturnValue( "MapLength", isAsync );
 #>
@@ -432,17 +417,17 @@ foreach ( var isAsync in new [] { false, true } )
 
 		private long ReadArrayLengthCore( long length )
 		{
-			this.InternalCollectionType = CollectionType.Array;
-			this.InternalItemsCount = length;
-			this.InternalData = unchecked( ( uint )length );
+			this.CollectionType = CollectionType.Array;
+			this.ItemsCount = unchecked( ( uint )length );
+			this.Data = unchecked( ( uint )length );
 			return length;
 		}
 
 		private long ReadMapLengthCore( long length )
 		{
-			this.InternalCollectionType = CollectionType.Map;
-			this.InternalItemsCount = length;
-			this.InternalData = unchecked( ( uint )length );
+			this.CollectionType = CollectionType.Map;
+			this.ItemsCount = unchecked( ( uint )length );
+			this.Data = unchecked( ( uint )length );
 			return length;
 		}
 
@@ -461,14 +446,14 @@ foreach ( var isAsync in new [] { false, true } )
 		{
 			if ( length == 0 )
 			{
-				this.InternalCollectionType = CollectionType.None;
+				this.CollectionType = CollectionType.None;
 				return Binary.Empty;
 			}
 
 			this.CheckLength( length, ReadValueResult.Binary );
 			var buffer = new byte[ length ];
-			<#= Await( isAsync, "this.ReadStrict" + AsyncSuffix( isAsync ) + "( buffer, buffer.Length" + LastArgument( isAsync ) + " )" ) #>;
-			this.InternalCollectionType = CollectionType.None;
+			<#= Await( isAsync, "this.Reader.Read" + AsyncSuffix( isAsync ) + "( buffer, buffer.Length" + LastArgument( isAsync ) + " )" ) #>;
+			this.CollectionType = CollectionType.None;
 			return buffer;
 		}
 
@@ -497,68 +482,15 @@ foreach ( var isAsync in new [] { false, true } )
 		{
 			if ( length == 0 )
 			{
-				this.InternalCollectionType = CollectionType.None;
+				this.CollectionType = CollectionType.None;
 				return String.Empty;
 			}
 
 			this.CheckLength( length, ReadValueResult.String );
 
-			var length32 = unchecked( ( int )length );
-			var bytes = BufferManager.NewByteBuffer( length32 );
-
-			if ( length32 <= bytes.Length )
-			{
-				<#= Await( isAsync, "this.ReadStrict" + AsyncSuffix( isAsync ) + "( bytes, length32" + LastArgument( isAsync ) + " )" ) #>;
-				var result = Encoding.UTF8.GetString( bytes, 0, length32 );
-				this.InternalCollectionType = CollectionType.None;
-				return result;
-			}
-
-			var decoder = Encoding.UTF8.GetDecoder();
-			var chars = BufferManager.NewCharBuffer( bytes.Length );
-			var stringBuffer = new StringBuilder( length32 );
-			var remaining = length32;
-			do
-			{
-				var reading = Math.Min( remaining, bytes.Length );
-				this._lastOffset = this._offset;
-				var bytesRead = <#= Await( isAsync, "this._source.Read" + AsyncSuffix( isAsync ) + "( bytes, 0, reading" + LastArgument( isAsync ) + " )" ) #>;
-				this._offset += bytesRead;
-				if ( bytesRead == 0 )
-				{
-					this.ThrowEofException( reading );
-				}
-
-				remaining -= bytesRead;
-
-				var isCompleted = false;
-				var bytesOffset = 0;
-
-				while ( !isCompleted )
-				{
-					int bytesUsed;
-					int charsUsed;
-					decoder.Convert(
-						bytes,
-						bytesOffset,
-						bytesRead - bytesOffset,
-						chars,
-						0,
-						chars.Length,
-						( bytesRead == 0 ),
-						// flush when last read.
-						out bytesUsed,
-						out charsUsed,
-						out isCompleted
-					);
-
-					stringBuffer.Append( chars, 0, charsUsed );
-					bytesOffset += bytesUsed;
-				}
-			} while ( remaining > 0 );
-
-			this.InternalCollectionType = CollectionType.None;
-			return stringBuffer.ToString();
+			var result = <#= Await( isAsync, "this.Reader.ReadString" + AsyncSuffix( isAsync ) + "( unchecked( ( int )length )" + LastArgument( isAsync ) + " )" ) #>;
+			this.CollectionType = CollectionType.None;
+			return result;
 		}
 
 <#
@@ -583,84 +515,51 @@ foreach ( var isAsync in new [] { false, true } )
 #>
 		private <#= AsyncReturnValue( "MessagePackExtendedTypeObject", isAsync ) #> ReadMessagePackExtendedTypeObject<#= AsyncSuffix( isAsync ) #>Core( ReadValueResult type<#= Parameter( isAsync ) #> )
 		{
-			byte typeCode;
 			uint length;
-			switch ( type )
+			switch ( ( uint )( type & ReadValueResult.VariableLengthMask ) )
 			{
-				case ReadValueResult.FixExt1:
+				case 0x20: // 001-00000
 				{
-					typeCode = <#= ReadByteStrict( isAsync ) #>;
-					length = 1;
+					length = <#= ReadScalarStrict( "Byte", isAsync ) #>;
 					break;
 				}
-				case ReadValueResult.FixExt2:
+				case 0x40: // 010-00000
 				{
-					typeCode = <#= ReadByteStrict( isAsync ) #>;
-					length = 2;
+					length = <#= ReadScalarStrict( "UInt16", isAsync ) #>;
 					break;
 				}
-				case ReadValueResult.FixExt4:
+				case 0x80: // 100-00000
 				{
-					typeCode = <#= ReadByteStrict( isAsync ) #>;
-					length = 4;
+					length = <#= ReadScalarStrict( "UInt32", isAsync ) #>;
 					break;
 				}
-				case ReadValueResult.FixExt8:
+				default: // 000-xxxxx
 				{
-					typeCode = <#= ReadByteStrict( isAsync ) #>;
-					length = 8;
+#if DEBUG
+					Contract.Assert( ( uint )( type & ReadValueResult.VariableLengthMask ) == 0, ( uint )( type & ReadValueResult.VariableLengthMask ) + " == 0" );
+#endif // DEBUG
+					length = ( uint )( type & ReadValueResult.FixedLengthMask );
 					break;
-				}
-				case ReadValueResult.FixExt16:
-				{
-					typeCode = <#= ReadByteStrict( isAsync ) #>;
-					length = 16;
-					break;
-				}
-				case ReadValueResult.Ext8:
-				{
-					<#= ReadStrict( "byte", isAsync ) #>;
-					length = BigEndianBinary.ToByte( this._scalarBuffer, 0 );
-					typeCode = this.ReadByteStrict();
-					break;
-				}
-				case ReadValueResult.Ext16:
-				{
-					<#= ReadStrict( "ushort", isAsync ) #>;
-					length = BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
-					typeCode = this.ReadByteStrict();
-					break;
-				}
-				case ReadValueResult.Ext32:
-				{
-					<#= ReadStrict( "uint", isAsync ) #>;
-					length = BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
-					typeCode = this.ReadByteStrict();
-					break;
-				}
-				default:
-				{
-					this.ThrowUnexpectedExtCodeException( type );
-					return default( MessagePackExtendedTypeObject ); // Never reach
 				}
 			}
 
+			var	typeCode = <#= ReadScalarStrict( "Byte", isAsync ) #>;
 			var data = new byte[ length ];
 <#
 	if ( !isAsync )
 	{
 #>
-			this.ReadStrict( data, data.Length );
+			this.Reader.Read( data, data.Length );
 <#
 	}
 	else
 	{
 #>
-			await this.ReadStrictAsync( data, data.Length, cancellationToken ).ConfigureAwait( false );
+			await this.Reader.ReadAsync( data, data.Length, cancellationToken ).ConfigureAwait( false );
 <#
 	}
 #>
-			this.InternalCollectionType = CollectionType.None;
+			this.CollectionType = CollectionType.None;
 			return new MessagePackExtendedTypeObject( typeCode, data );
 		}
 
@@ -677,17 +576,10 @@ foreach ( var isAsync in new [] { false, true } )
 	}
 }
 <#+
-private static string ReadStrict( string type, bool isAsync )
-{
-	return 
-		( isAsync ? "await this.ReadStrictAsync" : "this.ReadStrict" ) + 
-		"( this._scalarBuffer, sizeof( " + type + " )" +
-		( isAsync ? ", cancellationToken ).ConfigureAwait( false )" : " )" );
-}
 
-private static string ReadByteStrict( bool isAsync )
+private static string ReadScalarStrict( string type, bool isAsync )
 {
-	return isAsync ? "await this.ReadByteStrictAsync( cancellationToken ).ConfigureAwait( false )" : "this.ReadByteStrict()";
+	return isAsync ? ( "await this.Reader.Read" + type + "Async( cancellationToken ).ConfigureAwait( false )" ) : ( "this.Reader.Read" + type + "()" );
 }
 
 

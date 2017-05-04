@@ -1,0 +1,146 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file=".\UnpackerReader.TypedRead.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+using System.IO;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+namespace MsgPack
+{
+	// This file was generated from ByteArrayUnpackerReader.TypedRead.tt and UnpackerReader.TypedRead.ttinclude T4Template.
+	// Do not modify this file. Edit ByteArrayUnpackerReader.TypedRead.tt and UnpackerReader.TypedRead.ttinclude instead.
+
+	partial class ByteArrayUnpackerReader
+	{
+<#
+foreach ( var type in scalarTypes )
+{
+#>
+
+		public override <#= primitiveNames[ type ] #> Read<#= type #>()
+		{
+<#
+	if ( lengthTypes.ContainsKey( type ) )
+	{
+#>
+			var read = this.TryRead<#= type #> ();
+			if ( read < 0 )
+			{
+				this.ThrowEofException( sizeof( <#= primitiveNames[ type ] #> ) );
+			}
+
+			return unchecked( ( <#= primitiveNames[ type ] #> )read );
+<#
+	}
+	else
+	{
+		this.WriteByteArrayReaderReadBody( type, primitiveNames[ type ], true );
+	}
+#>
+		}
+<#
+	if ( lengthTypes.ContainsKey( type ) )
+	{
+#>
+
+		public override <#= lengthTypes[ type ] #> TryRead<#= type #>()
+		{
+<#
+		this.WriteByteArrayReaderReadBody( type, primitiveNames[ type ], false );
+#>
+		}
+<#
+	}
+}
+#>
+
+#if FEATURE_TAP
+<#
+foreach ( var type in scalarTypes )
+{
+#>
+
+		public override Task<<#= primitiveNames[ type ] #>> Read<#= type #>Async( CancellationToken cancellationToken )
+		{
+			return Task.FromResult( this.Read<#= type #>() );
+		}
+<#
+	if ( lengthTypes.ContainsKey( type ) )
+	{
+#>
+
+		public override Task<<#= lengthTypes[ type ] #>> TryRead<#= type #>Async( CancellationToken cancellationToken )
+		{
+			return Task.FromResult( this.TryRead<#= type #>() );
+		}
+<#
+	}
+}
+#>
+
+#endif // FEATURE_TAP
+	}
+}
+<#+
+private void WriteByteArrayReaderReadBody( string type, string primitiveType, bool isStrict )
+{
+#>
+			if ( this._source.Count - this._offset < sizeof( <#= primitiveType #> ) )
+			{
+<#+
+	if ( isStrict )
+	{
+#>
+				this.ThrowEofException( sizeof( <#= primitiveType #> ) );
+<#+
+	}
+	else
+	{
+#>
+				return -1;
+<#+
+	}
+#>
+			}
+
+			var result = BigEndianBinary.To<#= type #>( this._source.Array, this._source.Offset + this._offset );
+			this._offset += sizeof( <#= primitiveType #> );
+			return result;
+<#+
+} // WriteByteArrayReaderReadBody
+#>

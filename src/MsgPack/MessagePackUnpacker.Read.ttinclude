@@ -1,7 +1,4 @@
-﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
-<#@ output extension=".cs" #>
-<#@ Assembly Name="System.Core.dll" #>
-<#@ include file="..\Core.ttinclude" #>
+﻿<#@ include file="..\Core.ttinclude" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
@@ -10,6 +7,11 @@
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text" #>
+<#+
+private void WriteReadBodies( string typeName, string fileName, bool isBase )
+{
+#>
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -30,10 +32,6 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
 using System.Collections.Generic;
 #if FEATURE_TAP
@@ -43,69 +41,56 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-	// This file was generated from ItemsUnpacker.Read.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit ItemsUnpacker.Read.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from <#= fileName #> and MessagePackUnpacker.Read.ttinclude T4Template.
+	// Do not modify this file. Edit <#= fileName #> and MessagePackUnpacker.Read.ttinclude instead.
 
-	partial class ItemsUnpacker
+	partial class <#= typeName #>
 	{
-<#
-this.PushIndent( 2 );
+<#+
+	this.PushIndent( 2 );
 
-foreach( var type in
-	new []
-	{ 
-		typeof( bool ), 
-		typeof( byte ), typeof( sbyte ),
-		typeof( short ), typeof( ushort ),
-		typeof( int ), typeof( uint ),
-		typeof( long ), typeof( ulong ),
-		typeof( float ), typeof( double ),
+	foreach( var type in
+		new []
+		{ 
+			typeof( bool ), 
+			typeof( byte ), typeof( sbyte ),
+			typeof( short ), typeof( ushort ),
+			typeof( int ), typeof( uint ),
+			typeof( long ), typeof( ulong ),
+			typeof( float ), typeof( double ),
+		}
+	)
+	{
+		this.WriteReadBody( type.Name, type.Name, false,	isBase, isAsync => this.WriteReadScalar( type, isAsync ) );
+		this.WriteReadBody( type.Name, type.Name, true,		isBase, isAsync => this.WriteReadScalar( type, isAsync ) );
+
+		this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", false,	isBase, isAsync => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ), isAsync ) );
+		this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", true,	isBase, isAsync => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ), isAsync ) );
 	}
-)
-{
-	this.WriteReadBody( type.Name, type.Name, false, false,	isAsync => this.WriteReadScalar( type, isAsync ) );
-	this.WriteReadBody( type.Name, type.Name, false, true,	isAsync => this.WriteReadScalar( type, isAsync ) );
-	this.WriteReadBody( type.Name, type.Name, true, false,	isAsync => this.WriteReadScalar( type, isAsync ) );
-	this.WriteReadBody( type.Name, type.Name, true, true,	isAsync => this.WriteReadScalar( type, isAsync ) );
 
-	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", false, false,	isAsync => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ), isAsync ) );
-	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", false, true,	isAsync => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ), isAsync ) );
-	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", true, false,	isAsync => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ), isAsync ) );
-	this.WriteReadBody( "Nullable" + type.Name, type.Name + "?", true, true,	isAsync => this.WriteReadScalar( typeof( Nullable<> ).MakeGenericType( type ), isAsync ) );
-}
+	this.WriteReadBody( "Binary", "Byte[]", false,	isBase, isAsync => this.WriteReadRaw( "Byte[]", "Binary", isAsync ) );
+	this.WriteReadBody( "Binary", "Byte[]", true,	isBase, isAsync => this.WriteReadRaw( "Byte[]", "Binary", isAsync ) );
+	this.WriteReadBody( "String", "String", false,	isBase, isAsync => this.WriteReadRaw( "String", "String", isAsync ) );
+	this.WriteReadBody( "String", "String", true,	isBase, isAsync => this.WriteReadRaw( "String", "String", isAsync ) );
 
-this.WriteReadBody( "Binary", "Byte[]", false, false,	isAsync => this.WriteReadRaw( "Byte[]", "Binary", isAsync ) );
-this.WriteReadBody( "Binary", "Byte[]", false, true,	isAsync => this.WriteReadRaw( "Byte[]", "Binary", isAsync ) );
-this.WriteReadBody( "Binary", "Byte[]", true, false,	isAsync => this.WriteReadRaw( "Byte[]", "Binary", isAsync ) );
-this.WriteReadBody( "Binary", "Byte[]", true, true,		isAsync => this.WriteReadRaw( "Byte[]", "Binary", isAsync ) );
-this.WriteReadBody( "String", "String", false, false,	isAsync => this.WriteReadRaw( "String", "String", isAsync ) );
-this.WriteReadBody( "String", "String", false, true,	isAsync => this.WriteReadRaw( "String", "String", isAsync ) );
-this.WriteReadBody( "String", "String", true, false,	isAsync => this.WriteReadRaw( "String", "String", isAsync ) );
-this.WriteReadBody( "String", "String", true, true,		isAsync => this.WriteReadRaw( "String", "String", isAsync ) );
+	this.WriteReadBody( "Object",		"MessagePackObject",	false,	isBase, isAsync => this.WriteReadObject( isAsync ) );
+	this.WriteReadBody( "Object",		"MessagePackObject",	true,	isBase, isAsync => this.WriteReadObject( isAsync ) );
+	this.WriteReadBody( "ArrayLength",	"Int64",				false,	isBase, isAsync => this.WriteReadLength( "ArrayLength", isAsync ) );
+	this.WriteReadBody( "ArrayLength",	"Int64",				true,	isBase, isAsync => this.WriteReadLength( "ArrayLength", isAsync ) );
+	this.WriteReadBody( "MapLength",	"Int64",				false,	isBase, isAsync => this.WriteReadLength( "MapLength", isAsync ) );
+	this.WriteReadBody( "MapLength",	"Int64",				true,	isBase, isAsync => this.WriteReadLength( "MapLength", isAsync ) );
 
-this.WriteReadBody( "Object", "MessagePackObject", false, false, isAsync => this.WriteReadObject( isAsync ) );
-this.WriteReadBody( "Object", "MessagePackObject", false, true,	 isAsync => this.WriteReadObject( isAsync ) );
-this.WriteReadBody( "Object", "MessagePackObject", true, false,	 isAsync => this.WriteReadObject( isAsync ) );
-this.WriteReadBody( "Object", "MessagePackObject", true, true,	 isAsync => this.WriteReadObject( isAsync ) );
-this.WriteReadBody( "ArrayLength", "Int64", false, false,	 isAsync => this.WriteReadLength( "ArrayLength", isAsync ) );
-this.WriteReadBody( "ArrayLength", "Int64", false, true,	 isAsync => this.WriteReadLength( "ArrayLength", isAsync ) );
-this.WriteReadBody( "ArrayLength", "Int64", true, false,	 isAsync => this.WriteReadLength( "ArrayLength", isAsync ) );
-this.WriteReadBody( "ArrayLength", "Int64", true, true,		 isAsync => this.WriteReadLength( "ArrayLength", isAsync ) );
-this.WriteReadBody( "MapLength", "Int64", false, false,	 isAsync => this.WriteReadLength( "MapLength", isAsync ) );
-this.WriteReadBody( "MapLength", "Int64", false, true,	 isAsync => this.WriteReadLength( "MapLength", isAsync ) );
-this.WriteReadBody( "MapLength", "Int64", true, false,	 isAsync => this.WriteReadLength( "MapLength", isAsync ) );
-this.WriteReadBody( "MapLength", "Int64", true, true,	 isAsync => this.WriteReadLength( "MapLength", isAsync ) );
-
-this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false, false,	 isAsync => this.WriteReadExt( isAsync ) );
-this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", false, true,	 isAsync => this.WriteReadExt( isAsync ) );
-this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true, false,	 isAsync => this.WriteReadExt( isAsync ) );
-this.WriteReadBody( "MessagePackExtendedTypeObject", "MessagePackExtendedTypeObject", true, true,	 isAsync => this.WriteReadExt( isAsync ) );
-this.PopIndent();
+	this.WriteReadBody( "MessagePackExtendedTypeObject",			"MessagePackExtendedTypeObject",	false,	isBase, isAsync => this.WriteReadExt( isAsync, false ) );
+	this.WriteReadBody( "MessagePackExtendedTypeObject",			"MessagePackExtendedTypeObject",	true,	isBase, isAsync => this.WriteReadExt( isAsync, false ) );
+	this.WriteReadBody( "NullableMessagePackExtendedTypeObject",	"MessagePackExtendedTypeObject?",	false,	isBase, isAsync => this.WriteReadExt( isAsync, true ) );
+	this.WriteReadBody( "NullableMessagePackExtendedTypeObject",	"MessagePackExtendedTypeObject?",	true,	isBase, isAsync => this.WriteReadExt( isAsync, true ) );
+	this.PopIndent();
 #>
 	}
 }
 
 <#+
+} // WriteReadBodies
 
 private static readonly Type[] ScalarTypes =
 			new []
@@ -134,70 +119,106 @@ private static readonly TypeCodeMapping[] TypeCodeMappings =
 			( code, codeType ) => new TypeCodeMapping{ Code = code, CodeType = codeType, Size = Marshal.SizeOf( codeType ) }
 		).ToArray();
 
-private void WriteReadBody( string typeName, string fullTypeName, bool isForSubtree, bool isAsync, Action<bool> bodyWriter )
+private void WriteReadBody( string typeName, string fullTypeName, bool isAsync, bool isBase, Action<bool> bodyWriter )
 {
+	if ( !isBase )
+	{
 #>
-// <WriteReadBody typeName="<#= typeName #>" isForSubtree="<#= isForSubtree #>" isAsync="<#= isAsync #>">
+// <WriteReadBody typeName="<#= typeName #>" isAsync="<#= isAsync #>">
 <#+
+	}
+
 	if( isAsync )
 	{
 		this.PopIndent();
 #>
+
 #if FEATURE_TAP
 
 <#+
 		this.PushIndent( 2 );
 	}
 
-	var firstParameter = ( isForSubtree && typeName == "Object" ) ? "bool isDeep, " : String.Empty;
-	var firstArgument = ( !isForSubtree && typeName == "Object" ) ? "/* isDeep */true, " : String.Empty;
-#>
-<#= isForSubtree ? "internal" : "public override" #> <#= isAsync ? ( isForSubtree ? "async " : String.Empty ) + "Task<AsyncReadResult<" + fullTypeName + ">>" : "bool" #> Read<#= isForSubtree ? "Subtree" : String.Empty #><#= typeName #><#= !isAsync ? "( " + firstParameter + "out " + fullTypeName + " result )" : "Async( " + firstParameter + "CancellationToken cancellationToken )" #>
-{
-<#+
-	if( !isForSubtree )
-	{
-		this.PopIndent();
-#>
-			this.EnsureNotInSubtreeMode();
-<#+
-		this.PushIndent( 2 );
+	var firstParameter = ( typeName == "Object" ) ? "bool isDeep, " : String.Empty;
 
-		if( !isAsync )
+	var signature = new StringBuilder();
+	signature.Append( "public ");
+	if ( isAsync )
+	{
+		if ( !isBase )
 		{
-#>
-	return this.ReadSubtree<#= typeName #>( <#= firstArgument #>out result );
-<#+
+			signature.Append( "async ");
 		}
-		else
-		{
-#>
-	return this.ReadSubtree<#= typeName #>Async( <#= firstArgument #>cancellationToken );
-<#+
-		}
+	}
+
+	if ( isBase )
+	{
+		signature.Append( "abstract ");
 	}
 	else
 	{
+		signature.Append( "override ");
+	}
+
+	if ( isAsync )
+	{
+		signature.Append( "Task<AsyncReadResult<" ).Append( fullTypeName ).Append( ">>" );
+	}
+	else
+	{
+		signature.Append( "bool" );
+	}
+
+	signature.Append( " Read" ).Append( typeName );
+
+	if ( isAsync )
+	{
+		signature.Append( "Async( " ).Append( firstParameter ).Append( "CancellationToken cancellationToken )" );
+	}
+	else
+	{
+		signature.Append( "( " ).Append( firstParameter ).Append( "out " ).Append( fullTypeName ).Append( " result )" );
+	}
+
+	if ( isBase )
+	{
+		signature.Append( ';' );
+	}
+#>
+<#= signature #>
+<#+
+	if ( !isBase )
+	{
+#>
+{
+<#+
 		this.PushIndent( 1 );
 		bodyWriter( isAsync );
 		this.PopIndent();
-	}
 #>
 } 
+<#+
+	}
+#>
 
 <#+
 	if( isAsync )
 	{
 		this.PopIndent();
 #>
+
 #endif // FEATURE_TAP
 
 <#+
 		this.PushIndent( 2 );
 	}
+
+	if ( !isBase )
+	{
 #>
 // </WriteReadBody>
 <#+
+	}
 } // WriteReadBody
 
 private void WriteReadBodyCore( string typeName, Nullability nullability, Action<string, DecodedVariable, string, bool> bodyWriter, bool isAsync )
@@ -519,7 +540,7 @@ case ReadValueResult.ArrayLength:
 	for( var i = 0; i < length; i++ )
 	{
 		MessagePackObject item;
-		if( !this.ReadSubtreeObject( /* isDeep */true, out item ) )
+		if( !this.ReadObject( /* isDeep */true, out item ) )
 		{
 <#+
 		this.PushIndent( 3 );
@@ -564,7 +585,7 @@ case ReadValueResult.MapLength:
 	for( var i = 0; i < length; i++ )
 	{
 		MessagePackObject key;
-		if( !this.ReadSubtreeObject( /* isDeep */true, out key ) )
+		if( !this.ReadObject( /* isDeep */true, out key ) )
 		{
 <#+
 		this.PushIndent( 3 );
@@ -574,7 +595,7 @@ case ReadValueResult.MapLength:
 		}
 
 		MessagePackObject value;
-		if( !this.ReadSubtreeObject( /* isDeep */true, out value ) )
+		if( !this.ReadObject( /* isDeep */true, out value ) )
 		{
 <#+
 		this.PushIndent( 3 );
@@ -626,22 +647,22 @@ case ReadValueResult.Binary:
 #>
 }
 <#+
-	this.WriteReadExtCore( typeVariable, resultVariable, true, isAsync );
+	this.WriteReadExtCore( typeVariable, resultVariable, "MessagePackObject", isAsync );
 #>
 // </WriteReadObjectCore>
 <#+
 } // WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 
 
-private void WriteReadExt( bool isAsync )
+private void WriteReadExt( bool isAsync, bool isNullable )
 {
-	WriteReadBodyCore( "MessagePackExtendedTypeObject", Nullability.Value, ( typeVar, v, resultVar, isAsync0 ) => this.WriteReadExtCore( typeVar, resultVar, false, isAsync0 ), isAsync );
+	WriteReadBodyCore( "MessagePackExtendedTypeObject", isNullable ? Nullability.Nullable : Nullability.Value, ( typeVar, v, resultVar, isAsync0 ) => this.WriteReadExtCore( typeVar, resultVar, "MessagePackExtendedTypeObject" + ( isNullable ? "?" : String.Empty ), isAsync0 ), isAsync );
 } // WriteReadExt( bool isAsync )
 
-private void WriteReadExtCore( string typeVariable, string resultVariable, bool isMpo, bool isAsync )
+private void WriteReadExtCore( string typeVariable, string resultVariable, string typeName, bool isAsync )
 {
 #>
-// <WriteReadExtCore typeVariable="<#= typeVariable #>" resultVariable="<#= resultVariable #>" isMpo="<#= isMpo #>" isAsync="<#= isAsync #>">
+// <WriteReadExtCore typeVariable="<#= typeVariable #>" resultVariable="<#= resultVariable #>" typeName="<#= typeName #>" isAsync="<#= isAsync #>">
 <#+
 	foreach( var code in ExtCodes )
 	{
@@ -657,9 +678,9 @@ case ReadValueResult.<#= code #>:
 
 	this.PushIndent( 1 );
 
-	if( !isMpo )
+	if( typeName.Contains( "Ext" ) )
 	{
-		this.Success( null, resultVariable, expression, isAsync );
+		this.Success( typeName, resultVariable, expression, isAsync );
 	}
 	else
 	{
@@ -678,7 +699,7 @@ private void OnReturnScalar()
 {
 #>
 // <OnReturnScalar>
-this.InternalCollectionType = CollectionType.None;
+this.CollectionType = CollectionType.None;
 // </OnReturnScalar>
 <#+
 } // OnReturnScalar()
@@ -775,7 +796,7 @@ return AsyncReadResult.Success<#= typeArgument #>( <#= expression #> );
 #>
 // </Success>
 <#+
-} // Sucess( string resultVariable, string expression, bool isAsync )
+} // Success( string resultVariable, string expression, bool isAsync )
 
 private void SuccessWithLengthCheck( string code, string resultVariable, string expression, bool isAsync )
 {
@@ -813,7 +834,7 @@ private void SuccessObject( string resultVariable, string expression, bool isAsy
 	{
 #>
 <#= resultVariable #> = <#= expression #>;
-this.InternalData = <#= resultVariable #>;
+this.Data = <#= resultVariable #>;
 return true;
 <#+
 	}
@@ -823,7 +844,7 @@ return true;
 			withTypeVariable ? "<MessagePackObject>" : String.Empty;
 #>
 var result = <#= expression #>;
-this.InternalData = result;
+this.Data = result;
 return AsyncReadResult.Success<#= typeArgument #>( result );
 <#+
 	}
@@ -926,6 +947,11 @@ private class DecodedVariable
 	private string GetVariable( string name, bool isAsync )
 	{
 		return isAsync ? this._asyncResult + "." + name : name;
+	}
+
+	public override string ToString()
+	{
+		return String.Format( CultureInfo.InvariantCulture, "i: {0}, r4: {1}, r8: {2}, a: {3}", this._integral, this._real32, this._real64, this._asyncResult );
 	}
 }
 #>

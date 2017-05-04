@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Configuration Condition=" '$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == ''">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</ProjectGuid>
@@ -71,19 +71,19 @@
   <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
     <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>$(DefineConstants)</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU'">
     <DefineConstants>$(DefineConstants);PERFORMANCE_TEST</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -153,15 +153,40 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Update="ItemsUnpacker.Unpacking.cs">
-      <DependentUpon>ItemsUnpacker.Unpacking.tt</DependentUpon>
+    <Compile Update="DefaultByteArrayUnpacker.Unpacking.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DefaultByteArrayUnpacker.Unpacking.tt</DependentUpon>
+    </Compile>
+    <Compile Update="DefaultStreamUnpacker.Unpacking.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DefaultStreamUnpacker.Unpacking.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Unpacker.Unpacking.cs">
+      <DependentUpon>Unpacker.Unpacking.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Update="ItemsUnpacker.Read.cs">
+    <Compile Update="StreamUnpackerReader.TypedRead.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StreamUnpackerReader.TypedRead.tt</DependentUpon>
+    </Compile>
+    <Compile Update="MessagePackUnpacker.Read.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackUnpacker.Read.tt</DependentUpon>
+    </Compile>
+    <Compile Update="MessagePackUnpacker`1.Read.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackUnpacker`1.Read.tt</DependentUpon>
+    </Compile>
+    <Compile Update="MessagePackUnpacker`1.Unpacking.cs">
+      <DependentUpon>MessagePackUnpacker`1.Unpacking.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ItemsUnpacker.Read.tt</DependentUpon>
     </Compile>
     <Compile Update="Packer.Packing.cs">
       <AutoGen>True</AutoGen>
@@ -253,6 +278,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackHelpers.direct.tt</DependentUpon>
     </Compile>
+    <Compile Update="Unpacker.Leaf.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Unpacker.Leaf.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ByteArrayUnpackerReader.TypedRead.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ByteArrayUnpackerReader.TypedRead.tt</DependentUpon>
+    </Compile>
+    <Compile Update="UnpackerReader.TypedRead.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UnpackerReader.TypedRead.tt</DependentUpon>
+    </Compile>
     <Compile Update="Unpacking.Numerics.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -263,13 +303,8 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Unpacker.Unpacking.cs">
-      <DependentUpon>Unpacker.Unpacking.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="ItemsUnpacker.Skipping.cs">
-      <DependentUpon>ItemsUnpacker.Skipping.tt</DependentUpon>
+    <Compile Update="MessagePackUnpacker`1.Skipping.cs">
+      <DependentUpon>MessagePackUnpacker`1.Skipping.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -282,6 +317,14 @@
   <ItemGroup>
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
+    </None>
+    <None Update="DefaultByteArrayUnpacker.Unpacking.tt">
+      <LastGenOutput>DefaultByteArrayUnpacker.Unpacking.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="MessagePackUnpacker.Read.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackUnpacker.Read.cs</LastGenOutput>
     </None>
     <None Update="Serialization\DefaultSerializers\DefaultSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -315,6 +358,26 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackHelpers.direct.cs</LastGenOutput>
     </None>
+    <None Update="DefaultStreamUnpacker.Unpacking.tt">
+      <LastGenOutput>DefaultStreamUnpacker.Unpacking.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Unpacker.Leaf.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Unpacker.Leaf.cs</LastGenOutput>
+    </None>
+    <None Update="StreamUnpackerReader.TypedRead.tt">
+      <LastGenOutput>StreamUnpackerReader.TypedRead.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="ByteArrayUnpackerReader.TypedRead.tt">
+      <LastGenOutput>ByteArrayUnpackerReader.TypedRead.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="UnpackerReader.TypedRead.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnpackerReader.TypedRead.cs</LastGenOutput>
+    </None>
     <None Update="Unpacking.Numerics.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacking.Numerics.cs</LastGenOutput>
@@ -335,21 +398,21 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacker.Unpacking.cs</LastGenOutput>
     </None>
-    <None Update="ItemsUnpacker.Skipping.tt">
+    <None Update="MessagePackUnpacker`1.Skipping.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ItemsUnpacker.Skipping.cs</LastGenOutput>
+      <LastGenOutput>MessagePackUnpacker`1.Skipping.cs</LastGenOutput>
     </None>
     <None Update="SubtreeUnpacker.Unpacking.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SubtreeUnpacker.Unpacking.cs</LastGenOutput>
     </None>
-    <None Update="ItemsUnpacker.Read.tt">
+    <None Update="MessagePackUnpacker`1.Read.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ItemsUnpacker.Read.cs</LastGenOutput>
+      <LastGenOutput>MessagePackUnpacker`1.Read.cs</LastGenOutput>
     </None>
-    <None Update="ItemsUnpacker.Unpacking.tt">
+    <None Update="MessagePackUnpacker`1.Unpacking.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ItemsUnpacker.Unpacking.cs</LastGenOutput>
+      <LastGenOutput>MessagePackUnpacker`1.Unpacking.cs</LastGenOutput>
     </None>
     <None Update="Packer.Packing.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -387,9 +450,12 @@
     <None Include="remarks.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="BufferedStream.cs " />
-    <Compile Remove="MPContract.cs " />
-    <Compile Remove="NetStandardCompatibility.cs " />
+    <Compile Remove="AsyncReadResult.cs" />
+    <Compile Remove="AsyncReadResult`1.cs" />
+    <Compile Remove="TaskAugument.cs" />
+    <Compile Remove="BufferedStream.cs" />
+    <Compile Remove="MPContract.cs" />
+    <Compile Remove="NetStandardCompatibility.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
     <Compile Remove="Serialization\AbstractSerializers\SerializerBuilder`2.Tuple.cs" />
@@ -407,7 +473,6 @@
     <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Compile Remove="Serialization\EmittingSerializers\CallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Compile Remove="Serialization\EmittingSerializers\CallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Compile Remove="Serialization\ExpressionSerializers\*" />
     <Compile Remove="Serialization\Metadata\_Type.cs" />
     <Compile Remove="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Compile Remove="TupleItems.cs" />
@@ -437,9 +502,9 @@
     <Compile Remove="Serialization/TeeTextWriter.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0'">
-    <Compile Include="BufferedStream.cs " />
-    <Compile Include="MPContract.cs " />
-    <Compile Include="NetStandardCompatibility.cs " />
+    <Compile Include="BufferedStream.cs" />
+    <Compile Include="MPContract.cs" />
+    <Compile Include="NetStandardCompatibility.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
     <Compile Remove="UnsafeNativeMethods.cs" />
@@ -481,6 +546,11 @@
     <Compile Remove="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
     <Compile Remove="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Compile Remove="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
+    <Compile Include="AsyncReadResult.cs" />
+    <Compile Include="AsyncReadResult`1.cs" />
+    <Compile Include="TaskAugument.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

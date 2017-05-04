@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,13 +25,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Globalization;
 using System.IO;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-
 
 namespace MsgPack
 {
@@ -128,8 +132,6 @@ namespace MsgPack
 		}
 
 		private UnpackerMode _mode = UnpackerMode.Unknown;
-		// ReSharper disable once RedundantDefaultFieldInitializer
-		private bool _isSubtreeReading = false;
 
 		/// <summary>
 		///		Verifies the mode.
@@ -141,7 +143,7 @@ namespace MsgPack
 		/// <exception cref="InvalidOperationException">
 		///		Is in incompatible mode.
 		/// </exception>
-		private void VerifyMode( UnpackerMode mode )
+		internal void VerifyMode( UnpackerMode mode )
 		{
 			this.VerifyIsNotDisposed();
 
@@ -160,7 +162,7 @@ namespace MsgPack
 		/// <summary>
 		///		Verifies this instance is not disposed.
 		/// </summary>
-		private void VerifyIsNotDisposed()
+		internal void VerifyIsNotDisposed()
 		{
 			if ( this._mode == UnpackerMode.Disposed )
 			{
@@ -173,7 +175,7 @@ namespace MsgPack
 			throw new ObjectDisposedException( this.GetType().FullName );
 		}
 
-		private void ThrowInvalidModeException()
+		internal void ThrowInvalidModeException()
 		{
 			throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
 		}
@@ -259,7 +261,14 @@ namespace MsgPack
 		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
 		public static Unpacker Create( Stream stream, PackerUnpackerStreamOptions streamOptions, UnpackerOptions unpackerOptions )
 		{
-			return new ItemsUnpacker( stream, streamOptions );
+			if ( unpackerOptions == null || unpackerOptions.ValidationLevel == UnpackerValidationLevel.Collection )
+			{
+				return new CollectionValidatingStreamUnpacker( stream, streamOptions );
+			}
+			else
+			{
+				return new FastStreamUnpacker( stream, streamOptions );
+			}
 		}
 
 		/// <summary>
@@ -375,7 +384,14 @@ namespace MsgPack
 		/// <exception cref="ArgumentException"><paramref name="source"/> does not contain an array.</exception>
 		public static ByteArrayUnpacker Create( ArraySegment<byte> source, UnpackerOptions unpackerOptions )
 		{
-			throw new NotImplementedException();
+			if ( unpackerOptions == null || unpackerOptions.ValidationLevel == UnpackerValidationLevel.Collection )
+			{
+				return new CollectionValidatingByteArrayUnpacker( source );
+			}
+			else
+			{
+				return new FastByteArrayUnpacker( source );
+			}
 		}
 
 		#endregion -- Factories --
@@ -489,27 +505,20 @@ namespace MsgPack
 		///	</remarks>
 		public Unpacker ReadSubtree()
 		{
-			if ( !this.IsCollectionHeader )
-			{
-				ThrowCannotBeSubtreeModeException();
-			}
-
-			if ( this._isSubtreeReading )
-			{
-				ThrowInSubtreeModeException();
-			}
-
-			var subtreeReader = this.ReadSubtreeCore();
-			this._isSubtreeReading = !ReferenceEquals( subtreeReader, this );
-			return subtreeReader;
+			return this.InternalReadSubtree();
 		}
 
-		private static void ThrowCannotBeSubtreeModeException()
+		internal virtual Unpacker InternalReadSubtree()
+		{
+			return this.ReadSubtreeCore();
+		}
+
+		internal static void ThrowCannotBeSubtreeModeException()
 		{
 			throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 		}
 
-		private static void ThrowInSubtreeModeException()
+		internal static void ThrowInSubtreeModeException()
 		{
 			throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 		}
@@ -532,7 +541,6 @@ namespace MsgPack
 		/// </remarks>
 		protected internal virtual void EndReadSubtree()
 		{
-			this._isSubtreeReading = false;
 			this.SetStable();
 		}
 
@@ -562,14 +570,7 @@ namespace MsgPack
 			return result;
 		}
 
-		internal void EnsureNotInSubtreeMode()
-		{
-			this.VerifyMode( UnpackerMode.Streaming );
-			if ( this._isSubtreeReading )
-			{
-				ThrowInSubtreeModeException();
-			}
-		}
+		internal virtual void EnsureNotInSubtreeMode() { }
 
 		private void SetStable()
 		{
@@ -711,13 +712,10 @@ namespace MsgPack
 				this.ThrowInvalidModeException();
 			}
 
-			if ( this._isSubtreeReading )
-			{
-				ThrowInSubtreeModeException();
-			}
-
 			this._mode = UnpackerMode.Skipping;
 		}
+
+		internal virtual void BeginSkipCore() { }
 
 		private void EndSkip( long? result )
 		{
@@ -1129,7 +1127,7 @@ namespace MsgPack
 
 #endif // FEATURE_TAP
 
-		private enum UnpackerMode
+		internal enum UnpackerMode
 		{
 			Unknown = 0,
 			Skipping,

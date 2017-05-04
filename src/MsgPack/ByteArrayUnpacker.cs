@@ -36,13 +36,12 @@ namespace MsgPack
 		protected ArraySegment<byte> Source { get; private set; }
 
 		/// <summary>
-		///		Gets or sets the bytes used by this instance.
+		///		Gets the bytes used by this instance.
 		/// </summary>
 		/// <value>
 		///		The bytes used by this instance. The initial state is <c>0</c>.
-		///		This value only set from derived types.
 		/// </value>
-		public int BytesUsed { get; protected set; }
+		public abstract int BytesUsed { get;  }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ByteArrayUnpacker"/> class.

@@ -1,0 +1,1086 @@
+﻿<#@ include file="..\Core.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text" #>
+<#+
+private void Write( string typeName, string qualifier, string readerType, string fileName, bool isBase )
+{
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+namespace MsgPack
+{
+	// This file was generated from <#= fileName #> and Unpacker.Unpacking.ttinclude T4Template.
+	// Do not modify this file. Edit <#= fileName #> and Unpacker.Unpacking.ttinclude instead.
+
+	partial class <#= typeName #>
+	{
+<#+
+	if ( !isBase )
+	{
+#>
+#if DEBUG
+		internal
+#endif // DEBUG
+		protected MessagePackUnpacker<<#= readerType #>> Core { get; }
+
+		[Obsolete( "Consumer should not use this property. Query LastReadData instead." )]
+		public override MessagePackObject? Data
+		{
+			get { return this.Core.Data; }
+			protected set { this.Core.Data = value.GetValueOrDefault(); }
+		}
+
+		public override bool IsArrayHeader
+		{
+			get { return this.Core.CollectionType == CollectionType.Array; }
+		}
+
+		public override bool IsMapHeader
+		{
+			get { return this.Core.CollectionType == CollectionType.Map; }
+		}
+
+
+		public override long ItemsCount
+		{
+			get { return this.Core.CollectionType == CollectionType.None ? 0 : this.Core.ItemsCount; }
+		}
+
+		protected override bool ReadCore()
+		{
+			return this.Core.Read();
+		}
+
+		protected override long? SkipCore()
+		{
+			return this.Core.Skip();
+		}
+
+#if FEATURE_TAP
+
+		protected override Task<long?> SkipAsyncCore( CancellationToken cancellationToken )
+		{
+			return this.Core.SkipAsync( cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
+<#+
+	}
+
+	foreach ( var type in
+		new object []
+		{ 
+			typeof( bool ), 
+			typeof( byte ), typeof( sbyte ),
+			typeof( short ), typeof( ushort ),
+			typeof( int ), typeof( uint ),
+			typeof( long ), typeof( ulong ),
+			typeof( float ), typeof( double ),
+			"MessagePackExtendedTypeObject"
+		}
+	)
+	{
+		if ( isBase )
+		{
+#>
+		/// <summary>
+		///		Reads next <see cref="<#= GetTypeName( type ) #>" /> value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The <see cref="<#= GetTypeName( type ) #>" /> value read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the <see cref="<#= GetTypeName( type ) #>" /> type.
+		/// </exception>
+<#+
+			if ( IsNotCLSCompliant( type as Type ) )
+			{
+#>
+		[CLSCompliant( false )]
+<#+
+			}
+		}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
+		public <#= qualifier #> bool Read<#= GetTypeName( type ) #>( out <#= GetTypeName( type ) #> result )
+		{
+<#+
+		if ( isBase )
+		{
+#>
+			if( !this.Read() )
+			{
+				result = default( <#= GetTypeName( type ) #> );
+				return false;
+			}
+
+			result = this.LastReadData.As<#= GetTypeName( type ) #>();
+			return true;
+<#+
+		}
+		else
+		{
+#>
+			return this.Core.Read<#= GetTypeName( type ) #>( out result );
+<#+
+		}
+#>
+		}
+
+#if FEATURE_TAP
+
+<#+
+		foreach ( var withCancel in new [] { false, true } )
+		{
+			if ( !isBase )
+			{
+				if ( !withCancel )
+				{
+					continue;
+				}
+			}
+			else
+			{
+#>
+		/// <summary>
+		///		Reads next <see cref="<#= GetTypeName( type ) #>" /> value from current stream asynchronously.
+		///	</summary>
+<#+
+				if ( withCancel )
+				{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+				}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a <see cref="<#= GetTypeName( type ) #>" /> value read from current stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the <see cref="<#= GetTypeName( type ) #>" /> type.
+		/// </exception>
+<#+
+				if( IsNotCLSCompliant( type as Type ) )
+				{
+#>
+		[CLSCompliant( false )]
+<#+
+				}
+			}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Task<T> essentially must be nested generic." )]
+		public <#= AsyncReturn( type, withCancel, isBase ) #> Read<#= GetTypeName( type ) #>Async(<#= Parameter( withCancel ) #>)
+		{
+<#+
+			if ( !withCancel )
+			{
+#>
+			return this.Read<#= GetTypeName( type ) #>Async( CancellationToken.None );
+<#+
+			}
+			else if ( isBase )
+			{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<#= "<" + GetTypeName( type ) + ">" #>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.As<#= GetTypeName( type ) #>() );
+<#+
+			}
+			else
+			{
+#>
+			return this.Core.Read<#= GetTypeName( type ) #>Async(<#= Argument( withCancel ) #>);
+<#+
+			}
+#>
+		}
+
+<#+
+		} // foreach (withCancel)
+#>
+#endif // FEATURE_TAP
+
+<#+
+		if ( isBase )
+		{
+#>
+		/// <summary>
+		///		Reads next nullable <see cref="<#= GetTypeName( type ) #>" /> value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The nullable <see cref="<#= GetTypeName( type ) #>" /> value read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		The nullable <see cref="<#= GetTypeName( type ) #>" /> value read from current data source successfully.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the nullable <see cref="<#= GetTypeName( type ) #>" /> type.
+		/// </exception>
+<#+
+			if ( IsNotCLSCompliant( type as Type ) )
+			{
+#>
+		[CLSCompliant( false )]
+<#+
+			}
+		}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Adopting same pattern as non-nullables" )]
+		public <#= qualifier #> bool ReadNullable<#= GetTypeName( type ) #>( out <#= GetTypeName( type ) #>? result )
+		{
+<#+
+		if ( isBase )
+		{
+#>
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.LastReadData.IsNil ? default( <#= GetTypeName( type ) #>? ) : this.LastReadData.As<#= GetTypeName( type ) #>();
+			return true;
+<#+
+		}
+		else
+		{
+#>
+			return this.Core.ReadNullable<#= GetTypeName( type ) #>( out result );
+<#+
+		}
+#>
+		}
+
+#if FEATURE_TAP
+
+<#+
+		foreach ( var withCancel in new [] { false, true } )
+		{
+			if ( !isBase )
+			{
+				if ( !withCancel )
+				{
+					continue;
+				}
+			}
+			else
+			{
+#>
+		/// <summary>
+		///		Reads next nullable <see cref="<#= GetTypeName( type ) #>" /> value from current stream asynchronously.
+		///	</summary>
+<#+
+				if ( withCancel )
+				{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+				}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a nullable <see cref="<#= GetTypeName( type ) #>" /> value read from current stream.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not compatible for the nullable <see cref="<#= GetTypeName( type ) #>" /> type.
+		/// </exception>
+<#+
+				if( IsNotCLSCompliant( type as Type ) )
+				{
+#>
+		[CLSCompliant( false )]
+<#+
+				}
+			}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Nullables essentially must be nested generic." )]
+		public <#= AsyncReturnNullable( type, withCancel, isBase ) #> ReadNullable<#= GetTypeName( type ) #>Async(<#= Parameter( withCancel ) #>)
+		{
+<#+
+			if ( !withCancel )
+			{
+#>
+			return this.ReadNullable<#= GetTypeName( type ) #>Async( CancellationToken.None );
+<#+
+			}
+			else if ( isBase )
+			{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<#= "<" + GetTypeName( type ) + "?>" #>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.IsNil ? default( <#= GetTypeName( type ) #>? ) : this.LastReadData.As<#= GetTypeName( type ) #>() );
+<#+
+			}
+			else
+			{
+#>
+			return this.Core.ReadNullable<#= GetTypeName( type ) #>Async(<#= Argument( withCancel ) #>);
+<#+
+			}
+#>
+		}
+
+<#+
+		} // foreach (withCancel)
+#>
+#endif // FEATURE_TAP
+
+<#+
+	} // foreach (type)
+#>
+
+<#+
+	if ( isBase )
+	{
+#>
+		/// <summary>
+		///		Reads next array length value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The array length read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not an array.
+		/// </exception>
+<#+
+	}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
+		public <#= qualifier #> bool ReadArrayLength( out long result )
+		{
+<#+
+	if ( isBase )
+	{
+#>
+			if( !this.Read() )
+			{
+				result = 0;
+				return false;
+			}
+
+			if( !this.IsArrayHeader )
+			{
+				throw new MessageTypeException( "Not in array header." );
+			}
+
+			result = this.LastReadData.AsInt64();
+			return true;
+<#+
+	}
+	else
+	{
+#>
+			return this.Core.ReadArrayLength( out result );
+<#+
+	}
+#>
+		}
+
+#if FEATURE_TAP
+
+<#+
+	foreach ( var withCancel in new [] { false, true } )
+	{
+		if ( !isBase )
+		{
+			if ( !withCancel )
+			{
+				continue;
+			}
+		}
+		else
+		{
+#>
+		/// <summary>
+		///		Reads next array length value from current stream asynchronously.
+		///	</summary>
+<#+
+		if ( withCancel )
+		{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+		}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an array length read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not an array.
+		/// </exception>
+<#+
+		}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		public <#= AsyncReturn( "long", withCancel, isBase ) #> ReadArrayLengthAsync(<#= Parameter( withCancel ) #>)
+		{
+<#+
+		if ( !withCancel )
+		{
+#>
+			return this.ReadArrayLengthAsync( CancellationToken.None );
+<#+
+		}
+		else if ( isBase )
+		{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<long>();
+			}
+
+			if( !this.IsArrayHeader )
+			{
+				throw new MessageTypeException( "Not in array header." );
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsInt64() );
+<#+
+		}
+		else
+		{
+#>
+			return this.Core.ReadArrayLengthAsync(<#= Argument( withCancel ) #>);
+<#+
+		}
+#>
+		}
+
+<#+
+	} // foreach (withCancel)
+#>
+#endif // FEATURE_TAP
+
+<#+
+	if ( isBase )
+	{
+#>
+		/// <summary>
+		///		Reads next map length value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The map length read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a map.
+		/// </exception>
+<#+
+	}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
+		public <#= qualifier #> bool ReadMapLength( out long result )
+		{
+<#+
+	if ( isBase )
+	{
+#>
+			if( !this.Read())
+			{
+				result = 0;
+				return false;
+			}
+
+			if( !this.IsMapHeader )
+			{
+				throw new MessageTypeException( "Not in map header." );
+			}
+
+			result = this.LastReadData.AsInt64();
+			return true;
+<#+
+	}
+	else
+	{
+#>
+			return this.Core.ReadMapLength( out result );
+<#+
+	}
+#>
+		}
+
+#if FEATURE_TAP
+
+<#+
+	foreach ( var withCancel in new [] { false, true } )
+	{
+		if ( !isBase )
+		{
+			if ( !withCancel )
+			{
+				continue;
+			}
+		}
+		else
+		{
+#>
+		/// <summary>
+		///		Reads next map length value from current stream asynchronously.
+		///	</summary>
+<#+
+			if ( withCancel )
+			{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+			}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		an map length read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a map.
+		/// </exception>
+<#+
+		}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		public <#= AsyncReturn( "long", withCancel, isBase ) #> ReadMapLengthAsync(<#= Parameter( withCancel ) #>)
+		{
+<#+
+		if ( !withCancel )
+		{
+#>
+			return this.ReadMapLengthAsync( CancellationToken.None );
+<#+
+		}
+		else if ( isBase )
+		{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<long>();
+			}
+
+			if( !this.IsMapHeader )
+			{
+				throw new MessageTypeException( "Not in map header." );
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsInt64() );
+<#+
+		}
+		else
+		{
+#>
+			return this.Core.ReadMapLengthAsync(<#= Argument( withCancel ) #>);
+<#+
+		}
+#>
+		}
+
+<#+
+	} // foreach (withCancel)
+#>
+#endif // FEATURE_TAP
+
+<#+
+	if ( isBase )
+	{
+#>
+		/// <summary>
+		///		Reads next byte array value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The byte array read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+<#+
+	}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
+		public <#= qualifier #> bool ReadBinary( out byte[] result )
+		{
+<#+
+	if ( isBase )
+	{
+#>
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.LastReadData.AsBinary();
+			return true;
+<#+
+	}
+	else
+	{
+#>
+			return this.Core.ReadBinary( out result );
+<#+
+	}
+#>
+		}
+
+#if FEATURE_TAP
+
+<#+
+	foreach ( var withCancel in new [] { false, true } )
+	{
+		if ( !isBase )
+		{
+			if ( !withCancel )
+			{
+				continue;
+			}
+		}
+		else
+		{
+#>
+		/// <summary>
+		///		Reads next byte array value from current stream asynchronously.
+		///	</summary>
+<#+
+			if ( withCancel )
+			{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+			}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a byte array read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+<#+
+		}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		public <#= AsyncReturn( "byte[]", withCancel, isBase ) #> ReadBinaryAsync(<#= Parameter( withCancel ) #>)
+		{
+<#+
+		if ( !withCancel )
+		{
+#>
+			return this.ReadBinaryAsync( CancellationToken.None );
+<#+
+		}
+		else if ( isBase )
+		{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<byte[]>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsBinary() );
+<#+
+		}
+		else
+		{
+#>
+			return this.Core.ReadBinaryAsync(<#= Argument( withCancel ) #>);
+<#+
+		}
+#>
+		}
+
+<#+
+	} // foreach (withCancel)
+#>
+#endif // FEATURE_TAP
+
+<#+
+	if ( isBase )
+	{
+#>
+		/// <summary>
+		///		Reads next utf-8 encoded string value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The decoded utf-8 encoded string read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+<#+
+	}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
+		public <#= qualifier #> bool ReadString( out string result )
+		{
+<#+
+	if ( isBase )
+	{
+#>
+			if( !this.Read() )
+			{
+				result = null;
+				return false;
+			}
+
+			result = this.LastReadData.AsString();
+			return true;
+<#+
+	}
+	else
+	{
+#>
+			return this.Core.ReadString( out result );
+<#+
+	}
+#>
+		}
+
+#if FEATURE_TAP
+
+<#+
+	foreach ( var withCancel in new [] { false, true } )
+	{
+		if ( !isBase )
+		{
+			if ( !withCancel )
+			{
+				continue;
+			}
+		}
+		else
+		{
+#>
+		/// <summary>
+		///		Reads next utf-8 encoded string value from current stream asynchronously.
+		///	</summary>
+<#+
+			if ( withCancel )
+			{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+			}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a decoded utf-8 encoded string read from current stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+		/// <exception cref="MessageTypeException">
+		///		A value read from data source is not a raw.
+		/// </exception>
+<#+
+		}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Collections/Delegates/Nullables/Task<T> essentially must be nested generic." )]
+		public <#= AsyncReturn( "string", withCancel, isBase ) #> ReadStringAsync(<#= Parameter( withCancel ) #>)
+		{
+<#+
+		if ( !withCancel )
+		{
+#>
+			return this.ReadStringAsync( CancellationToken.None );
+<#+
+		}
+		else if ( isBase )
+		{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<string>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData.AsString() );
+<#+
+		}
+		else
+		{
+#>
+			return this.Core.ReadStringAsync(<#= Argument( withCancel ) #>);
+<#+
+		}
+#>
+		}
+
+<#+
+	} // foreach (withCancel)
+#>
+#endif // FEATURE_TAP
+
+<#+
+	if ( isBase )
+	{
+#>
+		/// <summary>
+		///		Reads next value from current stream.
+		///	</summary>
+		/// <param name="result">
+		///		The <see cref="MessagePackObject"/> which represents a value read from current stream to be stored when operation is succeeded.
+		/// </param>
+		/// <returns>
+		///		<c>true</c> if expected value was read from stream; <c>false</c> if no more data on the stream.
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+<#+
+	}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#", Justification = "Using nullable return value is very slow" )]
+		public <#= qualifier #> bool ReadObject( out MessagePackObject result )
+		{
+<#+
+	if ( isBase )
+	{
+#>
+			if( !this.Read() )
+			{
+				result = default( MessagePackObject );
+				return false;
+			}
+
+			result = this.LastReadData;
+			return true;
+<#+
+	}
+	else
+	{
+#>
+			return this.Core.ReadObject( /* isDeep*/true, out result );
+<#+
+	}
+#>
+		}
+
+#if FEATURE_TAP
+
+<#+
+	foreach ( var withCancel in new [] { false, true } )
+	{
+		if ( !isBase )
+		{
+			if ( !withCancel )
+			{
+				continue;
+			}
+		}
+		else
+		{
+#>
+		/// <summary>
+		///		Reads next value from current stream asynchronously.
+		///	</summary>
+<#+
+			if ( withCancel )
+			{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#+
+			}
+#>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains a value whether the operation was succeeded and
+		///		a <see cref="MessagePackObject"/> which represents a value read from current stream
+		///		Note that this method throws exception for unexpected state. See exceptions section.
+		/// </returns>
+		/// <exception cref="InvalidMessagePackStreamException">
+		///		Cannot read a value because the underlying stream unexpectedly ends.
+		/// </exception>
+<#+
+		}
+#>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "By design" )]
+		public <#= AsyncReturn( "MessagePackObject", withCancel, isBase ) #> ReadObjectAsync(<#= Parameter( withCancel ) #>)
+		{
+<#+
+		if ( !withCancel )
+		{
+#>
+			return this.ReadObjectAsync( CancellationToken.None );
+<#+
+		}
+		else if ( isBase )
+		{
+#>
+			if( !( await this.ReadAsync(<#= Argument( withCancel ) #>).ConfigureAwait( false ) ) )
+			{
+				return AsyncReadResult.Fail<MessagePackObject>();
+			}
+
+			return AsyncReadResult.Success( this.LastReadData );
+<#+
+		}
+		else
+		{
+#>
+			return this.Core.ReadObjectAsync( /* isDeep*/true, <#= Argument( withCancel ) #>);
+<#+
+		}
+#>
+		}
+
+<#+
+	} // foreach (withCancel)
+#>
+#endif // FEATURE_TAP
+
+	}
+}
+<#+
+} // Write
+
+private static bool IsNotCLSCompliant( Type type )
+{
+	if( type == null )
+	{
+		// MPETO
+		return false;
+	}
+
+	switch( Type.GetTypeCode( type ) )
+	{
+		case TypeCode.SByte:
+		case TypeCode.UInt16:
+		case TypeCode.UInt32:
+		case TypeCode.UInt64:
+		{
+			return true;
+		}
+		default:
+		{
+			return true;
+		}
+	}
+}
+
+private static string GetTypeName( object typeOrTypeName )
+{
+	return ( typeOrTypeName as string ) ?? ( typeOrTypeName as Type ).Name;
+}
+
+private static string AsyncReturn( object typeOrTypeName, bool withCancel, bool isBase )
+{
+	return ( withCancel ? ( isBase ? "virtual async " : "override " ) : string.Empty ) + "Task<AsyncReadResult<" + GetTypeName( typeOrTypeName ) + ">>";
+}
+
+private static string AsyncReturnNullable( object typeOrTypeName, bool withCancel, bool isBase )
+{
+	return ( withCancel ? ( isBase ? "virtual async " : "override " ) : string.Empty ) + "Task<AsyncReadResult<" + GetTypeName( typeOrTypeName ) + "?>>";
+}
+
+
+private static string Parameter( bool withCancel )
+{
+	return withCancel ? " CancellationToken cancellationToken " : String.Empty;
+}
+
+private static string Argument( bool withCancel )
+{
+	return withCancel ? " cancellationToken " : String.Empty;
+}
+#>

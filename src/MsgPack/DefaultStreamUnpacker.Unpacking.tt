@@ -3,5 +3,5 @@
 <#@ include file=".\Unpacker.Unpacking.ttinclude" #>
 <#@ Assembly Name="System.Core.dll" #>
 <#
-Write( "Unpacker", "virtual", String.Empty, "Unpacker.Unpacking.tt", /* isBase */true );
+Write( "DefaultStreamUnpacker", "override", "StreamUnpackerReader", "DefaultStreamUnpacker.Unpacking.tt", /* isBase */false );
 #>
