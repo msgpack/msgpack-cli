@@ -13,7 +13,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -482,6 +482,7 @@ this.PopIndent();
 private void WritePushCollection( string sizeVariable )
 {
 #>
+// <WritePushCollection sizeVariable="<#= sizeVariable #>">
 #region PushContextCollection
 
 if( remainingItems >= 0 )
@@ -497,6 +498,7 @@ if( remainingItems >= 0 )
 remainingItems = <#= sizeVariable #>;
 
 #endregion PushContextCollection
+// </WritePushCollection>
 <#+
 }
 
@@ -528,6 +530,7 @@ if( remainingCollections != null )
 private void WriteDrainValue( string sizeVariable, bool isAsync )
 {
 #>
+// <WriteDrainValue sizeVariable="<#= sizeVariable #>" isAsync="<#= isAsync #>">
 #region DrainValue
 
 long bytesRead = 0;
@@ -547,12 +550,14 @@ while( <#= sizeVariable #> > bytesRead )
 }
 
 #endregion DrainValue
+// </WriteDrainValue>
 <#+
 }
 
 private void WriteUnpackLength( int size, string lengthVariable, bool isAsync )
 {
 #>
+// <WriteUnpackLength size="<#= size #>" lengthVariable="<#= lengthVariable #>" isAsync="<#= isAsync #>">
 this._lastOffset = this._offset;
 var read = <#= Await( isAsync, "this._source.Read" +  AsyncSuffix( isAsync ) + "( this._scalarBuffer, 0, " + size.ToString( CultureInfo.InvariantCulture ) + LastArgument( isAsync ) + " )" ) #>;
 this._offset += read;
@@ -564,6 +569,7 @@ else
 {
 	return null;
 }
+// </WriteUnpackLength>
 <#+
 }
 
@@ -580,6 +586,7 @@ private void WriteUnpackByteSubsequent( string lengthVariable, bool isAsync )
 private void WriteUnpackByteCore( string lengthVariable, bool needsDeclaration, bool isAsync )
 {
 #>
+// <WriteUnpackByteCore lengthVariable="<#= lengthVariable ?? "(null)" #>" needsDeclaration="<#= needsDeclaration #>" isAsync="<#= isAsync #>">
 this._lastOffset = this._offset;
 <#= needsDeclaration ? "var" : String.Empty #> read = <#= Await( isAsync, "this._source.Read" + AsyncSuffix( isAsync ) + "( this._scalarBuffer, 0, 1" + LastArgument( isAsync ) + " )" ) #>;
 this._offset += read;
@@ -598,6 +605,7 @@ else
 {
 	return null;
 }
+// </WriteUnpackByteCore>
 <#+
 }
 

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -157,6 +157,7 @@ namespace MsgPack
 						}
 						else
 						{
+						// <WritePushCollection sizeVariable="size * 2">
 						#region PushContextCollection
 						
 						if( remainingItems >= 0 )
@@ -172,6 +173,7 @@ namespace MsgPack
 						remainingItems = size * 2;
 						
 						#endregion PushContextCollection
+						// </WritePushCollection>
 						}
 
 						continue;
@@ -203,6 +205,7 @@ namespace MsgPack
 						}
 						else
 						{
+						// <WritePushCollection sizeVariable="size">
 						#region PushContextCollection
 						
 						if( remainingItems >= 0 )
@@ -218,6 +221,7 @@ namespace MsgPack
 						remainingItems = size;
 						
 						#endregion PushContextCollection
+						// </WritePushCollection>
 						}
 
 						continue;
@@ -226,6 +230,7 @@ namespace MsgPack
 					case 0xB0:
 					{
 						var size = header & 0x1F;
+						// <WriteDrainValue sizeVariable="size" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -245,6 +250,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -292,6 +298,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="1" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -311,6 +318,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.SignedInt16:
@@ -335,6 +343,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="2" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -354,6 +363,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.SignedInt32:
@@ -379,6 +389,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="4" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -398,6 +409,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.SignedInt64:
@@ -423,6 +435,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="8" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -442,12 +455,14 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.Str8:
 					case MessagePackCode.Bin8:
 					{
 						byte length;
+						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -459,6 +474,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -478,6 +495,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -503,6 +521,7 @@ namespace MsgPack
 					case MessagePackCode.Raw16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
@@ -514,6 +533,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -533,6 +554,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -558,6 +580,7 @@ namespace MsgPack
 					case MessagePackCode.Raw32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
@@ -569,6 +592,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -588,6 +613,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -612,6 +638,7 @@ namespace MsgPack
 					case MessagePackCode.Array16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
@@ -623,6 +650,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -647,6 +675,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -662,6 +691,7 @@ namespace MsgPack
 							remainingItems = length;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
@@ -669,6 +699,7 @@ namespace MsgPack
 					case MessagePackCode.Array32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
@@ -680,6 +711,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -704,6 +736,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -719,6 +752,7 @@ namespace MsgPack
 							remainingItems = length;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
@@ -726,6 +760,7 @@ namespace MsgPack
 					case MessagePackCode.Map16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
@@ -737,6 +772,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -761,6 +797,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length * 2">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -776,6 +813,7 @@ namespace MsgPack
 							remainingItems = length * 2;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
@@ -783,6 +821,7 @@ namespace MsgPack
 					case MessagePackCode.Map32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
@@ -794,6 +833,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -818,6 +858,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length * 2">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -833,12 +874,14 @@ namespace MsgPack
 							remainingItems = length * 2;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
 					}
 					case MessagePackCode.FixExt1:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -849,6 +892,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="1" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -868,6 +913,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -891,6 +937,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt2:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -901,6 +948,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="2" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -920,6 +969,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -943,6 +993,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt4:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -953,6 +1004,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="4" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -972,6 +1025,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -995,6 +1049,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt8:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -1005,6 +1060,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="8" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1024,6 +1081,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1047,6 +1105,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt16:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -1057,6 +1116,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="16" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1076,6 +1137,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1100,6 +1162,7 @@ namespace MsgPack
 					case MessagePackCode.Ext8:
 					{
 						byte length;
+						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -1111,6 +1174,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="False">
 						this._lastOffset = this._offset;
 						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -1121,6 +1186,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1140,6 +1207,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1164,6 +1232,7 @@ namespace MsgPack
 					case MessagePackCode.Ext16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 2 );
 						this._offset += read;
@@ -1175,6 +1244,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="False">
 						this._lastOffset = this._offset;
 						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -1185,6 +1256,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1204,6 +1277,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1228,6 +1302,7 @@ namespace MsgPack
 					case MessagePackCode.Ext32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="False">
 						this._lastOffset = this._offset;
 						var read = this._source.Read( this._scalarBuffer, 0, 4 );
 						this._offset += read;
@@ -1239,6 +1314,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="False">
 						this._lastOffset = this._offset;
 						 read = this._source.Read( this._scalarBuffer, 0, 1 );
 						this._offset += read;
@@ -1249,6 +1326,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="False">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1268,6 +1347,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1419,6 +1499,7 @@ namespace MsgPack
 						}
 						else
 						{
+						// <WritePushCollection sizeVariable="size * 2">
 						#region PushContextCollection
 						
 						if( remainingItems >= 0 )
@@ -1434,6 +1515,7 @@ namespace MsgPack
 						remainingItems = size * 2;
 						
 						#endregion PushContextCollection
+						// </WritePushCollection>
 						}
 
 						continue;
@@ -1465,6 +1547,7 @@ namespace MsgPack
 						}
 						else
 						{
+						// <WritePushCollection sizeVariable="size">
 						#region PushContextCollection
 						
 						if( remainingItems >= 0 )
@@ -1480,6 +1563,7 @@ namespace MsgPack
 						remainingItems = size;
 						
 						#endregion PushContextCollection
+						// </WritePushCollection>
 						}
 
 						continue;
@@ -1488,6 +1572,7 @@ namespace MsgPack
 					case 0xB0:
 					{
 						var size = header & 0x1F;
+						// <WriteDrainValue sizeVariable="size" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1507,6 +1592,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1554,6 +1640,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="1" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1573,6 +1660,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.SignedInt16:
@@ -1597,6 +1685,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="2" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1616,6 +1705,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.SignedInt32:
@@ -1641,6 +1731,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="4" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1660,6 +1751,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.SignedInt64:
@@ -1685,6 +1777,7 @@ namespace MsgPack
 						}
 						
 						#endregion TryPopContextCollection
+						// <WriteDrainValue sizeVariable="8" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1704,12 +1797,14 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						continue;
 					}
 					case MessagePackCode.Str8:
 					case MessagePackCode.Bin8:
 					{
 						byte length;
+						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -1721,6 +1816,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1740,6 +1837,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1765,6 +1863,7 @@ namespace MsgPack
 					case MessagePackCode.Raw16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -1776,6 +1875,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1795,6 +1896,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1820,6 +1922,7 @@ namespace MsgPack
 					case MessagePackCode.Raw32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -1831,6 +1934,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -1850,6 +1955,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -1874,6 +1980,7 @@ namespace MsgPack
 					case MessagePackCode.Array16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -1885,6 +1992,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -1909,6 +2017,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -1924,6 +2033,7 @@ namespace MsgPack
 							remainingItems = length;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
@@ -1931,6 +2041,7 @@ namespace MsgPack
 					case MessagePackCode.Array32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -1942,6 +2053,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -1966,6 +2078,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -1981,6 +2094,7 @@ namespace MsgPack
 							remainingItems = length;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
@@ -1988,6 +2102,7 @@ namespace MsgPack
 					case MessagePackCode.Map16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -1999,6 +2114,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -2023,6 +2139,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length * 2">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -2038,6 +2155,7 @@ namespace MsgPack
 							remainingItems = length * 2;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
@@ -2045,6 +2163,7 @@ namespace MsgPack
 					case MessagePackCode.Map32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2056,6 +2175,7 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
 						if( length == 0 )
 						{
 							#region TryPopContextCollection
@@ -2080,6 +2200,7 @@ namespace MsgPack
 						}
 						else
 						{
+							// <WritePushCollection sizeVariable="length * 2">
 							#region PushContextCollection
 							
 							if( remainingItems >= 0 )
@@ -2095,12 +2216,14 @@ namespace MsgPack
 							remainingItems = length * 2;
 							
 							#endregion PushContextCollection
+							// </WritePushCollection>
 						}
 
 						continue;
 					}
 					case MessagePackCode.FixExt1:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2111,6 +2234,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="1" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2130,6 +2255,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -2153,6 +2279,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt2:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2163,6 +2290,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="2" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2182,6 +2311,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -2205,6 +2335,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt4:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2215,6 +2346,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="4" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2234,6 +2367,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -2257,6 +2391,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt8:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2267,6 +2402,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="8" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2286,6 +2423,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -2309,6 +2447,7 @@ namespace MsgPack
 					}
 					case MessagePackCode.FixExt16:
 					{
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="True" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2319,6 +2458,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="16" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2338,6 +2479,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -2362,6 +2504,7 @@ namespace MsgPack
 					case MessagePackCode.Ext8:
 					{
 						byte length;
+						// <WriteUnpackByteCore lengthVariable="length" needsDeclaration="True" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2373,6 +2516,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="True">
 						this._lastOffset = this._offset;
 						 read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2383,6 +2528,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2402,6 +2549,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -2426,6 +2574,7 @@ namespace MsgPack
 					case MessagePackCode.Ext16:
 					{
 						ushort length;
+						// <WriteUnpackLength size="2" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 2, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2437,6 +2586,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="True">
 						this._lastOffset = this._offset;
 						 read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2447,6 +2598,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2466,6 +2619,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;
@@ -2490,6 +2644,7 @@ namespace MsgPack
 					case MessagePackCode.Ext32:
 					{
 						uint length;
+						// <WriteUnpackLength size="4" lengthVariable="length" isAsync="True">
 						this._lastOffset = this._offset;
 						var read = await this._source.ReadAsync( this._scalarBuffer, 0, 4, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2501,6 +2656,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackLength>
+						// <WriteUnpackByteCore lengthVariable="(null)" needsDeclaration="False" isAsync="True">
 						this._lastOffset = this._offset;
 						 read = await this._source.ReadAsync( this._scalarBuffer, 0, 1, cancellationToken ).ConfigureAwait( false );
 						this._offset += read;
@@ -2511,6 +2668,8 @@ namespace MsgPack
 						{
 							return null;
 						}
+						// </WriteUnpackByteCore>
+						// <WriteDrainValue sizeVariable="length" isAsync="True">
 						#region DrainValue
 						
 						long bytesRead = 0;
@@ -2530,6 +2689,7 @@ namespace MsgPack
 						}
 						
 						#endregion DrainValue
+						// </WriteDrainValue>
 						#region TryPopContextCollection
 						
 						remainingItems--;

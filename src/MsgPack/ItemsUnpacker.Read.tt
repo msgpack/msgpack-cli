@@ -14,7 +14,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -136,6 +136,9 @@ private static readonly TypeCodeMapping[] TypeCodeMappings =
 
 private void WriteReadBody( string typeName, string fullTypeName, bool isForSubtree, bool isAsync, Action<bool> bodyWriter )
 {
+#>
+// <WriteReadBody typeName="<#= typeName #>" isForSubtree="<#= isForSubtree #>" isAsync="<#= isAsync #>">
+<#+
 	if( isAsync )
 	{
 		this.PopIndent();
@@ -192,10 +195,16 @@ private void WriteReadBody( string typeName, string fullTypeName, bool isForSubt
 <#+
 		this.PushIndent( 2 );
 	}
+#>
+// </WriteReadBody>
+<#+
 } // WriteReadBody
 
 private void WriteReadBodyCore( string typeName, Nullability nullability, Action<string, DecodedVariable, string, bool> bodyWriter, bool isAsync )
 {
+#>
+// <WriteReadBodyCore typeName="<#= typeName #>" nullability="<#= nullability #>" isAsync="<#= isAsync #>">
+<#+
 	var actualTypeName = typeName;
 	if( nullability == Nullability.Nullable  )
 	{
@@ -261,6 +270,7 @@ switch( type )
 #>
 	}
 }
+// </WriteReadBodyCore>
 <#+
 } // WriteReadBodyCore( Type type, bool isNullable, Action<string, DecodedVariable, string> bodyWriter )
 
@@ -272,53 +282,58 @@ private void WriteReadScalar( Type type, bool isAsync )
 
 private void WriteReadScalarCore( Type type, bool isNullable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 {
-	var nullableType =
-		( isNullable && type.IsValueType ) ? type.Name + "?" : null;
-
-	if( type == typeof( bool ) )
+#>
+// <WriteReadScalarCore type="<#= type #>" isNullable="<#= isNullable #>" valueVariable="<#= valueVariable #>" resultVariable="<#= resultVariable #>" isAsync="<#= isAsync #>">
+<#+
+	try
 	{
+		var nullableType =
+			( isNullable && type.IsValueType ) ? type.Name + "?" : null;
+
+		if ( type == typeof( bool ) )
+		{
 #>
 case ReadValueResult.Boolean:
 {
 <#+
-		this.PushIndent( 1 );
-		this.OnReturnScalar();
-		this.Success( nullableType, resultVariable, valueVariable.Integral( isAsync ) + " != 0", isAsync );
-		this.PopIndent();
+			this.PushIndent( 1 );
+			this.OnReturnScalar();
+			this.Success( nullableType, resultVariable, valueVariable.Integral( isAsync ) + " != 0", isAsync );
+			this.PopIndent();
 #>
 }
 <#+
-		return; // bool is done.
-	} // if( type == typeof( bool ) )
+			return; // bool is done.
+		} // if( type == typeof( bool ) )
 
-	var thisEntry = TypeCodeMappings.SingleOrDefault( e => e.CodeType == type );
-	if( thisEntry != null )
-	{
-		// For same type
+		var thisEntry = TypeCodeMappings.SingleOrDefault( e => e.CodeType == type );
+		if ( thisEntry != null )
+		{
+			// For same type
 #>
 case ReadValueResult.<#= thisEntry.Code #>:
 {
 <#+
-		this.PushIndent( 1 );
-		this.OnReturnScalar();
-		this.Success( nullableType, resultVariable, CastIfNecessary( GetSourceType( type ), type, false, valueVariable.Get( type, isAsync ), false, isAsync ), isAsync );
-		this.PopIndent();
+			this.PushIndent( 1 );
+			this.OnReturnScalar();
+			this.Success( nullableType, resultVariable, CastIfNecessary( GetSourceType( type ), type, false, valueVariable.Get( type, isAsync ), false, isAsync ), isAsync );
+			this.PopIndent();
 #>
 }
 <#+
-	} // if
+		} // if
 
-	foreach( var entry in TypeCodeMappings.Where( e => CanConvertTo( type, e.Size ) && e.CodeType != type ) )
-	{
-		if ( entry.CodeType == typeof( ulong ) || entry.CodeType == typeof( float ) || entry.CodeType == typeof( double ) )
+		foreach ( var entry in TypeCodeMappings.Where( e => CanConvertTo( type, e.Size ) && e.CodeType != type ) )
 		{
-			// UInt64 and Reals should be treated as spetially.
-			continue;
-		}
+			if ( entry.CodeType == typeof( ulong ) || entry.CodeType == typeof( float ) || entry.CodeType == typeof( double ) )
+			{
+				// UInt64 and Reals should be treated as spetially.
+				continue;
+			}
 #>
 case ReadValueResult.<#= entry.Code #>:
 <#+
-	} // foreach
+		} // foreach
 #>
 {
 <#+
@@ -330,48 +345,55 @@ case ReadValueResult.<#= entry.Code #>:
 }
 <#+
 
-	if( type != typeof( ulong ) )
-	{
+		if ( type != typeof( ulong ) )
+		{
 #>
 case ReadValueResult.UInt64:
 {
 <#+
-		this.PushIndent( 1 );
-		this.OnReturnScalar();
-		this.Success( nullableType, resultVariable, CastIfNecessary( typeof( ulong ), type, true, valueVariable.Integral( isAsync ), true, isAsync ), isAsync );
-		this.PopIndent();
+			this.PushIndent( 1 );
+			this.OnReturnScalar();
+			this.Success( nullableType, resultVariable, CastIfNecessary( typeof( ulong ), type, true, valueVariable.Integral( isAsync ), true, isAsync ), isAsync );
+			this.PopIndent();
 #>
 }
 <#+
-	}
+		} // if
 
-	if( type != typeof( float ) )
-	{
+		if ( type != typeof( float ) )
+		{
 #>
 case ReadValueResult.Single:
 {
 <#+
-		this.PushIndent( 1 );
-		this.OnReturnScalar();
-		this.Success( nullableType, resultVariable, CastIfNecessary( typeof( float ), type, true, valueVariable.Real32( isAsync ), false, isAsync ), isAsync );
-		this.PopIndent();
+			this.PushIndent( 1 );
+			this.OnReturnScalar();
+			this.Success( nullableType, resultVariable, CastIfNecessary( typeof( float ), type, true, valueVariable.Real32( isAsync ), false, isAsync ), isAsync );
+			this.PopIndent();
 #>
 }
 <#+
-	}
+		} // if
 
-	if( type != typeof( double ) )
-	{
+		if ( type != typeof( double ) )
+		{
 #>
 case ReadValueResult.Double:
 {
 <#+
-		this.PushIndent( 1 );
-		this.OnReturnScalar();
-		this.Success( nullableType, resultVariable, CastIfNecessary( typeof( double ), type, true, valueVariable.Real64( isAsync ), false, isAsync ), isAsync );
-		this.PopIndent();
+			this.PushIndent( 1 );
+			this.OnReturnScalar();
+			this.Success( nullableType, resultVariable, CastIfNecessary( typeof( double ), type, true, valueVariable.Real64( isAsync ), false, isAsync ), isAsync );
+			this.PopIndent();
 #>
 }
+<#+
+		} // if
+	}
+	finally
+	{
+#>
+// </WriteReadScalarCore>
 <#+
 	}
 } // WriteReadScalarCore( Type type, bool isNullable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
@@ -384,6 +406,7 @@ private void WriteReadLength( string code, bool isAsync )
 private void WriteReadLengthCore( string code, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 {
 #>
+// <WriteReadLengthCore code="<#= code #>" valueVariable="<#= valueVariable #>" resultVariable="<#= resultVariable #>" isAsync="<#= isAsync #>">
 case ReadValueResult.<#= code #>:
 {
 <#+
@@ -399,6 +422,7 @@ case ReadValueResult.<#= code #>:
 	this.PopIndent();
 #>
 }
+// </WriteReadLengthCore>
 <#+
 } // WriteReadLengthCore( string code, string headerVariable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 
@@ -411,6 +435,7 @@ private void WriteReadRaw( string typeName, string code, bool isAsync )
 private void WriteReadRawCore( string code, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 {
 #>
+// <WriteReadRawCore code="<#= code #>" valueVariable="<#= valueVariable #>" resultVariable="<#= resultVariable #>" isAsync="<#= isAsync #>">
 case ReadValueResult.String:
 case ReadValueResult.Binary:
 {
@@ -420,6 +445,7 @@ case ReadValueResult.Binary:
 	this.PopIndent();
 #>
 }
+// </WriteReadRawCore>
 <#+
 } // WriteReadRawCore( string code, string headerVariable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 
@@ -431,6 +457,7 @@ private void WriteReadObject( bool isAsync )
 private void WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 {
 #>
+// <WriteReadObjectCore typeVariable="<#= typeVariable #>" valueVariable="<#= valueVariable #>" resultVariable="<#= resultVariable #>" isAsync="<#= isAsync #>">
 case ReadValueResult.Nil:
 {
 <#+
@@ -600,6 +627,9 @@ case ReadValueResult.Binary:
 }
 <#+
 	this.WriteReadExtCore( typeVariable, resultVariable, true, isAsync );
+#>
+// </WriteReadObjectCore>
+<#+
 } // WriteReadObjectCore( string typeVariable, DecodedVariable valueVariable, string resultVariable, bool isAsync )
 
 
@@ -610,7 +640,9 @@ private void WriteReadExt( bool isAsync )
 
 private void WriteReadExtCore( string typeVariable, string resultVariable, bool isMpo, bool isAsync )
 {
-
+#>
+// <WriteReadExtCore typeVariable="<#= typeVariable #>" resultVariable="<#= resultVariable #>" isMpo="<#= isMpo #>" isAsync="<#= isAsync #>">
+<#+
 	foreach( var code in ExtCodes )
 	{
 #>
@@ -637,6 +669,7 @@ case ReadValueResult.<#= code #>:
 	this.PopIndent();
 #>
 }
+// </WriteReadExtCore>
 <#+
 } // WriteReadExtCore( string headerVariable, string resultVariable, bool isAsync )
 
@@ -644,7 +677,9 @@ case ReadValueResult.<#= code #>:
 private void OnReturnScalar()
 {
 #>
+// <OnReturnScalar>
 this.InternalCollectionType = CollectionType.None;
+// </OnReturnScalar>
 <#+
 } // OnReturnScalar()
 
@@ -719,6 +754,9 @@ private static Type GetSourceType( Type targetType )
 
 private void Success( string type, string resultVariable, string expression, bool isAsync )
 {
+#>
+// <Success type="<#= type ?? "(null)" #>" resultVariable="<#= resultVariable #>" expression="<#= expression #>" isAsync="<#= isAsync #>">
+<#+
 	if( !isAsync )
 	{
 #>
@@ -734,10 +772,16 @@ return true;
 return AsyncReadResult.Success<#= typeArgument #>( <#= expression #> );
 <#+
 	}
+#>
+// </Success>
+<#+
 } // Sucess( string resultVariable, string expression, bool isAsync )
 
 private void SuccessWithLengthCheck( string code, string resultVariable, string expression, bool isAsync )
 {
+#>
+// <SuccessWithLengthCheck code="<#= code #>" resultVariable="<#= resultVariable #>" expression="<#= expression #>" isAsync="<#= isAsync #>">
+<#+
 	if( !isAsync )
 	{
 #>
@@ -756,11 +800,15 @@ return AsyncReadResult.Success( result );
 	}
 
 #>
+// </SuccessWithLengthCheck>
 <#+
 } // SuccessWithLengthCheck( string type, string resultVariable, string expression, bool isAsync )
 
 private void SuccessObject( string resultVariable, string expression, bool isAsync, bool withTypeVariable )
 {
+#>
+// <SuccessObject resultVariable="<#= resultVariable #>" expression="<#= expression #>" isAsync="<#= isAsync #>" withTypeVariable="<#= withTypeVariable #>">
+<#+
 	if( !isAsync )
 	{
 #>
@@ -781,11 +829,15 @@ return AsyncReadResult.Success<#= typeArgument #>( result );
 	}
 
 #>
+// </SuccessObject>
 <#+
 } // SuccessObject( string resultVariable, string expression, bool isAsync )
 
 private void Fail( string resultVariable, string typeName, bool isAsync )
 {
+#>
+// <Fail resultVariable="<#= resultVariable #>" typeName="<#= typeName #>" isAsync="<#= isAsync #>">
+<#+
 	if( !isAsync )
 	{
 #>
@@ -799,6 +851,9 @@ return false;
 return AsyncReadResult.Fail<#= "<" + typeName + ">" #>();
 <#+
 	}
+#>
+// </Fail>
+<#+
 } // Fail( string resultVariable, string typeName, bool isAsync )
 
 private static string Await( bool isAsync, string expression )
