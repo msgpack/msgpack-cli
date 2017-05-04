@@ -73,7 +73,7 @@ var binVariations =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+// Copyright (C) 2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -105,10 +105,10 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit UnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from StreamUnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit StreamUnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class UnpackerTest
+	partial class StreamUnpackerTest
 	{
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -301,7 +301,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 
 		[Test]
-		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>()
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted()
 		{
 			using( var buffer =
 				new MemoryStream( 
@@ -309,7 +309,8 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 					.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 <#+
 				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0, isAsync );

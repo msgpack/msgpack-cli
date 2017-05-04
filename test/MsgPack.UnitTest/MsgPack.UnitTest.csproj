@@ -174,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BigEndianBinaryTest.cs" />
+    <Compile Include="CollectionValidatingStreamUnpackerTest.cs" />
     <Compile Include="CollectionAssertEx.cs" />
     <Compile Include="DirectConversionTest.cs" />
     <Compile Include="DirectConversionTest.Scalar.cs">
@@ -875,16 +876,32 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="SplittingStream.cs" />
-    <Compile Include="SubtreeUnpackerTest.cs" />
+    <Compile Include="StreamUnpackerTest.cs" />
+    <Compile Include="UnpackerTest.Subtree.cs" />
     <Compile Include="UnpackerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="StreamUnpackerTest.Ext.cs">
+      <DependentUpon>StreamUnpackerTest.Ext.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Ext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StreamUnpackerTest.Scalar.cs">
+      <DependentUpon>StreamUnpackerTest.Scalar.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StreamUnpackerTest.Raw.cs">
+      <DependentUpon>StreamUnpackerTest.Raw.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="UnpackerTest.Skip.cs">
       <AutoGen>True</AutoGen>
@@ -1285,6 +1302,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="gen\_ReadMe.txt" />
+    <None Include="StreamUnpackerTest.Scalar.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamUnpackerTest.Scalar.cs</LastGenOutput>
+    </None>
+    <None Include="StreamUnpackerTest.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamUnpackerTest.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="StreamUnpackerTest.Ext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamUnpackerTest.Ext.cs</LastGenOutput>
+    </None>
     <Content Include="UnpackerTest.Skip.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Skip.cs</LastGenOutput>

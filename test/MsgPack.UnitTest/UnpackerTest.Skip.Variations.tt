@@ -9,7 +9,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ namespace MsgPack
 	// Do not modify this file. Edit UnpackerTest.Skip.Veriations.tt and StreamingUnapkcerBase.ttinclude instead.
 
 	// ReSharper disable once InconsistentNaming
-	partial class UnpackerTest_Skip
+	partial class UnpackerTest
 	{
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -307,7 +307,7 @@ void WriteTestBody( string byteArrayExpression, string centinel, bool isAsync )
 #>
 			var binary = <#= byteArrayExpression #>;
 			using ( var buffer = new MemoryStream( binary ) )
-			using ( var target = new ItemsUnpacker( buffer, PackerUnpackerStreamOptions.None ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 <#+
 	if ( !isAsync )

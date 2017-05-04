@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+// Copyright (C) 2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,14 +34,14 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from UnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit UnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from StreamUnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude T4Template.
+	// Do not modify this file. Edit StreamUnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class UnpackerTest
+	partial class StreamUnpackerTest
 	{
 
 		[Test]
-		public void TestRead_FixExt1_AndBinaryLengthIs1JustLength_Success()
+		public void TestRead_FixExt1_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -50,7 +50,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -65,7 +66,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt1_AndBinaryLengthIs1TooShort_Fail()
+		public void TestRead_FixExt1_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -74,14 +75,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestRead_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -90,7 +92,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -105,7 +108,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt1_AndBinaryLengthIs1JustLength_Success()
+		public void TestReadExtendedTypeObject_FixExt1_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -114,7 +117,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -125,7 +129,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt1_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObject_FixExt1_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -134,7 +138,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -142,7 +147,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -151,7 +156,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -162,7 +168,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt2_AndBinaryLengthIs2JustLength_Success()
+		public void TestRead_FixExt2_AndBinaryLengthIs2JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -171,7 +177,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -186,7 +193,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt2_AndBinaryLengthIs2TooShort_Fail()
+		public void TestRead_FixExt2_AndBinaryLengthIs2TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -195,14 +202,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem()
+		public void TestRead_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -211,7 +219,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -226,7 +235,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt2_AndBinaryLengthIs2JustLength_Success()
+		public void TestReadExtendedTypeObject_FixExt2_AndBinaryLengthIs2JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -235,7 +244,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -246,7 +256,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt2_AndBinaryLengthIs2TooShort_Fail()
+		public void TestReadExtendedTypeObject_FixExt2_AndBinaryLengthIs2TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -255,7 +265,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -263,7 +274,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -272,7 +283,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -283,7 +295,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt4_AndBinaryLengthIs4JustLength_Success()
+		public void TestRead_FixExt4_AndBinaryLengthIs4JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -292,7 +304,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 4 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -307,7 +320,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt4_AndBinaryLengthIs4TooShort_Fail()
+		public void TestRead_FixExt4_AndBinaryLengthIs4TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -316,14 +329,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem()
+		public void TestRead_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -332,7 +346,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 5 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -347,7 +362,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt4_AndBinaryLengthIs4JustLength_Success()
+		public void TestReadExtendedTypeObject_FixExt4_AndBinaryLengthIs4JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -356,7 +371,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 4 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -367,7 +383,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt4_AndBinaryLengthIs4TooShort_Fail()
+		public void TestReadExtendedTypeObject_FixExt4_AndBinaryLengthIs4TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -376,7 +392,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -384,7 +401,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -393,7 +410,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 5 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -404,7 +422,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt8_AndBinaryLengthIs8JustLength_Success()
+		public void TestRead_FixExt8_AndBinaryLengthIs8JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -413,7 +431,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 8 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -428,7 +447,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt8_AndBinaryLengthIs8TooShort_Fail()
+		public void TestRead_FixExt8_AndBinaryLengthIs8TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -437,14 +456,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem()
+		public void TestRead_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -453,7 +473,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 9 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -468,7 +489,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt8_AndBinaryLengthIs8JustLength_Success()
+		public void TestReadExtendedTypeObject_FixExt8_AndBinaryLengthIs8JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -477,7 +498,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 8 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -488,7 +510,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt8_AndBinaryLengthIs8TooShort_Fail()
+		public void TestReadExtendedTypeObject_FixExt8_AndBinaryLengthIs8TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -497,7 +519,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -505,7 +528,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -514,7 +537,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 9 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -525,7 +549,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt16_AndBinaryLengthIs16JustLength_Success()
+		public void TestRead_FixExt16_AndBinaryLengthIs16JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -534,7 +558,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -549,7 +574,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_FixExt16_AndBinaryLengthIs16TooShort_Fail()
+		public void TestRead_FixExt16_AndBinaryLengthIs16TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -558,14 +583,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem()
+		public void TestRead_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -574,7 +600,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -589,7 +616,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt16_AndBinaryLengthIs16JustLength_Success()
+		public void TestReadExtendedTypeObject_FixExt16_AndBinaryLengthIs16JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -598,7 +625,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -609,7 +637,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt16_AndBinaryLengthIs16TooShort_Fail()
+		public void TestReadExtendedTypeObject_FixExt16_AndBinaryLengthIs16TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -618,7 +646,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -626,7 +655,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -635,7 +664,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -646,7 +676,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs0JustLength_Success()
+		public void TestRead_Ext8_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -655,7 +685,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -670,7 +701,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs0HasExtra_NoProblem()
+		public void TestRead_Ext8_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -679,7 +710,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -694,7 +726,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs0JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -703,7 +735,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -714,7 +747,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs0HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -723,7 +756,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -734,7 +768,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs1JustLength_Success()
+		public void TestRead_Ext8_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -743,7 +777,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -758,7 +793,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs1TooShort_Fail()
+		public void TestRead_Ext8_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -767,14 +802,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestRead_Ext8_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -783,7 +819,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -798,7 +835,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs1JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -807,7 +844,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -818,7 +856,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -827,7 +865,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -835,7 +874,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -844,7 +883,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -855,7 +895,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs17JustLength_Success()
+		public void TestRead_Ext8_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -864,7 +904,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -879,7 +920,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs17TooShort_Fail()
+		public void TestRead_Ext8_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -888,14 +929,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs17HasExtra_NoProblem()
+		public void TestRead_Ext8_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -904,7 +946,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -919,7 +962,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs17JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -928,7 +971,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -939,7 +983,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -948,7 +992,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -956,7 +1001,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs17HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -965,7 +1010,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -976,7 +1022,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs255JustLength_Success()
+		public void TestRead_Ext8_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -985,7 +1031,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1000,7 +1047,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs255TooShort_Fail()
+		public void TestRead_Ext8_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1009,14 +1056,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext8_AndBinaryLengthIs255HasExtra_NoProblem()
+		public void TestRead_Ext8_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1025,7 +1073,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1040,7 +1089,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs255JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1049,7 +1098,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1060,7 +1110,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1069,7 +1119,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1077,7 +1128,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs255HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1086,7 +1137,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1097,7 +1149,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs0JustLength_Success()
+		public void TestRead_Ext16_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1106,7 +1158,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1121,7 +1174,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs0HasExtra_NoProblem()
+		public void TestRead_Ext16_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1130,7 +1183,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1145,7 +1199,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs0JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1154,7 +1208,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1165,7 +1220,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs0HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1174,7 +1229,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1185,7 +1241,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs1JustLength_Success()
+		public void TestRead_Ext16_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1194,7 +1250,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1209,7 +1266,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs1TooShort_Fail()
+		public void TestRead_Ext16_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1218,14 +1275,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestRead_Ext16_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1234,7 +1292,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1249,7 +1308,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs1JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1258,7 +1317,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1269,7 +1329,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1278,7 +1338,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1286,7 +1347,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1295,7 +1356,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1306,7 +1368,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs17JustLength_Success()
+		public void TestRead_Ext16_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1315,7 +1377,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1330,7 +1393,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs17TooShort_Fail()
+		public void TestRead_Ext16_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1339,14 +1402,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs17HasExtra_NoProblem()
+		public void TestRead_Ext16_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1355,7 +1419,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1370,7 +1435,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs17JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1379,7 +1444,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1390,7 +1456,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1399,7 +1465,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1407,7 +1474,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs17HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1416,7 +1483,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1427,7 +1495,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs255JustLength_Success()
+		public void TestRead_Ext16_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1436,7 +1504,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1451,7 +1520,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs255TooShort_Fail()
+		public void TestRead_Ext16_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1460,14 +1529,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs255HasExtra_NoProblem()
+		public void TestRead_Ext16_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1476,7 +1546,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1491,7 +1562,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs255JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1500,7 +1571,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1511,7 +1583,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1520,7 +1592,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1528,7 +1601,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs255HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1537,7 +1610,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1548,7 +1622,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs256JustLength_Success()
+		public void TestRead_Ext16_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1557,7 +1631,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1572,7 +1647,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs256TooShort_Fail()
+		public void TestRead_Ext16_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1581,14 +1656,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs256HasExtra_NoProblem()
+		public void TestRead_Ext16_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1597,7 +1673,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1612,7 +1689,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs256JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1621,7 +1698,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1632,7 +1710,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs256TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1641,7 +1719,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1649,7 +1728,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs256HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1658,7 +1737,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1669,7 +1749,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs65535JustLength_Success()
+		public void TestRead_Ext16_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1678,7 +1758,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1693,7 +1774,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestRead_Ext16_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1702,14 +1783,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public void TestRead_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1718,7 +1800,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1733,7 +1816,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs65535JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1742,7 +1825,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1753,7 +1837,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1762,7 +1846,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1770,7 +1855,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1779,7 +1864,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1790,7 +1876,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs0JustLength_Success()
+		public void TestRead_Ext32_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1799,7 +1885,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1814,7 +1901,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs0HasExtra_NoProblem()
+		public void TestRead_Ext32_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1823,7 +1910,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1838,7 +1926,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs0JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1847,7 +1935,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1858,7 +1947,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs0HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1867,7 +1956,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1878,7 +1968,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs1JustLength_Success()
+		public void TestRead_Ext32_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1887,7 +1977,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1902,7 +1993,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs1TooShort_Fail()
+		public void TestRead_Ext32_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1911,14 +2002,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestRead_Ext32_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1927,7 +2019,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -1942,7 +2035,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs1JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1951,7 +2044,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1962,7 +2056,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1971,7 +2065,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1979,7 +2074,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs1HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -1988,7 +2083,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -1999,7 +2095,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs17JustLength_Success()
+		public void TestRead_Ext32_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2008,7 +2104,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2023,7 +2120,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs17TooShort_Fail()
+		public void TestRead_Ext32_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2032,14 +2129,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs17HasExtra_NoProblem()
+		public void TestRead_Ext32_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2048,7 +2146,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2063,7 +2162,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs17JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2072,7 +2171,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2083,7 +2183,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2092,7 +2192,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2100,7 +2201,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs17HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2109,7 +2210,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2120,7 +2222,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs255JustLength_Success()
+		public void TestRead_Ext32_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2129,7 +2231,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2144,7 +2247,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs255TooShort_Fail()
+		public void TestRead_Ext32_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2153,14 +2256,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs255HasExtra_NoProblem()
+		public void TestRead_Ext32_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2169,7 +2273,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2184,7 +2289,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs255JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2193,7 +2298,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2204,7 +2310,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2213,7 +2319,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2221,7 +2328,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs255HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2230,7 +2337,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2241,7 +2349,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs256JustLength_Success()
+		public void TestRead_Ext32_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2250,7 +2358,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2265,7 +2374,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs256TooShort_Fail()
+		public void TestRead_Ext32_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2274,14 +2383,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs256HasExtra_NoProblem()
+		public void TestRead_Ext32_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2290,7 +2400,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2305,7 +2416,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs256JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2314,7 +2425,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2325,7 +2437,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs256TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2334,7 +2446,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2342,7 +2455,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs256HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2351,7 +2464,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2362,7 +2476,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs65535JustLength_Success()
+		public void TestRead_Ext32_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2371,7 +2485,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2386,7 +2501,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestRead_Ext32_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2395,14 +2510,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public void TestRead_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2411,7 +2527,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2426,7 +2543,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65535JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2435,7 +2552,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2446,7 +2564,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2455,7 +2573,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2463,7 +2582,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2472,7 +2591,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2483,7 +2603,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs65536JustLength_Success()
+		public void TestRead_Ext32_AndBinaryLengthIs65536JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2492,7 +2612,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2507,7 +2628,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs65536TooShort_Fail()
+		public void TestRead_Ext32_AndBinaryLengthIs65536TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2516,14 +2637,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
 			}
 		}
 
 		[Test]
-		public void TestRead_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem()
+		public void TestRead_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2532,7 +2654,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65537 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( unpacker.Read() );
 #pragma warning disable 612,618
@@ -2547,7 +2670,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65536JustLength_Success()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65536JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2556,7 +2679,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2567,7 +2691,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65536TooShort_Fail()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65536TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2576,7 +2700,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2584,7 +2709,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem()
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2593,7 +2718,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65537 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
@@ -2606,7 +2732,7 @@ namespace MsgPack
 #if FEATURE_TAP
 
 		[Test]
-		public async Task TestReadAsync_FixExt1_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadAsync_FixExt1_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2615,7 +2741,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -2630,7 +2757,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_FixExt1_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadAsync_FixExt1_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2639,14 +2766,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadAsync_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2655,7 +2783,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -2670,7 +2799,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt1_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt1_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2679,7 +2808,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -2692,7 +2822,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_FixExt1_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_FixExt1_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2701,14 +2831,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt1_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2717,7 +2848,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -2730,7 +2862,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt2_AndBinaryLengthIs2JustLength_Success()
+		public async Task TestReadAsync_FixExt2_AndBinaryLengthIs2JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2739,7 +2871,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -2754,7 +2887,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_FixExt2_AndBinaryLengthIs2TooShort_Fail()
+		public void TestReadAsync_FixExt2_AndBinaryLengthIs2TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2763,14 +2896,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem()
+		public async Task TestReadAsync_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2779,7 +2913,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -2794,7 +2929,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt2_AndBinaryLengthIs2JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt2_AndBinaryLengthIs2JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2803,7 +2938,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -2816,7 +2952,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_FixExt2_AndBinaryLengthIs2TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_FixExt2_AndBinaryLengthIs2TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2825,14 +2961,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt2_AndBinaryLengthIs2HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2841,7 +2978,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -2854,7 +2992,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt4_AndBinaryLengthIs4JustLength_Success()
+		public async Task TestReadAsync_FixExt4_AndBinaryLengthIs4JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2863,7 +3001,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 4 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -2878,7 +3017,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_FixExt4_AndBinaryLengthIs4TooShort_Fail()
+		public void TestReadAsync_FixExt4_AndBinaryLengthIs4TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2887,14 +3026,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem()
+		public async Task TestReadAsync_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2903,7 +3043,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 5 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -2918,7 +3059,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt4_AndBinaryLengthIs4JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt4_AndBinaryLengthIs4JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2927,7 +3068,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 4 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -2940,7 +3082,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_FixExt4_AndBinaryLengthIs4TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_FixExt4_AndBinaryLengthIs4TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2949,14 +3091,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt4_AndBinaryLengthIs4HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2965,7 +3108,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 5 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -2978,7 +3122,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt8_AndBinaryLengthIs8JustLength_Success()
+		public async Task TestReadAsync_FixExt8_AndBinaryLengthIs8JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -2987,7 +3131,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 8 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3002,7 +3147,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_FixExt8_AndBinaryLengthIs8TooShort_Fail()
+		public void TestReadAsync_FixExt8_AndBinaryLengthIs8TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3011,14 +3156,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem()
+		public async Task TestReadAsync_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3027,7 +3173,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 9 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3042,7 +3189,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt8_AndBinaryLengthIs8JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt8_AndBinaryLengthIs8JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3051,7 +3198,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 8 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3064,7 +3212,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_FixExt8_AndBinaryLengthIs8TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_FixExt8_AndBinaryLengthIs8TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3073,14 +3221,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt8_AndBinaryLengthIs8HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3089,7 +3238,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 9 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3102,7 +3252,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt16_AndBinaryLengthIs16JustLength_Success()
+		public async Task TestReadAsync_FixExt16_AndBinaryLengthIs16JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3111,7 +3261,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3126,7 +3277,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_FixExt16_AndBinaryLengthIs16TooShort_Fail()
+		public void TestReadAsync_FixExt16_AndBinaryLengthIs16TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3135,14 +3286,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem()
+		public async Task TestReadAsync_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3151,7 +3303,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3166,7 +3319,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt16_AndBinaryLengthIs16JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt16_AndBinaryLengthIs16JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3175,7 +3328,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3188,7 +3342,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_FixExt16_AndBinaryLengthIs16TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_FixExt16_AndBinaryLengthIs16TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3197,14 +3351,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_FixExt16_AndBinaryLengthIs16HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3213,7 +3368,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3226,7 +3382,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs0JustLength_Success()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3235,7 +3391,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3250,7 +3407,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs0HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3259,7 +3416,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3274,7 +3432,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs0JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3283,7 +3441,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3296,7 +3455,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs0HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3305,7 +3464,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3318,7 +3478,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3327,7 +3487,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3342,7 +3503,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext8_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadAsync_Ext8_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3351,14 +3512,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3367,7 +3529,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3382,7 +3545,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3391,7 +3554,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3404,7 +3568,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3413,14 +3577,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3429,7 +3594,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3442,7 +3608,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs17JustLength_Success()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3451,7 +3617,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3466,7 +3633,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext8_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadAsync_Ext8_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3475,14 +3642,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs17HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3491,7 +3659,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3506,7 +3675,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs17JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3515,7 +3684,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3528,7 +3698,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3537,14 +3707,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs17HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3553,7 +3724,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3566,7 +3738,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs255JustLength_Success()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3575,7 +3747,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3590,7 +3763,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext8_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadAsync_Ext8_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3599,14 +3772,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext8_AndBinaryLengthIs255HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext8_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3615,7 +3789,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3630,7 +3805,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs255JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3639,7 +3814,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3652,7 +3828,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3661,14 +3837,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs255HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3677,7 +3854,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3690,7 +3868,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs0JustLength_Success()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3699,7 +3877,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3714,7 +3893,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs0HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3723,7 +3902,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3738,7 +3918,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs0JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3747,7 +3927,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3760,7 +3941,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs0HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3769,7 +3950,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3782,7 +3964,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3791,7 +3973,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3806,7 +3989,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext16_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadAsync_Ext16_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3815,14 +3998,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3831,7 +4015,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3846,7 +4031,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3855,7 +4040,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3868,7 +4054,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3877,14 +4063,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3893,7 +4080,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3906,7 +4094,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs17JustLength_Success()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3915,7 +4103,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3930,7 +4119,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext16_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadAsync_Ext16_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3939,14 +4128,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs17HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3955,7 +4145,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -3970,7 +4161,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs17JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -3979,7 +4170,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -3992,7 +4184,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4001,14 +4193,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs17HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4017,7 +4210,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4030,7 +4224,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs255JustLength_Success()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4039,7 +4233,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4054,7 +4249,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext16_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadAsync_Ext16_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4063,14 +4258,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs255HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4079,7 +4275,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4094,7 +4291,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs255JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4103,7 +4300,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4116,7 +4314,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4125,14 +4323,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs255HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4141,7 +4340,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4154,7 +4354,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs256JustLength_Success()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4163,7 +4363,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4178,7 +4379,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext16_AndBinaryLengthIs256TooShort_Fail()
+		public void TestReadAsync_Ext16_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4187,14 +4388,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs256HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4203,7 +4405,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4218,7 +4421,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs256JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4227,7 +4430,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4240,7 +4444,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs256TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4249,14 +4453,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs256HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4265,7 +4470,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4278,7 +4484,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs65535JustLength_Success()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4287,7 +4493,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4302,7 +4509,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext16_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestReadAsync_Ext16_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4311,14 +4518,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4327,7 +4535,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4342,7 +4551,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs65535JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4351,7 +4560,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4364,7 +4574,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4373,14 +4583,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4389,7 +4600,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4402,7 +4614,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs0JustLength_Success()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4411,7 +4623,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4426,7 +4639,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs0HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4435,7 +4648,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4450,7 +4664,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs0JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs0JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4459,7 +4673,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4472,7 +4687,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs0HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs0HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4481,7 +4696,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4494,7 +4710,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4503,7 +4719,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4518,7 +4735,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext32_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadAsync_Ext32_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4527,14 +4744,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4543,7 +4761,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4558,7 +4777,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs1JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs1JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4567,7 +4786,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4580,7 +4800,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs1TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs1TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4589,14 +4809,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs1HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs1HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4605,7 +4826,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4618,7 +4840,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs17JustLength_Success()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4627,7 +4849,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4642,7 +4865,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext32_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadAsync_Ext32_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4651,14 +4874,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs17HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4667,7 +4891,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4682,7 +4907,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs17JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs17JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4691,7 +4916,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 17 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4704,7 +4930,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs17TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs17TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4713,14 +4939,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs17HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs17HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4729,7 +4956,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 18 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4742,7 +4970,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs255JustLength_Success()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4751,7 +4979,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4766,7 +4995,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext32_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadAsync_Ext32_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4775,14 +5004,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs255HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4791,7 +5021,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4806,7 +5037,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs255JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs255JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4815,7 +5046,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4828,7 +5060,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs255TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs255TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4837,14 +5069,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs255HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs255HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4853,7 +5086,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4866,7 +5100,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs256JustLength_Success()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4875,7 +5109,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4890,7 +5125,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext32_AndBinaryLengthIs256TooShort_Fail()
+		public void TestReadAsync_Ext32_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4899,14 +5134,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs256HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4915,7 +5151,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -4930,7 +5167,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs256JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs256JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4939,7 +5176,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 256 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4952,7 +5190,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs256TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs256TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4961,14 +5199,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs256HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs256HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4977,7 +5216,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 257 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -4990,7 +5230,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65535JustLength_Success()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -4999,7 +5239,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -5014,7 +5255,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext32_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestReadAsync_Ext32_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5023,14 +5264,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5039,7 +5281,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -5054,7 +5297,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65535JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65535JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5063,7 +5306,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -5076,7 +5320,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65535TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65535TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5085,14 +5329,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65535HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5101,7 +5346,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -5114,7 +5360,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65536JustLength_Success()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65536JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5123,7 +5369,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -5138,7 +5385,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadAsync_Ext32_AndBinaryLengthIs65536TooShort_Fail()
+		public void TestReadAsync_Ext32_AndBinaryLengthIs65536TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5147,14 +5394,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem()
+		public async Task TestReadAsync_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5163,7 +5411,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65537 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.IsTrue( await unpacker.ReadAsync() );
 #pragma warning disable 612,618
@@ -5178,7 +5427,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65536JustLength_Success()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65536JustLength_Success_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5187,7 +5436,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
@@ -5200,7 +5450,7 @@ namespace MsgPack
 		}
 
 		[Test]
-		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65536TooShort_Fail()
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65536TooShort_Fail_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5209,14 +5459,15 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 			}
 		}
 
 		[Test]
-		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem()
+		public async Task TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65536HasExtra_NoProblem_Splitted()
 		{
 			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
 			using( var buffer =
@@ -5225,7 +5476,8 @@ namespace MsgPack
 					.Concat( Enumerable.Repeat( ( byte )0xFF, 65537 ) ).ToArray()
 				)
 			)
-			using( var unpacker = this.CreateUnpacker( buffer ) )
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 				MessagePackExtendedTypeObject result;
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
