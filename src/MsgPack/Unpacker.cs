@@ -215,7 +215,8 @@ namespace MsgPack
 		///		 Creates the new <see cref="Unpacker"/> from specified stream.
 		/// </summary>
 		/// <param name="stream">The stream to be unpacked. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
-		/// <returns><see cref="Unpacker"/> instance.</returns>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
 		public static Unpacker Create( Stream stream )
 		{
 			return Create( stream, true );
@@ -229,10 +230,11 @@ namespace MsgPack
 		///		<c>true</c> to close <paramref name="stream"/> when this instance is disposed;
 		///		<c>false</c>, otherwise.
 		/// </param>
-		/// <returns><see cref="Unpacker"/> instance.</returns>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
 		public static Unpacker Create( Stream stream, bool ownsStream )
 		{
-			return new ItemsUnpacker( stream, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : null );
+			return Create( stream, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : null, null );
 		}
 
 		/// <summary>
@@ -240,10 +242,140 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="stream">The stream to be unpacked.</param>
 		/// <param name="streamOptions"><see cref="PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
-		/// <returns><see cref="Unpacker"/> instance.</returns>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
 		public static Unpacker Create( Stream stream, PackerUnpackerStreamOptions streamOptions )
 		{
+			return Create( stream, streamOptions, null );
+		}
+
+		/// <summary>
+		///		 Creates the new <see cref="Unpacker"/> from specified stream.
+		/// </summary>
+		/// <param name="stream">The stream to be unpacked.</param>
+		/// <param name="streamOptions"><see cref="PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
+		public static Unpacker Create( Stream stream, PackerUnpackerStreamOptions streamOptions, UnpackerOptions unpackerOptions )
+		{
 			return new ItemsUnpacker( stream, streamOptions );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="array">The source byte array.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
+		public static ByteArrayUnpacker Create( byte[] array )
+		{
+			return Create( array, null );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="array">The source byte array.</param>
+		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="offset"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] array, int offset )
+		{
+			return Create( array, offset, null );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="array">The source byte array.</param>
+		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
+		/// <param name="count">The effective count of the <paramref name="array"/>.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="offset"/> is negative.
+		///		Or <paramref name="count"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] array, int offset, int count )
+		{
+			return Create( array, offset, count, null );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="array">The source byte array.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
+		public static ByteArrayUnpacker Create( byte[] array, UnpackerOptions unpackerOptions )
+		{
+			return Create( new ArraySegment<byte>( array ), unpackerOptions );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="array">The source byte array.</param>
+		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="offset"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] array, int offset, UnpackerOptions unpackerOptions )
+		{
+			return Create( new ArraySegment<byte>( array, offset, array == null ? 0 : ( array.Length - offset ) ), unpackerOptions );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="array">The source byte array.</param>
+		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
+		/// <param name="count">The effective count of the <paramref name="array"/>.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="offset"/> is negative.
+		///		Or <paramref name="count"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] array, int offset, int count, UnpackerOptions unpackerOptions )
+		{
+			return Create( new ArraySegment<byte>( array, offset, count ), unpackerOptions );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="source">The source byte array.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+		public static ByteArrayUnpacker Create( ArraySegment<byte> source )
+		{
+			return Create( source, null );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="source">The source byte array.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentException"><paramref name="source"/> does not contain an array.</exception>
+		public static ByteArrayUnpacker Create( ArraySegment<byte> source, UnpackerOptions unpackerOptions )
+		{
+			throw new NotImplementedException();
 		}
 
 		#endregion -- Factories --
