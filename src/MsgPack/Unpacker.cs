@@ -74,10 +74,10 @@ namespace MsgPack
 		/// </remarks>
 		public virtual MessagePackObject LastReadData
 		{
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 			get { return this.Data.GetValueOrDefault(); }
 			protected set { this.Data = value; }
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 		}
 
 		/// <summary>
@@ -194,7 +194,7 @@ namespace MsgPack
 		{
 			get { return null; }
 		}
-#endif		
+#endif
 
 		/// <summary>
 		///		Gets the previous position before last operation for debugging.
@@ -689,9 +689,9 @@ namespace MsgPack
 
 			this.UnpackSubtree();
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 			return this.Data;
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 		}
 
 		/// <summary>
@@ -748,9 +748,9 @@ namespace MsgPack
 
 			await this.UnpackSubtreeAsync( cancellationToken ).ConfigureAwait( false );
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 			return this.Data;
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 		}
 
 		/// <summary>
