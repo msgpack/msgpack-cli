@@ -49,8 +49,14 @@
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.cs">
+      <Link>ByteArrayUnpackerTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
       <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionValidatingByteArrayUnpackerTest.cs">
+      <Link>CollectionValidatingByteArrayUnpackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\CollectionValidatingStreamUnpackerTest.cs">
       <Link>CollectionValidatingStreamUnpackerTest.cs</Link>
@@ -66,6 +72,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\ExceptionTest.cs">
       <Link>ExceptionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\FastByteArrayUnpackerTest.cs">
+      <Link>FastByteArrayUnpackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\FastStreamUnpackerTest.cs">
       <Link>FastStreamUnpackerTest.cs</Link>
