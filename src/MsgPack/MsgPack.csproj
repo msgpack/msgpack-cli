@@ -517,7 +517,6 @@
     <Compile Remove="Serialization/Metadata/_DateTimeMessagePackSerializerHelpers.cs" />
     <Compile Remove="Serialization/Metadata/_Decimal.cs" />
     <Compile Remove="Serialization/Metadata/_DictionaryEntry.cs" />
-    <Compile Remove="Serialization/Metadata/_DynamicUnpackingContext.cs" />
     <Compile Remove="Serialization/Metadata/_EnumMessagePackSerializerHelpers.cs" />
     <Compile Remove="Serialization/Metadata/_FieldInfo.cs" />
     <Compile Remove="Serialization/Metadata/_IDictionaryEnumerator.cs" />
