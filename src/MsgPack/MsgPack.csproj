@@ -476,30 +476,30 @@
     <Compile Remove="Serialization\Metadata\_Type.cs" />
     <Compile Remove="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Compile Remove="TupleItems.cs" />
-    <Compile Include="../MsgPack.Net35/Contract.cs" />
-    <Compile Include="../MsgPack.Net35/Delegates.cs" />
-    <Compile Include="../MsgPack.Net35/NetFxCompatibilities.cs" />
-    <Compile Include="../MsgPack.Net35/Volatile.cs" />
-    <Compile Include="../MsgPack.Net35/Tuple`n.cs" />
+    <Compile Include="..\MsgPack.Net35\Contract.cs" />
+    <Compile Include="..\MsgPack.Net35\Delegates.cs" />
+    <Compile Include="..\MsgPack.Net35\NetFxCompatibilities.cs" />
+    <Compile Include="..\MsgPack.Net35\Volatile.cs" />
+    <Compile Include="..\MsgPack.Net35\Tuple`n.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <Compile Remove="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
     <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
-    <Compile Remove="Serialization/CodeDomSerializers/**/*.*" />
-    <Compile Remove="Serialization/CodeGenerationSink.cs" />
-    <Compile Remove="Serialization/DependentAssemblyManager.cs" />
-    <Compile Remove="Serialization/IndividualFileCodeGenerationSink.cs" />
-    <Compile Remove="Serialization/ISerializerGeneratorConfiguration.cs" />
-    <Compile Remove="Serialization/SerializerAssemblyGenerationConfiguration.cs" />
-    <Compile Remove="Serialization/SerializerCodeGenerationConfiguration.cs" />
-    <Compile Remove="Serialization/SerializerCodeInformation.cs" />
-    <Compile Remove="Serialization/SerializerCodeGenerationContext.cs" />
-    <Compile Remove="Serialization/SerializerCodeGenerationResult.cs" />
-    <Compile Remove="Serialization/SerializerGenerator.cs" />
-    <Compile Remove="Serialization/SingleTextWriterCodeGenerationSink.cs" />
-    <Compile Remove="Serialization/TeeTextWriter.cs" />
+    <Compile Remove="Serialization\CodeDomSerializers\*.*" />
+    <Compile Remove="Serialization\CodeGenerationSink.cs" />
+    <Compile Remove="Serialization\DependentAssemblyManager.cs" />
+    <Compile Remove="Serialization\IndividualFileCodeGenerationSink.cs" />
+    <Compile Remove="Serialization\ISerializerGeneratorConfiguration.cs" />
+    <Compile Remove="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
+    <Compile Remove="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Compile Remove="Serialization\SerializerCodeInformation.cs" />
+    <Compile Remove="Serialization\SerializerCodeGenerationContext.cs" />
+    <Compile Remove="Serialization\SerializerCodeGenerationResult.cs" />
+    <Compile Remove="Serialization\SerializerGenerator.cs" />
+    <Compile Remove="Serialization\SingleTextWriterCodeGenerationSink.cs" />
+    <Compile Remove="Serialization\TeeTextWriter.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0'">
     <Compile Include="BufferedStream.cs" />
@@ -510,35 +510,35 @@
     <Compile Remove="UnsafeNativeMethods.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
-    <Compile Remove="Serialization/AbstractSerializers/**/*.*" />
-    <Compile Remove="Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
-    <Compile Remove="Serialization/EmittingSerializers/**/*.*" />
-    <Compile Remove="Serialization/Metadata/_CultureInfo.cs" />
-    <Compile Remove="Serialization/Metadata/_DateTimeMessagePackSerializerHelpers.cs" />
-    <Compile Remove="Serialization/Metadata/_Decimal.cs" />
-    <Compile Remove="Serialization/Metadata/_DictionaryEntry.cs" />
-    <Compile Remove="Serialization/Metadata/_EnumMessagePackSerializerHelpers.cs" />
-    <Compile Remove="Serialization/Metadata/_FieldInfo.cs" />
-    <Compile Remove="Serialization/Metadata/_IDictionaryEnumerator.cs" />
-    <Compile Remove="Serialization/Metadata/_IDisposable.cs" />
-    <Compile Remove="Serialization/Metadata/_IEnumreator.cs" />
-    <Compile Remove="Serialization/Metadata/_MessagePackObject.cs" />
-    <Compile Remove="Serialization/Metadata/_MethodBase.cs" />
-    <Compile Remove="Serialization/Metadata/_Object.cs" />
-    <Compile Remove="Serialization/Metadata/_Packer.cs" />
-    <Compile Remove="Serialization/Metadata/_String.cs" />
-    <Compile Remove="Serialization/Metadata/_Unpacker.cs" />
-    <Compile Remove="Serialization/Metadata/_UnpackHelpers.cs" />
-    <Compile Remove="Serialization/Metadata/_UnpackHelpers.direct.cs" />
-    <Compile Remove="Serialization/Reflection/TracingILGenerator*.cs" />
-    <Compile Remove="Serialization/ReflectionExtensions.ConstructorDelegate.cs" />
-    <Compile Remove="Serialization/NullTextWriter.cs" />
+    <Compile Remove="Serialization\AbstractSerializers\**\*.*" />
+    <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
+    <Compile Remove="Serialization\EmittingSerializers\**\*.*" />
+    <Compile Remove="Serialization\Metadata\_CultureInfo.cs" />
+    <Compile Remove="Serialization\Metadata\_DateTimeMessagePackSerializerHelpers.cs" />
+    <Compile Remove="Serialization\Metadata\_Decimal.cs" />
+    <Compile Remove="Serialization\Metadata\_DictionaryEntry.cs" />
+    <Compile Remove="Serialization\Metadata\_EnumMessagePackSerializerHelpers.cs" />
+    <Compile Remove="Serialization\Metadata\_FieldInfo.cs" />
+    <Compile Remove="Serialization\Metadata\_IDictionaryEnumerator.cs" />
+    <Compile Remove="Serialization\Metadata\_IDisposable.cs" />
+    <Compile Remove="Serialization\Metadata\_IEnumreator.cs" />
+    <Compile Remove="Serialization\Metadata\_MessagePackObject.cs" />
+    <Compile Remove="Serialization\Metadata\_MethodBase.cs" />
+    <Compile Remove="Serialization\Metadata\_Object.cs" />
+    <Compile Remove="Serialization\Metadata\_Packer.cs" />
+    <Compile Remove="Serialization\Metadata\_String.cs" />
+    <Compile Remove="Serialization\Metadata\_Unpacker.cs" />
+    <Compile Remove="Serialization\Metadata\_UnpackHelpers.cs" />
+    <Compile Remove="Serialization\Metadata\_UnpackHelpers.direct.cs" />
+    <Compile Remove="Serialization\Reflection\TracingILGenerator*.cs" />
+    <Compile Remove="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
+    <Compile Remove="Serialization\NullTextWriter.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <Compile Remove="Serialization/AbstractSerializers/ISerializerCodeGenerator.cs" />
-    <Compile Remove="Serialization/AbstractSerializers/ISerializerCodeGenerationContext.cs" />
-    <Compile Remove="Serialization/EmittingSerializers/AssemblyBuilderCodeGenerationContext.cs" />
-    <Compile Remove="Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
+    <Compile Remove="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
+    <Compile Remove="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
+    <Compile Remove="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
+    <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
     <Compile Remove="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
