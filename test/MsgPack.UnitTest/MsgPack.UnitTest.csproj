@@ -877,6 +877,7 @@
     </Compile>
     <Compile Include="SplittingStream.cs" />
     <Compile Include="StreamUnpackerTest.cs" />
+    <Compile Include="UnpackerFactoryTest.cs" />
     <Compile Include="UnpackerTest.Subtree.cs" />
     <Compile Include="UnpackerTest.cs">
       <AutoGen>True</AutoGen>

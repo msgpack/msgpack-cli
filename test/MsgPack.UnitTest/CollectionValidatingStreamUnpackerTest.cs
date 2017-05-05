@@ -41,5 +41,8 @@ namespace MsgPack
 		{
 			return Unpacker.Create( stream, PackerUnpackerStreamOptions.None, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } );
 		}
+
+		{
+		}
 	}
 }

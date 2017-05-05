@@ -40,23 +40,5 @@ namespace MsgPack
 		}
 
 		protected abstract Unpacker CreateUnpacker( Stream stream );
-
-		[Test]
-		public void TestCreate_StreamIsNull()
-		{
-			Assert.Throws<ArgumentNullException>( () => { using ( this.CreateUnpacker( null ) ) { } } );
-		}
-
-		[Test]
-		public void TestCreate_OwnsStreamisFalse_NotDisposeStream()
-		{
-			using ( var stream = new MemoryStream() )
-			{
-				using ( Unpacker.Create( stream, false ) ) { }
-
-				// Should not throw ObjectDisposedException.
-				stream.WriteByte( 1 );
-			}
-		}
 	}
 }

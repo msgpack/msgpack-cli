@@ -367,6 +367,9 @@
     <Compile Include="..\MsgPack.UnitTest\TestSuite.cs">
       <Link>TestSuite.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerFactoryTest.cs">
+      <Link>UnpackerFactoryTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.cs">
       <Link>UnpackerTest.cs</Link>
     </Compile>
