@@ -37,6 +37,11 @@ namespace MsgPack
 	[Timeout( 3000 )]
 	public class FastStreamUnpackerTest : StreamUnpackerTest
 	{
+		protected override bool ShouldCheckSubtreeUnpacker
+		{
+			get { return false; }
+		}
+
 		protected override Unpacker CreateUnpacker( Stream stream )
 		{
 			return Unpacker.Create( stream, PackerUnpackerStreamOptions.None, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None } );

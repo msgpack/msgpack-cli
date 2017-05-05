@@ -50,9 +50,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -65,9 +68,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -80,9 +86,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -95,9 +104,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -110,9 +122,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -125,9 +140,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -140,9 +158,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -155,9 +176,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -170,9 +194,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -185,9 +212,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -200,9 +230,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -215,9 +248,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -230,9 +266,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -245,9 +284,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -260,9 +302,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -275,9 +320,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -290,9 +338,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -305,9 +356,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -320,9 +374,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -335,9 +392,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -350,9 +410,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -365,9 +428,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -380,9 +446,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -395,9 +464,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -410,9 +482,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -425,9 +500,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -440,9 +518,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -455,9 +536,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -470,9 +554,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -485,9 +572,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -500,9 +590,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -515,9 +608,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -530,9 +626,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -545,9 +644,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -560,9 +662,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -575,9 +680,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -590,9 +698,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -605,9 +716,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -620,9 +734,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -635,9 +752,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -650,9 +770,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -665,9 +788,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -680,9 +806,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -695,9 +824,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -710,9 +842,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -725,9 +860,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -740,9 +878,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -755,9 +896,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -770,9 +914,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -785,9 +932,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -800,9 +950,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -815,9 +968,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -830,9 +986,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -845,9 +1004,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -860,9 +1022,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -875,9 +1040,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -890,9 +1058,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -905,9 +1076,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -920,9 +1094,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -935,9 +1112,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -950,9 +1130,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -965,9 +1148,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -980,9 +1166,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -995,9 +1184,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1010,9 +1202,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1025,9 +1220,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1040,9 +1238,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1055,9 +1256,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1070,9 +1274,12 @@ namespace MsgPack
 			{
 				var result = target.Skip();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1087,9 +1294,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1102,9 +1312,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1117,9 +1330,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1132,9 +1348,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1147,9 +1366,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1162,9 +1384,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1177,9 +1402,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1192,9 +1420,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1207,9 +1438,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1222,9 +1456,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1237,9 +1474,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1252,9 +1492,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1267,9 +1510,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1282,9 +1528,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1297,9 +1546,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1312,9 +1564,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1327,9 +1582,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1342,9 +1600,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1357,9 +1618,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1372,9 +1636,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1387,9 +1654,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1402,9 +1672,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1417,9 +1690,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1432,9 +1708,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1447,9 +1726,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1462,9 +1744,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1477,9 +1762,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1492,9 +1780,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1507,9 +1798,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1522,9 +1816,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1537,9 +1834,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1552,9 +1852,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1567,9 +1870,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1582,9 +1888,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1597,9 +1906,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1612,9 +1924,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1627,9 +1942,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1642,9 +1960,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1657,9 +1978,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1672,9 +1996,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1687,9 +2014,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1702,9 +2032,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1717,9 +2050,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1732,9 +2068,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1747,9 +2086,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1762,9 +2104,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1777,9 +2122,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1792,9 +2140,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1807,9 +2158,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1822,9 +2176,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1837,9 +2194,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1852,9 +2212,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1867,9 +2230,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1882,9 +2248,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1897,9 +2266,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1912,9 +2284,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1927,9 +2302,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1942,9 +2320,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1957,9 +2338,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1972,9 +2356,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -1987,9 +2374,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2002,9 +2392,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2017,9 +2410,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2032,9 +2428,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2047,9 +2446,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2062,9 +2464,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2077,9 +2482,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2092,9 +2500,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 
@@ -2107,9 +2518,12 @@ namespace MsgPack
 			{
 				var result = await target.SkipAsync();
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( 0xC2 ) );
+				}
 			}
 		}
 

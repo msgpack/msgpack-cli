@@ -324,9 +324,12 @@ void WriteTestBody( string byteArrayExpression, string centinel, bool isAsync )
 	}
 #>
 				Assert.That( result, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
-				// Verify centinel value still exists in the stream.
-				Assert.That( buffer.ReadByte(), Is.EqualTo( <#= centinel #> ) );
+				if ( this.ShouldCheckStreamPosition )
+				{
+					Assert.That( buffer.Position, Is.EqualTo( binary.Length - 1 /* minus centinel byte */ ) );
+					// Verify centinel value still exists in the stream.
+					Assert.That( buffer.ReadByte(), Is.EqualTo( <#= centinel #> ) );
+				}
 			}
 <#+	
 }

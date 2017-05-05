@@ -18,9 +18,8 @@
 //
 #endregion -- License Terms --
 
+using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -37,12 +36,14 @@ namespace MsgPack
 	[Timeout( 3000 )]
 	public class CollectionValidatingStreamUnpackerTest : StreamUnpackerTest
 	{
+		protected override bool ShouldCheckSubtreeUnpacker
+		{
+			get { return true; }
+		}
+
 		protected override Unpacker CreateUnpacker( Stream stream )
 		{
 			return Unpacker.Create( stream, PackerUnpackerStreamOptions.None, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } );
-		}
-
-		{
 		}
 	}
 }

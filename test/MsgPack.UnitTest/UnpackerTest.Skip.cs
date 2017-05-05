@@ -262,6 +262,8 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_SubtreeReader_NestedMapContainsEmpty_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x80, 0x2, 0x81, 0x3, 0x3 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -273,6 +275,8 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_SubtreeReader_NestedArray_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x91, 0x1, 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -296,6 +300,8 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_SubtreeReader_NestedArrayContainsEmpty_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x90, 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -319,6 +325,8 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_BetweenSubtreeReader_NestedArray_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x93, 0x91, 0x1, 0x2, 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -343,6 +351,8 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_SubtreeReader_NestedMap_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x81, 0x2, 0x2, 0x3, 0x81, 0x4, 0x4 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -373,6 +383,8 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_NestedMapContainsEmpty_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x80, 0x2, 0x81, 0x3, 0x3 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -402,6 +414,8 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_BetweenSubtreeReader_NestedMap_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x83, 0x1, 0x81, 0x2, 0x2, 0x3, 0x3, 0x4, 0x81, 0x4, 0x4 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -651,6 +665,8 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_SubtreeReader_NestedMapContainsEmpty_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x80, 0x2, 0x81, 0x3, 0x3 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -662,6 +678,8 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_SubtreeReader_NestedArray_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x91, 0x1, 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -685,6 +703,8 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_SubtreeReader_NestedArrayContainsEmpty_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x90, 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -708,6 +728,8 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_BetweenSubtreeReader_NestedArray_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x93, 0x91, 0x1, 0x2, 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -732,6 +754,8 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_SubtreeReader_NestedMap_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x81, 0x2, 0x2, 0x3, 0x81, 0x4, 0x4 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -762,6 +786,8 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_NestedMapContainsEmpty_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x80, 0x2, 0x81, 0x3, 0x3 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
@@ -791,6 +817,8 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_BetweenSubtreeReader_NestedMap_AsIs()
 		{
+			this.VerifyCanTestSubtree();
+
 			using ( var stream = new MemoryStream( new byte[] { 0x83, 0x1, 0x81, 0x2, 0x2, 0x3, 0x3, 0x4, 0x81, 0x4, 0x4 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{

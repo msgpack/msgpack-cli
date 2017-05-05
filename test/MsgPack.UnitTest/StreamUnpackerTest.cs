@@ -34,6 +34,11 @@ namespace MsgPack
 {
 	public abstract partial class StreamUnpackerTest : UnpackerTest
 	{
+		protected override bool ShouldCheckStreamPosition
+		{
+			get { return true; }
+		}
+
 		protected sealed override Unpacker CreateUnpacker( MemoryStream stream )
 		{
 			return this.CreateUnpacker( stream as Stream );
