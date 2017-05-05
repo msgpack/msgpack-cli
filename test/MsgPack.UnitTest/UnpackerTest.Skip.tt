@@ -177,10 +177,9 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_ArrayScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
+			using ( var stream = new MemoryStream( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -250,10 +249,9 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_MapScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
+			using ( var stream = new MemoryStream( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
 		}

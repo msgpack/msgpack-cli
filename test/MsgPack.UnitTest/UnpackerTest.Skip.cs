@@ -157,10 +157,9 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_ArrayScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
+			using ( var stream = new MemoryStream( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } );
 				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -230,10 +229,9 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_MapScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
+			using ( var stream = new MemoryStream( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } );
 				Assert.That( target.Skip(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -560,10 +558,9 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_ArrayScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
+			using ( var stream = new MemoryStream( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } );
 				Assert.That( await target.SkipAsync(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -633,10 +630,9 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_MapScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
+			using ( var stream = new MemoryStream( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } ) )
 			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } );
 				Assert.That( await target.SkipAsync(), Is.EqualTo( stream.Length ) );
 			}
 		}
