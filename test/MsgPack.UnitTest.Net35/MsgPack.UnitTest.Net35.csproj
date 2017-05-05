@@ -373,6 +373,15 @@
     <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.cs">
       <Link>StreamUnpackerTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Ext.cs">
+      <Link>StreamUnpackerTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Raw.cs">
+      <Link>StreamUnpackerTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Scalar.cs">
+      <Link>StreamUnpackerTest.Scalar.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
       <Link>TestRandom.cs</Link>
     </Compile>

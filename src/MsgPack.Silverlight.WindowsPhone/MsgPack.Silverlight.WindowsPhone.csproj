@@ -134,11 +134,35 @@
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\ByteArrayUnpacker.cs">
+      <Link>ByteArrayUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ByteArrayUnpackerReader.cs">
+      <Link>ByteArrayUnpackerReader.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ByteArrayUnpackerReader.TypedRead.cs">
+      <Link>ByteArrayUnpackerReader.TypedRead.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\CollectionOperation.cs">
       <Link>CollectionOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\CollectionType.cs">
+      <Link>CollectionType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.cs">
+      <Link>DefaultByteArrayUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.Unpacking.cs">
+      <Link>DefaultByteArrayUnpacker.Unpacking.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\DefaultStreamUnpacker.cs">
+      <Link>DefaultStreamUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\DefaultStreamUnpacker.Unpacking.cs">
+      <Link>DefaultStreamUnpacker.Unpacking.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
       <Link>DictionaryDebuggerProxy`2.cs</Link>
@@ -163,18 +187,6 @@
     </Compile>
     <Compile Include="..\MsgPack\IPackable.cs">
       <Link>IPackable.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.cs">
-      <Link>ItemsUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.Read.cs">
-      <Link>ItemsUnpacker.Read.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.Skipping.cs">
-      <Link>ItemsUnpacker.Skipping.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.Unpacking.cs">
-      <Link>ItemsUnpacker.Unpacking.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\IUnpackable.cs">
       <Link>IUnpackable.cs</Link>
@@ -226,6 +238,24 @@
     </Compile>
     <Compile Include="..\MsgPack\MessagePackString.cs">
       <Link>MessagePackString.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackUnpacker.cs">
+      <Link>MessagePackUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackUnpacker.Read.cs">
+      <Link>MessagePackUnpacker.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackUnpacker`1.cs">
+      <Link>MessagePackUnpacker`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackUnpacker`1.Read.cs">
+      <Link>MessagePackUnpacker`1.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackUnpacker`1.Skipping.cs">
+      <Link>MessagePackUnpacker`1.Skipping.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackUnpacker`1.Unpacking.cs">
+      <Link>MessagePackUnpacker`1.Unpacking.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\MessageTypeException.cs">
       <Link>MessageTypeException.cs</Link>
@@ -773,6 +803,12 @@
     <Compile Include="..\MsgPack\StreamPacker.cs">
       <Link>StreamPacker.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\StreamUnpackerReader.cs">
+      <Link>StreamUnpackerReader.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\StreamUnpackerReader.TypedRead.cs">
+      <Link>StreamUnpackerReader.TypedRead.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\StringEscape.cs">
       <Link>StringEscape.cs</Link>
     </Compile>
@@ -791,8 +827,23 @@
     <Compile Include="..\MsgPack\Unpacker.cs">
       <Link>Unpacker.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Unpacker.Leaf.cs">
+      <Link>Unpacker.Leaf.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Unpacker.Unpacking.cs">
       <Link>Unpacker.Unpacking.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackerOptions.cs">
+      <Link>UnpackerOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackerReader.cs">
+      <Link>UnpackerReader.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackerReader.TypedRead.cs">
+      <Link>UnpackerReader.TypedRead.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackerValidationLevel.cs">
+      <Link>UnpackerValidationLevel.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\UnpackException.cs">
       <Link>UnpackException.cs</Link>
