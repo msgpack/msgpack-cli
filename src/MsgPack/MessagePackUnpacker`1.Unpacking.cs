@@ -44,80 +44,31 @@ namespace MsgPack
 		private ReadValueResult ReadValue( out byte header, out long integral, out float real32, out double real64 )
 		{
 			var readHeader = this.Reader.TryReadByte();
+			header = unchecked( ( byte )readHeader );
+			var readResult = EncodedTypes[ readHeader + 1 ];
+			if ( readResult == ReadValueResult.None )
+			{
+				return this.ReadValueCore( header, out integral, out real32, out real64 );
+			}
+
+			var result = readResult & ReadValueResult.ValidRangeMask;
+			this.CollectionType = ( CollectionType )( ( uint )this.CollectionType & ( ( uint )readResult >> 14 ) );
+
+			integral = ( short )( ( ( uint )readResult ) >> 16 );
+			real32 = default( float );
+			real64 = default( double );
+			return result;
+		}
+
+		private ReadValueResult ReadValueCore( byte header, out long integral, out float real32, out double real64 )
+		{
 			// This is BAD practice for out, but it reduces IL size very well for this method.
 			integral = default( long );
 			real32 = default( float );
 			real64 = default( double );
 
-			if ( readHeader < 0 )
-			{
-				header = 0;
-				return ReadValueResult.Eof;
-			}
-
-			header = unchecked( ( byte )readHeader );
-
-			switch ( header >> 4 )
-			{
-				case 0x0:
-				case 0x1:
-				case 0x2:
-				case 0x3:
-				case 0x4:
-				case 0x5:
-				case 0x6:
-				case 0x7:
-				{
-					// PositiveFixNum
-					this.CollectionType = CollectionType.None;
-					integral = header;
-					return ReadValueResult.Byte;
-				}
-				case 0x8:
-				{
-					// FixMap
-					integral = header & 0xF;
-					return ReadValueResult.MapLength;
-				}
-				case 0x9:
-				{
-					// FixArray
-					integral = header & 0xF;
-					return ReadValueResult.ArrayLength;
-				}
-				case 0xA:
-				case 0xB:
-				{
-					// FixRaw
-					integral = header & 0x1F;
-					return ReadValueResult.String;
-				}
-				case 0xE:
-				case 0xF:
-				{
-					// NegativeFixNum
-					this.CollectionType = CollectionType.None;
-					integral = header | unchecked( ( long )0xFFFFFFFFFFFFFF00 );
-					return ReadValueResult.SByte;
-				}
-			}
-
 			switch ( header )
 			{
-				case MessagePackCode.NilValue:
-				{
-					return ReadValueResult.Nil;
-				}
-				case MessagePackCode.TrueValue:
-				{
-					integral = 1;
-					return ReadValueResult.Boolean;
-				}
-				case MessagePackCode.FalseValue:
-				{
-					integral = 0;
-					return ReadValueResult.Boolean;
-				}
 				case MessagePackCode.SignedInt8:
 				{
 					integral = this.Reader.ReadSByte();
@@ -252,7 +203,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowUnassignedMessageTypeException( readHeader );
+					this.ThrowUnassignedMessageTypeException( header );
 					// Never reach
 					return ReadValueResult.Eof;
 				}
@@ -264,85 +215,32 @@ namespace MsgPack
 		private async Task<AsyncReadValueResult> ReadValueAsync( CancellationToken cancellationToken )
 		{
 			var readHeader = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+
 			var result = default( AsyncReadValueResult );
-
-			if ( readHeader < 0 )
-			{
-				return result;
-			}
-
 			var header = unchecked( ( byte )readHeader );
 			result.header = header;
-
-			switch ( header >> 4 )
+			var readResult = EncodedTypes[ readHeader + 1 ];
+			if ( readResult == ReadValueResult.None )
 			{
-				case 0x0:
-				case 0x1:
-				case 0x2:
-				case 0x3:
-				case 0x4:
-				case 0x5:
-				case 0x6:
-				case 0x7:
-				{
-					// PositiveFixNum
-					this.CollectionType = CollectionType.None;
-					result.integral = header;
-					result.type = ReadValueResult.Byte;
-					return result;
-				}
-				case 0x8:
-				{
-					// FixMap
-					result.integral = header & 0xF;
-					result.type = ReadValueResult.MapLength;
-					return result;
-				}
-				case 0x9:
-				{
-					// FixArray
-					result.integral = header & 0xF;
-					result.type = ReadValueResult.ArrayLength;
-					return result;
-				}
-				case 0xA:
-				case 0xB:
-				{
-					// FixRaw
-					result.integral = header & 0x1F;
-					result.type = ReadValueResult.String;
-					return result;
-				}
-				case 0xE:
-				case 0xF:
-				{
-					// NegativeFixNum
-					this.CollectionType = CollectionType.None;
-					result.integral = header | unchecked( ( long )0xFFFFFFFFFFFFFF00 );
-					result.type = ReadValueResult.SByte;
-					return result;
-				}
+				return await this.ReadValueAsyncCore( header, cancellationToken ).ConfigureAwait( false );
 			}
+
+			result.type = readResult & ReadValueResult.ValidRangeMask;
+			this.CollectionType = ( CollectionType )( ( uint )this.CollectionType & ( ( uint )readResult >> 14 ) );
+
+			result.integral = ( short )( ( ( uint )readResult ) >> 16 );
+			result.real32 = default( float );
+			result.real64 = default( double );
+			return result;
+		}
+
+
+		private async Task<AsyncReadValueResult> ReadValueAsyncCore( byte header, CancellationToken cancellationToken )
+		{
+			var result = default( AsyncReadValueResult );
 
 			switch ( header )
 			{
-				case MessagePackCode.NilValue:
-				{
-					result.type = ReadValueResult.Nil;
-					return result;
-				}
-				case MessagePackCode.TrueValue:
-				{
-					result.integral = 1;
-					result.type = ReadValueResult.Boolean;
-					return result;
-				}
-				case MessagePackCode.FalseValue:
-				{
-					result.integral = 0;
-					result.type = ReadValueResult.Boolean;
-					return result;
-				}
 				case MessagePackCode.SignedInt8:
 				{
 					result.integral = await this.Reader.ReadSByteAsync( cancellationToken ).ConfigureAwait( false );
@@ -505,7 +403,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					this.ThrowUnassignedMessageTypeException( readHeader );
+					this.ThrowUnassignedMessageTypeException( header );
 					// Never reach
 					result.type = ReadValueResult.Eof;
 					return result;

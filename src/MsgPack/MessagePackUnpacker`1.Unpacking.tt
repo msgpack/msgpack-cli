@@ -74,46 +74,17 @@ foreach ( var isAsync in new [] { false, true } )
 		private async Task<AsyncReadValueResult> ReadValueAsync( CancellationToken cancellationToken )
 		{
 			var readHeader = await this.Reader.TryReadByteAsync( cancellationToken ).ConfigureAwait( false );
+
 <#
 	}
 
-	if ( !isAsync )
-	{
-#>
-			// This is BAD practice for out, but it reduces IL size very well for this method.
-			integral = default( long );
-			real32 = default( float );
-			real64 = default( double );
-<#
-	}
-	else
+	if ( isAsync )
 	{
 #>
 			var result = default( AsyncReadValueResult );
 <#
 	}
-#>
 
-			if ( readHeader < 0 )
-			{
-<#
-	if ( !isAsync )
-	{
-#>
-				header = 0;
-				return ReadValueResult.Eof;
-<#
-	}
-	else
-	{
-#>
-				return result;
-<#
-	}
-#>
-			}
-
-<#
 	if ( !isAsync )
 	{
 #>
@@ -128,84 +99,59 @@ foreach ( var isAsync in new [] { false, true } )
 <#
 	}
 #>
-
-			switch ( header >> 4 )
+			var readResult = EncodedTypes[ readHeader + 1 ];
+			if ( readResult == ReadValueResult.None )
 			{
-				case 0x0:
-				case 0x1:
-				case 0x2:
-				case 0x3:
-				case 0x4:
-				case 0x5:
-				case 0x6:
-				case 0x7:
-				{
-					// PositiveFixNum
-					this.CollectionType = CollectionType.None;
-					<#= asyncPrefix #>integral = header;
 <#
-					ReturnValue( "Byte", isAsync );
+	if ( !isAsync )
+	{
 #>
-				}
-				case 0x8:
-				{
-					// FixMap
-					<#= asyncPrefix #>integral = header & 0xF;
+				return this.ReadValueCore( header, out integral, out real32, out real64 );
 <#
-					ReturnValue( "MapLength", isAsync );
+	}
+	else
+	{
 #>
-				}
-				case 0x9:
-				{
-					// FixArray
-					<#= asyncPrefix #>integral = header & 0xF;
+				return await this.ReadValueAsyncCore( header, cancellationToken ).ConfigureAwait( false );
 <#
-					ReturnValue( "ArrayLength", isAsync );
+	}
 #>
-				}
-				case 0xA:
-				case 0xB:
-				{
-					// FixRaw
-					<#= asyncPrefix #>integral = header & 0x1F;
-<#
-					ReturnValue( "String", isAsync );
-#>
-				}
-				case 0xE:
-				case 0xF:
-				{
-					// NegativeFixNum
-					this.CollectionType = CollectionType.None;
-					<#= asyncPrefix #>integral = header | unchecked( ( long )0xFFFFFFFFFFFFFF00 );
-<#
-					ReturnValue( "SByte", isAsync );
-#>
-				}
 			}
+
+			<#= isAsync ? "result.type" : "var result" #> = readResult & ReadValueResult.ValidRangeMask;
+			this.CollectionType = ( CollectionType )( ( uint )this.CollectionType & ( ( uint )readResult >> 14 ) );
+
+			<#= asyncPrefix #>integral = ( short )( ( ( uint )readResult ) >> 16 );
+			<#= asyncPrefix #>real32 = default( float );
+			<#= asyncPrefix #>real64 = default( double );
+			return result;
+		}
+
+<#
+	if ( !isAsync )
+	{
+#>
+		private ReadValueResult ReadValueCore( byte header, out long integral, out float real32, out double real64 )
+		{
+			// This is BAD practice for out, but it reduces IL size very well for this method.
+			integral = default( long );
+			real32 = default( float );
+			real64 = default( double );
+<#
+	}
+	else
+	{
+#>
+
+		private async Task<AsyncReadValueResult> ReadValueAsyncCore( byte header, CancellationToken cancellationToken )
+		{
+			var result = default( AsyncReadValueResult );
+<#
+	}
+#>
 
 			switch ( header )
 			{
-				case MessagePackCode.NilValue:
-				{
-<#
-					ReturnValue( "Nil", isAsync );
-#>
-				}
-				case MessagePackCode.TrueValue:
-				{
-					<#= asyncPrefix #>integral = 1;
-<#
-					ReturnValue( "Boolean", isAsync );
-#>
-				}
-				case MessagePackCode.FalseValue:
-				{
-					<#= asyncPrefix #>integral = 0;
-<#
-					ReturnValue( "Boolean", isAsync );
-#>
-				}
 				case MessagePackCode.SignedInt8:
 				{
 					<#= asyncPrefix #>integral = <#= ReadScalarStrict( "SByte", isAsync ) #>;
@@ -396,7 +342,7 @@ foreach ( var isAsync in new [] { false, true } )
 				}
 				default:
 				{
-					this.ThrowUnassignedMessageTypeException( readHeader );
+					this.ThrowUnassignedMessageTypeException( header );
 					// Never reach
 <#
 					ReturnValue( "Eof", isAsync );

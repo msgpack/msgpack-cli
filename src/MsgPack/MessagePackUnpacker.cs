@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Linq;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,34 +60,70 @@ namespace MsgPack
 
 		protected enum ReadValueResult : uint
 		{
-			Eof			=   0,
-			Nil			=   1	<< 8,
-			Boolean		=   2	<< 8,
-			SByte		=   3	<< 8,
-			Byte		=   4	<< 8,
-			Int16		=   5	<< 8,
-			UInt16		=   6	<< 8,
-			Int32		=   7	<< 8,
-			UInt32		=   8	<< 8,
-			Int64		=   9	<< 8,
-			UInt64		=   10	<< 8,
-			Single		=   11	<< 8,
-			Double		=   12	<< 8,
-			ArrayLength	=   13	<< 8,
-			MapLength	=   14	<< 8,
-			String		=   15	<< 8,
-			Binary		=   16	<< 8,
-			FixExt1		= ( 17	<< 8 ) | 0x1,
-			FixExt2		= ( 18	<< 8 ) | 0x2,
-			FixExt4		= ( 19	<< 8 ) | 0x4,
-			FixExt8		= ( 20	<< 8 ) | 0x8,
-			FixExt16	= ( 21	<< 8 ) | 0x10,
-			Ext8		= ( 22	<< 8 ) | ( 0x1 << 5 ),
-			Ext16		= ( 23	<< 8 ) | ( 0x2 << 5 ),
-			Ext32		= ( 24	<< 8 ) | ( 0x4 << 5 ),
+			// +-----------+-------+------+-----+-----+
+			// | 31  -  16 | 15-14 | 13-8 | 7-5 | 4-0 |
+			// +-----------+-------+------+-----+-----+
+			// |(reserved) | CLMSK | type | LoL | FxL |
+			// +-----------+-------+------+-----+-----+
+			// CLMSK: Mask for CollectionType (11 or 00)
+			// LoL: Length of variable Length(byte)
+			// FxL: Fixed Length
+			None		=   0,
+			Eof			=   1	<< 8,
+			Nil			=   2	<< 8,
+			Boolean		=   3	<< 8,
+			SByte		=   4	<< 8,
+			Byte		=   5	<< 8,
+			Int16		=   6	<< 8,
+			UInt16		=   7	<< 8,
+			Int32		=   8	<< 8,
+			UInt32		=   9	<< 8,
+			Int64		=   10	<< 8,
+			UInt64		=   11	<< 8,
+			Single		=   12	<< 8,
+			Double		=   13	<< 8,
+			ArrayLength	=   14	<< 8 | 0xC000,
+			MapLength	=   15	<< 8 | 0xC000,
+			String		=   16	<< 8,
+			Binary		=   17	<< 8,
+			FixExt1		= ( 18	<< 8 ) | 0x1,
+			FixExt2		= ( 19	<< 8 ) | 0x2,
+			FixExt4		= ( 20	<< 8 ) | 0x4,
+			FixExt8		= ( 21	<< 8 ) | 0x8,
+			FixExt16	= ( 22	<< 8 ) | 0x10,
+			Ext8		= ( 23	<< 8 ) | ( 0x1 << 5 ),
+			Ext16		= ( 24	<< 8 ) | ( 0x2 << 5 ),
+			Ext32		= ( 25	<< 8 ) | ( 0x4 << 5 ),
 			FixedLengthMask = 0x1F,
-			VariableLengthMask = 0xE0
+			VariableLengthMask = 0xE0,
+			ValidRangeMask = 0xFFFF
 		}
+
+		// Index = read-header + 1
+		// Value(short) << 16 | ReadValueResult
+		protected static readonly ReadValueResult[] EncodedTypes =
+			new [] { ReadValueResult.Eof } // for -1
+			.Concat(
+				Enumerable.Range( 0, 0x80 ).Select( i => unchecked( ( ReadValueResult )( uint )( i << 16 | ( uint )ReadValueResult.Byte ) ) )
+			).Concat(
+				Enumerable.Range( 0x80, 0x10 ).Select( i => unchecked( ( ReadValueResult )( uint )( ( i - 0x80 ) << 16 | ( uint )ReadValueResult.MapLength ) ) )
+			).Concat(
+				Enumerable.Range( 0x90, 0x10 ).Select( i => unchecked( ( ReadValueResult )( uint )( ( i - 0x90 ) << 16 | ( uint )ReadValueResult.ArrayLength ) ) )
+			).Concat(
+				Enumerable.Range( 0xA0, 0x20 ).Select( i => unchecked( ( ReadValueResult )( uint )( ( i - 0xA0 ) << 16 | ( uint )ReadValueResult.String ) ) )
+			).Concat(
+				new []
+				{
+					ReadValueResult.Nil,
+					ReadValueResult.None, // reserved
+					ReadValueResult.Boolean, // false
+					unchecked ( ( ReadValueResult )( 0x10000 | ( uint )ReadValueResult.Boolean ) )// true
+				}
+			).Concat(
+				Enumerable.Repeat( ReadValueResult.None, ( 0x20 - 4 ) )
+			).Concat(
+				Enumerable.Range( 0xE0, 0x20 ).Select( b => unchecked ( ( ReadValueResult )( uint )( ( 0xFF00 | b ) << 16 | ( uint )ReadValueResult.SByte ) ) )
+			).ToArray();
 
 #if FEATURE_TAP
 
