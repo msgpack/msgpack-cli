@@ -24,7 +24,13 @@
 #endif
 
 using System;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.IO;
+using System.Text;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -325,6 +331,135 @@ namespace MsgPack
 			}
 		}
 
+		// TODO: Use Span<T>
+		public override void Read( byte[] buffer, int size )
+		{
+#if DEBUG
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG
+
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( size == 0 )
+			{
+				return;
+			}
+
+			this._lastOffset = this._offset;
+			var remaining = size;
+			var offset = 0;
+			int read;
+
+			do
+			{
+				read = this._source.Read( buffer, offset, remaining );
+				remaining -= read;
+				offset += read;
+			} while ( read > 0 && remaining > 0 );
+
+			this._offset += offset;
+#if DEBUG
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG
+
+			if ( offset < size )
+			{
+				this.ThrowEofException( size );
+			}
+		}
+
+		public override string ReadString( int length )
+		{
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( length == 0 )
+			{
+				return String.Empty;
+			}
+
+			var bytes = BufferManager.NewByteBuffer( length );
+
+			if ( length <= bytes.Length )
+			{
+				this.Read( bytes, length );
+				return Encoding.UTF8.GetString( bytes, 0, length );
+			}
+
+			var decoder = Encoding.UTF8.GetDecoder();
+			var chars = BufferManager.NewCharBuffer( bytes.Length );
+			var stringBuffer = new StringBuilder( length );
+			var remaining = length;
+			bool isCompleted;
+			do
+			{
+				var reading = Math.Min( remaining, bytes.Length );
+				this._lastOffset = this._offset;
+				var bytesRead = this._source.Read( bytes, 0, reading );
+				this._offset += bytesRead;
+				if ( bytesRead == 0 )
+				{
+					this.ThrowEofException( reading );
+				}
+
+				isCompleted = decoder.DecodeString( bytes, 0, bytesRead, chars, stringBuffer );
+				remaining -= bytesRead;
+			} while ( remaining > 0 );
+
+			if ( !isCompleted )
+			{
+				this.ThrowBadUtf8Exception();
+			}
+
+			return stringBuffer.ToString();
+		}
+
+		public override bool Drain( uint size )
+		{
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( size == 0 )
+			{
+				return true;
+			}
+
+			if ( this._useStreamPosition )
+			{
+				var remaining = this._source.Length - this._source.Position;
+				if ( remaining >= size )
+				{
+					this._source.Position += size;
+					this._offset += size;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked(( int )Math.Min( size, Int32.MaxValue )) );
+				long remaining = size;
+				while ( remaining > 0 )
+				{
+					var reading = unchecked( ( int )Math.Min( remaining, dummyBufferForSkipping.Length ) );
+					this._lastOffset = this._offset;
+					var lastRead = this._source.Read( dummyBufferForSkipping, 0, reading );
+					this._offset += lastRead;
+					remaining -= lastRead;
+					if ( lastRead == 0 )
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+		}
+
 #if FEATURE_TAP
 
 		public override async Task<Byte> ReadByteAsync( CancellationToken cancellationToken )
@@ -611,6 +746,135 @@ namespace MsgPack
 				this.ThrowEofException( sizeof( double ) );
 				// never reaches
 				return default( double );
+			}
+		}
+
+		// TODO: Use Span<T>
+		public override async Task ReadAsync( byte[] buffer, int size, CancellationToken cancellationToken )
+		{
+#if DEBUG
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG
+
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( size == 0 )
+			{
+				return;
+			}
+
+			this._lastOffset = this._offset;
+			var remaining = size;
+			var offset = 0;
+			int read;
+
+			do
+			{
+				read = await this._source.ReadAsync( buffer, offset, remaining, cancellationToken ).ConfigureAwait( false );
+				remaining -= read;
+				offset += read;
+			} while ( read > 0 && remaining > 0 );
+
+			this._offset += offset;
+#if DEBUG
+			if ( this._source.CanSeek )
+			{
+				Contract.Assert( this._source.Position == this._offset, this._source.Position + "==" + this._offset );
+			}
+#endif // DEBUG
+
+			if ( offset < size )
+			{
+				this.ThrowEofException( size );
+			}
+		}
+
+		public override async Task<string> ReadStringAsync( int length, CancellationToken cancellationToken )
+		{
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( length == 0 )
+			{
+				return String.Empty;
+			}
+
+			var bytes = BufferManager.NewByteBuffer( length );
+
+			if ( length <= bytes.Length )
+			{
+				await this.ReadAsync( bytes, length, cancellationToken ).ConfigureAwait( false );
+				return Encoding.UTF8.GetString( bytes, 0, length );
+			}
+
+			var decoder = Encoding.UTF8.GetDecoder();
+			var chars = BufferManager.NewCharBuffer( bytes.Length );
+			var stringBuffer = new StringBuilder( length );
+			var remaining = length;
+			bool isCompleted;
+			do
+			{
+				var reading = Math.Min( remaining, bytes.Length );
+				this._lastOffset = this._offset;
+				var bytesRead = await this._source.ReadAsync( bytes, 0, reading, cancellationToken ).ConfigureAwait( false );
+				this._offset += bytesRead;
+				if ( bytesRead == 0 )
+				{
+					this.ThrowEofException( reading );
+				}
+
+				isCompleted = decoder.DecodeString( bytes, 0, bytesRead, chars, stringBuffer );
+				remaining -= bytesRead;
+			} while ( remaining > 0 );
+
+			if ( !isCompleted )
+			{
+				this.ThrowBadUtf8Exception();
+			}
+
+			return stringBuffer.ToString();
+		}
+
+		public override async Task<bool> DrainAsync( uint size, CancellationToken cancellationToken )
+		{
+			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
+			if ( size == 0 )
+			{
+				return true;
+			}
+
+			if ( this._useStreamPosition )
+			{
+				var remaining = this._source.Length - this._source.Position;
+				if ( remaining >= size )
+				{
+					this._source.Position += size;
+					this._offset += size;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				var dummyBufferForSkipping = BufferManager.NewByteBuffer( unchecked(( int )Math.Min( size, Int32.MaxValue )) );
+				long remaining = size;
+				while ( remaining > 0 )
+				{
+					var reading = unchecked( ( int )Math.Min( remaining, dummyBufferForSkipping.Length ) );
+					this._lastOffset = this._offset;
+					var lastRead = await this._source.ReadAsync( dummyBufferForSkipping, 0, reading, cancellationToken ).ConfigureAwait( false );
+					this._offset += lastRead;
+					remaining -= lastRead;
+					if ( lastRead == 0 )
+					{
+						return false;
+					}
+				}
+
+				return true;
 			}
 		}
 
