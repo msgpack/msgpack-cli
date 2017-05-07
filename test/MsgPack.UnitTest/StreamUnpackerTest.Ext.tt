@@ -22,21 +22,10 @@ var variableVariations =
 	{
 		// Label, Header Format, Length of Length, Actual Value Length
 		Tuple.Create( "Ext8", "0xC7, 0, {0}", 1, 0 ),
-		Tuple.Create( "Ext8", "0xC7, 1, {0}", 1, 1 ),
-		Tuple.Create( "Ext8", "0xC7, 17, {0}", 1, 17 ),
 		Tuple.Create( "Ext8", "0xC7, 0xFF, {0}", 1, 0xFF ),
 		Tuple.Create( "Ext16", "0xC8, 0, 0, {0}", 2, 0 ),
-		Tuple.Create( "Ext16", "0xC8, 0, 1, {0}", 2, 1 ),
-		Tuple.Create( "Ext16", "0xC8, 0, 17, {0}", 2, 17 ),
-		Tuple.Create( "Ext16", "0xC8, 0, 0xFF, {0}", 2, 0xFF ),
-		Tuple.Create( "Ext16", "0xC8, 1, 0, {0}", 2, 0x100 ),
 		Tuple.Create( "Ext16", "0xC8, 0xFF, 0xFF, {0}", 2, 0xFFFF ),
 		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 0, {0}", 4, 0 ),
-		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 1, {0}", 4, 1 ),
-		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 17, {0}", 4, 17 ),
-		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 0xFF, {0}", 4, 0xFF ),
-		Tuple.Create( "Ext32", "0xC9, 0, 0, 1, 0, {0}", 4, 0x100 ),
-		Tuple.Create( "Ext32", "0xC9, 0, 0, 0xFF, 0xFF, {0}", 4, 0xFFFF ),
 		Tuple.Create( "Ext32", "0xC9, 0, 1, 0, 0, {0}", 4, 0x10000 ),
 	};
 
@@ -77,8 +66,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from StreamUnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit StreamUnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from StreamUnpackerTest.Ext.tt T4Template.
+	// Do not modify this file. Edit StreamUnpackerTest.Ext.tt instead.
 
 	partial class StreamUnpackerTest
 	{

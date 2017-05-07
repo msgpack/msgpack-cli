@@ -18,27 +18,12 @@ var strVariations =
 	{
 		// Label, Length, Header Bytes, Header Type
 		Tuple.Create( "FixStr", 0, "0xA0", "String" ),
-		Tuple.Create( "FixStr", 1, "0xA1", "String" ),
 		Tuple.Create( "FixStr", 0x1F, "0xBF", "String" ),
 		Tuple.Create( "Str8", 0, "0xD9, 0", "String" ),
-		Tuple.Create( "Str8", 1, "0xD9, 1", "String" ),
-		Tuple.Create( "Str8", 0x1F, "0xD9, 0x1F", "String" ),
-		Tuple.Create( "Str8", 0x20, "0xD9, 0x20", "String" ),
 		Tuple.Create( "Str8", 0xFF, "0xD9, 0xFF", "String" ),
 		Tuple.Create( "Str16", 0, "0xDA, 0, 0", "String" ),
-		Tuple.Create( "Str16", 1, "0xDA, 0, 1", "String" ),
-		Tuple.Create( "Str16", 0x1F, "0xDA, 0, 0x1F", "String" ),
-		Tuple.Create( "Str16", 0x20, "0xDA, 0, 0x20", "String" ),
-		Tuple.Create( "Str16", 0xFF, "0xDA, 0, 0xFF", "String" ),
-		Tuple.Create( "Str16", 0x100, "0xDA, 1, 0", "String" ),
 		Tuple.Create( "Str16", 0xFFFF, "0xDA, 0xFF, 0xFF", "String" ),
 		Tuple.Create( "Str32", 0, "0xDB, 0, 0, 0, 0", "String" ),
-		Tuple.Create( "Str32", 1, "0xDB, 0, 0, 0, 1", "String" ),
-		Tuple.Create( "Str32", 0x1F, "0xDB, 0, 0, 0, 0x1F", "String" ),
-		Tuple.Create( "Str32", 0x20, "0xDB, 0, 0, 0, 0x20", "String" ),
-		Tuple.Create( "Str32", 0xFF, "0xDB, 0, 0, 0, 0xFF", "String" ),
-		Tuple.Create( "Str32", 0x100, "0xDB, 0, 0, 1, 0", "String" ),
-		Tuple.Create( "Str32", 0xFFFF, "0xDB, 0, 0, 0xFF, 0xFF", "String" ),
 		Tuple.Create( "Str32", 0x10000, "0xDB, 0, 1, 0, 0", "String" ),
 	};
 
@@ -47,24 +32,10 @@ var binVariations =
 	{
 		// Label, Length, Header Bytes, Header Type
 		Tuple.Create( "Bin8", 0, "0xC4, 0", "Byte[]" ),
-		Tuple.Create( "Bin8", 1, "0xC4, 1", "Byte[]" ),
-		Tuple.Create( "Bin8", 0x1F, "0xC4, 0x1F", "Byte[]" ),
-		Tuple.Create( "Bin8", 0x20, "0xC4, 0x20", "Byte[]" ),
 		Tuple.Create( "Bin8", 0xFF, "0xC4, 0xFF", "Byte[]" ),
 		Tuple.Create( "Bin16", 0, "0xC5, 0, 0", "Byte[]" ),
-		Tuple.Create( "Bin16", 1, "0xC5, 0, 1", "Byte[]" ),
-		Tuple.Create( "Bin16", 0x1F, "0xC5, 0, 0x1F", "Byte[]" ),
-		Tuple.Create( "Bin16", 0x20, "0xC5, 0, 0x20", "Byte[]" ),
-		Tuple.Create( "Bin16", 0xFF, "0xC5, 0, 0xFF", "Byte[]" ),
-		Tuple.Create( "Bin16", 0x100, "0xC5, 1, 0", "Byte[]" ),
 		Tuple.Create( "Bin16", 0xFFFF, "0xC5, 0xFF, 0xFF", "Byte[]" ),
 		Tuple.Create( "Bin32", 0, "0xC6, 0, 0, 0, 0", "Byte[]" ),
-		Tuple.Create( "Bin32", 1, "0xC6, 0, 0, 0, 1", "Byte[]" ),
-		Tuple.Create( "Bin32", 0x1F, "0xC6, 0, 0, 0, 0x1F", "Byte[]" ),
-		Tuple.Create( "Bin32", 0x20, "0xC6, 0, 0, 0, 0x20", "Byte[]" ),
-		Tuple.Create( "Bin32", 0xFF, "0xC6, 0, 0, 0, 0xFF", "Byte[]" ),
-		Tuple.Create( "Bin32", 0x100, "0xC6, 0, 0, 1, 0", "Byte[]" ),
-		Tuple.Create( "Bin32", 0xFFFF, "0xC6, 0, 0, 0xFF, 0xFF", "Byte[]" ),
 		Tuple.Create( "Bin32", 0x10000, "0xC6, 0, 1, 0, 0", "Byte[]" ),
 	};
 
@@ -105,8 +76,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from StreamUnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit StreamUnpackerTest.Raw.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from StreamUnpackerTest.Raw.tt T4Template.
+	// Do not modify this file. Edit StreamUnpackerTest.Raw.tt instead.
 
 	partial class StreamUnpackerTest
 	{
