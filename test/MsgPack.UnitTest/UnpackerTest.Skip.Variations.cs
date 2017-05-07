@@ -34,8 +34,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from UnpackerTest.Skip.Veriations.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit UnpackerTest.Skip.Veriations.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from UnpackerTest.Skip.Veriations.tt T4Template.
+	// Do not modify this file. Edit UnpackerTest.Skip.Veriations.tt instead.
 
 	// ReSharper disable once InconsistentNaming
 	partial class UnpackerTest

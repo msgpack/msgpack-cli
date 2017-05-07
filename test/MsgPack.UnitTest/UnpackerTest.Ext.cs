@@ -34,8 +34,8 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from UnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit UnpackerTest.Ext.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from UnpackerTest.Ext.tt T4Template.
+	// Do not modify this file. Edit UnpackerTest.Ext.tt instead.
 
 	partial class UnpackerTest
 	{
