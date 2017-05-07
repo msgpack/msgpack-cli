@@ -40,7 +40,7 @@ namespace MsgPack
 			get { return false; }
 		}
 
-		protected override Unpacker CreateUnpacker( byte[] source )
+		protected override ByteArrayUnpacker CreateUnpacker( ArraySegment<byte> source )
 		{
 			return Unpacker.Create( source, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None } );
 		}

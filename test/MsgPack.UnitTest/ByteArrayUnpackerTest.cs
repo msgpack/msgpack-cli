@@ -18,6 +18,7 @@
 //
 #endregion -- License Terms --
 
+using System;
 using System.IO;
 #if !MSTEST
 #else
@@ -42,6 +43,25 @@ namespace MsgPack
 			return this.CreateUnpacker( stream.ToArray() );
 		}
 
-		protected abstract Unpacker CreateUnpacker( byte[] source );
+		protected ByteArrayUnpacker CreateUnpacker( byte[] source )
+		{
+			return this.CreateUnpacker( new ArraySegment<byte>( source ) );
+		}
+
+		protected abstract ByteArrayUnpacker CreateUnpacker( ArraySegment<byte> source );
+
+		private static ArraySegment<byte> PrependAppendExtra( byte[] data )
+		{
+			var buffer = new byte[ data.Length + 2 ];
+			data.CopyTo( buffer, 1 );
+			buffer[ 0 ] = 0xC1;
+			buffer[ buffer.Length - 1 ] = 0xC1;
+			return new ArraySegment<byte>( buffer, 1, data.Length + 1 );
+		}
+
+		private static ArraySegment<byte> Limit( byte[] data )
+		{
+			return new ArraySegment<byte>( data, 0, data.Length - 1 );
+		}
 	}
 }

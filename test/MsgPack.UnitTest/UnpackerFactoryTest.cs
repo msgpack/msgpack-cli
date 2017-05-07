@@ -229,7 +229,7 @@ namespace MsgPack
 		[Test]
 		public void TestCreate_ByteArray_Int32_TooLargeOffset()
 		{
-			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 1 ], 2 ) ) { } } );
+			Assert.Throws<ArgumentOutOfRangeException>( () => { using ( Unpacker.Create( new byte[ 1 ], 2 ) ) { } } );
 		}
 
 		[Test]

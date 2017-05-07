@@ -35,6 +35,15 @@ namespace MsgPack
 	{
 		private readonly ArraySegment<byte> _source;
 
+#if DEBUG
+
+		internal ArraySegment<byte> DebugSource
+		{
+			get { return this._source; }
+		}
+
+#endif // DEBUG
+
 		private int _offset;
 
 		public override long Offset

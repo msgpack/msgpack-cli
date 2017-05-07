@@ -881,6 +881,21 @@
     </Compile>
     <Compile Include="SplittingStream.cs" />
     <Compile Include="StreamUnpackerTest.cs" />
+    <Compile Include="ByteArrayUnpackerTest.Ext.cs">
+      <DependentUpon>ByteArrayUnpackerTest.Ext.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ByteArrayUnpackerTest.Raw.cs">
+      <DependentUpon>ByteArrayUnpackerTest.Raw.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ByteArrayUnpackerTest.Scalar.cs">
+      <DependentUpon>ByteArrayUnpackerTest.Scalar.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="UnpackerFactoryTest.cs" />
     <Compile Include="UnpackerTest.Subtree.cs" />
     <Compile Include="UnpackerTest.cs">
@@ -1318,6 +1333,18 @@
     <None Include="StreamUnpackerTest.Ext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StreamUnpackerTest.Ext.cs</LastGenOutput>
+    </None>
+    <None Include="ByteArrayUnpackerTest.Ext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ByteArrayUnpackerTest.Ext.cs</LastGenOutput>
+    </None>
+    <None Include="ByteArrayUnpackerTest.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ByteArrayUnpackerTest.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="ByteArrayUnpackerTest.Scalar.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ByteArrayUnpackerTest.Scalar.cs</LastGenOutput>
     </None>
     <Content Include="UnpackerTest.Skip.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
