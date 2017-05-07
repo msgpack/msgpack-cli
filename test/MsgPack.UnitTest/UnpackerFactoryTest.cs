@@ -123,9 +123,8 @@ namespace MsgPack
 			}
 		}
 
-
 		[Test]
-		public void TestCreate_DefaultValidationLevel()
+		public void TestCreate_Stream_DefaultValidationLevel()
 		{
 			using ( var stream = new MemoryStream() )
 			using ( var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.None, default( UnpackerOptions ) ) )
@@ -133,8 +132,9 @@ namespace MsgPack
 				Assert.That( unpacker, Is.InstanceOf<CollectionValidatingStreamUnpacker>() );
 			}
 		}
+
 		[Test]
-		public void TestCreate_CollectionValidationLevel()
+		public void TestCreate_Stream_CollectionValidationLevel()
 		{
 			using ( var stream = new MemoryStream() )
 			using ( var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.None, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } ) )
@@ -142,8 +142,9 @@ namespace MsgPack
 				Assert.That( unpacker, Is.InstanceOf<CollectionValidatingStreamUnpacker>() );
 			}
 		}
+
 		[Test]
-		public void TestCreate_NoneValidationLevel()
+		public void TestCreate_Stream_NoneValidationLevel()
 		{
 			using ( var stream = new MemoryStream() )
 			using ( var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.None, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None } ) )
@@ -152,6 +153,215 @@ namespace MsgPack
 			}
 		}
 
-#warning TODO: ByteArray
+		private static void AssertSource( ByteArrayUnpacker unpacker, byte[] array, int expectedOffset, int expectedCount )
+		{
+			Assert.That( unpacker, Is.InstanceOf<DefaultByteArrayUnpacker>() );
+			Assert.That( ( unpacker as DefaultByteArrayUnpacker ).Core, Is.InstanceOf<MessagePackUnpacker<ByteArrayUnpackerReader>>() );
+			var core = ( unpacker as DefaultByteArrayUnpacker ).Core as MessagePackUnpacker<ByteArrayUnpackerReader>;
+			Assert.That( core.Reader.DebugSource.Array, Is.SameAs( array ) );
+			Assert.That( core.Reader.DebugSource.Offset, Is.EqualTo( expectedOffset ) );
+			Assert.That( core.Reader.DebugSource.Count, Is.EqualTo( expectedCount ) );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_EntireArray()
+		{
+			var array = Guid.NewGuid().ToByteArray();
+
+			using ( var unpacker = Unpacker.Create( array ) )
+			{
+				AssertSource( unpacker, array, 0, array.Length );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_ArrayIsNull()
+		{
+			Assert.Throws<ArgumentNullException>( () => { using ( Unpacker.Create( default( byte[] ) ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_ArrayIsEmpty()
+		{
+			var array = new byte[ 0 ];
+
+			using ( var unpacker = Unpacker.Create( array ) )
+			{
+				AssertSource( unpacker, array, 0, array.Length );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Offset()
+		{
+			var array = Guid.NewGuid().ToByteArray();
+			var offset = 1;
+
+			using ( var unpacker = Unpacker.Create( array, offset ) )
+			{
+				AssertSource( unpacker, array, offset, array.Length - offset );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Empty()
+		{
+			var array = new byte[ 0 ];
+
+			using ( var unpacker = Unpacker.Create( array, 0 ) )
+			{
+				AssertSource( unpacker, array, 0, array.Length );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_ArrayIsNull()
+		{
+			Assert.Throws<ArgumentNullException>( () => { using ( Unpacker.Create( default( byte[] ), 0 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_NegativeOffset()
+		{
+			Assert.Throws<ArgumentOutOfRangeException>( () => { using ( Unpacker.Create( new byte[ 0 ], -1 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_TooLargeOffset()
+		{
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 1 ], 2 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_OffsetAndCount()
+		{
+			var array = Guid.NewGuid().ToByteArray();
+			var offset = 1;
+			var count = 2;
+
+			using ( var unpacker = Unpacker.Create( array, offset, count ) )
+			{
+				AssertSource( unpacker, array, offset, count );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_Empty()
+		{
+			var array = new byte[ 0 ];
+
+			using ( var unpacker = Unpacker.Create( array, 0, 0 ) )
+			{
+				AssertSource( unpacker, array, 0, 0 );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_Bound()
+		{
+			var array = new byte[ 2 ];
+
+			using ( var unpacker = Unpacker.Create( array, 1, 1 ) )
+			{
+				AssertSource( unpacker, array, 1, 1 );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_ArrayIsNull()
+		{
+			Assert.Throws<ArgumentNullException>( () => { using ( Unpacker.Create( default( byte[] ), 0, 0 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_NegativeOffset()
+		{
+			Assert.Throws<ArgumentOutOfRangeException>( () => { using ( Unpacker.Create( new byte[ 0 ], -1, 0 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_TooLargeOffset()
+		{
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 1 ], 2, 0 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_NegativeCount()
+		{
+			Assert.Throws<ArgumentOutOfRangeException>( () => { using ( Unpacker.Create( new byte[ 0 ], 0, -1 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_TooLargeCount()
+		{
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 1 ], 0, 2 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArray_Int32_Int32_TooLargeCombination()
+		{
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 1 ], 1, 1 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegment_EntireArray()
+		{
+			var array = new ArraySegment<byte>( Guid.NewGuid().ToByteArray() );
+
+			using ( var unpacker = Unpacker.Create( array ) )
+			{
+				AssertSource( unpacker, array.Array, array.Offset, array.Count );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegment_ArrayIsNull()
+		{
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( default( ArraySegment<byte> ) ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegment_ArrayIsEmpty()
+		{
+			var array = new ArraySegment<byte>( new byte[ 0 ] );
+
+			using ( var unpacker = Unpacker.Create( array ) )
+			{
+				AssertSource( unpacker, array.Array, array.Offset, array.Count );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegment_DefaultValidationLevel()
+		{
+			var array = new ArraySegment<byte>( Guid.NewGuid().ToByteArray() );
+
+			using ( var unpacker = Unpacker.Create( array, default( UnpackerOptions ) ) )
+			{
+				Assert.That( unpacker, Is.InstanceOf<CollectionValidatingByteArrayUnpacker>() );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegment_CollectionValidationLevel()
+		{
+			var array = new ArraySegment<byte>( Guid.NewGuid().ToByteArray() );
+
+			using ( var unpacker = Unpacker.Create( array, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } ) )
+			{
+				Assert.That( unpacker, Is.InstanceOf<CollectionValidatingByteArrayUnpacker>() );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegment_NoneValidationLevel()
+		{
+			var array = new ArraySegment<byte>( Guid.NewGuid().ToByteArray() );
+
+			using ( var unpacker = Unpacker.Create( array, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None } ) )
+			{
+				Assert.That( unpacker, Is.InstanceOf<FastByteArrayUnpacker>() );
+			}
+		}
 	}
 }
