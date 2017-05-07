@@ -4,6 +4,7 @@
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
 <#
 
 var testSituations =
@@ -129,9 +130,9 @@ private void PutTest( Tuple<string, string, string, string, bool> testSituation,
 	PutTestMethod( readDirectMethodPrefix, testSituation, testCase, canConvertToString, PutTestUnpackDirectBody, isAsync );
 }
 
-private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool isExtra, int expectedReadLength, bool isAsync )
+private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool isExtraOrSplit, int expectedReadLength, bool isAsync )
 {
-	if ( isExtra )
+	if ( isExtraOrSplit )
 	{
 		if ( !isAsync )
 		{
@@ -142,7 +143,7 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 		else
 		{
 #>
-				Assert.Is<#= isExtra #>( await unpacker.ReadAsync() );
+				Assert.IsTrue( await unpacker.ReadAsync() );
 <#+
 		}
 #>
@@ -195,8 +196,6 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 				Assert.That( result.Value.IsTypeOf( typeof( byte[] ) ).GetValueOrDefault() );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 <#+
 	}
 	else
@@ -217,16 +216,13 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedReadLength #> ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( <#= expectedReadLength #> ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - <#= expectedReadLength + 1 #> ) );
 <#+
 	}
 }
 
-private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool isExtra, int expectedReadLength, bool isAsync )
+private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool isExtraOrSplit, int expectedReadLength, bool isAsync )
 {
-	if ( !isAsync || isExtra )
+	if ( !isAsync || isExtraOrSplit )
 	{
 #>
 				<#= testSituation.Item2 #> result;
@@ -234,7 +230,7 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 <#+
 	}
 
-	if ( isExtra )
+	if ( isExtraOrSplit )
 	{
 		if ( !isAsync )
 		{
@@ -246,7 +242,7 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 		{
 #>
 				var ret = await unpacker.Read<#= testSituation.Item1 #>Async();
-				Assert.Is<#= isExtra #>( ret.Success );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#+
 		}
@@ -255,8 +251,6 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 				Assert.That( result, Is.EqualTo( <#= expectedValue #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 <#+
 	}
 	else
@@ -277,9 +271,6 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedReadLength #> ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( <#= expectedReadLength #> ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - <#= expectedReadLength + 1 #> ) );
 <#+
 	}
 }
@@ -320,7 +311,28 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 #>
 			}
 		}
+
 <#+
+				var length = testCase.Item3.Count( c => c == ',' ) + testCase.Item2;
+				if ( length > 2 )
+				{
+#>
+		[Test]
+		public <#= AsyncVoid( isAsync ) #> <#= methodName #>_Splitted()
+		{
+			var data =
+				new byte[] { <#= testCase.Item3 #> }
+				.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= testCase.Item2 #> ) ).ToArray();
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+<#+
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, true, testCase.Item5, isAsync );
+#>
+			}
+		}
+
+<#+
+				} // if length > 2
 	}
 }
 

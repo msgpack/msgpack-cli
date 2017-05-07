@@ -44,10 +44,22 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Empty_Null()
 		{
-			using ( var stream = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = this.CreateUnpacker( stream ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				Assert.That( target.Skip(), Is.Null );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					Assert.That( target.Skip(), Is.Null );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 
@@ -443,12 +455,24 @@ namespace MsgPack
 #if FEATURE_TAP
 
 		[Test]
-		public async Task TestSkipAsync_Empty_Null()
+		public void TestSkipAsync_Empty_Null()
 		{
-			using ( var stream = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = this.CreateUnpacker( stream ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				Assert.That( await target.SkipAsync(), Is.Null );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					Assert.That( target.SkipAsync().Result, Is.Null );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 

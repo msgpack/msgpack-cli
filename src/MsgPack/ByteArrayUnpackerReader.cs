@@ -19,7 +19,14 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Globalization;
+using System.Linq;
 using System.Text;
 #if FEATURE_TAP
 using System.Threading;
@@ -33,75 +40,212 @@ namespace MsgPack
 	/// </summary>
 	internal sealed partial class ByteArrayUnpackerReader : UnpackerReader
 	{
-		private readonly ArraySegment<byte> _source;
+		private readonly byte[] _scalarBuffer = new byte[ 8 ];
+		// TODO: Use Span<byte> and keep ArraySegment<byte>[] as _originalByteArraySegments for GetRemainingBytes();
+		private readonly IList<ArraySegment<byte>> _sources;
+
+		private int _currentSourceIndex;
+
+		// TODO: Use Span<byte>
+		private ArraySegment<byte> _currentSource;
 
 #if DEBUG
 
 		internal ArraySegment<byte> DebugSource
 		{
-			get { return this._source; }
+			get { return this._sources[ this._currentSourceIndex ]; }
+		}
+
+		internal IList<ArraySegment<byte>> DebugBuffers
+		{
+			get { return this._sources; }
 		}
 
 #endif // DEBUG
 
-		private int _offset;
-
 		public override long Offset
 		{
-			get { return this._offset; }
+			get
+			{
+				return
+					this._sources.Take( this._currentSourceIndex ).Sum( x => x.Count )
+					+ this._currentSource.Offset - this._sources[ this._currentSourceIndex ].Offset;
+			}
+		}
+
+		public int CurrentSourceOffset
+		{
+			get { return this._currentSource.Offset; }
+		}
+
+		public int CurrentSourceIndex
+		{
+			get { return this._currentSourceIndex; }
 		}
 
 		public override bool GetPreviousPosition( out long offsetOrPosition )
 		{
-			offsetOrPosition = this._offset;
+			offsetOrPosition = this._sources[ this._currentSourceIndex ].Offset;
 			return false;
 		}
 
+		// TODO: Use Span<byte>
 		public ByteArrayUnpackerReader( ArraySegment<byte> source )
 		{
-			if ( source.Array == null )
+			if ( source.Array == null || source.Count == 0)
 			{
-				throw new ArgumentException( "Source must have non null Array.", "source" );
+				throw new ArgumentException( "Source must have non null, non-empty Array.", "source" );
 			}
 
-			this._source = source;
+			this._sources = new[] { source };
+			this._currentSourceIndex = 0;
+			this._currentSource = source;
 		}
 
-		private void ReadStrictCore( byte[] buffer, int size )
+		// TODO: Use Span<byte>
+		public ByteArrayUnpackerReader( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
 		{
-			var remaining = this._source.Count - this.Offset;
-			if ( remaining < size )
+			if ( sources == null )
 			{
-				this.ThrowEofException( size );
+				throw new ArgumentNullException( "source" );
 			}
 
-			Buffer.BlockCopy( this._source.Array, this._source.Offset + this._offset, buffer, 0, size );
-			this._offset += size;
+			if ( startIndex < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "The value cannot be negative.", "startIndex" );
+			}
+
+			if ( startOffset < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "The value cannot be negative.", "startOffset" );
+			}
+
+			if ( sources.Count == 0 )
+			{
+				throw new ArgumentException( "Sources cannot be empty.", "sources" );
+			}
+
+			if ( sources.Any( x => x.Array == null || x.Count == 0 ) )
+			{
+				throw new ArgumentException( "Sources contains null or empty Array.", "sources" );
+			}
+
+			if ( sources.Count <= startIndex )
+			{
+				throw new ArgumentException( "Sources is too small." );
+			}
+
+			this._sources = sources;
+			this._currentSourceIndex = startIndex;
+			var startSource = this._sources[ startIndex ];
+			var skip = startOffset - startSource.Offset;
+			if ( skip < 0 )
+			{
+				throw new ArgumentException( "The value cannot be smaller than the array segment Offset.", "startOffset" );
+			}
+
+			if ( skip > startSource.Count )
+			{
+				throw new ArgumentException( "The offset cannot exceed the array segment Count.", "startOffset" );
+			}
+
+			this._currentSource = startSource.Slice( skip );
+		}
+
+		private bool ShiftSourceIfNeeded( ref ArraySegment<byte> currentSource, ref int currentSourceIndex )
+		{
+			if ( currentSource.Count == 0 )
+			{
+				// try shift to next buffer
+				currentSourceIndex++;
+				if ( this._sources.Count == currentSourceIndex )
+				{
+					return false;
+				}
+
+				currentSource = this._sources[ currentSourceIndex ];
+			}
+
+			return true;
+		}
+
+		// TODO: Use Span<byte>
+		public bool TryRead( byte[] buffer, int requestedSize )
+		{
+			if ( requestedSize == 0 )
+			{
+				return true;
+			}
+			
+			if ( this._currentSource.Count >= requestedSize )
+			{
+				// fast path
+				// TODO: Use currentSource.CopyTo( buffer, requestedSize );
+				Buffer.BlockCopy( this._currentSource.Array, this._currentSource.Offset, buffer, 0, requestedSize );
+				this._currentSource = this._currentSource.Slice( requestedSize );
+				return true;
+			}
+
+			return this.TryReadSlow( buffer, requestedSize );
+		}
+
+		// TODO: Use Span<T>
+		private bool TryReadSlow( byte[] buffer, int requestedSize )
+		{
+			var currentSource = this._currentSource;
+			var currentSourceIndex = this._currentSourceIndex;
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+			{
+				return false;
+			}
+
+			var remaining = requestedSize;
+			var destinationOffset = 0;
+
+			do
+			{
+				var copying = Math.Min( currentSource.Count, remaining );
+				// TODO: Use currentSource.CopyTo( buffer, copying );
+				Buffer.BlockCopy( currentSource.Array, currentSource.Offset, buffer, destinationOffset, copying );
+				remaining -= copying;
+				currentSource = currentSource.Slice( copying );
+#if DEBUG
+				Contract.Assert( remaining >= 0, "remaining >= 0" );
+#endif // DEBUG
+
+				if ( remaining <= 0 )
+				{
+					// Finish
+					break;
+				}
+
+				destinationOffset += copying;
+
+				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+				{
+					return false;
+				}
+			} while ( true );
+
+			this._currentSourceIndex = currentSourceIndex;
+			this._currentSource = currentSource;
+			return true;
 		}
 
 		// TODO: Use Span<T>
 		public override void Read( byte[] buffer, int size )
 		{
-			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
-			if ( size == 0 )
+			if ( !this.TryRead( buffer, size ) )
 			{
-				return;
+				this.ThrowEofException( size );
 			}
-
-			this.ReadStrictCore( buffer, size );
 		}
 
 #if FEATURE_TAP
 
 		public override Task ReadAsync( byte[] buffer, int size, CancellationToken cancellationToken )
 		{
-			// Reading 0 byte from stream causes exception in some implementation (issue #60, reported from @odyth).
-			if ( size == 0 )
-			{
-				return TaskAugument.CompletedTask;
-			}
-
-			this.ReadStrictCore( buffer, size );
+			this.Read( buffer, size );
 			return TaskAugument.CompletedTask;
 		}
 
@@ -109,15 +253,72 @@ namespace MsgPack
 
 		public override string ReadString( int length )
 		{
-			if ( this._source.Count - this._offset < length )
+			if ( length == 0 )
 			{
-				this.ThrowEofException( length );
+				return String.Empty;
+			}
+			
+			if ( this._currentSource.Count - this._currentSource.Offset >= length )
+			{
+				// fast path
+				var result = Encoding.UTF8.GetString( this._currentSource.Array, this._currentSource.Offset, length );
+				this._currentSource = this._currentSource.Slice( length );
+				return result;
 			}
 
-			var result = Encoding.UTF8.GetString( this._source.Array, this._source.Offset + this._offset, length );
-			this._offset += length;
-			return result;
+			// Slow path
+			return this.ReadStringSlow( length );
 		}
+
+		private string ReadStringSlow( int requestedSize )
+		{
+			var currentSource = this._currentSource;
+			var currentSourceIndex = this._currentSourceIndex;
+
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+			{
+				this.ThrowEofException( requestedSize );
+			}
+
+			var remaining = requestedSize;
+
+			var decoder = Encoding.UTF8.GetDecoder();
+			var charBuffer = BufferManager.NewCharBuffer( requestedSize );
+			var result = new StringBuilder( requestedSize );
+			bool isCompleted;
+			do
+			{
+				var decoding = Math.Min( currentSource.Count, remaining );
+				isCompleted = decoder.DecodeString( currentSource.Array, currentSource.Offset, decoding, charBuffer, result );
+				remaining -= decoding;
+				currentSource = currentSource.Slice( decoding );
+
+#if DEBUG
+				Contract.Assert( remaining >= 0, "remaining >= 0" );
+#endif // DEBUG
+
+				if ( remaining <= 0 )
+				{
+					// Finish
+					break;
+				}
+
+				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+				{
+					this.ThrowEofException( requestedSize );
+				}
+			} while ( true );
+
+			if ( !isCompleted )
+			{
+				this.ThrowBadUtf8Exception();
+			}
+
+			this._currentSourceIndex = currentSourceIndex;
+			this._currentSource = currentSource;
+			return result.ToString();
+		}
+
 
 #if FEATURE_TAP
 
@@ -130,15 +331,41 @@ namespace MsgPack
 
 		public override bool Drain( uint size )
 		{
-			if ( size > Int32.MaxValue )
+			if ( size == 0 )
+			{
+				// 0 byte drain always success.
+				return true;
+			}
+
+			long remaining = size;
+
+			var currentSource = this._currentSource;
+			var currentSourceIndex = this._currentSourceIndex;
+
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
 			{
 				return false;
 			}
-
-			if ( this._source.Count - this._offset >= size )
+			
+			while ( remaining > 0 )
 			{
-				this._offset += unchecked( ( int )size );
-				return true;
+				var currentSourceSize = currentSource.Count;
+				if ( remaining <= currentSourceSize )
+				{
+					this._currentSourceIndex = currentSourceIndex;
+					this._currentSource = currentSource.Slice( unchecked( ( int )remaining) );
+					return true;
+				}
+
+				remaining -= currentSourceSize;
+				// try shift to next buffer
+				currentSourceIndex++;
+				if ( this._sources.Count == currentSourceIndex )
+				{
+					break;
+				}
+
+				currentSource = this._sources[ CurrentSourceIndex ];
 			}
 
 			return false;
@@ -156,13 +383,26 @@ namespace MsgPack
 		private void ThrowEofException( long reading )
 		{
 			throw new InvalidMessagePackStreamException(
-					String.Format(
-						CultureInfo.CurrentCulture,
-						"Data source unexpectedly ends. Cannot read {0:#,0} bytes from byte array segment at offset {1:#,0}.",
-						reading,
-						this._offset
-					)
-				);
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"Data source unexpectedly ends. Cannot read {0:#,0} bytes at offset {1:#,0}, buffer index {2}.",
+					reading,
+					this._currentSource.Offset,
+					this._currentSourceIndex
+				)
+			);
+		}
+
+		private void ThrowBadUtf8Exception()
+		{
+			throw new InvalidMessagePackStreamException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					"Data source has invalid UTF-8 sequence. Last code point at offset {1:#,0}, buffer index {2} is not completed.",
+					this._currentSource.Offset,
+					this._currentSourceIndex
+				)
+			);
 		}
 	}
 }

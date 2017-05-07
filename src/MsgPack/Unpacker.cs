@@ -394,6 +394,66 @@ namespace MsgPack
 			}
 		}
 
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array list.
+		/// </summary>
+		/// <param name="sources">The list of source byte array.</param>
+		/// <param name="startOffset">
+		///		The start offset of <see cref="ArraySegment{T}"/> of <paramref name="sources"/> at <paramref name="startIndex"/>.
+		///		Note that this is not relative, but absolute offset to get subarray from the <see cref="ArraySegment{T}"/>.
+		///	</param>
+		/// <param name="startIndex">The start index of <paramref name="sources"/>.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="startOffset"/> is negative.
+		///		Or <paramref name="startIndex"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">
+		///		The size of <paramref name="sources"/> is too small to specified <paramref name="startIndex"/>.
+		///		Or <paramref name="sources"/> contains any <see cref="ArraySegment{T}"/> which does not contain an array.
+		///		Or <paramref name="startOffset"/> is less than the <see cref="ArraySegment{T}.Offset"/>.
+		///		Or <paramref name="startOffset"/> is too large for the <see cref="ArraySegment{T}"/>.
+		///	</exception>
+		public static ByteArrayUnpacker Create( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
+		{
+			return Create( sources, startIndex, startOffset, null );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array list.
+		/// </summary>
+		/// <param name="sources">The list of source byte array.</param>
+		/// <param name="startOffset">
+		///		The start offset of <see cref="ArraySegment{T}"/> of <paramref name="sources"/> at <paramref name="startIndex"/>.
+		///		Note that this is not relative, but absolute offset to get subarray from the <see cref="ArraySegment{T}"/>.
+		///	</param>
+		/// <param name="startIndex">The start index of <paramref name="sources"/>.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="startOffset"/> is negative.
+		///		Or <paramref name="startIndex"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">
+		///		The size of <paramref name="sources"/> is too small to specified <paramref name="startIndex"/>.
+		///		Or <paramref name="sources"/> contains any <see cref="ArraySegment{T}"/> which does not contain an array.
+		///		Or <paramref name="startOffset"/> is less than the <see cref="ArraySegment{T}.Offset"/>.
+		///		Or <paramref name="startOffset"/> is too large for the <see cref="ArraySegment{T}"/>.
+		///	</exception>
+		public static ByteArrayUnpacker Create( IList<ArraySegment<byte>> sources, int startIndex, int startOffset, UnpackerOptions unpackerOptions )
+		{
+			if ( unpackerOptions == null || unpackerOptions.ValidationLevel == UnpackerValidationLevel.Collection )
+			{
+				return new CollectionValidatingByteArrayUnpacker( sources, startIndex, startOffset );
+			}
+			else
+			{
+				return new FastByteArrayUnpacker( sources, startIndex, startOffset );
+			}
+		}
+
 		#endregion -- Factories --
 
 		#region -- Ctor / Dispose --

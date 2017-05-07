@@ -33,6 +33,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 #if FEATURE_TAP
 using System.Threading;
@@ -48,8 +49,25 @@ namespace MsgPack
 foreach ( var spec in 
 	new []
 	{
-		new { Kind = "Stream",		Parameters = new Dictionary<string, string> { { "stream", "Stream" }, { "streamOptions", "PackerUnpackerStreamOptions" } } },
-		new { Kind = "ByteArray",	Parameters = new Dictionary<string, string> { { "source", "ArraySegment<byte>" } } },
+		new
+		{
+			Kind = "Stream",
+			ParametersList =
+				new []
+				{
+					new Dictionary<string, string> { { "stream", "Stream" }, { "streamOptions", "PackerUnpackerStreamOptions" } }
+				}
+		},
+		new
+		{
+			Kind = "ByteArray",
+			ParametersList =
+				new []
+				{
+					new Dictionary<string, string> { { "source", "ArraySegment<byte>" } },
+					new Dictionary<string, string> { { "sources", "IList<ArraySegment<byte>>" }, { "startIndex", "int" }, { "startOffset", "int" } }
+				}
+		}
 	}
 )
 {
@@ -57,9 +75,16 @@ foreach ( var spec in
 
 	internal sealed class Fast<#= spec.Kind #>Unpacker : Default<#= spec.Kind #>Unpacker
 	{
-		public Fast<#= spec.Kind #>Unpacker( <#= String.Join( ", ", spec.Parameters.Select( kv => kv.Value + " " + kv.Key ).ToArray() ) #> )
-			: base( <#= String.Join( ", ", spec.Parameters.Keys.ToArray() ) #> ) { }
+<#
+	foreach ( var parameters in spec.ParametersList )
+	{
+#>
+		public Fast<#= spec.Kind #>Unpacker( <#= String.Join( ", ", parameters.Select( kv => kv.Value + " " + kv.Key ).ToArray() ) #> )
+			: base( <#= String.Join( ", ", parameters.Keys.ToArray() ) #> ) { }
 
+<#
+	}
+#>
 		protected override Unpacker ReadSubtreeCore()
 		{
 			return this;
@@ -71,9 +96,16 @@ foreach ( var spec in
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;
 
-		public CollectionValidating<#= spec.Kind #>Unpacker( <#= String.Join( ", ", spec.Parameters.Select( kv => kv.Value + " " + kv.Key ).ToArray() ) #> )
-			: base( <#= String.Join( ", ", spec.Parameters.Keys.ToArray() ) #> ) { }
+<#
+	foreach ( var parameters in spec.ParametersList )
+	{
+#>
+		public CollectionValidating<#= spec.Kind #>Unpacker( <#= String.Join( ", ", parameters.Select( kv => kv.Value + " " + kv.Key ).ToArray() ) #> )
+			: base( <#= String.Join( ", ", parameters.Keys.ToArray() ) #> ) { }
 
+<#
+	}
+#>
 		internal override Unpacker InternalReadSubtree()
 		{
 			if ( !this.IsCollectionHeader )

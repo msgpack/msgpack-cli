@@ -28,46 +28,32 @@ namespace MsgPack
 	public abstract class ByteArrayUnpacker : Unpacker
 	{
 		/// <summary>
-		///		Gets the source bytes as <see cref="ArraySegment{T}"/>.
-		/// </summary>
-		/// <value>
-		///		The source bytes as <see cref="ArraySegment{T}"/>. The value will have non <c>null</c> array.
-		/// </value>
-		protected ArraySegment<byte> Source { get; private set; }
-
-		/// <summary>
 		///		Gets the bytes used by this instance.
 		/// </summary>
 		/// <value>
 		///		The bytes used by this instance. The initial state is <c>0</c>.
 		/// </value>
-		public abstract int BytesUsed { get;  }
+		public abstract long BytesUsed { get; }
+
+		/// <summary>
+		///		Gets the current index of sources.
+		/// </summary>
+		/// <value>
+		///		The current index of sources.
+		/// </value>
+		public abstract int CurrentSourceIndex { get; }
+
+		/// <summary>
+		///		Gets the current offset of the current source.
+		/// </summary>
+		/// <value>
+		///		The current offset of the current source.
+		/// </value>
+		public abstract int CurrentSourceOffset { get; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ByteArrayUnpacker"/> class.
 		/// </summary>
-		/// <param name="source">Source byte array.</param>
-		/// <exception cref="ArgumentException"><paramref name="source"/> does not have non <c>null</c> array.</exception>
-		protected ByteArrayUnpacker( ArraySegment<byte> source )
-		{
-			if ( source.Array == null )
-			{
-				throw new ArgumentException( "Source cannot be empty.", "source" );
-			}
-
-			this.Source = source;
-		}
-
-		/// <summary>
-		///		Gets the remaining bytes of <see cref="Source"/> as new <see cref="ArraySegment{T}"/>.
-		/// </summary>
-		/// <returns>
-		///		The remaining bytes as new <see cref="ArraySegment{T}"/>.
-		///		This value will contain valid array, but its <see cref="ArraySegment{T}.Count"/> can be <c>0</c>.
-		///	</returns>
-		public ArraySegment<byte> GetRemainingBytes()
-		{
-			return new ArraySegment<byte>( this.Source.Array, this.Source.Offset + this.BytesUsed, this.Source.Count - this.BytesUsed );
-		}
+		protected ByteArrayUnpacker() { }
 	}
 }

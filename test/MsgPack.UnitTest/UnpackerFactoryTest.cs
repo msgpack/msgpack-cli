@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 #if !MSTEST
 using NUnit.Framework;
@@ -183,12 +184,7 @@ namespace MsgPack
 		[Test]
 		public void TestCreate_ByteArray_ArrayIsEmpty()
 		{
-			var array = new byte[ 0 ];
-
-			using ( var unpacker = Unpacker.Create( array ) )
-			{
-				AssertSource( unpacker, array, 0, array.Length );
-			}
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 0 ] ) ) { } } );
 		}
 
 		[Test]
@@ -206,12 +202,7 @@ namespace MsgPack
 		[Test]
 		public void TestCreate_ByteArray_Int32_Empty()
 		{
-			var array = new byte[ 0 ];
-
-			using ( var unpacker = Unpacker.Create( array, 0 ) )
-			{
-				AssertSource( unpacker, array, 0, array.Length );
-			}
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 0 ], 0 ) ) { } } );
 		}
 
 		[Test]
@@ -248,12 +239,7 @@ namespace MsgPack
 		[Test]
 		public void TestCreate_ByteArray_Int32_Int32_Empty()
 		{
-			var array = new byte[ 0 ];
-
-			using ( var unpacker = Unpacker.Create( array, 0, 0 ) )
-			{
-				AssertSource( unpacker, array, 0, 0 );
-			}
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 0 ], 0, 0 ) ) { } } );
 		}
 
 		[Test]
@@ -323,12 +309,7 @@ namespace MsgPack
 		[Test]
 		public void TestCreate_ByteArraySegment_ArrayIsEmpty()
 		{
-			var array = new ArraySegment<byte>( new byte[ 0 ] );
-
-			using ( var unpacker = Unpacker.Create( array ) )
-			{
-				AssertSource( unpacker, array.Array, array.Offset, array.Count );
-			}
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new ArraySegment<byte>( new byte[ 0 ] ) ) ) { } } );
 		}
 
 		[Test]
@@ -359,6 +340,151 @@ namespace MsgPack
 			var array = new ArraySegment<byte>( Guid.NewGuid().ToByteArray() );
 
 			using ( var unpacker = Unpacker.Create( array, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None } ) )
+			{
+				Assert.That( unpacker, Is.InstanceOf<FastByteArrayUnpacker>() );
+			}
+		}
+
+		private static void AssertSources( ByteArrayUnpacker unpacker, IList<ArraySegment<byte>> sources, int expectedIndex, int expectedOffset )
+		{
+			Assert.That( unpacker, Is.InstanceOf<DefaultByteArrayUnpacker>() );
+			Assert.That( ( unpacker as DefaultByteArrayUnpacker ).Core, Is.InstanceOf<MessagePackUnpacker<ByteArrayUnpackerReader>>() );
+			var core = ( unpacker as DefaultByteArrayUnpacker ).Core as MessagePackUnpacker<ByteArrayUnpackerReader>;
+			Assert.That( core.Reader.DebugBuffers, Is.SameAs( sources ) );
+			Assert.That( core.Reader.CurrentSourceIndex, Is.EqualTo( expectedIndex ) );
+			Assert.That( core.Reader.CurrentSourceOffset, Is.EqualTo( expectedOffset ) );
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_Single()
+		{
+			var array = new [] { new ArraySegment<byte>( Guid.NewGuid().ToByteArray() ) };
+
+			using ( var unpacker = Unpacker.Create( array, 0, 0 ) )
+			{
+				AssertSources( unpacker, array, 0, 0 );
+			}
+		}
+
+		[Test]
+		[TestCase( 0, 0 )]
+		[TestCase( 0, 15 )]
+		[TestCase( 1, 8 )]
+		[TestCase( 2, 0 )]
+		[TestCase( 2, 15 )]
+		public void TestCreate_ByteArraySegmentList_Multiple(int index, int offset)
+		{
+			var array =
+				new []
+				{
+					new ArraySegment<byte>( Guid.NewGuid().ToByteArray() ),
+					new ArraySegment<byte>( Guid.NewGuid().ToByteArray() ),
+					new ArraySegment<byte>( Guid.NewGuid().ToByteArray() )
+				};
+
+			using ( var unpacker = Unpacker.Create( array, index, offset ) )
+			{
+				AssertSources( unpacker, array, index, offset );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_SourcesIsNull()
+		{
+			Assert.Throws<ArgumentNullException>( () => { using ( Unpacker.Create( default( IList<ArraySegment<byte>> ), 0, 0 ) ) { } } );
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_SourcesContainsNull()
+		{
+			Assert.Throws<ArgumentException>(
+				() => Unpacker.Create( new [] { new ArraySegment<byte>( new byte[ 1 ] ), default( ArraySegment<byte> ) }, 0, 0 )
+			);
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_SourcesContainsEmpty()
+		{
+			Assert.Throws<ArgumentException>(
+				() => Unpacker.Create( new [] { new ArraySegment<byte>( new byte[ 1 ] ), new ArraySegment<byte>( new byte[ 0 ] ) }, 0, 0 )
+			);
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_NegativeStartIndex()
+		{
+			Assert.Throws<ArgumentOutOfRangeException>(
+				() => Unpacker.Create( new [] { new ArraySegment<byte>( new byte[ 1 ] ) }, -1, 0 )
+			);
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_NegativeStartOffset()
+		{
+			Assert.Throws<ArgumentOutOfRangeException>(
+				() => Unpacker.Create( new [] { new ArraySegment<byte>( new byte[ 1 ] ) }, 0, -1 )
+			);
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_TooLargeStartIndex()
+		{
+			Assert.Throws<ArgumentException>(
+				() => Unpacker.Create( new [] { new ArraySegment<byte>( new byte[ 1 ] ) }, 1, 0 )
+			);
+		}
+
+		[Test]
+		[TestCase( 1, 2, 0 )] // too small
+		[TestCase( 1, 2, 4 )] // too large 
+		public void TestCreate_ByteArraySegmentList_TooLargeStartOffset( int segmentOffset, int segmentCount, int startOffset )
+		{
+			Assert.Throws<ArgumentException>(
+				() => Unpacker.Create( new [] { new ArraySegment<byte>( new byte[ 4 ], segmentOffset, segmentCount ) }, 0, startOffset )
+			);
+		}
+
+		[Test]
+		[TestCase( 1, 2, 1 )]
+		[TestCase( 1, 2, 3 )]
+		public void TestCreate_ByteArraySegmentList_StartOffset( int segmentOffset, int segmentCount, int startOffset )
+		{
+			var array = new[] { new ArraySegment<byte>( new byte[ 4 ], segmentOffset, segmentCount ) };
+
+			using ( var unpacker = Unpacker.Create( array, 0, startOffset, default( UnpackerOptions ) ) )
+			{
+				AssertSources( unpacker, array, 0, startOffset );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_DefaultValidationLevel()
+		{
+			var array = new [] { new ArraySegment<byte>( Guid.NewGuid().ToByteArray() ) };
+
+			using ( var unpacker = Unpacker.Create( array, 0, 0, default( UnpackerOptions ) ) )
+			{
+				Assert.That( unpacker, Is.InstanceOf<CollectionValidatingByteArrayUnpacker>() );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_CollectionValidationLevel()
+		{
+			var array = new [] { new ArraySegment<byte>( Guid.NewGuid().ToByteArray() ) };
+
+			using ( var unpacker = Unpacker.Create( array, 0, 0,  new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } ) )
+			{
+				Assert.That( unpacker, Is.InstanceOf<CollectionValidatingByteArrayUnpacker>() );
+			}
+		}
+
+		[Test]
+		public void TestCreate_ByteArraySegmentList_NoneValidationLevel()
+		{
+			var array = new [] { new ArraySegment<byte>( Guid.NewGuid().ToByteArray() ) };
+
+			using ( var unpacker = Unpacker.Create( array, 0, 0, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None } ) )
 			{
 				Assert.That( unpacker, Is.InstanceOf<FastByteArrayUnpacker>() );
 			}

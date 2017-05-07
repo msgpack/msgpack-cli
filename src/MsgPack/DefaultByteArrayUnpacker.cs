@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 
 namespace MsgPack
 {
@@ -27,16 +28,29 @@ namespace MsgPack
 	/// </summary>
 	internal abstract partial class DefaultByteArrayUnpacker : ByteArrayUnpacker
 	{
-		public override int BytesUsed
+		public override long BytesUsed
 		{
-			// Always Int32.
-			get { return unchecked ( ( int )this.Core.Reader.Offset ); }
+			get { return this.Core.Reader.Offset; }
+		}
+
+		public override int CurrentSourceIndex
+		{
+			get { return this.Core.Reader.CurrentSourceIndex; }
+		}
+
+		public override int CurrentSourceOffset
+		{
+			get { return this.Core.Reader.CurrentSourceOffset; }
 		}
 
 		protected DefaultByteArrayUnpacker( ArraySegment<byte> source )
-			: base( source )
 		{
 			this.Core = new MessagePackUnpacker<ByteArrayUnpackerReader>( new ByteArrayUnpackerReader( source ) );
+		}
+
+		protected DefaultByteArrayUnpacker( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
+		{
+			this.Core = new MessagePackUnpacker<ByteArrayUnpackerReader>( new ByteArrayUnpackerReader( sources, startIndex, startOffset ) );
 		}
 	}
 }

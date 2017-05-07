@@ -23,6 +23,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 #if FEATURE_TAP
 using System.Threading;
@@ -105,6 +106,9 @@ namespace MsgPack
 		public FastByteArrayUnpacker( ArraySegment<byte> source )
 			: base( source ) { }
 
+		public FastByteArrayUnpacker( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
+			: base( sources, startIndex, startOffset ) { }
+
 		protected override Unpacker ReadSubtreeCore()
 		{
 			return this;
@@ -118,6 +122,9 @@ namespace MsgPack
 
 		public CollectionValidatingByteArrayUnpacker( ArraySegment<byte> source )
 			: base( source ) { }
+
+		public CollectionValidatingByteArrayUnpacker( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
+			: base( sources, startIndex, startOffset ) { }
 
 		internal override Unpacker InternalReadSubtree()
 		{

@@ -46,6 +46,8 @@ namespace MsgPack
 
 		protected abstract bool ShouldCheckSubtreeUnpacker { get; }
 
+		protected abstract bool CanReadFromEmptySource { get; }
+
 		private void VerifyCanTestSubtree()
 		{
 			if ( !ShouldCheckSubtreeUnpacker )
@@ -575,11 +577,23 @@ namespace MsgPack
 		[Test]
 		public void TestReadItem_Empty_Null()
 		{
-			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = this.CreateUnpacker( buffer ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				var result = target.ReadItem();
-				Assert.That( result.HasValue, Is.False );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					var result = target.ReadItem();
+					Assert.That( result.HasValue, Is.False );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 
@@ -1291,13 +1305,25 @@ namespace MsgPack
 		}
 
 		[Test]
-		public async Task TestReadItemAsync_Empty_Null()
+		public void TestReadItemAsync_Empty_Null()
 		{
-			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = this.CreateUnpacker( buffer ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				var result = await target.ReadItemAsync();
-				Assert.That( result.HasValue, Is.False );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					var result = target.ReadItemAsync().Result;
+					Assert.That( result.HasValue, Is.False );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 

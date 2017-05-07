@@ -62,12 +62,24 @@ foreach( var isAsync in new [] { false, true } )
 	}
 #>
 		[Test]
-		public <#= AsyncTest( isAsync ) #>_Empty_Null()
+		public <#= Test( isAsync ) #>_Empty_Null()
 		{
-			using ( var stream = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = this.CreateUnpacker( stream ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.Null );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					Assert.That( target.Skip<#= isAsync ? "Async" : String.Empty #>()<#= isAsync ? ".Result" : String.Empty #>, Is.Null );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 
@@ -537,6 +549,16 @@ private static string AsyncTest( bool isAsync )
 			CultureInfo.InvariantCulture,
 			"{0} TestSkip{1}",
 			isAsync ? "async Task" : "void",
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Test( bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void TestSkip{0}",
 			isAsync ? "Async" : String.Empty
 		);
 }

@@ -4,6 +4,7 @@
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
 <#
 
 var fixVariations =
@@ -115,9 +116,9 @@ private void PutTest( string label, string headerFormat, int expectedLengthInLim
 	PutTestMethod( readDirectMethodPrefix,  headerFormat, expectedLengthInLimit, actualValueLength, PutTestUnpackDirectBody, isAsync );
 }
 
-private void PutTestUnpackDataBody( string typeCodeVariable, int expectedLengthInLimit, int actualValueLength, bool isExtra, bool isAsync )
+private void PutTestUnpackDataBody( string typeCodeVariable, int expectedLengthInLimit, int actualValueLength, bool isExtraOrSplit, bool isAsync )
 {
-	if ( isExtra )
+	if ( isExtraOrSplit )
 	{
 		if ( !isAsync )
 		{
@@ -136,7 +137,7 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int expectedLengthI
 #pragma warning disable 612,618
 				var result = unpacker.Data;
 #pragma warning restore 612,618
-				Assert.Is<#= isExtra #>( result.HasValue );
+				Assert.IsTrue( result.HasValue );
 
 				var actual = ( MessagePackExtendedTypeObject )result;
 				Assert.That( actual.TypeCode, Is.EqualTo( <#= typeCodeVariable #> ) );
@@ -144,8 +145,6 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int expectedLengthI
 				Assert.That( actual.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 <#+
 	}
 	else
@@ -166,16 +165,13 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int expectedLengthI
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedLengthInLimit #> ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( <#= expectedLengthInLimit #> ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - <#= expectedLengthInLimit + 1 #> ) );
 <#+
 	}
 }
 
-private void PutTestUnpackDirectBody( string typeCodeVariable, int expectedLengthInLimit, int actualValueLength, bool isExtra, bool isAsync )
+private void PutTestUnpackDirectBody( string typeCodeVariable, int expectedLengthInLimit, int actualValueLength, bool isExtraOrSplit, bool isAsync )
 {
-	if ( !isAsync || isExtra )
+	if ( !isAsync || isExtraOrSplit )
 	{
 #>
 				MessagePackExtendedTypeObject result;
@@ -183,19 +179,19 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int expectedLengt
 <#+
 	}
 
-	if ( isExtra )
+	if ( isExtraOrSplit )
 	{
 		if ( !isAsync )
 		{
 #>
-				Assert.Is<#= isExtra #>( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
 <#+
 		}
 		else
 		{
 #>
 				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
-				Assert.Is<#= isExtra #>( ret.Success );
+				Assert.IsTrue( ret.Success );
 				result = ret.Value;
 <#+
 		}
@@ -206,8 +202,6 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int expectedLengt
 				Assert.That( result.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 <#+
 	}
 	else
@@ -228,9 +222,6 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int expectedLengt
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedLengthInLimit #> ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( <#= expectedLengthInLimit #> ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - <#= expectedLengthInLimit + 1 #> ) );
 <#+
 	}
 }
@@ -270,7 +261,29 @@ private void PutTestMethod( string methodName, string headerFormat, int expected
 #>
 			}
 		}
+
 <#+
+				var length = headerValue.Count( c => c == ',' ) + 1 + actualValueLength;
+				if ( length > 2 )
+				{
+#>
+		[Test]
+		public <#= AsyncVoid( isAsync ) #> <#= methodName #>_Splitted()
+		{
+			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			var data =
+				new byte[] { <#= headerValue #> }
+				.Concat( Enumerable.Repeat( ( byte )0xFF, <#= actualValueLength #> ) ).ToArray();
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+<#+
+					putTestBody( typeCode, expectedLengthInLimit, actualValueLength, true, isAsync );
+#>
+			}
+		}
+
+<#+
+				} // if length > 2
 }
 
 private static string AsyncVoid( bool isAsync )

@@ -39,6 +39,11 @@ namespace MsgPack
 			get { return true; }
 		}
 
+		protected override bool CanReadFromEmptySource
+		{
+			get { return true; }
+		}
+
 		protected sealed override Unpacker CreateUnpacker( MemoryStream stream )
 		{
 			return this.CreateUnpacker( stream as Stream );

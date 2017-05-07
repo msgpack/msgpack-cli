@@ -40,7 +40,7 @@ namespace MsgPack
 
 		public override byte ReadByte()
 		{
-			var read = this.TryReadByte ();
+			var read = this.TryReadByte();
 			if ( read < 0 )
 			{
 				this.ThrowEofException( sizeof( byte ) );
@@ -51,43 +51,64 @@ namespace MsgPack
 
 		public override int TryReadByte()
 		{
-			if ( this._source.Count - this._offset < sizeof( byte ) )
+			if ( this._currentSource.Count >= sizeof( byte ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToByte( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( byte ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( byte ) ) )
 			{
 				return -1;
 			}
 
-			var result = BigEndianBinary.ToByte( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( byte );
-			return result;
+			return BigEndianBinary.ToByte( this._scalarBuffer, 0 );
 		}
 
 		public override sbyte ReadSByte()
 		{
-			if ( this._source.Count - this._offset < sizeof( sbyte ) )
+			if ( this._currentSource.Count >= sizeof( sbyte ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToSByte( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( sbyte ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( sbyte ) ) )
 			{
 				this.ThrowEofException( sizeof( sbyte ) );
 			}
 
-			var result = BigEndianBinary.ToSByte( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( sbyte );
-			return result;
+			return BigEndianBinary.ToSByte( this._scalarBuffer, 0 );
 		}
 
 		public override short ReadInt16()
 		{
-			if ( this._source.Count - this._offset < sizeof( short ) )
+			if ( this._currentSource.Count >= sizeof( short ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToInt16( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( short ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( short ) ) )
 			{
 				this.ThrowEofException( sizeof( short ) );
 			}
 
-			var result = BigEndianBinary.ToInt16( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( short );
-			return result;
+			return BigEndianBinary.ToInt16( this._scalarBuffer, 0 );
 		}
 
 		public override ushort ReadUInt16()
 		{
-			var read = this.TryReadUInt16 ();
+			var read = this.TryReadUInt16();
 			if ( read < 0 )
 			{
 				this.ThrowEofException( sizeof( ushort ) );
@@ -98,31 +119,45 @@ namespace MsgPack
 
 		public override int TryReadUInt16()
 		{
-			if ( this._source.Count - this._offset < sizeof( ushort ) )
+			if ( this._currentSource.Count >= sizeof( ushort ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToUInt16( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( ushort ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( ushort ) ) )
 			{
 				return -1;
 			}
 
-			var result = BigEndianBinary.ToUInt16( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( ushort );
-			return result;
+			return BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
 		}
 
 		public override int ReadInt32()
 		{
-			if ( this._source.Count - this._offset < sizeof( int ) )
+			if ( this._currentSource.Count >= sizeof( int ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToInt32( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( int ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( int ) ) )
 			{
 				this.ThrowEofException( sizeof( int ) );
 			}
 
-			var result = BigEndianBinary.ToInt32( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( int );
-			return result;
+			return BigEndianBinary.ToInt32( this._scalarBuffer, 0 );
 		}
 
 		public override uint ReadUInt32()
 		{
-			var read = this.TryReadUInt32 ();
+			var read = this.TryReadUInt32();
 			if ( read < 0 )
 			{
 				this.ThrowEofException( sizeof( uint ) );
@@ -133,62 +168,97 @@ namespace MsgPack
 
 		public override long TryReadUInt32()
 		{
-			if ( this._source.Count - this._offset < sizeof( uint ) )
+			if ( this._currentSource.Count >= sizeof( uint ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToUInt32( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( uint ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( uint ) ) )
 			{
 				return -1;
 			}
 
-			var result = BigEndianBinary.ToUInt32( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( uint );
-			return result;
+			return BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
 		}
 
 		public override long ReadInt64()
 		{
-			if ( this._source.Count - this._offset < sizeof( long ) )
+			if ( this._currentSource.Count >= sizeof( long ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToInt64( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( long ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( long ) ) )
 			{
 				this.ThrowEofException( sizeof( long ) );
 			}
 
-			var result = BigEndianBinary.ToInt64( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( long );
-			return result;
+			return BigEndianBinary.ToInt64( this._scalarBuffer, 0 );
 		}
 
 		public override ulong ReadUInt64()
 		{
-			if ( this._source.Count - this._offset < sizeof( ulong ) )
+			if ( this._currentSource.Count >= sizeof( ulong ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToUInt64( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( ulong ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( ulong ) ) )
 			{
 				this.ThrowEofException( sizeof( ulong ) );
 			}
 
-			var result = BigEndianBinary.ToUInt64( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( ulong );
-			return result;
+			return BigEndianBinary.ToUInt64( this._scalarBuffer, 0 );
 		}
 
 		public override float ReadSingle()
 		{
-			if ( this._source.Count - this._offset < sizeof( float ) )
+			if ( this._currentSource.Count >= sizeof( float ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToSingle( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( float ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( float ) ) )
 			{
 				this.ThrowEofException( sizeof( float ) );
 			}
 
-			var result = BigEndianBinary.ToSingle( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( float );
-			return result;
+			return BigEndianBinary.ToSingle( this._scalarBuffer, 0 );
 		}
 
 		public override double ReadDouble()
 		{
-			if ( this._source.Count - this._offset < sizeof( double ) )
+			if ( this._currentSource.Count >= sizeof( double ) )
+			{
+				// fast path
+				var result = BigEndianBinary.ToDouble( this._currentSource.Array, this._currentSource.Offset );
+				this._currentSource = this._currentSource.Slice( sizeof( double ) );
+				return result;
+			}
+
+			// slow path
+			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( double ) ) )
 			{
 				this.ThrowEofException( sizeof( double ) );
 			}
 
-			var result = BigEndianBinary.ToDouble( this._source.Array, this._source.Offset + this._offset );
-			this._offset += sizeof( double );
-			return result;
+			return BigEndianBinary.ToDouble( this._scalarBuffer, 0 );
 		}
 
 #if FEATURE_TAP

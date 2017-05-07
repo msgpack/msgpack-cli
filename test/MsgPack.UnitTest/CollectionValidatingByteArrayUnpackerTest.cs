@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -43,6 +44,11 @@ namespace MsgPack
 		protected override ByteArrayUnpacker CreateUnpacker( ArraySegment<byte> source )
 		{
 			return Unpacker.Create( source, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } );
+		}
+
+		protected override ByteArrayUnpacker CreateUnpacker( IList<ArraySegment<byte>> sources )
+		{
+			return Unpacker.Create( sources, 0, 0, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } );
 		}
 	}
 }

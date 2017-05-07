@@ -55,6 +55,8 @@ namespace MsgPack
 
 		protected abstract bool ShouldCheckSubtreeUnpacker { get; }
 
+		protected abstract bool CanReadFromEmptySource { get; }
+
 		private void VerifyCanTestSubtree()
 		{
 			if ( !ShouldCheckSubtreeUnpacker )
@@ -600,13 +602,25 @@ foreach( var isAsync in new [] { false, true } )
 		}
 
 		[Test]
-		public <#= AsyncTest( "ReadItem", isAsync ) #>_Empty_Null()
+		public <#= Test( "ReadItem", isAsync ) #>_Empty_Null()
 		{
-			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = this.CreateUnpacker( buffer ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				var result = <#= Await( "target.ReadItem", isAsync ) #>();
-				Assert.That( result.HasValue, Is.False );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					var result = target.ReadItem<#= isAsync ? "Async" : String.Empty #>()<#= isAsync ? ".Result" : String.Empty #>;
+					Assert.That( result.HasValue, Is.False );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 
@@ -876,6 +890,17 @@ private static string AsyncTest( string method, bool isAsync )
 			CultureInfo.InvariantCulture,
 			"{0} Test{1}{2}",
 			isAsync ? "async Task" : "void",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Test( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void Test{0}{1}",
 			method,
 			isAsync ? "Async" : String.Empty
 		);

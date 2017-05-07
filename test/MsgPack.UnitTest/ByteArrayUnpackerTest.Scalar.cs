@@ -54,9 +54,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -9223372036854775808 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -72,9 +69,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_Int64MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -9223372036854775808 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -89,9 +100,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -108,9 +116,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadInt64_Int64MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64 result;
+				Assert.IsTrue( unpacker.ReadInt64( out result ) );
+				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -125,9 +144,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -144,9 +160,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableInt64_Int64MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64? result;
+				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
+				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -164,9 +191,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483648 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -182,9 +206,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_Int32MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483648 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -199,9 +237,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -2147483648 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -218,9 +253,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadInt64_Int32MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64 result;
+				Assert.IsTrue( unpacker.ReadInt64( out result ) );
+				Assert.That( result, Is.EqualTo( -2147483648 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -235,9 +281,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -254,9 +297,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableInt64_Int32MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64? result;
+				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
+				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -274,9 +328,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32768 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -292,9 +343,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_Int16MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD1, 0x80, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32768 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -309,9 +374,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -32768 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -328,9 +390,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadInt64_Int16MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD1, 0x80, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64 result;
+				Assert.IsTrue( unpacker.ReadInt64( out result ) );
+				Assert.That( result, Is.EqualTo( -32768 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -345,9 +418,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -32768 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -364,9 +434,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableInt64_Int16MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD1, 0x80, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64? result;
+				Assert.IsTrue( unpacker.ReadNullableInt64( out result ) );
+				Assert.That( result.Value, Is.EqualTo( -32768 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -384,9 +465,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -128 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -402,11 +480,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public void TestReadInt64_SByteMinValue_Extra()
@@ -419,9 +495,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -128 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -438,11 +511,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public void TestReadNullableInt64_SByteMinValue_Extra()
@@ -455,9 +526,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -128 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -474,11 +542,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public void TestRead_NegativeFixNumMinValue_Extra()
@@ -494,9 +560,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -511,9 +574,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -32 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -528,9 +588,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -32 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -548,9 +605,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -565,9 +619,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -582,9 +633,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -602,9 +650,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 0 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -619,9 +664,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 0 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -636,9 +678,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 0 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -656,9 +695,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -673,9 +709,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -690,9 +723,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -710,9 +740,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 127 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -727,9 +754,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 127 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -744,9 +768,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 127 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -764,9 +785,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 255 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -782,11 +800,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public void TestReadUInt64_ByteMaxValue_Extra()
@@ -799,9 +815,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 255 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -818,11 +831,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public void TestReadNullableUInt64_ByteMaxValue_Extra()
@@ -835,9 +846,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 255 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -854,11 +862,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public void TestRead_UInt16MaxValue_Extra()
@@ -874,9 +880,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65535 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -892,9 +895,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_UInt16MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCD, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65535 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -909,9 +926,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 65535 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -928,9 +942,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadUInt64_UInt16MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCD, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64 result;
+				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
+				Assert.That( result, Is.EqualTo( 65535 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -945,9 +970,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 65535 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -964,9 +986,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableUInt64_UInt16MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCD, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64? result;
+				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
+				Assert.That( result.Value, Is.EqualTo( 65535 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -984,9 +1017,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967295 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1002,9 +1032,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_UInt32MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967295 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1019,9 +1063,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 4294967295 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1038,9 +1079,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadUInt64_UInt32MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64 result;
+				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
+				Assert.That( result, Is.EqualTo( 4294967295 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1055,9 +1107,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1074,9 +1123,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableUInt64_UInt32MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64? result;
+				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
+				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1094,9 +1154,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 18446744073709551615 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1112,9 +1169,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_UInt64MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 18446744073709551615 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1129,9 +1200,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1148,9 +1216,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadUInt64_UInt64MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64 result;
+				Assert.IsTrue( unpacker.ReadUInt64( out result ) );
+				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1165,9 +1244,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1184,9 +1260,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableUInt64_UInt64MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64? result;
+				Assert.IsTrue( unpacker.ReadNullableUInt64( out result ) );
+				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1204,9 +1291,6 @@ namespace MsgPack
 				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( true ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1221,9 +1305,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( true ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1238,9 +1319,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( true ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1258,9 +1336,6 @@ namespace MsgPack
 				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( false ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1275,9 +1350,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( false ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1292,9 +1364,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( false ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1312,9 +1381,6 @@ namespace MsgPack
 				Assert.That( Single.MaxValue.Equals( ( System.Single )result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1330,9 +1396,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_SingleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.MaxValue.Equals( ( System.Single )result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1347,9 +1427,6 @@ namespace MsgPack
 				Assert.That( Single.MaxValue.Equals( result ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1366,9 +1443,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadSingle_SingleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Single result;
+				Assert.IsTrue( unpacker.ReadSingle( out result ) );
+				Assert.That( Single.MaxValue.Equals( result ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1383,9 +1471,6 @@ namespace MsgPack
 				Assert.That( Single.MaxValue.Equals( result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1402,9 +1487,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableSingle_SingleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Single? result;
+				Assert.IsTrue( unpacker.ReadNullableSingle( out result ) );
+				Assert.That( Single.MaxValue.Equals( result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1422,9 +1518,6 @@ namespace MsgPack
 				Assert.That( Double.MaxValue.Equals( ( System.Double )result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1440,9 +1533,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestRead_DoubleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( unpacker.Read() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.MaxValue.Equals( ( System.Double )result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1457,9 +1564,6 @@ namespace MsgPack
 				Assert.That( Double.MaxValue.Equals( result ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1476,9 +1580,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadDouble_DoubleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Double result;
+				Assert.IsTrue( unpacker.ReadDouble( out result ) );
+				Assert.That( Double.MaxValue.Equals( result ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1493,9 +1608,6 @@ namespace MsgPack
 				Assert.That( Double.MaxValue.Equals( result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1512,9 +1624,20 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public void TestReadNullableDouble_DoubleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Double? result;
+				Assert.IsTrue( unpacker.ReadNullableDouble( out result ) );
+				Assert.That( Double.MaxValue.Equals( result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1529,8 +1652,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1545,8 +1666,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1561,8 +1680,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1577,8 +1694,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1593,8 +1708,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1609,8 +1722,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1625,8 +1736,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1641,8 +1750,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1657,8 +1764,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1673,8 +1778,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1689,8 +1792,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1710,9 +1811,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -9223372036854775808 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1728,9 +1826,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_Int64MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -9223372036854775808 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1747,9 +1859,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1765,9 +1874,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadInt64Async_Int64MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -9223372036854775808 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1784,9 +1906,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1802,9 +1921,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableInt64Async_Int64MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -9223372036854775808 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1822,9 +1954,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483648 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1840,9 +1969,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_Int32MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -2147483648 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1859,9 +2002,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -2147483648 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1877,9 +2017,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadInt64Async_Int32MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -2147483648 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1896,9 +2049,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1914,9 +2064,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableInt64Async_Int32MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -2147483648 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1934,9 +2097,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32768 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1952,9 +2112,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_Int16MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD1, 0x80, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32768 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -1971,9 +2145,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -32768 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -1989,9 +2160,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadInt64Async_Int16MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD1, 0x80, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64 result;
+				var ret = await unpacker.ReadInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( -32768 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2008,9 +2192,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -32768 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2026,9 +2207,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableInt64Async_Int16MinValue_Splitted()
+		{
+			var data = new byte[] { 0xD1, 0x80, 0x00 };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Int64? result;
+				var ret = await unpacker.ReadNullableInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( -32768 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2046,9 +2240,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -128 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2064,11 +2255,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public async Task TestReadInt64Async_SByteMinValue_Extra()
@@ -2083,9 +2272,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -128 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2101,11 +2287,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public async Task TestReadNullableInt64Async_SByteMinValue_Extra()
@@ -2120,9 +2304,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -128 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2138,11 +2319,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public async Task TestReadAsync_NegativeFixNumMinValue_Extra()
@@ -2158,9 +2337,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -32 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2177,9 +2353,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -32 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2196,9 +2369,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -32 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2216,9 +2386,6 @@ namespace MsgPack
 				Assert.That( ( System.Int64 )result.Value, Is.EqualTo( -1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2235,9 +2402,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( -1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2254,9 +2418,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( -1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2274,9 +2435,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 0 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2293,9 +2451,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 0 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2312,9 +2467,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 0 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2332,9 +2484,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2351,9 +2500,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2370,9 +2516,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 1 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2390,9 +2533,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 127 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2409,9 +2549,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 127 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2428,9 +2565,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 127 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2448,9 +2582,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 255 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2466,11 +2597,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public async Task TestReadUInt64Async_ByteMaxValue_Extra()
@@ -2485,9 +2614,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 255 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2503,11 +2629,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public async Task TestReadNullableUInt64Async_ByteMaxValue_Extra()
@@ -2522,9 +2646,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 255 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2540,11 +2661,9 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
 			}
 		}
+
 
 		[Test]
 		public async Task TestReadAsync_UInt16MaxValue_Extra()
@@ -2560,9 +2679,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65535 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2578,9 +2694,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_UInt16MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCD, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 65535 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2597,9 +2727,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 65535 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2615,9 +2742,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadUInt64Async_UInt16MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCD, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 65535 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2634,9 +2774,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 65535 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2652,9 +2789,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableUInt64Async_UInt16MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCD, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 65535 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2672,9 +2822,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967295 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2690,9 +2837,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_UInt32MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 4294967295 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2709,9 +2870,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 4294967295 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2727,9 +2885,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadUInt64Async_UInt32MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 4294967295 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2746,9 +2917,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2764,9 +2932,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableUInt64Async_UInt32MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 4294967295 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2784,9 +2965,6 @@ namespace MsgPack
 				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 18446744073709551615 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2802,9 +2980,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_UInt64MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( System.UInt64 )result.Value, Is.EqualTo( 18446744073709551615 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2821,9 +3013,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2839,9 +3028,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadUInt64Async_UInt64MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64 result;
+				var ret = await unpacker.ReadUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result, Is.EqualTo( 18446744073709551615 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2858,9 +3060,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2876,9 +3075,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableUInt64Async_UInt64MaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				UInt64? result;
+				var ret = await unpacker.ReadNullableUInt64Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( result.Value, Is.EqualTo( 18446744073709551615 ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -2896,9 +3108,6 @@ namespace MsgPack
 				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( true ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2915,9 +3124,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( true ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2934,9 +3140,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( true ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2954,9 +3157,6 @@ namespace MsgPack
 				Assert.That( ( System.Boolean )result.Value, Is.EqualTo( false ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2973,9 +3173,6 @@ namespace MsgPack
 				Assert.That( result, Is.EqualTo( false ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -2992,9 +3189,6 @@ namespace MsgPack
 				Assert.That( result.Value, Is.EqualTo( false ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3012,9 +3206,6 @@ namespace MsgPack
 				Assert.That( Single.MaxValue.Equals( ( System.Single )result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3030,9 +3221,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_SingleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Single.MaxValue.Equals( ( System.Single )result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -3049,9 +3254,6 @@ namespace MsgPack
 				Assert.That( Single.MaxValue.Equals( result ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3067,9 +3269,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadSingleAsync_SingleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Single result;
+				var ret = await unpacker.ReadSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MaxValue.Equals( result ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -3086,9 +3301,6 @@ namespace MsgPack
 				Assert.That( Single.MaxValue.Equals( result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3104,9 +3316,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableSingleAsync_SingleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Single? result;
+				var ret = await unpacker.ReadNullableSingleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Single.MaxValue.Equals( result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -3124,9 +3349,6 @@ namespace MsgPack
 				Assert.That( Double.MaxValue.Equals( ( System.Double )result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3142,9 +3364,23 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadAsync_DoubleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( await unpacker.ReadAsync() );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( Double.MaxValue.Equals( ( System.Double )result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -3161,9 +3397,6 @@ namespace MsgPack
 				Assert.That( Double.MaxValue.Equals( result ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3179,9 +3412,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadDoubleAsync_DoubleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Double result;
+				var ret = await unpacker.ReadDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MaxValue.Equals( result ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -3198,9 +3444,6 @@ namespace MsgPack
 				Assert.That( Double.MaxValue.Equals( result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3216,9 +3459,22 @@ namespace MsgPack
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public async Task TestReadNullableDoubleAsync_DoubleMaxValue_Splitted()
+		{
+			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Double? result;
+				var ret = await unpacker.ReadNullableDoubleAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+				Assert.That( Double.MaxValue.Equals( result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 
@@ -3235,8 +3491,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3253,8 +3507,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3271,8 +3523,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3289,8 +3539,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3307,8 +3555,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3325,8 +3571,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3343,8 +3587,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3361,8 +3603,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3379,8 +3619,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3397,8 +3635,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -3415,8 +3651,6 @@ namespace MsgPack
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 

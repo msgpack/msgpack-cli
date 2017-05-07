@@ -6,27 +6,28 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Numerics" #>
 <#@ import namespace="System.Runtime.InteropServices" #>
 <#
 
 var __integers =
-	new Tuple<string, BigInteger, string, Type, bool>[]
+	new Tuple<string, BigInteger, string, Type>[]
 	{
-		// Label, Expected Value, byte array, Exepected Type, isSingleByte
-		Tuple.Create( "Int64MinValue",			new BigInteger( Int64.MinValue ),	"new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }",	typeof( long ),		false ),
-		Tuple.Create( "Int32MinValue",			new BigInteger( Int32.MinValue ),	"new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }",							typeof( long ),		false ),
-		Tuple.Create( "Int16MinValue",			new BigInteger( Int16.MinValue ),	"new byte[] { 0xD1, 0x80, 0x00 }",										typeof( long ),		false ),
-		Tuple.Create( "SByteMinValue",			new BigInteger( SByte.MinValue ),	"new byte[] { 0xD0, 0x80 }",											typeof( long ),		false ),
-		Tuple.Create( "NegativeFixNumMinValue",	new BigInteger( -32 ),				"new byte[] { 0xE0 }",													typeof( long ),		true ),
-		Tuple.Create( "MinusOne",				new BigInteger( -1 ),				"new byte[] { 0xFF }",													typeof( long ),		true ),
-		Tuple.Create( "Zero",					new BigInteger( 0 ),				"new byte[] { 0x0 }",													typeof( ulong ),	true ),
-		Tuple.Create( "PlusOne",				new BigInteger( 1 ),				"new byte[] { 0x1 }",													typeof( ulong ),	true ),
-		Tuple.Create( "PositiveFixNumMaxValue",	new BigInteger( 127 ),				"new byte[] { 0x7F }",													typeof( ulong ),	true ),
-		Tuple.Create( "ByteMaxValue",			new BigInteger( Byte.MaxValue ),	"new byte[] { 0xCC, 0xFF }",											typeof( ulong ),	false ),
-		Tuple.Create( "UInt16MaxValue",			new BigInteger( UInt16.MaxValue ),	"new byte[] { 0xCD, 0xFF, 0xFF }",										typeof( ulong ),	false ),
-		Tuple.Create( "UInt32MaxValue",			new BigInteger( UInt32.MaxValue ),	"new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF }",							typeof( ulong ),	false ),
-		Tuple.Create( "UInt64MaxValue",			new BigInteger( UInt64.MaxValue ),	"new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }",	typeof( ulong ),	false ),
+		// Label, Expected Value, byte array, Exepected Type
+		Tuple.Create( "Int64MinValue",			new BigInteger( Int64.MinValue ),	"new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }",	typeof( long ) ),
+		Tuple.Create( "Int32MinValue",			new BigInteger( Int32.MinValue ),	"new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }",							typeof( long ) ),
+		Tuple.Create( "Int16MinValue",			new BigInteger( Int16.MinValue ),	"new byte[] { 0xD1, 0x80, 0x00 }",										typeof( long ) ),
+		Tuple.Create( "SByteMinValue",			new BigInteger( SByte.MinValue ),	"new byte[] { 0xD0, 0x80 }",											typeof( long ) ),
+		Tuple.Create( "NegativeFixNumMinValue",	new BigInteger( -32 ),				"new byte[] { 0xE0 }",													typeof( long ) ),
+		Tuple.Create( "MinusOne",				new BigInteger( -1 ),				"new byte[] { 0xFF }",													typeof( long ) ),
+		Tuple.Create( "Zero",					new BigInteger( 0 ),				"new byte[] { 0x0 }",													typeof( ulong ) ),
+		Tuple.Create( "PlusOne",				new BigInteger( 1 ),				"new byte[] { 0x1 }",													typeof( ulong ) ),
+		Tuple.Create( "PositiveFixNumMaxValue",	new BigInteger( 127 ),				"new byte[] { 0x7F }",													typeof( ulong ) ),
+		Tuple.Create( "ByteMaxValue",			new BigInteger( Byte.MaxValue ),	"new byte[] { 0xCC, 0xFF }",											typeof( ulong ) ),
+		Tuple.Create( "UInt16MaxValue",			new BigInteger( UInt16.MaxValue ),	"new byte[] { 0xCD, 0xFF, 0xFF }",										typeof( ulong ) ),
+		Tuple.Create( "UInt32MaxValue",			new BigInteger( UInt32.MaxValue ),	"new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF }",							typeof( ulong ) ),
+		Tuple.Create( "UInt64MaxValue",			new BigInteger( UInt64.MaxValue ),	"new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }",	typeof( ulong ) ),
 	};
 
 var __booleans =
@@ -100,6 +101,7 @@ foreach( var isAsync in new [] { false, true } )
 
 	foreach( var __testCase in __integers )
 	{
+		var length = __testCase.Item3.Count( c => c == ',' ) + 1;
 #>
 
 		[Test]
@@ -116,13 +118,10 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 <#
-		if ( !__testCase.Item5 /* !isSingleByte */ )
+		if ( length > 1 )
 		{
 #>
 
@@ -153,13 +152,32 @@ foreach( var isAsync in new [] { false, true } )
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+<#
+			if ( length > 2 )
+			{
+#>
+		[Test]
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
+		{
+			var data = <#= __testCase.Item3 #>;
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
-		} // if !isSingleByte
+			} // if length > 2
+		} // if length > 1
 
 		foreach( var isNullable in new [] { false, true } )
 		{
@@ -191,13 +209,10 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 <#
-			if ( !__testCase.Item5 /* !isSingleByte */ )
+			if ( length > 1 )
 			{
 #>
 
@@ -229,13 +244,44 @@ foreach( var isAsync in new [] { false, true } )
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+<#
+				if ( length > 2 )
+				{
+#>
+		[Test]
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Splitted()
+		{
+			var data = <#= __testCase.Item3 #>;
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+					if( !isAsync )
+					{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
+<#
+					}
+					else
+					{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+					}
+#>
+				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
-			} // if !isSingleByte
+				} // if length > 2
+			} // if length > 1
 		} // foreach( var isNullable
 	} // foreach( var __testCase
 
@@ -257,9 +303,6 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 <#
@@ -293,9 +336,6 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 <#
@@ -320,9 +360,6 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -353,9 +390,23 @@ foreach( var isAsync in new [] { false, true } )
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
+		{
+			var data = <#= __testCase.Item2 #>;
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
@@ -389,9 +440,6 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( unpacker.BytesUsed + 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 
@@ -423,9 +471,35 @@ foreach( var isAsync in new [] { false, true } )
 
 				// Only header is read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Offset, Is.EqualTo( 1 ) );
-				Assert.That( remaining.Count, Is.EqualTo( data.Length - 2 ) );
+			}
+		}
+
+		[Test]
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>_Splitted()
+		{
+			var data = <#= __testCase.Item2 #>;
+			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
+			{
+				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item3 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
+
+				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
@@ -469,8 +543,6 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.That( result, Is.Null );
 
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-				var remaining = unpacker.GetRemainingBytes();
-				Assert.That( remaining.Count, Is.EqualTo( 1 ) );
 			}
 		}
 <#
