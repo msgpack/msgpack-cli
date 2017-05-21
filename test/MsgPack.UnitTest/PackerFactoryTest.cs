@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -33,7 +33,8 @@ using ExplicitAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.
 
 namespace MsgPack
 {
-	partial class PackerTest
+	[TestFixture]
+	public class PackerFactoryTest
 	{
 #if !NETFX_CORE && !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[Test]
@@ -110,10 +111,10 @@ namespace MsgPack
 		[Test]
 		public void TestCreate_NullStream_ArgumentNullException()
 		{
-			Assert.Throws<ArgumentNullException>( () => Packer.Create( null ) );
-			Assert.Throws<ArgumentNullException>( () => Packer.Create( null, ~Packer.DefaultCompatibilityOptions ) );
-			Assert.Throws<ArgumentNullException>( () => Packer.Create( null, false ) );
-			Assert.Throws<ArgumentNullException>( () => Packer.Create( null, ~Packer.DefaultCompatibilityOptions, false ) );
+			Assert.Throws<ArgumentNullException>( () => Packer.Create( default( Stream ) ) );
+			Assert.Throws<ArgumentNullException>( () => Packer.Create( default( Stream ), ~Packer.DefaultCompatibilityOptions ) );
+			Assert.Throws<ArgumentNullException>( () => Packer.Create( default( Stream ), false ) );
+			Assert.Throws<ArgumentNullException>( () => Packer.Create( default( Stream ), ~Packer.DefaultCompatibilityOptions, false ) );
 		}
 
 		private sealed class CloseAwareStream : Stream

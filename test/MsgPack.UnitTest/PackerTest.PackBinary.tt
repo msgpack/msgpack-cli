@@ -11,7 +11,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ namespace MsgPack
 	// This file was generated from PackerTest.PackBinary.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit PackerTest.PackBinary.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class PackerTest_Pack
+	partial class PackerTest
 	{
 <#
 // Str
@@ -99,10 +99,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				<#= Await( "target.PackString", isAsync )#>( new String( 'A', <#= length.Item1 #> ) as <#= testType.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( <#= length.Item2.Length #> ).ToArray(), 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -123,10 +123,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackStringHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				<#= Await( "target.PackStringHeader", isAsync )#>( <#= length.Item1 #> ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -145,10 +145,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
 				<#= Await( "target.PackString", isAsync )#>( new String( 'A', <#= length.Item1 #> ) as <#= testType.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( <#= length.Item3.Length #> ).ToArray(), 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -164,10 +164,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackStringHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
 				<#= Await( "target.PackStringHeader", isAsync ) #>( <#= length.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed,
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -221,10 +221,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackRaw", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				<#= Await( "target.PackRaw", isAsync )#>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 <#
 			if ( testType.Item3 )
 			{
@@ -261,10 +261,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackRaw", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
 				<#= Await( "target.PackRaw", isAsync )#>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 <#
 			if ( testType.Item3 )
 			{
@@ -302,10 +302,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackBinary", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsBinStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				<#= Await( "target.PackBinary", isAsync ) #>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 <#
 			if ( testType.Item3 )
 			{
@@ -342,10 +342,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackBinary", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
 				<#= Await( "target.PackBinary", isAsync )#>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 <#
 			if ( testType.Item3 )
 			{
@@ -388,10 +388,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackRawHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				<#= Await( "target.PackRawHeader", isAsync ) #>( <#= length.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item4.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -403,10 +403,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackRawHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
 				<#= Await( "target.PackRawHeader", isAsync ) #>( <#= length.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -419,10 +419,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackBinaryHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsBinStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				<#= Await( "target.PackBinaryHeader", isAsync ) #>( <#= length.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -434,10 +434,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackBinaryHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
 				<#= Await( "target.PackBinaryHeader", isAsync ) #>( <#= length.Item1 #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -454,7 +454,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackRawHeader", isAsync ) #>_MinusOne()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 #pragma warning disable 0618
 				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackRawHeader", isAsync ) #>( -1 ) );
@@ -466,7 +466,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackStringHeader", isAsync ) #>_MinusOne()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackStringHeader", isAsync ) #>( -1 ) );
 			}
@@ -476,7 +476,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackBinaryHeader", isAsync ) #>_MinusOne()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackBinaryHeader", isAsync ) #>( -1 ) );
 			}
@@ -499,10 +499,10 @@ foreach( var isAsync in new [] { false, true } )
 		{
 			<#= testCase.Type #> value = null;
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackRaw", isAsync ) #>( value );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 0xC0 } ) 
@@ -527,10 +527,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackRawBody", isAsync ) #>_<#= testCase.Label #>_NotNull()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackRawBody", isAsync ) #>( <#= testCase.Value #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 1, 2, 3 } ) 
@@ -543,10 +543,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackRawBody", isAsync ) #>_<#= testCase.Label #>_Empty()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackRawBody", isAsync ) #>( <#= testCase.Empty #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[ 0 ] ) 
@@ -558,7 +558,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackRawBody", isAsync ) #>_<#= testCase.Label #>_Null()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				Assert.<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "target.PackRawBody", isAsync ) #>( default( <#= testCase.Type #> ) ) );
 			}
@@ -579,10 +579,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= testCase.Label #>_NotNull()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackString", isAsync ) #>( <#= testCase.Value #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 0xA3, ( byte )'A', ( byte )'B', ( byte )'C' } ) 
@@ -594,10 +594,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= testCase.Label #>_Empty()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackString", isAsync ) #>( <#= testCase.Empty #> );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 0xA0 } ) 
@@ -609,10 +609,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= testCase.Label #>_Null()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackString", isAsync ) #>( null );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 0xC0 } ) 
@@ -624,10 +624,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= testCase.Label #>_WithEncoding_NonNull()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackString", isAsync ) #>( <#= testCase.Value #>, Encoding.Unicode );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 0xA6, ( byte )'A', 0, ( byte )'B', 0, ( byte )'C', 0 } ) 
@@ -639,10 +639,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= testCase.Label #>_WithEncoding_Empty()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackString", isAsync ) #>( <#= testCase.Empty #>, Encoding.Unicode );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 0xA0 } ) 
@@ -654,10 +654,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackString", isAsync ) #>_<#= testCase.Label #>_WithEncoding_Null()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				<#= Await( "target.PackString", isAsync ) #>( null, Encoding.Unicode );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
 					Is.EqualTo( new byte[] { 0xC0 } ) 
@@ -669,7 +669,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackString", isAsync ) #>_<#= testCase.Label #>_NullEncoding()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var target = Packer.Create( buffer ) )
+			using ( var target = CreatePacker( buffer ) )
 			{
 				Assert.<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "target.PackString", isAsync ) #>( <#= testCase.Value #>, null ) );
 			}

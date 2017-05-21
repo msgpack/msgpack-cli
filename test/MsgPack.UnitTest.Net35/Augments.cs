@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,30 +19,20 @@
 #endregion -- License Terms --
 
 using System;
-#if !MSTEST
-using NUnit.Framework;
-#else
-using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
-using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
-using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
-using Assert = NUnit.Framework.Assert;
-using Is = NUnit.Framework.Is;
-#endif
 
 namespace MsgPack
 {
-	[TestFixture]
-	[Timeout( 500 )]
-	public partial class PackerTest_Pack
+	internal static class Augments
 	{
-		private sealed class Packable : IPackable
+		public static T[] ToArray<T>( this ArraySegment<T> source )
 		{
-			public void PackToMessage( Packer packer, PackingOptions options )
+			var result = new T[ source.Count ];
+			if ( result.Length > 0 )
 			{
-				// 0xC3
-				packer.Pack( true );
+				Array.Copy( source.Array, source.Offset, result, 0, source.Count );
 			}
-		}
 
+			return result;
+		}
 	}
 }

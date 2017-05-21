@@ -1,0 +1,458 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#
+
+var patterns =
+	new []
+	{
+		new { Label = "Fixed",		Single = "false",				Multiple = "false",						RequiresAllocator = false,	CanAllocate = false },
+		new { Label = "Default",	Single = "true",				Multiple = "true",						RequiresAllocator = false,	CanAllocate = true },
+		new { Label = "FixedSize",	Single = default( string ),		Multiple = "FixedSizeAllocationSize",	RequiresAllocator = false,	CanAllocate = true },
+		new { Label = "Custom",		Single = "Reallocate",			Multiple = "Allocate",					RequiresAllocator = true,	CanAllocate = true },
+	};
+
+var variations =
+	new []
+	{
+		new { Label = "Scalar",	Size = 9,	Input = "0x123456789AL",																		Output = "0xD3, 0, 0, 0, 0x12, 0x34, 0x56, 0x78, 0x9A" },
+		new { Label = "Binary",	Size = 34,	Input = "Enumerable.Range( 0, 32 ).Select( x => ( byte )x ).ToArray()",							Output = "0xC4, 0x20, " + String.Join( ", ", Enumerable.Range( 0, 32 ).Select( x => "0x" + x.ToString( "X2" ) ) ) },
+		new { Label = "String",	Size = 34,	Input = "new string( Enumerable.Range( ( int )'A', 32 ).Select( x => ( char )x ).ToArray() )",	Output = "0xD9, 0x20, " + String.Join( ", ", Enumerable.Range( ( int )'A', 32 ).Select( x => "0x" + x.ToString( "X2" ) ) ) },
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from ByteArrayPackerTest.Allocation.tt T4Template.
+	// Do not modify this file. Edit ByteArrayPackerTest.Allocation.tt instead.
+
+	partial class ByteArrayPackerTest
+	{
+		private const int DefaultAllocationSize = 65536;
+		private const int FixedSizeAllocationSize = 8;
+		private const int CustomAllocationSize = 16;
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
+	// single
+	foreach ( var pattern in patterns )
+	{
+		foreach ( var variation in variations )
+		{
+			this.PutSingleTest( pattern.Label + "_" + variation.Label + "_TooShortSize", pattern.RequiresAllocator, pattern.Single, 2, pattern.CanAllocate ? AllocationResult.Success : AllocationResult.Fail, variation.Input, variation.Output, isAsync, new [] { 0, 1 } );
+
+			this.PutSingleTest( pattern.Label + "_" + variation.Label + "_EnoughSize", pattern.RequiresAllocator, pattern.Single, variation.Size, AllocationResult.None, variation.Input, variation.Output, isAsync, new [] { 0, 1 } );
+		}
+	}
+
+	// mulitple
+	foreach ( var pattern in patterns )
+	{
+		foreach ( var variation in variations )
+		{
+			this.PutMultipleTest( pattern.Label + "_" + variation.Label + "_TooShortSize", pattern.RequiresAllocator, pattern.Multiple, 2, pattern.CanAllocate ? AllocationResult.Success : AllocationResult.Fail, pattern.Label, variation.Input, variation.Output, isAsync, new [] { 0, 1 }, new [] { 0, 1 } );
+			this.PutMultipleTest( pattern.Label + "_" + variation.Label + "_EnoughSize", pattern.RequiresAllocator, pattern.Multiple, variation.Size, AllocationResult.None, pattern.Label, variation.Input, variation.Output, isAsync, new [] { 0, 1 }, new [] { 0, 1 } );
+		}
+	}
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+	}
+}
+#>
+	}
+}
+<#+
+private void PutSingleTest( string label, bool requiresAllocator, string allocation, int initialSize, AllocationResult allocationResult, string input, string output, bool isAsync, int[] offsets )
+{
+	if ( allocation == null )
+	{
+		// No case for this pattern.
+		return;
+	}
+#>
+
+		[Test]
+<#+
+	foreach ( var offset in offsets )
+	{
+#>
+		[TestCase( <#= offset #> )]
+<#+
+	}
+#>
+		public <#= AsyncVoid( isAsync, allocationResult ) #> TestSingleAllocation_<#= label #><#= isAsync ? "Async" : String.Empty #>( int offset )
+		{
+<#+
+	string allocationExpression;
+
+	if ( requiresAllocator )
+	{
+#>
+			var allocator = new Allocator();
+<#+
+			allocationExpression = "allocator." + allocation;
+	}
+	else
+	{
+			allocationExpression = allocation;
+	}
+#>
+			var buffer = new ArraySegment<byte>( new byte[ <#= initialSize #> + offset ], offset, <#= initialSize #> );
+			using ( var target = CreatePacker( buffer, <#= allocationExpression #> ) )
+			{
+				Assert.That( target.InitialBufferIndex, Is.EqualTo( 0 ) );
+				Assert.That( target.CurrentBufferIndex, Is.EqualTo( 0 ) );
+				Assert.That( target.CurrentBufferOffset, Is.EqualTo( offset ) );
+
+<#+
+	switch ( allocationResult )
+	{
+		case AllocationResult.None:
+		case AllocationResult.Success:
+		{
+#>
+				<#= Pack( "target", isAsync ) #>( <#= input #> );
+				var expected = new byte[] { <#= output #> };
+
+				// InitialBufferIndex is immutable.
+				Assert.That( target.InitialBufferIndex, Is.EqualTo( 0 ) );
+
+				// CurrentBufferIndex is not shift for single array mode.
+				Assert.That( target.CurrentBufferIndex, Is.EqualTo( 0 ) );
+<#+
+			if ( allocationResult == AllocationResult.None )
+			{
+#>
+				// Base offset should not be changed because no allocation.
+				Assert.That( target.CurrentBufferOffset, Is.EqualTo( offset + expected.Length ) );
+<#+
+			}
+			else
+			{
+#>
+				// Base offset should be changed because of re-allocation.
+				Assert.That( target.CurrentBufferOffset, Is.EqualTo( expected.Length ) );
+<#+
+			}
+#>
+
+
+				var bytes = target.GetResultBytes();
+<#+
+			if ( allocationResult == AllocationResult.None )
+			{
+#>
+				if ( offset == 0 )
+				{
+					// Returns same array if buffer contains single array and its segment refers entire array.
+					Assert.That( target.GetResultBytes(), Is.SameAs( bytes ) );
+					// Returns same array if no allocation has been ocurred.
+					Assert.That( target.GetResultBytes(), Is.SameAs( buffer.Array ) );
+				}
+				else
+				{
+					// Returns different array even if single array mode.
+					Assert.That( bytes, Is.Not.Null );
+					Assert.That( bytes, Is.Not.SameAs( buffer.Array ) );
+				}
+<#+
+			}
+			else
+			{
+#>
+				// Returns different array even if single array mode.
+				Assert.That( bytes, Is.Not.Null );
+				Assert.That( bytes, Is.Not.SameAs( buffer.Array ) );
+<#+
+			}
+#>
+
+				// Only used contents are returned.
+				Assert.That( bytes, Is.EqualTo( expected ) );
+
+				var list = target.GetFinalBuffers();
+				Assert.That( list, Is.Not.Null.And.Not.Empty );
+				Assert.That( list.Count, Is.EqualTo( 1 ) );
+				// Note that startOffset should be considered in ArraySegmemt<T>.ToArray()
+				Assert.That( list.SelectMany( b => b.ToArray() ).Take( expected.Length ).ToArray(), Is.EqualTo( expected ) );
+<#+
+			break;
+		}
+		default:
+		{
+#>
+				Assert.Throws<#= isAsync ? "Async" : String.Empty #><InvalidOperationException>(
+					<#= isAsync ? "async " : String.Empty #>() => <#= Pack( "target", isAsync ) #>( <#= input #> )
+				);
+<#+
+			break;
+		}
+	}
+#>
+			}
+<#+
+	if ( requiresAllocator )
+	{
+#>
+			Assert.That( allocator.IsOnly<#= allocation #>Called(), Is.<#= allocationResult == AllocationResult.Success #> );
+<#+
+	}
+#>
+		}
+<#+
+}
+
+private void PutMultipleTest( string label, bool requiresAllocator, string allocation, int initialSize, AllocationResult allocationResult, string allocationType, string input, string output, bool isAsync, int[] offsets, int[] indexes )
+{
+#>
+
+		[Test]
+<#+
+	foreach ( var index in indexes )
+	{
+		foreach ( var offset in offsets )
+		{
+#>
+		[TestCase( <#= index #>, <#= offset #> )]
+<#+
+		}
+	}
+#>
+		public <#= AsyncVoid( isAsync, allocationResult ) #> TestMultiAllocation_<#= label #><#= isAsync ? "Async" : String.Empty #>( int startIndex, int startOffset )
+		{
+<#+
+	string allocationExpression;
+
+	if ( requiresAllocator )
+	{
+#>
+			var allocator = new Allocator();
+<#+
+			allocationExpression = "allocator." + allocation;
+	}
+	else
+	{
+			allocationExpression = allocation;
+	}
+#>
+			var buffers = new List<ArraySegment<byte>>( <#= initialSize / 2 + 1 #> + startIndex );
+			
+			for ( var i = 0; i < startIndex; i++ )
+			{
+				buffers.Add( new ArraySegment<byte>( new byte[ 2 ] ) );
+			}
+
+			buffers.Add( new ArraySegment<byte>( new byte[ 2 + startOffset ], startOffset, 2 ) );
+
+			for ( var i = ( startIndex + 1 ); i < <#= initialSize / 2 #> + startIndex; i++ )
+			{
+				buffers.Add( new ArraySegment<byte>( new byte[ 2 ] ) );
+			}
+			
+<#+
+	if ( initialSize % 2 == 1 )
+	{
+#>
+			buffers.Add( new ArraySegment<byte>( new byte[ 1 ] ) );
+<#+
+	}
+
+#>
+			var initialBuffersSize = buffers.Count;
+
+			using ( var target = CreatePacker( buffers, startIndex, startOffset, <#= allocationExpression #> ) )
+			{
+				Assert.That( target.InitialBufferIndex, Is.EqualTo( startIndex ) );
+				Assert.That( target.CurrentBufferIndex, Is.EqualTo( startIndex ) );
+				Assert.That( target.CurrentBufferOffset, Is.EqualTo( startOffset ) );
+
+<#+
+	switch ( allocationResult )
+	{
+		case AllocationResult.None:
+		case AllocationResult.Success:
+		{
+#>
+				<#= Pack( "target", isAsync ) #>( <#= input #> );
+
+				var expected = new byte[] { <#= output #> };
+
+				// InitialBufferIndex is immutable.
+				Assert.That( target.InitialBufferIndex, Is.EqualTo( startIndex ) );
+
+				// Note that the 'pointer' can be tail of the current buffer to avoid allocation which will not be required.
+<#+
+	if ( allocationResult == AllocationResult.Success )
+	{
+		if ( allocationType == "Custom" )
+		{
+#>
+				// This should be startIndex + 1 because our testing allocator do best job.
+				Assert.That( target.CurrentBufferIndex, Is.EqualTo( startIndex + 1 ) );
+				Assert.That( target.CurrentBufferOffset, Is.EqualTo( expected.Length - 2 /* length of head buffer */ ) );
+<#+
+		}
+		else
+		{
+#>
+				var expectedSizeInAllocated = expected.Length - 2;
+				// So, we subtract 1 for identical length data.
+				Assert.That( target.CurrentBufferIndex, Is.EqualTo( startIndex + ( expected.Length > 2 ? 1 : 0 ) + ( expectedSizeInAllocated / <#= allocationType #>AllocationSize ) - ( expectedSizeInAllocated % <#= allocationType #>AllocationSize == 0 ? 1 : 0 ) ) );
+				// Tail for identical length data, intermediate (1) for other length data.
+				Assert.That( target.CurrentBufferOffset, Is.EqualTo( ( expectedSizeInAllocated % <#= allocationType #>AllocationSize == 0 ) ? <#= allocationType #>AllocationSize : ( expectedSizeInAllocated % <#= allocationType #>AllocationSize ) ) );
+<#+
+		}
+	}
+	else
+	{
+#>
+				// So, we subtract 1 for even length data.
+				Assert.That( target.CurrentBufferIndex, Is.EqualTo( startIndex + expected.Length / 2  - ( expected.Length % 2 == 0 ? 1 : 0 ) ) );
+				// Tail for even length data, intermediate (1) for odd length data.
+				Assert.That( target.CurrentBufferOffset, Is.EqualTo( expected.Length % 2 == 0 ? 2 : 1 ) );
+<#+
+	}
+#>
+
+				var list = target.GetFinalBuffers();
+				Assert.That( list, Is.Not.Null.And.Not.Empty );
+				// Note that startOffset should be considered in ArraySegmemt<T>.ToArray()
+				Assert.That( list.SelectMany( b => b.ToArray() ).Skip( startIndex * 2 ).Take( expected.Length ).ToArray(), Is.EqualTo( expected ) );
+				// Buffer LIST should be touched by the allocator.
+				Assert.That( list, Is.SameAs( buffers ) );
+<#+
+	if ( allocationResult == AllocationResult.Success )
+	{
+#>
+				// Buffer should be adjusted by the allocator.
+				Assert.That( buffers.Count, Is.Not.EqualTo( initialBuffersSize ) );
+<#+
+	}
+	else
+	{
+#>
+				// Buffer should not be adjusted by the allocator.
+				Assert.That( buffers.Count, Is.EqualTo( initialBuffersSize ) );
+<#+
+	}
+#>
+
+				var bytes = target.GetResultBytes();
+				// Only used contents are returned.
+				Assert.That( target.GetResultBytes(), Is.Not.SameAs( bytes ) );
+				Assert.That( bytes, Is.Not.Null );
+				Assert.That( bytes, Is.EqualTo( expected ) );
+<#+
+	if ( allocationResult == AllocationResult.Success )
+	{
+		if ( requiresAllocator )
+		{
+#>
+				// Check last allocation size is expected (even if it is implementation detail.)
+				Assert.That( buffers.Last().Count, Is.EqualTo( allocator.LastAllocationSize ) );
+<#+
+		}
+		else
+		{
+#>
+				// Check last allocation size is expected (even if it is implementation detail.)
+				Assert.That( buffers.Last().Count, Is.EqualTo( <#= allocationType #>AllocationSize ) );
+<#+
+		}
+	}
+			break;
+		}
+		default:
+		{
+#>
+				Assert.Throws<#= isAsync ? "Async" : String.Empty #><InvalidOperationException>(
+					<#= isAsync ? "async " : String.Empty #>() => <#= Pack( "target", isAsync ) #>( <#= input #> )
+				);
+<#+
+			break;
+		}
+	}
+#>
+			}
+<#+
+	if ( requiresAllocator )
+	{
+#>
+			Assert.That( allocator.IsOnly<#= allocation #>Called(), Is.<#= allocationResult == AllocationResult.Success #> );
+<#+
+	}
+#>
+		}
+<#+
+}
+
+private static string AsyncVoid( bool isAsync, AllocationResult result )
+{
+	return ( isAsync && result != AllocationResult.Fail ) ? "async Task" : "void";
+}
+
+private static string Pack( string variable, bool isAsync )
+{
+	return ( isAsync ? "await " : String.Empty ) + variable + ".Pack" + ( isAsync ? "Async" : String.Empty );
+}
+
+private enum AllocationResult
+{
+	None,
+	Success,
+	Fail
+}
+#>

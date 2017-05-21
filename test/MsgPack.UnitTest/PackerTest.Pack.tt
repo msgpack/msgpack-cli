@@ -22,9 +22,13 @@ var __numerics =
 		Tuple.Create( "DoubleMaxValue", typeof( double ),"Double.MaxValue" , "new byte[] { 0xCB }.Concat( BitConverter.GetBytes( Double.MaxValue ).Reverse() ).ToArray()" ),
 		Tuple.Create( "SingleMaxValue", typeof( float ), "Single.MaxValue" , "new byte[] { 0xCA }.Concat( BitConverter.GetBytes( Single.MaxValue ).Reverse() ).ToArray()" ),
 		Tuple.Create( "UInt64MaxValue", typeof( ulong ), "UInt64.MaxValue" , "new byte[] { 0xCF }.Concat( BitConverter.GetBytes( UInt64.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "Int64MaxValue", typeof( long ), "Int64.MaxValue" , "new byte[] { 0xD3 }.Concat( BitConverter.GetBytes( Int64.MaxValue ).Reverse() ).ToArray()" ),
 		Tuple.Create( "UInt32MaxValue", typeof( uint ), "UInt32.MaxValue" , "new byte[] { 0xCE }.Concat( BitConverter.GetBytes( UInt32.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "Int32MaxValue", typeof( int ), "Int32.MaxValue" , "new byte[] { 0xD2 }.Concat( BitConverter.GetBytes( Int32.MaxValue ).Reverse() ).ToArray()" ),
 		Tuple.Create( "UInt16MaxValue", typeof( ushort ), "UInt16.MaxValue" , "new byte[] { 0xCD }.Concat( BitConverter.GetBytes( UInt16.MaxValue ).Reverse() ).ToArray()" ),
+		Tuple.Create( "Int16MaxValue", typeof( short ), "Int16.MaxValue" , "new byte[] { 0xD1 }.Concat( BitConverter.GetBytes( Int16.MaxValue ).Reverse() ).ToArray()" ),
 		Tuple.Create( "ByteMaxValue", typeof( byte ), "Byte.MaxValue" , "new byte[] { 0xCC, 0xFF }" ),
+		Tuple.Create( "SByteMaxValue", typeof( sbyte ), "SByte.MaxValue" , "new byte[] { 0x7F }" ),
 		Tuple.Create( "NegativeFixNumMinValueMinusOne", typeof( sbyte ), "( ( sbyte )-33 )" , "new byte[] { 0xD0, unchecked( ( byte )( sbyte )-33 ) }" ),
 		Tuple.Create( "NegativeFixNumMinValue", typeof( int ), "( -32 )" , "new byte[] { 0xE0 }" ),
 		Tuple.Create( "MinusOne", typeof( int ), "( -1 )" , "new byte[] { 0xFF }" ),
@@ -47,7 +51,7 @@ var __numerics =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -83,7 +87,7 @@ namespace MsgPack
 	// This file was generated from PackerTest.Pack.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit PackerTest.Pack.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class PackerTest_Pack
+	partial class PackerTest
 	{
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -104,12 +108,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Pack", isAsync )#>_<#= __numeric.Item1 #>_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -129,12 +133,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Pack", isAsync )#>_Nullable<#= __numeric.Item2.Name #>_NotNull_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -143,12 +147,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Pack", isAsync )#>_Nullable<#= __numeric.Item2.Name #>_Null_AsNil()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( default( <#= __numeric.Item2 #>?  ) );
 				Assert.AreEqual(
 					new byte[]{ 0xC0 },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -176,12 +180,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackArrayHeader", isAsync ) #><#= testCase.Type #>_<#= testCase.ValueLabel #>()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.PackArrayHeader", isAsync ) #>( <#= testCase.Value #> );
 				Assert.AreEqual(
 					new byte[] { <#= testCase.Bytes #> },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -193,7 +197,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackArrayHeader", isAsync ) #>Int32_MinusOne()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackArrayHeader", isAsync ) #>( -1 ) );
 			}
@@ -220,12 +224,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackMapHeader", isAsync ) #><#= testCase.Type #>_<#= testCase.ValueLabel #>()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.PackMapHeader", isAsync ) #>( <#= testCase.Value #> );
 				Assert.AreEqual(
 					new byte[] { <#= testCase.Bytes #> },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -238,7 +242,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackMapHeader", isAsync ) #>Int32_MinusOne()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackMapHeader", isAsync ) #>( -1 ) );
 			}
@@ -262,12 +266,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackCollection", isAsync ) #><#= testCase.Type #>_<#= testCase.ValueLabel #>()
 		{
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.PackCollection", isAsync ) #>( <#= testCase.Value #> );
 				Assert.AreEqual(
 					new byte[] { <#= testCase.Bytes #> },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -302,12 +306,12 @@ foreach( var isAsync in new [] { false, true } )
 		{
 			<#= testCase.Type #> value = <#= testCase.Value #>;
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( value );
 				Assert.AreEqual(
 					new byte[] { <#= testCase.Bytes #> },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
