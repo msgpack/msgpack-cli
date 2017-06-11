@@ -130,7 +130,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
+		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="stream"><see cref="Stream"/> object. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
 		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
@@ -145,7 +145,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
+		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="stream"><see cref="Stream"/> object. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
 		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
@@ -161,7 +161,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
+		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="stream"><see cref="Stream"/> object.</param>
 		/// <param name="ownsStream">
@@ -180,7 +180,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
+		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="stream"><see cref="Stream"/> object.</param>
 		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
@@ -200,7 +200,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instancde wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
+		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
 		/// </summary>
 		/// <param name="stream"><see cref="Stream"/> object.</param>
 		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
