@@ -192,7 +192,7 @@ foreach( var isAsync in new [] { false, true } )
 	foreach( var testType in
 		new []
 		{
-			// Type, Label, use ToArray
+			// Type, Label
 			Tuple.Create( "IEnumerable<byte>", "UncountableEnumerableOfByte", false ),
 			Tuple.Create( "IEnumerable<byte>", "EnumerableOfByte", true ),
 			Tuple.Create( "IList<byte>", "ListOfByte", true ),
@@ -225,10 +225,6 @@ foreach( var isAsync in new [] { false, true } )
 			{
 				<#= Await( "target.PackRaw", isAsync )#>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
 				var packed = this.GetResult( target );
-<#
-			if ( testType.Item3 )
-			{
-#>
 				Assert.That( 
 					packed.Take( <#= length.Item4.Length #> ).ToArray(), 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item4.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -237,23 +233,6 @@ foreach( var isAsync in new [] { false, true } )
 					packed.Skip( <#= length.Item4.Length #> ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
 				);
-<#
-			}
-			else
-			{
-				// IEnumerable<byte> will be always raw32
-#>
-				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
-				);
-				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
-				);
-<#
-			}
-#>
 			}
 		}
 		
@@ -265,10 +244,6 @@ foreach( var isAsync in new [] { false, true } )
 			{
 				<#= Await( "target.PackRaw", isAsync )#>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
 				var packed = this.GetResult( target );
-<#
-			if ( testType.Item3 )
-			{
-#>
 				Assert.That( 
 					packed.Take( <#= length.Item3.Length #> ).ToArray(), 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -277,23 +252,6 @@ foreach( var isAsync in new [] { false, true } )
 					packed.Skip( <#= length.Item3.Length #> ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
 				);
-<#
-			}
-			else
-			{
-				// IEnumerable<byte> will be always str32
-#>
-				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
-				);
-				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
-				);
-<#
-			}
-#>
 			}
 		}
 
@@ -306,10 +264,6 @@ foreach( var isAsync in new [] { false, true } )
 			{
 				<#= Await( "target.PackBinary", isAsync ) #>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
 				var packed = this.GetResult( target );
-<#
-			if ( testType.Item3 )
-			{
-#>
 				Assert.That( 
 					packed.Take( <#= length.Item2.Length #> ).ToArray(), 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -318,23 +272,6 @@ foreach( var isAsync in new [] { false, true } )
 					packed.Skip( <#= length.Item2.Length #> ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
 				);
-<#
-			}
-			else
-			{
-				// IEnumerable<byte> will be always bin32
-#>
-				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
-				);
-				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
-				);
-<#
-			}
-#>
 			}
 		}
 		
@@ -346,10 +283,6 @@ foreach( var isAsync in new [] { false, true } )
 			{
 				<#= Await( "target.PackBinary", isAsync )#>( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> )<#= testType.Item3 ? ".ToArray()" : String.Empty #> as <#= testType.Item1 #> );
 				var packed = this.GetResult( target );
-<#
-			if ( testType.Item3 )
-			{
-#>
 				Assert.That( 
 					packed.Take( <#= length.Item3.Length #> ).ToArray(), 
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
@@ -358,23 +291,6 @@ foreach( var isAsync in new [] { false, true } )
 					packed.Skip( <#= length.Item3.Length #> ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
 				);
-<#
-			}
-			else
-			{
-				// IEnumerable<byte> will be always raw32
-#>
-				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( <#= length.Item1 #> ).Reverse() ).ToArray() )
-				);
-				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, <#= length.Item1 #> ).ToArray() )
-				);
-<#
-			}
-#>
 			}
 		}		
 <#

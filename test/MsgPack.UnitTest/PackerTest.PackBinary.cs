@@ -1596,11 +1596,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -1615,11 +1615,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -1635,11 +1635,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -1654,11 +1654,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -1673,11 +1673,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -1692,11 +1692,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -1712,11 +1712,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -1731,11 +1731,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -1750,11 +1750,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xBF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -1769,11 +1769,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xBF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -1789,11 +1789,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x1F } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -1808,11 +1808,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xBF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -1827,11 +1827,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xD9, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -1846,11 +1846,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -1866,11 +1866,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -1885,11 +1885,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -1904,11 +1904,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xD9, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -1923,11 +1923,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -1943,11 +1943,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -1962,11 +1962,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -1981,11 +1981,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -2000,11 +2000,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -2020,11 +2020,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC5, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -2039,11 +2039,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -2058,11 +2058,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -2077,11 +2077,11 @@ namespace MsgPack
 				target.PackRaw( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -2097,11 +2097,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC5, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -2116,11 +2116,11 @@ namespace MsgPack
 				target.PackBinary( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -2136,7 +2136,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
@@ -2155,7 +2155,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
@@ -2175,7 +2175,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xC6, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
@@ -2194,7 +2194,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
@@ -6504,11 +6504,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -6523,11 +6523,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -6543,11 +6543,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -6562,11 +6562,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 0 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 0 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 0 ).ToArray() )
 				);
 			}
@@ -6581,11 +6581,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -6600,11 +6600,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -6620,11 +6620,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -6639,11 +6639,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 1 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 1 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 1 ).ToArray() )
 				);
 			}
@@ -6658,11 +6658,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xBF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -6677,11 +6677,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xBF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -6697,11 +6697,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x1F } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -6716,11 +6716,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 31 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 31 ).Reverse() ).ToArray() )
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xBF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 1 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 31 ).ToArray() )
 				);
 			}
@@ -6735,11 +6735,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xD9, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -6754,11 +6754,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -6774,11 +6774,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -6793,11 +6793,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 32 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 32 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0x20 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 32 ).ToArray() )
 				);
 			}
@@ -6812,11 +6812,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xD9, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -6831,11 +6831,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -6851,11 +6851,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 2 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC4, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 2 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -6870,11 +6870,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 255 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 255 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x0, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 255 ).ToArray() )
 				);
 			}
@@ -6889,11 +6889,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -6908,11 +6908,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -6928,11 +6928,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC5, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -6947,11 +6947,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 256 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 256 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 256 ).ToArray() )
 				);
 			}
@@ -6966,11 +6966,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -6985,11 +6985,11 @@ namespace MsgPack
 				await target.PackRawAsync( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -7005,11 +7005,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xC5, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -7024,11 +7024,11 @@ namespace MsgPack
 				await target.PackBinaryAsync( Enumerable.Repeat( ( byte )0xFF, 65535 ) as IEnumerable<byte> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65535 ).Reverse() ).ToArray() )
+					packed.Take( 3 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
 				);
 				Assert.That( 
-					packed.Skip( 5 ).ToArray(),
+					packed.Skip( 3 ).ToArray(),
 					Is.EqualTo( Enumerable.Repeat( ( byte )0xFF, 65535 ).ToArray() )
 				);
 			}
@@ -7044,7 +7044,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
@@ -7063,7 +7063,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
@@ -7083,7 +7083,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Bin32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xC6, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
@@ -7102,7 +7102,7 @@ namespace MsgPack
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed.Take( 5 ).ToArray(), 
-					Is.EqualTo( new byte[] { MessagePackCode.Raw32 }.Concat( BitConverter.GetBytes( 65536 ).Reverse() ).ToArray() )
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
