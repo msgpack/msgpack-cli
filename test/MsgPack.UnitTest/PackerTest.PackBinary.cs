@@ -57,7 +57,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 0 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 0 ) ) )
 				);
 			}
 		}
@@ -76,7 +76,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 1 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 1 ) ) )
 				);
 			}
 		}
@@ -95,7 +95,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 2 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 2 ) ) )
 				);
 			}
 		}
@@ -114,7 +114,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 3 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 3 ) ) )
 				);
 			}
 		}
@@ -133,7 +133,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 4 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 4 ) ) )
 				);
 			}
 		}
@@ -152,7 +152,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 5 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 5 ) ) )
 				);
 			}
 		}
@@ -171,7 +171,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 6 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 6 ) ) )
 				);
 			}
 		}
@@ -190,7 +190,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 7 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 7 ) ) )
 				);
 			}
 		}
@@ -209,7 +209,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 8 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 8 ) ) )
 				);
 			}
 		}
@@ -228,7 +228,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 9 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 9 ) ) )
 				);
 			}
 		}
@@ -247,7 +247,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 10 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 10 ) ) )
 				);
 			}
 		}
@@ -266,7 +266,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 11 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 11 ) ) )
 				);
 			}
 		}
@@ -285,7 +285,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 12 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 12 ) ) )
 				);
 			}
 		}
@@ -304,7 +304,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 13 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 13 ) ) )
 				);
 			}
 		}
@@ -323,7 +323,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 14 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 14 ) ) )
 				);
 			}
 		}
@@ -342,7 +342,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 15 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 15 ) ) )
 				);
 			}
 		}
@@ -361,7 +361,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 16 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 16 ) ) )
 				);
 			}
 		}
@@ -380,7 +380,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 17 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 17 ) ) )
 				);
 			}
 		}
@@ -399,7 +399,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 18 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 18 ) ) )
 				);
 			}
 		}
@@ -418,7 +418,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 19 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 19 ) ) )
 				);
 			}
 		}
@@ -437,7 +437,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 20 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 20 ) ) )
 				);
 			}
 		}
@@ -456,7 +456,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 21 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 21 ) ) )
 				);
 			}
 		}
@@ -475,7 +475,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 22 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 22 ) ) )
 				);
 			}
 		}
@@ -494,7 +494,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 23 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 23 ) ) )
 				);
 			}
 		}
@@ -513,7 +513,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 24 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 24 ) ) )
 				);
 			}
 		}
@@ -532,7 +532,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 25 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 25 ) ) )
 				);
 			}
 		}
@@ -551,7 +551,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 26 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 26 ) ) )
 				);
 			}
 		}
@@ -570,7 +570,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 27 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 27 ) ) )
 				);
 			}
 		}
@@ -589,7 +589,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 28 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 28 ) ) )
 				);
 			}
 		}
@@ -608,7 +608,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 29 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 29 ) ) )
 				);
 			}
 		}
@@ -627,7 +627,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 30 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 30 ) ) )
 				);
 			}
 		}
@@ -646,7 +646,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 31 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 31 ) ) )
 				);
 			}
 		}
@@ -665,7 +665,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
@@ -684,7 +684,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
@@ -718,7 +718,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
@@ -737,7 +737,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
@@ -771,7 +771,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 256 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 256 ) ) )
 				);
 			}
 		}
@@ -790,7 +790,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65535 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65535 ) ) )
 				);
 			}
 		}
@@ -809,7 +809,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65536 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65536 ) ) )
 				);
 			}
 		}
@@ -829,10 +829,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 0 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 0 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_0_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 0 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_1_String_WithoutCompatibilityOptions_AsStrStream()
@@ -848,10 +864,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 1 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 1 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_1_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 1 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_2_String_WithoutCompatibilityOptions_AsStrStream()
@@ -867,10 +899,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 2 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 2 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_2_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 2 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA2 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_3_String_WithoutCompatibilityOptions_AsStrStream()
@@ -886,10 +934,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 3 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 3 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_3_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 3 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA3 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_4_String_WithoutCompatibilityOptions_AsStrStream()
@@ -905,10 +969,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 4 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 4 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_4_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 4 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA4 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_5_String_WithoutCompatibilityOptions_AsStrStream()
@@ -924,10 +1004,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 5 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 5 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_5_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 5 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA5 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_6_String_WithoutCompatibilityOptions_AsStrStream()
@@ -943,10 +1039,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 6 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 6 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_6_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 6 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA6 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_7_String_WithoutCompatibilityOptions_AsStrStream()
@@ -962,10 +1074,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 7 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 7 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_7_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 7 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA7 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_8_String_WithoutCompatibilityOptions_AsStrStream()
@@ -981,10 +1109,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 8 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 8 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_8_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 8 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA8 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_9_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1000,10 +1144,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 9 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 9 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_9_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 9 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA9 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_10_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1019,10 +1179,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 10 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 10 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_10_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 10 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAA } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_11_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1038,10 +1214,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 11 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 11 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_11_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 11 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAB } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_12_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1057,10 +1249,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 12 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 12 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_12_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 12 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAC } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_13_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1076,10 +1284,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 13 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 13 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_13_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 13 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAD } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_14_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1095,10 +1319,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 14 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 14 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_14_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 14 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAE } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_15_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1114,10 +1354,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 15 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 15 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_15_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 15 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_16_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1133,10 +1389,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 16 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 16 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_16_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 16 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB0 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_17_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1152,10 +1424,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 17 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 17 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_17_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 17 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB1 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_18_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1171,10 +1459,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 18 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 18 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_18_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 18 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB2 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_19_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1190,10 +1494,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 19 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 19 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_19_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 19 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB3 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_20_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1209,10 +1529,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 20 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 20 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_20_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 20 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB4 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_21_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1228,10 +1564,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 21 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 21 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_21_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 21 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB5 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_22_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1247,10 +1599,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 22 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 22 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_22_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 22 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB6 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_23_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1266,10 +1634,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 23 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 23 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_23_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 23 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB7 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_24_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1285,10 +1669,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 24 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 24 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_24_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 24 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB8 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_25_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1304,10 +1704,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 25 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 25 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_25_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 25 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB9 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_26_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1323,10 +1739,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 26 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 26 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_26_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 26 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBA } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_27_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1342,10 +1774,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 27 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 27 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_27_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 27 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBB } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_28_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1361,10 +1809,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 28 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 28 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_28_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 28 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBC } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_29_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1380,10 +1844,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 29 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 29 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_29_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 29 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBD } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_30_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1399,10 +1879,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 30 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 30 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_30_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 30 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBE } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_31_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1418,10 +1914,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 31 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 31 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_31_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 31 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_32_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1437,10 +1949,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_32_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 32 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xD9, 0x20 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_32_String_WithBinaryAsRawCompatibilityOptions_AsRawStream()
@@ -1456,7 +1984,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
@@ -1490,10 +2018,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_255_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 255 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xD9, 0xFF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_255_String_WithBinaryAsRawCompatibilityOptions_AsRawStream()
@@ -1509,7 +2053,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
@@ -1543,10 +2087,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 256 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 256 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_256_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 256 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_65535_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1562,10 +2122,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65535 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65535 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public void TestPackStringHeader_65535_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 65535 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public void TestPackString_65536_String_WithoutCompatibilityOptions_AsStrStream()
@@ -1581,7 +2157,41 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65536 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65536 ) ) )
+				);
+			}
+		}
+
+		[Test]
+		public void TestPackStringHeader_65536_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackStringHeader( 65536 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
+				);
+			}
+		}
+		
+		[Test]
+		public void TestPackString_MultibyteString_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				target.PackString( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3\u30af" ); // msgpack in Katanaka (24bytes)
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xB8 } ) 
+				);
+				Assert.That( 
+					packed.Skip( 1 ).ToArray(),
+					Is.EqualTo( Encoding.UTF8.GetBytes( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3\u30af" ) )
 				);
 			}
 		}
@@ -4965,7 +5575,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 0 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 0 ) ) )
 				);
 			}
 		}
@@ -4984,7 +5594,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 1 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 1 ) ) )
 				);
 			}
 		}
@@ -5003,7 +5613,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 2 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 2 ) ) )
 				);
 			}
 		}
@@ -5022,7 +5632,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 3 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 3 ) ) )
 				);
 			}
 		}
@@ -5041,7 +5651,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 4 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 4 ) ) )
 				);
 			}
 		}
@@ -5060,7 +5670,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 5 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 5 ) ) )
 				);
 			}
 		}
@@ -5079,7 +5689,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 6 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 6 ) ) )
 				);
 			}
 		}
@@ -5098,7 +5708,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 7 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 7 ) ) )
 				);
 			}
 		}
@@ -5117,7 +5727,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 8 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 8 ) ) )
 				);
 			}
 		}
@@ -5136,7 +5746,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 9 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 9 ) ) )
 				);
 			}
 		}
@@ -5155,7 +5765,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 10 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 10 ) ) )
 				);
 			}
 		}
@@ -5174,7 +5784,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 11 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 11 ) ) )
 				);
 			}
 		}
@@ -5193,7 +5803,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 12 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 12 ) ) )
 				);
 			}
 		}
@@ -5212,7 +5822,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 13 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 13 ) ) )
 				);
 			}
 		}
@@ -5231,7 +5841,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 14 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 14 ) ) )
 				);
 			}
 		}
@@ -5250,7 +5860,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 15 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 15 ) ) )
 				);
 			}
 		}
@@ -5269,7 +5879,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 16 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 16 ) ) )
 				);
 			}
 		}
@@ -5288,7 +5898,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 17 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 17 ) ) )
 				);
 			}
 		}
@@ -5307,7 +5917,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 18 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 18 ) ) )
 				);
 			}
 		}
@@ -5326,7 +5936,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 19 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 19 ) ) )
 				);
 			}
 		}
@@ -5345,7 +5955,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 20 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 20 ) ) )
 				);
 			}
 		}
@@ -5364,7 +5974,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 21 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 21 ) ) )
 				);
 			}
 		}
@@ -5383,7 +5993,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 22 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 22 ) ) )
 				);
 			}
 		}
@@ -5402,7 +6012,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 23 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 23 ) ) )
 				);
 			}
 		}
@@ -5421,7 +6031,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 24 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 24 ) ) )
 				);
 			}
 		}
@@ -5440,7 +6050,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 25 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 25 ) ) )
 				);
 			}
 		}
@@ -5459,7 +6069,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 26 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 26 ) ) )
 				);
 			}
 		}
@@ -5478,7 +6088,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 27 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 27 ) ) )
 				);
 			}
 		}
@@ -5497,7 +6107,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 28 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 28 ) ) )
 				);
 			}
 		}
@@ -5516,7 +6126,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 29 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 29 ) ) )
 				);
 			}
 		}
@@ -5535,7 +6145,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 30 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 30 ) ) )
 				);
 			}
 		}
@@ -5554,7 +6164,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 31 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 31 ) ) )
 				);
 			}
 		}
@@ -5573,7 +6183,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
@@ -5592,7 +6202,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
@@ -5626,7 +6236,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
@@ -5645,7 +6255,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
@@ -5679,7 +6289,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 256 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 256 ) ) )
 				);
 			}
 		}
@@ -5698,7 +6308,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65535 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65535 ) ) )
 				);
 			}
 		}
@@ -5717,7 +6327,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65536 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65536 ) ) )
 				);
 			}
 		}
@@ -5737,10 +6347,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 0 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 0 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_0_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 0 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA0 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_1_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5756,10 +6382,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 1 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 1 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_1_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 1 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA1 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_2_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5775,10 +6417,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 2 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 2 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_2_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 2 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA2 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_3_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5794,10 +6452,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 3 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 3 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_3_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 3 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA3 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_4_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5813,10 +6487,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 4 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 4 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_4_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 4 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA4 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_5_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5832,10 +6522,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 5 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 5 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_5_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 5 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA5 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_6_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5851,10 +6557,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 6 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 6 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_6_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 6 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA6 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_7_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5870,10 +6592,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 7 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 7 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_7_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 7 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA7 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_8_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5889,10 +6627,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 8 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 8 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_8_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 8 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA8 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_9_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5908,10 +6662,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 9 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 9 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_9_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 9 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xA9 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_10_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5927,10 +6697,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 10 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 10 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_10_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 10 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAA } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_11_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5946,10 +6732,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 11 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 11 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_11_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 11 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAB } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_12_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5965,10 +6767,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 12 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 12 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_12_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 12 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAC } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_13_String_WithoutCompatibilityOptions_AsStrStream()
@@ -5984,10 +6802,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 13 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 13 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_13_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 13 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAD } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_14_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6003,10 +6837,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 14 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 14 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_14_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 14 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAE } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_15_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6022,10 +6872,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 15 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 15 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_15_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 15 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xAF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_16_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6041,10 +6907,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 16 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 16 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_16_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 16 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB0 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_17_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6060,10 +6942,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 17 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 17 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_17_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 17 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB1 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_18_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6079,10 +6977,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 18 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 18 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_18_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 18 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB2 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_19_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6098,10 +7012,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 19 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 19 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_19_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 19 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB3 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_20_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6117,10 +7047,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 20 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 20 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_20_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 20 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB4 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_21_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6136,10 +7082,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 21 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 21 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_21_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 21 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB5 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_22_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6155,10 +7117,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 22 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 22 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_22_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 22 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB6 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_23_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6174,10 +7152,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 23 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 23 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_23_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 23 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB7 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_24_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6193,10 +7187,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 24 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 24 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_24_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 24 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB8 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_25_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6212,10 +7222,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 25 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 25 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_25_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 25 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xB9 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_26_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6231,10 +7257,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 26 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 26 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_26_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 26 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBA } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_27_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6250,10 +7292,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 27 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 27 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_27_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 27 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBB } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_28_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6269,10 +7327,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 28 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 28 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_28_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 28 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBC } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_29_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6288,10 +7362,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 29 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 29 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_29_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 29 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBD } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_30_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6307,10 +7397,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 30 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 30 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_30_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 30 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBE } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_31_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6326,10 +7432,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 1 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 31 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 31 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_31_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 31 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xBF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_32_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6345,10 +7467,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_32_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 32 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xD9, 0x20 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_32_String_WithBinaryAsRawCompatibilityOptions_AsRawStream()
@@ -6364,7 +7502,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 32 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 32 ) ) )
 				);
 			}
 		}
@@ -6398,10 +7536,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 2 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_255_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 255 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xD9, 0xFF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_255_String_WithBinaryAsRawCompatibilityOptions_AsRawStream()
@@ -6417,7 +7571,7 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 255 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 255 ) ) )
 				);
 			}
 		}
@@ -6451,10 +7605,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 256 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 256 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_256_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 256 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xDA, 0x1, 0x0 } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_65535_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6470,10 +7640,26 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 3 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65535 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65535 ) ) )
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_65535_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 65535 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xDA, 0xFF, 0xFF } ) 
+				);
+			}
+		}
+		
 
 		[Test]
 		public async Task TestPackStringAsync_65536_String_WithoutCompatibilityOptions_AsStrStream()
@@ -6489,7 +7675,10 @@ namespace MsgPack
 				);
 				Assert.That( 
 					packed.Skip( 5 ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', 65536 ).ToArray() )
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( 'A', 65536 ) ) )
+				);
+			}
+		}
 				);
 			}
 		}

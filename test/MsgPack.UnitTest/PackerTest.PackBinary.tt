@@ -65,13 +65,12 @@ foreach( var isAsync in new [] { false, true } )
 	foreach( var testType in
 		new []
 		{
-			// Type, Label, Desktop Only
-			Tuple.Create( "IEnumerable<char>", "EnumerableOfChar", false ),
-			Tuple.Create( "string", "String", true )
+			new { Type = "IEnumerable<char>",	Label = "EnumerableOfChar",	WithoutNetFxCore = true,	Unit = 'A' },
+			new { Type = "string",				Label = "String",			WithoutNetFxCore = false,	Unit = 'A' },
 		}
 	)
 	{
-		if ( !testType.Item3 )
+		if ( testType.WithoutNetFxCore )
 		{
 #>
 #if !NETFX_CORE
@@ -79,16 +78,15 @@ foreach( var isAsync in new [] { false, true } )
 		}
 
 		foreach( var length in
-			Enumerable.Range( 0, 32 ).Select( length => Tuple.Create( length, new byte[]{ ( byte )( 0xA0 + length ) }, default( byte[] ) ) )
+			Enumerable.Range( 0, 32 ).Select( length => new { Length = length, Header = new byte[] { ( byte )( 0xA0 + length ) }, CompatHeader = default( byte[] ) } )
 			.Concat( 
 				new []
 				{
-					// Length, Header, Compat Header
-					Tuple.Create( 32, new byte[]{ 0xD9, 0x20 }, new byte[]{ 0xDA, 0, 0x20 } ),
-					Tuple.Create( 0xFF, new byte[]{ 0xD9, 0xFF }, new byte[]{ 0xDA, 0, 0xFF } ),
-					Tuple.Create( 0x100, new byte[]{ 0xDA, 1, 0 }, default( byte[] ) ),
-					Tuple.Create( 0xFFFF, new byte[]{ 0xDA, 0xFF, 0xFF }, default( byte[] ) ),
-					Tuple.Create( 0x10000, new byte[]{ 0xDB, 0, 1, 0, 0 }, default( byte[] ) ),
+					new { Length = 32,		Header = new byte[]{ 0xD9, 0x20 },			CompatHeader = new byte[]{ 0xDA, 0, 0x20 } },
+					new { Length = 0xFF,	Header = new byte[]{ 0xD9, 0xFF },			CompatHeader = new byte[]{ 0xDA, 0, 0xFF } },
+					new { Length = 0x100,	Header = new byte[]{ 0xDA, 1, 0 },			CompatHeader = default( byte[] ) },
+					new { Length = 0xFFFF,	Header = new byte[]{ 0xDA, 0xFF, 0xFF },	CompatHeader = default( byte[] ) },
+					new { Length = 0x10000,	Header = new byte[]{ 0xDB, 0, 1, 0, 0 },	CompatHeader = default( byte[] ) },
 				}
 			)
 		)
@@ -96,40 +94,40 @@ foreach( var isAsync in new [] { false, true } )
 #>
 
 		[Test]
-		public <#= AsyncTest( "PackString", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
+		public <#= AsyncTest( "PackString", isAsync ) #>_<#= length.Length #>_<#= testType.Label #>_WithoutCompatibilityOptions_AsStrStream()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
-				<#= Await( "target.PackString", isAsync )#>( new String( 'A', <#= length.Item1 #> ) as <#= testType.Item1 #> );
+				<#= Await( "target.PackString", isAsync )#>( new String( '<#= testType.Unit #>', <#= length.Length #> ) as <#= testType.Type #> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( <#= length.Item2.Length #> ).ToArray(), 
-					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+					packed.Take( <#= length.Header.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Header.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
 				);
 				Assert.That( 
-					packed.Skip( <#= length.Item2.Length #> ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', <#= length.Item1 #> ).ToArray() )
+					packed.Skip( <#= length.Header.Length #> ).ToArray(),
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( '<#= testType.Unit #>', <#= length.Length #> ) ) )
 				);
 			}
 		}
 <#
-			if( testType.Item2 == "string" )
+			if( testType.Type == "string" )
 			{
 				// Only once.
 #>
 
 		[Test]
-		public <#= AsyncTest( "PackStringHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithoutCompatibilityOptions_AsStrStream()
+		public <#= AsyncTest( "PackStringHeader", isAsync ) #>_<#= length.Length #>_<#= testType.Label #>_WithoutCompatibilityOptions_AsStrStream()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
-				<#= Await( "target.PackStringHeader", isAsync )#>( <#= length.Item1 #> ) );
+				<#= Await( "target.PackStringHeader", isAsync )#>( <#= length.Length #> );
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed, 
-					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Header.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
 				);
 			}
 		}
@@ -137,40 +135,40 @@ foreach( var isAsync in new [] { false, true } )
 <#
 			}
 
-			if( length.Item3 != null )
+			if( length.CompatHeader != null )
 			{
 #>
 
 		[Test]
-		public <#= AsyncTest( "PackString", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		public <#= AsyncTest( "PackString", isAsync ) #>_<#= length.Length #>_<#= testType.Label #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
-				<#= Await( "target.PackString", isAsync )#>( new String( 'A', <#= length.Item1 #> ) as <#= testType.Item1 #> );
+				<#= Await( "target.PackString", isAsync )#>( new String( 'A', <#= length.Length #> ) as <#= testType.Type #> );
 				var packed = this.GetResult( target );
 				Assert.That( 
-					packed.Take( <#= length.Item3.Length #> ).ToArray(), 
-					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+					packed.Take( <#= length.CompatHeader.Length #> ).ToArray(), 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.CompatHeader.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
 				);
 				Assert.That( 
-					packed.Skip( <#= length.Item3.Length #> ).ToArray(),
-					Is.EqualTo( Enumerable.Repeat( ( byte )'A', <#= length.Item1 #> ).ToArray() )
+					packed.Skip( <#= length.CompatHeader.Length #> ).ToArray(),
+					Is.EqualTo( Encoding.UTF8.GetBytes( new String( '<#= testType.Unit #>', <#= length.Length #> ) ) )
 				);
 			}
 		}
 		
 		[Test]
-		public <#= AsyncTest( "PackStringHeader", isAsync ) #>_<#= length.Item1 #>_<#= testType.Item2 #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
+		public <#= AsyncTest( "PackStringHeader", isAsync ) #>_<#= length.Length #>_<#= testType.Label #>_WithBinaryAsRawCompatibilityOptions_AsRawStream()
 		{
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.PackBinaryAsRaw ) )
 			{
-				<#= Await( "target.PackStringHeader", isAsync ) #>( <#= length.Item1 #> );
+				<#= Await( "target.PackStringHeader", isAsync ) #>( <#= length.Length #> );
 				var packed = this.GetResult( target );
 				Assert.That( 
 					packed,
-					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.Item3.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
+					Is.EqualTo( new byte[] { <#= String.Join( ", ", length.CompatHeader.Select( b => "0x" + b.ToString( "X" ) ) ) #> } ) 
 				);
 			}
 		}
@@ -178,7 +176,7 @@ foreach( var isAsync in new [] { false, true } )
 			}
 		}
 
-		if ( !testType.Item3 )
+		if ( testType.WithoutNetFxCore )
 		{
 #>
 #endif // !NETFX_CORE
