@@ -144,33 +144,22 @@ namespace MsgPack
 			else
 			{
 #>
-			var chars = value.ToCharArray();
-			var encoder = Encoding.UTF8.GetEncoder();
-			this.WriteStringHeader( encoder.GetByteCount( chars, 0, chars.Length, true ), allowStr8 );
-			
-			var currentBuffer = this._currentBuffer;
-			var currentBufferIndex = this._currentBufferIndex;
-			int charsOffset = 0;
-			int remainingCharLength = value.Length;
-			bool isCompleted = false;
-			do
+			var encodedLength = Encoding.UTF8.GetByteCount( value );
+			this.WriteStringHeader( encodedLength, allowStr8 );
+			if ( encodedLength == 0 )
 			{
-				if ( !this.ShiftBufferIfNeeded( remainingCharLength * sizeof( char ), ref currentBuffer, ref currentBufferIndex ) )
-				{
-					this.ThrowEofExceptionForString( ( value.Length - remainingCharLength ) * sizeof( char ) );
-				}
+				return;
+			}
 
-				int bytesUsed;
-				isCompleted = encoder.EncodeString( chars, ref charsOffset, ref remainingCharLength, currentBuffer.Array, currentBuffer.Offset, currentBuffer.Count, out bytesUsed );
-				currentBuffer = currentBuffer.Slice( bytesUsed );
-			} while ( remainingCharLength > 0 );
-
-#if DEBUG
-			Contract.Assert( isCompleted, "Encoding is not completed!" );
-#endif // DEBUG
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
+			if ( encodedLength <= this._currentBuffer.Count )
+			{
+				Encoding.UTF8.GetBytes( value, 0, value.Length, this._currentBuffer.Array, this._currentBuffer.Offset );
+				this._currentBuffer = this._currentBuffer.Slice( encodedLength );
+			}
+			else
+			{
+				this.WriteStringBody( value );
+			}
 <#
 			} // if isAsync
 #>
@@ -207,6 +196,74 @@ namespace MsgPack
 			}
 
 			this.WriteBytes( MessagePackCode.Str32, unchecked(( uint )bytesLength) );
+		}
+
+#if !FEATURE_POINTER_CONVERSION
+		private void WriteStringBody( string value )
+		{
+			var chars = BufferManager.NewCharBuffer( value.Length );
+			int offset = 0;
+
+			while ( offset < value.Length )
+			{
+				int copying = Math.Min( value.Length - offset, chars.Length );
+				value.CopyTo( offset, chars, 0, copying );
+				this.WriteStringBody( chars );
+				offset += copying;
+			}
+		}
+
+		private void WriteStringBody( char[] value )
+		{
+			var charsOffset = 0;
+#else
+		private unsafe void WriteStringBody( string value )
+		{
+			fixed ( char* pValue = value )
+#endif // !FEATURE_POINTER_CONVERSION
+			{
+				var currentBuffer = this._currentBuffer;
+				var currentBufferIndex = this._currentBufferIndex;
+				var encoder = Encoding.UTF8.GetEncoder();
+#if FEATURE_POINTER_CONVERSION
+				var pChars = pValue;
+#endif // FEATURE_POINTER_CONVERSION
+				var remainingCharsLength = value.Length;
+				var isCompleted = false;
+				do
+				{
+					if ( !this.ShiftBufferIfNeeded( remainingCharsLength * sizeof( char ), ref currentBuffer, ref currentBufferIndex ) )
+					{
+						this.ThrowEofExceptionForString( ( value.Length - remainingCharsLength ) * sizeof( char ) );
+					}
+
+					int charsUsed, bytesUsed;
+#if FEATURE_POINTER_CONVERSION
+					fixed ( byte* pBuffer = currentBuffer.Array )
+#endif // FEATURE_POINTER_CONVERSION
+					{
+#if FEATURE_POINTER_CONVERSION
+						isCompleted = encoder.EncodeString( pChars, remainingCharsLength, pBuffer + currentBuffer.Offset, currentBuffer.Count, out charsUsed, out bytesUsed );
+#else
+						isCompleted = encoder.EncodeString( value, charsOffset, remainingCharsLength, currentBuffer.Array, currentBuffer.Offset, currentBuffer.Count, out charsUsed, out bytesUsed );
+#endif // FEATURE_POINTER_CONVERSION
+					}
+
+#if FEATURE_POINTER_CONVERSION
+					pChars += charsUsed;
+#else
+					charsOffset += charsUsed;
+#endif // FEATURE_POINTER_CONVERSION
+					remainingCharsLength -= charsUsed;
+					currentBuffer = currentBuffer.Slice( bytesUsed );
+				} while ( remainingCharsLength > 0 );
+#if DEBUG
+				Contract.Assert( isCompleted, "Encoding is not completed!" );
+#endif // DEBUG
+
+				this._currentBufferIndex = currentBufferIndex;
+				this._currentBuffer = currentBuffer;
+			}
 		}
 	}
 }

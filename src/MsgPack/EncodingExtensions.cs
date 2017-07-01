@@ -37,10 +37,33 @@ namespace MsgPack
 	/// </summary>
 	internal static class EncodingExtensions
 	{
-		public static /* unsafe */ bool EncodeString( this Encoder source, char[]/* char* */ chars, ref int charsOffset, ref int charsLength, byte[] /* byte* */ buffer, int bufferOffset, int bufferCount, out int bytesUsed )
+#if FEATURE_POINTER_CONVERSION
+#if !NETFX_35 && !UNITY
+		[System.Security.SecuritySafeCritical]
+#endif // !NETFX_35 && !UNITY
+		public static unsafe bool EncodeString( this Encoder source, char* pChar, int charsLength, byte* pBuffer, int bufferCount, out int charsUsed, out int bytesUsed )
 		{
 			bool isCompleted;
-			int charsUsed;
+			source.Convert(
+				pChar,
+				charsLength,
+				pBuffer,
+				bufferCount,
+				false,
+				out charsUsed,
+				out bytesUsed,
+				out isCompleted
+			);
+
+			return isCompleted;
+		}
+#else
+#if NETSTANDARD2_0
+#warning TODO: Use pointer based API.
+#endif // NETSTANDARD2_0
+		public static unsafe bool EncodeString( this Encoder source, char[] chars, int charsOffset, int charsLength, byte[] buffer, int bufferOffset, int bufferCount, out int charsUsed, out int bytesUsed )
+		{
+			bool isCompleted;
 			source.Convert(
 				chars,
 				charsOffset,
@@ -54,11 +77,9 @@ namespace MsgPack
 				out isCompleted
 			);
 
-			charsOffset += charsUsed;
-			charsLength -= charsUsed;
-
 			return isCompleted;
 		}
+#endif // FEATURE_POINTER_CONVERSION
 
 		public static bool DecodeString( this Decoder source, byte[] bytes, int bytesOffset, int bytesLength, char[] buffer, StringBuilder result )
 		{

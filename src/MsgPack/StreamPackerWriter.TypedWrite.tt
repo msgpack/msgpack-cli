@@ -82,27 +82,17 @@ namespace MsgPack
 <#
 		} // foreach type
 #>
+
+
 		public override <#= isAsync ? "async Task" : "void" #> WriteBytes<#= isAsync ? "Async" : String.Empty #>( string value, bool allowStr8<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
 		{
-			var chars = value.ToCharArray();
-			var encoder = Encoding.UTF8.GetEncoder();
-			<#= isAsync ? "await " : String.Empty #>this.WriteStringHeader<#= isAsync ? "Async" : String.Empty #>( encoder.GetByteCount( chars, 0, chars.Length, true ), allowStr8<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
-
-			var buffer = BufferManager.NewByteBuffer( value.Length );
-			int charsOffset = 0;
-			int remainingCharsLength = value.Length;
-			
-			bool isCompleted = false;
-			do
+			var encodedLength = Encoding.UTF8.GetByteCount( value );
+			<#= isAsync ? "await " : String.Empty #>this.WriteStringHeader<#= isAsync ? "Async" : String.Empty #>( encodedLength, allowStr8<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+			if ( encodedLength == 0 )
 			{
-				int bytesUsed;
-				isCompleted = encoder.EncodeString( chars, ref charsOffset, ref remainingCharsLength, buffer, 0, buffer.Length, out bytesUsed );
-				<#= isAsync ? "await " : String.Empty #>this._destination.Write<#= isAsync ? "Async" : String.Empty #>( buffer, 0, bytesUsed<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
-			} while ( remainingCharsLength > 0 );
-
-#if DEBUG
-			Contract.Assert( isCompleted, "Encoding is not completed!" );
-#endif // DEBUG
+				return;
+			}
+			<#= isAsync ? "await " : String.Empty #>this.WriteStringBody<#= isAsync ? "Async" : String.Empty #>( value<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
 		}
 		
 		private <#= isAsync ? "async Task" : "void" #> WriteStringHeader<#= isAsync ? "Async" : String.Empty #>( int bytesLength, bool allowStr8<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
@@ -127,6 +117,48 @@ namespace MsgPack
 
 			<#= isAsync ? "await " : String.Empty #>this.WriteBytes<#= isAsync ? "Async" : String.Empty #>( MessagePackCode.Str32, unchecked(( uint )bytesLength)<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
 		}
+
+#if !FEATURE_POINTER_CONVERSION
+		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( string value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		{
+			var chars = BufferManager.NewCharBuffer( value.Length );
+			int offset = 0;
+
+			while ( offset < value.Length )
+			{
+				int copying = Math.Min( value.Length - offset, chars.Length );
+				value.CopyTo( offset, chars, 0, copying );
+				<#= isAsync ? "await " : String.Empty #>this.WriteStringBody<#= isAsync ? "Async" : String.Empty #>( chars<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+				offset += copying;
+			}
+		}
+
+		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( char[] value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		{
+#else
+		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( string value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		{
+#endif // !FEATURE_POINTER_CONVERSION
+			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
+			var encoder = Encoding.UTF8.GetEncoder();
+			var valueOffset = 0;
+			var remainingCharsLength = value.Length;
+			
+			bool isCompleted = false;
+			do
+			{
+				int charsUsed, bytesUsed;
+				isCompleted = EncodeString( encoder, value, valueOffset, remainingCharsLength, buffer, out charsUsed, out bytesUsed );
+
+				valueOffset += charsUsed;
+				remainingCharsLength -= charsUsed;
+				<#= isAsync ? "await " : String.Empty #>this._destination.Write<#= isAsync ? "Async" : String.Empty #>( buffer, 0, bytesUsed<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+			} while ( remainingCharsLength > 0 );
+
+#if DEBUG
+			Contract.Assert( isCompleted, "Encoding is not completed!" );
+#endif // DEBUG
+		}
 <#
 
 		if ( isAsync )
@@ -137,6 +169,26 @@ namespace MsgPack
 		}
 	} // foreach isAsync
 #>
+
+#if FEATURE_POINTER_CONVERSION
+		private static unsafe bool EncodeString( Encoder encoder, string value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
+		{
+			fixed ( char* pValue = value )
+			{
+				var pChars = pValue + startOffset;
+
+				fixed ( byte* pBuffer = buffer )
+				{
+					return encoder.EncodeString( pChars, count, pBuffer, buffer.Length, out charsUsed, out bytesUsed );
+				}
+			}
+		}
+#else
+		private static bool EncodeString( Encoder encoder, char[] value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
+		{
+			return encoder.EncodeString( value, startOffset, count, buffer, 0, buffer.Length, out charsUsed, out bytesUsed );
+		}
+#endif // FEATURE_POINTER_CONVERSION
 	}
 }
 <#+

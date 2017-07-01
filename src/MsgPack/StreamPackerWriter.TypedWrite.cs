@@ -107,27 +107,17 @@ namespace MsgPack
 			this.WriteBytes( this._scalarBuffer, 0, sizeof( double ) + 1 );
 		}
 
+
+
 		public override void WriteBytes( string value, bool allowStr8 )
 		{
-			var chars = value.ToCharArray();
-			var encoder = Encoding.UTF8.GetEncoder();
-			this.WriteStringHeader( encoder.GetByteCount( chars, 0, chars.Length, true ), allowStr8 );
-
-			var buffer = BufferManager.NewByteBuffer( value.Length );
-			int charsOffset = 0;
-			int remainingCharsLength = value.Length;
-			
-			bool isCompleted = false;
-			do
+			var encodedLength = Encoding.UTF8.GetByteCount( value );
+			this.WriteStringHeader( encodedLength, allowStr8 );
+			if ( encodedLength == 0 )
 			{
-				int bytesUsed;
-				isCompleted = encoder.EncodeString( chars, ref charsOffset, ref remainingCharsLength, buffer, 0, buffer.Length, out bytesUsed );
-				this._destination.Write( buffer, 0, bytesUsed );
-			} while ( remainingCharsLength > 0 );
-
-#if DEBUG
-			Contract.Assert( isCompleted, "Encoding is not completed!" );
-#endif // DEBUG
+				return;
+			}
+			this.WriteStringBody( value );
 		}
 		
 		private void WriteStringHeader( int bytesLength, bool allowStr8 )
@@ -151,6 +141,48 @@ namespace MsgPack
 			}
 
 			this.WriteBytes( MessagePackCode.Str32, unchecked(( uint )bytesLength) );
+		}
+
+#if !FEATURE_POINTER_CONVERSION
+		private void WriteStringBody( string value )
+		{
+			var chars = BufferManager.NewCharBuffer( value.Length );
+			int offset = 0;
+
+			while ( offset < value.Length )
+			{
+				int copying = Math.Min( value.Length - offset, chars.Length );
+				value.CopyTo( offset, chars, 0, copying );
+				this.WriteStringBody( chars );
+				offset += copying;
+			}
+		}
+
+		private void WriteStringBody( char[] value )
+		{
+#else
+		private void WriteStringBody( string value )
+		{
+#endif // !FEATURE_POINTER_CONVERSION
+			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
+			var encoder = Encoding.UTF8.GetEncoder();
+			var valueOffset = 0;
+			var remainingCharsLength = value.Length;
+			
+			bool isCompleted = false;
+			do
+			{
+				int charsUsed, bytesUsed;
+				isCompleted = EncodeString( encoder, value, valueOffset, remainingCharsLength, buffer, out charsUsed, out bytesUsed );
+
+				valueOffset += charsUsed;
+				remainingCharsLength -= charsUsed;
+				this._destination.Write( buffer, 0, bytesUsed );
+			} while ( remainingCharsLength > 0 );
+
+#if DEBUG
+			Contract.Assert( isCompleted, "Encoding is not completed!" );
+#endif // DEBUG
 		}
 #if FEATURE_TAP
 
@@ -219,27 +251,17 @@ namespace MsgPack
 			await this.WriteBytesAsync( this._scalarBuffer, 0, sizeof( double ) + 1, cancellationToken ).ConfigureAwait( false );
 		}
 
+
+
 		public override async Task WriteBytesAsync( string value, bool allowStr8, CancellationToken cancellationToken )
 		{
-			var chars = value.ToCharArray();
-			var encoder = Encoding.UTF8.GetEncoder();
-			await this.WriteStringHeaderAsync( encoder.GetByteCount( chars, 0, chars.Length, true ), allowStr8, cancellationToken ).ConfigureAwait( false );
-
-			var buffer = BufferManager.NewByteBuffer( value.Length );
-			int charsOffset = 0;
-			int remainingCharsLength = value.Length;
-			
-			bool isCompleted = false;
-			do
+			var encodedLength = Encoding.UTF8.GetByteCount( value );
+			await this.WriteStringHeaderAsync( encodedLength, allowStr8, cancellationToken ).ConfigureAwait( false );
+			if ( encodedLength == 0 )
 			{
-				int bytesUsed;
-				isCompleted = encoder.EncodeString( chars, ref charsOffset, ref remainingCharsLength, buffer, 0, buffer.Length, out bytesUsed );
-				await this._destination.WriteAsync( buffer, 0, bytesUsed, cancellationToken ).ConfigureAwait( false );
-			} while ( remainingCharsLength > 0 );
-
-#if DEBUG
-			Contract.Assert( isCompleted, "Encoding is not completed!" );
-#endif // DEBUG
+				return;
+			}
+			await this.WriteStringBodyAsync( value, cancellationToken ).ConfigureAwait( false );
 		}
 		
 		private async Task WriteStringHeaderAsync( int bytesLength, bool allowStr8, CancellationToken cancellationToken )
@@ -264,6 +286,68 @@ namespace MsgPack
 
 			await this.WriteBytesAsync( MessagePackCode.Str32, unchecked(( uint )bytesLength), cancellationToken ).ConfigureAwait( false );
 		}
+
+#if !FEATURE_POINTER_CONVERSION
+		private async Task WriteStringBodyAsync( string value, CancellationToken cancellationToken )
+		{
+			var chars = BufferManager.NewCharBuffer( value.Length );
+			int offset = 0;
+
+			while ( offset < value.Length )
+			{
+				int copying = Math.Min( value.Length - offset, chars.Length );
+				value.CopyTo( offset, chars, 0, copying );
+				await this.WriteStringBodyAsync( chars, cancellationToken ).ConfigureAwait( false );
+				offset += copying;
+			}
+		}
+
+		private async Task WriteStringBodyAsync( char[] value, CancellationToken cancellationToken )
+		{
+#else
+		private async Task WriteStringBodyAsync( string value, CancellationToken cancellationToken )
+		{
+#endif // !FEATURE_POINTER_CONVERSION
+			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
+			var encoder = Encoding.UTF8.GetEncoder();
+			var valueOffset = 0;
+			var remainingCharsLength = value.Length;
+			
+			bool isCompleted = false;
+			do
+			{
+				int charsUsed, bytesUsed;
+				isCompleted = EncodeString( encoder, value, valueOffset, remainingCharsLength, buffer, out charsUsed, out bytesUsed );
+
+				valueOffset += charsUsed;
+				remainingCharsLength -= charsUsed;
+				await this._destination.WriteAsync( buffer, 0, bytesUsed, cancellationToken ).ConfigureAwait( false );
+			} while ( remainingCharsLength > 0 );
+
+#if DEBUG
+			Contract.Assert( isCompleted, "Encoding is not completed!" );
+#endif // DEBUG
+		}
 #endif // FEATURE_TAP
+
+#if FEATURE_POINTER_CONVERSION
+		private static unsafe bool EncodeString( Encoder encoder, string value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
+		{
+			fixed ( char* pValue = value )
+			{
+				var pChars = pValue + startOffset;
+
+				fixed ( byte* pBuffer = buffer )
+				{
+					return encoder.EncodeString( pChars, count, pBuffer, buffer.Length, out charsUsed, out bytesUsed );
+				}
+			}
+		}
+#else
+		private static bool EncodeString( Encoder encoder, char[] value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
+		{
+			return encoder.EncodeString( value, startOffset, count, buffer, 0, buffer.Length, out charsUsed, out bytesUsed );
+		}
+#endif // FEATURE_POINTER_CONVERSION
 	}
 }
