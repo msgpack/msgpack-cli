@@ -7679,6 +7679,37 @@ namespace MsgPack
 				);
 			}
 		}
+
+		[Test]
+		public async Task TestPackStringHeaderAsync_65536_String_WithoutCompatibilityOptions_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringHeaderAsync( 65536 );
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed, 
+					Is.EqualTo( new byte[] { 0xDB, 0x0, 0x1, 0x0, 0x0 } ) 
+				);
+			}
+		}
+		
+		[Test]
+		public async Task TestPackStringAsync_MultibyteString_AsStrStream()
+		{
+			using ( var buffer = new MemoryStream() )
+			using ( var target = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
+			{
+				await target.PackStringAsync( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3\u30af" ); // msgpack in Katanaka (24bytes)
+				var packed = this.GetResult( target );
+				Assert.That( 
+					packed.Take( 1 ).ToArray(), 
+					Is.EqualTo( new byte[] { 0xB8 } ) 
+				);
+				Assert.That( 
+					packed.Skip( 1 ).ToArray(),
+					Is.EqualTo( Encoding.UTF8.GetBytes( "\u30e1\u30c3\u30bb\u30fc\u30b8\u30d1\u30c3\u30af" ) )
 				);
 			}
 		}
