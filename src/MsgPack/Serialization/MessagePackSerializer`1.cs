@@ -28,7 +28,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -868,10 +867,10 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public byte[] PackSingleObject( T objectTree )
 		{
-			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions ) )
 			{
-				this.Pack( buffer, objectTree );
-				return buffer.ToArray();
+				this.PackTo( packer, objectTree );
+				return packer.GetResultBytes();
 			}
 		}
 
@@ -915,10 +914,10 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task<byte[]> PackSingleObjectAsync( T objectTree, CancellationToken cancellationToken )
 		{
-			using ( var buffer = new MemoryStream() )
+			using ( var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions ) )
 			{
-				await this.PackAsync( buffer, objectTree, cancellationToken ).ConfigureAwait( false );
-				return buffer.ToArray();
+				await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
+				return packer.GetResultBytes();
 			}
 		}
 
@@ -963,9 +962,14 @@ namespace MsgPack.Serialization
 			}
 
 			// ReSharper disable once AssignNullToNotNullAttribute
-			using ( var stream = new MemoryStream( buffer ) )
+			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
-				return this.Unpack( stream );
+				if ( !unpacker.Read() )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				return this.UnpackFrom( unpacker );
 			}
 		}
 
@@ -1044,7 +1048,7 @@ namespace MsgPack.Serialization
 		///		</para>
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
-		public new async Task<T> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
+		public new Task<T> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
 		{
 			if ( buffer == null )
 			{
@@ -1052,9 +1056,14 @@ namespace MsgPack.Serialization
 			}
 
 			// ReSharper disable once AssignNullToNotNullAttribute
-			using ( var stream = new MemoryStream( buffer ) )
+			using ( var unpacker = Unpacker.Create( buffer ) )
 			{
-				return await this.UnpackAsync( stream, cancellationToken ).ConfigureAwait( false );
+				if ( !unpacker.Read() )
+				{
+					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
+				}
+
+				return this.UnpackFromAsync( unpacker, cancellationToken );
 			}
 		}
 
