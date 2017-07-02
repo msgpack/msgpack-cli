@@ -26,6 +26,7 @@
     <Preserve Path="System\Collections\Generic\*" />
     <Preserve Path="App.xaml" />
     <Preserve Path="App.xaml.cs" />
+    <Preserve Path="Augments.cs" />
     <Exclude Path="gen\*" />
     <Exclude Path="Serialization\PreGenerated*" />
     <Exclude Path="Serialization\_SetUpFixture.cs" />
@@ -147,6 +148,7 @@
     <Exclude Path="Serialization\AppendableReadOnlyCollections.cs" />
     <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
     <Preserve Path="Serialization\CodeDomCodeGeneration.cs" />
+    <Preserve Path="Augments.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />
     <Preserve Path="Mono\System\AggregateException.cs" />

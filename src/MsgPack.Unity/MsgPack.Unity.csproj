@@ -74,6 +74,9 @@
     <Compile Include="..\MsgPack.Unity.Full\Serialization\TypedMessagePackSerializerWrapper`1.cs">
       <Link>Serialization\TypedMessagePackSerializerWrapper`1.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\ArraySegmentAugument.cs">
+      <Link>ArraySegmentAugument.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\AsyncReadResult.cs">
       <Link>AsyncReadResult.cs</Link>
     </Compile>
@@ -89,6 +92,15 @@
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\ByteArrayPacker.cs">
+      <Link>ByteArrayPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ByteArrayPackerWriter.cs">
+      <Link>ByteArrayPackerWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ByteArrayPackerWriter.TypedWrite.cs">
+      <Link>ByteArrayPackerWriter.TypedWrite.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\ByteArrayUnpacker.cs">
       <Link>ByteArrayUnpacker.cs</Link>
     </Compile>
@@ -97,6 +109,9 @@
     </Compile>
     <Compile Include="..\MsgPack\ByteArrayUnpackerReader.TypedRead.cs">
       <Link>ByteArrayUnpackerReader.TypedRead.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ByteBufferAllocator.cs">
+      <Link>ByteBufferAllocator.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
@@ -107,11 +122,17 @@
     <Compile Include="..\MsgPack\CollectionType.cs">
       <Link>CollectionType.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\DefaultByteArrayPacker.cs">
+      <Link>DefaultByteArrayPacker.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.cs">
       <Link>DefaultByteArrayUnpacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.Unpacking.cs">
       <Link>DefaultByteArrayUnpacker.Unpacking.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\DefaultStreamPacker.cs">
+      <Link>DefaultStreamPacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\DefaultStreamUnpacker.cs">
       <Link>DefaultStreamUnpacker.cs</Link>
@@ -121,6 +142,12 @@
     </Compile>
     <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
       <Link>DictionaryDebuggerProxy`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\EncodingExtensions.cs">
+      <Link>EncodingExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\FixedArrayBufferAllocator.cs">
+      <Link>FixedArrayBufferAllocator.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Float32Bits.cs">
       <Link>Float32Bits.cs</Link>
@@ -191,6 +218,15 @@
     <Compile Include="..\MsgPack\MessagePackObjectEqualityComparer.cs">
       <Link>MessagePackObjectEqualityComparer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MessagePackPacker.cs">
+      <Link>MessagePackPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackPacker`1.cs">
+      <Link>MessagePackPacker`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackPacker`1.Pack.cs">
+      <Link>MessagePackPacker`1.Pack.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\MessagePackString.cs">
       <Link>MessagePackString.cs</Link>
     </Compile>
@@ -218,8 +254,17 @@
     <Compile Include="..\MsgPack\MPContract.cs">
       <Link>MPContract.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MultipleArrayBufferAllocator.cs">
+      <Link>MultipleArrayBufferAllocator.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Packer.cs">
       <Link>Packer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Packer.Factory.cs">
+      <Link>Packer.Factory.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Packer.Leaf.cs">
+      <Link>Packer.Leaf.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Packer.Nullable.cs">
       <Link>Packer.Nullable.cs</Link>
@@ -235,6 +280,9 @@
     </Compile>
     <Compile Include="..\MsgPack\PackerUnpackerStreamOptions.cs">
       <Link>PackerUnpackerStreamOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\PackerWriter.cs">
+      <Link>PackerWriter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\PackingOptions.cs">
       <Link>PackingOptions.cs</Link>
@@ -716,8 +764,17 @@
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\SingleArrayBufferAllocator.cs">
+      <Link>SingleArrayBufferAllocator.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\StreamPacker.cs">
       <Link>StreamPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\StreamPackerWriter.cs">
+      <Link>StreamPackerWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\StreamPackerWriter.TypedWrite.cs">
+      <Link>StreamPackerWriter.TypedWrite.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\StreamUnpackerReader.cs">
       <Link>StreamUnpackerReader.cs</Link>

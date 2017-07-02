@@ -79,8 +79,17 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest.Net35\Augments.cs">
+      <Link>Augments.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayPackerTest.Allocation.cs">
+      <Link>ByteArrayPackerTest.Allocation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayPackerTest.cs">
+      <Link>ByteArrayPackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.cs">
       <Link>ByteArrayUnpackerTest.cs</Link>
@@ -190,17 +199,14 @@
     <Compile Include="..\MsgPack.UnitTest\MessageUnpackableTest.cs">
       <Link>MessageUnpackableTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerFactoryTest.cs">
+      <Link>PackerFactoryTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.cs">
       <Link>PackerTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\PackerTest.Miscs.cs">
-      <Link>PackerTest.Miscs.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.cs">
       <Link>PackerTest.Pack.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.Miscs.cs">
-      <Link>PackerTest.Pack.Miscs.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.PackBinary.cs">
       <Link>PackerTest.PackBinary.cs</Link>
@@ -357,6 +363,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
       <Link>SplittingStream.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamPackerTest.cs">
+      <Link>StreamPackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.cs">
       <Link>StreamUnpackerTest.cs</Link>
