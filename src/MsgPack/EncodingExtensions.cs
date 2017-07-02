@@ -61,7 +61,7 @@ namespace MsgPack
 #if NETSTANDARD2_0
 #warning TODO: Use pointer based API.
 #endif // NETSTANDARD2_0
-		public static unsafe bool EncodeString( this Encoder source, char[] chars, int charsOffset, int charsLength, byte[] buffer, int bufferOffset, int bufferCount, out int charsUsed, out int bytesUsed )
+		public static bool EncodeString( this Encoder source, char[] chars, int charsOffset, int charsLength, byte[] buffer, int bufferOffset, int bufferCount, out int charsUsed, out int bytesUsed )
 		{
 			bool isCompleted;
 			source.Convert(

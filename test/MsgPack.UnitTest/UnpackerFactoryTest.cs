@@ -26,6 +26,7 @@ using NUnit.Framework;
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
 using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TestCaseAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.DataRowAttribute;
 using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
@@ -114,8 +115,12 @@ namespace MsgPack
 					Assert.That( ( unpacker as DefaultStreamUnpacker ).Core, Is.InstanceOf<MessagePackUnpacker<StreamUnpackerReader>>() );
 					var core = ( unpacker as DefaultStreamUnpacker ).Core as MessagePackUnpacker<StreamUnpackerReader>;
 					Assert.That( core.Reader.DebugOwnsStream, Is.False );
+#if !SILVERLIGHT
 					Assert.That( core.Reader.DebugSource, Is.Not.SameAs( stream ) );
 					Assert.That( core.Reader.DebugSource, Is.InstanceOf<BufferedStream>() );
+#else
+					Assert.That( core.Reader.DebugSource, Is.SameAs( stream ) );
+#endif // !SILVERLIGHT
 				}
 			}
 			finally

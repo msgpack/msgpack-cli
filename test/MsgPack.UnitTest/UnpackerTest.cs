@@ -713,7 +713,7 @@ namespace MsgPack
 		[Test]
 		public void TestReadString_Clob()
 		{
-			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( Char.ConvertFromUtf32 ) );
+			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( ConvertFromUtf32 ) );
 			var encoded = Encoding.UTF8.GetBytes( str );
 			using ( var buffer =
 				new MemoryStream(
@@ -1443,7 +1443,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestReadStringAsync_Clob()
 		{
-			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( Char.ConvertFromUtf32 ) );
+			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( ConvertFromUtf32 ) );
 			var encoded = Encoding.UTF8.GetBytes( str );
 			using ( var buffer =
 				new MemoryStream(
@@ -1535,5 +1535,34 @@ namespace MsgPack
 
 #endif // FEATURE_TAP
 
+
+		private static string ConvertFromUtf32( int utf32 )
+		{
+#if !SILVERLIGHT
+			return Char.ConvertFromUtf32( utf32 );
+#else
+			// From coreclr source: https://github.com/dotnet/coreclr/blob/release/1.1.0/src/mscorlib/src/System/Char.cs#L915
+
+			// For UTF32 values from U+00D800 ~ U+00DFFF, we should throw.  They
+			// are considered as irregular code unit sequence, but they are not illegal.
+			if ( ( utf32 < 0 || utf32 > 0x10ffff ) || ( utf32 >= 0x00d800 && utf32 <= 0x00dfff ) )
+			{
+				throw new ArgumentOutOfRangeException( "utf32" );
+			}
+
+			if ( utf32 < 0x10000 )
+			{
+				// This is a BMP character.
+				return ( Char.ToString( ( char )utf32 ) );
+			}
+
+			// This is a supplementary character.  Convert it to a surrogate pair in UTF-16.
+			utf32 -= 0x10000;
+			var chars = new char[ 2 ];
+			chars[0] = ( char )( ( utf32 / 0x400 ) + ( int )'\ud800' );
+			chars[1] = ( char )( ( utf32 % 0x400 ) + ( int )'\udc00' );
+			return new String( chars );
+#endif // SILVERLIGHT
+		}
 	}
 }
