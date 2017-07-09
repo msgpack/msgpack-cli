@@ -1820,7 +1820,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -1868,7 +1868,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadInt64Async()
 				);
 
@@ -1915,7 +1915,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableInt64Async()
 				);
 
@@ -1963,7 +1963,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -2011,7 +2011,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadInt64Async()
 				);
 
@@ -2058,7 +2058,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableInt64Async()
 				);
 
@@ -2106,7 +2106,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD1, 0x80, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -2154,7 +2154,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD1, 0x80, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadInt64Async()
 				);
 
@@ -2201,7 +2201,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD1, 0x80, 0x00 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableInt64Async()
 				);
 
@@ -2249,7 +2249,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD0, 0x80 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -2281,7 +2281,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD0, 0x80 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadInt64Async()
 				);
 
@@ -2313,7 +2313,7 @@ namespace MsgPack
 			var data = new byte[] { 0xD0, 0x80 };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableInt64Async()
 				);
 
@@ -2591,7 +2591,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCC, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -2623,7 +2623,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCC, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadUInt64Async()
 				);
 
@@ -2655,7 +2655,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCC, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableUInt64Async()
 				);
 
@@ -2688,7 +2688,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCD, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -2736,7 +2736,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCD, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadUInt64Async()
 				);
 
@@ -2783,7 +2783,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCD, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableUInt64Async()
 				);
 
@@ -2831,7 +2831,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -2879,7 +2879,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadUInt64Async()
 				);
 
@@ -2926,7 +2926,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableUInt64Async()
 				);
 
@@ -2974,7 +2974,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -3022,7 +3022,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadUInt64Async()
 				);
 
@@ -3069,7 +3069,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableUInt64Async()
 				);
 
@@ -3215,7 +3215,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -3263,7 +3263,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadSingleAsync()
 				);
 
@@ -3310,7 +3310,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableSingleAsync()
 				);
 
@@ -3358,7 +3358,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadAsync() 
 				);
 
@@ -3406,7 +3406,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadDoubleAsync()
 				);
 
@@ -3453,7 +3453,7 @@ namespace MsgPack
 			var data = new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => await unpacker.ReadNullableDoubleAsync()
 				);
 

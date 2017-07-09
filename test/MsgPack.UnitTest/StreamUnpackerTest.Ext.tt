@@ -156,7 +156,7 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int actualValueLeng
 		else
 		{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 <#+
 		}
 	}
@@ -204,7 +204,7 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int actualValueLe
 		else
 		{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 <#+
 		}
 	}

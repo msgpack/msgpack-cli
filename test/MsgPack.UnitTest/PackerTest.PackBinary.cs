@@ -10682,7 +10682,7 @@ namespace MsgPack
 			using ( var target = CreatePacker( buffer ) )
 			{
 #pragma warning disable 0618
-				Assert.ThrowsAsync<ArgumentOutOfRangeException>( async () => await target.PackRawHeaderAsync( -1 ) );
+				AssertEx.ThrowsAsync<ArgumentOutOfRangeException>( async () => await target.PackRawHeaderAsync( -1 ) );
 #pragma warning restore 0618
 			}
 		}
@@ -10693,7 +10693,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentOutOfRangeException>( async () => await target.PackStringHeaderAsync( -1 ) );
+				AssertEx.ThrowsAsync<ArgumentOutOfRangeException>( async () => await target.PackStringHeaderAsync( -1 ) );
 			}
 		}
 
@@ -10703,7 +10703,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentOutOfRangeException>( async () => await target.PackBinaryHeaderAsync( -1 ) );
+				AssertEx.ThrowsAsync<ArgumentOutOfRangeException>( async () => await target.PackBinaryHeaderAsync( -1 ) );
 			}
 		}
 
@@ -10792,7 +10792,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentNullException>( async () => await target.PackRawBodyAsync( default( IList<byte> ) ) );
+				AssertEx.ThrowsAsync<ArgumentNullException>( async () => await target.PackRawBodyAsync( default( IList<byte> ) ) );
 			}
 		}
 		[Test]
@@ -10832,7 +10832,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentNullException>( async () => await target.PackRawBodyAsync( default( IEnumerable<byte> ) ) );
+				AssertEx.ThrowsAsync<ArgumentNullException>( async () => await target.PackRawBodyAsync( default( IEnumerable<byte> ) ) );
 			}
 		}
 		[Test]
@@ -10872,7 +10872,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentNullException>( async () => await target.PackRawBodyAsync( default( byte[] ) ) );
+				AssertEx.ThrowsAsync<ArgumentNullException>( async () => await target.PackRawBodyAsync( default( byte[] ) ) );
 			}
 		}
 		[Test]
@@ -10971,7 +10971,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentNullException>( async () => await target.PackStringAsync( new char[] { 'A', 'B', 'C' }, null ) );
+				AssertEx.ThrowsAsync<ArgumentNullException>( async () => await target.PackStringAsync( new char[] { 'A', 'B', 'C' }, null ) );
 			}
 		}
 
@@ -11071,7 +11071,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentNullException>( async () => await target.PackStringAsync( "ABC", null ) );
+				AssertEx.ThrowsAsync<ArgumentNullException>( async () => await target.PackStringAsync( "ABC", null ) );
 			}
 		}
 

@@ -108,7 +108,7 @@ foreach( var isAsync in new [] { false, true } )
 			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, <#= testCase.Item1 #> ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( new MessagePackExtendedTypeObject( 1, body ) ) );
+				<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -139,7 +139,7 @@ foreach( var isAsync in new [] { false, true } )
 			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, <#= testCase.Item1 #> ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, body ) );
+				<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, body ) );
 			}
 		}
 <#
@@ -152,7 +152,7 @@ foreach( var isAsync in new [] { false, true } )
 			using( var buffer = new MemoryStream() )
 			using( var packer = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, null ) );
+				<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, null ) );
 			}
 		}
 		
@@ -162,7 +162,7 @@ foreach( var isAsync in new [] { false, true } )
 			using( var buffer = new MemoryStream() )
 			using( var packer = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( default( MessagePackExtendedTypeObject ) ) );
+				<#= Throws( isAsync ) #><ArgumentException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( default( MessagePackExtendedTypeObject ) ) );
 			}
 		}
 
@@ -216,7 +216,7 @@ private static string AsyncLambdaTest( string method, bool isAsync )
 
 private static string Throws( bool isAsync )
 {
-	return isAsync ? "ThrowsAsync" : "Throws";
+	return isAsync ? "AssertEx.ThrowsAsync" : "Assert.Throws";
 }
 
 private static string AsyncLambda( string expressionBody, bool isAsync )

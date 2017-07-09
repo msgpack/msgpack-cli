@@ -50,6 +50,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
+      <Link>AssertEx.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
     </Compile>

@@ -143,7 +143,7 @@ foreach( var isAsync in new [] { false, true } )
 			else
 			{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => <#= ReadAwait( isAsync ) #> 
 				);
 <#
@@ -235,7 +235,7 @@ foreach( var isAsync in new [] { false, true } )
 				else
 				{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => <#= ReadAwait( isNullable, __testCase.Item4 ) #>
 				);
 <#
@@ -381,7 +381,7 @@ foreach( var isAsync in new [] { false, true } )
 	else
 	{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => <#= ReadAwait( isAsync ) #> 
 				);
 <#
@@ -462,7 +462,7 @@ foreach( var isAsync in new [] { false, true } )
 			else
 			{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>(
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
 					async () => <#= ReadAwait( isNullable, __testCase.Item3 ) #>
 				);
 <#

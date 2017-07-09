@@ -235,7 +235,7 @@ private void PutSingleTest( string label, bool requiresAllocator, string allocat
 		default:
 		{
 #>
-				Assert.Throws<#= isAsync ? "Async" : String.Empty #><InvalidOperationException>(
+				<#= Throws( isAsync ) #><InvalidOperationException>(
 					<#= isAsync ? "async " : String.Empty #>() => <#= Pack( "target", isAsync ) #>( <#= input #> )
 				);
 <#+
@@ -419,7 +419,7 @@ private void PutMultipleTest( string label, bool requiresAllocator, string alloc
 		default:
 		{
 #>
-				Assert.Throws<#= isAsync ? "Async" : String.Empty #><InvalidOperationException>(
+				<#= Throws( isAsync ) #><InvalidOperationException>(
 					<#= isAsync ? "async " : String.Empty #>() => <#= Pack( "target", isAsync ) #>( <#= input #> )
 				);
 <#+
@@ -448,6 +448,11 @@ private static string AsyncVoid( bool isAsync, AllocationResult result )
 private static string Pack( string variable, bool isAsync )
 {
 	return ( isAsync ? "await " : String.Empty ) + variable + ".Pack" + ( isAsync ? "Async" : String.Empty );
+}
+
+private static string Throws( bool isAsync )
+{
+	return isAsync ? "AssertEx.ThrowsAsync" : "Assert.Throws";
 }
 
 private enum AllocationResult

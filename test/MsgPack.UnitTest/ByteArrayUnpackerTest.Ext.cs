@@ -1484,7 +1484,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -1549,7 +1549,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -1614,7 +1614,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -1679,7 +1679,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 2 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -1744,7 +1744,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 4 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -1809,7 +1809,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 4 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -1874,7 +1874,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 8 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -1939,7 +1939,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 8 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -2004,7 +2004,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -2069,7 +2069,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -2134,7 +2134,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -2199,7 +2199,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 2 ) );
@@ -2264,7 +2264,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 3 ) );
@@ -2329,7 +2329,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 3 ) );
@@ -2394,7 +2394,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 3 ) );
@@ -2459,7 +2459,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 3 ) );
@@ -2524,7 +2524,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 4 ) );
@@ -2589,7 +2589,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 4 ) );
@@ -2654,7 +2654,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 5 ) );
@@ -2719,7 +2719,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 5 ) );
@@ -2784,7 +2784,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 6 ) );
@@ -2849,7 +2849,7 @@ namespace MsgPack
 				.Concat( Enumerable.Repeat( ( byte )0xFF, 65536 ) ).ToArray();
 			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
 
 				// Only header and type header are read.
 				Assert.That( unpacker.BytesUsed, Is.EqualTo( 6 ) );

@@ -173,6 +173,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssertEx.cs" />
     <Compile Include="BigEndianBinaryTest.cs" />
     <Compile Include="ByteArrayPackerTest.Allocation.cs">
       <AutoGen>True</AutoGen>

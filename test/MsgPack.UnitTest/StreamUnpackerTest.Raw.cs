@@ -3160,7 +3160,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -3224,7 +3224,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
 			}
 		}
 
@@ -3384,7 +3384,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -3448,7 +3448,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
 			}
 		}
 
@@ -3608,7 +3608,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -3672,7 +3672,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
 			}
 		}
 
@@ -3832,7 +3832,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -3896,7 +3896,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
 			}
 		}
 
@@ -4050,7 +4050,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -4112,7 +4112,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
 			}
 		}
 
@@ -4266,7 +4266,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -4328,7 +4328,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
 			}
 		}
 
@@ -4482,7 +4482,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -4544,7 +4544,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
 			}
 		}
 
@@ -4698,7 +4698,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -4760,7 +4760,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
 			}
 		}
 
@@ -4914,7 +4914,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -4976,7 +4976,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
 			}
 		}
 
@@ -5130,7 +5130,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -5192,7 +5192,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
 			}
 		}
 
@@ -5346,7 +5346,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -5408,7 +5408,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
 			}
 		}
 
@@ -5568,7 +5568,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -5632,7 +5632,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
 			}
 		}
 
@@ -5792,7 +5792,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -5856,7 +5856,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
 			}
 		}
 
@@ -6016,7 +6016,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 			}
 		}
 
@@ -6080,7 +6080,7 @@ namespace MsgPack
 			using( var splitted = new SplittingStream( buffer ) )
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
 			}
 		}
 

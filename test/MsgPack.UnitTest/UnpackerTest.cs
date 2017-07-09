@@ -932,7 +932,7 @@ namespace MsgPack
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					// To be failed.
-					Assert.ThrowsAsync<InvalidOperationException>( async () => await rootUnpacker.ReadAsync() );
+					AssertEx.ThrowsAsync<InvalidOperationException>( async () => await rootUnpacker.ReadAsync() );
 				}
 			}
 		}
@@ -1155,7 +1155,7 @@ namespace MsgPack
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( await target.SkipAsync(), Is.Null, "Precondition" );
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await target.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await target.ReadAsync() );
 			}
 		}
 
@@ -1202,7 +1202,7 @@ namespace MsgPack
 			{
 				foreach ( var item in target )
 				{
-					Assert.ThrowsAsync<InvalidOperationException>( async () => await target.ReadAsync() );
+					AssertEx.ThrowsAsync<InvalidOperationException>( async () => await target.ReadAsync() );
 				}
 			}
 		}
@@ -1217,7 +1217,7 @@ namespace MsgPack
 			{
 				foreach ( var item in target )
 				{
-					Assert.ThrowsAsync<InvalidOperationException>( async () => await target.SkipAsync() );
+					AssertEx.ThrowsAsync<InvalidOperationException>( async () => await target.SkipAsync() );
 				}
 			}
 		}
@@ -1529,7 +1529,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream( new byte[] { 0xC1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
-				Assert.ThrowsAsync<UnassignedMessageTypeException>( async () => await target.ReadAsync() );
+				AssertEx.ThrowsAsync<UnassignedMessageTypeException>( async () => await target.ReadAsync() );
 			}
 		}
 
@@ -1541,7 +1541,7 @@ namespace MsgPack
 #if !SILVERLIGHT
 			return Char.ConvertFromUtf32( utf32 );
 #else
-			// From coreclr source: https://github.com/dotnet/coreclr/blob/release/1.1.0/src/mscorlib/src/System/Char.cs#L915
+			// From coreclr source: https://github.com/dotnet/coreclr/blob/master/src/mscorlib/shared/System/Char.cs
 
 			// For UTF32 values from U+00D800 ~ U+00DFFF, we should throw.  They
 			// are considered as irregular code unit sequence, but they are not illegal.
@@ -1558,7 +1558,8 @@ namespace MsgPack
 
 			// This is a supplementary character.  Convert it to a surrogate pair in UTF-16.
 			utf32 -= 0x10000;
-			var chars = new char[ 2 ];
+			uint surrogate = 0; // allocate 2 chars worth of stack space
+			char[] chars = new char[ 2 ];
 			chars[0] = ( char )( ( utf32 / 0x400 ) + ( int )'\ud800' );
 			chars[1] = ( char )( ( utf32 % 0x400 ) + ( int )'\udc00' );
 			return new String( chars );

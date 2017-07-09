@@ -199,7 +199,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackArrayHeader", isAsync ) #>( -1 ) );
+				<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackArrayHeader", isAsync ) #>( -1 ) );
 			}
 		}
 <#
@@ -244,7 +244,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackMapHeader", isAsync ) #>( -1 ) );
+				<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "packer.PackMapHeader", isAsync ) #>( -1 ) );
 			}
 		}
 <#
@@ -369,7 +369,7 @@ private static string AsyncLambdaTest( string method, bool isAsync )
 
 private static string Throws( bool isAsync )
 {
-	return isAsync ? "ThrowsAsync" : "Throws";
+	return isAsync ? "AssertEx.ThrowsAsync" : "Assert.Throws";
 }
 
 private static string AsyncLambda( string expressionBody, bool isAsync )

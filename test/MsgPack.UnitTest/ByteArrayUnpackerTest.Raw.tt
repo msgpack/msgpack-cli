@@ -209,7 +209,7 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 		else
 		{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
 <#+
 		}
 #>
@@ -264,7 +264,7 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 		else
 		{
 #>
-				Assert.ThrowsAsync<InvalidMessagePackStreamException>( async () =>  await unpacker.Read<#= testSituation.Item1 #>Async() );
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () =>  await unpacker.Read<#= testSituation.Item1 #>Async() );
 <#+
 		}
 #>

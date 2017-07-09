@@ -391,7 +391,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var target = CreatePacker( buffer ) )
 			{
 #pragma warning disable 0618
-				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackRawHeader", isAsync ) #>( -1 ) );
+				<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackRawHeader", isAsync ) #>( -1 ) );
 #pragma warning restore 0618
 			}
 		}
@@ -402,7 +402,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackStringHeader", isAsync ) #>( -1 ) );
+				<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackStringHeader", isAsync ) #>( -1 ) );
 			}
 		}
 
@@ -412,7 +412,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackBinaryHeader", isAsync ) #>( -1 ) );
+				<#= Throws( isAsync ) #><ArgumentOutOfRangeException>( <#= AsyncLambda( "target.PackBinaryHeader", isAsync ) #>( -1 ) );
 			}
 		}
 
@@ -494,7 +494,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "target.PackRawBody", isAsync ) #>( default( <#= testCase.Type #> ) ) );
+				<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "target.PackRawBody", isAsync ) #>( default( <#= testCase.Type #> ) ) );
 			}
 		}
 <#
@@ -605,7 +605,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var buffer = new MemoryStream() )
 			using ( var target = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "target.PackString", isAsync ) #>( <#= testCase.Value #>, null ) );
+				<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "target.PackString", isAsync ) #>( <#= testCase.Value #>, null ) );
 			}
 		}
 
@@ -663,7 +663,7 @@ private static string AsyncLambdaTest( string method, bool isAsync )
 
 private static string Throws( bool isAsync )
 {
-	return isAsync ? "ThrowsAsync" : "Throws";
+	return isAsync ? "AssertEx.ThrowsAsync" : "Assert.Throws";
 }
 
 private static string AsyncLambda( string expressionBody, bool isAsync )

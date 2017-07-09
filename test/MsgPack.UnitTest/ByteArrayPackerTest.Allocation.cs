@@ -2196,7 +2196,7 @@ namespace MsgPack
 				Assert.That( target.CurrentBufferIndex, Is.EqualTo( 0 ) );
 				Assert.That( target.CurrentBufferOffset, Is.EqualTo( offset ) );
 
-				Assert.ThrowsAsync<InvalidOperationException>(
+				AssertEx.ThrowsAsync<InvalidOperationException>(
 					async () => await target.PackAsync( 0x123456789AL )
 				);
 			}
@@ -2264,7 +2264,7 @@ namespace MsgPack
 				Assert.That( target.CurrentBufferIndex, Is.EqualTo( 0 ) );
 				Assert.That( target.CurrentBufferOffset, Is.EqualTo( offset ) );
 
-				Assert.ThrowsAsync<InvalidOperationException>(
+				AssertEx.ThrowsAsync<InvalidOperationException>(
 					async () => await target.PackAsync( Enumerable.Range( 0, 32 ).Select( x => ( byte )x ).ToArray() )
 				);
 			}
@@ -2332,7 +2332,7 @@ namespace MsgPack
 				Assert.That( target.CurrentBufferIndex, Is.EqualTo( 0 ) );
 				Assert.That( target.CurrentBufferOffset, Is.EqualTo( offset ) );
 
-				Assert.ThrowsAsync<InvalidOperationException>(
+				AssertEx.ThrowsAsync<InvalidOperationException>(
 					async () => await target.PackAsync( new string( Enumerable.Range( ( int )'A', 32 ).Select( x => ( char )x ).ToArray() ) )
 				);
 			}
@@ -2969,7 +2969,7 @@ namespace MsgPack
 				Assert.That( target.CurrentBufferIndex, Is.EqualTo( startIndex ) );
 				Assert.That( target.CurrentBufferOffset, Is.EqualTo( startOffset ) );
 
-				Assert.ThrowsAsync<InvalidOperationException>(
+				AssertEx.ThrowsAsync<InvalidOperationException>(
 					async () => await target.PackAsync( 0x123456789AL )
 				);
 			}
@@ -3064,7 +3064,7 @@ namespace MsgPack
 				Assert.That( target.CurrentBufferIndex, Is.EqualTo( startIndex ) );
 				Assert.That( target.CurrentBufferOffset, Is.EqualTo( startOffset ) );
 
-				Assert.ThrowsAsync<InvalidOperationException>(
+				AssertEx.ThrowsAsync<InvalidOperationException>(
 					async () => await target.PackAsync( Enumerable.Range( 0, 32 ).Select( x => ( byte )x ).ToArray() )
 				);
 			}
@@ -3158,7 +3158,7 @@ namespace MsgPack
 				Assert.That( target.CurrentBufferIndex, Is.EqualTo( startIndex ) );
 				Assert.That( target.CurrentBufferOffset, Is.EqualTo( startOffset ) );
 
-				Assert.ThrowsAsync<InvalidOperationException>(
+				AssertEx.ThrowsAsync<InvalidOperationException>(
 					async () => await target.PackAsync( new string( Enumerable.Range( ( int )'A', 32 ).Select( x => ( char )x ).ToArray() ) )
 				);
 			}

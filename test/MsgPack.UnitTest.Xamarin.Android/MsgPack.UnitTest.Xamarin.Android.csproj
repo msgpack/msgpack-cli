@@ -70,6 +70,9 @@
     <Compile Include="..\MsgPack.UnitTest.Xamarin.iOS\Serialization\AotTest.cs">
       <Link>Serialization\AotTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
+      <Link>AssertEx.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
     </Compile>

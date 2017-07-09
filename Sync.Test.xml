@@ -51,6 +51,7 @@
     <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
     <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
     <Exclude Path="_SetUpFixture.cs" />
+    <Exclude Path="AssertEx.cs" />
     <Exclude Path="TestSuite.cs" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
@@ -164,6 +165,7 @@
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+    <Exclude Path="AssertEx.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">

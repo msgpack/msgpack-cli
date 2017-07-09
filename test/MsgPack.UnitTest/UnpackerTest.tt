@@ -211,7 +211,7 @@ foreach( var isAsync in new [] { false, true } )
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					// To be failed.
-					Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "rootUnpacker.Read", isAsync ) #>() );
+					<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "rootUnpacker.Read", isAsync ) #>() );
 				}
 			}
 		}
@@ -434,7 +434,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Skip", isAsync ) #>(), Is.Null, "Precondition" );
-				Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+				<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
 			}
 		}
 
@@ -481,7 +481,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 				foreach ( var item in target )
 				{
-					Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+					<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
 				}
 			}
 		}
@@ -496,7 +496,7 @@ foreach( var isAsync in new [] { false, true } )
 			{
 				foreach ( var item in target )
 				{
-					Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Skip", isAsync ) #>() );
+					<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Skip", isAsync ) #>() );
 				}
 			}
 		}
@@ -865,7 +865,7 @@ foreach( var isAsync in new [] { false, true } )
 			using ( var buffer = new MemoryStream( new byte[] { 0xC1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><UnassignedMessageTypeException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+				<#= Throws( isAsync ) #><UnassignedMessageTypeException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
 			}
 		}
 
@@ -961,7 +961,7 @@ private static string AsyncLambdaTest( string method, bool isAsync )
 
 private static string Throws( bool isAsync )
 {
-	return isAsync ? "ThrowsAsync" : "Throws";
+	return isAsync ? "AssertEx.ThrowsAsync" : "Assert.Throws";
 }
 
 private static string AsyncLambda( string expressionBody, bool isAsync )

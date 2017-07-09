@@ -2149,7 +2149,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentOutOfRangeException>( async () => await packer.PackArrayHeaderAsync( -1 ) );
+				AssertEx.ThrowsAsync<ArgumentOutOfRangeException>( async () => await packer.PackArrayHeaderAsync( -1 ) );
 			}
 		}
 
@@ -2264,7 +2264,7 @@ namespace MsgPack
 			using ( var buffer = new MemoryStream() )
 			using ( var packer = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentOutOfRangeException>( async () => await packer.PackMapHeaderAsync( -1 ) );
+				AssertEx.ThrowsAsync<ArgumentOutOfRangeException>( async () => await packer.PackMapHeaderAsync( -1 ) );
 			}
 		}
 
