@@ -30,7 +30,6 @@ using System.Resources;
 [assembly: AssemblyCopyright( "Copyright © FUJIWARA, Yusuke 2010" )]
 
 [assembly: ComVisible( false )]
-[assembly: CLSCompliant( true )]
 [assembly: NeutralResourcesLanguage( "en-US" )]
 [assembly: AssemblyVersion( "1.0.0.0" )]
 [assembly: AssemblyFileVersion( "0.1.0.0" )]
