@@ -55,6 +55,7 @@
     <Compile Include="Sample08_Polymorphism.cs" />
     <Compile Include="Sample07_ConstructorBasedDeserialization.cs" />
     <Compile Include="Sample09_Async.cs" />
+    <Compile Include="Sample10_ByteArrayBased.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
