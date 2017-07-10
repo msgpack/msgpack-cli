@@ -153,21 +153,21 @@ namespace MsgPack
 			{
 				int copying = Math.Min( value.Length - offset, chars.Length );
 				value.CopyTo( offset, chars, 0, copying );
-				this.WriteStringBody( chars );
+				this.WriteStringBody( chars, copying );
 				offset += copying;
 			}
 		}
 
-		private void WriteStringBody( char[] value )
+		private void WriteStringBody( char[] value, int remainingCharsLength )
 		{
 #else
 		private void WriteStringBody( string value )
 		{
+			var remainingCharsLength = value.Length;
 #endif // !FEATURE_POINTER_CONVERSION
 			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
 			var encoder = Encoding.UTF8.GetEncoder();
 			var valueOffset = 0;
-			var remainingCharsLength = value.Length;
 			
 			bool isCompleted = false;
 			do
@@ -297,21 +297,21 @@ namespace MsgPack
 			{
 				int copying = Math.Min( value.Length - offset, chars.Length );
 				value.CopyTo( offset, chars, 0, copying );
-				await this.WriteStringBodyAsync( chars, cancellationToken ).ConfigureAwait( false );
+				await this.WriteStringBodyAsync( chars, copying, cancellationToken ).ConfigureAwait( false );
 				offset += copying;
 			}
 		}
 
-		private async Task WriteStringBodyAsync( char[] value, CancellationToken cancellationToken )
+		private async Task WriteStringBodyAsync( char[] value, int remainingCharsLength, CancellationToken cancellationToken )
 		{
 #else
 		private async Task WriteStringBodyAsync( string value, CancellationToken cancellationToken )
 		{
+			var remainingCharsLength = value.Length;
 #endif // !FEATURE_POINTER_CONVERSION
 			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
 			var encoder = Encoding.UTF8.GetEncoder();
 			var valueOffset = 0;
-			var remainingCharsLength = value.Length;
 			
 			bool isCompleted = false;
 			do

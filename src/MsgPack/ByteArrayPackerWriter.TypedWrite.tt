@@ -208,12 +208,12 @@ namespace MsgPack
 			{
 				int copying = Math.Min( value.Length - offset, chars.Length );
 				value.CopyTo( offset, chars, 0, copying );
-				this.WriteStringBody( chars );
+				this.WriteStringBody( chars, copying );
 				offset += copying;
 			}
 		}
 
-		private void WriteStringBody( char[] value )
+		private void WriteStringBody( char[] value, int remainingCharsLength )
 		{
 			var charsOffset = 0;
 #else
@@ -227,8 +227,8 @@ namespace MsgPack
 				var encoder = Encoding.UTF8.GetEncoder();
 #if FEATURE_POINTER_CONVERSION
 				var pChars = pValue;
-#endif // FEATURE_POINTER_CONVERSION
 				var remainingCharsLength = value.Length;
+#endif // FEATURE_POINTER_CONVERSION
 				var isCompleted = false;
 				do
 				{

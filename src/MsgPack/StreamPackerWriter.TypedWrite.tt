@@ -128,21 +128,21 @@ namespace MsgPack
 			{
 				int copying = Math.Min( value.Length - offset, chars.Length );
 				value.CopyTo( offset, chars, 0, copying );
-				<#= isAsync ? "await " : String.Empty #>this.WriteStringBody<#= isAsync ? "Async" : String.Empty #>( chars<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+				<#= isAsync ? "await " : String.Empty #>this.WriteStringBody<#= isAsync ? "Async" : String.Empty #>( chars, copying<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
 				offset += copying;
 			}
 		}
 
-		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( char[] value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( char[] value, int remainingCharsLength<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
 		{
 #else
 		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( string value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
 		{
+			var remainingCharsLength = value.Length;
 #endif // !FEATURE_POINTER_CONVERSION
 			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
 			var encoder = Encoding.UTF8.GetEncoder();
 			var valueOffset = 0;
-			var remainingCharsLength = value.Length;
 			
 			bool isCompleted = false;
 			do
