@@ -57,14 +57,6 @@ namespace MsgPack
 
 		protected abstract bool CanReadFromEmptySource { get; }
 
-		private void VerifyCanTestSubtree()
-		{
-			if ( !ShouldCheckSubtreeUnpacker )
-			{
-				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
-			}
-		}
-
 		protected abstract Unpacker CreateUnpacker( MemoryStream stream );
 
 <#
@@ -174,7 +166,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "Read", isAsync ) #>_ReadInSubtreeTail_NoEffect()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
 			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
@@ -201,7 +208,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "Read", isAsync ) #>_InSubtreeMode_Fail()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
@@ -219,7 +241,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_IsScalar_Fail()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
 			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
@@ -241,7 +278,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_NestedArray_Success()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x94, 0x91, 0x1, 0x90, 0xC0, 0x92, 0x1, 0x2, 0x91, 0x1 } ) )
 			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
@@ -299,7 +351,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_NestedMap_Success()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x84, 0x1, 0x81, 0x1, 0x1, 0x2, 0x80, 0x3, 0xC0, 0x4, 0x82, 0x1, 0x1, 0x2, 0x2, 0x81, 0x1, 0x1 } ) )
 			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
@@ -373,7 +440,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_Nested_ReadGrandchildren_Success()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 0x1, 0x91, 0x1, 0x2 } ) )
 			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
@@ -402,7 +484,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InLeafBody_Fail()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
@@ -428,7 +525,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "Read", isAsync ) #>_UnderSkipping()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -441,7 +553,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "GetEnumerator", isAsync ) #>_UnderSkipping()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -461,7 +588,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_UnderSkipping()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -474,7 +616,21 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "Read", isAsync ) #>_UnderEnumerating()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -489,7 +645,21 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "Skip", isAsync ) #>_UnderEnumerating()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -504,7 +674,21 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "ReadSubtree", isAsync ) #>_UnderEnumerating()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -519,7 +703,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InRootHead_Success()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -542,7 +741,21 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "ReadSubtree", isAsync ) #>_InScalar()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0xD0, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
@@ -557,7 +770,22 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InNestedScalar()
 		{
-			this.VerifyCanTestSubtree();
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
 
 			using ( var buffer = new MemoryStream( new byte[] { 0x81, 0x1, 0x91, 0x1 } ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
