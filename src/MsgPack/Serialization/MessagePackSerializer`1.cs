@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 	public abstract class MessagePackSerializer<T> : MessagePackSerializer
 	{
 		// ReSharper disable once StaticFieldInGenericType
-		private static readonly bool _isNullable = JudgeNullable();
+		private static readonly bool IsNullable = JudgeNullable();
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="T:PackerCompatibilityOptions.Classic"/>.
@@ -256,7 +256,7 @@ namespace MsgPack.Serialization
 		public T Unpack( Stream stream )
 		{
 			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
-			var unpacker = Unpacker.Create( stream );
+			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.None, DefaultUnpackerOptions );
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
@@ -323,7 +323,8 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task<T> UnpackAsync( Stream stream, CancellationToken cancellationToken )
 		{
-			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.SingletonForAsync );
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
+			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.SingletonForAsync, DefaultUnpackerOptions );
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
@@ -531,7 +532,7 @@ namespace MsgPack.Serialization
 		/// </remarks>
 		protected internal virtual T UnpackNil()
 		{
-			if ( !_isNullable )
+			if ( !IsNullable )
 			{
 				ThrowNewValueTypeCannotBeNullException();
 			}
@@ -867,11 +868,11 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public byte[] PackSingleObject( T objectTree )
 		{
-			using ( var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions ) )
-			{
-				this.PackTo( packer, objectTree );
-				return packer.GetResultBytes();
-			}
+			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
+			var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions );
+
+			this.PackTo( packer, objectTree );
+			return packer.GetResultBytes();
 		}
 
 #if FEATURE_TAP
@@ -914,11 +915,11 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task<byte[]> PackSingleObjectAsync( T objectTree, CancellationToken cancellationToken )
 		{
-			using ( var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions ) )
-			{
-				await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
-				return packer.GetResultBytes();
-			}
+			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
+			var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions );
+
+			await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
+			return packer.GetResultBytes();
 		}
 
 #endif // FEATURE_TAP
@@ -961,16 +962,16 @@ namespace MsgPack.Serialization
 				ThrowArgumentNullException( "buffer" );
 			}
 
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
 			// ReSharper disable once AssignNullToNotNullAttribute
-			using ( var unpacker = Unpacker.Create( buffer ) )
-			{
-				if ( !unpacker.Read() )
-				{
-					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
-				}
+			var unpacker = Unpacker.Create( buffer, DefaultUnpackerOptions );
 
-				return this.UnpackFrom( unpacker );
+			if ( !unpacker.Read() )
+			{
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
+
+			return this.UnpackFrom( unpacker );
 		}
 
 #if FEATURE_TAP
@@ -1055,16 +1056,16 @@ namespace MsgPack.Serialization
 				ThrowArgumentNullException( "buffer" );
 			}
 
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
 			// ReSharper disable once AssignNullToNotNullAttribute
-			using ( var unpacker = Unpacker.Create( buffer ) )
-			{
-				if ( !unpacker.Read() )
-				{
-					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
-				}
+			var unpacker = Unpacker.Create( buffer, DefaultUnpackerOptions );
 
-				return this.UnpackFromAsync( unpacker, cancellationToken );
+			if ( !unpacker.Read() )
+			{
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
+
+			return this.UnpackFromAsync( unpacker, cancellationToken );
 		}
 
 #endif // FEATURE_TAP
