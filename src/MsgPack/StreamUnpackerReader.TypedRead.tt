@@ -152,6 +152,7 @@ this.WriteDrain( /* isAsync */true );
 <#+
 private void WriteStreamReaderReadBody( string type, string primitiveType, bool isStrict, bool isAsync )
 {
+	var isByteRead = primitiveType == "byte";
 	var methodCall = new StringBuilder();
 	if ( isAsync )
 	{
@@ -165,7 +166,14 @@ private void WriteStreamReaderReadBody( string type, string primitiveType, bool 
 		methodCall.Append( "Async");
 	}
 
-	methodCall.Append( "( this._scalarBuffer, totalRead, sizeof( " ).Append( primitiveType ).Append( " ) - totalRead" );
+	if ( isByteRead )
+	{
+		methodCall.Append( "( this._scalarBuffer, 0, sizeof( " ).Append( primitiveType ).Append( " )" );
+	}
+	else
+	{
+		methodCall.Append( "( this._scalarBuffer, totalRead, sizeof( " ).Append( primitiveType ).Append( " ) - totalRead" );
+	}
 
 	if ( isAsync )
 	{
@@ -179,6 +187,35 @@ private void WriteStreamReaderReadBody( string type, string primitiveType, bool 
 		methodCall.Append( ".ConfigureAwait( false )");
 	}
 
+	if ( isByteRead )
+	{
+		// optimization for read byte -- it is frequently called for header parsing.
+#>
+			var read = <#= methodCall #>;
+			this._offset += read;
+			if ( read > 0 )
+			{
+				return this._scalarBuffer[ 0 ];
+			}
+		
+<#+
+		if ( isStrict )
+		{
+#>
+			this.ThrowEofException( sizeof( <#= primitiveType #> ) );
+			// never reaches
+			return default( <#= primitiveType #> );
+<#+
+		}
+		else
+		{
+#>
+			return -1;
+<#+
+		}
+	}
+	else
+	{
 #>
 			this._lastOffset = this._offset;
 			var totalRead = 0;
@@ -199,23 +236,24 @@ private void WriteStreamReaderReadBody( string type, string primitiveType, bool 
 			else
 			{
 <#+
-	if ( isStrict )
-	{
+		if ( isStrict )
+		{
 #>
 				this.ThrowEofException( sizeof( <#= primitiveType #> ) );
 				// never reaches
 				return default( <#= primitiveType #> );
 <#+
-	}
-	else
-	{
+		}
+		else
+		{
 #>
 				return -1;
 <#+
-	}
+		}
 #>
 			}
 <#+
+	} // if primitiveType == "byte"
 } // WriteStreamReaderReadBody
 
 private void WriteRead( bool isAsync )

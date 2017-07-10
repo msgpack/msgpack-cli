@@ -57,26 +57,14 @@ namespace MsgPack
 
 		public override int TryReadByte()
 		{
-			this._lastOffset = this._offset;
-			var totalRead = 0;
-			var read = 0;
-			// Retry for splitted stream like NetworkStream
-			do
+			var read = this._source.Read( this._scalarBuffer, 0, sizeof( byte ) );
+			this._offset += read;
+			if ( read > 0 )
 			{
-				read = this._source.Read( this._scalarBuffer, totalRead, sizeof( byte ) - totalRead );
-				totalRead += read;
-			} while ( read > 0 && totalRead < sizeof( byte ) );
-
-			this._offset += totalRead;
-			
-			if ( totalRead == sizeof( byte ) )
-			{
-				return BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+				return this._scalarBuffer[ 0 ];
 			}
-			else
-			{
-				return -1;
-			}
+		
+			return -1;
 		}
 
 		public override SByte ReadSByte()
@@ -475,26 +463,14 @@ namespace MsgPack
 
 		public override async Task<int> TryReadByteAsync( CancellationToken cancellationToken )
 		{
-			this._lastOffset = this._offset;
-			var totalRead = 0;
-			var read = 0;
-			// Retry for splitted stream like NetworkStream
-			do
+			var read = await this._source.ReadAsync( this._scalarBuffer, 0, sizeof( byte ), cancellationToken ).ConfigureAwait( false );
+			this._offset += read;
+			if ( read > 0 )
 			{
-				read = await this._source.ReadAsync( this._scalarBuffer, totalRead, sizeof( byte ) - totalRead, cancellationToken ).ConfigureAwait( false );
-				totalRead += read;
-			} while ( read > 0 && totalRead < sizeof( byte ) );
-
-			this._offset += totalRead;
-			
-			if ( totalRead == sizeof( byte ) )
-			{
-				return BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+				return this._scalarBuffer[ 0 ];
 			}
-			else
-			{
-				return -1;
-			}
+		
+			return -1;
 		}
 
 		public override async Task<SByte> ReadSByteAsync( CancellationToken cancellationToken )
