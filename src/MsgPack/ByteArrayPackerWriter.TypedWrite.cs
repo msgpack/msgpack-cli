@@ -45,273 +45,273 @@ namespace MsgPack
 		public override void WriteBytes( byte header, byte value )
 		{
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ) + 1, ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( byte ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( byte ) );
 			}
 
-			currentBuffer.Array[ currentBuffer.Offset ] = header;
-			currentBuffer = currentBuffer.Slice( 1 );
+			currentBuffer[ currentBufferOffset ] = header;
+			currentBufferOffset += 1;
 			
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( byte ) );
 			}
 
-			var buffer = currentBuffer.Array;
-			var offset = currentBuffer.Offset;
-			var bufferRemaining = currentBuffer.Count;
+			var bufferRemaining = currentBufferLimit - currentBufferOffset;
 
 			for ( var totalWritten = 0; totalWritten < sizeof( byte ); )
 			{
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( byte ); currentWritten++, totalWritten++ )
 				{
-					buffer[ offset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( byte ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( byte ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
-				currentBuffer = currentBuffer.Slice( currentWritten );
+				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( byte ) - totalWritten, ref currentBuffer, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( byte ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( byte ) );
 				}
 
-				buffer = currentBuffer.Array;
-				offset = currentBuffer.Offset;
-				bufferRemaining = currentBuffer.Count;
+				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, ushort value )
 		{
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) + 1, ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ushort ) );
 			}
 
-			currentBuffer.Array[ currentBuffer.Offset ] = header;
-			currentBuffer = currentBuffer.Slice( 1 );
+			currentBuffer[ currentBufferOffset ] = header;
+			currentBufferOffset += 1;
 			
-			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ), ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ushort ) );
 			}
 
-			var buffer = currentBuffer.Array;
-			var offset = currentBuffer.Offset;
-			var bufferRemaining = currentBuffer.Count;
+			var bufferRemaining = currentBufferLimit - currentBufferOffset;
 
 			for ( var totalWritten = 0; totalWritten < sizeof( ushort ); )
 			{
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( ushort ); currentWritten++, totalWritten++ )
 				{
-					buffer[ offset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( ushort ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( ushort ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
-				currentBuffer = currentBuffer.Slice( currentWritten );
+				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) - totalWritten, ref currentBuffer, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( ushort ) );
 				}
 
-				buffer = currentBuffer.Array;
-				offset = currentBuffer.Offset;
-				bufferRemaining = currentBuffer.Count;
+				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, uint value )
 		{
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( uint ) + 1, ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( uint ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( uint ) );
 			}
 
-			currentBuffer.Array[ currentBuffer.Offset ] = header;
-			currentBuffer = currentBuffer.Slice( 1 );
+			currentBuffer[ currentBufferOffset ] = header;
+			currentBufferOffset += 1;
 			
-			if ( !this.ShiftBufferIfNeeded( sizeof( uint ), ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( uint ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( uint ) );
 			}
 
-			var buffer = currentBuffer.Array;
-			var offset = currentBuffer.Offset;
-			var bufferRemaining = currentBuffer.Count;
+			var bufferRemaining = currentBufferLimit - currentBufferOffset;
 
 			for ( var totalWritten = 0; totalWritten < sizeof( uint ); )
 			{
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( uint ); currentWritten++, totalWritten++ )
 				{
-					buffer[ offset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( uint ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( uint ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
-				currentBuffer = currentBuffer.Slice( currentWritten );
+				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( uint ) - totalWritten, ref currentBuffer, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( uint ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( uint ) );
 				}
 
-				buffer = currentBuffer.Array;
-				offset = currentBuffer.Offset;
-				bufferRemaining = currentBuffer.Count;
+				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, ulong value )
 		{
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) + 1, ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ulong ) );
 			}
 
-			currentBuffer.Array[ currentBuffer.Offset ] = header;
-			currentBuffer = currentBuffer.Slice( 1 );
+			currentBuffer[ currentBufferOffset ] = header;
+			currentBufferOffset += 1;
 			
-			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ), ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ulong ) );
 			}
 
-			var buffer = currentBuffer.Array;
-			var offset = currentBuffer.Offset;
-			var bufferRemaining = currentBuffer.Count;
+			var bufferRemaining = currentBufferLimit - currentBufferOffset;
 
 			for ( var totalWritten = 0; totalWritten < sizeof( ulong ); )
 			{
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( ulong ); currentWritten++, totalWritten++ )
 				{
-					buffer[ offset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
-				currentBuffer = currentBuffer.Slice( currentWritten );
+				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) - totalWritten, ref currentBuffer, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( ulong ) );
 				}
 
-				buffer = currentBuffer.Array;
-				offset = currentBuffer.Offset;
-				bufferRemaining = currentBuffer.Count;
+				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, float value )
 		{
 			var bits = ToBits( value );
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( float ) + 1, ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( float ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( float ) );
 			}
 
-			currentBuffer.Array[ currentBuffer.Offset ] = header;
-			currentBuffer = currentBuffer.Slice( 1 );
+			currentBuffer[ currentBufferOffset ] = header;
+			currentBufferOffset += 1;
 			
-			if ( !this.ShiftBufferIfNeeded( sizeof( float ), ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( float ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( float ) );
 			}
 
-			var buffer = currentBuffer.Array;
-			var offset = currentBuffer.Offset;
-			var bufferRemaining = currentBuffer.Count;
+			var bufferRemaining = currentBufferLimit - currentBufferOffset;
 
 			for ( var totalWritten = 0; totalWritten < sizeof( float ); )
 			{
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( float ); currentWritten++, totalWritten++ )
 				{
-					buffer[ offset + currentWritten ] = unchecked( ( byte )( bits >> ( ( sizeof( float ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( bits >> ( ( sizeof( float ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
-				currentBuffer = currentBuffer.Slice( currentWritten );
+				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( float ) - totalWritten, ref currentBuffer, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( float ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( float ) );
 				}
 
-				buffer = currentBuffer.Array;
-				offset = currentBuffer.Offset;
-				bufferRemaining = currentBuffer.Count;
+				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, double value )
 		{
 			var bits = ToBits( value );
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( double ) + 1, ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( double ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( double ) );
 			}
 
-			currentBuffer.Array[ currentBuffer.Offset ] = header;
-			currentBuffer = currentBuffer.Slice( 1 );
+			currentBuffer[ currentBufferOffset ] = header;
+			currentBufferOffset += 1;
 			
-			if ( !this.ShiftBufferIfNeeded( sizeof( double ), ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( double ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( double ) );
 			}
 
-			var buffer = currentBuffer.Array;
-			var offset = currentBuffer.Offset;
-			var bufferRemaining = currentBuffer.Count;
+			var bufferRemaining = currentBufferLimit - currentBufferOffset;
 
 			for ( var totalWritten = 0; totalWritten < sizeof( double ); )
 			{
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( double ); currentWritten++, totalWritten++ )
 				{
-					buffer[ offset + currentWritten ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
-				currentBuffer = currentBuffer.Slice( currentWritten );
+				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( double ) - totalWritten, ref currentBuffer, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( double ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( double ) );
 				}
 
-				buffer = currentBuffer.Array;
-				offset = currentBuffer.Offset;
-				bufferRemaining = currentBuffer.Count;
+				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( string value, bool allowStr8 )
@@ -323,10 +323,11 @@ namespace MsgPack
 				return;
 			}
 
-			if ( encodedLength <= this._currentBuffer.Count )
+			if ( encodedLength <= this._currentBufferLimit - this._currentBufferOffset )
 			{
-				Encoding.UTF8.GetBytes( value, 0, value.Length, this._currentBuffer.Array, this._currentBuffer.Offset );
-				this._currentBuffer = this._currentBuffer.Slice( encodedLength );
+				// Fast path
+				Encoding.UTF8.GetBytes( value, 0, value.Length, this._currentBuffer, this._currentBufferOffset );
+				this._currentBufferOffset += encodedLength;
 			}
 			else
 			{
@@ -427,6 +428,8 @@ namespace MsgPack
 #endif // !FEATURE_POINTER_CONVERSION
 			{
 				var currentBuffer = this._currentBuffer;
+				var currentBufferOffset = this._currentBufferOffset;
+				var currentBufferLimit = this._currentBufferLimit;
 				var currentBufferIndex = this._currentBufferIndex;
 				var encoder = Encoding.UTF8.GetEncoder();
 #if FEATURE_POINTER_CONVERSION
@@ -436,20 +439,20 @@ namespace MsgPack
 				var isCompleted = false;
 				do
 				{
-					if ( !this.ShiftBufferIfNeeded( remainingCharsLength * sizeof( char ), ref currentBuffer, ref currentBufferIndex ) )
+					if ( !this.ShiftBufferIfNeeded( remainingCharsLength * sizeof( char ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 					{
 						this.ThrowEofExceptionForString( ( value.Length - remainingCharsLength ) * sizeof( char ) );
 					}
 
 					int charsUsed, bytesUsed;
 #if FEATURE_POINTER_CONVERSION
-					fixed ( byte* pBuffer = currentBuffer.Array )
+					fixed ( byte* pBuffer = currentBuffer )
 #endif // FEATURE_POINTER_CONVERSION
 					{
 #if FEATURE_POINTER_CONVERSION
-						isCompleted = encoder.EncodeString( pChars, remainingCharsLength, pBuffer + currentBuffer.Offset, currentBuffer.Count, out charsUsed, out bytesUsed );
+						isCompleted = encoder.EncodeString( pChars, remainingCharsLength, pBuffer + currentBufferOffset, currentBufferLimit - currentBufferOffset, out charsUsed, out bytesUsed );
 #else
-						isCompleted = encoder.EncodeString( value, charsOffset, remainingCharsLength, currentBuffer.Array, currentBuffer.Offset, currentBuffer.Count, out charsUsed, out bytesUsed );
+						isCompleted = encoder.EncodeString( value, charsOffset, remainingCharsLength, currentBuffer, currentBufferOffset, currentBufferLimit - currentBufferOffset, out charsUsed, out bytesUsed );
 #endif // FEATURE_POINTER_CONVERSION
 					}
 
@@ -459,7 +462,7 @@ namespace MsgPack
 					charsOffset += charsUsed;
 #endif // FEATURE_POINTER_CONVERSION
 					remainingCharsLength -= charsUsed;
-					currentBuffer = currentBuffer.Slice( bytesUsed );
+					currentBufferOffset += bytesUsed;
 				} while ( remainingCharsLength > 0 );
 #if DEBUG
 				Contract.Assert( isCompleted, "Encoding is not completed!" );
@@ -467,6 +470,8 @@ namespace MsgPack
 
 				this._currentBufferIndex = currentBufferIndex;
 				this._currentBuffer = currentBuffer;
+				this._currentBufferOffset = currentBufferOffset;
+				this._currentBufferLimit = currentBufferLimit;
 			}
 		}
 	}

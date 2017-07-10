@@ -51,7 +51,9 @@ namespace MsgPack
 		private int _currentBufferIndex;
 
 		// TODO: Use Span<byte>
-		private ArraySegment<byte> _currentBuffer;
+		private byte[] _currentBuffer;
+		private int _currentBufferOffset;
+		private int _currentBufferLimit;
 
 #if DEBUG
 
@@ -73,7 +75,7 @@ namespace MsgPack
 			{
 				return
 					this._buffers.Skip( this._initialBufferIndex ).Take( this._currentBufferIndex - this._initialBufferIndex ).Sum( x => x.Count )
-					+ this._currentBuffer.Offset - this._buffers[ this._currentBufferIndex ].Offset;
+					+ this._currentBufferOffset - this._buffers[ this._currentBufferIndex ].Offset;
 			}
 		}
 
@@ -89,7 +91,7 @@ namespace MsgPack
 
 		public int CurrentBufferOffset
 		{
-			get { return this._currentBuffer.Offset; }
+			get { return this._currentBufferOffset; }
 		}
 
 		// TODO: Use Span<byte>
@@ -102,7 +104,9 @@ namespace MsgPack
 
 			this._buffers = new[] { buffer };
 			this._currentBufferIndex = 0;
-			this._currentBuffer = buffer;
+			this._currentBuffer = buffer.Array;
+			this._currentBufferOffset = buffer.Offset;
+			this._currentBufferLimit = buffer.Count + buffer.Offset;
 			this._allocator = allocator;
 		}
 
@@ -154,7 +158,9 @@ namespace MsgPack
 				throw new ArgumentException( "The offset cannot exceed the array segment Count.", "startOffset" );
 			}
 
-			this._currentBuffer = startBuffer.Slice( skip );
+			this._currentBuffer = startBuffer.Array;
+			this._currentBufferOffset = startBuffer.Offset + skip;
+			this._currentBufferLimit = startBuffer.Count + startBuffer.Offset;
 			this._allocator = allocator;
 		}
 
@@ -163,24 +169,29 @@ namespace MsgPack
 			return this._buffers;
 		}
 
-		private bool ShiftBufferIfNeeded( int sizeHint, ref ArraySegment<byte> currentBuffer, ref int currentBufferIndex )
+		private bool ShiftBufferIfNeeded( int sizeHint, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit, ref int currentBufferIndex )
 		{
 			// Check current buffer is empty and whether more buffer is required.
-			if ( currentBuffer.Count == 0 && sizeHint > 0 )
+			if ( currentBufferLimit == currentBufferOffset && sizeHint > 0 )
 			{
 				// try shift to next buffer
 				currentBufferIndex++;
+				ArraySegment<byte> newBuffer;
 				if ( this._buffers.Count == currentBufferIndex )
 				{
-					if ( !this._allocator.TryAllocate( this._buffers, sizeHint, ref currentBufferIndex, out currentBuffer ) )
+					if ( !this._allocator.TryAllocate( this._buffers, sizeHint, ref currentBufferIndex, out newBuffer ) )
 					{
 						return false;
 					}
 				}
 				else
 				{
-					currentBuffer = this._buffers[ currentBufferIndex ];
+					newBuffer = this._buffers[ currentBufferIndex ];
 				}
+
+				currentBuffer = newBuffer.Array;
+				currentBufferOffset = newBuffer.Offset;
+				currentBufferLimit = newBuffer.Offset + newBuffer.Count;
 			}
 
 			return true;
@@ -189,36 +200,42 @@ namespace MsgPack
 		public override void WriteByte( byte value )
 		{
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( 1 );
 			}
 
-			currentBuffer.Array[ currentBuffer.Offset ] = value;
+			currentBuffer[ currentBufferOffset ] = value;
 			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer.Slice( sizeof( byte ) );
+			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset + 1;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		private void WriteBytes( byte[] value, int startIndex, int count )
 		{
 			var currentBuffer = this._currentBuffer;
+			var currentBufferOffset = this._currentBufferOffset;
+			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( count, ref currentBuffer, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( count, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( count );
 			}
 
-			int written = 0;
+			var written = 0;
 			do
 			{
-				var writes = Math.Min( currentBuffer.Count, ( count - written ) );
-				Buffer.BlockCopy( value, startIndex + written, currentBuffer.Array, currentBuffer.Offset, writes );
+				var writes = Math.Min( currentBufferLimit - currentBufferOffset, ( count - written ) );
+				Buffer.BlockCopy( value, startIndex + written, currentBuffer, currentBufferOffset, writes );
 
 				written += writes;
-				currentBuffer = currentBuffer.Slice( writes );
+				currentBufferOffset += writes;
 
-				if ( !this.ShiftBufferIfNeeded( count - written, ref currentBuffer, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( count - written, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( count );
 				}
@@ -226,6 +243,8 @@ namespace MsgPack
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte[] value )
@@ -256,7 +275,7 @@ namespace MsgPack
 					CultureInfo.CurrentCulture,
 					"Data buffer unexpectedly ends. Cannot write {0:#,0} bytes at offset {1:#,0}, buffer index {2}.",
 					requiredSize,
-					this._currentBuffer.Offset,
+					this._currentBufferOffset,
 					this._currentBufferIndex
 				)
 			);
@@ -269,7 +288,7 @@ namespace MsgPack
 					CultureInfo.CurrentCulture,
 					"Data buffer unexpectedly ends. Cannot write {0:#,0} UTF-16 chars in UTF-8 encoding at offset {1:#,0}, buffer index {2}.",
 					requiredCharCount,
-					this._currentBuffer.Offset,
+					this._currentBufferOffset,
 					this._currentBufferIndex
 				)
 			);

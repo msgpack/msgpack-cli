@@ -74,9 +74,6 @@
     <Compile Include="..\MsgPack.Unity.Full\Serialization\TypedMessagePackSerializerWrapper`1.cs">
       <Link>Serialization\TypedMessagePackSerializerWrapper`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\ArraySegmentAugument.cs">
-      <Link>ArraySegmentAugument.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\AsyncReadResult.cs">
       <Link>AsyncReadResult.cs</Link>
     </Compile>

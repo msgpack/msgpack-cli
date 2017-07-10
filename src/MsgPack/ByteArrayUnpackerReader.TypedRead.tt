@@ -120,11 +120,11 @@ foreach ( var type in scalarTypes )
 private void WriteByteArrayReaderReadBody( string type, string primitiveType, bool isStrict )
 {
 #>
-			if ( this._currentSource.Count >= sizeof( <#= primitiveType #> ) )
+			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( <#= primitiveType #> ) )
 			{
 				// fast path
-				var result = BigEndianBinary.To<#= type #>( this._currentSource.Array, this._currentSource.Offset );
-				this._currentSource = this._currentSource.Slice( sizeof( <#= primitiveType #> ) );
+				var result = BigEndianBinary.To<#= type #>( this._currentSource, this._currentSourceOffset );
+				this._currentSourceOffset += sizeof( <#= primitiveType #> );
 				return result;
 			}
 

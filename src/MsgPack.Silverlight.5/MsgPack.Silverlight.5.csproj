@@ -80,9 +80,6 @@
     <Compile Include="..\MsgPack.Net35\Volatile.cs">
       <Link>Volatile.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\ArraySegmentAugument.cs">
-      <Link>ArraySegmentAugument.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\AsyncReadResult.cs">
       <Link>AsyncReadResult.cs</Link>
     </Compile>

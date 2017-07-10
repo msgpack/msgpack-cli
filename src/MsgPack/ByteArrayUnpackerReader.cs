@@ -51,7 +51,9 @@ namespace MsgPack
 		private int _currentSourceIndex;
 
 		// TODO: Use Span<byte>
-		private ArraySegment<byte> _currentSource;
+		private byte[] _currentSource;
+		private int _currentSourceOffset;
+		private int _currentSourceLimit;
 
 #if DEBUG
 
@@ -73,13 +75,13 @@ namespace MsgPack
 			{
 				return
 					this._sources.Take( this._currentSourceIndex ).Sum( x => x.Count )
-					+ this._currentSource.Offset - this._sources[ this._currentSourceIndex ].Offset;
+					+ this._currentSourceOffset - this._sources[ this._currentSourceIndex ].Offset;
 			}
 		}
 
 		public int CurrentSourceOffset
 		{
-			get { return this._currentSource.Offset; }
+			get { return this._currentSourceOffset; }
 		}
 
 		public int CurrentSourceIndex
@@ -103,7 +105,9 @@ namespace MsgPack
 
 			this._sources = new[] { source };
 			this._currentSourceIndex = 0;
-			this._currentSource = source;
+			this._currentSource = source.Array;
+			this._currentSourceOffset = source.Offset;
+			this._currentSourceLimit = source.Offset + source.Count;
 		}
 
 		// TODO: Use Span<byte>
@@ -153,12 +157,14 @@ namespace MsgPack
 				throw new ArgumentException( "The offset cannot exceed the array segment Count.", "startOffset" );
 			}
 
-			this._currentSource = startSource.Slice( skip );
+			this._currentSource = startSource.Array;
+			this._currentSourceOffset = startSource.Offset + skip;
+			this._currentSourceLimit = startSource.Count + startSource.Offset;
 		}
 
-		private bool ShiftSourceIfNeeded( ref ArraySegment<byte> currentSource, ref int currentSourceIndex )
+		private bool ShiftSourceIfNeeded( ref byte[] currentSource, ref int currentSourceOffset, ref int currentSourceLimit, ref int currentSourceIndex )
 		{
-			if ( currentSource.Count == 0 )
+			if ( currentSourceLimit == currentSourceOffset )
 			{
 				// try shift to next buffer
 				currentSourceIndex++;
@@ -167,7 +173,9 @@ namespace MsgPack
 					return false;
 				}
 
-				currentSource = this._sources[ currentSourceIndex ];
+				currentSource = this._sources[ currentSourceIndex ].Array;
+				currentSourceOffset = this._sources[ currentSourceIndex ].Offset;
+				currentSourceLimit = this._sources[ currentSourceIndex ].Count + currentSourceOffset;
 			}
 
 			return true;
@@ -181,12 +189,12 @@ namespace MsgPack
 				return true;
 			}
 			
-			if ( this._currentSource.Count >= requestedSize )
+			if ( this._currentSourceLimit - this._currentSourceOffset >= requestedSize )
 			{
 				// fast path
 				// TODO: Use currentSource.CopyTo( buffer, requestedSize );
-				Buffer.BlockCopy( this._currentSource.Array, this._currentSource.Offset, buffer, 0, requestedSize );
-				this._currentSource = this._currentSource.Slice( requestedSize );
+				Buffer.BlockCopy( this._currentSource, this._currentSourceOffset, buffer, 0, requestedSize );
+				this._currentSourceOffset += requestedSize;
 				return true;
 			}
 
@@ -197,8 +205,10 @@ namespace MsgPack
 		private bool TryReadSlow( byte[] buffer, int requestedSize )
 		{
 			var currentSource = this._currentSource;
+			var currentSourceOffset = this._currentSourceOffset;
+			var currentSourceLimit = this._currentSourceLimit;
 			var currentSourceIndex = this._currentSourceIndex;
-			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
 			{
 				return false;
 			}
@@ -208,11 +218,11 @@ namespace MsgPack
 
 			do
 			{
-				var copying = Math.Min( currentSource.Count, remaining );
+				var copying = Math.Min( currentSourceLimit - currentSourceOffset, remaining );
 				// TODO: Use currentSource.CopyTo( buffer, copying );
-				Buffer.BlockCopy( currentSource.Array, currentSource.Offset, buffer, destinationOffset, copying );
+				Buffer.BlockCopy( currentSource, currentSourceOffset, buffer, destinationOffset, copying );
 				remaining -= copying;
-				currentSource = currentSource.Slice( copying );
+				currentSourceOffset += copying;
 #if DEBUG
 				Contract.Assert( remaining >= 0, "remaining >= 0" );
 #endif // DEBUG
@@ -225,7 +235,7 @@ namespace MsgPack
 
 				destinationOffset += copying;
 
-				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
 				{
 					return false;
 				}
@@ -233,6 +243,8 @@ namespace MsgPack
 
 			this._currentSourceIndex = currentSourceIndex;
 			this._currentSource = currentSource;
+			this._currentSourceOffset = currentSourceOffset;
+			this._currentSourceLimit = currentSourceLimit;
 			return true;
 		}
 
@@ -262,11 +274,11 @@ namespace MsgPack
 				return String.Empty;
 			}
 			
-			if ( this._currentSource.Count - this._currentSource.Offset >= length )
+			if ( this._currentSourceLimit - this._currentSourceOffset >= length )
 			{
 				// fast path
-				var result = Encoding.UTF8.GetString( this._currentSource.Array, this._currentSource.Offset, length );
-				this._currentSource = this._currentSource.Slice( length );
+				var result = Encoding.UTF8.GetString( this._currentSource, this._currentSourceOffset, length );
+				this._currentSourceOffset += length;
 				return result;
 			}
 
@@ -277,9 +289,11 @@ namespace MsgPack
 		private string ReadStringSlow( int requestedSize )
 		{
 			var currentSource = this._currentSource;
+			var currentSourceOffset = this._currentSourceOffset;
+			var currentSourceLimit = this._currentSourceLimit;
 			var currentSourceIndex = this._currentSourceIndex;
 
-			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
 			{
 				this.ThrowEofException( requestedSize );
 			}
@@ -292,10 +306,10 @@ namespace MsgPack
 			bool isCompleted;
 			do
 			{
-				var decoding = Math.Min( currentSource.Count, remaining );
-				isCompleted = decoder.DecodeString( currentSource.Array, currentSource.Offset, decoding, charBuffer, result );
+				var decoding = Math.Min( currentSourceLimit - currentSourceOffset, remaining );
+				isCompleted = decoder.DecodeString( currentSource, currentSourceOffset, decoding, charBuffer, result );
 				remaining -= decoding;
-				currentSource = currentSource.Slice( decoding );
+				currentSourceOffset += decoding;
 
 #if DEBUG
 				Contract.Assert( remaining >= 0, "remaining >= 0" );
@@ -307,7 +321,7 @@ namespace MsgPack
 					break;
 				}
 
-				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
 				{
 					this.ThrowEofException( requestedSize );
 				}
@@ -320,6 +334,8 @@ namespace MsgPack
 
 			this._currentSourceIndex = currentSourceIndex;
 			this._currentSource = currentSource;
+			this._currentSourceOffset = currentSourceOffset;
+			this._currentSourceLimit = currentSourceLimit;
 			return result.ToString();
 		}
 
@@ -344,20 +360,23 @@ namespace MsgPack
 			long remaining = size;
 
 			var currentSource = this._currentSource;
+			var currentSourceOffset = this._currentSourceOffset;
+			var currentSourceLimit = this._currentSourceLimit;
 			var currentSourceIndex = this._currentSourceIndex;
 
-			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceIndex ) )
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
 			{
 				return false;
 			}
 			
 			while ( remaining > 0 )
 			{
-				var currentSourceSize = currentSource.Count;
+				var currentSourceSize = currentSourceLimit - currentSourceOffset;
 				if ( remaining <= currentSourceSize )
 				{
 					this._currentSourceIndex = currentSourceIndex;
-					this._currentSource = currentSource.Slice( unchecked( ( int )remaining) );
+					this._currentSourceOffset += unchecked( ( int )remaining );
+					this._currentSourceLimit = currentSourceLimit;
 					return true;
 				}
 
@@ -369,7 +388,9 @@ namespace MsgPack
 					break;
 				}
 
-				currentSource = this._sources[ CurrentSourceIndex ];
+				currentSource = this._sources[ currentSourceIndex ].Array;
+				currentSourceOffset = this._sources[ currentSourceIndex ].Offset;
+				currentSourceLimit = this._sources[ currentSourceIndex ].Count + currentSourceOffset;
 			}
 
 			return false;
@@ -391,7 +412,7 @@ namespace MsgPack
 					CultureInfo.CurrentCulture,
 					"Data source unexpectedly ends. Cannot read {0:#,0} bytes at offset {1:#,0}, buffer index {2}.",
 					reading,
-					this._currentSource.Offset,
+					this._currentSourceOffset,
 					this._currentSourceIndex
 				)
 			);
@@ -403,7 +424,7 @@ namespace MsgPack
 				String.Format(
 					CultureInfo.CurrentCulture,
 					"Data source has invalid UTF-8 sequence. Last code point at offset {1:#,0}, buffer index {2} is not completed.",
-					this._currentSource.Offset,
+					this._currentSourceOffset,
 					this._currentSourceIndex
 				)
 			);
