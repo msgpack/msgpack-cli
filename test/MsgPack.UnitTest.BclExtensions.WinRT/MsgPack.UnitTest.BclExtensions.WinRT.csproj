@@ -17,7 +17,7 @@
     <PackageCertificateKeyFile>MsgPack.UnitTest.BclExtensions.WinRT_TemporaryKey.pfx</PackageCertificateKeyFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PackageCertificateThumbprint>0075289B27A71F50931C53D6D1AACAD469D08F68</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>34322AD6CF171CC843FCCE936CB6B9B616B961E1</PackageCertificateThumbprint>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <TargetFrameworkVersion />
