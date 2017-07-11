@@ -869,7 +869,7 @@ namespace MsgPack.Serialization
 		public byte[] PackSingleObject( T objectTree )
 		{
 			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
-			var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions );
+			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ), this.PackerCompatibilityOptions );
 
 			this.PackTo( packer, objectTree );
 			return packer.GetResultBytes();
@@ -916,7 +916,7 @@ namespace MsgPack.Serialization
 		public async Task<byte[]> PackSingleObjectAsync( T objectTree, CancellationToken cancellationToken )
 		{
 			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
-			var packer = Packer.Create( new byte[ 64 * 1024 ], this.PackerCompatibilityOptions );
+			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ), this.PackerCompatibilityOptions );
 
 			await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
 			return packer.GetResultBytes();

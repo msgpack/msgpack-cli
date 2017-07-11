@@ -39,6 +39,8 @@ namespace MsgPack.Serialization
 	{
 		internal static readonly UnpackerOptions DefaultUnpackerOptions = new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None };
 
+		internal const int BufferSize = 256;
+
 		private readonly SerializationContext _ownerContext;
 
 		/// <summary>
