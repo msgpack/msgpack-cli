@@ -93,30 +93,24 @@ namespace MsgPack
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
-			
-			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+
+			if ( currentBufferLimit - currentBufferOffset >= sizeof( <#= type #> ) )
 			{
-				this.ThrowEofException( sizeof( <#= type #> ) );
+				// Fast path
+<#
+				var bytesLength = lengthes[ type ];
+				for ( var i = 0; i < bytesLength; i++ )
+				{
+#>
+				currentBuffer[ currentBufferOffset<#= i == 0 ? String.Empty : ( " + " + i.ToString( CultureInfo.InvariantCulture ) ) #> ] = unchecked( ( byte )( <#= bits #> >> ( ( sizeof( <#= type #> ) - <#= ( i + 1 ).ToString( CultureInfo.InvariantCulture ) #> ) * 8 ) & 0xFF ) );
+<#
+				}
+#>
+				currentBufferOffset += sizeof( <#= type #> );
 			}
-
-			var bufferRemaining = currentBufferLimit - currentBufferOffset;
-
-			for ( var totalWritten = 0; totalWritten < sizeof( <#= type #> ); )
+			else
 			{
-				var currentWritten = 0;
-				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( <#= type #> ); currentWritten++, totalWritten++ )
-				{
-					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( <#= bits #> >> ( ( sizeof( <#= type #> ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
-				}
-
-				currentBufferOffset += currentWritten;
-			
-				if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
-				{
-					this.ThrowEofException( sizeof( <#= type #> ) );
-				}
-
-				bufferRemaining = currentBufferLimit - currentBufferOffset;
+				this.WriteBytesSlow( <#= bits #>, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
@@ -129,6 +123,39 @@ namespace MsgPack
 		}
 
 <#
+			if ( !isAsync )
+			{
+#>
+		private void WriteBytesSlow( <#= this.ToBitsType( type ) #> value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		{			
+			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			{
+				this.ThrowEofException( sizeof( <#= type #> ) );
+			}
+
+			var bufferRemaining = currentBufferLimit - currentBufferOffset;
+
+			for ( var totalWritten = 0; totalWritten < sizeof( <#= type #> ); )
+			{
+				var currentWritten = 0;
+				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( <#= type #> ); currentWritten++, totalWritten++ )
+				{
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( <#= type #> ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+				}
+
+				currentBufferOffset += currentWritten;
+			
+				if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				{
+					this.ThrowEofException( sizeof( <#= type #> ) );
+				}
+
+				bufferRemaining = currentBufferLimit - currentBufferOffset;
+			}
+		}
+
+<#
+			} // if !isAsync
 		} // foreach type
 #>
 		public override <#= isAsync ? "Task" : "void" #> WriteBytes<#= isAsync ? "Async" : String.Empty #>( string value, bool allowStr8<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
@@ -272,3 +299,23 @@ namespace MsgPack
 		}
 	}
 }
+<#+
+private string ToBitsType( string type )
+{
+	switch ( type )
+	{
+		case "float":
+		{
+			return "int";
+		}
+		case "double":
+		{
+			return "long";
+		}
+		default:
+		{
+			return type;
+		}
+	}
+}
+#>

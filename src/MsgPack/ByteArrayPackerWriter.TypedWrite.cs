@@ -55,7 +55,26 @@ namespace MsgPack
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
-			
+
+			if ( currentBufferLimit - currentBufferOffset >= sizeof( byte ) )
+			{
+				// Fast path
+				currentBuffer[ currentBufferOffset ] = unchecked( ( byte )( value >> ( ( sizeof( byte ) - 1 ) * 8 ) & 0xFF ) );
+				currentBufferOffset += sizeof( byte );
+			}
+			else
+			{
+				this.WriteBytesSlow( value, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
+			}
+
+			this._currentBufferIndex = currentBufferIndex;
+			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
+		}
+
+		private void WriteBytesSlow( byte value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		{			
 			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( byte ) );
@@ -80,11 +99,6 @@ namespace MsgPack
 
 				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, ushort value )
@@ -100,7 +114,27 @@ namespace MsgPack
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
-			
+
+			if ( currentBufferLimit - currentBufferOffset >= sizeof( ushort ) )
+			{
+				// Fast path
+				currentBuffer[ currentBufferOffset ] = unchecked( ( byte )( value >> ( ( sizeof( ushort ) - 1 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 1 ] = unchecked( ( byte )( value >> ( ( sizeof( ushort ) - 2 ) * 8 ) & 0xFF ) );
+				currentBufferOffset += sizeof( ushort );
+			}
+			else
+			{
+				this.WriteBytesSlow( value, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
+			}
+
+			this._currentBufferIndex = currentBufferIndex;
+			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
+		}
+
+		private void WriteBytesSlow( ushort value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		{			
 			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ushort ) );
@@ -125,11 +159,6 @@ namespace MsgPack
 
 				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, uint value )
@@ -145,7 +174,29 @@ namespace MsgPack
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
-			
+
+			if ( currentBufferLimit - currentBufferOffset >= sizeof( uint ) )
+			{
+				// Fast path
+				currentBuffer[ currentBufferOffset ] = unchecked( ( byte )( value >> ( ( sizeof( uint ) - 1 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 1 ] = unchecked( ( byte )( value >> ( ( sizeof( uint ) - 2 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 2 ] = unchecked( ( byte )( value >> ( ( sizeof( uint ) - 3 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 3 ] = unchecked( ( byte )( value >> ( ( sizeof( uint ) - 4 ) * 8 ) & 0xFF ) );
+				currentBufferOffset += sizeof( uint );
+			}
+			else
+			{
+				this.WriteBytesSlow( value, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
+			}
+
+			this._currentBufferIndex = currentBufferIndex;
+			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
+		}
+
+		private void WriteBytesSlow( uint value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		{			
 			if ( !this.ShiftBufferIfNeeded( sizeof( uint ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( uint ) );
@@ -170,11 +221,6 @@ namespace MsgPack
 
 				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, ulong value )
@@ -190,7 +236,33 @@ namespace MsgPack
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
-			
+
+			if ( currentBufferLimit - currentBufferOffset >= sizeof( ulong ) )
+			{
+				// Fast path
+				currentBuffer[ currentBufferOffset ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 1 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 1 ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 2 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 2 ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 3 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 3 ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 4 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 4 ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 5 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 5 ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 6 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 6 ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 7 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 7 ] = unchecked( ( byte )( value >> ( ( sizeof( ulong ) - 8 ) * 8 ) & 0xFF ) );
+				currentBufferOffset += sizeof( ulong );
+			}
+			else
+			{
+				this.WriteBytesSlow( value, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
+			}
+
+			this._currentBufferIndex = currentBufferIndex;
+			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
+		}
+
+		private void WriteBytesSlow( ulong value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		{			
 			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ulong ) );
@@ -215,11 +287,6 @@ namespace MsgPack
 
 				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, float value )
@@ -236,7 +303,29 @@ namespace MsgPack
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
-			
+
+			if ( currentBufferLimit - currentBufferOffset >= sizeof( float ) )
+			{
+				// Fast path
+				currentBuffer[ currentBufferOffset ] = unchecked( ( byte )( bits >> ( ( sizeof( float ) - 1 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 1 ] = unchecked( ( byte )( bits >> ( ( sizeof( float ) - 2 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 2 ] = unchecked( ( byte )( bits >> ( ( sizeof( float ) - 3 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 3 ] = unchecked( ( byte )( bits >> ( ( sizeof( float ) - 4 ) * 8 ) & 0xFF ) );
+				currentBufferOffset += sizeof( float );
+			}
+			else
+			{
+				this.WriteBytesSlow( bits, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
+			}
+
+			this._currentBufferIndex = currentBufferIndex;
+			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
+		}
+
+		private void WriteBytesSlow( int value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		{			
 			if ( !this.ShiftBufferIfNeeded( sizeof( float ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( float ) );
@@ -249,7 +338,7 @@ namespace MsgPack
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( float ); currentWritten++, totalWritten++ )
 				{
-					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( bits >> ( ( sizeof( float ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( float ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
 				currentBufferOffset += currentWritten;
@@ -261,11 +350,6 @@ namespace MsgPack
 
 				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( byte header, double value )
@@ -282,7 +366,33 @@ namespace MsgPack
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
-			
+
+			if ( currentBufferLimit - currentBufferOffset >= sizeof( double ) )
+			{
+				// Fast path
+				currentBuffer[ currentBufferOffset ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 1 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 1 ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 2 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 2 ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 3 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 3 ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 4 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 4 ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 5 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 5 ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 6 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 6 ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 7 ) * 8 ) & 0xFF ) );
+				currentBuffer[ currentBufferOffset + 7 ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - 8 ) * 8 ) & 0xFF ) );
+				currentBufferOffset += sizeof( double );
+			}
+			else
+			{
+				this.WriteBytesSlow( bits, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
+			}
+
+			this._currentBufferIndex = currentBufferIndex;
+			this._currentBuffer = currentBuffer;
+			this._currentBufferOffset = currentBufferOffset;
+			this._currentBufferLimit = currentBufferLimit;
+		}
+
+		private void WriteBytesSlow( long value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		{			
 			if ( !this.ShiftBufferIfNeeded( sizeof( double ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( double ) );
@@ -295,7 +405,7 @@ namespace MsgPack
 				var currentWritten = 0;
 				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( double ); currentWritten++, totalWritten++ )
 				{
-					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( bits >> ( ( sizeof( double ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
+					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( double ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
 				}
 
 				currentBufferOffset += currentWritten;
@@ -307,11 +417,6 @@ namespace MsgPack
 
 				bufferRemaining = currentBufferLimit - currentBufferOffset;
 			}
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
 		}
 
 		public override void WriteBytes( string value, bool allowStr8 )
