@@ -42,13 +42,15 @@ namespace MsgPack
 
 	partial class ByteArrayPackerWriter
 	{
+		private const int MaximumUtf8Length = 4;
+
 		public override void WriteBytes( byte header, byte value )
 		{
 			var currentBuffer = this._currentBuffer;
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( byte ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( byte ) );
 			}
@@ -75,7 +77,7 @@ namespace MsgPack
 
 		private void WriteBytesSlow( byte value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( byte ) );
 			}
@@ -92,7 +94,7 @@ namespace MsgPack
 
 				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( byte ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( byte ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( byte ) );
 				}
@@ -107,7 +109,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ushort ) );
 			}
@@ -135,7 +137,7 @@ namespace MsgPack
 
 		private void WriteBytesSlow( ushort value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ushort ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ushort ) );
 			}
@@ -152,7 +154,7 @@ namespace MsgPack
 
 				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( ushort ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( ushort ) );
 				}
@@ -167,7 +169,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( uint ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( uint ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( uint ) );
 			}
@@ -197,7 +199,7 @@ namespace MsgPack
 
 		private void WriteBytesSlow( uint value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( uint ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( uint ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( uint ) );
 			}
@@ -214,7 +216,7 @@ namespace MsgPack
 
 				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( uint ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( uint ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( uint ) );
 				}
@@ -229,7 +231,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ulong ) );
 			}
@@ -263,7 +265,7 @@ namespace MsgPack
 
 		private void WriteBytesSlow( ulong value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( ulong ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( ulong ) );
 			}
@@ -280,7 +282,7 @@ namespace MsgPack
 
 				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( ulong ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( ulong ) );
 				}
@@ -296,7 +298,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( float ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( float ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( float ) );
 			}
@@ -326,7 +328,7 @@ namespace MsgPack
 
 		private void WriteBytesSlow( int value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( float ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( float ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( float ) );
 			}
@@ -343,7 +345,7 @@ namespace MsgPack
 
 				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( float ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( float ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( float ) );
 				}
@@ -359,7 +361,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( double ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( double ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( double ) );
 			}
@@ -393,7 +395,7 @@ namespace MsgPack
 
 		private void WriteBytesSlow( long value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( double ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( double ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( double ) );
 			}
@@ -410,7 +412,7 @@ namespace MsgPack
 
 				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( double ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( double ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( double ) );
 				}
@@ -436,7 +438,7 @@ namespace MsgPack
 			}
 			else
 			{
-				this.WriteStringBody( value );
+				this.WriteStringBody( value, encodedLength );
 			}
 		}
 
@@ -509,7 +511,7 @@ namespace MsgPack
 		}
 
 #if !FEATURE_POINTER_CONVERSION
-		private void WriteStringBody( string value )
+		private void WriteStringBody( string value, int encodedLength )
 		{
 			var chars = BufferManager.NewCharBuffer( value.Length );
 			int offset = 0;
@@ -518,16 +520,16 @@ namespace MsgPack
 			{
 				int copying = Math.Min( value.Length - offset, chars.Length );
 				value.CopyTo( offset, chars, 0, copying );
-				this.WriteStringBody( chars, copying );
+				this.WriteStringBody( chars, copying, encodedLength );
 				offset += copying;
 			}
 		}
 
-		private void WriteStringBody( char[] value, int remainingCharsLength )
+		private void WriteStringBody( char[] value, int remainingCharsLength, int encodedLength )
 		{
 			var charsOffset = 0;
 #else
-		private unsafe void WriteStringBody( string value )
+		private unsafe void WriteStringBody( string value, int encodedLength )
 		{
 			fixed ( char* pValue = value )
 #endif // !FEATURE_POINTER_CONVERSION
@@ -541,12 +543,13 @@ namespace MsgPack
 				var pChars = pValue;
 				var remainingCharsLength = value.Length;
 #endif // FEATURE_POINTER_CONVERSION
+				var remainingBytesLength = encodedLength; 
 				var isCompleted = false;
 				do
 				{
-					if ( !this.ShiftBufferIfNeeded( remainingCharsLength * sizeof( char ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+					if ( !this.ShiftBufferIfNeeded( remainingBytesLength, MaximumUtf8Length, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 					{
-						this.ThrowEofExceptionForString( ( value.Length - remainingCharsLength ) * sizeof( char ) );
+						this.ThrowEofExceptionForString( remainingBytesLength );
 					}
 
 					int charsUsed, bytesUsed;
@@ -567,6 +570,7 @@ namespace MsgPack
 					charsOffset += charsUsed;
 #endif // FEATURE_POINTER_CONVERSION
 					remainingCharsLength -= charsUsed;
+					remainingBytesLength -= bytesUsed;
 					currentBufferOffset += bytesUsed;
 				} while ( remainingCharsLength > 0 );
 #if DEBUG

@@ -169,17 +169,17 @@ namespace MsgPack
 			return this._buffers;
 		}
 
-		private bool ShiftBufferIfNeeded( int sizeHint, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit, ref int currentBufferIndex )
+		private bool ShiftBufferIfNeeded( int sizeHint, int minimumSize, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit, ref int currentBufferIndex )
 		{
 			// Check current buffer is empty and whether more buffer is required.
-			if ( currentBufferLimit == currentBufferOffset && sizeHint > 0 )
+			if ( currentBufferLimit - currentBufferOffset < minimumSize && sizeHint > 0 )
 			{
 				// try shift to next buffer
 				currentBufferIndex++;
 				ArraySegment<byte> newBuffer;
 				if ( this._buffers.Count == currentBufferIndex )
 				{
-					if ( !this._allocator.TryAllocate( this._buffers, sizeHint, ref currentBufferIndex, out newBuffer ) )
+					if ( !this._allocator.TryAllocate( this._buffers, sizeHint, minimumSize, ref currentBufferIndex, out newBuffer ) )
 					{
 						return false;
 					}
@@ -203,7 +203,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( 1 );
 			}
@@ -221,7 +221,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( count, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( count, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( count );
 			}
@@ -235,7 +235,7 @@ namespace MsgPack
 				written += writes;
 				currentBufferOffset += writes;
 
-				if ( !this.ShiftBufferIfNeeded( count - written, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( count - written, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( count );
 				}

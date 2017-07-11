@@ -59,7 +59,7 @@ namespace MsgPack
 			this._allocator = allocator;
 		}
 
-		public override bool TryAllocate( IList<ArraySegment<byte>> buffers, int sizeHint, ref int newCurrentBufferIndex, out ArraySegment<byte> newCurrentBuffer )
+		public override bool TryAllocate( IList<ArraySegment<byte>> buffers, int sizeHint, int minimumSize, ref int newCurrentBufferIndex, out ArraySegment<byte> newCurrentBuffer )
 		{
 			if ( buffers.IsReadOnly || buffers.Count == Int32.MaxValue )
 			{
@@ -67,8 +67,8 @@ namespace MsgPack
 				return false;
 			}
 			
-			var newSegment = this._allocator( sizeHint );
-			if ( newSegment.Count == 0 || newSegment.Array == null )
+			var newSegment = this._allocator( Math.Max( sizeHint, minimumSize ) );
+			if ( newSegment.Count < minimumSize || newSegment.Array == null )
 			{
 				newCurrentBuffer = default( ArraySegment<byte> );
 				return false;

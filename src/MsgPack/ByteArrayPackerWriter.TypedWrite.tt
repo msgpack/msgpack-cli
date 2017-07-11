@@ -53,6 +53,8 @@ namespace MsgPack
 
 	partial class ByteArrayPackerWriter
 	{
+		private const int MaximumUtf8Length = 4;
+
 <#
 	foreach ( var isAsync in new [] { false, true } )
 	{
@@ -86,7 +88,7 @@ namespace MsgPack
 			var currentBufferOffset = this._currentBufferOffset;
 			var currentBufferLimit = this._currentBufferLimit;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) + 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( <#= type #> ) );
 			}
@@ -128,7 +130,7 @@ namespace MsgPack
 #>
 		private void WriteBytesSlow( <#= this.ToBitsType( type ) #> value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( <#= type #> ) );
 			}
@@ -145,7 +147,7 @@ namespace MsgPack
 
 				currentBufferOffset += currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) - totalWritten, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( <#= type #> ) );
 				}
@@ -186,7 +188,7 @@ namespace MsgPack
 			}
 			else
 			{
-				this.WriteStringBody( value );
+				this.WriteStringBody( value, encodedLength );
 			}
 <#
 			} // if isAsync
@@ -227,7 +229,7 @@ namespace MsgPack
 		}
 
 #if !FEATURE_POINTER_CONVERSION
-		private void WriteStringBody( string value )
+		private void WriteStringBody( string value, int encodedLength )
 		{
 			var chars = BufferManager.NewCharBuffer( value.Length );
 			int offset = 0;
@@ -236,16 +238,16 @@ namespace MsgPack
 			{
 				int copying = Math.Min( value.Length - offset, chars.Length );
 				value.CopyTo( offset, chars, 0, copying );
-				this.WriteStringBody( chars, copying );
+				this.WriteStringBody( chars, copying, encodedLength );
 				offset += copying;
 			}
 		}
 
-		private void WriteStringBody( char[] value, int remainingCharsLength )
+		private void WriteStringBody( char[] value, int remainingCharsLength, int encodedLength )
 		{
 			var charsOffset = 0;
 #else
-		private unsafe void WriteStringBody( string value )
+		private unsafe void WriteStringBody( string value, int encodedLength )
 		{
 			fixed ( char* pValue = value )
 #endif // !FEATURE_POINTER_CONVERSION
@@ -259,12 +261,13 @@ namespace MsgPack
 				var pChars = pValue;
 				var remainingCharsLength = value.Length;
 #endif // FEATURE_POINTER_CONVERSION
+				var remainingBytesLength = encodedLength; 
 				var isCompleted = false;
 				do
 				{
-					if ( !this.ShiftBufferIfNeeded( remainingCharsLength * sizeof( char ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+					if ( !this.ShiftBufferIfNeeded( remainingBytesLength, MaximumUtf8Length, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
 					{
-						this.ThrowEofExceptionForString( ( value.Length - remainingCharsLength ) * sizeof( char ) );
+						this.ThrowEofExceptionForString( remainingBytesLength );
 					}
 
 					int charsUsed, bytesUsed;
@@ -285,6 +288,7 @@ namespace MsgPack
 					charsOffset += charsUsed;
 #endif // FEATURE_POINTER_CONVERSION
 					remainingCharsLength -= charsUsed;
+					remainingBytesLength -= bytesUsed;
 					currentBufferOffset += bytesUsed;
 				} while ( remainingCharsLength > 0 );
 #if DEBUG
