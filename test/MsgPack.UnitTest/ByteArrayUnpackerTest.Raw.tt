@@ -195,7 +195,7 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 #>
 				Assert.That( result.Value.IsTypeOf( typeof( byte[] ) ).GetValueOrDefault() );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 <#+
 	}
 	else
@@ -215,7 +215,8 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 #>
 
 				// Only header is read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedReadLength #> ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( <#= expectedReadLength #> ) );
 <#+
 	}
 }
@@ -250,7 +251,8 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 
 				Assert.That( result, Is.EqualTo( <#= expectedValue #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 <#+
 	}
 	else
@@ -270,7 +272,8 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 #>
 
 				// Only header is read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedReadLength #> ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( <#= expectedReadLength #> ) );
 <#+
 	}
 }
@@ -286,54 +289,17 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 			var data =
 				new byte[] { <#= testCase.Item3 #> }
 				.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= testCase.Item2 #> ) ).ToArray();
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 <#+
 				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, true, testCase.Item5, isAsync );
 #>
 			}
 		}
 <#+
-	if ( testCase.Item2 + testCase.Item5 > 1 )
-	{
-#>
-
-		[Test]
-		public void <#= methodName #>_Limited()
-		{
-			var data =
-				new byte[] { <#= testCase.Item3 #> }
-				.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= testCase.Item2 #> ) ).ToArray();
-			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
-			{
-<#+
-				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, false, testCase.Item5, isAsync );
-#>
-			}
-		}
-
-<#+
-				var length = testCase.Item3.Count( c => c == ',' ) + testCase.Item2;
-				if ( length > 2 )
-				{
-#>
-		[Test]
-		public <#= AsyncVoid( isAsync ) #> <#= methodName #>_Splitted()
-		{
-			var data =
-				new byte[] { <#= testCase.Item3 #> }
-				.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= testCase.Item2 #> ) ).ToArray();
-			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
-			{
-<#+
-				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, true, testCase.Item5, isAsync );
-#>
-			}
-		}
-
-<#+
-				} // if length > 2
-	}
 }
 
 private static string AsyncVoid( bool isAsync )

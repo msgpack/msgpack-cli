@@ -144,7 +144,8 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int expectedLengthI
 				Assert.That( actual.Body, Is.Not.Null );
 				Assert.That( actual.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 <#+
 	}
 	else
@@ -164,7 +165,8 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int expectedLengthI
 #>
 
 				// Only header and type header are read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedLengthInLimit #> ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( <#= expectedLengthInLimit #> ) );
 <#+
 	}
 }
@@ -201,7 +203,8 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int expectedLengt
 				Assert.That( result.Body, Is.Not.Null );
 				Assert.That( result.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 <#+
 	}
 	else
@@ -221,7 +224,8 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int expectedLengt
 #>
 
 				// Only header and type header are read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( <#= expectedLengthInLimit #> ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( <#= expectedLengthInLimit #> ) );
 <#+
 	}
 }
@@ -239,51 +243,17 @@ private void PutTestMethod( string methodName, string headerFormat, int expected
 			var data =
 				new byte[] { <#= headerValue #> }
 				.Concat( Enumerable.Repeat( ( byte )0xFF, <#= actualValueLength #> ) ).ToArray();
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 <#+
 				putTestBody( typeCode, expectedLengthInLimit, actualValueLength, true, isAsync );
 #>
 			}
 		}
-
-		[Test]
-		public void <#= methodName #>_Limited()
-		{
-			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
-			var data =
-				new byte[] { <#= headerValue #> }
-				.Concat( Enumerable.Repeat( ( byte )0xFF, <#= actualValueLength #> ) ).ToArray();
-			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
-			{
 <#+
-				putTestBody( typeCode, expectedLengthInLimit, actualValueLength, false, isAsync );
-#>
-			}
-		}
-
-<#+
-				var length = headerValue.Count( c => c == ',' ) + 1 + actualValueLength;
-				if ( length > 2 )
-				{
-#>
-		[Test]
-		public <#= AsyncVoid( isAsync ) #> <#= methodName #>_Splitted()
-		{
-			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
-			var data =
-				new byte[] { <#= headerValue #> }
-				.Concat( Enumerable.Repeat( ( byte )0xFF, <#= actualValueLength #> ) ).ToArray();
-			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
-			{
-<#+
-					putTestBody( typeCode, expectedLengthInLimit, actualValueLength, true, isAsync );
-#>
-			}
-		}
-
-<#+
-				} // if length > 2
 }
 
 private static string AsyncVoid( bool isAsync )

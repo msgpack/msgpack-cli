@@ -51,62 +51,44 @@ namespace MsgPack
 
 		public override int TryReadByte()
 		{
-			if ( this._currentSourceRemains >= sizeof( byte ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToByte( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( byte );
-				this._currentSourceRemains -= sizeof( byte );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( byte ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( byte ) )
 			{
 				return -1;
 			}
 
-			return BigEndianBinary.ToByte( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToByte( source, offset );
+			this._offset += sizeof( byte );
+			return result;
 		}
 
 		public override sbyte ReadSByte()
 		{
-			if ( this._currentSourceRemains >= sizeof( sbyte ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToSByte( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( sbyte );
-				this._currentSourceRemains -= sizeof( sbyte );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( sbyte ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( sbyte ) )
 			{
 				this.ThrowEofException( sizeof( sbyte ) );
 			}
 
-			return BigEndianBinary.ToSByte( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToSByte( source, offset );
+			this._offset += sizeof( sbyte );
+			return result;
 		}
 
 		public override short ReadInt16()
 		{
-			if ( this._currentSourceRemains >= sizeof( short ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToInt16( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( short );
-				this._currentSourceRemains -= sizeof( short );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( short ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( short ) )
 			{
 				this.ThrowEofException( sizeof( short ) );
 			}
 
-			return BigEndianBinary.ToInt16( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToInt16( source, offset );
+			this._offset += sizeof( short );
+			return result;
 		}
 
 		public override ushort ReadUInt16()
@@ -122,42 +104,30 @@ namespace MsgPack
 
 		public override int TryReadUInt16()
 		{
-			if ( this._currentSourceRemains >= sizeof( ushort ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToUInt16( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( ushort );
-				this._currentSourceRemains -= sizeof( ushort );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( ushort ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( ushort ) )
 			{
 				return -1;
 			}
 
-			return BigEndianBinary.ToUInt16( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToUInt16( source, offset );
+			this._offset += sizeof( ushort );
+			return result;
 		}
 
 		public override int ReadInt32()
 		{
-			if ( this._currentSourceRemains >= sizeof( int ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToInt32( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( int );
-				this._currentSourceRemains -= sizeof( int );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( int ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( int ) )
 			{
 				this.ThrowEofException( sizeof( int ) );
 			}
 
-			return BigEndianBinary.ToInt32( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToInt32( source, offset );
+			this._offset += sizeof( int );
+			return result;
 		}
 
 		public override uint ReadUInt32()
@@ -173,102 +143,72 @@ namespace MsgPack
 
 		public override long TryReadUInt32()
 		{
-			if ( this._currentSourceRemains >= sizeof( uint ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToUInt32( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( uint );
-				this._currentSourceRemains -= sizeof( uint );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( uint ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( uint ) )
 			{
 				return -1;
 			}
 
-			return BigEndianBinary.ToUInt32( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToUInt32( source, offset );
+			this._offset += sizeof( uint );
+			return result;
 		}
 
 		public override long ReadInt64()
 		{
-			if ( this._currentSourceRemains >= sizeof( long ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToInt64( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( long );
-				this._currentSourceRemains -= sizeof( long );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( long ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( long ) )
 			{
 				this.ThrowEofException( sizeof( long ) );
 			}
 
-			return BigEndianBinary.ToInt64( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToInt64( source, offset );
+			this._offset += sizeof( long );
+			return result;
 		}
 
 		public override ulong ReadUInt64()
 		{
-			if ( this._currentSourceRemains >= sizeof( ulong ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToUInt64( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( ulong );
-				this._currentSourceRemains -= sizeof( ulong );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( ulong ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( ulong ) )
 			{
 				this.ThrowEofException( sizeof( ulong ) );
 			}
 
-			return BigEndianBinary.ToUInt64( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToUInt64( source, offset );
+			this._offset += sizeof( ulong );
+			return result;
 		}
 
 		public override float ReadSingle()
 		{
-			if ( this._currentSourceRemains >= sizeof( float ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToSingle( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( float );
-				this._currentSourceRemains -= sizeof( float );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( float ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( float ) )
 			{
 				this.ThrowEofException( sizeof( float ) );
 			}
 
-			return BigEndianBinary.ToSingle( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToSingle( source, offset );
+			this._offset += sizeof( float );
+			return result;
 		}
 
 		public override double ReadDouble()
 		{
-			if ( this._currentSourceRemains >= sizeof( double ) )
-			{
-				// fast path
-				var result = BigEndianBinary.ToDouble( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( double );
-				this._currentSourceRemains -= sizeof( double );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( double ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( double ) )
 			{
 				this.ThrowEofException( sizeof( double ) );
 			}
 
-			return BigEndianBinary.ToDouble( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.ToDouble( source, offset );
+			this._offset += sizeof( double );
+			return result;
 		}
 
 #if FEATURE_TAP

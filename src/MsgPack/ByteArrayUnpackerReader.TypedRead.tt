@@ -120,17 +120,9 @@ foreach ( var type in scalarTypes )
 private void WriteByteArrayReaderReadBody( string type, string primitiveType, bool isStrict )
 {
 #>
-			if ( this._currentSourceRemains >= sizeof( <#= primitiveType #> ) )
-			{
-				// fast path
-				var result = BigEndianBinary.To<#= type #>( this._currentSource, this._currentSourceOffset );
-				this._currentSourceOffset += sizeof( <#= primitiveType #> );
-				this._currentSourceRemains -= sizeof( <#= primitiveType #> );
-				return result;
-			}
-
-			// slow path
-			if ( !this.TryReadSlow( this._scalarBuffer, sizeof( <#= primitiveType #> ) ) )
+			var source = this._source;
+			var offset = this._offset;
+			if ( source.Length - offset < sizeof( <#= primitiveType #> ) )
 			{
 <#+
 	if ( isStrict )
@@ -148,7 +140,9 @@ private void WriteByteArrayReaderReadBody( string type, string primitiveType, bo
 #>
 			}
 
-			return BigEndianBinary.To<#= type #>( this._scalarBuffer, 0 );
+			var result = BigEndianBinary.To<#= type #>( source, offset );
+			this._offset += sizeof( <#= primitiveType #> );
+			return result;
 <#+
 } // WriteByteArrayReaderReadBody
 #>

@@ -28,29 +28,14 @@ namespace MsgPack
 	/// </summary>
 	internal abstract partial class DefaultByteArrayUnpacker : ByteArrayUnpacker
 	{
-		public override long BytesUsed
+		public override int Offset
 		{
-			get { return this.Core.Reader.Offset; }
+			get { return unchecked( ( int )this.Core.Reader.Offset ); }
 		}
 
-		public override int CurrentSourceIndex
+		protected DefaultByteArrayUnpacker( byte[] source, int startOffset )
 		{
-			get { return this.Core.Reader.CurrentSourceIndex; }
-		}
-
-		public override int CurrentSourceOffset
-		{
-			get { return this.Core.Reader.CurrentSourceOffset; }
-		}
-
-		protected DefaultByteArrayUnpacker( ArraySegment<byte> source )
-		{
-			this.Core = new MessagePackUnpacker<ByteArrayUnpackerReader>( new ByteArrayUnpackerReader( source ) );
-		}
-
-		protected DefaultByteArrayUnpacker( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
-		{
-			this.Core = new MessagePackUnpacker<ByteArrayUnpackerReader>( new ByteArrayUnpackerReader( sources, startIndex, startOffset ) );
+			this.Core = new MessagePackUnpacker<ByteArrayUnpackerReader>( new ByteArrayUnpackerReader( source, startOffset ) );
 		}
 	}
 }

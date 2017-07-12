@@ -47,76 +47,18 @@ namespace MsgPack
 
 		protected sealed override Unpacker CreateUnpacker( MemoryStream stream )
 		{
-			return this.CreateUnpacker( stream.ToArray() );
+			return this.CreateUnpacker( stream.ToArray(), 0 );
 		}
 
-		protected ByteArrayUnpacker CreateUnpacker( byte[] source )
-		{
-			return this.CreateUnpacker( new ArraySegment<byte>( source ) );
-		}
+		protected abstract ByteArrayUnpacker CreateUnpacker( byte[] source, int offset );
 
-		protected abstract ByteArrayUnpacker CreateUnpacker( ArraySegment<byte> source );
-
-		protected abstract ByteArrayUnpacker CreateUnpacker( IList<ArraySegment<byte>> sources );
-
-		private static ArraySegment<byte> PrependAppendExtra( byte[] data )
+		private static byte[] PrependAppendExtra( byte[] data )
 		{
 			var buffer = new byte[ data.Length + 2 ];
 			data.CopyTo( buffer, 1 );
 			buffer[ 0 ] = 0xC1;
 			buffer[ buffer.Length - 1 ] = 0xC1;
-			return new ArraySegment<byte>( buffer, 1, data.Length + 1 );
-		}
-
-		private static ArraySegment<byte> Limit( byte[] data )
-		{
-			return new ArraySegment<byte>( data, 0, data.Length - 1 );
-		}
-
-		private static IList<ArraySegment<byte>> Split( byte[] data )
-		{
-			switch ( data.Length )
-			{
-				case 0:
-				case 1:
-				{
-					Assert.Fail( "Invalid test. data.Length must be greator than 1." );
-					return null;
-				}
-				case 2:
-				{
-					return
-						new[]
-						{
-							new ArraySegment<byte>( data, 0, 1 ),
-							new ArraySegment<byte>( data, 1, 1 ),
-							new ArraySegment<byte>( new byte[] { 0xC1 }, 0, 1 )
-						};
-				}
-				case 3:
-				{
-					return
-						new[]
-						{
-							new ArraySegment<byte>( data, 0, 1 ),
-							new ArraySegment<byte>( data, 1, 1 ),
-							new ArraySegment<byte>( data, 2, 1 ),
-							new ArraySegment<byte>( new byte[] { 0xC1 }, 0, 1 )
-						};
-				}
-				default:
-				{
-					return
-						new[]
-						{
-							new ArraySegment<byte>( data, 0, 1 ),
-							new ArraySegment<byte>( data, 1, 1 ),
-							new ArraySegment<byte>( data, 2, data.Length - 3 ),
-							new ArraySegment<byte>( data, data.Length - 1, 1 ),
-							new ArraySegment<byte>( new byte[] { 0xC1 }, 0, 1 )
-						};
-				}
-			}
+			return buffer;
 		}
 	}
 }

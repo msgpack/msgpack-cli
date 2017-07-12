@@ -274,103 +274,10 @@ namespace MsgPack
 		/// <summary>
 		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
 		/// </summary>
-		/// <param name="array">The source byte array.</param>
-		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
-		public static ByteArrayUnpacker Create( byte[] array )
-		{
-			return Create( array, null );
-		}
-
-		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
-		/// </summary>
-		/// <param name="array">The source byte array.</param>
-		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
-		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="offset"/> is negative.
-		///	</exception>
-		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
-		public static ByteArrayUnpacker Create( byte[] array, int offset )
-		{
-			return Create( array, offset, null );
-		}
-
-		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
-		/// </summary>
-		/// <param name="array">The source byte array.</param>
-		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
-		/// <param name="count">The effective count of the <paramref name="array"/>.</param>
-		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="offset"/> is negative.
-		///		Or <paramref name="count"/> is negative.
-		///	</exception>
-		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
-		public static ByteArrayUnpacker Create( byte[] array, int offset, int count )
-		{
-			return Create( array, offset, count, null );
-		}
-
-		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
-		/// </summary>
-		/// <param name="array">The source byte array.</param>
-		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
-		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
-		public static ByteArrayUnpacker Create( byte[] array, UnpackerOptions unpackerOptions )
-		{
-			return Create( new ArraySegment<byte>( array ), unpackerOptions );
-		}
-
-		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
-		/// </summary>
-		/// <param name="array">The source byte array.</param>
-		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
-		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
-		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="offset"/> is negative.
-		///	</exception>
-		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
-		public static ByteArrayUnpacker Create( byte[] array, int offset, UnpackerOptions unpackerOptions )
-		{
-			return Create( new ArraySegment<byte>( array, offset, array == null ? 0 : ( array.Length - offset ) ), unpackerOptions );
-		}
-
-		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
-		/// </summary>
-		/// <param name="array">The source byte array.</param>
-		/// <param name="offset">The effective start offset of the <paramref name="array"/>.</param>
-		/// <param name="count">The effective count of the <paramref name="array"/>.</param>
-		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
-		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="array"/> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="offset"/> is negative.
-		///		Or <paramref name="count"/> is negative.
-		///	</exception>
-		/// <exception cref="ArgumentException">The array length of <paramref name="array"/> is too small.</exception>
-		public static ByteArrayUnpacker Create( byte[] array, int offset, int count, UnpackerOptions unpackerOptions )
-		{
-			return Create( new ArraySegment<byte>( array, offset, count ), unpackerOptions );
-		}
-
-		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
-		/// </summary>
 		/// <param name="source">The source byte array.</param>
 		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
-		public static ByteArrayUnpacker Create( ArraySegment<byte> source )
+		public static ByteArrayUnpacker Create( byte[] source )
 		{
 			return Create( source, null );
 		}
@@ -379,78 +286,51 @@ namespace MsgPack
 		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
 		/// </summary>
 		/// <param name="source">The source byte array.</param>
-		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <param name="startOffset">The effective start offset of the <paramref name="source"/>.</param>
 		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentException"><paramref name="source"/> does not contain an array.</exception>
-		public static ByteArrayUnpacker Create( ArraySegment<byte> source, UnpackerOptions unpackerOptions )
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="startOffset"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">The array length of <paramref name="source"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] source, int startOffset )
 		{
-			if ( unpackerOptions == null || unpackerOptions.ValidationLevel == UnpackerValidationLevel.Collection )
-			{
-				return new CollectionValidatingByteArrayUnpacker( source );
-			}
-			else
-			{
-				return new FastByteArrayUnpacker( source );
-			}
+			return Create( source, startOffset, null );
 		}
 
 		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array list.
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
 		/// </summary>
-		/// <param name="sources">The list of source byte array.</param>
-		/// <param name="startOffset">
-		///		The start offset of <see cref="ArraySegment{T}"/> of <paramref name="sources"/> at <paramref name="startIndex"/>.
-		///		Note that this is not relative, but absolute offset to get subarray from the <see cref="ArraySegment{T}"/>.
-		///	</param>
-		/// <param name="startIndex">The start index of <paramref name="sources"/>.</param>
+		/// <param name="source">The source byte array.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
 		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///		<paramref name="startOffset"/> is negative.
-		///		Or <paramref name="startIndex"/> is negative.
-		///	</exception>
-		/// <exception cref="ArgumentException">
-		///		The size of <paramref name="sources"/> is too small to specified <paramref name="startIndex"/>.
-		///		Or <paramref name="sources"/> contains any <see cref="ArraySegment{T}"/> which does not contain an array.
-		///		Or <paramref name="startOffset"/> is less than the <see cref="ArraySegment{T}.Offset"/>.
-		///		Or <paramref name="startOffset"/> is too large for the <see cref="ArraySegment{T}"/>.
-		///	</exception>
-		public static ByteArrayUnpacker Create( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+		public static ByteArrayUnpacker Create( byte[] source, UnpackerOptions unpackerOptions )
 		{
-			return Create( sources, startIndex, startOffset, null );
+			return Create( source, 0, unpackerOptions );
 		}
 
 		/// <summary>
-		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array list.
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
 		/// </summary>
-		/// <param name="sources">The list of source byte array.</param>
-		/// <param name="startOffset">
-		///		The start offset of <see cref="ArraySegment{T}"/> of <paramref name="sources"/> at <paramref name="startIndex"/>.
-		///		Note that this is not relative, but absolute offset to get subarray from the <see cref="ArraySegment{T}"/>.
-		///	</param>
-		/// <param name="startIndex">The start index of <paramref name="sources"/>.</param>
+		/// <param name="source">The source byte array.</param>
+		/// <param name="startOffset">The effective start offset of the <paramref name="source"/>.</param>
 		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
 		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="sources"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">
 		///		<paramref name="startOffset"/> is negative.
-		///		Or <paramref name="startIndex"/> is negative.
 		///	</exception>
-		/// <exception cref="ArgumentException">
-		///		The size of <paramref name="sources"/> is too small to specified <paramref name="startIndex"/>.
-		///		Or <paramref name="sources"/> contains any <see cref="ArraySegment{T}"/> which does not contain an array.
-		///		Or <paramref name="startOffset"/> is less than the <see cref="ArraySegment{T}.Offset"/>.
-		///		Or <paramref name="startOffset"/> is too large for the <see cref="ArraySegment{T}"/>.
-		///	</exception>
-		public static ByteArrayUnpacker Create( IList<ArraySegment<byte>> sources, int startIndex, int startOffset, UnpackerOptions unpackerOptions )
+		/// <exception cref="ArgumentException">The array length of <paramref name="source"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] source, int startOffset, UnpackerOptions unpackerOptions )
 		{
 			if ( unpackerOptions == null || unpackerOptions.ValidationLevel == UnpackerValidationLevel.Collection )
 			{
-				return new CollectionValidatingByteArrayUnpacker( sources, startIndex, startOffset );
+				return new CollectionValidatingByteArrayUnpacker( source, startOffset );
 			}
 			else
 			{
-				return new FastByteArrayUnpacker( sources, startIndex, startOffset );
+				return new FastByteArrayUnpacker( source, startOffset );
 			}
 		}
 

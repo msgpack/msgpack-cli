@@ -41,14 +41,9 @@ namespace MsgPack
 			get { return true; }
 		}
 
-		protected override ByteArrayUnpacker CreateUnpacker( ArraySegment<byte> source )
+		protected override ByteArrayUnpacker CreateUnpacker( byte[] source, int offset )
 		{
-			return Unpacker.Create( source, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } );
-		}
-
-		protected override ByteArrayUnpacker CreateUnpacker( IList<ArraySegment<byte>> sources )
-		{
-			return Unpacker.Create( sources, 0, 0, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } );
+			return Unpacker.Create( source, offset, new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.Collection } );
 		}
 	}
 }

@@ -108,8 +108,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Extra()
 		{
 			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
@@ -117,68 +120,11 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
-		if ( length > 1 )
-		{
-#>
-
-		[Test]
-		public <#= Test( isAsync ) #>_<#= __testCase.Item1 #>_Limited()
-		{
-			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
-			{
-<#
-			if ( !isAsync )
-			{
-#>
-				Assert.Throws<InvalidMessagePackStreamException>(
-					() => <#= ReadAwait( isAsync ) #> 
-				);
-<#
-			}
-			else
-			{
-#>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
-					async () => <#= ReadAwait( isAsync ) #> 
-				);
-<#
-			}
-#>
-
-				// Only header is read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-			}
-		}
-
-<#
-			if ( length > 2 )
-			{
-#>
-		[Test]
-		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
-			{
-				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
-#pragma warning disable 612,618
-				var result = unpacker.Data;
-#pragma warning restore 612,618
-				Assert.IsTrue( result.HasValue );
-				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
-
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-			}
-		}
-<#
-			} // if length > 2
-		} // if length > 1
-
 		foreach( var isNullable in new [] { false, true } )
 		{
 #>
@@ -187,8 +133,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Extra()
 		{
 			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
 				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
 <#
 			if( !isAsync )
@@ -208,80 +156,11 @@ foreach( var isAsync in new [] { false, true } )
 #>
 				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset -1, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
-			if ( length > 1 )
-			{
-#>
-
-		[Test]
-		public <#= Test( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Limited()
-		{
-			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
-			{
-<#
-				if( !isAsync )
-				{
-#>
-				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
-				Assert.Throws<InvalidMessagePackStreamException>(
-					() => <#= Read( isNullable, __testCase.Item4 ) #>
-				);
-<#
-				}
-				else
-				{
-#>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
-					async () => <#= ReadAwait( isNullable, __testCase.Item4 ) #>
-				);
-<#
-			}
-#>
-
-				// Only header is read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-			}
-		}
-
-<#
-				if ( length > 2 )
-				{
-#>
-		[Test]
-		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
-			{
-				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
-<#
-					if( !isAsync )
-					{
-#>
-				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
-<#
-					}
-					else
-					{
-#>
-				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
-				Assert.IsTrue( ret.Success );
-				result = ret.Value;
-<#
-					}
-#>
-				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
-
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-			}
-		}
-<#
-				} // if length > 2
-			} // if length > 1
 		} // foreach( var isNullable
 	} // foreach( var __testCase
 
@@ -293,8 +172,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Extra()
 		{
 			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
@@ -302,7 +184,8 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.IsTrue( result.HasValue );
 				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
@@ -314,8 +197,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Extra()
 		{
 			var data = <#= __testCase.Item3 #>;
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
 <#
 			if( !isAsync )
@@ -335,7 +221,8 @@ foreach( var isAsync in new [] { false, true } )
 #>
 				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
@@ -350,8 +237,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Extra()
 		{
 			var data = <#= __testCase.Item2 #>;
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
 				var result = unpacker.Data;
@@ -359,54 +249,8 @@ foreach( var isAsync in new [] { false, true } )
 				Assert.IsTrue( result.HasValue );
 				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-			}
-		}
-
-		[Test]
-		public <#= Test( isAsync ) #>_<#= __testCase.Item1 #>_Limited()
-		{
-			var data = <#= __testCase.Item2 #>;
-			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
-			{
-<#
-	if ( !isAsync )
-	{
-#>
-				Assert.Throws<InvalidMessagePackStreamException>(
-					() => <#= ReadAwait( isAsync ) #> 
-				);
-<#
-	}
-	else
-	{
-#>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
-					async () => <#= ReadAwait( isAsync ) #> 
-				);
-<#
-	}
-#>
-
-				// Only header is read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			var data = <#= __testCase.Item2 #>;
-			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
-			{
-				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
-#pragma warning disable 612,618
-				var result = unpacker.Data;
-#pragma warning restore 612,618
-				Assert.IsTrue( result.HasValue );
-				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
-
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
@@ -418,8 +262,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>_Extra()
 		{
 			var data = <#= __testCase.Item2 #>;
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
 <#
 			if( !isAsync )
@@ -439,67 +286,8 @@ foreach( var isAsync in new [] { false, true } )
 #>
 				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
-			}
-		}
-
-		[Test]
-		public <#= Test( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>_Limited()
-		{
-			var data = <#= __testCase.Item2 #>;
-			using( var unpacker = this.CreateUnpacker( Limit( data ) ) )
-			{
-<#
-			if( !isAsync )
-			{
-#>
-				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
-				Assert.Throws<InvalidMessagePackStreamException>(
-					() => <#= Read( isNullable, __testCase.Item3 ) #>
-				);
-<#
-			}
-			else
-			{
-#>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>(
-					async () => <#= ReadAwait( isNullable, __testCase.Item3 ) #>
-				);
-<#
-			}
-#>
-
-				// Only header is read.
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( 1 ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			var data = <#= __testCase.Item2 #>;
-			using( var unpacker = this.CreateUnpacker( Split( data ) ) )
-			{
-				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
-<#
-			if( !isAsync )
-			{
-#>
-				Assert.IsTrue( <#= Read( isNullable, __testCase.Item3 ) #> );
-<#
-			}
-			else
-			{
-#>
-				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
-				Assert.IsTrue( ret.Success );
-				result = ret.Value;
-<#
-			}
-#>
-				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
-
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 			}
 		}
 <#
@@ -521,8 +309,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, true, __scalarType ) #>_Extra()
 		{
 			var data = new byte[] { 0xC0 };
-			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ) ) )
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
 			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
 				<#= __scalarType.Name #>? result;
 <#
 			if( !isAsync )
@@ -542,7 +333,8 @@ foreach( var isAsync in new [] { false, true } )
 #>
 				Assert.That( result, Is.Null );
 
-				Assert.That( unpacker.BytesUsed, Is.EqualTo( data.Length ) );
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
 			}
 		}
 <#

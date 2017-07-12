@@ -103,11 +103,8 @@ namespace MsgPack
 
 	internal sealed class FastByteArrayUnpacker : DefaultByteArrayUnpacker
 	{
-		public FastByteArrayUnpacker( ArraySegment<byte> source )
-			: base( source ) { }
-
-		public FastByteArrayUnpacker( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
-			: base( sources, startIndex, startOffset ) { }
+		public FastByteArrayUnpacker( byte[] source, int startOffset )
+			: base( source, startOffset ) { }
 
 		protected override Unpacker ReadSubtreeCore()
 		{
@@ -120,11 +117,8 @@ namespace MsgPack
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;
 
-		public CollectionValidatingByteArrayUnpacker( ArraySegment<byte> source )
-			: base( source ) { }
-
-		public CollectionValidatingByteArrayUnpacker( IList<ArraySegment<byte>> sources, int startIndex, int startOffset )
-			: base( sources, startIndex, startOffset ) { }
+		public CollectionValidatingByteArrayUnpacker( byte[] source, int startOffset )
+			: base( source, startOffset ) { }
 
 		internal override Unpacker InternalReadSubtree()
 		{

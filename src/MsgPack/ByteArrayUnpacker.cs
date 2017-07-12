@@ -28,28 +28,12 @@ namespace MsgPack
 	public abstract class ByteArrayUnpacker : Unpacker
 	{
 		/// <summary>
-		///		Gets the bytes used by this instance.
+		///		Gets the current offset of the source.
 		/// </summary>
 		/// <value>
-		///		The bytes used by this instance. The initial state is <c>0</c>.
+		///		The current offset of the source.
 		/// </value>
-		public abstract long BytesUsed { get; }
-
-		/// <summary>
-		///		Gets the current index of sources.
-		/// </summary>
-		/// <value>
-		///		The current index of sources.
-		/// </value>
-		public abstract int CurrentSourceIndex { get; }
-
-		/// <summary>
-		///		Gets the current offset of the current source.
-		/// </summary>
-		/// <value>
-		///		The current offset of the current source.
-		/// </value>
-		public abstract int CurrentSourceOffset { get; }
+		public abstract int Offset { get; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="ByteArrayUnpacker"/> class.

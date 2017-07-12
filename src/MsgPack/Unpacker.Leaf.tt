@@ -64,8 +64,7 @@ foreach ( var spec in
 			ParametersList =
 				new []
 				{
-					new Dictionary<string, string> { { "source", "ArraySegment<byte>" } },
-					new Dictionary<string, string> { { "sources", "IList<ArraySegment<byte>>" }, { "startIndex", "int" }, { "startOffset", "int" } }
+					new Dictionary<string, string> { { "source", "byte[]" }, { "startOffset", "int" } }
 				}
 		}
 	}
