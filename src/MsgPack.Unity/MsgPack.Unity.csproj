@@ -254,9 +254,6 @@
     <Compile Include="..\MsgPack\MPContract.cs">
       <Link>MPContract.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\MultipleArrayBufferAllocator.cs">
-      <Link>MultipleArrayBufferAllocator.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Packer.cs">
       <Link>Packer.cs</Link>
     </Compile>

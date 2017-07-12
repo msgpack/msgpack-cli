@@ -84,83 +84,37 @@ namespace MsgPack
 				string bits;
 				this.WriteToBits( type, "value", out bits );
 #>
-			var currentBuffer = this._currentBuffer;
-			var currentBufferOffset = this._currentBufferOffset;
-			var currentBufferRemains = this._currentBufferRemains;
-			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
+			var buffer = this._buffer;
+			var offset = this._offset;
+			var remains = buffer.Length - offset;
+			if ( remains < sizeof( <#= type #> ) && !this._allocator.TryAllocate( buffer, sizeof( <#= type #> ), out buffer ) )
 			{
 				this.ThrowEofException( sizeof( <#= type #> ) );
 			}
 
-			currentBuffer[ currentBufferOffset ] = header;
-			currentBufferOffset += 1;
-			currentBufferRemains -= 1;
+			buffer[ offset ] = header;
+			offset++;
 
-			if ( currentBufferRemains >= sizeof( <#= type #> ) )
-			{
-				// Fast path
+			// Fast path
 <#
 				var bytesLength = lengthes[ type ];
 				for ( var i = 0; i < bytesLength; i++ )
 				{
 #>
-				currentBuffer[ currentBufferOffset<#= i == 0 ? String.Empty : ( " + " + i.ToString( CultureInfo.InvariantCulture ) ) #> ] = unchecked( ( byte )( <#= bits #> >> ( ( sizeof( <#= type #> ) - <#= ( i + 1 ).ToString( CultureInfo.InvariantCulture ) #> ) * 8 ) & 0xFF ) );
+			buffer[ offset<#= i == 0 ? String.Empty : ( " + " + i.ToString( CultureInfo.InvariantCulture ) ) #> ] = unchecked( ( byte )( <#= bits #> >> ( ( sizeof( <#= type #> ) - <#= ( i + 1 ).ToString( CultureInfo.InvariantCulture ) #> ) * 8 ) & 0xFF ) );
 <#
 				}
 #>
-				currentBufferOffset += sizeof( <#= type #> );
-				currentBufferRemains -= sizeof( <#= type #> );
-			}
-			else
-			{
-				this.WriteBytesSlow( <#= bits #>, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains );
-			}
 
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferRemains = currentBufferRemains;
+			this._buffer = buffer;
+			this._offset = offset + sizeof( <#= type #> );
 <#
 			} // if isAsync 
 #>
 		}
 
-<#
-			if ( !isAsync )
-			{
-#>
-		private void WriteBytesSlow( <#= this.ToBitsType( type ) #> value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferRemains )
-		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
-			{
-				this.ThrowEofException( sizeof( <#= type #> ) );
-			}
-
-			var bufferRemaining = currentBufferRemains;
-
-			for ( var totalWritten = 0; totalWritten < sizeof( <#= type #> ); )
-			{
-				var currentWritten = 0;
-				for ( ; currentWritten < bufferRemaining && totalWritten < sizeof( <#= type #> ); currentWritten++, totalWritten++ )
-				{
-					currentBuffer[ currentBufferOffset + currentWritten ] = unchecked( ( byte )( value >> ( ( sizeof( <#= type #> ) - totalWritten - 1 ) * 8 ) & 0xFF ) );
-				}
-
-				currentBufferOffset += currentWritten;
-				currentBufferRemains -= currentWritten;
-			
-				if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
-				{
-					this.ThrowEofException( sizeof( <#= type #> ) );
-				}
-
-				bufferRemaining = currentBufferRemains;
-			}
-		}
 
 <#
-			} // if !isAsync
 		} // foreach type
 #>
 		public override <#= isAsync ? "Task" : "void" #> WriteBytes<#= isAsync ? "Async" : String.Empty #>( string value, bool allowStr8<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
@@ -183,17 +137,18 @@ namespace MsgPack
 				return;
 			}
 
-			if ( encodedLength <= this._currentBufferRemains )
+			var buffer  = this._buffer;
+			var offset = this._offset;
+			var remains = buffer.Length - offset;
+
+			if ( remains < encodedLength && !this._allocator.TryAllocate( buffer, encodedLength, out buffer ) )
 			{
-				// Fast path
-				Encoding.UTF8.GetBytes( value, 0, value.Length, this._currentBuffer, this._currentBufferOffset );
-				this._currentBufferOffset += encodedLength;
-				this._currentBufferRemains -= encodedLength;
+				this.ThrowEofException( encodedLength );
 			}
-			else
-			{
-				this.WriteStringBody( value, encodedLength );
-			}
+
+			Encoding.UTF8.GetBytes( value, 0, value.Length, buffer, offset );
+			this._buffer = buffer;
+			this._offset += encodedLength;
 <#
 			} // if isAsync
 #>
@@ -230,81 +185,6 @@ namespace MsgPack
 			}
 
 			this.WriteBytes( MessagePackCode.Str32, unchecked(( uint )bytesLength) );
-		}
-
-#if !FEATURE_POINTER_CONVERSION
-		private void WriteStringBody( string value, int encodedLength )
-		{
-			var chars = BufferManager.NewCharBuffer( value.Length );
-			int offset = 0;
-
-			while ( offset < value.Length )
-			{
-				int copying = Math.Min( value.Length - offset, chars.Length );
-				value.CopyTo( offset, chars, 0, copying );
-				this.WriteStringBody( chars, copying, encodedLength );
-				offset += copying;
-			}
-		}
-
-		private void WriteStringBody( char[] value, int remainingCharsLength, int encodedLength )
-		{
-			var charsOffset = 0;
-#else
-		private unsafe void WriteStringBody( string value, int encodedLength )
-		{
-			fixed ( char* pValue = value )
-#endif // !FEATURE_POINTER_CONVERSION
-			{
-				var currentBuffer = this._currentBuffer;
-				var currentBufferOffset = this._currentBufferOffset;
-				var currentBufferRemains = this._currentBufferRemains;
-				var currentBufferIndex = this._currentBufferIndex;
-				var encoder = Encoding.UTF8.GetEncoder();
-#if FEATURE_POINTER_CONVERSION
-				var pChars = pValue;
-				var remainingCharsLength = value.Length;
-#endif // FEATURE_POINTER_CONVERSION
-				var remainingBytesLength = encodedLength; 
-				var isCompleted = false;
-				do
-				{
-					if ( !this.ShiftBufferIfNeeded( remainingBytesLength, MaximumUtf8Length, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
-					{
-						this.ThrowEofExceptionForString( remainingBytesLength );
-					}
-
-					int charsUsed, bytesUsed;
-#if FEATURE_POINTER_CONVERSION
-					fixed ( byte* pBuffer = currentBuffer )
-#endif // FEATURE_POINTER_CONVERSION
-					{
-#if FEATURE_POINTER_CONVERSION
-						isCompleted = encoder.EncodeString( pChars, remainingCharsLength, pBuffer + currentBufferOffset, currentBufferRemains, out charsUsed, out bytesUsed );
-#else
-						isCompleted = encoder.EncodeString( value, charsOffset, remainingCharsLength, currentBuffer, currentBufferOffset, currentBufferRemains, out charsUsed, out bytesUsed );
-#endif // FEATURE_POINTER_CONVERSION
-					}
-
-#if FEATURE_POINTER_CONVERSION
-					pChars += charsUsed;
-#else
-					charsOffset += charsUsed;
-#endif // FEATURE_POINTER_CONVERSION
-					remainingCharsLength -= charsUsed;
-					remainingBytesLength -= bytesUsed;
-					currentBufferOffset += bytesUsed;
-					currentBufferRemains -= bytesUsed;
-				} while ( remainingCharsLength > 0 );
-#if DEBUG
-				Contract.Assert( isCompleted, "Encoding is not completed!" );
-#endif // DEBUG
-
-				this._currentBufferIndex = currentBufferIndex;
-				this._currentBuffer = currentBuffer;
-				this._currentBufferOffset = currentBufferOffset;
-				this._currentBufferRemains = currentBufferRemains;
-			}
 		}
 	}
 }

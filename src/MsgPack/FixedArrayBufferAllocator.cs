@@ -32,9 +32,9 @@ namespace MsgPack
 
 		private FixedArrayBufferAllocator() { }
 
-		public override bool TryAllocate( IList<ArraySegment<byte>> buffers, int sizeHint, int minimumSize, ref int newCurrentBufferIndex, out ArraySegment<byte> newCurrentBuffer )
+		public override bool TryAllocate( byte[] oldBuffer, int requestSize, out byte[] newBuffer )
 		{
-			newCurrentBuffer = default( ArraySegment<byte> );
+			newBuffer = null;
 			return false;
 		}
 	}

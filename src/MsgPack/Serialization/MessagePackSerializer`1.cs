@@ -868,8 +868,39 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public byte[] PackSingleObject( T objectTree )
 		{
+			var segment = this.PackSingleObjectAsBytes( objectTree );
+
+			if ( segment.Count == segment.Array.Length )
+			{
+				return segment.Array;
+			}
+			else
+			{
+				var result = new byte[ segment.Count ];
+				Buffer.BlockCopy( segment.Array, segment.Offset, result, 0, segment.Count );
+				return result;
+			}
+		}
+
+		/// <summary>
+		///		Serializes specified object to the <see cref="ArraySegment{T}"/> of <see cref="Byte"/>.
+		/// </summary>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <remarks>
+		///		This method is more efficient than <see cref="PackSingleObject(T)"/> because of less copying.
+		/// </remarks>
+		/// <seealso cref="P:Capabilities"/>
+		public ArraySegment<byte> PackSingleObjectAsBytes( T objectTree )
+		{
 			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
-			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ), this.PackerCompatibilityOptions );
+			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ), /* allowExpansion */true, this.PackerCompatibilityOptions );
 
 			this.PackTo( packer, objectTree );
 			return packer.GetResultBytes();
@@ -915,13 +946,46 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task<byte[]> PackSingleObjectAsync( T objectTree, CancellationToken cancellationToken )
 		{
+			var segment = await this.PackSingleObjectAsBytesAsync( objectTree, cancellationToken ).ConfigureAwait( false );
+			if ( segment.Count == segment.Array.Length )
+			{
+				return segment.Array;
+			}
+			else
+			{
+				var result = new byte[ segment.Count ];
+				Buffer.BlockCopy( segment.Array, segment.Offset, result, 0, segment.Count );
+				return result;
+			}
+		}
+
+		/// <summary>
+		///		Serializes specified object to the <see cref="ArraySegment{T}"/> of <see cref="Byte"/> asynchronously.
+		/// </summary>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains an array of <see cref="Byte"/> which stores serialized value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <remarks>
+		///		This method is more efficient than <see cref="PackSingleObject(T)"/> because of less copying.
+		/// </remarks>
+		/// <seealso cref="P:Capabilities"/>
+		public async Task<ArraySegment<byte>> PackSingleObjectAsBytesAsync( T objectTree, CancellationToken cancellationToken )
+		{
 			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
-			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ), this.PackerCompatibilityOptions );
+			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ),  /* allowExpansion */true, this.PackerCompatibilityOptions );
 
 			await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
 			return packer.GetResultBytes();
 		}
-
 #endif // FEATURE_TAP
 
 		/// <summary>

@@ -40,41 +40,28 @@ namespace MsgPack
 			get { return this._core; }
 		}
 
-		public override long BytesUsed
+		public override int BytesUsed
 		{
 			get { return this._core.Writer.BytesUsed; }
 		}
 
-		public override int InitialBufferIndex
+		public override int InitialBufferOffset
 		{
-			get { return this._core.Writer.InitialBufferIndex; }
+			get { return this._core.Writer.InitialOffset; }
 		}
 
-		public override int CurrentBufferIndex
-		{
-			get { return this._core.Writer.CurrentBufferIndex; }
-		}
+		public DefaultByteArrayPacker( byte[] buffer, ByteBufferAllocator allocator, PackerCompatibilityOptions compatibilityOptions )
+			: this( buffer, 0, allocator, compatibilityOptions ) { }
 
-		public override int CurrentBufferOffset
-		{
-			get { return this._core.Writer.CurrentBufferOffset; }
-		}
-
-		public DefaultByteArrayPacker( ArraySegment<byte> buffer, ByteBufferAllocator allocator, PackerCompatibilityOptions compatibilityOptions )
+		public DefaultByteArrayPacker( byte[] buffer, int startOffset, ByteBufferAllocator allocator, PackerCompatibilityOptions compatibilityOptions )
 			: base( compatibilityOptions )
 		{
-			this._core = new MessagePackPacker<ByteArrayPackerWriter>( new ByteArrayPackerWriter( buffer, allocator ), compatibilityOptions );
+			this._core = new MessagePackPacker<ByteArrayPackerWriter>( new ByteArrayPackerWriter( buffer, startOffset, allocator ), compatibilityOptions );
 		}
 
-		public DefaultByteArrayPacker( IList<ArraySegment<byte>> buffers, int startIndex, int startOffset, ByteBufferAllocator allocator, PackerCompatibilityOptions compatibilityOptions )
-			: base( compatibilityOptions )
+		public override byte[] GetFinalBuffer()
 		{
-			this._core = new MessagePackPacker<ByteArrayPackerWriter>( new ByteArrayPackerWriter( buffers, startIndex, startOffset, allocator ), compatibilityOptions );
-		}
-
-		public override IList<ArraySegment<byte>> GetFinalBuffers()
-		{
-			return this._core.Writer.GetBufferAsByteArray();
+			return this._core.Writer.Buffer;
 		}
 
 		protected override void WriteByte( byte value )

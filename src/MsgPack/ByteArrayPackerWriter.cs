@@ -43,211 +43,77 @@ namespace MsgPack
 	internal sealed partial class ByteArrayPackerWriter : PackerWriter
 	{
 		// TODO: Use Span<byte>;
-		private readonly IList<ArraySegment<byte>> _buffers;
+		private readonly int _initialOffset;
 
 		private readonly ByteBufferAllocator _allocator;
 
-		private readonly int _initialBufferIndex;
-		private int _currentBufferIndex;
-
 		// TODO: Use Span<byte>
-		private byte[] _currentBuffer;
-		private int _currentBufferOffset;
-		private int _currentBufferRemains;
+		private byte[] _buffer;
+		private int _offset;
 
-#if DEBUG
-
-		internal ArraySegment<byte> DebugBuffer
+		public byte[] Buffer
 		{
-			get { return this._buffers[ this._currentBufferIndex ]; }
+			get { return this._buffer; }
 		}
 
-		internal IList<ArraySegment<byte>> DebugBuffers
+		public int BytesUsed
 		{
-			get { return this.GetBufferAsByteArray(); }
+			get { return this._offset - this._initialOffset; }
 		}
 
-#endif // DEBUG
-
-		public long BytesUsed
+		public int InitialOffset
 		{
-			get
-			{
-				return
-					this._buffers.Skip( this._initialBufferIndex ).Take( this._currentBufferIndex - this._initialBufferIndex ).Sum( x => x.Count )
-					+ this._currentBufferOffset - this._buffers[ this._currentBufferIndex ].Offset;
-			}
-		}
-
-		public int InitialBufferIndex
-		{
-			get { return this._initialBufferIndex; }
-		}
-
-		public int CurrentBufferIndex
-		{
-			get { return this._currentBufferIndex; }
-		}
-
-		public int CurrentBufferOffset
-		{
-			get { return this._currentBufferOffset; }
+			get { return this._initialOffset; }
 		}
 
 		// TODO: Use Span<byte>
-		public ByteArrayPackerWriter( ArraySegment<byte> buffer, ByteBufferAllocator allocator )
+		public ByteArrayPackerWriter( byte[] buffer, int startOffset, ByteBufferAllocator allocator )
 		{
-			if ( buffer.Array == null || buffer.Count == 0 )
-			{
-				throw new ArgumentException( "Buffer must have non null, non-empty Array.", "buffer" );
-			}
-
-			this._buffers = new[] { buffer };
-			this._currentBufferIndex = 0;
-			this._currentBuffer = buffer.Array;
-			this._currentBufferOffset = buffer.Offset;
-			this._currentBufferRemains = buffer.Count;
-			this._allocator = allocator;
-		}
-
-		// TODO: Use Span<byte>
-		public ByteArrayPackerWriter( IList<ArraySegment<byte>> buffers, int startIndex, int startOffset, ByteBufferAllocator allocator )
-		{
-			if ( buffers == null )
-			{
-				throw new ArgumentNullException( "buffers" );
-			}
-
-			if ( startIndex < 0 )
-			{
-				throw new ArgumentOutOfRangeException( "The value cannot be negative.", "startIndex" );
-			}
-
+			this._buffer = buffer ?? Binary.Empty;
 			if ( startOffset < 0 )
 			{
-				throw new ArgumentOutOfRangeException( "The value cannot be negative.", "startOffset" );
+				throw new ArgumentOutOfRangeException( "startOffset" );
 			}
 
-			if ( buffers.Count == 0 )
+			if ( startOffset > this._buffer.Length )
 			{
-				throw new ArgumentException( "Buffers cannot be empty.", "sources" );
+				throw new ArgumentException( "The startOffset is too large or the length of buffer is too small." );
 			}
 
-			if ( buffers.Any( x => x.Array == null || x.Count == 0 ) )
-			{
-				throw new ArgumentException( "Buffers contains null or empty Array.", "sources" );
-			}
-
-			if ( buffers.Count <= startIndex )
-			{
-				throw new ArgumentException( "Buffers is too small." );
-			}
-
-			this._buffers = buffers;
-			this._initialBufferIndex = startIndex;
-			this._currentBufferIndex = startIndex;
-			var startBuffer = this._buffers[ startIndex ];
-			var skip = startOffset - startBuffer.Offset;
-			if ( skip < 0 )
-			{
-				throw new ArgumentException( "The value cannot be smaller than the array segment Offset.", "startOffset" );
-			}
-
-			if ( skip > startBuffer.Count )
-			{
-				throw new ArgumentException( "The offset cannot exceed the array segment Count.", "startOffset" );
-			}
-
-			this._currentBuffer = startBuffer.Array;
-			this._currentBufferOffset = startBuffer.Offset + skip;
-			this._currentBufferRemains = startBuffer.Count - skip;
+			this._initialOffset = startOffset;
+			this._offset = startOffset;
 			this._allocator = allocator;
-		}
-
-		public IList<ArraySegment<byte>> GetBufferAsByteArray()
-		{
-			return this._buffers;
-		}
-
-		private bool ShiftBufferIfNeeded( int sizeHint, int minimumSize, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferRemains, ref int currentBufferIndex )
-		{
-			// Check current buffer is empty and whether more buffer is required.
-			if ( currentBufferRemains < minimumSize && sizeHint > 0 )
-			{
-				// try shift to next buffer
-				currentBufferIndex++;
-				ArraySegment<byte> newBuffer;
-				if ( this._buffers.Count == currentBufferIndex )
-				{
-					if ( !this._allocator.TryAllocate( this._buffers, sizeHint, minimumSize, ref currentBufferIndex, out newBuffer ) )
-					{
-						return false;
-					}
-				}
-				else
-				{
-					newBuffer = this._buffers[ currentBufferIndex ];
-				}
-
-#warning TODO: IList<ArraySegment<byte>> の使い方を再考する必要あり。今だと抜かせない。
-				currentBuffer = newBuffer.Array;
-				currentBufferOffset = newBuffer.Offset;
-				currentBufferRemains = newBuffer.Count;
-			}
-
-			return true;
 		}
 
 		public override void WriteByte( byte value )
 		{
-			var currentBuffer = this._currentBuffer;
-			var currentBufferOffset = this._currentBufferOffset;
-			var currentBufferRemains = this._currentBufferRemains;
-			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
+			var buffer = this._buffer;
+			var offset = this._offset;
+			var remains = buffer.Length - offset;
+			if ( remains < 1 && !this._allocator.TryAllocate( buffer, 1, out buffer ) )
 			{
 				this.ThrowEofException( 1 );
 			}
 
-			currentBuffer[ currentBufferOffset ] = value;
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset + 1;
-			this._currentBufferRemains = currentBufferRemains - 1;
+			buffer[ offset ] = value;
+			this._buffer = buffer;
+			this._offset = offset + 1;
 		}
 
 		private void WriteBytes( byte[] value, int startIndex, int count )
 		{
-			var currentBuffer = this._currentBuffer;
-			var currentBufferOffset = this._currentBufferOffset;
-			var currentBufferRemains = this._currentBufferRemains;
-			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( count, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
+			var buffer = this._buffer;
+			var offset = this._offset;
+			var remains = buffer.Length - offset;
+			if ( remains < count && !this._allocator.TryAllocate( buffer, count, out buffer ) )
 			{
 				this.ThrowEofException( count );
 			}
 
-			var written = 0;
-			do
-			{
-				var remains = count - written;
-				var writes = Math.Min( currentBufferRemains, remains );
-				Buffer.BlockCopy( value, startIndex + written, currentBuffer, currentBufferOffset, writes );
+			System.Buffer.BlockCopy( value, startIndex, buffer, offset, count );
 
-				written += writes;
-				currentBufferOffset += writes;
-				currentBufferRemains -= writes;
-
-				if ( !this.ShiftBufferIfNeeded( remains, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
-				{
-					this.ThrowEofException( count );
-				}
-			} while ( written < count );
-
-			this._currentBufferIndex = currentBufferIndex;
-			this._currentBuffer = currentBuffer;
-			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferRemains = currentBufferRemains;
+			this._buffer = buffer;
+			this._offset += count;
 		}
 
 		public override void WriteBytes( byte[] value )
@@ -276,10 +142,9 @@ namespace MsgPack
 			throw new InvalidOperationException(
 				String.Format(
 					CultureInfo.CurrentCulture,
-					"Data buffer unexpectedly ends. Cannot write {0:#,0} bytes at offset {1:#,0}, buffer index {2}.",
+					"Data buffer unexpectedly ends. Cannot write {0:#,0} bytes at offset {1:#,0}.",
 					requiredSize,
-					this._currentBufferOffset,
-					this._currentBufferIndex
+					this._offset
 				)
 			);
 		}
@@ -289,10 +154,9 @@ namespace MsgPack
 			throw new InvalidOperationException(
 				String.Format(
 					CultureInfo.CurrentCulture,
-					"Data buffer unexpectedly ends. Cannot write {0:#,0} UTF-16 chars in UTF-8 encoding at offset {1:#,0}, buffer index {2}.",
+					"Data buffer unexpectedly ends. Cannot write {0:#,0} UTF-16 chars in UTF-8 encoding at offset {1:#,0}.",
 					requiredCharCount,
-					this._currentBufferOffset,
-					this._currentBufferIndex
+					this._offset
 				)
 			);
 		}

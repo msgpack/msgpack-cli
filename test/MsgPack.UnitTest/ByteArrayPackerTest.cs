@@ -19,8 +19,8 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -46,37 +46,22 @@ namespace MsgPack
 		protected override Packer CreatePacker( MemoryStream stream, PackerCompatibilityOptions compatibilityOptions )
 		{
 			Assert.That( stream.Position, Is.EqualTo( 0 ) );
-			return Packer.Create( new byte[ 64 * 1024 ], compatibilityOptions );
+			return Packer.Create( new byte[ 64 * 1024 ], true, compatibilityOptions );
 		}
 
-		private static ByteArrayPacker CreatePacker( ArraySegment<byte> buffer, bool allowsBufferExtension )
+		private static ByteArrayPacker CreatePacker( byte[] buffer, int startOffset, bool allowsBufferExtension )
 		{
-			return Packer.Create( buffer, allowsBufferExtension, PackerCompatibilityOptions.None );
+			return Packer.Create( buffer, startOffset, allowsBufferExtension, PackerCompatibilityOptions.None );
 		}
 
-		private static ByteArrayPacker CreatePacker( ArraySegment<byte> buffer, Func<ArraySegment<byte>, int, ArraySegment<byte>> allocator )
+		private static ByteArrayPacker CreatePacker( byte[] buffer, int startOffset, Func<byte[], int, byte[]> allocator )
 		{
-			return Packer.Create( buffer, allocator, PackerCompatibilityOptions.None );
-		}
-
-		private static ByteArrayPacker CreatePacker( IList<ArraySegment<byte>> buffers, int startOffset, int startIndex, bool allowsBufferExtension )
-		{
-			return Packer.Create( buffers, startOffset, startIndex, allowsBufferExtension, PackerCompatibilityOptions.None );
-		}
-
-		private static ByteArrayPacker CreatePacker( IList<ArraySegment<byte>> buffers, int startOffset, int startIndex, int allocationUnitSize )
-		{
-			return Packer.Create( buffers, startOffset, startIndex, allocationUnitSize, PackerCompatibilityOptions.None );
-		}
-
-		private static ByteArrayPacker CreatePacker( IList<ArraySegment<byte>> buffers, int startOffset, int startIndex, Func<int, ArraySegment<byte>> allocator )
-		{
-			return Packer.Create( buffers, startOffset, startIndex, allocator, PackerCompatibilityOptions.None );
+			return Packer.Create( buffer, startOffset, allocator, PackerCompatibilityOptions.None );
 		}
 
 		protected override byte[] GetResult( Packer packer )
 		{
-			return ( ( ByteArrayPacker )packer ).GetResultBytes();
+			return ( ( ByteArrayPacker )packer ).GetResultBytes().ToArray();
 		}
 
 		private sealed class Allocator
@@ -105,14 +90,14 @@ namespace MsgPack
 				return new ArraySegment<byte>( new byte[ actualSize ] );
 			}
 
-			public ArraySegment<byte> Reallocate( ArraySegment<byte> old, int size )
+			public byte[] Reallocate( byte[] old, int size )
 			{
 				this.IsReallocateCalled = true;
-				int actualSize = old.Count + Math.Max( size, 16 );
+				int actualSize = old.Length + Math.Max( size, 16 );
 				this.LastAllocationSize = actualSize;
 				var result = new byte[ actualSize ];
-				Buffer.BlockCopy( old.Array, old.Offset, result, 0, old.Count );
-				return new ArraySegment<byte>( result );
+				Buffer.BlockCopy( old, 0, result, 0, old.Length );
+				return result;
 			}
 		}
 	}

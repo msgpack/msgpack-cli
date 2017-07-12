@@ -30,7 +30,7 @@ namespace MsgPack
 	{
 		// This type should be public when the design is fixed for Span<byte>
 
-		public abstract bool TryAllocate( IList<ArraySegment<byte>> arrayBuffers, /* IList<Span<byte>> spanBuffers, */ int sizeHint, int minimumSize, ref int newCurrentBufferIndex, out /* Span<byte> */ArraySegment<byte> newCurrentBuffer );
+		public abstract bool TryAllocate( byte[] oldBuffer, int requestSize, out /* Span<byte> */byte[] newBuffer );
 	}
 
 #warning TODO: SpanBufferAllocator

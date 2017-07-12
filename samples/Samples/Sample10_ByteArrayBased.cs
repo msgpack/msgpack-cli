@@ -47,8 +47,8 @@ namespace Samples
 					Image = new byte[] { 1, 2, 3, 4 },
 					Comment = "This is test object to be serialize/deserialize using MsgPack."
 				};
-			// Note that the packer automatically increse buffer list.
-			using ( var bytePacker = Packer.Create( buffer, allowsBufferExpansion: false ) )
+			// Note that the packer automatically increse buffer.
+			using ( var bytePacker = Packer.Create( buffer ) )
 			{
 				serializer.PackTo( bytePacker, obj );
 				// Note: You can get actual bytes with GetResultBytes(), but it causes array copy.
@@ -58,40 +58,6 @@ namespace Samples
 				using ( var byteUnpacker = Unpacker.Create( buffer ) )
 				{
 					var deserialized = serializer.UnpackFrom( byteUnpacker );
-				}
-			}
-		}
-
-		[Test]
-		public void ComplexBufferListCase()
-		{
-			var bufferManager = new MyArrayBufferManager();
-
-			var context = new SerializationContext();
-			var serializer = context.GetSerializer<PhotoEntry>();
-
-			var obj =
-				new PhotoEntry
-				{
-					Id = 123,
-					Title = "My photo",
-					Date = DateTime.Now,
-					Image = new byte[] { 1, 2, 3, 4 },
-					Comment = "This is test object to be serialize/deserialize using MsgPack."
-				};
-			// Note that the packer automatically increse buffer list.
-			using ( var bytePacker = Packer.Create( bufferManager.Buffers, startIndex: 0, startOffset: 0, allowsBufferExpansion: true ) )
-			{
-				serializer.PackTo( bytePacker, obj );
-				// The ByteArrayPacker tracks buffer usage (used bytes, current index of the list and offset of the current array).
-				// In general, you bookkeep CurrentBufferIndex and CurrentBufferOffset for next Packer.Create call's startIndex and startOffset respectively.
-				Console.WriteLine( "Packed {0:#,0}bytes. Now buffer position is index:{1}, offset:{2}", bytePacker.BytesUsed, bytePacker.CurrentBufferIndex, bytePacker.CurrentBufferOffset );
-
-				using ( var byteUnpacker = Unpacker.Create( bufferManager.Buffers, startIndex: 0, startOffset: 0 ) )
-				{
-					var deserialized = serializer.UnpackFrom( byteUnpacker );
-					// The ByteArrayUnpacker tracks buffer usage (used bytes, current index of the list and offset of the current array).
-					Console.WriteLine( "Unpacked {0:#,0}bytes. Now buffer position is index:{1}, offset:{2}", byteUnpacker.BytesUsed, byteUnpacker.CurrentSourceIndex, byteUnpacker.CurrentSourceOffset );
 				}
 			}
 		}

@@ -30,45 +30,40 @@ namespace MsgPack
 	{
 		public static readonly SingleArrayBufferAllocator Default = new SingleArrayBufferAllocator( Allocate );
 
-		private readonly Func<ArraySegment<byte>, int, ArraySegment<byte>> _allocator;
+		private readonly Func<byte[], int, byte[]> _allocator;
 
-		public SingleArrayBufferAllocator( Func<ArraySegment<byte>, int, ArraySegment<byte>> allocator )
+		public SingleArrayBufferAllocator( Func<byte[], int, byte[]> allocator )
 		{
 			this._allocator = allocator;
 		}
 
-		private static ArraySegment<byte> Allocate( ArraySegment<byte> old, int sizeHint )
+		private static byte[] Allocate( byte[] old, int requestSize )
 		{
+			if ( old.Length < 256 )
+			{
+				return new byte[ 256 ];
+			}
+
 			// Use golden ratio to improve linear memory range reusability (of LOH)
-			var newSize = Math.Max( ( long )( old.Count * 1.1618 ), sizeHint + ( long )old.Count );
+			var newSize = Math.Max( ( long )( old.Length * 1.1618 ), requestSize + ( long )old.Length );
 			if ( newSize > Int32.MaxValue )
 			{
-				return default( ArraySegment<byte> );
+				return null;
 			}
 
-			return new ArraySegment<byte>( new byte[ newSize ] );
+			return new byte[ newSize ];
 		}
 
-		public override bool TryAllocate( IList<ArraySegment<byte>> buffers, int sizeHint, int minimumSize, ref int newCurrentBufferIndex, out ArraySegment<byte> newCurrentBuffer )
+		public override bool TryAllocate( byte[] oldBuffer, int requestSize, out byte[] newBuffer )
 		{
-			if ( buffers.Count != 1 )
+			newBuffer = this._allocator( oldBuffer, requestSize );
+			if ( newBuffer == null || newBuffer.Length < ( oldBuffer.Length + requestSize ) )
 			{
-				throw new ArgumentException( "buffers must be single array.", nameof( buffers ) );
-			}
-
-			var current = buffers[ 0 ];
-			var requestSize = Math.Max( sizeHint, minimumSize );
-			var newSegment = this._allocator( current, requestSize );
-			if ( newSegment.Count < ( current.Count + requestSize ) || newSegment.Array == null )
-			{
-				newCurrentBuffer = default( ArraySegment<byte> );
+				newBuffer = null;
 				return false;
 			}
-			Buffer.BlockCopy( current.Array, current.Offset, newSegment.Array, newSegment.Offset, current.Count );
-			buffers[ 0 ] = newSegment;
-			newCurrentBufferIndex = 0;
-			newCurrentBuffer = new ArraySegment<byte>( newSegment.Array, newSegment.Offset + current.Count, newSegment.Count - current.Count );
 
+			Buffer.BlockCopy( oldBuffer, 0, newBuffer, 0, oldBuffer.Length );
 			return true;
 		}
 	}
