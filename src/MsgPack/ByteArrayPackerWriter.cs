@@ -53,7 +53,7 @@ namespace MsgPack
 		// TODO: Use Span<byte>
 		private byte[] _currentBuffer;
 		private int _currentBufferOffset;
-		private int _currentBufferLimit;
+		private int _currentBufferRemains;
 
 #if DEBUG
 
@@ -106,7 +106,7 @@ namespace MsgPack
 			this._currentBufferIndex = 0;
 			this._currentBuffer = buffer.Array;
 			this._currentBufferOffset = buffer.Offset;
-			this._currentBufferLimit = buffer.Count + buffer.Offset;
+			this._currentBufferRemains = buffer.Count;
 			this._allocator = allocator;
 		}
 
@@ -160,7 +160,7 @@ namespace MsgPack
 
 			this._currentBuffer = startBuffer.Array;
 			this._currentBufferOffset = startBuffer.Offset + skip;
-			this._currentBufferLimit = startBuffer.Count + startBuffer.Offset;
+			this._currentBufferRemains = startBuffer.Count - skip;
 			this._allocator = allocator;
 		}
 
@@ -169,10 +169,10 @@ namespace MsgPack
 			return this._buffers;
 		}
 
-		private bool ShiftBufferIfNeeded( int sizeHint, int minimumSize, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit, ref int currentBufferIndex )
+		private bool ShiftBufferIfNeeded( int sizeHint, int minimumSize, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferRemains, ref int currentBufferIndex )
 		{
 			// Check current buffer is empty and whether more buffer is required.
-			if ( currentBufferLimit - currentBufferOffset < minimumSize && sizeHint > 0 )
+			if ( currentBufferRemains < minimumSize && sizeHint > 0 )
 			{
 				// try shift to next buffer
 				currentBufferIndex++;
@@ -189,9 +189,10 @@ namespace MsgPack
 					newBuffer = this._buffers[ currentBufferIndex ];
 				}
 
+#warning TODO: IList<ArraySegment<byte>> の使い方を再考する必要あり。今だと抜かせない。
 				currentBuffer = newBuffer.Array;
 				currentBufferOffset = newBuffer.Offset;
-				currentBufferLimit = newBuffer.Offset + newBuffer.Count;
+				currentBufferRemains = newBuffer.Count;
 			}
 
 			return true;
@@ -201,9 +202,9 @@ namespace MsgPack
 		{
 			var currentBuffer = this._currentBuffer;
 			var currentBufferOffset = this._currentBufferOffset;
-			var currentBufferLimit = this._currentBufferLimit;
+			var currentBufferRemains = this._currentBufferRemains;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( byte ), sizeof( byte ), ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( 1 );
 			}
@@ -212,16 +213,16 @@ namespace MsgPack
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
 			this._currentBufferOffset = currentBufferOffset + 1;
-			this._currentBufferLimit = currentBufferLimit;
+			this._currentBufferRemains = currentBufferRemains - 1;
 		}
 
 		private void WriteBytes( byte[] value, int startIndex, int count )
 		{
 			var currentBuffer = this._currentBuffer;
 			var currentBufferOffset = this._currentBufferOffset;
-			var currentBufferLimit = this._currentBufferLimit;
+			var currentBufferRemains = this._currentBufferRemains;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( count, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( count, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( count );
 			}
@@ -229,13 +230,15 @@ namespace MsgPack
 			var written = 0;
 			do
 			{
-				var writes = Math.Min( currentBufferLimit - currentBufferOffset, ( count - written ) );
+				var remains = count - written;
+				var writes = Math.Min( currentBufferRemains, remains );
 				Buffer.BlockCopy( value, startIndex + written, currentBuffer, currentBufferOffset, writes );
 
 				written += writes;
 				currentBufferOffset += writes;
+				currentBufferRemains -= writes;
 
-				if ( !this.ShiftBufferIfNeeded( count - written, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( remains, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( count );
 				}
@@ -244,7 +247,7 @@ namespace MsgPack
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
 			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
+			this._currentBufferRemains = currentBufferRemains;
 		}
 
 		public override void WriteBytes( byte[] value )

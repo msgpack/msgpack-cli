@@ -86,17 +86,18 @@ namespace MsgPack
 #>
 			var currentBuffer = this._currentBuffer;
 			var currentBufferOffset = this._currentBufferOffset;
-			var currentBufferLimit = this._currentBufferLimit;
+			var currentBufferRemains = this._currentBufferRemains;
 			var currentBufferIndex = this._currentBufferIndex;
-			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) + 1, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( <#= type #> ) );
 			}
 
 			currentBuffer[ currentBufferOffset ] = header;
 			currentBufferOffset += 1;
+			currentBufferRemains -= 1;
 
-			if ( currentBufferLimit - currentBufferOffset >= sizeof( <#= type #> ) )
+			if ( currentBufferRemains >= sizeof( <#= type #> ) )
 			{
 				// Fast path
 <#
@@ -109,16 +110,17 @@ namespace MsgPack
 				}
 #>
 				currentBufferOffset += sizeof( <#= type #> );
+				currentBufferRemains -= sizeof( <#= type #> );
 			}
 			else
 			{
-				this.WriteBytesSlow( <#= bits #>, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit );
+				this.WriteBytesSlow( <#= bits #>, ref currentBufferIndex, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains );
 			}
 
 			this._currentBufferIndex = currentBufferIndex;
 			this._currentBuffer = currentBuffer;
 			this._currentBufferOffset = currentBufferOffset;
-			this._currentBufferLimit = currentBufferLimit;
+			this._currentBufferRemains = currentBufferRemains;
 <#
 			} // if isAsync 
 #>
@@ -128,14 +130,14 @@ namespace MsgPack
 			if ( !isAsync )
 			{
 #>
-		private void WriteBytesSlow( <#= this.ToBitsType( type ) #> value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferLimit )
+		private void WriteBytesSlow( <#= this.ToBitsType( type ) #> value, ref int currentBufferIndex, ref byte[] currentBuffer, ref int currentBufferOffset, ref int currentBufferRemains )
 		{			
-			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+			if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ), 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
 			{
 				this.ThrowEofException( sizeof( <#= type #> ) );
 			}
 
-			var bufferRemaining = currentBufferLimit - currentBufferOffset;
+			var bufferRemaining = currentBufferRemains;
 
 			for ( var totalWritten = 0; totalWritten < sizeof( <#= type #> ); )
 			{
@@ -146,13 +148,14 @@ namespace MsgPack
 				}
 
 				currentBufferOffset += currentWritten;
+				currentBufferRemains -= currentWritten;
 			
-				if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+				if ( !this.ShiftBufferIfNeeded( sizeof( <#= type #> ) - totalWritten, 1, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
 				{
 					this.ThrowEofException( sizeof( <#= type #> ) );
 				}
 
-				bufferRemaining = currentBufferLimit - currentBufferOffset;
+				bufferRemaining = currentBufferRemains;
 			}
 		}
 
@@ -180,11 +183,12 @@ namespace MsgPack
 				return;
 			}
 
-			if ( encodedLength <= this._currentBufferLimit - this._currentBufferOffset )
+			if ( encodedLength <= this._currentBufferRemains )
 			{
 				// Fast path
 				Encoding.UTF8.GetBytes( value, 0, value.Length, this._currentBuffer, this._currentBufferOffset );
 				this._currentBufferOffset += encodedLength;
+				this._currentBufferRemains -= encodedLength;
 			}
 			else
 			{
@@ -254,7 +258,7 @@ namespace MsgPack
 			{
 				var currentBuffer = this._currentBuffer;
 				var currentBufferOffset = this._currentBufferOffset;
-				var currentBufferLimit = this._currentBufferLimit;
+				var currentBufferRemains = this._currentBufferRemains;
 				var currentBufferIndex = this._currentBufferIndex;
 				var encoder = Encoding.UTF8.GetEncoder();
 #if FEATURE_POINTER_CONVERSION
@@ -265,7 +269,7 @@ namespace MsgPack
 				var isCompleted = false;
 				do
 				{
-					if ( !this.ShiftBufferIfNeeded( remainingBytesLength, MaximumUtf8Length, ref currentBuffer, ref currentBufferOffset, ref currentBufferLimit, ref currentBufferIndex ) )
+					if ( !this.ShiftBufferIfNeeded( remainingBytesLength, MaximumUtf8Length, ref currentBuffer, ref currentBufferOffset, ref currentBufferRemains, ref currentBufferIndex ) )
 					{
 						this.ThrowEofExceptionForString( remainingBytesLength );
 					}
@@ -276,9 +280,9 @@ namespace MsgPack
 #endif // FEATURE_POINTER_CONVERSION
 					{
 #if FEATURE_POINTER_CONVERSION
-						isCompleted = encoder.EncodeString( pChars, remainingCharsLength, pBuffer + currentBufferOffset, currentBufferLimit - currentBufferOffset, out charsUsed, out bytesUsed );
+						isCompleted = encoder.EncodeString( pChars, remainingCharsLength, pBuffer + currentBufferOffset, currentBufferRemains, out charsUsed, out bytesUsed );
 #else
-						isCompleted = encoder.EncodeString( value, charsOffset, remainingCharsLength, currentBuffer, currentBufferOffset, currentBufferLimit - currentBufferOffset, out charsUsed, out bytesUsed );
+						isCompleted = encoder.EncodeString( value, charsOffset, remainingCharsLength, currentBuffer, currentBufferOffset, currentBufferRemains, out charsUsed, out bytesUsed );
 #endif // FEATURE_POINTER_CONVERSION
 					}
 
@@ -290,6 +294,7 @@ namespace MsgPack
 					remainingCharsLength -= charsUsed;
 					remainingBytesLength -= bytesUsed;
 					currentBufferOffset += bytesUsed;
+					currentBufferRemains -= bytesUsed;
 				} while ( remainingCharsLength > 0 );
 #if DEBUG
 				Contract.Assert( isCompleted, "Encoding is not completed!" );
@@ -298,7 +303,7 @@ namespace MsgPack
 				this._currentBufferIndex = currentBufferIndex;
 				this._currentBuffer = currentBuffer;
 				this._currentBufferOffset = currentBufferOffset;
-				this._currentBufferLimit = currentBufferLimit;
+				this._currentBufferRemains = currentBufferRemains;
 			}
 		}
 	}

@@ -51,11 +51,12 @@ namespace MsgPack
 
 		public override int TryReadByte()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( byte ) )
+			if ( this._currentSourceRemains >= sizeof( byte ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToByte( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( byte );
+				this._currentSourceRemains -= sizeof( byte );
 				return result;
 			}
 
@@ -70,11 +71,12 @@ namespace MsgPack
 
 		public override sbyte ReadSByte()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( sbyte ) )
+			if ( this._currentSourceRemains >= sizeof( sbyte ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToSByte( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( sbyte );
+				this._currentSourceRemains -= sizeof( sbyte );
 				return result;
 			}
 
@@ -89,11 +91,12 @@ namespace MsgPack
 
 		public override short ReadInt16()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( short ) )
+			if ( this._currentSourceRemains >= sizeof( short ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToInt16( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( short );
+				this._currentSourceRemains -= sizeof( short );
 				return result;
 			}
 
@@ -119,11 +122,12 @@ namespace MsgPack
 
 		public override int TryReadUInt16()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( ushort ) )
+			if ( this._currentSourceRemains >= sizeof( ushort ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToUInt16( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( ushort );
+				this._currentSourceRemains -= sizeof( ushort );
 				return result;
 			}
 
@@ -138,11 +142,12 @@ namespace MsgPack
 
 		public override int ReadInt32()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( int ) )
+			if ( this._currentSourceRemains >= sizeof( int ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToInt32( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( int );
+				this._currentSourceRemains -= sizeof( int );
 				return result;
 			}
 
@@ -168,11 +173,12 @@ namespace MsgPack
 
 		public override long TryReadUInt32()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( uint ) )
+			if ( this._currentSourceRemains >= sizeof( uint ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToUInt32( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( uint );
+				this._currentSourceRemains -= sizeof( uint );
 				return result;
 			}
 
@@ -187,11 +193,12 @@ namespace MsgPack
 
 		public override long ReadInt64()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( long ) )
+			if ( this._currentSourceRemains >= sizeof( long ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToInt64( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( long );
+				this._currentSourceRemains -= sizeof( long );
 				return result;
 			}
 
@@ -206,11 +213,12 @@ namespace MsgPack
 
 		public override ulong ReadUInt64()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( ulong ) )
+			if ( this._currentSourceRemains >= sizeof( ulong ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToUInt64( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( ulong );
+				this._currentSourceRemains -= sizeof( ulong );
 				return result;
 			}
 
@@ -225,11 +233,12 @@ namespace MsgPack
 
 		public override float ReadSingle()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( float ) )
+			if ( this._currentSourceRemains >= sizeof( float ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToSingle( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( float );
+				this._currentSourceRemains -= sizeof( float );
 				return result;
 			}
 
@@ -244,11 +253,12 @@ namespace MsgPack
 
 		public override double ReadDouble()
 		{
-			if ( this._currentSourceLimit - this._currentSourceOffset >= sizeof( double ) )
+			if ( this._currentSourceRemains >= sizeof( double ) )
 			{
 				// fast path
 				var result = BigEndianBinary.ToDouble( this._currentSource, this._currentSourceOffset );
 				this._currentSourceOffset += sizeof( double );
+				this._currentSourceRemains -= sizeof( double );
 				return result;
 			}
 

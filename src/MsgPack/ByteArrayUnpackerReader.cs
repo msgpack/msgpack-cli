@@ -53,7 +53,7 @@ namespace MsgPack
 		// TODO: Use Span<byte>
 		private byte[] _currentSource;
 		private int _currentSourceOffset;
-		private int _currentSourceLimit;
+		private int _currentSourceRemains;
 
 #if DEBUG
 
@@ -107,7 +107,7 @@ namespace MsgPack
 			this._currentSourceIndex = 0;
 			this._currentSource = source.Array;
 			this._currentSourceOffset = source.Offset;
-			this._currentSourceLimit = source.Offset + source.Count;
+			this._currentSourceRemains = source.Count;
 		}
 
 		// TODO: Use Span<byte>
@@ -159,12 +159,12 @@ namespace MsgPack
 
 			this._currentSource = startSource.Array;
 			this._currentSourceOffset = startSource.Offset + skip;
-			this._currentSourceLimit = startSource.Count + startSource.Offset;
+			this._currentSourceRemains = startSource.Count - skip;
 		}
 
-		private bool ShiftSourceIfNeeded( ref byte[] currentSource, ref int currentSourceOffset, ref int currentSourceLimit, ref int currentSourceIndex )
+		private bool ShiftSourceIfNeeded( ref byte[] currentSource, ref int currentSourceOffset, ref int currentSourceRemains, ref int currentSourceIndex )
 		{
-			if ( currentSourceLimit == currentSourceOffset )
+			if ( currentSourceRemains == 0 )
 			{
 				// try shift to next buffer
 				currentSourceIndex++;
@@ -175,7 +175,7 @@ namespace MsgPack
 
 				currentSource = this._sources[ currentSourceIndex ].Array;
 				currentSourceOffset = this._sources[ currentSourceIndex ].Offset;
-				currentSourceLimit = this._sources[ currentSourceIndex ].Count + currentSourceOffset;
+				currentSourceRemains = this._sources[ currentSourceIndex ].Count;
 			}
 
 			return true;
@@ -189,12 +189,13 @@ namespace MsgPack
 				return true;
 			}
 			
-			if ( this._currentSourceLimit - this._currentSourceOffset >= requestedSize )
+			if ( this._currentSourceRemains >= requestedSize )
 			{
 				// fast path
 				// TODO: Use currentSource.CopyTo( buffer, requestedSize );
 				Buffer.BlockCopy( this._currentSource, this._currentSourceOffset, buffer, 0, requestedSize );
 				this._currentSourceOffset += requestedSize;
+				this._currentSourceRemains -= requestedSize;
 				return true;
 			}
 
@@ -206,9 +207,9 @@ namespace MsgPack
 		{
 			var currentSource = this._currentSource;
 			var currentSourceOffset = this._currentSourceOffset;
-			var currentSourceLimit = this._currentSourceLimit;
+			var currentSourceRemains = this._currentSourceRemains;
 			var currentSourceIndex = this._currentSourceIndex;
-			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceRemains, ref currentSourceIndex ) )
 			{
 				return false;
 			}
@@ -218,11 +219,12 @@ namespace MsgPack
 
 			do
 			{
-				var copying = Math.Min( currentSourceLimit - currentSourceOffset, remaining );
+				var copying = Math.Min( currentSourceRemains, remaining );
 				// TODO: Use currentSource.CopyTo( buffer, copying );
 				Buffer.BlockCopy( currentSource, currentSourceOffset, buffer, destinationOffset, copying );
 				remaining -= copying;
 				currentSourceOffset += copying;
+				currentSourceRemains -= copying;
 #if DEBUG
 				Contract.Assert( remaining >= 0, "remaining >= 0" );
 #endif // DEBUG
@@ -235,7 +237,7 @@ namespace MsgPack
 
 				destinationOffset += copying;
 
-				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
+				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceRemains, ref currentSourceIndex ) )
 				{
 					return false;
 				}
@@ -244,7 +246,7 @@ namespace MsgPack
 			this._currentSourceIndex = currentSourceIndex;
 			this._currentSource = currentSource;
 			this._currentSourceOffset = currentSourceOffset;
-			this._currentSourceLimit = currentSourceLimit;
+			this._currentSourceRemains = currentSourceRemains;
 			return true;
 		}
 
@@ -274,11 +276,12 @@ namespace MsgPack
 				return String.Empty;
 			}
 			
-			if ( this._currentSourceLimit - this._currentSourceOffset >= length )
+			if ( this._currentSourceRemains >= length )
 			{
 				// fast path
 				var result = Encoding.UTF8.GetString( this._currentSource, this._currentSourceOffset, length );
 				this._currentSourceOffset += length;
+				this._currentSourceRemains -= length;
 				return result;
 			}
 
@@ -290,10 +293,10 @@ namespace MsgPack
 		{
 			var currentSource = this._currentSource;
 			var currentSourceOffset = this._currentSourceOffset;
-			var currentSourceLimit = this._currentSourceLimit;
+			var currentSourceRemains = this._currentSourceRemains;
 			var currentSourceIndex = this._currentSourceIndex;
 
-			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceRemains, ref currentSourceIndex ) )
 			{
 				this.ThrowEofException( requestedSize );
 			}
@@ -306,11 +309,11 @@ namespace MsgPack
 			bool isCompleted;
 			do
 			{
-				var decoding = Math.Min( currentSourceLimit - currentSourceOffset, remaining );
+				var decoding = Math.Min( currentSourceRemains, remaining );
 				isCompleted = decoder.DecodeString( currentSource, currentSourceOffset, decoding, charBuffer, result );
 				remaining -= decoding;
 				currentSourceOffset += decoding;
-
+				currentSourceRemains -= decoding;
 #if DEBUG
 				Contract.Assert( remaining >= 0, "remaining >= 0" );
 #endif // DEBUG
@@ -321,7 +324,7 @@ namespace MsgPack
 					break;
 				}
 
-				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
+				if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceRemains, ref currentSourceIndex ) )
 				{
 					this.ThrowEofException( requestedSize );
 				}
@@ -335,7 +338,7 @@ namespace MsgPack
 			this._currentSourceIndex = currentSourceIndex;
 			this._currentSource = currentSource;
 			this._currentSourceOffset = currentSourceOffset;
-			this._currentSourceLimit = currentSourceLimit;
+			this._currentSourceRemains = currentSourceRemains;
 			return result.ToString();
 		}
 
@@ -361,26 +364,25 @@ namespace MsgPack
 
 			var currentSource = this._currentSource;
 			var currentSourceOffset = this._currentSourceOffset;
-			var currentSourceLimit = this._currentSourceLimit;
+			var currentSourceRemains = this._currentSourceRemains;
 			var currentSourceIndex = this._currentSourceIndex;
 
-			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceLimit, ref currentSourceIndex ) )
+			if ( !this.ShiftSourceIfNeeded( ref currentSource, ref currentSourceOffset, ref currentSourceRemains, ref currentSourceIndex ) )
 			{
 				return false;
 			}
 			
 			while ( remaining > 0 )
 			{
-				var currentSourceSize = currentSourceLimit - currentSourceOffset;
-				if ( remaining <= currentSourceSize )
+				if ( remaining <= currentSourceRemains )
 				{
 					this._currentSourceIndex = currentSourceIndex;
-					this._currentSourceOffset += unchecked( ( int )remaining );
-					this._currentSourceLimit = currentSourceLimit;
+					this._currentSourceOffset = currentSourceOffset + unchecked( ( int )remaining );
+					this._currentSourceRemains = currentSourceRemains - unchecked( ( int )remaining );
 					return true;
 				}
 
-				remaining -= currentSourceSize;
+				remaining -= currentSourceRemains;
 				// try shift to next buffer
 				currentSourceIndex++;
 				if ( this._sources.Count == currentSourceIndex )
@@ -390,7 +392,7 @@ namespace MsgPack
 
 				currentSource = this._sources[ currentSourceIndex ].Array;
 				currentSourceOffset = this._sources[ currentSourceIndex ].Offset;
-				currentSourceLimit = this._sources[ currentSourceIndex ].Count + currentSourceOffset;
+				currentSourceRemains = this._sources[ currentSourceIndex ].Count;
 			}
 
 			return false;
