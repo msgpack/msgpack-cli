@@ -169,25 +169,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ByteArrayPackerWriter.TypedWrite.tt</DependentUpon>
     </Compile>
+    <Compile Update="MessagePackByteArrayPacker.Pack.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackByteArrayPacker.Pack.tt</DependentUpon>
+    </Compile>
     <Compile Update="DefaultByteArrayUnpacker.Unpacking.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DefaultByteArrayUnpacker.Unpacking.tt</DependentUpon>
     </Compile>
+    <Compile Update="MessagePackStreamPacker.Pack.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackStreamPacker.Pack.tt</DependentUpon>
+    </Compile>
     <Compile Update="DefaultStreamUnpacker.Unpacking.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DefaultStreamUnpacker.Unpacking.tt</DependentUpon>
-    </Compile>
-    <Compile Update="MessagePackPacker`1.Pack.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MessagePackPacker`1.Pack.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Packer.Leaf.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Packer.Leaf.tt</DependentUpon>
     </Compile>
     <Compile Update="StreamPackerWriter.TypedWrite.cs">
       <DesignTime>True</DesignTime>
@@ -349,23 +349,17 @@
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
-    <None Include="MessagePackPacker`1.Pack.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MessagePackPacker`1.Pack.tt</DependentUpon>
-    </None>
-    <None Include="Packer.Leaf.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Packer.Leaf.tt</DependentUpon>
-    </None>
     <None Update="DefaultByteArrayUnpacker.Unpacking.tt">
       <LastGenOutput>DefaultByteArrayUnpacker.Unpacking.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="MessagePackPacker`1.Pack.tt">
+    <None Update="MessagePackByteArrayPacker.Pack.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MessagePackPacker`1.Pack.cs</LastGenOutput>
+      <LastGenOutput>MessagePackByteArrayPacker.Pack.cs</LastGenOutput>
+    </None>
+    <None Update="MessagePackStreamPacker.Pack.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackStreamPacker.Pack.cs</LastGenOutput>
     </None>
     <None Update="MessagePackUnpacker.Read.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

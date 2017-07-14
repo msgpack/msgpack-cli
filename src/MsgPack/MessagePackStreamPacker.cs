@@ -19,7 +19,9 @@
 #endregion -- License Terms --
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,19 +30,20 @@ using System.Threading.Tasks;
 namespace MsgPack
 {
 	/// <summary>
-	///		<see cref="PackerWriter"/> for <see cref="Stream"/>.
+	///		Implementation for stream based MessagePack packer.
 	/// </summary>
-	internal sealed partial class StreamPackerWriter : PackerWriter
+	internal sealed partial class MessagePackStreamPacker : Packer
 	{
 		private readonly Stream _destination;
-		private readonly bool _ownsStream;
 		private readonly byte[] _scalarBuffer;
+		private readonly bool _ownsStream;
 
 #if DEBUG
 		internal Stream Destination { get { return this._destination; } }
 #endif // DEBUG
 
-		public StreamPackerWriter( Stream stream, PackerUnpackerStreamOptions streamOptions )
+		public MessagePackStreamPacker( Stream stream, PackerUnpackerStreamOptions streamOptions, PackerCompatibilityOptions compatibilityOptions )
+			: base( compatibilityOptions )
 		{
 			if ( stream == null )
 			{
@@ -63,17 +66,27 @@ namespace MsgPack
 			base.Dispose( disposing );
 		}
 
-		public void Flush()
+		public override void Flush()
 		{
 			this._destination.Flush();
 		}
 
-		public override void WriteByte( byte value )
+		protected override void WriteByte( byte value )
 		{
 			this._destination.WriteByte( value );
 		}
 
-		public override void WriteBytes( byte[] value )
+		protected override void WriteBytes( byte[] value, bool isImmutable )
+		{
+			this.WriteBytes( value );
+		}
+
+		protected override void WriteBytes( ICollection<byte> value )
+		{
+			this.WriteBytes( value as byte[] ?? value.ToArray() );
+		}
+
+		private void WriteBytes( byte[] value )
 		{
 			this.WriteBytes( value, 0, value.Length );
 		}
@@ -85,18 +98,28 @@ namespace MsgPack
 
 #if FEATURE_TAP
 
-		public Task FlushAsync( CancellationToken cancellationToken )
+		public override Task FlushAsync( CancellationToken cancellationToken )
 		{
 			return this._destination.FlushAsync( cancellationToken );
 		}
 
-		public override Task WriteByteAsync( byte value, CancellationToken cancellationToken )
+		protected override Task WriteByteAsync( byte value, CancellationToken cancellationToken )
 		{
 			this._scalarBuffer[ 0 ] = value;
 			return this._destination.WriteAsync( this._scalarBuffer, 0, sizeof( byte ), cancellationToken );
 		}
 
-		public override Task WriteBytesAsync( byte[] value, CancellationToken cancellationToken )
+		protected override Task WriteBytesAsync( byte[] value, bool isImmutable, CancellationToken cancellationToken )
+		{
+			return this.WriteBytesAsync( value, cancellationToken );
+		}
+
+		protected override Task WriteBytesAsync( ICollection<byte> value, CancellationToken cancellationToken )
+		{
+			return this.WriteBytesAsync( value as byte[] ?? value.ToArray(), cancellationToken );
+		}
+
+		private Task WriteBytesAsync( byte[] value, CancellationToken cancellationToken )
 		{
 			return this.WriteBytesAsync( value, 0, value.Length, cancellationToken );
 		}

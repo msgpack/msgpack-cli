@@ -18,16 +18,8 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
-using Contract = MsgPack.MPContract;
-#else
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
 #if FEATURE_TAP
@@ -38,36 +30,35 @@ using System.Threading.Tasks;
 namespace MsgPack
 {
 	/// <summary>
-	///		<see cref="PackerWriter"/> for byte array.
+	///		Implementation for byte array based MessagePack packer.
 	/// </summary>
-	internal sealed partial class ByteArrayPackerWriter : PackerWriter
+	internal sealed partial class MessagePackByteArrayPacker : ByteArrayPacker
 	{
-		// TODO: Use Span<byte>;
-		private readonly int _initialOffset;
-
-		private readonly ByteBufferAllocator _allocator;
+		private const int MaximumUtf8Length = 4;
 
 		// TODO: Use Span<byte>
 		private byte[] _buffer;
 		private int _offset;
 
-		public byte[] Buffer
-		{
-			get { return this._buffer; }
-		}
+		// TODO: Use Span<byte>;
+		private readonly int _initialOffset;
+		private readonly ByteBufferAllocator _allocator;
 
-		public int BytesUsed
+		public override int BytesUsed
 		{
 			get { return this._offset - this._initialOffset; }
 		}
 
-		public int InitialOffset
+		public override int InitialBufferOffset
 		{
 			get { return this._initialOffset; }
 		}
 
-		// TODO: Use Span<byte>
-		public ByteArrayPackerWriter( byte[] buffer, int startOffset, ByteBufferAllocator allocator )
+		public MessagePackByteArrayPacker( byte[] buffer, ByteBufferAllocator allocator, PackerCompatibilityOptions compatibilityOptions )
+			: this( buffer, 0, allocator, compatibilityOptions ) { }
+
+		public MessagePackByteArrayPacker( byte[] buffer, int startOffset, ByteBufferAllocator allocator, PackerCompatibilityOptions compatibilityOptions )
+			: base( compatibilityOptions )
 		{
 			this._buffer = buffer ?? Binary.Empty;
 			if ( startOffset < 0 )
@@ -85,7 +76,36 @@ namespace MsgPack
 			this._allocator = allocator;
 		}
 
-		public override void WriteByte( byte value )
+		public override byte[] GetFinalBuffer()
+		{
+			return this._buffer;
+		}
+
+		protected override void WriteBytes( ICollection<byte> value )
+		{
+			this.WriteBytes( value as byte[] ?? value.ToArray() );
+		}
+
+		protected override void WriteBytes( byte[] value, bool isImmutable )
+		{
+			this.WriteBytes( value );
+		}
+
+#if FEATURE_TAP
+
+		protected override Task WriteBytesAsync( ICollection<byte> value, CancellationToken cancellationToken )
+		{
+			return this.WriteBytesAsync( value as byte[] ?? value.ToArray(), cancellationToken );
+		}
+
+		protected override Task WriteBytesAsync( byte[] value, bool isImmutable, CancellationToken cancellationToken )
+		{
+			return this.WriteBytesAsync( value, cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
+		protected override void WriteByte( byte value )
 		{
 			var buffer = this._buffer;
 			var offset = this._offset;
@@ -110,26 +130,26 @@ namespace MsgPack
 				this.ThrowEofException( count );
 			}
 
-			System.Buffer.BlockCopy( value, startIndex, buffer, offset, count );
+			Buffer.BlockCopy( value, startIndex, buffer, offset, count );
 
 			this._buffer = buffer;
 			this._offset += count;
 		}
 
-		public override void WriteBytes( byte[] value )
+		private void WriteBytes( byte[] value )
 		{
 			this.WriteBytes( value, 0, value.Length );
 		}
 
 #if FEATURE_TAP
 
-		public override Task WriteByteAsync( byte value, CancellationToken cancellationToken )
+		protected override Task WriteByteAsync( byte value, CancellationToken cancellationToken )
 		{
 			this.WriteByte( value );
 			return TaskAugument.CompletedTask;
 		}
 
-		public override Task WriteBytesAsync( byte[] value, CancellationToken cancellationToken )
+		private Task WriteBytesAsync( byte[] value, CancellationToken cancellationToken )
 		{
 			this.WriteBytes( value );
 			return TaskAugument.CompletedTask;

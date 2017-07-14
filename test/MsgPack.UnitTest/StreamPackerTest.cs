@@ -51,7 +51,7 @@ namespace MsgPack
 
 		protected override byte[] GetResult( Packer packer )
 		{
-			return ( ( MemoryStream )( ( DefaultStreamPacker )packer ).Core.Writer.Destination ).ToArray();
+			return ( ( MemoryStream )( ( MessagePackStreamPacker )packer ).Destination ).ToArray();
 		}
 
 		[Test]

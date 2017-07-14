@@ -94,7 +94,7 @@ namespace MsgPack
 		/// </remarks>
 		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions, bool ownsStream )
 		{
-			return new DefaultStreamPacker( stream, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : PackerUnpackerStreamOptions.None, compatibilityOptions );
+			return new MessagePackStreamPacker( stream, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : PackerUnpackerStreamOptions.None, compatibilityOptions );
 		}
 
 		/// <summary>
@@ -111,7 +111,7 @@ namespace MsgPack
 		/// </remarks>
 		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions, PackerUnpackerStreamOptions streamOptions )
 		{
-			return new DefaultStreamPacker( stream, streamOptions, compatibilityOptions );
+			return new MessagePackStreamPacker( stream, streamOptions, compatibilityOptions );
 		}
 
 		#endregion -- Stream --
@@ -155,7 +155,7 @@ namespace MsgPack
 		/// <returns><see cref="ByteArrayPacker"/> instance. This value will not be <c>null</c>.</returns>
 		public static ByteArrayPacker Create( byte[] buffer, bool allowsBufferExpansion, PackerCompatibilityOptions compatibilityOptions )
 		{
-			return new DefaultByteArrayPacker( buffer, 0, allowsBufferExpansion ? SingleArrayBufferAllocator.Default : FixedArrayBufferAllocator.Instance, compatibilityOptions );
+			return new MessagePackByteArrayPacker( buffer, 0, allowsBufferExpansion ? SingleArrayBufferAllocator.Default : FixedArrayBufferAllocator.Instance, compatibilityOptions );
 		}
 
 		/// <summary>
@@ -175,7 +175,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentException">The array length of <paramref name="buffer"/> is too small.</exception>
 		public static ByteArrayPacker Create( byte[] buffer, int startOffset, bool allowsBufferExpansion, PackerCompatibilityOptions compatibilityOptions )
 		{
-			return new DefaultByteArrayPacker( buffer, startOffset, allowsBufferExpansion ? SingleArrayBufferAllocator.Default : FixedArrayBufferAllocator.Instance, compatibilityOptions );
+			return new MessagePackByteArrayPacker( buffer, startOffset, allowsBufferExpansion ? SingleArrayBufferAllocator.Default : FixedArrayBufferAllocator.Instance, compatibilityOptions );
 		}
 
 		/// <summary>
@@ -216,7 +216,7 @@ namespace MsgPack
 		/// <exception cref="ArgumentException">The array length of <paramref name="buffer"/> is too small.</exception>
 		public static ByteArrayPacker Create( byte[] buffer, int startOffset, Func<byte[], int, byte[]> allocator, PackerCompatibilityOptions compatibilityOptions )
 		{
-			return new DefaultByteArrayPacker( buffer, startOffset, new SingleArrayBufferAllocator( allocator ), compatibilityOptions );
+			return new MessagePackByteArrayPacker( buffer, startOffset, new SingleArrayBufferAllocator( allocator ), compatibilityOptions );
 		}
 
 		#endregion -- byte[] --

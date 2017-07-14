@@ -95,12 +95,6 @@
     <Compile Include="..\MsgPack\ByteArrayPacker.cs">
       <Link>ByteArrayPacker.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\ByteArrayPackerWriter.cs">
-      <Link>ByteArrayPackerWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ByteArrayPackerWriter.TypedWrite.cs">
-      <Link>ByteArrayPackerWriter.TypedWrite.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\ByteArrayUnpacker.cs">
       <Link>ByteArrayUnpacker.cs</Link>
     </Compile>
@@ -122,17 +116,11 @@
     <Compile Include="..\MsgPack\CollectionType.cs">
       <Link>CollectionType.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\DefaultByteArrayPacker.cs">
-      <Link>DefaultByteArrayPacker.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.cs">
       <Link>DefaultByteArrayUnpacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.Unpacking.cs">
       <Link>DefaultByteArrayUnpacker.Unpacking.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\DefaultStreamPacker.cs">
-      <Link>DefaultStreamPacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\DefaultStreamUnpacker.cs">
       <Link>DefaultStreamUnpacker.cs</Link>
@@ -182,6 +170,12 @@
     <Compile Include="..\MsgPack\MessageNotSupportedException.cs">
       <Link>MessageNotSupportedException.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayPacker.cs">
+      <Link>MessagePackByteArrayPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayPacker.Pack.cs">
+      <Link>MessagePackByteArrayPacker.Pack.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\MessagePackCode.cs">
       <Link>MessagePackCode.cs</Link>
     </Compile>
@@ -218,14 +212,11 @@
     <Compile Include="..\MsgPack\MessagePackObjectEqualityComparer.cs">
       <Link>MessagePackObjectEqualityComparer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\MessagePackPacker.cs">
-      <Link>MessagePackPacker.cs</Link>
+    <Compile Include="..\MsgPack\MessagePackStreamPacker.cs">
+      <Link>MessagePackStreamPacker.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\MessagePackPacker`1.cs">
-      <Link>MessagePackPacker`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackPacker`1.Pack.cs">
-      <Link>MessagePackPacker`1.Pack.cs</Link>
+    <Compile Include="..\MsgPack\MessagePackStreamPacker.Pack.cs">
+      <Link>MessagePackStreamPacker.Pack.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\MessagePackString.cs">
       <Link>MessagePackString.cs</Link>
@@ -260,9 +251,6 @@
     <Compile Include="..\MsgPack\Packer.Factory.cs">
       <Link>Packer.Factory.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Packer.Leaf.cs">
-      <Link>Packer.Leaf.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Packer.Nullable.cs">
       <Link>Packer.Nullable.cs</Link>
     </Compile>
@@ -277,9 +265,6 @@
     </Compile>
     <Compile Include="..\MsgPack\PackerUnpackerStreamOptions.cs">
       <Link>PackerUnpackerStreamOptions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\PackerWriter.cs">
-      <Link>PackerWriter.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\PackingOptions.cs">
       <Link>PackingOptions.cs</Link>
@@ -763,15 +748,6 @@
     </Compile>
     <Compile Include="..\MsgPack\SingleArrayBufferAllocator.cs">
       <Link>SingleArrayBufferAllocator.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamPacker.cs">
-      <Link>StreamPacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamPackerWriter.cs">
-      <Link>StreamPackerWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamPackerWriter.TypedWrite.cs">
-      <Link>StreamPackerWriter.TypedWrite.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\StreamUnpackerReader.cs">
       <Link>StreamUnpackerReader.cs</Link>

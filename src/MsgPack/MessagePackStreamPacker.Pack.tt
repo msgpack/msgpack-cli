@@ -1,14 +1,14 @@
 ﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
 <#@ output extension=".cs" #>
-<#@ include file=".\PackerWriter.TypedWrite.ttinclude" #>
 <#@ Assembly Name="System.Core.dll" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="System.IO" #>
-<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
 <#@ import namespace="System.Text" #>
+<#@ include file="MessagePackPackerCommon.ttinclude" #>
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -47,17 +47,49 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-	// This file was generated from StreamPackerWriter.TypedWrite.tt and PackerWriter.TypedWrite.ttinclude T4Template.
-	// Do not modify this file. Edit StreamPackerWriter.TypedWrite.tt and PackerWriter.TypedWrite.ttinclude instead.
+	// This file was generated from MessagePackStreamPacker.Pack.tt and MessagePackPackerCommon.ttinclude T4Template.
+	// Do not modify this file. Edit MessagePackStreamPacker.Pack.tt  and MessagePackPackerCommon.ttinclude instead.
 
-	partial class StreamPackerWriter
+	partial class MessagePackStreamPacker
 	{
 <#
+	this.WriteOverrides();
+#>
+#if FEATURE_TAP
+
+		private async Task WriteStringHeaderAsync( int bytesLength, bool allowStr8, CancellationToken cancellationToken )
+		{
+			if( bytesLength < 0x20 )
+			{
+				await this.WriteByteAsync( ( byte )( bytesLength | MessagePackCode.MinimumFixedRaw ), cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			if ( bytesLength < 0x100 && allowStr8 )
+			{
+				await this.WriteBytesAsync( MessagePackCode.Str8, ( byte )bytesLength, cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			if ( bytesLength < 0x10000 )
+			{
+				await this.WriteBytesAsync( MessagePackCode.Str16, ( ushort )bytesLength, cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			await this.WriteBytesAsync( MessagePackCode.Str32, unchecked(( uint )bytesLength), cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
+
+<#
+
 	foreach ( var isAsync in new [] { false, true } )
 	{
 		if ( isAsync )
 		{
 #>
+
 #if FEATURE_TAP
 
 <#
@@ -66,7 +98,7 @@ namespace MsgPack
 		foreach ( var type in scalarTypes )
 		{
 #>
-		public override <#= isAsync ? "async Task" : "void" #> WriteBytes<#= isAsync ? "Async" : String.Empty #>( byte header, <#= type #> value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		<#= AsyncMethod( isAsync, "void", "WriteBytes", "byte header, " + type + " value", false ) #>
 		{
 <#
 			string bits;
@@ -82,9 +114,7 @@ namespace MsgPack
 <#
 		} // foreach type
 #>
-
-
-		public override <#= isAsync ? "async Task" : "void" #> WriteBytes<#= isAsync ? "Async" : String.Empty #>( string value, bool allowStr8<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		<#= AsyncMethod( isAsync, "void", "WriteBytes", "string value, bool allowStr8", false ) #>
 		{
 			var encodedLength = Encoding.UTF8.GetByteCount( value );
 			<#= isAsync ? "await " : String.Empty #>this.WriteStringHeader<#= isAsync ? "Async" : String.Empty #>( encodedLength, allowStr8<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
@@ -92,34 +122,13 @@ namespace MsgPack
 			{
 				return;
 			}
+
 			<#= isAsync ? "await " : String.Empty #>this.WriteStringBody<#= isAsync ? "Async" : String.Empty #>( value<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
-		}
-		
-		private <#= isAsync ? "async Task" : "void" #> WriteStringHeader<#= isAsync ? "Async" : String.Empty #>( int bytesLength, bool allowStr8<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
-		{
-			if( bytesLength < 0x20 )
-			{
-				<#= isAsync ? "await " : String.Empty #>this.WriteByte<#= isAsync ? "Async" : String.Empty #>( ( byte )( bytesLength | MessagePackCode.MinimumFixedRaw )<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
-				return;
-			}
-
-			if ( bytesLength < 0x100 && allowStr8 )
-			{
-				<#= isAsync ? "await " : String.Empty #>this.WriteBytes<#= isAsync ? "Async" : String.Empty #>( MessagePackCode.Str8, ( byte )bytesLength<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
-				return;
-			}
-
-			if ( bytesLength < 0x10000 )
-			{
-				<#= isAsync ? "await " : String.Empty #>this.WriteBytes<#= isAsync ? "Async" : String.Empty #>( MessagePackCode.Str16, ( ushort )bytesLength<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
-				return;
-			}
-
-			<#= isAsync ? "await " : String.Empty #>this.WriteBytes<#= isAsync ? "Async" : String.Empty #>( MessagePackCode.Str32, unchecked(( uint )bytesLength)<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
 		}
 
 #if !FEATURE_POINTER_CONVERSION
-		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( string value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+
+		<#= AsyncMethod( isAsync, "void", "WriteStringBody", "string value", false ) #>
 		{
 			var chars = BufferManager.NewCharBuffer( value.Length );
 			int offset = 0;
@@ -133,13 +142,17 @@ namespace MsgPack
 			}
 		}
 
-		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( char[] value, int remainingCharsLength<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		<#= AsyncMethod( isAsync, "void", "WriteStringBody", "char[] value, int remainingCharsLength", false ) #>
 		{
+
 #else
-		private <#= isAsync ? "async Task" : "void" #> WriteStringBody<#= isAsync ? "Async" : String.Empty #>( string value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+
+		<#= AsyncMethod( isAsync, "void", "WriteStringBody", "string value", false ) #>
 		{
 			var remainingCharsLength = value.Length;
+
 #endif // !FEATURE_POINTER_CONVERSION
+
 			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
 			var encoder = Encoding.UTF8.GetEncoder();
 			var valueOffset = 0;
@@ -159,6 +172,7 @@ namespace MsgPack
 			Contract.Assert( isCompleted, "Encoding is not completed!" );
 #endif // DEBUG
 		}
+
 <#
 
 		if ( isAsync )
@@ -169,8 +183,9 @@ namespace MsgPack
 		}
 	} // foreach isAsync
 #>
-
+	
 #if FEATURE_POINTER_CONVERSION
+
 		private static unsafe bool EncodeString( Encoder encoder, string value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
 		{
 			fixed ( char* pValue = value )
@@ -183,11 +198,14 @@ namespace MsgPack
 				}
 			}
 		}
+
 #else
+
 		private static bool EncodeString( Encoder encoder, char[] value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
 		{
 			return encoder.EncodeString( value, startOffset, count, buffer, 0, buffer.Length, out charsUsed, out bytesUsed );
 		}
+
 #endif // FEATURE_POINTER_CONVERSION
 	}
 }

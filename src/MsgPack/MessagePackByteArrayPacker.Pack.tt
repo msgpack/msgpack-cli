@@ -1,15 +1,14 @@
 ﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
 <#@ output extension=".cs" #>
-<#@ include file=".\PackerWriter.TypedWrite.ttinclude" #>
 <#@ Assembly Name="System.Core.dll" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="System.IO" #>
-<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Runtime.InteropServices" #>
 <#@ import namespace="System.Text" #>
+<#@ include file="MessagePackPackerCommon.ttinclude" #>
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -30,16 +29,7 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Text;
 #if FEATURE_TAP
 using System.Threading;
@@ -48,14 +38,14 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-	// This file was generated from ByteArrayPackerWriter.TypedWrite.tt and PackerWriter.TypedWrite.ttinclude T4Template.
-	// Do not modify this file. Edit ByteArrayPackerWriter.TypedWrite.tt and PackerWriter.TypedWrite.ttinclude instead.
+	// This file was generated from MessagePackByteArrayPacker.Pack.tt and MessagePackPackerCommon.ttinclude T4Template.
+	// Do not modify this file. Edit MessagePackByteArrayPacker.Pack.tt  and MessagePackPackerCommon.ttinclude instead.
 
-	partial class ByteArrayPackerWriter
+	partial class MessagePackByteArrayPacker
 	{
-		private const int MaximumUtf8Length = 4;
-
 <#
+	this.WriteOverrides();
+
 	foreach ( var isAsync in new [] { false, true } )
 	{
 		if ( isAsync )
@@ -69,7 +59,7 @@ namespace MsgPack
 		foreach ( var type in scalarTypes )
 		{
 #>
-		public override <#= isAsync ? "Task" : "void" #> WriteBytes<#= isAsync ? "Async" : String.Empty #>( byte header, <#= type #> value<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		<#= NonAsyncMethod( isAsync, "void", "WriteBytes", "byte header, " + type + " value", false ) #>
 		{
 <#
 			if ( isAsync )
@@ -95,7 +85,6 @@ namespace MsgPack
 			buffer[ offset ] = header;
 			offset++;
 
-			// Fast path
 <#
 				var bytesLength = lengthes[ type ];
 				for ( var i = 0; i < bytesLength; i++ )
@@ -113,11 +102,10 @@ namespace MsgPack
 #>
 		}
 
-
 <#
 		} // foreach type
 #>
-		public override <#= isAsync ? "Task" : "void" #> WriteBytes<#= isAsync ? "Async" : String.Empty #>( string value, bool allowStr8<#= isAsync ? ", CancellationToken cancellationToken" : String.Empty #> )
+		<#= NonAsyncMethod( isAsync, "void", "WriteBytes", "string value, bool allowStr8", false ) #>
 		{
 <#
 			if ( isAsync )
@@ -164,47 +152,5 @@ namespace MsgPack
 		}
 	} // foreach isAsync
 #>
-		private void WriteStringHeader( int bytesLength, bool allowStr8 )
-		{
-			if( bytesLength < 0x20 )
-			{
-				this.WriteByte( ( byte )( bytesLength | MessagePackCode.MinimumFixedRaw ) );
-				return;
-			}
-
-			if ( bytesLength < 0x100 && allowStr8 )
-			{
-				this.WriteBytes( MessagePackCode.Str8, ( byte )bytesLength );
-				return;
-			}
-
-			if ( bytesLength < 0x10000 )
-			{
-				this.WriteBytes( MessagePackCode.Str16, ( ushort )bytesLength );
-				return;
-			}
-
-			this.WriteBytes( MessagePackCode.Str32, unchecked(( uint )bytesLength) );
-		}
 	}
 }
-<#+
-private string ToBitsType( string type )
-{
-	switch ( type )
-	{
-		case "float":
-		{
-			return "int";
-		}
-		case "double":
-		{
-			return "long";
-		}
-		default:
-		{
-			return type;
-		}
-	}
-}
-#>
