@@ -36,11 +36,9 @@ namespace MsgPack
 	{
 		private const int MaximumUtf8Length = 4;
 
-		// TODO: Use Span<byte>
 		private byte[] _buffer;
 		private int _offset;
 
-		// TODO: Use Span<byte>;
 		private readonly int _initialOffset;
 		private readonly ByteBufferAllocator _allocator;
 
