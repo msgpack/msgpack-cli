@@ -46,8 +46,8 @@ namespace MsgPack
 	/// </summary>
 	internal sealed partial class SubtreeUnpacker : Unpacker
 	{
-		private readonly MessagePackUnpacker _rootCore;
 		private readonly Unpacker _root;
+		private readonly IRootUnpacker _internalRoot;
 		private readonly SubtreeUnpacker _parent;
 		private readonly BooleanStack _isMap;
 		private readonly Int64Stack _unpacked;
@@ -61,61 +61,62 @@ namespace MsgPack
 
 		public override bool IsArrayHeader
 		{
-			get { return this._rootCore.CollectionType == CollectionType.Array; }
+			get { return this._internalRoot.CollectionType == CollectionType.Array; }
 		}
 
 		public override bool IsMapHeader
 		{
-			get { return this._rootCore.CollectionType == CollectionType.Map; }
+			get { return this._internalRoot.CollectionType == CollectionType.Map; }
 		}
 
 		public override bool IsCollectionHeader
 		{
-			get { return this._rootCore.CollectionType != CollectionType.None; }
+			get { return this._internalRoot.CollectionType != CollectionType.None; }
 		}
 
 		[Obsolete( "Consumer should not use this property. Query LastReadData instead." )]
 		public override MessagePackObject? Data
 		{
-			get { return this._rootCore.Data; }
-			protected set { this._rootCore.Data = value.GetValueOrDefault(); }
+			get { return this._internalRoot.Data; }
+			protected set { this._internalRoot.Data = value; }
 		}
 
 		public override MessagePackObject LastReadData
 		{
-			get { return this._rootCore.Data; }
-			protected set { this._rootCore.Data = value; }
+			get { return this._internalRoot.LastReadData; }
+			protected set { this._internalRoot.LastReadData = value; }
 		}
 
 #if DEBUG
 		internal override long? UnderlyingStreamPosition
 		{
-			get { return this._root.UnderlyingStreamPosition; }
+			get { return this._internalRoot.UnderlyingStreamPosition; }
 		}
 #endif
 
-		public SubtreeUnpacker( MessagePackUnpacker parentCore, Unpacker parent ) : this( parentCore, parent, null ) { }
+		public SubtreeUnpacker( Unpacker parent ) : this( parent, null ) { }
 
-		private SubtreeUnpacker( MessagePackUnpacker rootCore, Unpacker root, SubtreeUnpacker parent )
+		private SubtreeUnpacker( Unpacker root, SubtreeUnpacker parent )
 		{
+			var internalRoot = root as IRootUnpacker;
 #if DEBUG
-			Contract.Assert( rootCore != null, "rootCore != null" );
 			Contract.Assert( root != null, "root != null" );
-			Contract.Assert( rootCore.CollectionType == CollectionType.Array || rootCore.CollectionType == CollectionType.Map, "root.IsArrayHeader || root.IsMapHeader" );
+			Contract.Assert( internalRoot != null, "root is IRootUnpacker" );
+			Contract.Assert( internalRoot.CollectionType == CollectionType.Array || internalRoot.CollectionType == CollectionType.Map, "root.IsArrayHeader || root.IsMapHeader" );
 #endif // DEBUG
-			this._rootCore = rootCore;
 			this._root = root;
+			this._internalRoot = internalRoot;
 			this._parent = parent;
 			this._unpacked = new Int64Stack( 2 );
 
 			this._itemsCount = new Int64Stack( 2 );
 			this._isMap = new BooleanStack( 2 );
 
-			if ( rootCore.ItemsCount > 0 )
+			if ( root.ItemsCount > 0 )
 			{
-				this._itemsCount.Push( rootCore.ItemsCount * ( ( int )rootCore.CollectionType ) );
+				this._itemsCount.Push( root.ItemsCount * ( ( int )internalRoot.CollectionType ) );
 				this._unpacked.Push( 0 );
-				this._isMap.Push( rootCore.CollectionType == CollectionType.Map );
+				this._isMap.Push( internalRoot.CollectionType == CollectionType.Map );
 			}
 
 			this._state = State.InHead;
@@ -202,12 +203,12 @@ namespace MsgPack
 				ThrowInTailException();
 			}
 
-			if ( this._rootCore.CollectionType == CollectionType.None )
+			if ( this._internalRoot.CollectionType == CollectionType.None )
 			{
 				ThrowNotInHeadOfCollectionException();
 			}
 
-			return new SubtreeUnpacker( this._rootCore, this._root, this );
+			return new SubtreeUnpacker( this._root, this );
 		}
 
 		private static void ThrowInTailException()
@@ -224,23 +225,23 @@ namespace MsgPack
 		{
 			this.DiscardCompletedStacks();
 
-			if ( this._itemsCount.Count == 0 || !this._rootCore.Read() )
+			if ( this._itemsCount.Count == 0 || !this._root.ReadInternal() )
 			{
 				return false;
 			}
 
-			switch ( this._rootCore.CollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
 				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._rootCore.ItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
 				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._rootCore.ItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -262,23 +263,23 @@ namespace MsgPack
 		{
 			this.DiscardCompletedStacks();
 
-			if ( this._itemsCount.Count == 0 || !( await this._rootCore.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
+			if ( this._itemsCount.Count == 0 || !( await this._root.ReadInternalAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				return false;
 			}
 
-			switch ( this._rootCore.CollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
 				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._rootCore.ItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
 				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._rootCore.ItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -305,7 +306,7 @@ namespace MsgPack
 				return 0;
 			}
 
-			var result = this._rootCore.Skip();
+			var result = this._root.Skip();
 			if ( result != null )
 			{
 				this._unpacked.Push( this._unpacked.Pop() + 1 );
@@ -325,7 +326,7 @@ namespace MsgPack
 				return 0;
 			}
 
-			var result = await this._rootCore.SkipAsync( cancellationToken ).ConfigureAwait( false );
+			var result = await this._root.SkipAsync( cancellationToken ).ConfigureAwait( false );
 			if ( result != null )
 			{
 				this._unpacked.Push( this._unpacked.Pop() + 1 );

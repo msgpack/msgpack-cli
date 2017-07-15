@@ -18,36 +18,27 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
-using System.Collections.Generic;
 using System.IO;
-#if FEATURE_TAP
-using System.Threading;
-using System.Threading.Tasks;
-#endif // FEATURE_TAP
 
 namespace MsgPack
 {
 	// This file was generated from Unpacker.Leaf.tt and Core.ttinclude T4Template.
 	// Do not modify this file. Edit Unpacker.Leaf.tt and Core.ttinclude instead.
 
-
-	internal sealed class FastStreamUnpacker : DefaultStreamUnpacker
+	internal sealed class FastStreamUnpacker : MessagePackStreamUnpacker
 	{
 		public FastStreamUnpacker( Stream stream, PackerUnpackerStreamOptions streamOptions )
 			: base( stream, streamOptions ) { }
 
 		protected override Unpacker ReadSubtreeCore()
 		{
+			this.BeginReadSubtree();
 			return this;
 		}
 	}
 
-	internal sealed class CollectionValidatingStreamUnpacker : DefaultStreamUnpacker
+	internal sealed class CollectionValidatingStreamUnpacker : MessagePackStreamUnpacker
 	{
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;
@@ -74,7 +65,7 @@ namespace MsgPack
 
 		protected override Unpacker ReadSubtreeCore()
 		{
-			return new SubtreeUnpacker( this.Core, this );
+			return new SubtreeUnpacker( this );
 		}
 
 		protected internal override void EndReadSubtree()
@@ -101,7 +92,7 @@ namespace MsgPack
 		}
 	}
 
-	internal sealed class FastByteArrayUnpacker : DefaultByteArrayUnpacker
+	internal sealed class FastByteArrayUnpacker : MessagePackByteArrayUnpacker
 	{
 		public FastByteArrayUnpacker( byte[] source, int startOffset )
 			: base( source, startOffset ) { }
@@ -112,7 +103,7 @@ namespace MsgPack
 		}
 	}
 
-	internal sealed class CollectionValidatingByteArrayUnpacker : DefaultByteArrayUnpacker
+	internal sealed class CollectionValidatingByteArrayUnpacker : MessagePackByteArrayUnpacker
 	{
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;
@@ -139,7 +130,7 @@ namespace MsgPack
 
 		protected override Unpacker ReadSubtreeCore()
 		{
-			return new SubtreeUnpacker( this.Core, this );
+			return new SubtreeUnpacker( this );
 		}
 
 		protected internal override void EndReadSubtree()

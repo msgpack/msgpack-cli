@@ -19,18 +19,23 @@
 #endregion -- License Terms --
 
 using System;
-using System.IO;
 
 namespace MsgPack
 {
 	/// <summary>
-	///		Public interface for stream based MessagePack unpacker.
+	///		Represents <see cref="Int64"/> offset and value pair.
 	/// </summary>
-	internal abstract partial class DefaultStreamUnpacker : Unpacker
+	/// <typeparam name="T">A type of the value.</typeparam>
+	internal struct Int64OffsetValue<T>
 	{
-		protected DefaultStreamUnpacker( Stream stream, PackerUnpackerStreamOptions streamOptions )
+		public readonly long Offset;
+
+		public readonly T Result;
+
+		public Int64OffsetValue( T result, long offset )
 		{
-			this.Core = new MessagePackUnpacker<StreamUnpackerReader>( new StreamUnpackerReader( stream, streamOptions ) );
+			this.Result = result;
+			this.Offset = offset;
 		}
 	}
 }

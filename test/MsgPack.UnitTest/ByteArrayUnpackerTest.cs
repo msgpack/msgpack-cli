@@ -45,12 +45,27 @@ namespace MsgPack
 			get { return false; }
 		}
 
+		protected override bool MayFailToRollback
+		{
+			get { return false; }
+		}
+
 		protected sealed override Unpacker CreateUnpacker( MemoryStream stream )
 		{
 			return this.CreateUnpacker( stream.ToArray(), 0 );
 		}
 
 		protected abstract ByteArrayUnpacker CreateUnpacker( byte[] source, int offset );
+
+		protected override bool CanRevert( Unpacker unpacker )
+		{
+			return true;
+		}
+
+		protected override long GetOffset( Unpacker unpacker )
+		{
+			return ( ( ByteArrayUnpacker )unpacker ).Offset;
+		}
 
 		private static byte[] PrependAppendExtra( byte[] data )
 		{

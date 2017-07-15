@@ -48,5 +48,15 @@ namespace MsgPack
 			// Fast-path
 			return default( AsyncReadResult<T> );
 		}
+
+		internal static AsyncReadResult<Int32OffsetValue<T>> Success<T>( T returnValue, int offset )
+		{
+			return new AsyncReadResult<Int32OffsetValue<T>>( new Int32OffsetValue<T>( returnValue, offset ), true );
+		}
+
+		internal static AsyncReadResult<Int64OffsetValue<T>> Success<T>( T returnValue, long offset )
+		{
+			return new AsyncReadResult<Int64OffsetValue<T>>( new Int64OffsetValue<T>( returnValue, offset ), true );
+		}
 	}
 }

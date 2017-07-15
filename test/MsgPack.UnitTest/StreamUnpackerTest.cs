@@ -44,11 +44,26 @@ namespace MsgPack
 			get { return true; }
 		}
 
+		protected override bool MayFailToRollback
+		{
+			get { return true; }
+		}
+
 		protected sealed override Unpacker CreateUnpacker( MemoryStream stream )
 		{
 			return this.CreateUnpacker( stream as Stream );
 		}
 
 		protected abstract Unpacker CreateUnpacker( Stream stream );
+
+		protected override bool CanRevert( Unpacker unpacker )
+		{
+			return ( ( MessagePackStreamUnpacker )unpacker ).DebugSource.CanSeek;
+		}
+
+		protected override long GetOffset( Unpacker unpacker )
+		{
+			return ( ( MessagePackStreamUnpacker )unpacker ).DebugOffset;
+		}
 	}
 }

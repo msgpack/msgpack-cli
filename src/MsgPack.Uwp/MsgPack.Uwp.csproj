@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;AOT;NETSTANDARD1_3;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;AOT;NETSTANDARD1_3;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -33,7 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\uap10\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;AOT;NETSTANDARD1_3;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;AOT;NETSTANDARD1_3;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\bin\uap10\MsgPack.XML</DocumentationFile>
@@ -43,7 +43,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -53,7 +53,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -65,7 +65,7 @@
     <PlatformTarget>ARM</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\ARM\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>ARM</PlatformTarget>
@@ -75,7 +75,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
     <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -87,7 +87,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -97,7 +97,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -143,12 +143,6 @@
     <Compile Include="..\MsgPack\ByteArrayUnpacker.cs">
       <Link>ByteArrayUnpacker.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\ByteArrayUnpackerReader.cs">
-      <Link>ByteArrayUnpackerReader.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ByteArrayUnpackerReader.TypedRead.cs">
-      <Link>ByteArrayUnpackerReader.TypedRead.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\ByteBufferAllocator.cs">
       <Link>ByteBufferAllocator.cs</Link>
     </Compile>
@@ -160,18 +154,6 @@
     </Compile>
     <Compile Include="..\MsgPack\CollectionType.cs">
       <Link>CollectionType.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.cs">
-      <Link>DefaultByteArrayUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\DefaultByteArrayUnpacker.Unpacking.cs">
-      <Link>DefaultByteArrayUnpacker.Unpacking.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\DefaultStreamUnpacker.cs">
-      <Link>DefaultStreamUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\DefaultStreamUnpacker.Unpacking.cs">
-      <Link>DefaultStreamUnpacker.Unpacking.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
       <Link>DictionaryDebuggerProxy`2.cs</Link>
@@ -197,11 +179,20 @@
     <Compile Include="..\MsgPack\IAsyncUnpackable.cs">
       <Link>IAsyncUnpackable.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Int32OffsetValue`1.cs">
+      <Link>Int32OffsetValue`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Int64OffsetValue`1.cs">
+      <Link>Int64OffsetValue`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\InvalidMessagePackStreamException.cs">
       <Link>InvalidMessagePackStreamException.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\IPackable.cs">
       <Link>IPackable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\IRootUnpacker.cs">
+      <Link>IRootUnpacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\IUnpackable.cs">
       <Link>IUnpackable.cs</Link>
@@ -220,6 +211,12 @@
     </Compile>
     <Compile Include="..\MsgPack\MessagePackByteArrayPacker.Pack.cs">
       <Link>MessagePackByteArrayPacker.Pack.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayUnpacker.cs">
+      <Link>MessagePackByteArrayUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayUnpacker.Unpack.cs">
+      <Link>MessagePackByteArrayUnpacker.Unpack.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\MessagePackCode.cs">
       <Link>MessagePackCode.cs</Link>
@@ -263,26 +260,14 @@
     <Compile Include="..\MsgPack\MessagePackStreamPacker.Pack.cs">
       <Link>MessagePackStreamPacker.Pack.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MessagePackStreamUnpacker.cs">
+      <Link>MessagePackStreamUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackStreamUnpacker.Unpack.cs">
+      <Link>MessagePackStreamUnpacker.Unpack.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\MessagePackString.cs">
       <Link>MessagePackString.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackUnpacker.cs">
-      <Link>MessagePackUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackUnpacker.Read.cs">
-      <Link>MessagePackUnpacker.Read.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackUnpacker`1.cs">
-      <Link>MessagePackUnpacker`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackUnpacker`1.Read.cs">
-      <Link>MessagePackUnpacker`1.Read.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackUnpacker`1.Skipping.cs">
-      <Link>MessagePackUnpacker`1.Skipping.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\MessagePackUnpacker`1.Unpacking.cs">
-      <Link>MessagePackUnpacker`1.Unpacking.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\MessageTypeException.cs">
       <Link>MessageTypeException.cs</Link>
@@ -316,6 +301,12 @@
     </Compile>
     <Compile Include="..\MsgPack\PreserveAttribute.cs">
       <Link>PreserveAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ReadValueResult.cs">
+      <Link>ReadValueResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ReadValueResults.cs">
+      <Link>ReadValueResults.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
@@ -851,12 +842,6 @@
     <Compile Include="..\MsgPack\SingleArrayBufferAllocator.cs">
       <Link>SingleArrayBufferAllocator.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\StreamUnpackerReader.cs">
-      <Link>StreamUnpackerReader.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\StreamUnpackerReader.TypedRead.cs">
-      <Link>StreamUnpackerReader.TypedRead.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\StringEscape.cs">
       <Link>StringEscape.cs</Link>
     </Compile>
@@ -886,12 +871,6 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackerOptions.cs">
       <Link>UnpackerOptions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnpackerReader.cs">
-      <Link>UnpackerReader.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\UnpackerReader.TypedRead.cs">
-      <Link>UnpackerReader.TypedRead.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\UnpackerValidationLevel.cs">
       <Link>UnpackerValidationLevel.cs</Link>

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2017 FUJIWARA, Yusuke
+// Copyright (C) 2010-2015 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,23 +19,24 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
 
 namespace MsgPack
 {
 	/// <summary>
-	///		Public interface for byte array based MessagePack unpacker.
+	///		Defines accessor for internal, domestic Unpacker implementations.
 	/// </summary>
-	internal abstract partial class DefaultByteArrayUnpacker : ByteArrayUnpacker
+	internal interface IRootUnpacker
 	{
-		public override int Offset
-		{
-			get { return unchecked( ( int )this.Core.Reader.Offset ); }
-		}
+		CollectionType CollectionType { get; }
 
-		protected DefaultByteArrayUnpacker( byte[] source, int startOffset )
-		{
-			this.Core = new MessagePackUnpacker<ByteArrayUnpackerReader>( new ByteArrayUnpackerReader( source, startOffset ) );
-		}
+		MessagePackObject? Data { get; set; }
+
+		MessagePackObject LastReadData { get; set; }
+
+#if DEBUG
+		long? UnderlyingStreamPosition { get; }
+#endif // DEBUG
+
+		bool ReadObject( bool isDeep, out MessagePackObject result );
 	}
 }

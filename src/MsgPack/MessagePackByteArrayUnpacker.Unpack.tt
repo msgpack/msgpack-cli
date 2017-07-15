@@ -1,0 +1,108 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file=".\MessagePackUnpackerCommon.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+using System.Collections.Generic;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+using System.Globalization;
+using System.IO;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+#if !UNITY || MSGPACK_UNITY_FULL
+using Int64Stack = System.Collections.Generic.Stack<System.Int64>;
+#endif // !UNITY || MSGPACK_UNITY_FULL
+
+namespace MsgPack
+{
+	// This file was generated from MessagePackByteArrayUnpacker.Unpack.tt and MessagePackUnpackerCommon.ttinclude T4Template.
+	// Do not modify this file. Edit MessagePackByteArrayUnpacker.Unpack.tt and MessagePackUnpackerCommon.ttinclude instead.
+
+	partial class MessagePackByteArrayUnpacker
+	{
+<#
+this.WriteCommon(
+	"_offset",
+	new ReadMethodContext( "source", "offset", "Int32", useOffsetForBuffer: true ),
+	context => this.WritePrologue( context ),
+	( context, collectionType ) => this.WriteEpilogue( context, collectionType ),
+	( context, indentLevel, lengthExpression, onFail, isAsync ) => this.WriteReadBytes( context, indentLevel, lengthExpression, onFail, isAsync ),
+	isPseudoAsync: true
+);
+#>
+	}
+}
+<#+
+private void WritePrologue( ReadMethodContext context )
+{
+#>
+			var <#= context.BufferExpression #> = this._source;
+			var <#= context.OffsetExpression #> = this._offset;
+<#+
+} // WritePrologue
+
+private void WriteEpilogue( ReadMethodContext context, string collectionType )
+{
+#>
+			this._offset = <#= context.OffsetExpression #>;
+<#+
+	if ( collectionType != null )
+	{
+#>
+			this._collectionType = <#= collectionType #>;
+<#+
+	}
+} // WriteEpilogue
+
+private void WriteReadBytes( ReadMethodContext context, int indentLevel, string lengthExpression, Action<int> onFail, bool isAsync )
+{
+	this.PushIndent( indentLevel );
+#>
+if ( <#= context.BufferExpression #>.Length - <#= context.OffsetExpression #> < <#= lengthExpression #> )
+{
+<#+
+	onFail( 1 );
+#>
+}
+<#+
+	this.PopIndent();
+}// WriteReadBytes( context, indentLevel, lengthExpression, onFail, isAsync )
+#>

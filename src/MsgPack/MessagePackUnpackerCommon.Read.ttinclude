@@ -1,0 +1,1497 @@
+﻿<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Runtime.InteropServices" #><#+
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+private void WriteReadOverrides(
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes, // context, indentLevel, lengthExpression, onFail, isAsync
+	bool isPseudoAsync
+)
+{
+	foreach( var type in
+		new []
+		{ 
+			typeof( byte ), typeof( sbyte ),
+			typeof( short ), typeof( ushort ),
+			typeof( int ), typeof( uint ),
+			typeof( long ), typeof( ulong ),
+			typeof( float ), typeof( double ),
+		}
+	)
+	{
+		foreach ( var isAsync in new [] { false, true } )
+		{
+			this.WriteBeginAsyncRegion( isAsync );
+
+			foreach ( var isNullable in new [] { false, true } )
+			{
+				this.WriteReadScalar( type.Name, isNullable, isAsync, isPseudoAsync, context, prologue, epilogue, readBytes );
+			}
+
+			this.WriteEndAsyncRegion( isAsync );
+		}
+	}
+
+	foreach ( var isAsync in new [] { false, true } )
+	{
+		this.WriteBeginAsyncRegion( isAsync );
+
+		foreach ( var isNullable in new [] { false, true } )
+		{
+			this.WriteReadBoolean( isNullable, isAsync, isPseudoAsync, context, prologue, epilogue, readBytes );
+		}
+
+		this.WriteEndAsyncRegion( isAsync );
+	}
+
+	foreach ( var type in
+		new []
+		{
+			new { Label = "Binary", Name = "Byte[]" },
+			new { Label = "String", Name = "String" }
+		}
+	)
+	{
+		foreach ( var isAsync in new [] { false, true } )
+		{
+			this.WriteBeginAsyncRegion( isAsync );
+
+			this.WriteReadRaw( type.Label, type.Name, isAsync, isPseudoAsync, context, prologue, epilogue, readBytes );
+
+			this.WriteEndAsyncRegion( isAsync );
+		}
+	}
+
+	foreach ( var isAsync in new [] { false, true } )
+	{
+		this.WriteBeginAsyncRegion( isAsync );
+
+		this.WriteReadObject( isAsync, isPseudoAsync, context, prologue, epilogue, readBytes );
+
+		this.WriteEndAsyncRegion( isAsync );
+	}
+
+	foreach ( var collectionType in
+		new []
+		{
+			"Array",
+			"Map"
+		}
+	)
+	{
+		foreach ( var isAsync in new [] { false, true } )
+		{
+			this.WriteBeginAsyncRegion( isAsync );
+
+			this.WriteReadCollectionLength( collectionType, typeof( long ).Name, isAsync, isPseudoAsync, context, prologue, epilogue, readBytes );
+
+			this.WriteEndAsyncRegion( isAsync );
+		}
+	}
+
+	foreach ( var isAsync in new [] { false, true } )
+	{
+		this.WriteBeginAsyncRegion( isAsync );
+
+		foreach ( var isNullable in new [] { false, true } )
+		{
+			this.WriteReadExt( isNullable, isAsync, isPseudoAsync, context, prologue, epilogue, readBytes );
+		}
+
+		this.WriteEndAsyncRegion( isAsync );
+	}
+} // WriteReadOverrides
+
+private void WriteReadScalar(
+	string type,
+	bool isNullable,
+	bool isAsync,
+	bool isPseudoAsync,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes // context, indentLevel, lengthExpression, onFail, isAsync
+)
+{
+	var typeLabel = ( isNullable ? "Nullable" : String.Empty ) + type;
+	var typeName = type + ( isNullable ? "?" : String.Empty );
+	var isSigned = typeName.StartsWith( "SByte" ) || typeName.StartsWith( "Int" );
+#>
+		public sealed override <#= Signature( typeLabel, typeName, "Read{0}", String.Empty, isAsync, isPseudoAsync ) #>
+		{
+<#+
+	if ( isAsync && isPseudoAsync )
+	{
+#>
+			<#= typeName #> result;
+			return Task.FromResult( this.Read<#= typeLabel #>( out result ) ? AsyncReadResult.Success( result ) : AsyncReadResult.Fail<<#= typeName #>>() );
+<#+
+	}
+	else // if ( isAsync && isPseudoAsync )
+	{
+		this.WriteReadPrologue( typeName, context, prologue, readBytes, isAsync );
+#>
+
+			// Check immediate
+			if ( ( header & ReadValueResult.FlagsAndTypeCodeMask ) == 0 )
+			{
+				var immediateValue = unchecked( ( sbyte )( byte )( header & ReadValueResult.ValueOrLengthMask ) );
+<#+
+		if ( !isSigned )
+		{
+#>
+				// Check sign
+				result = checked( ( <#= typeName #> )immediateValue );
+<#+
+		}
+		else // if isSigned
+		{
+#>
+				result = ( <#= typeName #> )immediateValue;
+<#+
+		} // if isSigned
+#>
+				<#= context.OffsetExpression #>++;
+				// goto tail
+			}
+			else
+			{
+				// Slow path
+<#+
+		if ( !isAsync )
+		{
+#>
+				if ( !this.Read<#= typeLabel #>Slow( header, <#= context.BufferExpression #>, ref <#= context.OffsetExpression #>, out result ) )
+<#+
+		}
+		else // if !isAsync
+		{
+#>
+				var slowAsyncResult = await this.Read<#= typeLabel #>SlowAsync( header, <#= context.BufferExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+				if ( slowAsyncResult.Success )
+				{
+					result = slowAsyncResult.Value.Result;
+					offset = slowAsyncResult.Value.Offset;
+				}
+				else
+<#+
+		} // if !isAsync
+#>
+				{
+<#+
+		this.OnFail( typeName, context.OffsetType, 5, isAsync, withOffset: false );
+#>
+				}
+				// goto tail
+			}
+
+<#+
+		this.WriteReadEpilogue( context, "CollectionType.None", epilogue, isAsync );
+#>
+		}
+
+<#+
+		var slowParameters =
+			"ReadValueResult header, " +
+			"byte[] " + context.BufferExpression + ", " +
+			( !isAsync ? "ref " : String.Empty ) + context.OffsetType + " " + context.OffsetExpression + ", ";
+#>
+		private <#= SignatureWithOffset( typeLabel, typeName, context.OffsetType, "Read{0}Slow", slowParameters, isAsync, isPseudoAsync ) #>
+		{
+<#+
+		// nullable?
+		if ( typeName.EndsWith( "?" ) )
+		{
+#>
+			if ( header == ReadValueResult.Nil )
+			{
+<#+
+			if ( !isAsync )
+			{
+#>
+				result = default( <#= typeName #> );
+				<#= context.OffsetExpression #>++;
+				return true;
+<#+
+			}
+			else // if !isAsync
+			{
+#>
+				return AsyncReadResult.Success( default( <#= typeName #> ), <#= context.OffsetExpression #> + 1 );
+<#+
+			} // if !isAsync
+#>
+			}
+
+<#+
+			var nonNullableTypeName = typeName.Remove( typeName.Length - 1 );
+#>
+			<#= nonNullableTypeName #> value;
+<#+
+			if ( !isAsync )
+			{
+#>
+			if( !this.Read<#= nonNullableTypeName #>Slow( header, <#= context.BufferExpression #>, ref <#= context.OffsetExpression #>, out value ) )
+<#+
+			}
+			else // if !isAsync
+			{
+#>
+			var asyncReadResult = await this.Read<#= typeName.Remove( typeName.Length - 1 ) #>SlowAsync( header, <#= context.BufferExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+			if ( asyncReadResult.Success )
+			{
+				value = asyncReadResult.Value.Result;
+				<#= context.OffsetExpression #> = asyncReadResult.Value.Offset;
+			}
+			else
+<#+
+			} // if !isAsync
+#>
+			{
+<#+
+			this.OnFail( typeName, context.OffsetType, 4, isAsync, withOffset: true );
+#>
+			}
+
+<#+
+			if ( !isAsync )
+			{
+#>
+			result = value;
+			return true;
+<#+
+			}
+			else // if !isAsync
+			{
+#>
+			return AsyncReadResult.Success( ( <#= typeName #> )value, <#= context.OffsetExpression #> );
+<#+
+			} // if !isAsync
+		}
+		else // if !nullable
+		{
+			if ( isAsync )
+			{
+#>
+			<#= typeName #> result;
+<#+
+			} // if !isAsync
+#>
+			// Check type
+			if ( ( header & ReadValueResult.NonScalarBitMask ) != 0 )
+			{
+				this.ThrowTypeException( typeof( <#= typeName #> ), header );
+			}
+
+			<#= context.OffsetExpression #>++;
+			var length = ( int )( header & ReadValueResult.LengthOfLengthMask ) >> 8;
+<#+
+			readBytes( context, 3, "length", indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+
+			checked
+			{
+				switch( ( int )( header & ReadValueResult.TypeCodeMask ) )
+				{
+					case 0x100: // Byte
+					{
+						result = ( <#= typeName #> )<#= context.BufferExpression #>[ <#= context.BufferOffsetExpression #> ];
+						break;
+					}
+<#+
+			for ( var i = 1; i <= 3; i++ )
+			{
+				var bytes = Math.Pow( 2, i ).ToString( CultureInfo.InvariantCulture );
+				var bits = ( Math.Pow( 2, i ) * 8 ).ToString( CultureInfo.InvariantCulture );
+#>
+					case 0x<#= bytes #>00: // UInt<#= bits #>
+					{
+						result = ( <#= typeName #> )BigEndianBinary.ToUInt<#= bits #>( <#= context.BufferExpression #>, <#= context.BufferOffsetExpression #> );
+						break;
+					}
+<#+
+			} // for
+#>
+					case 0x1100: // SByte
+					{
+						result = ( <#= typeName #> )( unchecked( ( SByte )<#= context.BufferExpression #>[ <#= context.BufferOffsetExpression #> ] ) );
+						break;
+					}
+<#+
+			for ( var i = 1; i <= 3; i++ )
+			{
+				var bytes = Math.Pow( 2, i ).ToString( CultureInfo.InvariantCulture );
+				var bits = ( Math.Pow( 2, i ) * 8 ).ToString( CultureInfo.InvariantCulture );
+#>
+					case 0x1<#= bytes #>00: // Int<#= bits #>
+					{
+						result = ( <#= typeName #> )BigEndianBinary.ToInt<#= bits #>( <#= context.BufferExpression #>, <#= context.BufferOffsetExpression #> );
+						break;
+					}
+<#+
+			} // for
+#>
+					case 0x2400: // Single
+					{
+						result = ( <#= typeName #> )BigEndianBinary.ToSingle( <#= context.BufferExpression #>, <#= context.BufferOffsetExpression #> );
+						break;
+					}
+					case 0x2800: // Double
+					{
+						result = ( <#= typeName #> )BigEndianBinary.ToDouble( <#= context.BufferExpression #>, <#= context.BufferOffsetExpression #> );
+						break;
+					}
+					default:
+					{
+						this.ThrowTypeException( typeof( <#= typeName #> ), header );
+						// Never
+						result = default( <#= typeName #> );
+						break;
+					}
+				} // switch
+			} // checked
+
+			<#= context.OffsetExpression #> += length;
+<#+
+			if ( !isAsync )
+			{
+#>
+			return true;
+<#+
+			}
+			else // if !isAsync
+			{
+#>
+			return AsyncReadResult.Success( result, <#= context.OffsetExpression #> );
+<#+
+			} // if !isAsync
+		} // if !nullable
+	} // if ( isAsync && isPseudoAsync )
+#>
+		}
+
+<#+
+} // WriteReadScalar
+
+
+private void WriteReadBoolean(
+	bool isNullable,
+	bool isAsync,
+	bool isPseudoAsync,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes // context, indentLevel, lengthExpression, onFail, isAsync
+)
+{
+	var typeLabel = ( isNullable ? "Nullable" : String.Empty ) + "Boolean";
+	var typeName = "Boolean" + ( isNullable ? "?" : String.Empty );
+#>
+		public sealed override <#= Signature( typeLabel, typeName, "Read{0}", String.Empty, isAsync, isPseudoAsync ) #>
+		{
+<#+
+	if ( isAsync && isPseudoAsync )
+	{
+#>
+			<#= typeName #> result;
+			return Task.FromResult( this.Read<#= typeLabel #>( out result ) ? AsyncReadResult.Success( result ) : AsyncReadResult.Fail<<#= typeName #>>() );
+<#+
+	}
+	else // if ( isAsync && isPseudoAsync )
+	{
+		this.WriteReadPrologue( typeName, context, prologue, readBytes, isAsync );
+#>
+			<#= context.OffsetExpression #>++;
+
+			switch ( header )
+			{
+<#+
+		if ( isNullable )
+		{
+#>
+				case ReadValueResult.Nil:
+				{
+					result = default( bool? );
+					break;
+				}
+<#+
+		} // if isNullable
+#>
+				case ReadValueResult.True:
+				{
+					result = true;
+					break;
+				}
+				case ReadValueResult.False:
+				{
+					result = false;
+					break;
+				}
+				default:
+				{
+					this.ThrowTypeException( typeof( <#= typeName #> ), header );
+					// never
+					result = false;
+					break;
+				}
+			}
+
+<#+
+		this.WriteReadEpilogue( context, "CollectionType.None", epilogue, isAsync );
+	}
+#>
+		} // if ( isAsync && isPseudoAsync )
+
+<#+
+} // WriteReadBoolean
+
+
+private void WriteReadCollectionLength(
+	string collectionType,
+	string typeName,
+	bool isAsync,
+	bool isPseudoAsync,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes // context, indentLevel, lengthExpression, onFail, isAsync
+)
+{
+	this.WriteReadCollectionCore(
+		collectionType,
+		collectionType + "Length",
+		typeName,
+		isAsync,
+		isPseudoAsync,
+		context,
+		prologue,
+		epilogue,
+		readBytes,
+		null,
+		( !isAsync || !isPseudoAsync ) ? () => this.WriteReadCollectionLengthCore() : default( Action )
+	);
+} // WriteReadCollectionLength
+
+private void WriteReadCollectionLengthCore()
+{
+#>
+			result = length;
+			this._data = length;
+<#+
+} // WriteReadCollectionLengthCore
+
+private void WriteReadRaw(
+	string typeLabel,
+	string typeName,
+	bool isAsync,
+	bool isPseudoAsync,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes // context, indentLevel, lengthExpression, onFail, isAsync
+)
+{
+	this.WriteReadCollectionCore(
+		"Raw",
+		typeLabel,
+		typeName,
+		isAsync,
+		isPseudoAsync,
+		context,
+		prologue,
+		epilogue,
+		readBytes,
+		null,
+		( !isAsync || !isPseudoAsync ) ? () => this.WriteReadRawCoreCall( context, typeLabel, typeName, typeName, 3, "result", isAsync, withOffset: false ) : default( Action )
+	);
+} // WriteReadRaw
+
+private void WriteReadRawCoreCall(
+	ReadMethodContext context,
+	string typeLabel,
+	string typeName,
+	string returnTypeName,
+	int indentLevel,
+	string resultExpression,
+	bool isAsync,
+	bool withOffset
+)
+{
+	this.PushIndent( indentLevel );
+	if ( !isAsync )
+	{
+#>
+if( !this.Read<#= typeLabel #>Core( unchecked( ( int )length ), ref <#= context.OffsetExpression #>, out <#= resultExpression #> ) )
+<#+
+	}
+	else // if !isAsync
+	{
+#>
+var asyncReadResult = await this.Read<#= typeLabel #>CoreAsync( unchecked( ( int )length ), <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+if ( asyncReadResult.Success )
+{
+	<#= context.OffsetExpression #> = asyncReadResult.Value.Offset;
+	<#= resultExpression #> = asyncReadResult.Value.Result;
+}
+else
+<#+
+	} // if !isAsync
+#>
+{
+<#+
+	this.OnFail( returnTypeName, context.OffsetType, 1, isAsync, withOffset );
+#>
+}
+
+<#+
+	this.PopIndent();
+} // WriteReadRawCoreCall
+
+
+private void WriteReadExt(
+	bool isNullable,
+	bool isAsync,
+	bool isPseudoAsync,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes // context, indentLevel, lengthExpression, onFail, isAsync
+)
+{
+	var typeLabel = ( isNullable ? "Nullable" : String.Empty ) + "MessagePackExtendedTypeObject";
+	var typeName = "MessagePackExtendedTypeObject" + ( isNullable ? "?" : String.Empty );
+	this.WriteReadCollectionCore(
+		"Ext",
+		typeLabel,
+		typeName,
+		isAsync,
+		isPseudoAsync,
+		context,
+		prologue,
+		epilogue,
+		readBytes,
+		( ( !isAsync || !isPseudoAsync ) && isNullable ) ? () => this.WriteNullableReadExtPrologue( isAsync ) : default( Action ),
+		( !isAsync || !isPseudoAsync ) ? () => this.WriteReadExtEpilogue( isNullable, isAsync, typeName, context, readBytes ) : default( Action )
+	);
+	
+	if ( !isNullable && ( !isAsync || !isPseudoAsync ) )
+	{
+		var parameters =
+			"int length, " +
+			"byte[] " + context.BufferExpression + ", " +
+			( !isAsync ? "ref " : String.Empty ) + context.OffsetType + " " + context.OffsetExpression + ", ";
+#>
+		private <#= SignatureWithOffset( typeLabel, typeName, context.OffsetType, "Read{0}Core", parameters, isAsync, isPseudoAsync ) #>
+		{
+			// Read type code
+<#+
+		readBytes( context, 3, "1", indentLevel => this.OnFail( "MessagePackExtendedTypeObject", context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+
+			var typeCode = <#= context.BufferExpression #>[ <#= context.BufferOffsetExpression #> ];
+			<#= context.OffsetExpression #>++;
+
+			// Read body
+<#+
+		this.WriteReadBinaryCoreCall( typeName, context, "body", "length", 3, isAsync );
+
+		if ( !isAsync )
+		{
+#>
+
+			result = new MessagePackExtendedTypeObject( typeCode, body );
+			return true;
+<#+
+		}
+		else
+		{
+#>
+			return AsyncReadResult.Success( new MessagePackExtendedTypeObject( typeCode, body ), <#= context.OffsetExpression #> );
+<#+
+		}
+#>
+		}
+
+<#+
+	} // if !isNullable
+} // WriteReadExt
+
+private void WriteNullableReadExtPrologue( bool isAsync )
+{
+#>
+			if ( header == ReadValueResult.Nil )
+			{
+<#+
+	if ( !isAsync )
+	{
+#>
+				result = default( MessagePackExtendedTypeObject? );
+				return true;
+<#+
+	}
+	else
+	{
+#>
+				return AsyncReadResult.Success( default( MessagePackExtendedTypeObject? ) );
+<#+
+	}
+#>
+			}
+<#+
+} // WriteNullableReadExtPrologue
+
+private void WriteReadExtEpilogue(
+	bool isNullable,
+	bool isAsync,
+	string typeName,
+	ReadMethodContext context,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes // context, indentLevel, lengthExpression, onFail, isAsync
+)
+{
+	this.WriteReadExtCoreCall( isNullable, isAsync, typeName, context, 3, "result", readBytes, withOffset: false );
+
+	if ( isNullable && !isAsync )
+	{
+#>
+			result = value;
+<#+
+	}
+} // WriteReadExtEpilogue
+
+private void WriteReadExtCoreCall(
+	bool isNullable,
+	bool isAsync,
+	string returnType,
+	ReadMethodContext context,
+	int indentLevel,
+	string resultExpression,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes, // context, indentLevel, lengthExpression, onFail, isAsync
+	bool withOffset
+)
+{
+	this.PushIndent( indentLevel );
+
+	var variable = isNullable ? "value" : resultExpression;
+	if ( !isAsync )
+	{
+		if ( isNullable )
+		{
+#>
+MessagePackExtendedTypeObject <#= variable #>;
+<#+
+		}
+#>
+if ( !this.ReadMessagePackExtendedTypeObjectCore( unchecked( ( int )length ), <#= context.BufferExpression #>, ref <#= context.OffsetExpression #>, out <#= variable #> ) )
+<#+
+	}
+	else
+	{
+#>
+var asyncReadResult = await this.ReadMessagePackExtendedTypeObjectCoreAsync( unchecked( ( int )length ), <#= context.BufferExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+if ( asyncReadResult.Success )
+{
+	<#= resultExpression #> = asyncReadResult.Value.Result;
+	<#= context.OffsetExpression #> = asyncReadResult.Value.Offset;
+}
+else
+<#+
+	}
+#>
+{
+<#+
+	this.OnFail( returnType, context.OffsetType, 1, isAsync, withOffset );
+#>
+}
+
+<#+
+	this.PopIndent();
+} // WriteReadExtCoreCall
+
+
+private void WriteReadCollectionCore(
+	string collectionType,
+	string typeLabel,
+	string typeName,
+	bool isAsync,
+	bool isPseudoAsync,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes, // context, indentLevel, lengthExpression, onFail, isAsync
+	Action onHeaderRead,
+	Action onLengthChecked
+)
+{
+#>
+		public sealed override <#= Signature( typeLabel, typeName, "Read{0}", String.Empty, isAsync, isPseudoAsync ) #>
+		{
+<#+
+	if ( isAsync && isPseudoAsync )
+	{
+#>
+			<#= typeName #> result;
+			return Task.FromResult( this.Read<#= typeLabel #>( out result ) ? AsyncReadResult.Success( result ) : AsyncReadResult.Fail<<#= typeName #>>() );
+<#+
+	}
+	else // if ( isAsync && isPseudoAsync )
+	{
+		this.WriteReadPrologue( typeName, context, prologue, readBytes, isAsync );
+		if ( onHeaderRead != null )
+		{
+			onHeaderRead();
+		}
+#>
+			<#= context.OffsetExpression #>++;
+<#+
+	if ( collectionType == "Raw" )
+	{
+#>
+
+			// <#= typeName #> can be null.
+			if ( header == ReadValueResult.Nil )
+			{
+				result = null;
+<#+
+		this.PushIndent( 1 );
+		this.WriteReadEpilogue( context, "CollectionType.None", epilogue, isAsync );
+		this.PopIndent();
+#>
+			}
+<#+
+	} // if collectionType == "Raw"
+#>
+
+			// Check type
+			if ( ( header & ReadValueResult.<#= collectionType #>TypeMask ) != ReadValueResult.<#= collectionType #>TypeMask )
+			{
+				this.ThrowTypeException( "<#= collectionType.ToLowerInvariant() #>", header );
+			}
+
+			// Get length
+			var lengthOfLength = ( int )( header & ReadValueResult.LengthOfLengthMask ) >> 8;
+			uint length;
+			switch ( lengthOfLength )
+			{
+				case 0:
+				{
+					length = ( byte )( header & ReadValueResult.ValueOrLengthMask );
+					break;
+				}
+				case 1: // <#= collectionType #>8
+				{
+<#+
+		this.WriteReadCollectionLengthSlowCall( context, 1, typeName, readBytes, isAsync );
+#>
+					break;
+				}
+				case 2: // <#= collectionType #>16
+				{
+<#+
+		this.WriteReadCollectionLengthSlowCall( context, 2, typeName, readBytes, isAsync );
+#>
+					break;
+				}
+				default: // <#= collectionType #>32
+				{
+#if DEBUG
+					Contract.Assert( lengthOfLength == 4, lengthOfLength + " == 4" );
+#endif // DEBUG
+<#+
+		this.WriteReadCollectionLengthSlowCall( context, 4, typeName, readBytes, isAsync );
+#>
+					break;
+				}
+			}
+
+			<#= context.OffsetExpression #> += lengthOfLength;
+			this.CheckLength( length, header );
+<#+
+		onLengthChecked();
+
+		this.WriteReadEpilogue( context, "CollectionType." + ( ( collectionType == "Array" || collectionType == "Map" ) ? collectionType : "None" ), epilogue, isAsync );
+	} // if ( isAsync && isPseudoAsync )
+#>
+		}
+
+<#+
+} // WriteReadCollectionCore
+
+private void WriteReadCollectionLengthSlowCall(
+	ReadMethodContext context,
+	int byteLength,
+	string typeName,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes, // context, indentLevel, lengthExpression, onFail, isAsync
+	bool isAsync
+)
+{
+	var bytes = byteLength.ToString( CultureInfo.InvariantCulture );
+	var bits = ( byteLength * 8 ).ToString( CultureInfo.InvariantCulture );
+
+	readBytes( context, 5, bytes, indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: false ), isAsync );
+#>
+
+					length = BigEndianBinary.To<#= byteLength == 1 ? "Byte" : "UInt" + bits #>( <#= context.BufferExpression #>, <#= context.BufferOffsetExpression #> );
+
+<#+
+} // WriteReadCollectionLengthSlowCall
+
+
+private void WriteReadObject(
+	bool isAsync,
+	bool isPseudoAsync,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes // context, indentLevel, lengthExpression, onFail, isAsync
+)
+{
+	var typeLabel = "Object";
+	var typeName = "MessagePackObject";
+#>
+		private <#= Signature( typeLabel, typeName, "Read{0}", "bool isDeep, ", isAsync, isPseudoAsync ) #>
+		{
+<#+
+	if ( isAsync && isPseudoAsync )
+	{
+#>
+			<#= typeName #> result;
+			return Task.FromResult( this.Read<#= typeLabel #>( isDeep, out result ) ? AsyncReadResult.Success( result ) : AsyncReadResult.Fail<<#= typeName #>>() );
+<#+
+	}
+	else // if ( isAsync && isPseudoAsync )
+	{
+		// Do not read header yet.
+		if ( isAsync )
+		{
+#>
+			<#= typeName #> result;
+<#+
+		} // if isAsync
+
+		prologue( context );
+
+		if ( !isAsync )
+		{
+#>
+			if ( !this.ReadObjectCore( isDeep, <#= context.BufferExpression #>, ref <#= context.OffsetExpression #>, out result ) )
+<#+
+		}
+		else // if !isAsync
+		{
+#>
+			var asyncReadResult = await this.ReadObjectCoreAsync( isDeep, <#= context.BufferExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+			if ( asyncReadResult.Success )
+			{
+				result = asyncReadResult.Value.Result;
+				offset = asyncReadResult.Value.Offset;
+			}
+			else
+<#+
+		} // if !isAsync
+#>
+			{
+<#+
+		this.OnFail( typeName, context.OffsetType, 4, isAsync, withOffset: false );
+#>
+			}
+<#+
+		epilogue( context, null );
+#>
+			return <#= !isAsync ? "true" : "AsyncReadResult.Success( result )" #>;
+		}
+
+<#+
+		var coreParameters =
+			"bool isDeep, " +
+			"byte[] " + context.BufferExpression + ", " +
+			( !isAsync ? "ref " : String.Empty ) + context.OffsetType + " " + context.OffsetExpression + ", ";
+#>
+		private <#= SignatureWithOffset( typeLabel, typeName, context.OffsetType, "Read{0}Core", coreParameters, isAsync, isPseudoAsync ) #>
+		{
+<#+
+		readBytes( context, 3, "1", indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+
+			var byteHeader = <#= context.BufferExpression #>[ <#= context.BufferOffsetExpression #> ];
+			<#= context.OffsetExpression #>++;
+			var collectionType = ReadValueResults.CollectionType[ byteHeader ];
+<#+
+		if ( isAsync )
+		{
+#>
+			<#= typeName #> result;
+<#+
+		} // !isAsync
+#>
+
+			if ( ReadValueResults.HasConstantObject[ byteHeader ] )
+			{
+				result = ReadValueResults.ContantObject[ byteHeader ];
+			}
+			else
+			{
+				var header = ReadValueResults.EncodedTypes[ byteHeader ];
+
+				if ( ( header & ReadValueResult.RawTypeMask ) == ReadValueResult.RawTypeMask && ( header & ReadValueResult.LengthOfLengthMask ) == 0 )
+				{
+					// fixed raw
+					int length = ( int )( header & ReadValueResult.ValueOrLengthMask );
+
+<#+
+	this.WriteReadBinaryCoreCall( typeName, context, "binary", "length", 5, isAsync );
+#>
+
+					result = binary;
+				}
+				else
+				{
+<#+
+		if ( !isAsync )
+		{
+#>
+					if ( !this.ReadObjectSlow( header, <#= context.BufferExpression #>, ref <#= context.OffsetExpression #>, out result ) )
+<#+
+		}
+		else // if !isAsync
+		{
+#>
+					var asyncReadReasult = await this.ReadObjectSlowAsync( header, <#= context.BufferExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+					if ( asyncReadReasult.Success )
+					{
+						result = asyncReadReasult.Value.Result;
+						<#= context.OffsetExpression #> = asyncReadReasult.Value.Offset;
+					}
+					else
+<#+
+		} // if !isAsync
+#>
+					{
+<#+
+		this.OnFail( typeName, context.OffsetType, 6, isAsync, withOffset: true );
+#>
+					}
+				}
+			}
+
+			if ( isDeep && collectionType != CollectionType.None )
+			{
+<#+
+		if ( !isAsync )
+		{
+#>
+				if ( !this.ReadItems( result.AsInt32(), collectionType == CollectionType.Map, <#= context.BufferExpression #>, ref offset, out result ) )
+<#+
+		}
+		else // if !isAsync
+		{
+#>
+				var asyncReadReasult = await this.ReadItemsAsync( result.AsInt32(), collectionType == CollectionType.Map, <#= context.BufferExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+				if ( asyncReadReasult.Success )
+				{
+					result = asyncReadReasult.Value.Result;
+					<#= context.OffsetExpression #> = asyncReadReasult.Value.Offset;
+				}
+				else
+<#+
+		} // if !isAsync
+#>
+				{
+<#+
+		this.OnFail( typeName, context.OffsetType, 5, isAsync, withOffset: true );
+#>
+				}
+			}
+
+			this._data = result;
+			this._collectionType = collectionType;
+			return <#= !isAsync ? "true" : "AsyncReadResult.Success( result, offset )" #>;
+		}
+
+<#+
+		var slowParameters =
+			"ReadValueResult header, " +
+			"byte[] " + context.BufferExpression + ", " +
+			( !isAsync ? "ref " : String.Empty ) + context.OffsetType + " " + context.OffsetExpression + ", ";
+#>
+		private <#= SignatureWithOffset( typeLabel, typeName, context.OffsetType, "Read{0}Slow", slowParameters, isAsync, isPseudoAsync ) #>
+		{
+<#+
+		if ( isAsync )
+		{
+#>
+			<#= typeName #> result;
+<#+
+		} // if !isAsync
+#>
+			switch ( header & ReadValueResult.TypeCodeMask )
+			{
+				case ReadValueResult.Array16Type:
+				case ReadValueResult.Map16Type:
+				{
+<#+
+		readBytes( context, 5, "2", indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+					result = BigEndianBinary.ToUInt16( <#= context.BufferExpression #>, <#= context.BufferOffsetExpression #> );
+					<#= context.OffsetExpression #> += 2;
+					break;
+				}
+				case ReadValueResult.Array32Type:
+				case ReadValueResult.Map32Type:
+				{
+<#+
+		readBytes( context, 5, "4", indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+					result = BigEndianBinary.ToUInt32( <#= context.BufferExpression #>, <#= context.BufferOffsetExpression #> );
+					<#= context.OffsetExpression #> += 4;
+					break;
+				}
+<#+
+		foreach ( var item in
+			new []
+			{
+				new { Label = "String", Type = "string", RawCallLabel = "RawString",	RawCallType = "MessagePackString",	Code = "Str", ConstructorFormat = "new MessagePackObject( {0} )" },
+				new { Label = "Binary", Type = "byte[]", RawCallLabel = "Binary",		RawCallType = "byte[]",				Code = "Bin", ConstructorFormat = "new MessagePackObject( {0}, /* isBinary */true )" },
+			}
+		)
+		{
+			foreach ( var bits in
+				new []
+				{
+					new { Value = "8",	Bytes = "1",	Decode = "{0}[ {1} ]" },
+					new { Value = "16", Bytes = "2",	Decode = "BigEndianBinary.ToUInt16( {0}, {1} )" },
+					new { Value = "32", Bytes = "4",	Decode = "BigEndianBinary.ToUInt32( {0}, {1} )" }
+				}
+			)
+			{
+				var variable = item.Label.ToLowerInvariant() + "Value";
+#>
+				case ReadValueResult.<#= item.Code #><#= bits.Value #>Type:
+				{
+<#+
+				readBytes( context, 5, bits.Bytes, indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+
+					var length = <#= String.Format( CultureInfo.InvariantCulture, bits.Decode, context.BufferExpression , context.BufferOffsetExpression ) #>;
+					this.CheckLength( length, header );
+					<#= context.OffsetExpression #> += <#= bits.Bytes #>;
+					<#= item.RawCallType #> <#= variable #>;
+<#+
+				this.WriteReadRawCoreCall( context, item.RawCallLabel, item.Type, typeName, 5, variable, isAsync, withOffset: true );
+#>
+					result = <#= String.Format( CultureInfo.InvariantCulture, item.ConstructorFormat, variable ) #>;
+					break;
+				}
+<#+
+			} // foreach bits
+		} // foreach item
+#>
+				case ReadValueResult.FixExtType:
+				{
+					var length = ( header & ReadValueResult.ValueOrLengthMask );
+					MessagePackExtendedTypeObject ext;
+<#+
+		this.WriteReadExtCoreCall( false, isAsync, typeName, context, 5, "ext", readBytes, withOffset: true );
+#>
+					result = ext;
+					break;
+				}
+<#+
+		foreach ( var bits in
+			new []
+			{
+				new { Value = "8",	Bytes = "1",	Decode = "{0}[ {1} ]" },
+				new { Value = "16",	Bytes = "2",	Decode = "BigEndianBinary.ToUInt16( {0}, {1} )" },
+				new { Value = "32",	Bytes = "4",	Decode = "BigEndianBinary.ToUInt32( {0}, {1} )" }
+			}
+		)
+		{
+#>
+				case ReadValueResult.Ext<#= bits.Value #>Type:
+				{
+<#+
+			readBytes( context, 5, bits.Bytes, indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+					var length = <#= String.Format( CultureInfo.InvariantCulture, bits.Decode, context.BufferExpression , context.BufferOffsetExpression ) #>;
+					<#= context.OffsetExpression #> += <#= bits.Bytes #>;
+					MessagePackExtendedTypeObject ext;
+<#+
+			this.WriteReadExtCoreCall( false, isAsync, typeName, context, 5, "ext", readBytes, withOffset: true );
+#>
+					result = ext;
+					break;
+				}
+<#+
+		} // foreach bits
+
+		foreach ( var item in
+			new []
+			{
+				new { Prefix = String.Empty, ByteDecode = "unchecked( ( sbyte ){0}[ {1} ] )" },
+				new { Prefix = "U",			 ByteDecode = "{0}[ {1} ]" }
+			}
+		)
+		{
+			foreach ( var bits in
+				new []
+				{
+					new { Value = "8",	Bytes = "1",	Decode = item.ByteDecode },
+					new { Value = "16",	Bytes = "2",	Decode = "BigEndianBinary.To" + item.Prefix + "Int16( {0}, {1} )" },
+					new { Value = "32",	Bytes = "4",	Decode = "BigEndianBinary.To" + item.Prefix + "Int32( {0}, {1} )" },
+					new { Value = "64",	Bytes = "8",	Decode = "BigEndianBinary.To" + item.Prefix + "Int64( {0}, {1} )" }
+				}
+			)
+			{
+#>
+				case ReadValueResult.<#= item.Prefix #>Int<#= bits.Value #>Type:
+				{
+<#+
+				readBytes( context, 5, bits.Bytes, indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+					result = <#= String.Format( CultureInfo.InvariantCulture, bits.Decode, context.BufferExpression , context.BufferOffsetExpression ) #>;
+					<#= context.OffsetExpression #> += <#= bits.Bytes #>;
+					break;
+				}
+<#+
+			} // foreach bits
+		} // foreach item
+
+		foreach ( var bits in
+			new []
+			{
+				new { Value = "32",	Bytes = "4",	Decode = "BigEndianBinary.ToSingle( {0}, {1} )" },
+				new { Value = "64",	Bytes = "8",	Decode = "BigEndianBinary.ToDouble( {0}, {1} )" }
+			}
+		)
+		{
+#>
+				case ReadValueResult.Real<#= bits.Value #>Type:
+				{
+<#+
+				readBytes( context, 5, bits.Bytes, indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: true ), isAsync );
+#>
+					result = <#= String.Format( CultureInfo.InvariantCulture, bits.Decode, context.BufferExpression , context.BufferOffsetExpression ) #>;
+					<#= context.OffsetExpression #> += <#= bits.Bytes #>;
+					break;
+				}
+<#+
+		} // foreach bits
+#>
+				default:
+				{
+#if DEBUG
+					Contract.Assert( header == ReadValueResult.InvalidCode, header.ToString( "X" ) + " == ReadValueResult.InvalidCode" );
+#endif // DEBUG
+					this.ThrowUnassignedMessageTypeException( 0xC1 );
+					// never
+					result = default( MessagePackObject );
+					break;
+				}
+			}
+
+			return <#= !isAsync ? "true" : "AsyncReadResult.Success( result, " + context.OffsetExpression + " )" #>;
+		}
+
+<#+
+		var itemsParameters =
+			"int count, bool isMap, " +
+			"byte[] " + context.BufferExpression + ", " +
+			( !isAsync ? "ref " : String.Empty ) + context.OffsetType + " " + context.OffsetExpression + ", ";
+#>
+		private <#= SignatureWithOffset( typeLabel, typeName, context.OffsetType, "ReadItems", itemsParameters, isAsync, isPseudoAsync ) #>
+		{
+			MessagePackObject container;
+			if ( !isMap )
+			{
+				var array = new MessagePackObject[ count ];
+				for ( var i = 0; i < count; i++ )
+				{
+					MessagePackObject item;
+<#+
+		this.WriteReadItemCore( context, "item", isAsync );
+#>
+					array[ i ] = item;
+				}
+
+				container = new MessagePackObject( array, true );
+			}
+			else
+			{
+				var map = new MessagePackObjectDictionary( count );
+
+				for ( var i = 0; i < count; i++ )
+				{
+					MessagePackObject key;
+<#+
+		this.WriteReadItemCore( context, "key", isAsync );
+#>
+					MessagePackObject value;
+<#+
+		this.WriteReadItemCore( context, "value", isAsync );
+#>
+					map.Add( key, value );
+				}
+
+				container = new MessagePackObject( map, true );
+			}
+<#+
+		if ( !isAsync )
+		{
+#>
+			result = container;
+			return true;
+<#+
+		}
+		else // if !isAsync
+		{
+#>
+			return AsyncReadResult.Success( container, <#= context.OffsetExpression #> );
+<#+
+		} // if !isAsync
+	} // if ( isAsync && isPseudoAsync )
+#>
+		}
+
+<#+
+} // WriteReadObject
+
+private void WriteReadItemCore(
+	ReadMethodContext context,
+	string resultVariable,
+	bool isAsync
+)
+{
+#>
+<#+
+	if ( !isAsync )
+	{
+#>
+					if ( !this.ReadObjectCore( true, <#= context.BufferExpression #>, ref <#= context.OffsetExpression #>, out <#= resultVariable #> ) )
+<#+
+	}
+	else
+	{
+		var variable = resultVariable + "AsyncReadResult";
+#>
+					var <#= variable #> = await this.ReadObjectCoreAsync( true, <#= context.BufferExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+					if ( <#= variable #>.Success )
+					{
+						<#= context.OffsetExpression #> = <#= variable #>.Value.Offset;
+						<#= resultVariable #> = <#= variable #>.Value.Result;
+					}
+					else
+<#+
+	}
+#>
+					{
+<#+
+	this.OnFail( "MessagePackObject", context.OffsetType, 6, isAsync, withOffset: true );
+#>
+					}
+<#+
+} // WriteReadItemCore
+
+
+private void WriteReadBinaryCoreCall(
+	string typeName,
+	ReadMethodContext context,
+	string resultVariable,
+	string lengthExpression,
+	int indentLevel,
+	bool isAsync
+)
+{
+	this.PushIndent( indentLevel );
+#>
+byte[] <#= resultVariable #>;
+<#+
+	if ( !isAsync )
+	{
+#>
+if ( !this.ReadBinaryCore( <#= lengthExpression #>, ref <#= context.OffsetExpression #>, out <#= resultVariable #> ) )
+<#+
+	}
+	else // !isAsync
+	{
+#>
+var asyncReadResult = await this.ReadBinaryCoreAsync( <#= lengthExpression #>, <#= context.OffsetExpression #>, cancellationToken ).ConfigureAwait( false );
+if ( asyncReadResult.Success )
+{
+	<#= resultVariable #> = asyncReadResult.Value.Result;
+	<#= context.OffsetExpression #> = asyncReadResult.Value.Offset;
+}
+else
+<#+
+	} // if !isAsync
+#>
+{
+<#+
+	this.OnFail( typeName, context.OffsetType, 1, isAsync, withOffset: true );
+#>
+}
+<#+
+	this.PopIndent();
+} // WriteReadBinaryCoreCall
+
+private void WriteReadPrologue(
+	string typeName,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes, // context, indentLevel, lengthExpression, onFail, isAsync
+	bool isAsync
+)
+{
+	if ( isAsync )
+	{
+#>
+			<#= typeName #> result;
+<#+
+	}
+
+	prologue( context );
+
+	readBytes( context, 3, "1", indentLevel => this.OnFail( typeName, context.OffsetType, indentLevel, isAsync, withOffset: false ), isAsync );
+#>
+
+			var header = ReadValueResults.EncodedTypes[ <#= context.BufferExpression #>[ <#= context.BufferOffsetExpression #> ] ];
+<#+
+} // WriteReadPrologue
+
+private void WriteReadEpilogue(
+	ReadMethodContext context,
+	string collectionType,
+	Action<ReadMethodContext, string> epilogue,
+	bool isAsync
+)
+{
+	epilogue( context, collectionType );
+#>
+			return <#= !isAsync ? "true" : "AsyncReadResult.Success( result )" #>;
+<#+
+} // WriteReadEpilogue
+
+
+private void OnFail( string typeName, string offsetType, int indentLevel, bool isAsync, bool withOffset )
+{
+	this.PushIndent( indentLevel );
+
+	if ( !isAsync )
+	{
+#>
+result = default( <#= typeName #> );
+return false;
+<#+
+	}
+	else
+	{
+#>
+return AsyncReadResult.Fail<<#= withOffset ? ( offsetType + "OffsetValue<" + typeName + ">" ) : typeName #>>();
+<#+
+	}
+
+	this.PopIndent();
+} // OnFail
+
+private static string Signature( string typeLabel, string typeName, string nameFormat, string precedingParameters, bool isAsync, bool isPseudoAsync )
+{
+	return SignatureCore( typeLabel, typeName, nameFormat, precedingParameters, isAsync, isPseudoAsync, "AsyncReadResult<{0}>" );
+}
+
+private static string SignatureWithOffset( string typeLabel, string typeName, string offsetType, string nameFormat, string precedingParameters, bool isAsync, bool isPseudoAsync )
+{
+	return SignatureCore( typeLabel, typeName, nameFormat, precedingParameters, isAsync, isPseudoAsync, "AsyncReadResult<" + offsetType + "OffsetValue<{0}>>" );
+}
+
+private static string SignatureCore( string typeLabel, string typeName, string nameFormat, string precedingParameters, bool isAsync, bool isPseudoAsync, string asyncResultTypeFormat )
+{
+	var signature = new StringBuilder();
+
+	if ( isAsync )
+	{
+		if( ! isPseudoAsync )
+		{
+			signature.Append( "async " );
+		}
+
+		signature.Append( "Task<" ).AppendFormat( asyncResultTypeFormat, typeName ).Append( "> " );
+	}
+	else
+	{
+		signature.Append( "bool " );
+	}
+
+	signature.AppendFormat( nameFormat, typeLabel );
+
+	if ( isAsync )
+	{
+		signature.Append( "Async( " ).Append( precedingParameters ).Append( "CancellationToken cancellationToken )" );
+	}
+	else
+	{
+		signature.Append( "( " ).Append( precedingParameters ).Append( "out " ).Append( typeName ).Append( " result )" );
+	}
+
+	return signature.ToString();
+}
+
+private sealed class ReadMethodContext
+{
+	private readonly bool _useOffsetForBuffer;
+
+	public string BufferExpression { get; private set; }
+
+	public string OffsetExpression { get; private set; }
+
+	public string OffsetType { get; private set; }
+
+	public string BufferOffsetExpression
+	{
+		get { return this._useOffsetForBuffer ? this.OffsetExpression : "0"; }
+	}
+
+	public ReadMethodContext( string bufferExpression, string offsetExpression, string offsetType, bool useOffsetForBuffer )
+	{
+		this.BufferExpression = bufferExpression;
+		this.OffsetExpression = offsetExpression;
+		this.OffsetType = offsetType;
+		this._useOffsetForBuffer = useOffsetForBuffer;
+	}
+}
+
+private enum Nullability
+{
+	Reference,
+	Value,
+	Nullable
+}
+
+private string ToPrimitive( Type type )
+{
+	return
+		type.Name
+		.Replace( "Int64", "long ")
+		.Replace( "Int16", "short ")
+		.Replace( "Int32", "int ")
+		.Replace( "Single", "float ")
+		.Replace( "Boolean", "bool ")
+		.ToLowerInvariant();
+}
+#>

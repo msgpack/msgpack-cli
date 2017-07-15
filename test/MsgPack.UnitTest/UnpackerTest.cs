@@ -48,7 +48,13 @@ namespace MsgPack
 
 		protected abstract bool CanReadFromEmptySource { get; }
 
+		protected abstract bool MayFailToRollback { get; }
+
 		protected abstract Unpacker CreateUnpacker( MemoryStream stream );
+
+		protected abstract bool CanRevert( Unpacker unpacker );
+
+		protected abstract long GetOffset( Unpacker unpacker );
 
 		[Test]
 		public void TestRead_ScalarSequence_AsIs()
@@ -1721,6 +1727,17 @@ namespace MsgPack
 			chars[1] = ( char )( ( utf32 % 0x400 ) + ( int )'\udc00' );
 			return new String( chars );
 #endif // SILVERLIGHT
+		}
+
+		protected sealed class NonSeekableStream : MemoryStream
+		{
+			public override bool CanSeek
+			{
+				get { return false; }
+			}
+
+			public NonSeekableStream( byte[] buffer )
+				: base( buffer ) { }
 		}
 	}
 }

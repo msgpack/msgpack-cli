@@ -1,7 +1,0 @@
-﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
-<#@ output extension=".cs" #>
-<#@ include file=".\Unpacker.Unpacking.ttinclude" #>
-<#@ Assembly Name="System.Core.dll" #>
-<#
-Write( "DefaultByteArrayUnpacker", "override", "ByteArrayUnpackerReader", "DefaultByteArrayUnpacker.Unpacking.tt", /* isBase */false );
-#>

@@ -57,16 +57,16 @@
     <DefineConstants>$(DefineConstants);NETFX_45;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
-    <DefineConstants>$(DefineConstants);NETFX_46;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETFX_46;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
     <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
-    <DefineConstants>$(DefineConstants);__MOBILE__;AOT;XAMARIN;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION</DefineConstants>
+    <DefineConstants>$(DefineConstants);__MOBILE__;AOT;XAMARIN;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
     <DefineConstants>$(DefineConstants);__ANDROID__</DefineConstants>
@@ -174,10 +174,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MessagePackByteArrayPacker.Pack.tt</DependentUpon>
     </Compile>
-    <Compile Update="DefaultByteArrayUnpacker.Unpacking.cs">
+    <Compile Update="MessagePackByteArrayUnpacker.Unpack.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>DefaultByteArrayUnpacker.Unpacking.tt</DependentUpon>
+      <DependentUpon>MessagePackByteArrayUnpacker.Unpack.tt</DependentUpon>
     </Compile>
     <Compile Update="MessagePackStreamPacker.Pack.cs">
       <DesignTime>True</DesignTime>
@@ -199,25 +199,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Update="StreamUnpackerReader.TypedRead.cs">
+    <Compile Update="MessagePackStreamUnpacker.Unpack.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>StreamUnpackerReader.TypedRead.tt</DependentUpon>
+      <DependentUpon>MessagePackStreamUnpacker.Unpack.tt</DependentUpon>
     </Compile>
     <Compile Update="MessagePackUnpacker.Read.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MessagePackUnpacker.Read.tt</DependentUpon>
-    </Compile>
-    <Compile Update="MessagePackUnpacker`1.Read.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MessagePackUnpacker`1.Read.tt</DependentUpon>
-    </Compile>
-    <Compile Update="MessagePackUnpacker`1.Unpacking.cs">
-      <DependentUpon>MessagePackUnpacker`1.Unpacking.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Update="Packer.Packing.cs">
       <AutoGen>True</AutoGen>
@@ -349,13 +339,18 @@
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
-    <None Update="DefaultByteArrayUnpacker.Unpacking.tt">
-      <LastGenOutput>DefaultByteArrayUnpacker.Unpacking.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
+    <None Include="MessagePackByteArrayUnpacker.Unpack.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackByteArrayUnpacker.Unpack.tt</DependentUpon>
     </None>
     <None Update="MessagePackByteArrayPacker.Pack.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackByteArrayPacker.Pack.cs</LastGenOutput>
+    </None>
+    <None Update="MessagePackByteArrayUnpacker.Unpack.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackByteArrayUnpacker.Unpack.cs</LastGenOutput>
     </None>
     <None Update="MessagePackStreamPacker.Pack.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -417,8 +412,8 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Unpacker.Leaf.cs</LastGenOutput>
     </None>
-    <None Update="StreamUnpackerReader.TypedRead.tt">
-      <LastGenOutput>StreamUnpackerReader.TypedRead.cs</LastGenOutput>
+    <None Update="MessagePackStreamUnpacker.Unpack.tt">
+      <LastGenOutput>MessagePackStreamUnpacker.Unpack.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="ByteArrayUnpackerReader.TypedRead.tt">
@@ -456,14 +451,6 @@
     <None Update="SubtreeUnpacker.Unpacking.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SubtreeUnpacker.Unpacking.cs</LastGenOutput>
-    </None>
-    <None Update="MessagePackUnpacker`1.Read.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MessagePackUnpacker`1.Read.cs</LastGenOutput>
-    </None>
-    <None Update="MessagePackUnpacker`1.Unpacking.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MessagePackUnpacker`1.Unpacking.cs</LastGenOutput>
     </None>
     <None Update="Packer.Packing.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

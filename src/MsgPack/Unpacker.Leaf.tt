@@ -28,23 +28,13 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
-using System.Collections.Generic;
 using System.IO;
-#if FEATURE_TAP
-using System.Threading;
-using System.Threading.Tasks;
-#endif // FEATURE_TAP
 
 namespace MsgPack
 {
 	// This file was generated from Unpacker.Leaf.tt and Core.ttinclude T4Template.
 	// Do not modify this file. Edit Unpacker.Leaf.tt and Core.ttinclude instead.
-
 <#
 foreach ( var spec in 
 	new []
@@ -72,7 +62,7 @@ foreach ( var spec in
 {
 #>
 
-	internal sealed class Fast<#= spec.Kind #>Unpacker : Default<#= spec.Kind #>Unpacker
+	internal sealed class Fast<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
 	{
 <#
 	foreach ( var parameters in spec.ParametersList )
@@ -86,11 +76,19 @@ foreach ( var spec in
 #>
 		protected override Unpacker ReadSubtreeCore()
 		{
+<#
+	if ( spec.Kind == "Stream" )
+	{
+#>
+			this.BeginReadSubtree();
+<#
+	}
+#>
 			return this;
 		}
 	}
 
-	internal sealed class CollectionValidating<#= spec.Kind #>Unpacker : Default<#= spec.Kind #>Unpacker
+	internal sealed class CollectionValidating<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
 	{
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;
@@ -124,7 +122,7 @@ foreach ( var spec in
 
 		protected override Unpacker ReadSubtreeCore()
 		{
-			return new SubtreeUnpacker( this.Core, this );
+			return new SubtreeUnpacker( this );
 		}
 
 		protected internal override void EndReadSubtree()

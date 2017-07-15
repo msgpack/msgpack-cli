@@ -76,7 +76,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_FixExt1_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD4, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -137,7 +179,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_FixExt1_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD4, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -197,7 +282,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_FixExt2_AndBinaryLengthIs2TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD5, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -258,7 +385,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_FixExt2_AndBinaryLengthIs2TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD5, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -318,7 +488,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_FixExt4_AndBinaryLengthIs4TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD6, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -379,7 +591,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_FixExt4_AndBinaryLengthIs4TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD6, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -439,7 +694,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_FixExt8_AndBinaryLengthIs8TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD7, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -500,7 +797,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_FixExt8_AndBinaryLengthIs8TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD7, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -560,7 +900,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_FixExt16_AndBinaryLengthIs16TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD8, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -621,7 +1003,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_FixExt16_AndBinaryLengthIs16TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD8, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -769,7 +1194,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext8_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -830,7 +1297,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -890,7 +1400,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext8_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -951,7 +1503,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -1011,7 +1606,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext8_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -1072,7 +1709,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext8_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -1220,7 +1900,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext16_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -1281,7 +2003,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -1341,7 +2106,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext16_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -1402,7 +2209,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -1462,7 +2312,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext16_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -1523,7 +2415,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -1583,7 +2518,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext16_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -1644,7 +2621,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -1704,7 +2724,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext16_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -1765,7 +2827,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext16_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -1913,7 +3018,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext32_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -1974,7 +3121,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -2034,7 +3224,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext32_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -2095,7 +3327,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -2155,7 +3430,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext32_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -2216,7 +3533,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -2276,7 +3636,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext32_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -2337,7 +3739,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -2397,7 +3842,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext32_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -2458,7 +3945,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -2518,7 +4048,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestRead_Ext32_AndBinaryLengthIs65536TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 			}
 		}
 
@@ -2579,7 +4151,50 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				MessagePackExtendedTypeObject result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObject_Ext32_AndBinaryLengthIs65536TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				MessagePackExtendedTypeObject result;
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 			}
 		}
 
@@ -2641,7 +4256,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_FixExt1_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD4, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -2703,7 +4360,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_FixExt1_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD4, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -2765,7 +4464,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_FixExt2_AndBinaryLengthIs2TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD5, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -2827,7 +4568,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_FixExt2_AndBinaryLengthIs2TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD5, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -2889,7 +4672,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_FixExt4_AndBinaryLengthIs4TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD6, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -2951,7 +4776,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_FixExt4_AndBinaryLengthIs4TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD6, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -3013,7 +4880,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_FixExt8_AndBinaryLengthIs8TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD7, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -3075,7 +4984,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_FixExt8_AndBinaryLengthIs8TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD7, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -3137,7 +5088,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_FixExt16_AndBinaryLengthIs16TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD8, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -3199,7 +5192,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_FixExt16_AndBinaryLengthIs16TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xD8, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -3353,7 +5388,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext8_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -3415,7 +5492,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -3477,7 +5596,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext8_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -3539,7 +5700,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -3601,7 +5804,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext8_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -3663,7 +5908,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext8_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC7, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -3817,7 +6104,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext16_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -3879,7 +6208,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -3941,7 +6312,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext16_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4003,7 +6416,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -4065,7 +6520,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext16_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4127,7 +6624,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -4189,7 +6728,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext16_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4251,7 +6832,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -4313,7 +6936,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext16_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4375,7 +7040,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext16_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC8, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -4529,7 +7236,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext32_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4591,7 +7340,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs1TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 1, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -4653,7 +7444,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext32_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4715,7 +7548,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs17TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 17, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -4777,7 +7652,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext32_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4839,7 +7756,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs255TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -4901,7 +7860,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext32_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -4963,7 +7964,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs256TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 1, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -5025,7 +8068,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext32_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -5087,7 +8172,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65535TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 
@@ -5149,7 +8276,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadAsync_Ext32_AndBinaryLengthIs65536TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 			}
 		}
 
@@ -5211,7 +8380,49 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+			}
+		}
+
+		[Test]
+		public void TestReadExtendedTypeObjectAsync_Ext32_AndBinaryLengthIs65536TooShort_Fail_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var typeCode = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { 0xC9, 0, 1, 0, 0, typeCode }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray()
+				)
+			)
+			using( var unpacker = this.CreateUnpacker( buffer ) )
+			{
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 			}
 		}
 

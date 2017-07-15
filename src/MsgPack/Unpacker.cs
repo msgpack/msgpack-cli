@@ -500,7 +500,11 @@ namespace MsgPack
 		public bool Read()
 		{
 			this.EnsureNotInSubtreeMode();
+			return this.ReadInternal();
+		}
 
+		internal bool ReadInternal()
+		{
 			bool result = this.ReadCore();
 			if ( result && !this.IsCollectionHeader )
 			{
@@ -563,10 +567,14 @@ namespace MsgPack
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		The underying stream unexpectedly ended.
 		/// </exception>
-		public async Task<bool> ReadAsync( CancellationToken cancellationToken )
+		public Task<bool> ReadAsync( CancellationToken cancellationToken )
 		{
 			this.EnsureNotInSubtreeMode();
+			return this.ReadInternalAsync( cancellationToken );
+		}
 
+		internal async Task<bool> ReadInternalAsync( CancellationToken cancellationToken )
+		{
 			bool result = await this.ReadAsyncCore( cancellationToken ).ConfigureAwait( false );
 			if ( result && !this.IsCollectionHeader )
 			{

@@ -140,23 +140,23 @@ if ( this._itemsCount.Count == 0 )
 	return false;
 }
 
-if ( !this._rootCore.Read<#= typeName #>( <#= isDeep #>out result ) )
+if ( !this._root.Read<#= typeName #>( <#= isDeep #>out result ) )
 {
 	return false;
 }
 
-switch ( this._rootCore.CollectionType )
+switch ( this._internalRoot.CollectionType )
 {
 	case CollectionType.Array:
 	{
-		this._itemsCount.Push( this._rootCore.ItemsCount );
+		this._itemsCount.Push( this._root.ItemsCount );
 		this._unpacked.Push( 0 );
 		this._isMap.Push( false );
 		break;
 	}
 	case CollectionType.Map:
 	{
-		this._itemsCount.Push( this._rootCore.ItemsCount * 2 );
+		this._itemsCount.Push( this._root.ItemsCount * 2 );
 		this._unpacked.Push( 0 );
 		this._isMap.Push( true );
 		break;

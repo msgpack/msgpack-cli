@@ -1,7 +1,0 @@
-﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
-<#@ output extension=".cs" #>
-<#@ Assembly Name="System.Core.dll" #>
-<#@ include file=".\MessagePackUnpacker.Read.ttinclude" #>
-<#
-WriteReadBodies( "MessagePackUnpacker<TReader>", "MessagePackUnpacker`1.tt", false );
-#>

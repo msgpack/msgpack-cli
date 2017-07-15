@@ -57,10 +57,8 @@ namespace MsgPack
 			{
 				using ( var unpacker = Unpacker.Create( stream, false ) )
 				{
-					Assert.That( unpacker, Is.InstanceOf<DefaultStreamUnpacker>() );
-					Assert.That( ( unpacker as DefaultStreamUnpacker ).Core, Is.InstanceOf<MessagePackUnpacker<StreamUnpackerReader>>() );
-					var core = ( unpacker as DefaultStreamUnpacker ).Core as MessagePackUnpacker<StreamUnpackerReader>;
-					Assert.That( core.Reader.DebugOwnsStream, Is.False );
+					Assert.That( unpacker, Is.InstanceOf<MessagePackStreamUnpacker>() );
+					Assert.That( ( unpacker as MessagePackStreamUnpacker ).DebugOwnsStream, Is.False );
 				}
 
 				// Should not throw ObjectDisposedException.
@@ -89,11 +87,10 @@ namespace MsgPack
 				using ( var stream = new MemoryStream() )
 				using ( var unpacker = Unpacker.Create( stream, default( PackerUnpackerStreamOptions ), default( UnpackerOptions ) ) )
 				{
-					Assert.That( unpacker, Is.InstanceOf<DefaultStreamUnpacker>() );
-					Assert.That( ( unpacker as DefaultStreamUnpacker ).Core, Is.InstanceOf<MessagePackUnpacker<StreamUnpackerReader>>() );
-					var core = ( unpacker as DefaultStreamUnpacker ).Core as MessagePackUnpacker<StreamUnpackerReader>;
-					Assert.That( core.Reader.DebugOwnsStream, Is.False );
-					Assert.That( core.Reader.DebugSource, Is.SameAs( stream ) );
+					Assert.That( unpacker, Is.InstanceOf<MessagePackStreamUnpacker>() );
+					var streamUnpacker = unpacker as MessagePackStreamUnpacker;
+					Assert.That( streamUnpacker.DebugOwnsStream, Is.False );
+					Assert.That( streamUnpacker.DebugSource, Is.SameAs( stream ) );
 				}
 			}
 			finally
@@ -111,15 +108,14 @@ namespace MsgPack
 				using ( var stream = new MemoryStream() )
 				using ( var unpacker = Unpacker.Create( stream, new PackerUnpackerStreamOptions { OwnsStream = false, WithBuffering = true, BufferSize = 123 }, default( UnpackerOptions ) ) )
 				{
-					Assert.That( unpacker, Is.InstanceOf<DefaultStreamUnpacker>() );
-					Assert.That( ( unpacker as DefaultStreamUnpacker ).Core, Is.InstanceOf<MessagePackUnpacker<StreamUnpackerReader>>() );
-					var core = ( unpacker as DefaultStreamUnpacker ).Core as MessagePackUnpacker<StreamUnpackerReader>;
-					Assert.That( core.Reader.DebugOwnsStream, Is.False );
+					Assert.That( unpacker, Is.InstanceOf<MessagePackStreamUnpacker>() );
+					var streamUnpacker = unpacker as MessagePackStreamUnpacker;
+					Assert.That( streamUnpacker.DebugOwnsStream, Is.False );
 #if !SILVERLIGHT
-					Assert.That( core.Reader.DebugSource, Is.Not.SameAs( stream ) );
-					Assert.That( core.Reader.DebugSource, Is.InstanceOf<BufferedStream>() );
+					Assert.That( streamUnpacker.DebugSource, Is.Not.SameAs( stream ) );
+					Assert.That( streamUnpacker.DebugSource, Is.InstanceOf<BufferedStream>() );
 #else
-					Assert.That( core.Reader.DebugSource, Is.SameAs( stream ) );
+					Assert.That( streamUnpacker.DebugSource, Is.SameAs( stream ) );
 #endif // !SILVERLIGHT
 				}
 			}
@@ -161,11 +157,10 @@ namespace MsgPack
 
 		private static void AssertSource( ByteArrayUnpacker unpacker, byte[] array, int expectedOffset )
 		{
-			Assert.That( unpacker, Is.InstanceOf<DefaultByteArrayUnpacker>() );
-			Assert.That( ( unpacker as DefaultByteArrayUnpacker ).Core, Is.InstanceOf<MessagePackUnpacker<ByteArrayUnpackerReader>>() );
-			var core = ( unpacker as DefaultByteArrayUnpacker ).Core as MessagePackUnpacker<ByteArrayUnpackerReader>;
-			Assert.That( core.Reader.DebugSource, Is.SameAs( array ) );
-			Assert.That( core.Reader.Offset, Is.EqualTo( expectedOffset ) );
+			Assert.That( unpacker, Is.InstanceOf<MessagePackByteArrayUnpacker>() );
+			var byteArrayUnpacker = unpacker as MessagePackByteArrayUnpacker;
+			Assert.That( byteArrayUnpacker.DebugSource, Is.SameAs( array ) );
+			Assert.That( byteArrayUnpacker.Offset, Is.EqualTo( expectedOffset ) );
 		}
 
 		[Test]
