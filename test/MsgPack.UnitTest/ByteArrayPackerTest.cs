@@ -34,7 +34,7 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack
 {
 	[TestFixture]
-	//[Timeout( 500 )]
+	[Timeout( 500 )]
 	public partial class ByteArrayPackerTest : PackerTest
 	{
 		protected override Packer CreatePacker( MemoryStream stream )
