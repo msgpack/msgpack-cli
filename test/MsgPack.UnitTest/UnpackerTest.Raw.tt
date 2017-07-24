@@ -295,13 +295,33 @@ private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool
 		if ( !isAsync )
 		{
 #>
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read<#= testSituation.Item1 #>( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read<#= testSituation.Item1 #>( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read<#= testSituation.Item1 #>( out result ) );
+				}
 <#+
 		}
 		else
 		{
 #>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.Read<#= testSituation.Item1 #>Async() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read<#= testSituation.Item1 #>Async().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.Read<#= testSituation.Item1 #>Async() );
+				}
 <#+
 		}
 	}
@@ -332,14 +352,14 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 <#+
-				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
+	putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
 #>
 			}
 		}
 <#+
 
-		if ( !willSuccess  )
-		{
+	if ( !willSuccess  )
+	{
 #>
 
 		[Test]
@@ -360,12 +380,12 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 <#+
-				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
+		putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
 #>
 			}
 		}
 <#+
-		}
+	}
 }
 
 private static string AsyncVoid( bool isAsync, bool willSuccess )

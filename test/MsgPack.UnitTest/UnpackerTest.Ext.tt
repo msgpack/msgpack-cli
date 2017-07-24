@@ -316,7 +316,7 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 <#+
-				putTestBody( typeCode, actualValueLength, willSuccess, isAsync );
+		putTestBody( typeCode, actualValueLength, willSuccess, isAsync );
 #>
 			}
 		}

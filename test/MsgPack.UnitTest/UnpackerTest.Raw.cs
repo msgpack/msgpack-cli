@@ -267,7 +267,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -289,7 +299,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -449,7 +469,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -471,7 +501,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -719,7 +759,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -741,7 +791,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -901,7 +961,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -923,7 +993,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1083,7 +1163,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1105,7 +1195,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1265,7 +1365,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1287,7 +1397,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1535,7 +1655,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1557,7 +1687,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1717,7 +1857,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1739,7 +1889,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1899,7 +2059,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -1921,7 +2091,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2081,7 +2261,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2103,7 +2293,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2263,7 +2463,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2285,7 +2495,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2445,7 +2665,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2467,7 +2697,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2715,7 +2955,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2737,7 +2987,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2897,7 +3157,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -2919,7 +3189,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3079,7 +3359,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3101,7 +3391,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3261,7 +3561,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3283,7 +3593,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3443,7 +3763,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3465,7 +3795,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3625,7 +3965,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3647,7 +3997,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3807,7 +4167,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -3829,7 +4199,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4069,7 +4449,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4091,7 +4481,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4247,7 +4647,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4269,7 +4679,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4425,7 +4845,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4447,7 +4877,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4603,7 +5043,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4625,7 +5075,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4865,7 +5325,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -4887,7 +5357,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5043,7 +5523,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5065,7 +5555,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5221,7 +5721,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5243,7 +5753,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5399,7 +5919,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5421,7 +5951,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5577,7 +6117,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5599,7 +6149,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5755,7 +6315,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -5777,7 +6347,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6017,7 +6597,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6039,7 +6629,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6195,7 +6795,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6217,7 +6827,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6373,7 +6993,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6395,7 +7025,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6551,7 +7191,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6573,7 +7223,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6729,7 +7389,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6751,7 +7421,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6907,7 +7587,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -6929,7 +7619,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -7085,7 +7785,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -7107,7 +7817,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				String result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadString( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadString( out result ) );
+				}
 			}
 		}
 
@@ -7347,7 +8067,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -7369,7 +8099,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -7525,7 +8265,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -7547,7 +8297,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -7787,7 +8547,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -7809,7 +8579,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -7965,7 +8745,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -7987,7 +8777,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8143,7 +8943,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8165,7 +8975,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8321,7 +9141,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8343,7 +9173,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8583,7 +9423,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8605,7 +9455,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8761,7 +9621,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8783,7 +9653,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8939,7 +9819,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -8961,7 +9851,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9117,7 +10017,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9139,7 +10049,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9295,7 +10215,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9317,7 +10247,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9473,7 +10413,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9495,7 +10445,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9735,7 +10695,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9757,7 +10727,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9913,7 +10893,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -9935,7 +10925,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10091,7 +11091,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10113,7 +11123,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10269,7 +11289,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10291,7 +11321,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10447,7 +11487,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10469,7 +11519,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10625,7 +11685,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10647,7 +11717,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10803,7 +11883,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -10825,7 +11915,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11073,7 +12173,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11095,7 +12205,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11255,7 +12375,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11277,7 +12407,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11437,7 +12577,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11459,7 +12609,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11619,7 +12779,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11641,7 +12811,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11889,7 +13069,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -11911,7 +13101,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12071,7 +13271,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12093,7 +13303,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12253,7 +13473,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12275,7 +13505,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12435,7 +13675,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12457,7 +13707,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12617,7 +13877,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12639,7 +13909,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12799,7 +14079,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -12821,7 +14111,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13069,7 +14369,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13091,7 +14401,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13251,7 +14571,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13273,7 +14603,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13433,7 +14773,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13455,7 +14805,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13615,7 +14975,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13637,7 +15007,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13797,7 +15177,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13819,7 +15209,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -13979,7 +15379,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -14001,7 +15411,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -14161,7 +15581,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -14183,7 +15613,17 @@ namespace MsgPack
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Byte[] result;
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinary( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadBinary( out result ) );
+				}
 			}
 		}
 
@@ -14438,7 +15878,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -14459,7 +15909,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -14622,7 +16082,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -14643,7 +16113,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -14898,7 +16378,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -14919,7 +16409,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15082,7 +16582,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15103,7 +16613,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15266,7 +16786,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15287,7 +16817,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15450,7 +16990,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15471,7 +17021,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15726,7 +17286,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15747,7 +17317,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15910,7 +17490,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -15931,7 +17521,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16094,7 +17694,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16115,7 +17725,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16278,7 +17898,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16299,7 +17929,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16462,7 +18102,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16483,7 +18133,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16646,7 +18306,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16667,7 +18337,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16922,7 +18602,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -16943,7 +18633,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17106,7 +18806,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17127,7 +18837,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17290,7 +19010,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17311,7 +19041,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17474,7 +19214,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17495,7 +19245,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17658,7 +19418,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17679,7 +19449,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17842,7 +19622,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -17863,7 +19653,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18026,7 +19826,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18047,7 +19857,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18294,7 +20114,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18315,7 +20145,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18474,7 +20314,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18495,7 +20345,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18654,7 +20514,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18675,7 +20545,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18834,7 +20714,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -18855,7 +20745,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19102,7 +21002,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19123,7 +21033,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19282,7 +21202,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19303,7 +21233,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19462,7 +21402,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19483,7 +21433,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19642,7 +21602,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19663,7 +21633,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19822,7 +21802,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -19843,7 +21833,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20002,7 +22002,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20023,7 +22033,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20270,7 +22290,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20291,7 +22321,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20450,7 +22490,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20471,7 +22521,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20630,7 +22690,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20651,7 +22721,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20810,7 +22890,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20831,7 +22921,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -20990,7 +23090,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -21011,7 +23121,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -21170,7 +23290,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -21191,7 +23321,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -21350,7 +23490,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -21371,7 +23521,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadStringAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadStringAsync() );
+				}
 			}
 		}
 
@@ -21618,7 +23778,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -21639,7 +23809,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -21798,7 +23978,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -21819,7 +24009,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22066,7 +24266,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22087,7 +24297,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22246,7 +24466,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22267,7 +24497,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22426,7 +24666,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22447,7 +24697,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22606,7 +24866,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22627,7 +24897,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22874,7 +25154,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -22895,7 +25185,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23054,7 +25354,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23075,7 +25385,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23234,7 +25554,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23255,7 +25585,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23414,7 +25754,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23435,7 +25785,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23594,7 +25954,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23615,7 +25985,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23774,7 +26154,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -23795,7 +26185,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24042,7 +26442,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24063,7 +26473,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24222,7 +26642,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24243,7 +26673,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24402,7 +26842,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24423,7 +26873,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24582,7 +27042,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24603,7 +27073,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24762,7 +27242,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24783,7 +27273,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24942,7 +27442,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -24963,7 +27473,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25122,7 +27642,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25143,7 +27673,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25398,7 +27938,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25419,7 +27969,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25582,7 +28142,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25603,7 +28173,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25766,7 +28346,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25787,7 +28377,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25950,7 +28550,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -25971,7 +28581,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26226,7 +28846,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26247,7 +28877,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26410,7 +29050,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26431,7 +29081,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26594,7 +29254,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26615,7 +29285,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26778,7 +29458,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26799,7 +29489,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26962,7 +29662,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -26983,7 +29693,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27146,7 +29866,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27167,7 +29897,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27422,7 +30162,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27443,7 +30193,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27606,7 +30366,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27627,7 +30397,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27790,7 +30570,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27811,7 +30601,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27974,7 +30774,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -27995,7 +30805,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -28158,7 +30978,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -28179,7 +31009,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -28342,7 +31182,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -28363,7 +31213,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -28526,7 +31386,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 
@@ -28547,7 +31417,17 @@ namespace MsgPack
 			)
 			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadBinaryAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadBinaryAsync() );
+				}
 			}
 		}
 

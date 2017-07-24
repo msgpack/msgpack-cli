@@ -201,13 +201,33 @@ private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> 
 		if ( !isAsync )
 		{
 #>
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 <#+
 		}
 		else
 		{
 #>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 <#+
 		}
 	}
@@ -269,6 +289,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 	}
 
 	var expectedValue = String.Format( CultureInfo.InvariantCulture, testSituation.Item4, testSituation.Item3, testCase.Item2 );
+	var willSuccess = valueLengthAjustument >= 0;
 #>
 
 		[Test]
@@ -284,11 +305,41 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 <#+
-				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, valueLengthAjustument >= 0, isAsync );
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
 #>
 			}
 		}
 <#+
+
+		if ( !willSuccess  )
+		{
+#>
+
+		[Test]
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { <#= testCase.Item3 #> }
+					.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
+			{
+<#+
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
+#>
+			}
+		}
+<#+
+		}
 }
 
 private static string AsyncVoid( bool isAsync, bool willSuccess )

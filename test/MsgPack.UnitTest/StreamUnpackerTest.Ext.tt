@@ -150,13 +150,33 @@ private void PutTestUnpackDataBody( string typeCodeVariable, int actualValueLeng
 		if ( !isAsync )
 		{
 #>
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
 <#+
 		}
 		else
 		{
 #>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
 <#+
 		}
 	}
@@ -198,15 +218,36 @@ private void PutTestUnpackDirectBody( string typeCodeVariable, int actualValueLe
 		if ( !isAsync )
 		{
 #>
-				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
 <#+
 		}
 		else
 		{
 #>
-				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
 <#+
 		}
+
 	}
 }
 
@@ -221,6 +262,7 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 
 	var typeCode = "typeCode";
 	var headerValue = String.Format( CultureInfo.InvariantCulture, headerFormat, typeCode );
+	var willSuccess = valueLengthAjustument >= 0;
 #>
 
 		[Test]
@@ -237,11 +279,41 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 			using( var unpacker = this.CreateUnpacker( splitted ) )
 			{
 <#+
-				putTestBody( typeCode, actualValueLength, valueLengthAjustument >= 0, isAsync );
+	putTestBody( typeCode, actualValueLength, willSuccess, isAsync );
 #>
 			}
 		}
 <#+
+	if ( !willSuccess )
+	{
+#>
+
+		[Test]
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { <#= headerValue #> }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
+			{
+<#+
+		putTestBody( typeCode, actualValueLength, willSuccess, isAsync );
+#>
+			}
+		}
+<#+
+	}
 }
 
 private static string AsyncVoid( bool isAsync, bool willSuccess )
