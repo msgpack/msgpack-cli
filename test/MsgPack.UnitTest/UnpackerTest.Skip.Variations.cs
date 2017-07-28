@@ -19,8 +19,10 @@
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 #if !MSTEST
 using NUnit.Framework;
@@ -458,7 +460,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_FixedArray_Max()
 		{
-			var binary = new byte[]{ 0x9F, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0xC2 };
+			var binary = new byte[]{ 0x9F, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0xC2 };
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -512,7 +514,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_FixedMap_Max()
 		{
-			var binary = new byte[]{ 0x8F, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0xC2 };
+			var binary = new byte[]{ 0x8F, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0xC2 };
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -566,7 +568,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_FixedRaw_Max()
 		{
-			var binary = new byte[]{ 0xBF, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0xC2 };
+			var binary = new byte[]{ 0xBF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0xC2 };
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -602,7 +604,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Array16_Min()
 		{
-			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -620,7 +622,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Array16_Max()
 		{
-			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -656,7 +658,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Array32_Min()
 		{
-			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -674,7 +676,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Array32_Max()
 		{
-			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -710,7 +712,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Map16_Min()
 		{
-			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x40 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x40 ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -728,7 +730,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Map16_Max()
 		{
-			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x1FFFE ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x1FFFE ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -764,7 +766,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Map32_Min()
 		{
-			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x20000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x20000 ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -782,7 +784,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Map32_Max()
 		{
-			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x20002 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x20002 ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -818,7 +820,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Str8_Min()
 		{
-			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x41, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x0, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -836,7 +838,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Str8_Max()
 		{
-			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x41, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x0, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -872,7 +874,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Raw16_Min()
 		{
-			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -890,7 +892,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Raw16_Max()
 		{
-			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -926,7 +928,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Raw32_Min()
 		{
-			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -944,7 +946,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Raw32_Max()
 		{
-			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -980,7 +982,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Bin8_Min()
 		{
-			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x41, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x0, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -998,7 +1000,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Bin8_Max()
 		{
-			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x41, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x0, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1034,7 +1036,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Bin16_Min()
 		{
-			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1052,7 +1054,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Bin16_Max()
 		{
-			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1088,7 +1090,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Bin32_Min()
 		{
-			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1106,7 +1108,7 @@ namespace MsgPack
 		[Test]
 		public void TestSkip_Bin32_Max()
 		{
-			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1702,7 +1704,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_FixedArray_Max()
 		{
-			var binary = new byte[]{ 0x9F, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0xC2 };
+			var binary = new byte[]{ 0x9F, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0xC2 };
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1756,7 +1758,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_FixedMap_Max()
 		{
-			var binary = new byte[]{ 0x8F, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0xC2 };
+			var binary = new byte[]{ 0x8F, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0xC2 };
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1810,7 +1812,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_FixedRaw_Max()
 		{
-			var binary = new byte[]{ 0xBF, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0xC2 };
+			var binary = new byte[]{ 0xBF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0xC2 };
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1846,7 +1848,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Array16_Min()
 		{
-			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1864,7 +1866,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Array16_Max()
 		{
-			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDC }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1900,7 +1902,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Array32_Min()
 		{
-			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1918,7 +1920,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Array32_Max()
 		{
-			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDD }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1954,7 +1956,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Map16_Min()
 		{
-			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x40 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0x20 ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x40 ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -1972,7 +1974,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Map16_Max()
 		{
-			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x1FFFE ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDE }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x1FFFE ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2008,7 +2010,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Map32_Min()
 		{
-			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x20000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x20000 ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2026,7 +2028,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Map32_Max()
 		{
-			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x20002 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDF }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Range( 0x0, 0x20002 ).SelectMany( i => new byte[] { 0xA5 }.Concat( Encoding.UTF8.GetBytes( i.ToString( "X5", CultureInfo.InvariantCulture ) ) ) ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2062,7 +2064,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Str8_Min()
 		{
-			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x41, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x0, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2080,7 +2082,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Str8_Max()
 		{
-			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x41, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xD9 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x0, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2116,7 +2118,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Raw16_Min()
 		{
-			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2134,7 +2136,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Raw16_Max()
 		{
-			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDA }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2170,7 +2172,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Raw32_Min()
 		{
-			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2188,7 +2190,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Raw32_Max()
 		{
-			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xDB }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2224,7 +2226,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Bin8_Min()
 		{
-			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x41, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0x20 } ).Concat( Enumerable.Repeat( 0x0, 0x20 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2242,7 +2244,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Bin8_Max()
 		{
-			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x41, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC4 }.Concat( new byte[] { 0xFF } ).Concat( Enumerable.Repeat( 0x0, 0xFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2278,7 +2280,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Bin16_Min()
 		{
-			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0x100 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x100 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2296,7 +2298,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Bin16_Max()
 		{
-			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC5 }.Concat( BitConverter.GetBytes( ( ushort )0xFFFF ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0xFFFF ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2332,7 +2334,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Bin32_Min()
 		{
-			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10000 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10000 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
@@ -2350,7 +2352,7 @@ namespace MsgPack
 		[Test]
 		public async Task TestSkipAsync_Bin32_Max()
 		{
-			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x41, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
+			var binary = new byte[] { 0xC6 }.Concat( BitConverter.GetBytes( ( uint )0x10001 ).Reverse() ).Concat( Enumerable.Repeat( 0x0, 0x10001 ).Select( i => ( byte )i ) ).Concat( new byte[] { 0xC2 } ).ToArray();
 			using ( var buffer = new MemoryStream( binary ) )
 			using ( var target = this.CreateUnpacker( buffer ) )
 			{
