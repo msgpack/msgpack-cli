@@ -201,7 +201,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 	else
 	{
 #>
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.Unpack<#= suffix #>( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.Unpack<#= suffix #>( buffer ) );
 <#+
 	}
 #>
@@ -225,7 +225,7 @@ private void PutTestMethod( string methodName, Tuple<string, string, string, str
 	else
 	{
 #>
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.Unpack<#= suffix #>( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.Unpack<#= suffix #>( buffer ) );
 <#+
 	}
 #>
