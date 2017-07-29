@@ -213,13 +213,13 @@ namespace MsgPack
 		[Test]
 		public void TestCreate_ByteArray_Int32_NegativeOffset()
 		{
-			Assert.Throws<ArgumentOutOfRangeException>( () => { using ( Unpacker.Create( new byte[ 0 ], -1 ) ) { } } );
+			Assert.Throws<ArgumentOutOfRangeException>( () => { using ( Unpacker.Create( new byte[ 1 ], -1 ) ) { } } );
 		}
 
 		[Test]
 		public void TestCreate_ByteArray_Int32_TooLargeOffset()
 		{
-			Assert.Throws<ArgumentOutOfRangeException>( () => { using ( Unpacker.Create( new byte[ 1 ], 2 ) ) { } } );
+			Assert.Throws<ArgumentException>( () => { using ( Unpacker.Create( new byte[ 1 ], 2 ) ) { } } );
 		}
 
 		[Test]
