@@ -44,14 +44,14 @@ namespace System.IO
 	/// greater than the internal buffer size, then this class may not even allocate the internal buffer.
 	/// See a large comment in Write for the details of the write buffer heuristic.
 	/// 
-	/// This class buffers reads & writes in a shared buffer.
+	/// This class buffers reads &amp; writes in a shared buffer.
 	/// (If you maintained two buffers separately, one operation would always trash the other buffer
 	/// anyways, so we might as well use one buffer.) 
 	/// The assumption here is you will almost always be doing a series of reads or writes, but rarely
 	/// alternate between the two of them on the same stream.
 	///
 	/// Class Invariants:
-	/// The class has one buffer, shared for reading & writing.
+	/// The class has one buffer, shared for reading &amp; writing.
 	/// It can only be used for one or the other at any point in time - not both.
 	/// The following should be true:
 	/// <![CDATA[

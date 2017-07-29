@@ -527,7 +527,7 @@ namespace MsgPack.Serialization
 		///			The implementation of this class returns <c>null</c> for nullable types (that is, all reference types and <see cref="Nullable{T}"/>); otherwise, throws <see cref="System.Runtime.Serialization.SerializationException"/>.
 		///		</para>
 		///		<para>
-		///			Custom serializers can override this method to provide custom nil representation. For example, built-in <see cref="DBNull"/> serializer overrides this method to return <see cref="DBNull.Value"/> instead of <c>null</c>.
+		///			Custom serializers can override this method to provide custom nil representation. For example, built-in <c>DBNull</c> serializer overrides this method to return <c>DBNull.Value</c> instead of <c>null</c>.
 		///		</para>
 		/// </remarks>
 		protected internal virtual T UnpackNil()

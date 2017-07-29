@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -312,7 +312,7 @@ namespace MsgPack.Serialization
 		///		<see cref="PackToMapParameters{T}.Packer"/> of <paramref name="parameter"/> is <c>null</c>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
-		///		<see cref="PackToMapAsyncParameters{T}.Operations"/> of <paramref name="parameter"/> is <c>null</c>.
+		///		<c>PackToMapAsyncParameters{T}.Operations</c> of <paramref name="parameter"/> is <c>null</c>.
 		/// </exception>
 #if !UNITY || MSGPACK_UNITY_FULL
 		[EditorBrowsable( EditorBrowsableState.Never )]
