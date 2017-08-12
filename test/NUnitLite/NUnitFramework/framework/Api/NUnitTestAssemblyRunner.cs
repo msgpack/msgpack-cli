@@ -32,7 +32,6 @@ using System.IO;
 #if !SILVERLIGHT && !NETCF && !PORTABLE
 using System.Diagnostics;
 using System.Security;
-using System.Windows.Forms;
 #endif
 
 namespace NUnit.Framework.Api
@@ -392,9 +391,6 @@ namespace NUnit.Framework.Api
         [SecuritySafeCritical]
         private static void PauseBeforeRun()
         {
-            var process = Process.GetCurrentProcess();
-            string attachMessage = string.Format("Attach debugger to Process {0}.exe with Id {1} if desired.", process.ProcessName, process.Id);
-            MessageBox.Show(attachMessage, process.ProcessName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 #endif
 
