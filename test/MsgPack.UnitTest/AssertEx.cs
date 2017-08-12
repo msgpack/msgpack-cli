@@ -33,7 +33,7 @@ namespace MsgPack
 		public static TException ThrowsAsync<TException>( Func<Task> assertion )
 			where TException : Exception
 		{
-#if MSTEST
+#if MSTEST || XAMARIN
 			return Assert.Throws<TException>( () => assertion().GetAwaiter().GetResult() );
 #else
 			return Assert.ThrowsAsync<TException>( () => assertion() );
