@@ -656,3 +656,4 @@ Release 0.9.0 RC1 T.B.D
   * Fix constructor deserialization fails if the constructor parameters order is not lexical. Issue #233
   * Fix asynchronous multi dimensional array deserialization corruption.
   * Fix enum serialization throws NullReferenceException in Unity. Issue #215.
+  * Fix MessagePackSerializer.Capability does not work correctly in Unity.
