@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 #if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
@@ -70,6 +71,7 @@ namespace MsgPack.Serialization
 
 		private SerializationTarget( IList<SerializingMember> members, ConstructorInfo constructor, string[] correspondingMemberNames, bool canDeserialize )
 		{
+			Trace( "SerializationTarget::ctor(canDeserialize: {0})", canDeserialize );
 			this.Members = members;
 			this.DeserializationConstructor = constructor;
 			this.IsConstructorDeserialization = constructor != null && constructor.GetParameters().Any();
@@ -286,6 +288,7 @@ namespace MsgPack.Serialization
 		{
 			if ( HasUnpackableInterface( targetType, context ) )
 			{
+				Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> true: HasUnpackableInterface", targetType, kind );
 				return true;
 			}
 
@@ -293,14 +296,18 @@ namespace MsgPack.Serialization
 			{
 				case ConstructorKind.Marked:
 				{
+					Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> true: Marked", targetType, kind );
 					return true;
 				}
 				case ConstructorKind.Parameterful:
 				{
-					return HasAnyCorrespondingMembers( correspondingMemberNames );
+					var result = HasAnyCorrespondingMembers( correspondingMemberNames );
+					Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> {2}: HasAnyCorrespondingMembers", targetType, kind, result );
+					return result;
 				}
 				case ConstructorKind.Default:
 				{
+					Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> {2}: Default", targetType, kind, allowDefault );
 					return allowDefault;
 				}
 				default:
@@ -317,7 +324,7 @@ namespace MsgPack.Serialization
 			var returningMemberNamesSet = new HashSet<string>();
 			while ( type != typeof( object ) && type != null )
 			{
-				var members = 
+				var members =
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
 					type.FindMembers(
 						MemberTypes.Field | MemberTypes.Property,
@@ -507,6 +514,9 @@ namespace MsgPack.Serialization
 			// A constructor which has most parameters will be used.
 			var mostRichConstructors =
 				constructors.GroupBy( ctor => ctor.GetParameters().Length ).OrderByDescending( g => g.Key ).First().ToArray();
+#if DEBUG
+			Trace( "SerializationTarget::FindDeserializationConstructor.MostRich({0}) -> {1}", targetType, String.Join( ";", mostRichConstructors.Select( x => x.ToString() ).ToArray() ) );
+#endif // DEBUG
 			switch ( mostRichConstructors.Length )
 			{
 				case 1:
@@ -828,6 +838,14 @@ namespace MsgPack.Serialization
 			{
 				return ( obj.Key == null ? 0 : StringComparer.OrdinalIgnoreCase.GetHashCode( obj.Key ) ) ^ ( obj.Value == null ? 0 : obj.Value.GetHashCode() );
 			}
+		}
+
+		[Conditional( "DEBUG" )]
+		private static void Trace( string format, params object[] args )
+		{
+#if !SILVERLIGHT && !WINDOWS_PHONE && !NETFX_CORE
+			Tracer.Binding.TraceEvent( Tracer.EventType.Trace, Tracer.EventId.Trace, format, args );
+#endif // !SILVERLIGHT && !WINDOWS_PHONE && !NETFX_CORE
 		}
 
 		private enum ConstructorKind

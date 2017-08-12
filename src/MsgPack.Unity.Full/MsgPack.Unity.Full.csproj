@@ -38,7 +38,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>3001,3002</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -708,6 +709,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Tracer.cs">
+      <Link>Serialization\Tracer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>

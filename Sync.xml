@@ -44,6 +44,7 @@
     <Preserve Path="Serialization\NonGenericMessagePackSerializer.cs" />
     <Preserve Path="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
     <Preserve Path="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
+    <Preserve Path="Serialization\Tracer.cs" />
     <Preserve Path="CorLibOnlyHelper*.tt" />
     <Preserve Path="CorLibOnlyHelper*.cs" />
     <Preserve Path="MPContract.cs" />

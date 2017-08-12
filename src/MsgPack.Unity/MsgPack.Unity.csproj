@@ -719,6 +719,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Tracer.cs">
+      <Link>Serialization\Tracer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>
     </Compile>
