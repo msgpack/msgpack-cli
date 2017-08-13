@@ -28,10 +28,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 #if !NETFX_CORE
 using Microsoft.FSharp.Collections;
 #endif // !NETFX_CORE
@@ -68,7 +68,7 @@ namespace MsgPack.Serialization
 		[SetUp]
 		public void SetUp()
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
@@ -90,13 +90,13 @@ namespace MsgPack.Serialization
 
 			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.TestDirectory;
 			SerializerDebugging.AddRuntimeAssembly( typeof( ImmutableList ).Assembly.Location );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
 				try
@@ -115,7 +115,7 @@ namespace MsgPack.Serialization
 
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 		}
 #endif // !NETFX_CORE && !SDILVERLIGHT && !AOT
 

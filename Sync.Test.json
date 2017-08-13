@@ -6,8 +6,13 @@
       {"type": "include", "path": "../MsgPack.UnitTest/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Properties/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen35/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
       {"type": "include", "path": "**/*.cs"},
-      {"type": "remove", "path": "obj/**/*.cs"}
+      {"type": "remove", "path": "obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Augments.cs"}
     ]
   },
 	{
@@ -17,10 +22,14 @@
       {"type": "include", "path": "../MsgPack.UnitTest.BclExtensions/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest.BclExtensions/Properties/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest.BclExtensions/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
       {"type": "include", "path": "**/*.cs"},
       {"type": "remove", "path": "obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
       {"type": "include", "path": "../MsgPack.UnitTest/Serialization/RoslynCodeGeneration.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TempFileDependentAssemblyManager.cs"}
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TempFileDependentAssemblyManager.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Augments.cs"}
     ]
   },
 	{
@@ -32,12 +41,16 @@
       {"type": "remove", "path": "../MsgPack.UnitTest/obj/**/*.cs"},
       {"type": "include", "path": "**/*.cs"},
       {"type": "remove", "path": "obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen35/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/PreGenerated*"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/_SetUpFixture.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/AppendableReadOnlyCollections.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/ArrayGenerationBasedAutoMessagePackSerializerTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/ArrayGenerationBasedEnumSerializationTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CompositeTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/FromExpressionTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/GenerationBasedNilImplicationTest.cs"},
@@ -49,8 +62,7 @@
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*FieldBased*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/_SetUpFixture.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/AssertEx.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest.Net35/Augments.cs"}
+      {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"}
     ]
   },
 	{
@@ -70,9 +82,13 @@
       {"type": "include", "path": "../MsgPack.UnitTest/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Properties/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen35/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
       {"type": "include", "path": "**/*.cs"},
       {"type": "remove", "path": "obj/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/_SetUpFixture.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CompositeTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/FromExpressionTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/MessagePackMemberAndDataMemberMixedTarget.cs"},
@@ -83,6 +99,7 @@
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/TempFileDependentAssemblyManager.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*FieldBased*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/_SetUpFixture.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Augments.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"}
     ]
   },
@@ -115,14 +132,13 @@
     "base": "MsgPack.UnitTest.Uwp",
     "globs": [
       {"type": "include", "path": "../../src/MsgPack/Tuple`n.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest.Net35/Dummies/**/*.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest.Net35/Mono/**/*.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest.Net35/Augments.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/AssertEx.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest.Net35/gen/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Net35/gen/MsgPack_Serialization_PolymorphicMemberTypeKnownType*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Net35/gen/MsgPack_Serialization_PolymorphicMemberTypeRuntimeType*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/gen35/**/*.cs"}, 
+      {"type": "include", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen35/MsgPack_Serialization_PolymorphicMemberTypeKnownType*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen35/MsgPack_Serialization_PolymorphicMemberTypeRuntimeType*.cs"},
       {"type": "remove", "path": "../MsgPack.NUnitPortable/TimeoutAttribute.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/AppendableReadOnlyCollections.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
@@ -135,6 +151,7 @@
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/TempFileDependentAssemblyManager.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*FieldBased*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/_SetUpFixture.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Augments.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/ExceptionTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/MessagePackObjectTest.RuntimeSerialization.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"},

@@ -139,7 +139,7 @@ namespace MsgPack
 			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
-#if !UNITY && !SILVERLIGHT && !AOT && !NETFX_CORE
+#if !UNITY && !SILVERLIGHT && !AOT && !NETFX_CORE && !NETSTANDARD1_3
 		[Test]
 		public void TestEqualsFullTrust()
 		{
@@ -157,7 +157,7 @@ namespace MsgPack
 			Debug.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#endif // !UNITY && !SILVERLIGHT && !AOT
+#endif // !UNITY && !SILVERLIGHT && !AOT && !NETFX_CORE && !NETSTANDARD1_3
 
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
 		private static StrongName GetStrongName( Type type )

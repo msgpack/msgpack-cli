@@ -26,7 +26,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
 #if !MSTEST
 using NUnit.Framework;
@@ -43,6 +45,7 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class CompositeTest
 	{
+#if !NETSTANDARD1_3
 		[SetUp]
 		public void SetUp()
 		{
@@ -84,6 +87,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
 		}
+#endif // !NETSTANDARD1_3
 
 		[Test]
 		public void TestArrayFieldBased()
@@ -97,6 +101,7 @@ namespace MsgPack.Serialization
 			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
 
+#if !NETSTANDARD1_3
 		[Test]
 		public void TestArrayCodeDomBased()
 		{
@@ -108,6 +113,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
+#endif // !NETSTANDARD1_3
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder generator )
 		{
@@ -131,7 +137,9 @@ namespace MsgPack.Serialization
 					SerializationMethod = serializationMethod,
 					SerializerOptions =
 					{
+#if !NETSTANDARD1_3
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+#endif // !NETSTANDARD1_3
 						EmitterFlavor = emittingFlavor
 					}
 				};

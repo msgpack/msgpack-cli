@@ -79,7 +79,7 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MsgPack.UnitTest.Net35\Augments.cs">
+    <Compile Include="..\MsgPack.UnitTest\Augments.cs">
       <Link>Augments.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">

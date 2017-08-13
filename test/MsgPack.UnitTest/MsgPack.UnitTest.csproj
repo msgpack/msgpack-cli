@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,30 +10,31 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack.UnitTest</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <!-- TODO: netstandard2.0 -->
+    <TargetFrameworks>net46;net35;netstandard1.3;</TargetFrameworks>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <SignAssembly>true</SignAssembly>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SKIP_LARGE_TEST;FEATURE_TAP</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>TRACE;DEBUG;SKIP_LARGE_TEST</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -41,13 +42,8 @@
     <DefineConstants>DEBUG;TRACE;PERFORMANCE_TEST</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
@@ -58,10 +54,8 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
@@ -69,10 +63,8 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CoreProfile|AnyCPU'">
     <OutputPath>bin\CoreProfile\</OutputPath>
@@ -80,985 +72,390 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
+    <DefineConstants>$(DefineConstants);NETFX_35;</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
+    <DefineConstants>$(DefineConstants);NETFX_46;</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net35'">
+    <DefineConstants>$(DefineConstants);FEATURE_TAP;</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeAnalysis, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.1.3.2\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
+    <PackageReference Include="NUnit" Version="3.7.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
+    <PackageReference Include="System.Collections.NonGeneric" Version="4.0.1" />
+    <PackageReference Include="System.Collections.Specialized" Version="4.0.1" />
+    <PackageReference Include="System.Data.Common" Version="4.1.0" />
+    <PackageReference Include="System.Diagnostics.Contracts" Version="4.0.1" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.1.1" />
+    <PackageReference Include="System.Runtime.Numerics" Version="4.0.1" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.1.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35' or '$(TargetFramework)' == 'net46'">
     <Reference Include="System" />
-    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.AppContext.4.1.0\lib\net46\System.AppContext.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Console, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Console.4.0.0\lib\net46\System.Console.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35' ">
     <Reference Include="System.Core" />
-    <Reference Include="System.Diagnostics.FileVersionInfo, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Diagnostics.FileVersionInfo.4.0.0\lib\net46\System.Diagnostics.FileVersionInfo.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Diagnostics.StackTrace.4.0.1\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IO.FileSystem.4.0.1\lib\net46\System.IO.FileSystem.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Reflection.Metadata, Version=1.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Reflection.Metadata.1.3.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Security.Cryptography.Algorithms.4.2.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Security.Cryptography.Encoding.4.0.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Security.Cryptography.Primitives.4.0.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Security.Cryptography.X509Certificates.4.1.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.Encoding.CodePages, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Text.Encoding.CodePages.4.0.1\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Threading.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Threading.Thread.4.0.0\lib\net46\System.Threading.Thread.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.XmlDocument, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Xml.XmlDocument.4.0.1\lib\net46\System.Xml.XmlDocument.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.XPath, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Xml.XPath.4.0.1\lib\net46\System.Xml.XPath.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.XPath.XDocument, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Xml.XPath.XDocument.4.0.1\lib\net46\System.Xml.XPath.XDocument.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
+    <Compile Remove="gen\**\*.cs" />
+    <Compile Remove="Serialization\AppendableReadOnlyCollections.cs" />
+    <Compile Remove="Serialization\RoslynCodeGeneration.cs" />
+    <Compile Remove="AssertEx.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
+    <Compile Remove="gen35\**\*.cs" />
+    <Compile Remove="Dummies\**\*.cs" />
+    <Compile Remove="Mono\**\*.cs" />
+    <Compile Remove="Augments.cs" />
+    <Compile Remove="Serialization\CodeDomCodeGeneration.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <Compile Include="..\MsgPack.NUnitPortable\TimeoutAttribute.cs" />
+    <Compile Remove="Serialization\PreGeneratedSerializerGenerator.cs" />
+    <Compile Remove="Serialization\RoslynCodeGeneration.cs" />
+    <Compile Remove="Serialization\SerializerGeneratorTest.cs " />
+    <Compile Remove="Serialization\TempFileDependentAssemblyManager.cs " />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssertEx.cs" />
-    <Compile Include="BigEndianBinaryTest.cs" />
-    <Compile Include="ByteArrayPackerTest.Allocation.cs">
+    <Compile Update="ByteArrayPackerTest.Allocation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ByteArrayPackerTest.Allocation.tt</DependentUpon>
     </Compile>
-    <Compile Include="ByteArrayPackerTest.cs" />
-    <Compile Include="ByteArrayUnpackerTest.cs" />
-    <Compile Include="CollectionValidatingByteArrayUnpackerTest.cs" />
-    <Compile Include="FastByteArrayUnpackerTest.cs" />
-    <Compile Include="FastStreamUnpackerTest.cs" />
-    <Compile Include="CollectionValidatingStreamUnpackerTest.cs" />
-    <Compile Include="CollectionAssertEx.cs" />
-    <Compile Include="DirectConversionTest.cs" />
-    <Compile Include="DirectConversionTest.Scalar.cs">
+    <Compile Update="DirectConversionTest.Scalar.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DirectConversionTest.Scalar.tt</DependentUpon>
     </Compile>
-    <Compile Include="EqualsTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ExceptionTest.cs" />
-    <Compile Include="GenericExceptionTester.cs" />
-    <Compile Include="gen\MsgPack_ImageSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassCollectionNoAttributeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassCollectionRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassDictKeyKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassDictKeyRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassListItemKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassListItemRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassMemberKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AbstractClassMemberRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObject_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTime_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32Array_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_AnnotatedClassSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeGeneratedEnclosureSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeGeneratedSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeWithDataContractSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeWithDataContractWithOrderSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeWithNonSerializedSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeWithOneBaseOrderSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeWithoutAnyAttributeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ComplexTypeWithTwoMemberSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_DataMamberClassSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_DictionaryValueType_2_System_Int32_System_Int32_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumByNameSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumByteFlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumByteSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumDefaultSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumInt16FlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumInt16Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumInt32FlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumInt32Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumInt64FlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumInt64Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumMemberObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumSByteFlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumSByteSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumUInt16FlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumUInt16Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumUInt32FlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumUInt32Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_EnumUInt64Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_GenericNonCollectionTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_HasEnumerableSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InnerSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceCollectionKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceCollectionNoAttributeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceCollectionRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceDictKeyKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceDictKeyRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceListItemKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceListItemRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceMemberKnownTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_InterfaceMemberRuntimeTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_NonGenericNonCollectionTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_OuterSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PlainClassSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeMixedSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionPropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteFieldSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWritePropertySerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObjectSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObject_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_System_DateTime_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_System_Int32Array_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_System_Int32_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_System_ObjectArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_SimpleCollection_1_System_Object_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObject_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTime_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32Array_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_System_ObjectArray_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_StringKeyedCollection_1_System_Object_Serializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_TestValueTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_TupleAbstractTypeSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_VersioningTestTargetSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_WithAbstractInt32CollectionSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_WithAbstractNonCollectionSerializer.cs" />
-    <Compile Include="gen\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObject_Serializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_System_DateTime_Serializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_System_Int32Array_Serializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_System_Int32_Serializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_System_ObjectArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_Generic_HashSet_1_System_Object_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_System_DateTimeArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_System_Int32Array_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_System_Int32_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_System_ObjectArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_Collection_1_System_Object_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObject_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTimeArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTime_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs" />
-    <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
-    <Compile Include="gen\System_DayOfWeekSerializer.cs" />
-    <Compile Include="Image.cs" />
-    <Compile Include="PackerFactoryTest.cs" />
-    <Compile Include="Serialization\KeyNameTransformersTest.cs" />
-    <Compile Include="Serialization\InheritanceTest.cs" />
-    <Compile Include="MessagePackConvertTest.cs" />
-    <Compile Include="MessagePackExtendedTypeObjectTest.cs" />
-    <Compile Include="MessagePackObjectDictionaryTest.cs" />
-    <Compile Include="MessagePackObjectTest.Conversion.cs">
+    <Compile Update="MessagePackObjectTest.Conversion.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.Conversion.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.Equals.cs" />
-    <Compile Include="MessagePackObjectTest.Equals.Integer.cs">
+    <Compile Update="MessagePackObjectTest.Equals.Integer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.Equals.Integer.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.Equals.Real.cs">
+    <Compile Update="MessagePackObjectTest.Equals.Real.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.Equals.Real.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.Exceptionals.Conversion.cs">
+    <Compile Update="MessagePackObjectTest.Exceptionals.Conversion.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.Exceptionals.Conversion.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.Exceptionals.cs" />
-    <Compile Include="MessagePackObjectTest.IPackable.cs" />
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Array.cs">
+    <Compile Update="MessagePackObjectTest.IsTypeOf.Array.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.IsTypeOf.Array.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.IsTypeOf.cs" />
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Integer.cs">
+    <Compile Update="MessagePackObjectTest.IsTypeOf.Integer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.IsTypeOf.Integer.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Map.cs">
+    <Compile Update="MessagePackObjectTest.IsTypeOf.Map.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.IsTypeOf.Map.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.IsTypeOf.Raw.cs">
+    <Compile Update="MessagePackObjectTest.IsTypeOf.Raw.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MessagePackObjectTest.IsTypeOf.Raw.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessagePackObjectTest.Miscs.cs" />
-    <Compile Include="MessagePackObjectTest.Objects.cs" />
-    <Compile Include="MessagePackObjectTest.RuntimeSerialization.cs" />
-    <Compile Include="MessagePackObjectTest.Strings.cs" />
-    <Compile Include="MessagePackStringTest.cs" />
-    <Compile Include="MessageUnpackableTest.cs" />
-    <Compile Include="PackerTest.Pack.cs">
+    <Compile Update="PackerTest.Pack.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PackerTest.Pack.tt</DependentUpon>
     </Compile>
-    <Compile Include="PackerTest.PackObject.cs">
+    <Compile Update="PackerTest.PackObject.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PackerTest.PackObject.tt</DependentUpon>
     </Compile>
-    <Compile Include="PackerTest.PackT.cs">
+    <Compile Update="PackerTest.PackT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PackerTest.PackT.tt</DependentUpon>
     </Compile>
-    <Compile Include="PackUnpackTest.cs" />
-    <Compile Include="PackUnpackTest.Scalar.cs">
+    <Compile Update="PackUnpackTest.Scalar.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PackUnpackTest.Scalar.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\AddOnlyCollection`1.cs" />
-    <Compile Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+    <Compile Update="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
       <DependentUpon>ArrayReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
+    <Compile Update="Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
       <DependentUpon>ArrayReflectionBasedEnumSerializationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\ArrayFieldBasedEnumSerializationTest.cs">
+    <Compile Update="Serialization\ArrayFieldBasedEnumSerializationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ArrayFieldBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs">
+    <Compile Update="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ArrayGenerationBasedAutoMessagePackSerializerTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\ArrayGenerationBasedEnumSerializationTest.cs">
+    <Compile Update="Serialization\ArrayGenerationBasedEnumSerializationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ArrayGenerationBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\ArraySegmentEqualityComparer`1.cs" />
-    <Compile Include="Serialization\AutoMessagePackSerializerTest.Types.cs">
+    <Compile Update="Serialization\AutoMessagePackSerializerTest.Types.cs">
       <DependentUpon>AutoMessagePackSerializerTest.Types.tt</DependentUpon>
-      <SubType>Code</SubType>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Serialization\BaseCollections.cs" />
-    <Compile Include="Serialization\ComplexType.cs" />
-    <Compile Include="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
-    <Compile Include="Serialization\ComplexTypeWithOneBaseOrder.cs" />
-    <Compile Include="Serialization\ComplexTypeWithoutAnyAttribute.cs" />
-    <Compile Include="Serialization\ComplexTypeWithTwoMember.cs" />
-    <Compile Include="Serialization\CompositeTest.cs" />
-    <Compile Include="Serialization\DataContractAndNonSerializedMixedTarget.cs" />
-    <Compile Include="Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" />
-    <Compile Include="Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs" />
-    <Compile Include="Serialization\EnumSerializationTest.EnumDefinitions.cs">
+    <Compile Update="Serialization\EnumSerializationTest.EnumDefinitions.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EnumSerializationTest.EnumDefinitions.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
+    <Compile Update="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MapReflectionBasedAutoMessagePackSerializerTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\PerformanceTest.cs" />
-    <Compile Include="Serialization\AppendableReadOnlyCollections.cs" />
-    <Compile Include="Serialization\ReflectionBasedNilImplicationTest.cs">
+    <Compile Update="Serialization\ReflectionBasedNilImplicationTest.cs">
       <DependentUpon>ReflectionBasedNilImplicationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\FieldBasedNilImplicationTest.cs">
+    <Compile Update="Serialization\FieldBasedNilImplicationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FieldBasedNilImplicationTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\FromExpressionTest.cs" />
-    <Compile Include="Serialization\MapReflectionBasedEnumSerializationTest.cs">
+    <Compile Update="Serialization\MapReflectionBasedEnumSerializationTest.cs">
       <DependentUpon>MapReflectionBasedEnumSerializationTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\RegressionTests.cs" />
-    <Compile Include="Serialization\RoslynCodeGeneration.cs" />
-    <Compile Include="Serialization\SerializationTargets.cs" />
-    <Compile Include="Serialization\GenerationBasedNilImplicationTest.cs">
+    <Compile Update="Serialization\GenerationBasedNilImplicationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GenerationBasedNilImplicationTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\IVerifiable.cs" />
-    <Compile Include="Serialization\IVerifiable`1.cs" />
-    <Compile Include="Serialization\MapFieldBasedEnumSerializationTest.cs">
+    <Compile Update="Serialization\MapFieldBasedEnumSerializationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MapFieldBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs">
+    <Compile Update="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MapGenerationBasedAutoMessagePackSerializerTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\MapGenerationBasedEnumSerializationTest.cs">
+    <Compile Update="Serialization\MapGenerationBasedEnumSerializationTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MapGenerationBasedEnumSerializationTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\SerializationTargetTest.cs" />
-    <Compile Include="Serialization\MessagePackMemberAndDataMemberMixedTarget.cs" />
-    <Compile Include="Serialization\MessagePackMemberAttributeTest.cs" />
-    <Compile Include="Serialization\MessagePackSerializerTest.cs" />
-    <Compile Include="Serialization\MessagePackSerializerTTest.cs" />
-    <Compile Include="Serialization\MillisecondsDateTimeComparer.cs" />
-    <Compile Include="Serialization\MillisecondsDateTimeOffsetComparer.cs" />
-    <Compile Include="Serialization\NilImplicationTestTarget.cs" />
-    <Compile Include="PackerTest.cs" />
-    <Compile Include="Serialization\PreGeneratedSerializerActivator.Types.cs">
+    <Compile Update="Serialization\PreGeneratedSerializerActivator.Types.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PreGeneratedSerializerActivator.Types.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\PreGeneratedSerializerGenerator.cs" />
-    <Compile Include="Serialization\PreGeneratedSerializerActivator.cs" />
-    <Compile Include="Serialization\SerializationContextTest.cs" />
-    <Compile Include="Serialization\SerializerGeneratorTest.cs" />
-    <Compile Include="Serialization\SimpleCollection`1.cs" />
-    <Compile Include="Serialization\StringKeyedCollection.cs" />
-    <Compile Include="Serialization\StructWithDataContractTest.cs" />
-    <Compile Include="Serialization\TempFileDependentAssemblyManager.cs" />
-    <Compile Include="Serialization\TestValueType.cs" />
-    <Compile Include="Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" />
-    <Compile Include="Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs" />
-    <Compile Include="Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs" />
-    <Compile Include="Serialization\VersioningTest.Cases.cs">
+    <Compile Update="Serialization\VersioningTest.Cases.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VersioningTest.Cases.tt</DependentUpon>
     </Compile>
-    <Compile Include="Serialization\VersioningTest.cs" />
-    <Compile Include="Serialization\_SetUpFixture.cs" />
-    <Compile Include="Serialization\ComplexTypeWithNonSerialized.cs" />
-    <Compile Include="Serialization\ComplexTypeWithDataContract.cs" />
-    <Compile Include="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
+    <Compile Update="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.cs">
       <DependentUpon>ArrayFieldBasedAutoMessagePackSerializerTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
+    <Compile Update="Serialization\MapFieldBasedAutoMessagePackSerializerTest.cs">
       <DependentUpon>MapFieldBasedAutoMessagePackSerializerTest.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="SplittingStream.cs" />
-    <Compile Include="StreamPackerTest.cs" />
-    <Compile Include="StreamUnpackerTest.cs" />
-    <Compile Include="ByteArrayUnpackerTest.Ext.cs">
+    <Compile Update="ByteArrayUnpackerTest.Ext.cs">
       <DependentUpon>ByteArrayUnpackerTest.Ext.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ByteArrayUnpackerTest.Raw.cs">
+    <Compile Update="ByteArrayUnpackerTest.Raw.cs">
       <DependentUpon>ByteArrayUnpackerTest.Raw.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ByteArrayUnpackerTest.Scalar.cs">
+    <Compile Update="ByteArrayUnpackerTest.Scalar.cs">
       <DependentUpon>ByteArrayUnpackerTest.Scalar.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="UnpackerFactoryTest.cs" />
-    <Compile Include="UnpackerTest.Subtree.cs" />
-    <Compile Include="UnpackerTest.cs">
+    <Compile Update="UnpackerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.tt</DependentUpon>
     </Compile>
-    <Compile Include="StreamUnpackerTest.Ext.cs">
+    <Compile Update="StreamUnpackerTest.Ext.cs">
       <DependentUpon>StreamUnpackerTest.Ext.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="UnpackerTest.Ext.cs">
+    <Compile Update="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Ext.tt</DependentUpon>
     </Compile>
-    <Compile Include="StreamUnpackerTest.Scalar.cs">
+    <Compile Update="StreamUnpackerTest.Scalar.cs">
       <DependentUpon>StreamUnpackerTest.Scalar.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="StreamUnpackerTest.Raw.cs">
+    <Compile Update="StreamUnpackerTest.Raw.cs">
       <DependentUpon>StreamUnpackerTest.Raw.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="UnpackerTest.Skip.cs">
+    <Compile Update="UnpackerTest.Skip.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Skip.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackerTest.Object.cs">
+    <Compile Update="UnpackerTest.Object.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Object.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackerTest.Raw.cs">
+    <Compile Update="UnpackerTest.Raw.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Raw.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackerTest.Scalar.cs">
+    <Compile Update="UnpackerTest.Scalar.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Scalar.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackerTest.Skip.Variations.cs">
+    <Compile Update="UnpackerTest.Skip.Variations.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Skip.Variations.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Array.cs">
+    <Compile Update="UnpackingTest.Combinations.Array.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Array.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Boolean.cs">
+    <Compile Update="UnpackingTest.Combinations.Boolean.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Boolean.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Byte.cs">
+    <Compile Update="UnpackingTest.Combinations.Byte.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Byte.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Double.cs">
+    <Compile Update="UnpackingTest.Combinations.Double.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Double.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Int16.cs">
+    <Compile Update="UnpackingTest.Combinations.Int16.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Int16.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Int32.cs">
+    <Compile Update="UnpackingTest.Combinations.Int32.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Int32.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Int64.cs">
+    <Compile Update="UnpackingTest.Combinations.Int64.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Int64.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Map.cs">
+    <Compile Update="UnpackingTest.Combinations.Map.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Map.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Nil.cs">
+    <Compile Update="UnpackingTest.Combinations.Nil.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Nil.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Raw.cs">
+    <Compile Update="UnpackingTest.Combinations.Raw.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Raw.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.SByte.cs">
+    <Compile Update="UnpackingTest.Combinations.SByte.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.SByte.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.Single.cs">
+    <Compile Update="UnpackingTest.Combinations.Single.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.Single.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.UInt16.cs">
+    <Compile Update="UnpackingTest.Combinations.UInt16.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.UInt16.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.UInt32.cs">
+    <Compile Update="UnpackingTest.Combinations.UInt32.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.UInt32.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.Combinations.UInt64.cs">
+    <Compile Update="UnpackingTest.Combinations.UInt64.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackingTest.Combinations.UInt64.tt</DependentUpon>
     </Compile>
-    <Compile Include="UnpackingTest.cs" />
-    <Compile Include="_SetUpFixture.cs" />
-    <Compile Include="TestRandom.cs">
+    <Compile Update="TestRandom.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestRandom.tt</DependentUpon>
     </Compile>
-    <Compile Include="TestSuite.cs" />
-    <Compile Include="PackerTest.PackBinary.cs">
+    <Compile Update="PackerTest.PackBinary.cs">
       <DependentUpon>PackerTest.PackBinary.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="PackerTest.PackExtendedType.cs">
+    <Compile Update="PackerTest.PackExtendedType.cs">
       <DependentUpon>PackerTest.PackExtendedType.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="UnpackingTest.Scalar.cs">
+    <Compile Update="UnpackingTest.Scalar.cs">
       <DependentUpon>UnpackingTest.Scalar.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="UnpackingTest.Raw.cs">
+    <Compile Update="UnpackingTest.Raw.cs">
       <DependentUpon>UnpackingTest.Raw.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="UnpackingTest.Ext.cs">
+    <Compile Update="UnpackingTest.Ext.cs">
       <DependentUpon>UnpackingTest.Ext.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1078,241 +475,240 @@
     <None Include="cases_compact.mpac">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="DirectConversionTest.Scalar.tt">
+    <None Update="DirectConversionTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DirectConversionTest.Scalar.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.Conversion.tt">
+    <None Update="MessagePackObjectTest.Conversion.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.Conversion.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.Equals.Integer.tt">
+    <None Update="MessagePackObjectTest.Equals.Integer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.Equals.Integer.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.Equals.Real.tt">
+    <None Update="MessagePackObjectTest.Equals.Real.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.Equals.Real.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.Exceptionals.Conversion.tt">
+    <None Update="MessagePackObjectTest.Exceptionals.Conversion.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.Exceptionals.Conversion.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.IsTypeOf.Array.tt">
+    <None Update="MessagePackObjectTest.IsTypeOf.Array.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.IsTypeOf.Array.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.IsTypeOf.Integer.tt">
+    <None Update="MessagePackObjectTest.IsTypeOf.Integer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.IsTypeOf.Integer.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.IsTypeOf.Map.tt">
+    <None Update="MessagePackObjectTest.IsTypeOf.Map.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.IsTypeOf.Map.cs</LastGenOutput>
     </None>
-    <None Include="MessagePackObjectTest.IsTypeOf.Raw.tt">
+    <None Update="MessagePackObjectTest.IsTypeOf.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackObjectTest.IsTypeOf.Raw.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
-    <None Include="PackerTest.Pack.tt">
+    <None Update="PackerTest.Pack.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerTest.Pack.cs</LastGenOutput>
     </None>
-    <None Include="PackerTest.PackObject.tt">
+    <None Update="PackerTest.PackObject.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerTest.PackObject.cs</LastGenOutput>
     </None>
-    <None Include="PackerTest.PackT.tt">
+    <None Update="PackerTest.PackT.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerTest.PackT.cs</LastGenOutput>
     </None>
-    <None Include="PackUnpackTest.Scalar.tt">
+    <None Update="PackUnpackTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackUnpackTest.Scalar.cs</LastGenOutput>
     </None>
     <None Include="PEVerify.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.tt">
+    <None Update="Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayReflectionBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayReflectionBasedEnumSerializationTest.tt">
+    <None Update="Serialization\ArrayReflectionBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayReflectionBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayFieldBasedEnumSerializationTest.tt">
+    <None Update="Serialization\ArrayFieldBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayFieldBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.tt">
+    <None Update="Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayGenerationBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayGenerationBasedEnumSerializationTest.tt">
+    <None Update="Serialization\ArrayGenerationBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayGenerationBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
     <None Include="Serialization\AutoMessagePackSerializerTest.Polymorphism.ttinclude" />
     <None Include="Serialization\AutoMessagePackSerializerTest.ttinclude" />
-    <None Include="Serialization\AutoMessagePackSerializerTest.Types.tt">
+    <None Update="Serialization\AutoMessagePackSerializerTest.Types.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AutoMessagePackSerializerTest.Types.cs</LastGenOutput>
     </None>
     <None Include="Serialization\AutoMessagePackSerializerTest.Types.ttinclude" />
-    <None Include="Serialization\EnumSerializationTest.EnumDefinitions.tt">
+    <None Update="Serialization\EnumSerializationTest.EnumDefinitions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EnumSerializationTest.EnumDefinitions.cs</LastGenOutput>
     </None>
     <None Include="Serialization\EnumSerializationTest.ttinclude" />
-    <None Include="Serialization\ReflectionBasedNilImplicationTest.tt">
+    <None Update="Serialization\ReflectionBasedNilImplicationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ReflectionBasedNilImplicationTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\FieldBasedNilImplicationTest.tt">
+    <None Update="Serialization\FieldBasedNilImplicationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FieldBasedNilImplicationTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\GenerationBasedNilImplicationTest.tt">
+    <None Update="Serialization\GenerationBasedNilImplicationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GenerationBasedNilImplicationTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.tt">
+    <None Update="Serialization\MapReflectionBasedAutoMessagePackSerializerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapReflectionBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapReflectionBasedEnumSerializationTest.tt">
+    <None Update="Serialization\MapReflectionBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapReflectionBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapFieldBasedEnumSerializationTest.tt">
+    <None Update="Serialization\MapFieldBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapFieldBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.tt">
+    <None Update="Serialization\MapGenerationBasedAutoMessagePackSerializerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapGenerationBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapGenerationBasedEnumSerializationTest.tt">
+    <None Update="Serialization\MapGenerationBasedEnumSerializationTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapGenerationBasedEnumSerializationTest.cs</LastGenOutput>
     </None>
     <None Include="Serialization\NilImplicationTest.ttinclude" />
-    <None Include="Serialization\PreGeneratedSerializerActivator.Types.tt">
+    <None Update="Serialization\PreGeneratedSerializerActivator.Types.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PreGeneratedSerializerActivator.Types.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\VersioningTest.Cases.tt">
+    <None Update="Serialization\VersioningTest.Cases.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VersioningTest.Cases.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.tt">
+    <None Update="Serialization\ArrayFieldBasedAutoMessagePackSerializerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArrayFieldBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
     </None>
-    <None Include="Serialization\MapFieldBasedAutoMessagePackSerializerTest.tt">
+    <None Update="Serialization\MapFieldBasedAutoMessagePackSerializerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MapFieldBasedAutoMessagePackSerializerTest.cs</LastGenOutput>
     </None>
-    <None Include="TestRandom.tt">
+    <None Update="TestRandom.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TestRandom.cs</LastGenOutput>
     </None>
-    <None Include="UnpackerTest.Ext.tt">
+    <None Update="UnpackerTest.Ext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Ext.cs</LastGenOutput>
     </None>
-    <None Include="UnpackerTest.Raw.tt">
+    <None Update="UnpackerTest.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Raw.cs</LastGenOutput>
     </None>
-    <None Include="UnpackerTest.Scalar.tt">
+    <None Update="UnpackerTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Scalar.cs</LastGenOutput>
     </None>
-    <None Include="UnpackerTest.Skip.Variations.tt">
+    <None Update="UnpackerTest.Skip.Variations.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Skip.Variations.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Array.tt">
+    <None Update="UnpackingTest.Combinations.Array.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Array.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Boolean.tt">
+    <None Update="UnpackingTest.Combinations.Boolean.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Boolean.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Byte.tt">
+    <None Update="UnpackingTest.Combinations.Byte.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Byte.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Double.tt">
+    <None Update="UnpackingTest.Combinations.Double.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Double.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Int16.tt">
+    <None Update="UnpackingTest.Combinations.Int16.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Int16.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Int32.tt">
+    <None Update="UnpackingTest.Combinations.Int32.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Int32.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Int64.tt">
+    <None Update="UnpackingTest.Combinations.Int64.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Int64.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Map.tt">
+    <None Update="UnpackingTest.Combinations.Map.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Map.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Nil.tt">
+    <None Update="UnpackingTest.Combinations.Nil.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Nil.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Raw.tt">
+    <None Update="UnpackingTest.Combinations.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Raw.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.SByte.tt">
+    <None Update="UnpackingTest.Combinations.SByte.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.SByte.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.Single.tt">
+    <None Update="UnpackingTest.Combinations.Single.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.Single.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.UInt16.tt">
+    <None Update="UnpackingTest.Combinations.UInt16.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.UInt16.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.UInt32.tt">
+    <None Update="UnpackingTest.Combinations.UInt32.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.UInt32.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Combinations.UInt64.tt">
+    <None Update="UnpackingTest.Combinations.UInt64.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Combinations.UInt64.cs</LastGenOutput>
     </None>
     <None Include="UnpackingTest.Common.ttinclude" />
-    <None Include="PackerTest.PackBinary.tt">
+    <None Update="PackerTest.PackBinary.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerTest.PackBinary.cs</LastGenOutput>
     </None>
-    <None Include="PackerTest.PackExtendedType.tt">
+    <None Update="PackerTest.PackExtendedType.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PackerTest.PackExtendedType.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Scalar.tt">
+    <None Update="UnpackingTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Scalar.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Raw.tt">
+    <None Update="UnpackingTest.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Raw.cs</LastGenOutput>
     </None>
-    <None Include="UnpackingTest.Ext.tt">
+    <None Update="UnpackingTest.Ext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackingTest.Ext.cs</LastGenOutput>
     </None>
@@ -1328,54 +724,48 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ByteArrayPackerTest.Allocation.tt">
+    <None Update="ByteArrayPackerTest.Allocation.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ByteArrayPackerTest.Allocation.cs</LastGenOutput>
-    </Content>
-    <Content Include="gen\_ReadMe.txt" />
-    <None Include="StreamUnpackerTest.Scalar.tt">
+    </None>
+    <None Include="gen\_ReadMe.txt" />
+    <None Update="StreamUnpackerTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StreamUnpackerTest.Scalar.cs</LastGenOutput>
     </None>
-    <None Include="StreamUnpackerTest.Raw.tt">
+    <None Update="StreamUnpackerTest.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StreamUnpackerTest.Raw.cs</LastGenOutput>
     </None>
-    <None Include="StreamUnpackerTest.Ext.tt">
+    <None Update="StreamUnpackerTest.Ext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StreamUnpackerTest.Ext.cs</LastGenOutput>
     </None>
-    <None Include="ByteArrayUnpackerTest.Ext.tt">
+    <None Update="ByteArrayUnpackerTest.Ext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ByteArrayUnpackerTest.Ext.cs</LastGenOutput>
     </None>
-    <None Include="ByteArrayUnpackerTest.Raw.tt">
+    <None Update="ByteArrayUnpackerTest.Raw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ByteArrayUnpackerTest.Raw.cs</LastGenOutput>
     </None>
-    <None Include="ByteArrayUnpackerTest.Scalar.tt">
+    <None Update="ByteArrayUnpackerTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ByteArrayUnpackerTest.Scalar.cs</LastGenOutput>
     </None>
-    <Content Include="UnpackerTest.Skip.tt">
+    <None Update="UnpackerTest.Skip.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Skip.cs</LastGenOutput>
-    </Content>
-    <Content Include="UnpackerTest.Object.tt">
+    </None>
+    <None Update="UnpackerTest.Object.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Object.cs</LastGenOutput>
-    </Content>
-    <Content Include="UnpackerTest.tt">
+    </None>
+    <None Update="UnpackerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

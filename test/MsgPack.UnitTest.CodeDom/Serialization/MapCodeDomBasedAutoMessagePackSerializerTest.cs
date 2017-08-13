@@ -4653,11 +4653,11 @@ namespace MsgPack.Serialization
 
 					try
 					{
-#if !NETFX_CORE
+#if !NETFX_CORE && !NETSTANDARD1_3
 						var property = typeof( T ).GetProperty( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
 #else
 						var property = typeof( T ).GetRuntimeProperties().SingleOrDefault( p => p.Name == memberName );
-#endif
+#endif // !NETFX_CORE && !NETSTANDARD1_3
 						if ( property != null )
 						{
 #if !UNITY
@@ -4668,11 +4668,11 @@ namespace MsgPack.Serialization
 						}
 						else
 						{
-#if !NETFX_CORE
+#if !NETFX_CORE && !NETSTANDARD1_3
 							var field =  typeof( T ).GetField( memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
 #else
 							var field = typeof( T ).GetRuntimeFields().SingleOrDefault( f => f.Name == memberName );
-#endif
+#endif // !NETFX_CORE && !NETSTANDARD1_3
 							if ( field == null )
 							{
 								Assert.Fail( memberName + " is not found." );

@@ -79,9 +79,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MsgPack.UnitTest.Net35\Augments.cs">
-      <Link>Augments.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest.Silverlight.5\System\Collections\Generic\BigHelper.cs">
       <Link>System\Collections\Generic\BigHelper.cs</Link>
     </Compile>
@@ -96,6 +93,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest.Silverlight.5\System\MidpointRouding.cs">
       <Link>System\MidpointRouding.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Augments.cs">
+      <Link>Augments.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
