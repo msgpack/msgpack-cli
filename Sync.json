@@ -34,8 +34,13 @@
       {"type": "remove", "path": "../MsgPack/Serialization/TeeTextWriter.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/SingleTextWriterCodeGenerationSink.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/Tracer.cs"},
+      {"type": "remove", "path": "../MsgPack/Contract.cs"},
+      {"type": "remove", "path": "../MsgPack/Delegates.cs"},
       {"type": "remove", "path": "../MsgPack/MPContract.cs"},
+      {"type": "remove", "path": "../MsgPack/NetFxCompatibilities.cs"},
+      {"type": "remove", "path": "../MsgPack/Tuple`n.cs"},
       {"type": "remove", "path": "../MsgPack/UnsafeNativeMethods.cs"},
+      {"type": "remove", "path": "../MsgPack/Volatile.cs"},
       {"type": "remove", "path": "../MsgPack/Validation.cs"}
     ]
   },
@@ -43,6 +48,7 @@
     "name": "MsgPack.Unity.Full",
     "base": "MsgPack.Uwp",
     "globs": [
+      {"type": "include", "path": "../MsgPack/Serialization/Tracer.cs"},
       {"type": "include", "path": "../MsgPack/MPContract.cs"},
       {"type": "include", "path": "../MsgPack/Volatile.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/CollectionSerializers/CollectionSerializerBase`2.cs"},
@@ -75,7 +81,10 @@
     "name": "MsgPack.Unity",
     "base": "MsgPack.Unity.Full",
     "globs": [
-      {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_Collections_Generic_Queue_1MessagePackSerializer.cs"},
+      {"type": "include", "path": "../MsgPack.Unity.Full/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.Unity.Full/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.Unity.Full/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_Collections_Generic_Queue_1MessagePackSerializer`1.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_Collections_Generic_Stack_1MessagePackSerializer`1.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_UriMessagePackSerializer.cs"}
@@ -124,7 +133,6 @@
       {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_Collections_Specialized_NameValueCollectionMessagePackSerializer.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_Numerics_ComplexMessagePackSerializer.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs"},
-      {"type": "remove", "path": "../MsgPack/Serialization/DefaultSerializers/UnixEpocFileTimeMessagePackSerializer.cs"},
       {"type": "remove", "path": "../MsgPack/Serialization/Reflection/ReflectionHelpers.cs"},
       {"type": "remove", "path": "../MsgPack/BufferedStream.cs"},
       {"type": "remove", "path": "../MsgPack/NetStandardCompatibility.cs"},

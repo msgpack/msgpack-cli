@@ -38,8 +38,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
     <DefineConstants>TRACE;UNITY_IPHONE;MSGPACK_UNITY_FULL;AOT;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>3001,3002</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -52,9 +51,6 @@
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.Net35\Volatile.cs">
-      <Link>Volatile.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\AsyncReadResult.cs">
       <Link>AsyncReadResult.cs</Link>
@@ -245,32 +241,35 @@
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Tracer.cs">
+      <Link>Serialization\Tracer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionKind.cs">
       <Link>Serialization\CollectionKind.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs">
-      <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs">
       <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs">
+      <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionSerializerHelpers.cs">
       <Link>Serialization\CollectionSerializers\CollectionSerializerHelpers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs">
-      <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs">
       <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs">
-      <Link>Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs">
+      <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\EnumerableMessagePackSerializer`2.cs">
       <Link>Serialization\CollectionSerializers\EnumerableMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs">
+      <Link>Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\ICollectionInstanceFactory.cs">
       <Link>Serialization\CollectionSerializers\ICollectionInstanceFactory.cs</Link>
@@ -281,11 +280,11 @@
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs">
-      <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs">
+      <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs</Link>
@@ -404,11 +403,11 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs</Link>
@@ -461,14 +460,14 @@
     <Compile Include="..\MsgPack\Serialization\EnumMemberSerializationMethod.cs">
       <Link>Serialization\EnumMemberSerializationMethod.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializer`1.cs">
+      <Link>Serialization\EnumMessagePackSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerHelpers.cs">
       <Link>Serialization\EnumMessagePackSerializerHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerProvider.cs">
       <Link>Serialization\EnumMessagePackSerializerProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializer`1.cs">
-      <Link>Serialization\EnumMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumNameTransformers.cs">
       <Link>Serialization\EnumNameTransformers.cs</Link>
@@ -536,14 +535,14 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.Factories.cs">
       <Link>Serialization\MessagePackSerializer.Factories.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer`1.cs">
+      <Link>Serialization\MessagePackSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
       <Link>Serialization\MessagePackSerializerExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerProvider.cs">
       <Link>Serialization\MessagePackSerializerProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer`1.cs">
-      <Link>Serialization\MessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
@@ -559,9 +558,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\PackHelpers.cs">
       <Link>Serialization\PackHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\PolymorphicTypeVerificationContext.cs">
-      <Link>Serialization\PolymorphicTypeVerificationContext.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicDeserializer.cs">
       <Link>Serialization\Polymorphic\IPolymorphicDeserializer.cs</Link>
@@ -587,6 +583,9 @@
     <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoding.cs">
       <Link>Serialization\Polymorphic\TypeInfoEncoding.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphicTypeVerificationContext.cs">
+      <Link>Serialization\PolymorphicTypeVerificationContext.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Constructors.cs">
       <Link>Serialization\PolymorphismSchema.Constructors.cs</Link>
     </Compile>
@@ -604,6 +603,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\PolymorphismType.cs">
       <Link>Serialization\PolymorphismType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
+      <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
+      <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.CollectionTraits.cs">
       <Link>Serialization\ReflectionExtensions.CollectionTraits.cs</Link>
@@ -656,12 +661,6 @@
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionSerializerNilImplicationHandlerParameter.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
-      <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
-      <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\ResolveSerializerEventArgs.cs">
       <Link>Serialization\ResolveSerializerEventArgs.cs</Link>
     </Compile>
@@ -709,9 +708,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Tracer.cs">
-      <Link>Serialization\Tracer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>
@@ -793,6 +789,9 @@
     </Compile>
     <Compile Include="..\MsgPack\UnpackingStreamReader.cs">
       <Link>UnpackingStreamReader.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Volatile.cs">
+      <Link>Volatile.cs</Link>
     </Compile>
     <Compile Include="CorLibOnlyHelper.cs">
       <AutoGen>True</AutoGen>

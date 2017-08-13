@@ -77,6 +77,9 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\_SetUpFixture.cs">
+      <Link>_SetUpFixture.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
       <Link>AssertEx.cs</Link>
     </Compile>
@@ -224,6 +227,15 @@
     <Compile Include="..\MsgPack.UnitTest\PackUnpackTest.Scalar.cs">
       <Link>PackUnpackTest.Scalar.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
+      <Link>Serialization\_SetUpFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
+      <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAttributeTest.cs">
+      <Link>Serialization\MessagePackMemberAttributeTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
       <Link>Serialization\AddOnlyCollection`1.cs</Link>
     </Compile>
@@ -296,12 +308,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedEnumSerializationTest.cs">
       <Link>Serialization\MapReflectionBasedEnumSerializationTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
-      <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAttributeTest.cs">
-      <Link>Serialization\MessagePackMemberAttributeTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackSerializerTest.cs">
       <Link>Serialization\MessagePackSerializerTest.cs</Link>
     </Compile>
@@ -361,9 +367,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.cs">
       <Link>Serialization\VersioningTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
-      <Link>Serialization\_SetUpFixture.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
       <Link>SplittingStream.cs</Link>
@@ -472,9 +475,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Scalar.cs">
       <Link>UnpackingTest.Scalar.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\_SetUpFixture.cs">
-      <Link>_SetUpFixture.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

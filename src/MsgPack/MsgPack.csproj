@@ -516,11 +516,13 @@
     <Compile Remove="Serialization\Metadata\_Type.cs" />
     <Compile Remove="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Compile Remove="TupleItems.cs" />
-    <Compile Include="..\MsgPack.Net35\Contract.cs" />
-    <Compile Include="..\MsgPack.Net35\Delegates.cs" />
-    <Compile Include="..\MsgPack.Net35\NetFxCompatibilities.cs" />
-    <Compile Include="..\MsgPack.Net35\Volatile.cs" />
-    <Compile Include="..\MsgPack.Net35\Tuple`n.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
+    <Compile Remove="Contract.cs" />
+    <Compile Remove="Delegates.cs" />
+    <Compile Remove="NetFxCompatibilities.cs" />
+    <Compile Remove="Volatile.cs" />
+    <Compile Remove="Tuple`n.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <Compile Remove="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
