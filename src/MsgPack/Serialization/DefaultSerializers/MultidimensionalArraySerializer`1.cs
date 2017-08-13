@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -444,7 +444,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					var totalLength = UnpackHelpers.GetItemsCount( arrayUnpacker );
 					if ( totalLength > 0 )
 					{
-						ForEach(
+						await ForEachAsync(
 							result,
 							totalLength,
 							lengthsAndLowerBounds.Item2,
@@ -463,7 +463,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 								);
 								// ReSharper restore AccessToDisposedClosure
 							}
-						);
+						).ConfigureAwait( false );
 					}
 
 					return ( TArray )( object )result;
@@ -536,5 +536,35 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 		}
+
+#if FEATURE_TAP
+
+		private static async Task ForEachAsync( Array array, int totalLength, int[] lowerBounds, int[] lengths, Func<int[], Task> action )
+		{
+			var indices = new int[ array.Rank ];
+			for ( var dimension = 0; dimension < array.Rank; dimension++ )
+			{
+				indices[ dimension ] = lowerBounds[ dimension ];
+			}
+
+			for ( var i = 0; i < totalLength; i++ )
+			{
+				await action( indices ).ConfigureAwait( false );
+				// Canculate indices with carrying up.
+				var dimension = indices.Length - 1;
+				for ( ; dimension >= 0; dimension-- )
+				{
+					if ( ( indices[ dimension ] + 1 ) < lengths[ dimension ] + lowerBounds[ dimension ] )
+					{
+						indices[ dimension ]++;
+						break;
+					}
+
+					// Let's carry up, so set 0 to current dimension.
+					indices[ dimension ] = lowerBounds[ dimension ];
+				}
+			}
+		}
+#endif // FEATURE_TAP
 	}
 }

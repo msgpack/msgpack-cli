@@ -85,5 +85,34 @@ namespace MsgPack
 				return unchecked( ( char )( 'A' + ( b - 10 ) ) );
 			}
 		}
+
+		public static int ToBits( float value )
+		{
+			var bits = new Float32Bits( value );
+			var result = default( int );
+
+			// Float32Bits usage is effectively pointer dereference operation rather than shifting operators, so we must consider endianness here.
+			if ( BitConverter.IsLittleEndian )
+			{
+				result = bits.Byte3 << 24;
+				result |= bits.Byte2 << 16;
+				result |= bits.Byte1 << 8;
+				result |= bits.Byte0;
+			}
+			else
+			{
+				result = bits.Byte0 << 24;
+				result |= bits.Byte1 << 16;
+				result |= bits.Byte2 << 8;
+				result |= bits.Byte3;
+			}
+
+			return result;
+		}
+
+		public static long ToBits( double value )
+		{
+			return BitConverter.DoubleToInt64Bits( value );
+		}
 	}
 }

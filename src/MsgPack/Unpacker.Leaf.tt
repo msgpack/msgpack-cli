@@ -1,0 +1,154 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\Core.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+
+namespace MsgPack
+{
+	// This file was generated from Unpacker.Leaf.tt and Core.ttinclude T4Template.
+	// Do not modify this file. Edit Unpacker.Leaf.tt and Core.ttinclude instead.
+<#
+foreach ( var spec in 
+	new []
+	{
+		new
+		{
+			Kind = "Stream",
+			ParametersList =
+				new []
+				{
+					new Dictionary<string, string> { { "stream", "Stream" }, { "streamOptions", "PackerUnpackerStreamOptions" } }
+				}
+		},
+		new
+		{
+			Kind = "ByteArray",
+			ParametersList =
+				new []
+				{
+					new Dictionary<string, string> { { "source", "byte[]" }, { "startOffset", "int" } }
+				}
+		}
+	}
+)
+{
+#>
+
+	internal sealed class Fast<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
+	{
+<#
+	foreach ( var parameters in spec.ParametersList )
+	{
+#>
+		public Fast<#= spec.Kind #>Unpacker( <#= String.Join( ", ", parameters.Select( kv => kv.Value + " " + kv.Key ).ToArray() ) #> )
+			: base( <#= String.Join( ", ", parameters.Keys.ToArray() ) #> ) { }
+
+<#
+	}
+#>
+		protected override Unpacker ReadSubtreeCore()
+		{
+<#
+	if ( spec.Kind == "Stream" )
+	{
+#>
+			this.BeginReadSubtree();
+<#
+	}
+#>
+			return this;
+		}
+	}
+
+	internal sealed class CollectionValidating<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
+	{
+		// ReSharper disable once RedundantDefaultFieldInitializer
+		private bool _isSubtreeReading = false;
+
+<#
+	foreach ( var parameters in spec.ParametersList )
+	{
+#>
+		public CollectionValidating<#= spec.Kind #>Unpacker( <#= String.Join( ", ", parameters.Select( kv => kv.Value + " " + kv.Key ).ToArray() ) #> )
+			: base( <#= String.Join( ", ", parameters.Keys.ToArray() ) #> ) { }
+
+<#
+	}
+#>
+		internal override Unpacker InternalReadSubtree()
+		{
+			if ( !this.IsCollectionHeader )
+			{
+				ThrowCannotBeSubtreeModeException();
+			}
+
+			if ( this._isSubtreeReading )
+			{
+				ThrowInSubtreeModeException();
+			}
+
+			var subtreeReader = this.ReadSubtreeCore();
+			this._isSubtreeReading = !ReferenceEquals( subtreeReader, this );
+			return subtreeReader;
+		}
+
+		protected override Unpacker ReadSubtreeCore()
+		{
+			return new SubtreeUnpacker( this );
+		}
+
+		protected internal override void EndReadSubtree()
+		{
+			this._isSubtreeReading = false;
+			base.EndReadSubtree();
+		}
+
+		internal override void EnsureNotInSubtreeMode()
+		{
+			this.VerifyMode( UnpackerMode.Streaming );
+			if ( this._isSubtreeReading )
+			{
+				ThrowInSubtreeModeException();
+			}
+		}
+
+		internal override void BeginSkipCore()
+		{
+			if ( this._isSubtreeReading )
+			{
+				ThrowInSubtreeModeException();
+			}
+		}
+	}
+<#
+}
+#>
+}

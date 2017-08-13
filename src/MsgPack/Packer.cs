@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -127,93 +127,6 @@ namespace MsgPack
 		protected Packer( PackerCompatibilityOptions compatibilityOptions )
 		{
 			this._compatibilityOptions = compatibilityOptions;
-		}
-
-		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
-		/// </summary>
-		/// <param name="stream"><see cref="Stream"/> object. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
-		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
-		/// <remarks>
-		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
-		///		 NetworkStream, UnmanagedMemoryStream, or so.
-		/// </remarks>
-		public static Packer Create( Stream stream )
-		{
-			return Create( stream, true );
-		}
-
-		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
-		/// </summary>
-		/// <param name="stream"><see cref="Stream"/> object. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
-		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
-		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
-		/// <remarks>
-		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
-		///		 NetworkStream, UnmanagedMemoryStream, or so.
-		/// </remarks>
-		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions )
-		{
-			return Create( stream, compatibilityOptions, true );
-		}
-
-		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with <see cref="DefaultCompatibilityOptions"/>.
-		/// </summary>
-		/// <param name="stream"><see cref="Stream"/> object.</param>
-		/// <param name="ownsStream">
-		///		<c>true</c> to close <paramref name="stream"/> when this instance is disposed;
-		///		<c>false</c>, otherwise.
-		/// </param>
-		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
-		/// <remarks>
-		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
-		///		 NetworkStream, UnmanagedMemoryStream, or so.
-		/// </remarks>
-		public static Packer Create( Stream stream, bool ownsStream )
-		{
-			return Create( stream, DefaultCompatibilityOptions, ownsStream );
-		}
-
-		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
-		/// </summary>
-		/// <param name="stream"><see cref="Stream"/> object.</param>
-		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
-		/// <param name="ownsStream">
-		///		<c>true</c> to close <paramref name="stream"/> when this instance is disposed;
-		///		<c>false</c>, otherwise.
-		/// </param>
-		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
-		/// <remarks>
-		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
-		///		 NetworkStream, UnmanagedMemoryStream, or so.
-		/// </remarks>
-		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions, bool ownsStream )
-		{
-			return new StreamPacker( stream, compatibilityOptions, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : PackerUnpackerStreamOptions.None );
-		}
-
-		/// <summary>
-		///		Create standard Safe <see cref="Packer"/> instance wrapping specified <see cref="Stream"/> with specified <see cref="PackerCompatibilityOptions"/>.
-		/// </summary>
-		/// <param name="stream"><see cref="Stream"/> object.</param>
-		/// <param name="compatibilityOptions">A <see cref="PackerCompatibilityOptions"/> which specifies compatibility options.</param>
-		/// <param name="streamOptions"><see cref="PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
-		/// <returns>Safe <see cref="Packer"/>. This will not be null.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is null.</exception>
-		/// <remarks>
-		///		 You can specify any derived <see cref="Stream"/> class like FileStream, <see cref="MemoryStream"/>,
-		///		 NetworkStream, UnmanagedMemoryStream, or so.
-		/// </remarks>
-		public static Packer Create( Stream stream, PackerCompatibilityOptions compatibilityOptions, PackerUnpackerStreamOptions streamOptions )
-		{
-			return new StreamPacker( stream, compatibilityOptions, streamOptions );
 		}
 
 		/// <summary>
@@ -458,7 +371,7 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
@@ -489,12 +402,17 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
 #endif // FEATURE_TAP
 
-		private void PrivatePackCore( sbyte value )
+		/// <summary>
+		///		Packs <see cref="SByte"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="SByte"/> value.</param>
+		[CLSCompliant( false )]
+		protected virtual void PackCore( sbyte value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
@@ -511,7 +429,14 @@ namespace MsgPack
 
 #if FEATURE_TAP
 
-		private async Task PrivatePackAsyncCore( sbyte value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="SByte"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="SByte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		[CLSCompliant( false )]
+		protected virtual async Task PackAsyncCore( sbyte value, CancellationToken cancellationToken )
 		{
 			if ( await this.TryPackTinySignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
 			{
@@ -600,7 +525,7 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
@@ -629,41 +554,33 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
 #endif // FEATURE_TAP
 
-		private void PrivatePackCore( byte value )
-		{
-			if ( this.TryPackTinyUnsignedInteger( value ) )
-			{
-				return;
-			}
 
-#pragma warning disable 168
-			var b = this.TryPackUInt8( value );
-#pragma warning restore 168
-#if DEBUG
-			Contract.Assert( b, "success" );
-#endif // DEBUG
+
+		/// <summary>
+		///		Packs <see cref="Byte"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="Byte"/> value.</param>
+		protected virtual void PackCore( byte value )
+		{
+			this.WriteByte( value );
 		}
 
 #if FEATURE_TAP
 
-		private async Task PrivatePackAsyncCore( byte value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="Byte"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Byte"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual Task PackAsyncCore( byte value, CancellationToken cancellationToken )
 		{
-			if ( await this.TryPackTinyUnsignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
-			{
-				return;
-			}
-
-#pragma warning disable 168
-			var b = await this.TryPackUInt8Async( value, cancellationToken ).ConfigureAwait( false );
-#pragma warning restore 168
-#if DEBUG
-			Contract.Assert( b, "success" );
-#endif // DEBUG
+			return this.WriteByteAsync( value, cancellationToken );
 		}
 
 #endif // FEATURE_TAP
@@ -740,7 +657,7 @@ namespace MsgPack
 		public Packer Pack( bool value )
 		{
 			this.VerifyNotDisposed();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
@@ -765,19 +682,29 @@ namespace MsgPack
 		public Task PackAsync( bool value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
 #endif // FEATURE_TAP
 
-		private void PrivatePackCore( bool value )
+		/// <summary>
+		///		Packs <see cref="Boolean"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="Boolean"/> value.</param>
+		protected virtual void PackCore( bool value )
 		{
 			this.WriteByte( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue );
 		}
 
 #if FEATURE_TAP
 
-		private async Task PrivatePackAsyncCore( bool value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="Boolean"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Boolean"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackAsyncCore( bool value, CancellationToken cancellationToken )
 		{
 			await this.WriteByteAsync( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue, cancellationToken ).ConfigureAwait( false );
 		}

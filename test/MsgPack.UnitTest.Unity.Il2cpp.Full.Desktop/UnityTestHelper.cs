@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,30 +19,38 @@
 #endregion -- License Terms --
 
 using System;
-#if !MSTEST
-using NUnit.Framework;
-#else
-using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
-using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
-using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
-using Assert = NUnit.Framework.Assert;
-using Is = NUnit.Framework.Is;
-#endif
+using System.Diagnostics;
+
+using MsgPack.Serialization;
 
 namespace MsgPack
 {
-	[TestFixture]
-	[Timeout( 500 )]
-	public partial class PackerTest_Pack
+	public static class UnityTestHelper
 	{
-		private sealed class Packable : IPackable
+		public static void AddBindingTraceLogger( Action<string> logger )
 		{
-			public void PackToMessage( Packer packer, PackingOptions options )
-			{
-				// 0xC3
-				packer.Pack( true );
-			}
+			Tracer.Binding.Switch.Level = SourceLevels.All;
+			Tracer.Binding.Listeners.Add( new DelegateTraceListener( logger ) );
 		}
 
+		private sealed class DelegateTraceListener : TraceListener
+		{
+			private readonly Action<string> _logger;
+
+			public DelegateTraceListener( Action<string> logger )
+			{
+			    this._logger = logger;
+			}
+
+			public override void Write( string message )
+			{
+				this._logger( message );
+			}
+
+			public override void WriteLine( string message )
+			{
+				this._logger( message );
+			}
+		}
 	}
 }

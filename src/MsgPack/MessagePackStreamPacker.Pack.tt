@@ -1,0 +1,221 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="MessagePackPackerCommon.ttinclude" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+using System.Text;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+namespace MsgPack
+{
+	// This file was generated from MessagePackStreamPacker.Pack.tt and MessagePackPackerCommon.ttinclude T4Template.
+	// Do not modify this file. Edit MessagePackStreamPacker.Pack.tt  and MessagePackPackerCommon.ttinclude instead.
+
+	partial class MessagePackStreamPacker
+	{
+<#
+	this.WriteOverrides();
+#>
+#if FEATURE_TAP
+
+		private async Task WriteStringHeaderAsync( int bytesLength, bool allowStr8, CancellationToken cancellationToken )
+		{
+			if( bytesLength < 0x20 )
+			{
+				await this.WriteByteAsync( ( byte )( bytesLength | MessagePackCode.MinimumFixedRaw ), cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			if ( bytesLength < 0x100 && allowStr8 )
+			{
+				await this.WriteBytesAsync( MessagePackCode.Str8, ( byte )bytesLength, cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			if ( bytesLength < 0x10000 )
+			{
+				await this.WriteBytesAsync( MessagePackCode.Str16, ( ushort )bytesLength, cancellationToken ).ConfigureAwait( false );
+				return;
+			}
+
+			await this.WriteBytesAsync( MessagePackCode.Str32, unchecked(( uint )bytesLength), cancellationToken ).ConfigureAwait( false );
+		}
+
+#endif // FEATURE_TAP
+
+<#
+
+	foreach ( var isAsync in new [] { false, true } )
+	{
+		if ( isAsync )
+		{
+#>
+
+#if FEATURE_TAP
+
+<#
+		}
+
+		foreach ( var type in scalarTypes )
+		{
+#>
+		<#= AsyncMethod( isAsync, "void", "WriteBytes", "byte header, " + type + " value", false ) #>
+		{
+<#
+			string bits;
+			this.WriteToBits( type, "value", out bits );
+#>
+			this._scalarBuffer[ 0 ] = header;
+<#
+			this.WriteShift( type, bits, "this._scalarBuffer", i => ( i + 1 ).ToString( CultureInfo.InvariantCulture ) );
+#>
+			<#= isAsync ? "await " : String.Empty #>this.WriteBytes<#= isAsync ? "Async" : String.Empty #>( this._scalarBuffer, 0, sizeof( <#= type #> ) + 1<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+		}
+
+<#
+		} // foreach type
+#>
+		<#= AsyncMethod( isAsync, "void", "WriteBytes", "string value, bool allowStr8", false ) #>
+		{
+			var encodedLength = Encoding.UTF8.GetByteCount( value );
+			<#= isAsync ? "await " : String.Empty #>this.WriteStringHeader<#= isAsync ? "Async" : String.Empty #>( encodedLength, allowStr8<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+			if ( encodedLength == 0 )
+			{
+				return;
+			}
+
+			<#= isAsync ? "await " : String.Empty #>this.WriteStringBody<#= isAsync ? "Async" : String.Empty #>( value<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+		}
+
+#if !FEATURE_POINTER_CONVERSION
+
+		<#= AsyncMethod( isAsync, "void", "WriteStringBody", "string value", false ) #>
+		{
+			var chars = BufferManager.NewCharBuffer( value.Length );
+			int offset = 0;
+
+			while ( offset < value.Length )
+			{
+				int copying = Math.Min( value.Length - offset, chars.Length );
+				value.CopyTo( offset, chars, 0, copying );
+				<#= isAsync ? "await " : String.Empty #>this.WriteStringBody<#= isAsync ? "Async" : String.Empty #>( chars, copying<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+				offset += copying;
+			}
+		}
+
+		<#= AsyncMethod( isAsync, "void", "WriteStringBody", "char[] value, int remainingCharsLength", false ) #>
+		{
+
+#else
+
+		<#= AsyncMethod( isAsync, "void", "WriteStringBody", "string value", false ) #>
+		{
+			var remainingCharsLength = value.Length;
+
+#endif // !FEATURE_POINTER_CONVERSION
+
+			var buffer = BufferManager.NewByteBuffer( value.Length * 4 );
+			var encoder = Encoding.UTF8.GetEncoder();
+			var valueOffset = 0;
+			
+			bool isCompleted = false;
+			do
+			{
+				int charsUsed, bytesUsed;
+				isCompleted = EncodeString( encoder, value, valueOffset, remainingCharsLength, buffer, out charsUsed, out bytesUsed );
+
+				valueOffset += charsUsed;
+				remainingCharsLength -= charsUsed;
+				<#= isAsync ? "await " : String.Empty #>this._destination.Write<#= isAsync ? "Async" : String.Empty #>( buffer, 0, bytesUsed<#= isAsync ? ", cancellationToken" : String.Empty #> )<#= isAsync ? ".ConfigureAwait( false )" : String.Empty #>;
+			} while ( remainingCharsLength > 0 );
+
+#if DEBUG
+			Contract.Assert( isCompleted, "Encoding is not completed!" );
+#endif // DEBUG
+		}
+
+<#
+
+		if ( isAsync )
+		{
+#>
+#endif // FEATURE_TAP
+<#
+		}
+	} // foreach isAsync
+#>
+	
+#if FEATURE_POINTER_CONVERSION
+
+		private static unsafe bool EncodeString( Encoder encoder, string value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
+		{
+			fixed ( char* pValue = value )
+			{
+				var pChars = pValue + startOffset;
+
+				fixed ( byte* pBuffer = buffer )
+				{
+					return encoder.EncodeString( pChars, count, pBuffer, buffer.Length, out charsUsed, out bytesUsed );
+				}
+			}
+		}
+
+#else
+
+		private static bool EncodeString( Encoder encoder, char[] value, int startOffset, int count, byte[] buffer, out int charsUsed, out int bytesUsed )
+		{
+			return encoder.EncodeString( value, startOffset, count, buffer, 0, buffer.Length, out charsUsed, out bytesUsed );
+		}
+
+#endif // FEATURE_POINTER_CONVERSION
+	}
+}
+<#+
+private void WriteShift( string type, string variable, string buffer, Func<int, string> offsetGenerator )
+{
+	var bytesLength = lengthes[ type ];
+	for ( var i = 0; i < bytesLength; i++ )
+	{
+		this.WriteShiftCore( i, bytesLength, variable, buffer, offsetGenerator );
+	}
+}
+#>

@@ -1,0 +1,614 @@
+﻿<#@ include file="..\Core.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text" #>
+<#+
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+private void WriteOverrides()
+{
+	var ints =
+		new HashSet<Type>
+		{
+			typeof( byte ), typeof( sbyte ),
+			typeof( short ), typeof( ushort ),
+			typeof( int ), typeof( uint ),
+			typeof( long ), typeof( ulong ),
+		};
+
+	var signedInts =
+		new HashSet<Type>
+		{
+			typeof( sbyte ),
+			typeof( short ),
+			typeof( int ),
+			typeof( long ), 
+		};
+
+	foreach ( var isAsync in new [] { false, true } )
+	{
+		if ( isAsync )
+		{
+#>
+#if FEATURE_TAP
+
+<#+
+		}
+
+		foreach ( var type in
+			new []
+			{ 
+				typeof( bool ), 
+				typeof( byte ), typeof( sbyte ),
+				typeof( short ), typeof( ushort ),
+				typeof( int ), typeof( uint ),
+				typeof( long ), typeof( ulong ),
+				typeof( float ), typeof( double ),
+			}
+		)
+		{
+#>
+		<#= AsyncPack( type, isAsync ) #>
+		{
+<#+
+			if ( ints.Contains( type ) )
+			{
+				if ( type.Name.EndsWith( "64" ) )
+				{
+#>
+			if ( ( value & 0x000000000000007FL ) == value )
+<#+
+				}
+				else
+				{
+#>
+			if ( ( value & 0x0000007F ) == value )
+<#+
+				}
+#>
+			{
+				// Positive fix num
+				<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( unchecked( ( byte )( value & 0xFF ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+<#+
+			} // if ints
+			
+			if ( signedInts.Contains( type ) )
+			{
+				if ( type.Name.EndsWith( "64" ) )
+				{
+#>
+			if ( ( ~value & unchecked( ( long )0xFFFFFFFFFFFFFFE0 ) ) == 0 )
+<#+
+				}
+				else
+				{
+#>
+			if ( ( ~value & 0xFFFFFFE0 ) == 0 )
+<#+
+				}
+#>
+			{
+				// Negative fix num
+				<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( unchecked( ( byte )( value & 0xFF ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+<#+
+			} // if signedInts
+
+			if ( type == typeof( bool ) )
+			{
+#>
+			<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( value ? ( byte )MessagePackCode.TrueValue : ( byte )MessagePackCode.FalseValue<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+<#+
+			}
+			else
+			{
+				if ( ints.Contains( type ) )
+				{
+					// Use compact expression as possible
+
+					var size = Marshal.SizeOf( type );
+					var isSigned = signedInts.Contains( type );
+
+					if ( isSigned )
+					{
+#>
+			if ( value < 0 )
+			{
+<#+
+						for ( var bytes = 1; bytes < size; bytes *= 2 )
+						{
+							var mask = new String( Enumerable.Repeat( 'F', bytes * 2 ).ToArray() );
+#>
+				if ( value >= <#= ToTypeName( true, bytes ) #>.MinValue )
+				{
+					<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= ToCodeName( isSigned, bytes ) #>, unchecked( ( <#= ToTypeName( false, bytes ) #> )( value & 0x<#= mask #> ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+					return;
+				}
+
+<#+
+						} // for
+#>
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= ToCodeName( type.Name ) #>, unchecked( ( <#= ToUnsigned( type ) #> )value )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+<#+
+					} // isSigned
+
+					for ( var bytes = 1; bytes < size; bytes *= 2 )
+					{
+						var mask = new String( Enumerable.Repeat( 'F', bytes * 2 ).ToArray() );
+#>
+			if ( value <= <#= ToTypeName( isSigned, bytes ) #>.MaxValue )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= ToCodeName( isSigned, bytes ) #>, unchecked( ( <#= ToTypeName( false, bytes ) #> )( value & 0x<#= mask #> ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+<#+
+					} // for
+				} // if ints
+#>
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= ToCodeName( type.Name ) #>, unchecked( ( <#= ToUnsigned( type ) #> )value )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+<#+
+			} // if type == typeof( bool )
+#>
+		}
+
+<#+
+		} // foreach type (scalar)
+
+		foreach ( var prefix in new [] { "Array", "Map" } )
+		{
+#>
+		<#= AsyncMethod( isAsync, "void", "Pack" + prefix + "Header", "int length", true ) #>
+		{
+			if ( length < 0x10 )
+			{
+				<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( unchecked( ( byte )( MessagePackCode.MinimumFixed<#= prefix #> | length ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			if ( length < 0x10000 )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= prefix #>16, unchecked( ( ushort )( length & 0xFFFF ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= prefix #>32, unchecked( ( uint )length )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+			return;
+		}
+
+<#+
+		} // foreach prefix
+
+#>
+		<#= AsyncMethod( isAsync, "void", "PackStringHeader", "int length", true ) #>
+		{
+			if ( length < 0x20 )
+			{
+				<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			if ( length < 0x100 && ( this.CompatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Str8, unchecked( ( byte )( length & 0xFF ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			if ( length < 0x10000 )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Str16, unchecked( ( ushort )( length & 0xFFFF ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Str32, unchecked( ( uint )length )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+			return;
+		}
+
+		<#= AsyncMethod( isAsync, "void", "PackBinaryHeader", "int length", true ) #>
+		{
+			if ( length < 0x100 )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Bin8, unchecked( ( byte )( length & 0xFF ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			if ( length < 0x10000 )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Bin16, unchecked( ( ushort )( length & 0xFFFF ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Bin32, unchecked( ( uint )length )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+			return;
+		}
+
+<#+
+
+		// TODO: ReadOnlySpan<char>, ReadOnlySpan<byte>
+
+#>
+		<#= AsyncMethod( isAsync, "void", "PackRaw", "string value", true ) #>
+		{
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( value, ( this.CompatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+		}
+
+<#+
+
+		foreach ( var isRaw in new [] { true, false } )
+		{
+			var suffix = isRaw ? "Raw" : "Binary";
+			var code = isRaw ? "Str" : "Bin";
+#>
+		<#= AsyncMethod( isAsync, "void", "Pack" + suffix, "byte[] value", true ) #>
+		{
+<#+
+			if ( isRaw )
+			{
+#>
+			if ( value.Length < 0x20 )
+			{
+				<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | value.Length ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( value<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+<#+
+			} // if spec.IsRaw
+#>
+			if ( value.Length < 0x100<#= isRaw ? " && ( this.CompatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0" : String.Empty #> )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= code #>8, unchecked( ( byte )( value.Length ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( value<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			if ( value.Length < 0x10000 )
+			{
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= code #>16, unchecked( ( ushort )( value.Length ) )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( value<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+				return;
+			}
+
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.<#= code #>32, unchecked( ( uint )value.Length )<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( value<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+			return;
+		}
+
+<#+
+		} // foreach spec
+
+		// TODO: ReadOnlySpan<byte>
+#>
+		<#= AsyncMethod( isAsync, "void", "PackExtendedTypeValue", "byte typeCode, byte[] body", true ) #>
+		{
+			unchecked
+			{
+				switch ( body.Length )
+				{
+					case 1:
+					{
+						<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.FixExt1<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						break;
+					}
+					case 2:
+					{
+						<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.FixExt2<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						break;
+					}
+					case 4:
+					{
+						<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.FixExt4<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						break;
+					}
+					case 8:
+					{
+						<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.FixExt8<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						break;
+					}
+					case 16:
+					{
+						<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.FixExt16<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						break;
+					}
+					default:
+					{
+						if ( body.Length < 0x100 )
+						{
+							<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Ext8, ( byte )body.Length<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						}
+						else if ( body.Length < 0x10000 )
+						{
+							<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Ext16, ( ushort )body.Length<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						}
+						else
+						{
+							<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( ( byte )MessagePackCode.Ext32, ( uint )body.Length<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+						}
+
+						break;
+					}
+				} // switch
+			} // unchecked
+
+			<#= Await( isAsync ) #>this.WriteByte<#= Suffix( isAsync ) #>( typeCode<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+			<#= Await( isAsync ) #>this.WriteBytes<#= Suffix( isAsync ) #>( body<#= Argument( isAsync ) #> )<#= ConfigureAwait( isAsync ) #>;
+		}
+
+<#+
+
+		if ( isAsync )
+		{
+#>
+#endif // FEATURE_TAP
+<#+
+		}
+
+	} // foreach isAsync
+#>
+
+		private void WriteStringHeader( int bytesLength, bool allowStr8 )
+		{
+			if( bytesLength < 0x20 )
+			{
+				this.WriteByte( ( byte )( bytesLength | MessagePackCode.MinimumFixedRaw ) );
+				return;
+			}
+
+			if ( bytesLength < 0x100 && allowStr8 )
+			{
+				this.WriteBytes( MessagePackCode.Str8, ( byte )bytesLength );
+				return;
+			}
+
+			if ( bytesLength < 0x10000 )
+			{
+				this.WriteBytes( MessagePackCode.Str16, ( ushort )bytesLength );
+				return;
+			}
+
+			this.WriteBytes( MessagePackCode.Str32, unchecked( ( uint )bytesLength ) );
+		}
+
+<#+
+}
+
+private static string AsyncPack( Type type, bool isAsync )
+{
+	return
+		AsyncMethod(
+			isAsync,
+			"void",
+			"Pack",
+			String.Format(
+				CultureInfo.InvariantCulture,
+				"{0} value",
+				type.Name
+			),
+			true
+		);
+}
+
+private static string AsyncMethod( bool isAsync, string returnType, string name, string parameterList, bool isOverride )
+{
+	var realReturnType = returnType;
+	if ( isAsync )
+	{
+		realReturnType = "Task" + ( returnType == "void" ? String.Empty : ( "<" + returnType + ">" ) );
+	}
+
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} {1} {2}{3}{4}( {5}{6} )",
+			isOverride ? "protected override" : "private",
+			( isAsync ? "async " : String.Empty ) + realReturnType,
+			name,
+			isAsync ? "Async" : String.Empty,
+			isOverride ? "Core" : String.Empty,
+			parameterList,
+			isAsync ? ", CancellationToken cancellationToken" : String.Empty
+		);
+}
+
+private static string NonAsyncMethod( bool isAsync, string returnType, string name, string parameterList, bool isOverride )
+{
+	var realReturnType = returnType;
+	if ( isAsync )
+	{
+		realReturnType = "Task" + ( returnType == "void" ? String.Empty : ( "<" + returnType + ">" ) );
+	}
+
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} {1} {2}{3}{4}( {5}{6} )",
+			isOverride ? "protected override" : "private",
+			realReturnType,
+			name,
+			isAsync ? "Async" : String.Empty,
+			isOverride ? "Core" : String.Empty,
+			parameterList,
+			isAsync ? ", CancellationToken cancellationToken" : String.Empty
+		);
+}
+
+private static string Await( bool isAsync )
+{
+	return isAsync ? "await " : String.Empty;
+}
+
+private static string Suffix( bool isAsync )
+{
+	return isAsync ? "Async" : String.Empty;
+}
+
+private static string Argument( bool isAsync )
+{
+	return isAsync ? ", cancellationToken" : String.Empty;
+}
+
+private static string ConfigureAwait( bool isAsync )
+{
+	return isAsync ? ".ConfigureAwait( false )" : String.Empty;
+}
+
+private static string ToTypeName( bool isSigned, int bytes )
+{
+	switch ( bytes )
+	{
+		case 1:
+		{
+			return isSigned ? "SByte" : "Byte";
+		}
+		default:
+		{
+			return ( isSigned ? "Int" : "UInt" ) + ( bytes * 8 ).ToString( CultureInfo.InvariantCulture );
+		}
+	}
+}
+
+private static string ToCodeName( bool isSigned, int bytes )
+{
+	return ( isSigned ? "Signed" : "Unsigned" ) + "Int" + ( bytes * 8 ).ToString( CultureInfo.InvariantCulture );
+}
+
+private static string ToCodeName( string typeName )
+{
+	switch ( typeName )
+	{
+		case "Byte":
+		{
+			return "UnsignedInt8";
+		}
+		case "SByte":
+		{
+			return "SignedInt8";
+		}
+		case "Single":
+		{
+			return "Real32";
+		}
+		case "Double":
+		{
+			return "Real64";
+		}
+		default: 
+		{
+			return typeName.Replace( "Int", "SignedInt" ).Replace( "USigned", "Unsigned" ); 
+		}
+	}
+}
+
+private static string ToUnsigned( Type type )
+{
+	switch ( type.Name )
+	{
+		case "Byte":
+		case "UInt16":
+		case "UInt32":
+		case "UInt64":
+		case "Single":
+		case "Double":
+		{
+			return type.Name;
+		}
+		case "SByte":
+		{
+			return "Byte";
+		}
+		case "Int16":
+		case "Int32":
+		case "Int64":
+		{
+			return "U" + type.Name;
+		}
+		default:
+		{
+			throw new Exception( "unexpected type " + type );
+		}
+	}
+}
+
+private static readonly string[] scalarTypes =
+	new []
+	{
+		"byte",
+		"ushort",
+		"uint",
+		"ulong",
+		"float",
+		"double"
+	};
+
+private static readonly HashSet<string> nonBulletables =
+	new HashSet<string>
+	{
+		"float",
+		"double"
+	};
+
+private static readonly Dictionary<string, int> lengthes =
+	new Dictionary<string, int>
+	{
+		{ "byte", 1 },
+		{ "ushort", 2 },
+		{ "uint", 4 },
+		{ "ulong", 8 },
+		{ "float", 4 },
+		{ "double", 8 }
+	};
+
+private void WriteToBits( string type, string variable, out string bitsVariableName )
+{
+	if ( nonBulletables.Contains( type ) )
+	{
+#>
+			var bits = Binary.ToBits( <#= variable #> );
+<#+
+		bitsVariableName = "bits";
+	}
+	else
+	{
+		bitsVariableName = variable;
+	}
+}
+
+private void WriteShiftCore( int index, int bytesLengthOfType, string variable, string buffer, Func<int, string> offsetGenerator )
+{
+	var shiftSize = ( bytesLengthOfType - index - 1 ) * 8;
+	var shift = shiftSize == 0 ? String.Empty : ( " >> " + shiftSize.ToString( CultureInfo.InvariantCulture ) );
+#>
+			<#= buffer #>[ <#= offsetGenerator( index ) #> ] = unchecked( ( byte )( <#= variable #><#= shift #> & 0xFF ) );
+<#+
+}
+#>

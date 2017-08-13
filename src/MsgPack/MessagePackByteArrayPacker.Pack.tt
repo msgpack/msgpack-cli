@@ -1,0 +1,156 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="MessagePackPackerCommon.ttinclude" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.Text;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+namespace MsgPack
+{
+	// This file was generated from MessagePackByteArrayPacker.Pack.tt and MessagePackPackerCommon.ttinclude T4Template.
+	// Do not modify this file. Edit MessagePackByteArrayPacker.Pack.tt  and MessagePackPackerCommon.ttinclude instead.
+
+	partial class MessagePackByteArrayPacker
+	{
+<#
+	this.WriteOverrides();
+
+	foreach ( var isAsync in new [] { false, true } )
+	{
+		if ( isAsync )
+		{
+#>
+#if FEATURE_TAP
+
+<#
+		}
+
+		foreach ( var type in scalarTypes )
+		{
+#>
+		<#= NonAsyncMethod( isAsync, "void", "WriteBytes", "byte header, " + type + " value", false ) #>
+		{
+<#
+			if ( isAsync )
+			{
+#>
+			this.WriteBytes( header, value );
+			return TaskAugument.CompletedTask;
+<#
+			}
+			else
+			{
+				string bits;
+				this.WriteToBits( type, "value", out bits );
+#>
+			var buffer = this._buffer;
+			var offset = this._offset;
+			var remains = buffer.Length - offset;
+			if ( remains < sizeof( <#= type #> ) && !this._allocator.TryAllocate( buffer, sizeof( <#= type #> ), out buffer ) )
+			{
+				this.ThrowEofException( sizeof( <#= type #> ) );
+			}
+
+			buffer[ offset ] = header;
+			offset++;
+
+<#
+				var bytesLength = lengthes[ type ];
+				for ( var i = 0; i < bytesLength; i++ )
+				{
+#>
+			buffer[ offset<#= i == 0 ? String.Empty : ( " + " + i.ToString( CultureInfo.InvariantCulture ) ) #> ] = unchecked( ( byte )( <#= bits #> >> ( ( sizeof( <#= type #> ) - <#= ( i + 1 ).ToString( CultureInfo.InvariantCulture ) #> ) * 8 ) & 0xFF ) );
+<#
+				}
+#>
+
+			this._buffer = buffer;
+			this._offset = offset + sizeof( <#= type #> );
+<#
+			} // if isAsync 
+#>
+		}
+
+<#
+		} // foreach type
+#>
+		<#= NonAsyncMethod( isAsync, "void", "WriteBytes", "string value, bool allowStr8", false ) #>
+		{
+<#
+			if ( isAsync )
+			{
+#>
+			this.WriteBytes( value, allowStr8 );
+			return TaskAugument.CompletedTask;
+<#
+			}
+			else
+			{
+#>
+			var encodedLength = Encoding.UTF8.GetByteCount( value );
+			this.WriteStringHeader( encodedLength, allowStr8 );
+			if ( encodedLength == 0 )
+			{
+				return;
+			}
+
+			var buffer  = this._buffer;
+			var offset = this._offset;
+			var remains = buffer.Length - offset;
+
+			if ( remains < encodedLength && !this._allocator.TryAllocate( buffer, encodedLength, out buffer ) )
+			{
+				this.ThrowEofException( encodedLength );
+			}
+
+			Encoding.UTF8.GetBytes( value, 0, value.Length, buffer, offset );
+			this._buffer = buffer;
+			this._offset += encodedLength;
+<#
+			} // if isAsync
+#>
+		}
+
+<#
+
+		if ( isAsync )
+		{
+#>
+#endif // FEATURE_TAP
+<#
+		}
+	} // foreach isAsync
+#>
+	}
+}

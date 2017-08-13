@@ -28,7 +28,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,7 +53,7 @@ namespace MsgPack.Serialization
 	public abstract class MessagePackSerializer<T> : MessagePackSerializer
 	{
 		// ReSharper disable once StaticFieldInGenericType
-		private static readonly bool _isNullable = JudgeNullable();
+		private static readonly bool IsNullable = JudgeNullable();
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackSerializer{T}"/> class with <see cref="T:PackerCompatibilityOptions.Classic"/>.
@@ -257,7 +256,7 @@ namespace MsgPack.Serialization
 		public T Unpack( Stream stream )
 		{
 			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
-			var unpacker = Unpacker.Create( stream );
+			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.None, DefaultUnpackerOptions );
 			if ( !unpacker.Read() )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
@@ -324,7 +323,8 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task<T> UnpackAsync( Stream stream, CancellationToken cancellationToken )
 		{
-			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.SingletonForAsync );
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
+			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.SingletonForAsync, DefaultUnpackerOptions );
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
@@ -527,12 +527,12 @@ namespace MsgPack.Serialization
 		///			The implementation of this class returns <c>null</c> for nullable types (that is, all reference types and <see cref="Nullable{T}"/>); otherwise, throws <see cref="System.Runtime.Serialization.SerializationException"/>.
 		///		</para>
 		///		<para>
-		///			Custom serializers can override this method to provide custom nil representation. For example, built-in <see cref="DBNull"/> serializer overrides this method to return <see cref="DBNull.Value"/> instead of <c>null</c>.
+		///			Custom serializers can override this method to provide custom nil representation. For example, built-in <c>DBNull</c> serializer overrides this method to return <c>DBNull.Value</c> instead of <c>null</c>.
 		///		</para>
 		/// </remarks>
 		protected internal virtual T UnpackNil()
 		{
-			if ( !_isNullable )
+			if ( !IsNullable )
 			{
 				ThrowNewValueTypeCannotBeNullException();
 			}
@@ -868,11 +868,42 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public byte[] PackSingleObject( T objectTree )
 		{
-			using ( var buffer = new MemoryStream() )
+			var segment = this.PackSingleObjectAsBytes( objectTree );
+
+			if ( segment.Count == segment.Array.Length )
 			{
-				this.Pack( buffer, objectTree );
-				return buffer.ToArray();
+				return segment.Array;
 			}
+			else
+			{
+				var result = new byte[ segment.Count ];
+				Buffer.BlockCopy( segment.Array, segment.Offset, result, 0, segment.Count );
+				return result;
+			}
+		}
+
+		/// <summary>
+		///		Serializes specified object to the <see cref="ArraySegment{T}"/> of <see cref="Byte"/>.
+		/// </summary>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <returns>An array of <see cref="Byte"/> which stores serialized value.</returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <remarks>
+		///		This method is more efficient than <see cref="PackSingleObject(T)"/> because of less copying.
+		/// </remarks>
+		/// <seealso cref="P:Capabilities"/>
+		public ArraySegment<byte> PackSingleObjectAsBytes( T objectTree )
+		{
+			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
+			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ), /* allowExpansion */true, this.PackerCompatibilityOptions );
+
+			this.PackTo( packer, objectTree );
+			return packer.GetResultBytes();
 		}
 
 #if FEATURE_TAP
@@ -915,13 +946,46 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task<byte[]> PackSingleObjectAsync( T objectTree, CancellationToken cancellationToken )
 		{
-			using ( var buffer = new MemoryStream() )
+			var segment = await this.PackSingleObjectAsBytesAsync( objectTree, cancellationToken ).ConfigureAwait( false );
+			if ( segment.Count == segment.Array.Length )
 			{
-				await this.PackAsync( buffer, objectTree, cancellationToken ).ConfigureAwait( false );
-				return buffer.ToArray();
+				return segment.Array;
+			}
+			else
+			{
+				var result = new byte[ segment.Count ];
+				Buffer.BlockCopy( segment.Array, segment.Offset, result, 0, segment.Count );
+				return result;
 			}
 		}
 
+		/// <summary>
+		///		Serializes specified object to the <see cref="ArraySegment{T}"/> of <see cref="Byte"/> asynchronously.
+		/// </summary>
+		/// <param name="objectTree">Object to be serialized.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>
+		///		A <see cref="Task"/> that represents the asynchronous operation. 
+		///		The value of the <c>TResult</c> parameter contains an array of <see cref="Byte"/> which stores serialized value.
+		/// </returns>
+		/// <exception cref="System.Runtime.Serialization.SerializationException">
+		///		Failed to serialize object.
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		///		<typeparamref name="T"/> is not serializable even if it can be deserialized.
+		/// </exception>
+		/// <remarks>
+		///		This method is more efficient than <see cref="PackSingleObject(T)"/> because of less copying.
+		/// </remarks>
+		/// <seealso cref="P:Capabilities"/>
+		public async Task<ArraySegment<byte>> PackSingleObjectAsBytesAsync( T objectTree, CancellationToken cancellationToken )
+		{
+			// Packer does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
+			var packer = Packer.Create( BufferManager.NewByteBuffer( BufferSize ),  /* allowExpansion */true, this.PackerCompatibilityOptions );
+
+			await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
+			return packer.GetResultBytes();
+		}
 #endif // FEATURE_TAP
 
 		/// <summary>
@@ -962,11 +1026,16 @@ namespace MsgPack.Serialization
 				ThrowArgumentNullException( "buffer" );
 			}
 
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
 			// ReSharper disable once AssignNullToNotNullAttribute
-			using ( var stream = new MemoryStream( buffer ) )
+			var unpacker = Unpacker.Create( buffer, DefaultUnpackerOptions );
+
+			if ( !unpacker.Read() )
 			{
-				return this.Unpack( stream );
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
+
+			return this.UnpackFrom( unpacker );
 		}
 
 #if FEATURE_TAP
@@ -1044,18 +1113,23 @@ namespace MsgPack.Serialization
 		///		</para>
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "False positive because never reached." )]
-		public new async Task<T> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
+		public new Task<T> UnpackSingleObjectAsync( byte[] buffer, CancellationToken cancellationToken )
 		{
 			if ( buffer == null )
 			{
 				ThrowArgumentNullException( "buffer" );
 			}
 
+			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
 			// ReSharper disable once AssignNullToNotNullAttribute
-			using ( var stream = new MemoryStream( buffer ) )
+			var unpacker = Unpacker.Create( buffer, DefaultUnpackerOptions );
+
+			if ( !unpacker.Read() )
 			{
-				return await this.UnpackAsync( stream, cancellationToken ).ConfigureAwait( false );
+				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
 			}
+
+			return this.UnpackFromAsync( unpacker, cancellationToken );
 		}
 
 #endif // FEATURE_TAP

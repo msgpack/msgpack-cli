@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -82,18 +82,18 @@ namespace MsgPack
 		///			as long as it has buffered value.
 		///		</para>
 		///		<para>
-		///			Current built-in <see cref="Unpacker"/> implementation uses <see cref="BufferedStream"/> for buffering,
+		///			Current built-in <see cref="Unpacker"/> implementation uses <c>BufferedStream</c> for buffering,
 		///			and avoid buffering for following in-memory or stream with buffering feature:
 		///			<list type="bullet">
-		///				<item><see cref="System.IO.BufferedStream" /> itself.</item>
-		///				<item><see cref="System.IO.MemoryStream" />.</item>
-		///				<item><see cref="System.IO.UnmanagedMemoryStream" />.</item>
-		///				<item><see cref="System.IO.FileStream" /> which has own internal buffer.</item>
+		///				<item><c>System.IO.BufferedStream</c> itself.</item>
+		///				<item><c>System.IO.MemoryStream</c>.</item>
+		///				<item><c>System.IO.UnmanagedMemoryStream</c>.</item>
+		///				<item><c>System.IO.FileStream</c> which has own internal buffer.</item>
 		///			</list>
 		///		</para>
 		///		<para>
-		///			Logically, it is preferred that you should wrap with <see cref="System.IO.BufferedStream"/> yourself for underlying stream
-		///			for wrapper stream such as <seealso cref="System.IO.Compression.DeflateStream"/>, <see cref="System.Security.Cryptography.CryptoStream"/>, etc.
+		///			Logically, it is preferred that you should wrap with <c>System.IO.BufferedStream</c> yourself for underlying stream
+		///			for wrapper stream such as <c>System.IO.Compression.DeflateStream</c>, <c>System.Security.Cryptography.CryptoStream</c>, etc.
 		///		</para>
 		/// </remarks>
 		/// <seealso cref="BufferSize"/>

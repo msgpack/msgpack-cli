@@ -173,7 +173,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssertEx.cs" />
     <Compile Include="BigEndianBinaryTest.cs" />
+    <Compile Include="ByteArrayPackerTest.Allocation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ByteArrayPackerTest.Allocation.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ByteArrayPackerTest.cs" />
+    <Compile Include="ByteArrayUnpackerTest.cs" />
+    <Compile Include="CollectionValidatingByteArrayUnpackerTest.cs" />
+    <Compile Include="FastByteArrayUnpackerTest.cs" />
+    <Compile Include="FastStreamUnpackerTest.cs" />
+    <Compile Include="CollectionValidatingStreamUnpackerTest.cs" />
     <Compile Include="CollectionAssertEx.cs" />
     <Compile Include="DirectConversionTest.cs" />
     <Compile Include="DirectConversionTest.Scalar.cs">
@@ -654,6 +666,7 @@
     <Compile Include="gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs" />
     <Compile Include="gen\System_DayOfWeekSerializer.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="PackerFactoryTest.cs" />
     <Compile Include="Serialization\KeyNameTransformersTest.cs" />
     <Compile Include="Serialization\InheritanceTest.cs" />
     <Compile Include="MessagePackConvertTest.cs" />
@@ -709,7 +722,6 @@
     <Compile Include="MessagePackObjectTest.Strings.cs" />
     <Compile Include="MessagePackStringTest.cs" />
     <Compile Include="MessageUnpackableTest.cs" />
-    <Compile Include="PackerTest.Miscs.cs" />
     <Compile Include="PackerTest.Pack.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -725,7 +737,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PackerTest.PackT.tt</DependentUpon>
     </Compile>
-    <Compile Include="PackerTest.Pack.Miscs.cs" />
     <Compile Include="PackUnpackTest.cs" />
     <Compile Include="PackUnpackTest.Scalar.cs">
       <AutoGen>True</AutoGen>
@@ -875,16 +886,49 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="SplittingStream.cs" />
-    <Compile Include="SubtreeUnpackerTest.cs" />
+    <Compile Include="StreamPackerTest.cs" />
+    <Compile Include="StreamUnpackerTest.cs" />
+    <Compile Include="ByteArrayUnpackerTest.Ext.cs">
+      <DependentUpon>ByteArrayUnpackerTest.Ext.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ByteArrayUnpackerTest.Raw.cs">
+      <DependentUpon>ByteArrayUnpackerTest.Raw.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ByteArrayUnpackerTest.Scalar.cs">
+      <DependentUpon>ByteArrayUnpackerTest.Scalar.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UnpackerFactoryTest.cs" />
+    <Compile Include="UnpackerTest.Subtree.cs" />
     <Compile Include="UnpackerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.tt</DependentUpon>
     </Compile>
+    <Compile Include="StreamUnpackerTest.Ext.cs">
+      <DependentUpon>StreamUnpackerTest.Ext.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="UnpackerTest.Ext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UnpackerTest.Ext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StreamUnpackerTest.Scalar.cs">
+      <DependentUpon>StreamUnpackerTest.Scalar.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StreamUnpackerTest.Raw.cs">
+      <DependentUpon>StreamUnpackerTest.Raw.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="UnpackerTest.Skip.cs">
       <AutoGen>True</AutoGen>
@@ -1284,7 +1328,35 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ByteArrayPackerTest.Allocation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ByteArrayPackerTest.Allocation.cs</LastGenOutput>
+    </Content>
     <Content Include="gen\_ReadMe.txt" />
+    <None Include="StreamUnpackerTest.Scalar.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamUnpackerTest.Scalar.cs</LastGenOutput>
+    </None>
+    <None Include="StreamUnpackerTest.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamUnpackerTest.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="StreamUnpackerTest.Ext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamUnpackerTest.Ext.cs</LastGenOutput>
+    </None>
+    <None Include="ByteArrayUnpackerTest.Ext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ByteArrayUnpackerTest.Ext.cs</LastGenOutput>
+    </None>
+    <None Include="ByteArrayUnpackerTest.Raw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ByteArrayUnpackerTest.Raw.cs</LastGenOutput>
+    </None>
+    <None Include="ByteArrayUnpackerTest.Scalar.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ByteArrayUnpackerTest.Scalar.cs</LastGenOutput>
+    </None>
     <Content Include="UnpackerTest.Skip.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.Skip.cs</LastGenOutput>

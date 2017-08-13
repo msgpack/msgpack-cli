@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -25,13 +25,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if CORE_CLR || UNITY || NETSTANDARD1_1
+using Contract = MsgPack.MPContract;
+#else
+using System.Diagnostics.Contracts;
+#endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Globalization;
 using System.IO;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-
 
 namespace MsgPack
 {
@@ -74,10 +78,10 @@ namespace MsgPack
 		/// </remarks>
 		public virtual MessagePackObject LastReadData
 		{
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 			get { return this.Data.GetValueOrDefault(); }
 			protected set { this.Data = value; }
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 		}
 
 		/// <summary>
@@ -128,8 +132,6 @@ namespace MsgPack
 		}
 
 		private UnpackerMode _mode = UnpackerMode.Unknown;
-		// ReSharper disable once RedundantDefaultFieldInitializer
-		private bool _isSubtreeReading = false;
 
 		/// <summary>
 		///		Verifies the mode.
@@ -141,7 +143,7 @@ namespace MsgPack
 		/// <exception cref="InvalidOperationException">
 		///		Is in incompatible mode.
 		/// </exception>
-		private void VerifyMode( UnpackerMode mode )
+		internal void VerifyMode( UnpackerMode mode )
 		{
 			this.VerifyIsNotDisposed();
 
@@ -160,7 +162,7 @@ namespace MsgPack
 		/// <summary>
 		///		Verifies this instance is not disposed.
 		/// </summary>
-		private void VerifyIsNotDisposed()
+		internal void VerifyIsNotDisposed()
 		{
 			if ( this._mode == UnpackerMode.Disposed )
 			{
@@ -173,7 +175,7 @@ namespace MsgPack
 			throw new ObjectDisposedException( this.GetType().FullName );
 		}
 
-		private void ThrowInvalidModeException()
+		internal void ThrowInvalidModeException()
 		{
 			throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "Reader is in '{0}' mode.", this._mode ) );
 		}
@@ -194,7 +196,7 @@ namespace MsgPack
 		{
 			get { return null; }
 		}
-#endif		
+#endif
 
 		/// <summary>
 		///		Gets the previous position before last operation for debugging.
@@ -215,7 +217,8 @@ namespace MsgPack
 		///		 Creates the new <see cref="Unpacker"/> from specified stream.
 		/// </summary>
 		/// <param name="stream">The stream to be unpacked. This stream will be closed when <see cref="Packer.Dispose(Boolean)"/> is called.</param>
-		/// <returns><see cref="Unpacker"/> instance.</returns>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
 		public static Unpacker Create( Stream stream )
 		{
 			return Create( stream, true );
@@ -229,10 +232,11 @@ namespace MsgPack
 		///		<c>true</c> to close <paramref name="stream"/> when this instance is disposed;
 		///		<c>false</c>, otherwise.
 		/// </param>
-		/// <returns><see cref="Unpacker"/> instance.</returns>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
 		public static Unpacker Create( Stream stream, bool ownsStream )
 		{
-			return new ItemsUnpacker( stream, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : null );
+			return Create( stream, ownsStream ? PackerUnpackerStreamOptions.SingletonOwnsStream : null, null );
 		}
 
 		/// <summary>
@@ -240,10 +244,94 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="stream">The stream to be unpacked.</param>
 		/// <param name="streamOptions"><see cref="PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
-		/// <returns><see cref="Unpacker"/> instance.</returns>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
 		public static Unpacker Create( Stream stream, PackerUnpackerStreamOptions streamOptions )
 		{
-			return new ItemsUnpacker( stream, streamOptions );
+			return Create( stream, streamOptions, null );
+		}
+
+		/// <summary>
+		///		 Creates the new <see cref="Unpacker"/> from specified stream.
+		/// </summary>
+		/// <param name="stream">The stream to be unpacked.</param>
+		/// <param name="streamOptions"><see cref="PackerUnpackerStreamOptions"/> which specifies stream handling options.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="Unpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="stream"/> is <c>null</c>.</exception>
+		public static Unpacker Create( Stream stream, PackerUnpackerStreamOptions streamOptions, UnpackerOptions unpackerOptions )
+		{
+			if ( unpackerOptions == null || unpackerOptions.ValidationLevel == UnpackerValidationLevel.Collection )
+			{
+				return new CollectionValidatingStreamUnpacker( stream, streamOptions );
+			}
+			else
+			{
+				return new FastStreamUnpacker( stream, streamOptions );
+			}
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="source">The source byte array.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+		public static ByteArrayUnpacker Create( byte[] source )
+		{
+			return Create( source, null );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="source">The source byte array.</param>
+		/// <param name="startOffset">The effective start offset of the <paramref name="source"/>.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="startOffset"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">The array length of <paramref name="source"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] source, int startOffset )
+		{
+			return Create( source, startOffset, null );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="source">The source byte array.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+		public static ByteArrayUnpacker Create( byte[] source, UnpackerOptions unpackerOptions )
+		{
+			return Create( source, 0, unpackerOptions );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="ByteArrayUnpacker"/> from specified byte array.
+		/// </summary>
+		/// <param name="source">The source byte array.</param>
+		/// <param name="startOffset">The effective start offset of the <paramref name="source"/>.</param>
+		/// <param name="unpackerOptions"><see cref="UnpackerOptions"/> which specifies various options. Specify <c>null</c> to use default options.</param>
+		/// <returns><see cref="ByteArrayUnpacker"/> instance. This value will not be <c>null</c>.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		///		<paramref name="startOffset"/> is negative.
+		///	</exception>
+		/// <exception cref="ArgumentException">The array length of <paramref name="source"/> is too small.</exception>
+		public static ByteArrayUnpacker Create( byte[] source, int startOffset, UnpackerOptions unpackerOptions )
+		{
+			if ( unpackerOptions == null || unpackerOptions.ValidationLevel == UnpackerValidationLevel.Collection )
+			{
+				return new CollectionValidatingByteArrayUnpacker( source, startOffset );
+			}
+			else
+			{
+				return new FastByteArrayUnpacker( source, startOffset );
+			}
 		}
 
 		#endregion -- Factories --
@@ -357,27 +445,20 @@ namespace MsgPack
 		///	</remarks>
 		public Unpacker ReadSubtree()
 		{
-			if ( !this.IsCollectionHeader )
-			{
-				ThrowCannotBeSubtreeModeException();
-			}
-
-			if ( this._isSubtreeReading )
-			{
-				ThrowInSubtreeModeException();
-			}
-
-			var subtreeReader = this.ReadSubtreeCore();
-			this._isSubtreeReading = !ReferenceEquals( subtreeReader, this );
-			return subtreeReader;
+			return this.InternalReadSubtree();
 		}
 
-		private static void ThrowCannotBeSubtreeModeException()
+		internal virtual Unpacker InternalReadSubtree()
+		{
+			return this.ReadSubtreeCore();
+		}
+
+		internal static void ThrowCannotBeSubtreeModeException()
 		{
 			throw new InvalidOperationException( "Unpacker does not locate on array nor map header." );
 		}
 
-		private static void ThrowInSubtreeModeException()
+		internal static void ThrowInSubtreeModeException()
 		{
 			throw new InvalidOperationException( "Unpacker is in 'Subtree' mode." );
 		}
@@ -400,7 +481,6 @@ namespace MsgPack
 		/// </remarks>
 		protected internal virtual void EndReadSubtree()
 		{
-			this._isSubtreeReading = false;
 			this.SetStable();
 		}
 
@@ -420,7 +500,11 @@ namespace MsgPack
 		public bool Read()
 		{
 			this.EnsureNotInSubtreeMode();
+			return this.ReadInternal();
+		}
 
+		internal bool ReadInternal()
+		{
 			bool result = this.ReadCore();
 			if ( result && !this.IsCollectionHeader )
 			{
@@ -430,14 +514,7 @@ namespace MsgPack
 			return result;
 		}
 
-		internal void EnsureNotInSubtreeMode()
-		{
-			this.VerifyMode( UnpackerMode.Streaming );
-			if ( this._isSubtreeReading )
-			{
-				ThrowInSubtreeModeException();
-			}
-		}
+		internal virtual void EnsureNotInSubtreeMode() { }
 
 		private void SetStable()
 		{
@@ -490,10 +567,14 @@ namespace MsgPack
 		/// <exception cref="InvalidMessagePackStreamException">
 		///		The underying stream unexpectedly ended.
 		/// </exception>
-		public async Task<bool> ReadAsync( CancellationToken cancellationToken )
+		public Task<bool> ReadAsync( CancellationToken cancellationToken )
 		{
 			this.EnsureNotInSubtreeMode();
+			return this.ReadInternalAsync( cancellationToken );
+		}
 
+		internal async Task<bool> ReadInternalAsync( CancellationToken cancellationToken )
+		{
 			bool result = await this.ReadAsyncCore( cancellationToken ).ConfigureAwait( false );
 			if ( result && !this.IsCollectionHeader )
 			{
@@ -579,13 +660,10 @@ namespace MsgPack
 				this.ThrowInvalidModeException();
 			}
 
-			if ( this._isSubtreeReading )
-			{
-				ThrowInSubtreeModeException();
-			}
-
 			this._mode = UnpackerMode.Skipping;
 		}
+
+		internal virtual void BeginSkipCore() { }
 
 		private void EndSkip( long? result )
 		{
@@ -689,9 +767,9 @@ namespace MsgPack
 
 			this.UnpackSubtree();
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 			return this.Data;
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 		}
 
 		/// <summary>
@@ -748,9 +826,9 @@ namespace MsgPack
 
 			await this.UnpackSubtreeAsync( cancellationToken ).ConfigureAwait( false );
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 			return this.Data;
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 		}
 
 		/// <summary>
@@ -997,7 +1075,7 @@ namespace MsgPack
 
 #endif // FEATURE_TAP
 
-		private enum UnpackerMode
+		internal enum UnpackerMode
 		{
 			Unknown = 0,
 			Skipping,

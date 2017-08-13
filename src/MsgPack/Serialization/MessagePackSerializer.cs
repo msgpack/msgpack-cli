@@ -37,6 +37,10 @@ namespace MsgPack.Serialization
 	public abstract partial class MessagePackSerializer : IMessagePackSingleObjectSerializer
 #pragma warning restore 0618
 	{
+		internal static readonly UnpackerOptions DefaultUnpackerOptions = new UnpackerOptions { ValidationLevel = UnpackerValidationLevel.None };
+
+		internal const int BufferSize = 256;
+
 		private readonly SerializationContext _ownerContext;
 
 		/// <summary>

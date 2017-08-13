@@ -1,0 +1,349 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#
+
+var testSituations =
+	new []
+	{
+		// Suffix, Value Type, Unit Value Expression, Expected Value Expression Format, is str
+		Tuple.Create( "String", "String", "'A'", "new String( {0}, {1} )", true ),
+		Tuple.Create( "Binary", "Byte[]", "0xFF", "Enumerable.Repeat( {0}, {1} ).ToArray()", false )
+	};
+var strVariations =
+	new []
+	{
+		// Label, Length, Header Bytes, Header Type
+		Tuple.Create( "FixStr", 0, "0xA0", "String" ),
+		Tuple.Create( "FixStr", 0x1F, "0xBF", "String" ),
+		Tuple.Create( "Str8", 0, "0xD9, 0", "String" ),
+		Tuple.Create( "Str8", 0xFF, "0xD9, 0xFF", "String" ),
+		Tuple.Create( "Str16", 0, "0xDA, 0, 0", "String" ),
+		Tuple.Create( "Str16", 0xFFFF, "0xDA, 0xFF, 0xFF", "String" ),
+		Tuple.Create( "Str32", 0, "0xDB, 0, 0, 0, 0", "String" ),
+		Tuple.Create( "Str32", 0x10000, "0xDB, 0, 1, 0, 0", "String" ),
+	};
+
+var binVariations =
+	new []
+	{
+		// Label, Length, Header Bytes, Header Type
+		Tuple.Create( "Bin8", 0, "0xC4, 0", "Byte[]" ),
+		Tuple.Create( "Bin8", 0xFF, "0xC4, 0xFF", "Byte[]" ),
+		Tuple.Create( "Bin16", 0, "0xC5, 0, 0", "Byte[]" ),
+		Tuple.Create( "Bin16", 0xFFFF, "0xC5, 0xFF, 0xFF", "Byte[]" ),
+		Tuple.Create( "Bin32", 0, "0xC6, 0, 0, 0, 0", "Byte[]" ),
+		Tuple.Create( "Bin32", 0x10000, "0xC6, 0, 1, 0, 0", "Byte[]" ),
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from StreamUnpackerTest.Raw.tt T4Template.
+	// Do not modify this file. Edit StreamUnpackerTest.Raw.tt instead.
+
+	partial class StreamUnpackerTest
+	{
+<#
+foreach( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
+	foreach( var testSituation in testSituations )
+	{
+		foreach( var testCase in strVariations )
+		{
+			PutTest( testSituation, testCase, testSituation.Item5 || testCase.Item2 == 0, isAsync );
+		}
+
+		// can be bin stream.
+		foreach( var testCase in binVariations )
+		{
+			PutTest( testSituation, testCase, false, isAsync );
+		}
+	}
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+	}
+}
+#>
+	}
+}
+<#+
+private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, bool canConvertToString, bool isAsync )
+{
+	// FIXME: too short data, too long data
+	var readDataMethodPrefix = "TestRead_" + testCase.Item1 + "_" + testCase.Item2 + ( isAsync ? "Async" : String.Empty ) + "_As" + testSituation.Item1 + "_";
+	PutTestMethod( readDataMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDataBody, isAsync );
+	PutTestMethod( readDataMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDataBody, isAsync );
+	PutTestMethod( readDataMethodPrefix + "HasExtra", testSituation, testCase, 1,  canConvertToString, PutTestUnpackDataBody, isAsync );
+
+	var readDirectMethodPrefix = "TestRead" + testSituation.Item1 + "_" + testCase.Item1 + ( isAsync ? "Async" : String.Empty ) + "_" + testCase.Item2 + "_";
+	PutTestMethod( readDirectMethodPrefix + "JustLength", testSituation, testCase, 0, canConvertToString, PutTestUnpackDirectBody, isAsync );
+	PutTestMethod( readDirectMethodPrefix + "TooShort", testSituation, testCase, -1, canConvertToString, PutTestUnpackDirectBody, isAsync );
+	PutTestMethod( readDirectMethodPrefix + "HasExtra", testSituation, testCase, 1, canConvertToString, PutTestUnpackDirectBody , isAsync );
+}
+
+private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success, bool isAsync )
+{
+	if ( success )
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.IsTrue( unpacker.Read() );
+<#+
+		}
+		else
+		{
+#>
+				Assert.IsTrue( await unpacker.ReadAsync() );
+<#+
+		}
+#>
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+<#+
+		if ( testSituation.Item2 == sourceType )
+		{
+#>
+				Assert.That( ( <#= sourceType #> )result.Value, Is.EqualTo( <#= expectedValue #> ) );
+				Assert.That( result.Value.UnderlyingType, Is.EqualTo( typeof( <#= sourceType #> ) ) );
+<#+
+		}
+#>
+
+				// raw/str always can be byte[]
+				var asBinary = ( byte[] )result.Value;
+<#+
+		if ( canConvertToString )
+		{
+#>
+				var asString = ( String )result.Value;
+<#+
+		}
+		else
+		{
+#>
+				Assert.Throws<InvalidOperationException>( () => { var asString = ( String )result.Value; } );
+<#+
+		}
+
+		if ( canConvertToString )
+		{
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( string ) ).GetValueOrDefault() );
+<#+
+		}
+		else
+		{
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( string ) ).GetValueOrDefault(), Is.False );
+<#+
+		}
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( byte[] ) ).GetValueOrDefault() );
+<#+
+	}
+	else
+	{
+		if ( !isAsync )
+		{
+#>
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+<#+
+		}
+		else
+		{
+#>
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+<#+
+		}
+	}
+}
+
+private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool success, bool isAsync )
+{
+	if ( success || !isAsync )
+	{
+#>
+				<#= testSituation.Item2 #> result;
+<#+
+	}
+
+	if ( success )
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.IsTrue( unpacker.Read<#= testSituation.Item1 #>( out result ) );
+<#+
+		}
+		else
+		{
+#>
+				var ret = await unpacker.Read<#= testSituation.Item1 #>Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#+
+		}
+#>
+				Assert.That( result, Is.EqualTo( <#= expectedValue #> ) );
+<#+
+	}
+	else
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read<#= testSituation.Item1 #>( out result ) );
+<#+
+		}
+		else
+		{
+#>
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.Read<#= testSituation.Item1 #>Async() );
+<#+
+		}
+	}
+}
+
+private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string> testCase, int valueLengthAjustument, bool canConvertToString, Action<Tuple<string, string, string, string, bool>, string, string, bool, bool, bool> putTestBody, bool isAsync )
+{
+	var adjustedValueLength = testCase.Item2 + valueLengthAjustument;
+	if ( adjustedValueLength < 0 )
+	{
+		// Never occurred situation.
+		return;
+	}
+
+	var expectedValue = String.Format( CultureInfo.InvariantCulture, testSituation.Item4, testSituation.Item3, testCase.Item2 );
+	var willSuccess = valueLengthAjustument >= 0;
+#>
+
+		[Test]
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted()
+		{
+			using( var buffer =
+				new MemoryStream( 
+					new byte[] { <#= testCase.Item3 #> }
+					.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
+			{
+<#+
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
+#>
+			}
+		}
+<#+
+
+		if ( !willSuccess  )
+		{
+#>
+
+		[Test]
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { <#= testCase.Item3 #> }
+					.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
+			{
+<#+
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, willSuccess, isAsync );
+#>
+			}
+		}
+<#+
+		}
+}
+
+private static string AsyncVoid( bool isAsync, bool willSuccess )
+{
+	return ( isAsync && willSuccess ) ? "async Task" : "void";
+}
+#>

@@ -164,7 +164,7 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 	else
 	{
 #>
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 <#+
 	}
 #>
@@ -189,7 +189,7 @@ private void PutTestMethod( string methodName, string headerFormat, int? lengthO
 	else
 	{
 #>
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 <#+
 	}
 #>

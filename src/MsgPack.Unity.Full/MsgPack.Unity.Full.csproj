@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
     <NoWarn>3001,3002</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\MsgPack-CLI\unity-full\MsgPack.XML</DocumentationFile>
     <NoWarn>3001,3002</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
     <OutputPath>bin\CodeAnalysis\</OutputPath>
@@ -45,6 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -68,14 +71,32 @@
     <Compile Include="..\MsgPack\BufferManager.cs">
       <Link>BufferManager.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\ByteArrayPacker.cs">
+      <Link>ByteArrayPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ByteArrayUnpacker.cs">
+      <Link>ByteArrayUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ByteBufferAllocator.cs">
+      <Link>ByteBufferAllocator.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\CollectionDebuggerProxy`1.cs">
       <Link>CollectionDebuggerProxy`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\CollectionOperation.cs">
       <Link>CollectionOperation.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\CollectionType.cs">
+      <Link>CollectionType.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\DictionaryDebuggerProxy`2.cs">
       <Link>DictionaryDebuggerProxy`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\EncodingExtensions.cs">
+      <Link>EncodingExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\FixedArrayBufferAllocator.cs">
+      <Link>FixedArrayBufferAllocator.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Float32Bits.cs">
       <Link>Float32Bits.cs</Link>
@@ -92,23 +113,20 @@
     <Compile Include="..\MsgPack\IAsyncUnpackable.cs">
       <Link>IAsyncUnpackable.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Int32OffsetValue`1.cs">
+      <Link>Int32OffsetValue`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Int64OffsetValue`1.cs">
+      <Link>Int64OffsetValue`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\InvalidMessagePackStreamException.cs">
       <Link>InvalidMessagePackStreamException.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\IPackable.cs">
       <Link>IPackable.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.cs">
-      <Link>ItemsUnpacker.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.Read.cs">
-      <Link>ItemsUnpacker.Read.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.Skipping.cs">
-      <Link>ItemsUnpacker.Skipping.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\ItemsUnpacker.Unpacking.cs">
-      <Link>ItemsUnpacker.Unpacking.cs</Link>
+    <Compile Include="..\MsgPack\IRootUnpacker.cs">
+      <Link>IRootUnpacker.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\IUnpackable.cs">
       <Link>IUnpackable.cs</Link>
@@ -121,6 +139,18 @@
     </Compile>
     <Compile Include="..\MsgPack\MessageNotSupportedException.cs">
       <Link>MessageNotSupportedException.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayPacker.cs">
+      <Link>MessagePackByteArrayPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayPacker.Pack.cs">
+      <Link>MessagePackByteArrayPacker.Pack.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayUnpacker.cs">
+      <Link>MessagePackByteArrayUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackByteArrayUnpacker.Unpack.cs">
+      <Link>MessagePackByteArrayUnpacker.Unpack.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\MessagePackCode.cs">
       <Link>MessagePackCode.cs</Link>
@@ -158,6 +188,18 @@
     <Compile Include="..\MsgPack\MessagePackObjectEqualityComparer.cs">
       <Link>MessagePackObjectEqualityComparer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\MessagePackStreamPacker.cs">
+      <Link>MessagePackStreamPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackStreamPacker.Pack.cs">
+      <Link>MessagePackStreamPacker.Pack.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackStreamUnpacker.cs">
+      <Link>MessagePackStreamUnpacker.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\MessagePackStreamUnpacker.Unpack.cs">
+      <Link>MessagePackStreamUnpacker.Unpack.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\MessagePackString.cs">
       <Link>MessagePackString.cs</Link>
     </Compile>
@@ -169,6 +211,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Packer.cs">
       <Link>Packer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Packer.Factory.cs">
+      <Link>Packer.Factory.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Packer.Nullable.cs">
       <Link>Packer.Nullable.cs</Link>
@@ -190,6 +235,12 @@
     </Compile>
     <Compile Include="..\MsgPack\PreserveAttribute.cs">
       <Link>PreserveAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ReadValueResult.cs">
+      <Link>ReadValueResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\ReadValueResults.cs">
+      <Link>ReadValueResults.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
@@ -659,6 +710,9 @@
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs">
       <Link>Serialization\SerializingMember.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\Tracer.cs">
+      <Link>Serialization\Tracer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs">
       <Link>Serialization\TypeKeyRepository.cs</Link>
     </Compile>
@@ -677,8 +731,8 @@
     <Compile Include="..\MsgPack\SetOperation.cs">
       <Link>SetOperation.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\StreamPacker.cs">
-      <Link>StreamPacker.cs</Link>
+    <Compile Include="..\MsgPack\SingleArrayBufferAllocator.cs">
+      <Link>SingleArrayBufferAllocator.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\StringEscape.cs">
       <Link>StringEscape.cs</Link>
@@ -698,8 +752,17 @@
     <Compile Include="..\MsgPack\Unpacker.cs">
       <Link>Unpacker.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Unpacker.Leaf.cs">
+      <Link>Unpacker.Leaf.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Unpacker.Unpacking.cs">
       <Link>Unpacker.Unpacking.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackerOptions.cs">
+      <Link>UnpackerOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\UnpackerValidationLevel.cs">
+      <Link>UnpackerValidationLevel.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\UnpackException.cs">
       <Link>UnpackException.cs</Link>

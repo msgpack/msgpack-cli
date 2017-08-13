@@ -1,0 +1,323 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#
+
+var fixVariations =
+	new []
+	{
+		// Label, Headers, Value Length
+		Tuple.Create( "FixExt1", "0xD4, {0}", 1 ),
+		Tuple.Create( "FixExt2", "0xD5, {0}", 2 ),
+		Tuple.Create( "FixExt4", "0xD6, {0}", 4 ),
+		Tuple.Create( "FixExt8", "0xD7, {0}", 8 ),
+		Tuple.Create( "FixExt16", "0xD8, {0}", 16 ),
+	};
+
+var variableVariations =
+	new []
+	{
+		// Label, Header Format, Length of Length, Actual Value Length
+		Tuple.Create( "Ext8", "0xC7, 0, {0}", 1, 0 ),
+		Tuple.Create( "Ext8", "0xC7, 0xFF, {0}", 1, 0xFF ),
+		Tuple.Create( "Ext16", "0xC8, 0, 0, {0}", 2, 0 ),
+		Tuple.Create( "Ext16", "0xC8, 0xFF, 0xFF, {0}", 2, 0xFFFF ),
+		Tuple.Create( "Ext32", "0xC9, 0, 0, 0, 0, {0}", 4, 0 ),
+		Tuple.Create( "Ext32", "0xC9, 0, 1, 0, 0, {0}", 4, 0x10000 ),
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from StreamUnpackerTest.Ext.tt T4Template.
+	// Do not modify this file. Edit StreamUnpackerTest.Ext.tt instead.
+
+	partial class StreamUnpackerTest
+	{
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
+	foreach ( var testCase in fixVariations )
+	{
+		PutTest( testCase.Item1, testCase.Item2, null, testCase.Item3, isAsync );
+	}
+
+	foreach ( var testCase in variableVariations )
+	{
+		PutTest( testCase.Item1, testCase.Item2, testCase.Item3, testCase.Item4, isAsync );
+	}
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+	}
+}
+#>
+	}
+}
+<#+
+private void PutTest( string label, string headerFormat, int? lengthOfLength, int actualValueLength, bool isAsync )
+{
+	var readDataMethodPrefix = "TestRead" + ( isAsync ? "Async" : String.Empty ) + "_" + label + "_AndBinaryLengthIs" + actualValueLength;
+	PutTestMethod( readDataMethodPrefix + "JustLength_Success", headerFormat, lengthOfLength, actualValueLength, 0, PutTestUnpackDataBody, isAsync );
+	PutTestMethod( readDataMethodPrefix + "TooShort_Fail", headerFormat, lengthOfLength, actualValueLength, -1, PutTestUnpackDataBody, isAsync );
+	PutTestMethod( readDataMethodPrefix + "HasExtra_NoProblem",  headerFormat, lengthOfLength, actualValueLength, 1, PutTestUnpackDataBody, isAsync );
+
+	var readDirectMethodPrefix = "TestReadExtendedTypeObject" + ( isAsync ? "Async" : String.Empty ) + "_" + label + "_AndBinaryLengthIs" + actualValueLength;
+	PutTestMethod( readDirectMethodPrefix + "JustLength_Success",  headerFormat, lengthOfLength, actualValueLength, 0, PutTestUnpackDirectBody, isAsync );
+	PutTestMethod( readDirectMethodPrefix + "TooShort_Fail",  headerFormat, lengthOfLength, actualValueLength, -1, PutTestUnpackDirectBody, isAsync );
+	PutTestMethod( readDirectMethodPrefix + "HasExtra_NoProblem",  headerFormat, lengthOfLength, actualValueLength, 1, PutTestUnpackDirectBody, isAsync );
+}
+
+private void PutTestUnpackDataBody( string typeCodeVariable, int actualValueLength, bool success, bool isAsync )
+{
+	if ( success )
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.IsTrue( unpacker.Read() );
+<#+
+		}
+		else
+		{
+#>
+				Assert.IsTrue( await unpacker.ReadAsync() );
+<#+
+		}
+#>
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				var actual = ( MessagePackExtendedTypeObject )result;
+				Assert.That( actual.TypeCode, Is.EqualTo( <#= typeCodeVariable #> ) );
+				Assert.That( actual.Body, Is.Not.Null );
+				Assert.That( actual.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
+<#+
+	}
+	else
+	{
+		if ( !isAsync )
+		{
+#>
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.Read() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+				}
+<#+
+		}
+		else
+		{
+#>
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadAsync().GetAwaiter().GetResult() );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+				}
+<#+
+		}
+	}
+}
+
+private void PutTestUnpackDirectBody( string typeCodeVariable, int actualValueLength, bool success, bool isAsync )
+{
+	if ( success || !isAsync )
+	{
+#>
+				MessagePackExtendedTypeObject result;
+<#+
+	}
+
+	if ( success )
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.IsTrue( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+<#+
+		}
+		else
+		{
+#>
+				var ret = await unpacker.ReadMessagePackExtendedTypeObjectAsync();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#+
+		}
+#>
+				Assert.That( result.TypeCode, Is.EqualTo( <#= typeCodeVariable #> ) );
+				Assert.That( result.Body, Is.Not.Null );
+				Assert.That( result.Body.Length, Is.EqualTo( <#= actualValueLength #> ) );
+<#+
+	}
+	else
+	{
+		if ( !isAsync )
+		{
+#>
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.ReadMessagePackExtendedTypeObject( out result ) );
+				}
+<#+
+		}
+		else
+		{
+#>
+				if ( this.CanRevert( unpacker ) )
+				{
+					// Just fail and revert.
+					var initialOffset = this.GetOffset( unpacker );
+					Assert.IsFalse( unpacker.ReadMessagePackExtendedTypeObjectAsync().GetAwaiter().GetResult().Success );
+					Assert.That( this.GetOffset( unpacker ), Is.EqualTo( initialOffset ) );
+				}
+				else
+				{
+					AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadMessagePackExtendedTypeObjectAsync() );
+				}
+<#+
+		}
+
+	}
+}
+
+private void PutTestMethod( string methodName, string headerFormat, int? lengthOfLength, int actualValueLength, int valueLengthAjustument, Action<string, int, bool, bool> putTestBody, bool isAsync )
+{
+	var adjustedValueLength = actualValueLength + valueLengthAjustument;
+	if ( adjustedValueLength < 0 )
+	{
+		// Never occurred situation.
+		return;
+	}
+
+	var typeCode = "typeCode";
+	var headerValue = String.Format( CultureInfo.InvariantCulture, headerFormat, typeCode );
+	var willSuccess = valueLengthAjustument >= 0;
+#>
+
+		[Test]
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted()
+		{
+			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new MemoryStream( 
+					new byte[] { <#= headerValue #> }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
+			{
+<#+
+	putTestBody( typeCode, actualValueLength, willSuccess, isAsync );
+#>
+			}
+		}
+<#+
+	if ( !willSuccess )
+	{
+#>
+
+		[Test]
+		public <#= AsyncVoid( isAsync, valueLengthAjustument >= 0 ) #> <#= methodName #>_Splitted_NotSeekable()
+		{
+			if ( !this.MayFailToRollback )
+			{
+				// skip because this test is not neccessary.
+				return;
+			}
+
+			var <#= typeCode #> = ( byte )( Math.Abs( Environment.TickCount ) % 128 );
+			using( var buffer =
+				new NonSeekableStream(
+					new byte[] { <#= headerValue #> }
+					.Concat( Enumerable.Repeat( ( byte )0xFF, <#= adjustedValueLength #> ) ).ToArray()
+				)
+			)
+			using( var splitted = new SplittingStream( buffer ) )
+			using( var unpacker = this.CreateUnpacker( splitted ) )
+			{
+<#+
+		putTestBody( typeCode, actualValueLength, willSuccess, isAsync );
+#>
+			}
+		}
+<#+
+	}
+}
+
+private static string AsyncVoid( bool isAsync, bool willSuccess )
+{
+	return ( isAsync && willSuccess ) ? "async Task" : "void";
+}
+#>

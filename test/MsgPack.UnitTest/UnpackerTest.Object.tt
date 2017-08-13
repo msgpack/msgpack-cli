@@ -12,7 +12,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2016 FUJIWARA, Yusuke
+// Copyright (C) 2016-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -47,8 +47,7 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.Object.tt T4Template.
 	// Do not modify this file. Edit UnpackerTest.Object.tt instead.
 
-	[TestFixture]
-	public partial class UnpackerTest_Object
+	partial class UnpackerTest
 	{
 <#
 foreach ( var testCase in
@@ -92,7 +91,7 @@ foreach ( var testCase in
 				var value = <#= testCase.Value #>;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );

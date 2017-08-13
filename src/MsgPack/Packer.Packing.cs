@@ -56,11 +56,15 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
-		private void PrivatePackCore( Int16 value )
+		/// <summary>
+		///		Packs <see cref="Int16"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="Int16"/> value.</param>
+		protected virtual void PackCore( Int16 value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
@@ -123,10 +127,16 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
-		private async Task PrivatePackAsyncCore( Int16 value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="Int16"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Int16"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackAsyncCore( Int16 value, CancellationToken cancellationToken )
 		{
 			if ( await this.TryPackTinySignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
 			{
@@ -201,11 +211,16 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
-		private void PrivatePackCore( UInt16 value )
+		/// <summary>
+		///		Packs <see cref="UInt16"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="UInt16"/> value.</param>
+		[CLSCompliant( false )]
+		protected virtual void PackCore( UInt16 value )
 		{
 			if ( this.TryPackTinyUnsignedInteger( value ) )
 			{
@@ -271,10 +286,17 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
-		private async Task PrivatePackAsyncCore( UInt16 value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="UInt16"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="UInt16"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		[CLSCompliant( false )]
+		protected virtual async Task PackAsyncCore( UInt16 value, CancellationToken cancellationToken )
 		{
 			if ( await this.TryPackTinyUnsignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
 			{
@@ -350,11 +372,15 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
-		private void PrivatePackCore( Int32 value )
+		/// <summary>
+		///		Packs <see cref="Int32"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="Int32"/> value.</param>
+		protected virtual void PackCore( Int32 value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
@@ -424,10 +450,16 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
-		private async Task PrivatePackAsyncCore( Int32 value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="Int32"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Int32"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackAsyncCore( Int32 value, CancellationToken cancellationToken )
 		{
 			if ( await this.TryPackTinySignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
 			{
@@ -509,11 +541,16 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
-		private void PrivatePackCore( UInt32 value )
+		/// <summary>
+		///		Packs <see cref="UInt32"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="UInt32"/> value.</param>
+		[CLSCompliant( false )]
+		protected virtual void PackCore( UInt32 value )
 		{
 			if ( this.TryPackTinyUnsignedInteger( value ) )
 			{
@@ -586,10 +623,17 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
-		private async Task PrivatePackAsyncCore( UInt32 value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="UInt32"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="UInt32"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		[CLSCompliant( false )]
+		protected virtual async Task PackAsyncCore( UInt32 value, CancellationToken cancellationToken )
 		{
 			if ( await this.TryPackTinyUnsignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
 			{
@@ -672,11 +716,15 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
-		private void PrivatePackCore( Int64 value )
+		/// <summary>
+		///		Packs <see cref="Int64"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="Int64"/> value.</param>
+		protected virtual void PackCore( Int64 value )
 		{
 			if ( this.TryPackTinySignedInteger( value ) )
 			{
@@ -751,10 +799,16 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
-		private async Task PrivatePackAsyncCore( Int64 value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="Int64"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Int64"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackAsyncCore( Int64 value, CancellationToken cancellationToken )
 		{
 			if ( await this.TryPackTinySignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
 			{
@@ -841,11 +895,16 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
-		private void PrivatePackCore( UInt64 value )
+		/// <summary>
+		///		Packs <see cref="UInt64"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="UInt64"/> value.</param>
+		[CLSCompliant( false )]
+		protected virtual void PackCore( UInt64 value )
 		{
 			if ( this.TryPackTinyUnsignedInteger( value ) )
 			{
@@ -923,10 +982,17 @@ namespace MsgPack
 		{
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
-		private async Task PrivatePackAsyncCore( UInt64 value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="UInt64"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="UInt64"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		[CLSCompliant( false )]
+		protected virtual async Task PackAsyncCore( UInt64 value, CancellationToken cancellationToken )
 		{
 			if ( await this.TryPackTinyUnsignedIntegerAsync( value, cancellationToken ).ConfigureAwait( false ) )
 			{
@@ -1012,12 +1078,16 @@ namespace MsgPack
 		public Packer Pack( float value )
 		{
 			this.VerifyNotDisposed();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
 
-		private void PrivatePackCore( float value )
+		/// <summary>
+		///		Packs <see cref="Single"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="Single"/> value.</param>
+		protected virtual void PackCore( float value )
 		{
 			this.WriteByte( MessagePackCode.Real32 );
 
@@ -1061,11 +1131,17 @@ namespace MsgPack
 		public Task PackAsync( float value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
 
-		private async Task PrivatePackAsyncCore( float value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="Single"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Single"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackAsyncCore( float value, CancellationToken cancellationToken )
 		{
 			await this.WriteByteAsync( MessagePackCode.Real32, cancellationToken ).ConfigureAwait( false );
 
@@ -1102,12 +1178,16 @@ namespace MsgPack
 		public Packer Pack( double value )
 		{
 			this.VerifyNotDisposed();
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 		}
 
 
-		private void PrivatePackCore( double value )
+		/// <summary>
+		///		Packs <see cref="Double"/> value to current stream.
+		/// </summary>
+		/// <param name="value"><see cref="Double"/> value.</param>
+		protected virtual void PackCore( double value )
 		{
 			this.WriteByte( MessagePackCode.Real64 );
 			unchecked
@@ -1145,11 +1225,17 @@ namespace MsgPack
 		public Task PackAsync( double value, CancellationToken cancellationToken )
 		{
 			this.VerifyNotDisposed();
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 		}
 
 
-		private async Task PrivatePackAsyncCore( double value, CancellationToken cancellationToken )
+		/// <summary>
+		///		Packs <see cref="Double"/> value to current stream asynchronously.
+		/// </summary>
+		/// <param name="value"><see cref="Double"/> value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackAsyncCore( double value, CancellationToken cancellationToken )
 		{
 			await this.WriteByteAsync( MessagePackCode.Real64, cancellationToken ).ConfigureAwait( false );
 			unchecked
@@ -1180,16 +1266,6 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackArrayHeader( int count )
 		{
-			this.PackArrayHeaderCore( count );
-			return this;
-		}
-
-		/// <summary>
-		///		Bookkeep array length or list items count to be packed on current stream.
-		/// </summary>
-		/// <param name="count">Array length or list items count.</param>
-		protected void PackArrayHeaderCore( int count )
-		{
 			if ( count < 0 )
 			{
 				ThrowCannotBeNegativeException( "count" );
@@ -1198,10 +1274,15 @@ namespace MsgPack
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			this.PrivatePackArrayHeaderCore( count );
+			this.PackArrayHeaderCore( count );
+			return this;
 		}
 
-		private void PrivatePackArrayHeaderCore( int count )
+		/// <summary>
+		///		Bookkeep array length or list items count to be packed on current stream.
+		/// </summary>
+		/// <param name="count">Array length or list items count.</param>
+		protected virtual void PackArrayHeaderCore( int count )
 		{
 #if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
@@ -1232,6 +1313,7 @@ namespace MsgPack
 			}
 		}
 
+
 #if FEATURE_TAP
 
 		/// <summary>
@@ -1242,6 +1324,14 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackArrayHeaderAsync( int count )
 		{
+			if ( count < 0 )
+			{
+				ThrowCannotBeNegativeException( "count" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
 			return this.PackArrayHeaderAsyncCore( count );
 		}
 
@@ -1264,6 +1354,14 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackArrayHeaderAsync( int count, CancellationToken cancellationToken )
 		{
+			if ( count < 0 )
+			{
+				ThrowCannotBeNegativeException( "count" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
 			return this.PackArrayHeaderAsyncCore( count, cancellationToken );
 		}
 
@@ -1273,20 +1371,7 @@ namespace MsgPack
 		/// <param name="count">Array length or list items count.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		protected Task PackArrayHeaderAsyncCore( int count, CancellationToken cancellationToken )
-		{
-			if ( count < 0 )
-			{
-				ThrowCannotBeNegativeException( "count" );
-			}
-
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			return this.PrivatePackArrayHeaderAsyncCore( count, cancellationToken );
-		}
-
-		private async Task PrivatePackArrayHeaderAsyncCore( int count, CancellationToken cancellationToken )
+		protected virtual async Task PackArrayHeaderAsyncCore( int count, CancellationToken cancellationToken )
 		{
 #if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
@@ -1327,16 +1412,6 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackMapHeader( int count )
 		{
-			this.PackMapHeaderCore( count );
-			return this;
-		}
-
-		/// <summary>
-		///		Bookkeep dictionary (map) items count to be packed on current stream.
-		/// </summary>
-		/// <param name="count">Dictionary (map) items count.</param>
-		protected void PackMapHeaderCore( int count )
-		{
 			if ( count < 0 )
 			{
 				ThrowCannotBeNegativeException( "count" );
@@ -1345,10 +1420,15 @@ namespace MsgPack
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			this.PrivatePackMapHeaderCore( count );
+			this.PackMapHeaderCore( count );
+			return this;
 		}
 
-		private void PrivatePackMapHeaderCore( int count )
+		/// <summary>
+		///		Bookkeep dictionary (map) items count to be packed on current stream.
+		/// </summary>
+		/// <param name="count">Dictionary (map) items count.</param>
+		protected virtual void PackMapHeaderCore( int count )
 		{
 #if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
@@ -1379,6 +1459,7 @@ namespace MsgPack
 			}
 		}
 
+
 #if FEATURE_TAP
 
 		/// <summary>
@@ -1389,6 +1470,14 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackMapHeaderAsync( int count )
 		{
+			if ( count < 0 )
+			{
+				ThrowCannotBeNegativeException( "count" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
 			return this.PackMapHeaderAsyncCore( count );
 		}
 
@@ -1411,6 +1500,14 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackMapHeaderAsync( int count, CancellationToken cancellationToken )
 		{
+			if ( count < 0 )
+			{
+				ThrowCannotBeNegativeException( "count" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
 			return this.PackMapHeaderAsyncCore( count, cancellationToken );
 		}
 
@@ -1420,20 +1517,7 @@ namespace MsgPack
 		/// <param name="count">Dictionary (map) items count.</param>
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		protected Task PackMapHeaderAsyncCore( int count, CancellationToken cancellationToken )
-		{
-			if ( count < 0 )
-			{
-				ThrowCannotBeNegativeException( "count" );
-			}
-
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			return this.PrivatePackMapHeaderAsyncCore( count, cancellationToken );
-		}
-
-		private async Task PrivatePackMapHeaderAsyncCore( int count, CancellationToken cancellationToken )
+		protected virtual async Task PackMapHeaderAsyncCore( int count, CancellationToken cancellationToken )
 		{
 #if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
@@ -1478,7 +1562,14 @@ namespace MsgPack
 		[Obsolete( "Use PackStringHeader(Int32) or Use PackBinaryHeader(Int32) instead." )]
 		public Packer PackRawHeader( int length )
 		{
-			this.PackRawHeaderCore( length );
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+			this.PackStringHeaderCore( length );
 			return this;
 		}
 
@@ -1496,7 +1587,14 @@ namespace MsgPack
 		[Obsolete( "Use PackStringHeader(Int32) or Use PackBinaryHeader(Int32) instead." )]
 		public Task PackRawHeaderAsync( int length )
 		{
-			return this.PackRawHeaderAsyncCore( length );
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+			return this.PackStringHeaderAsyncCore( length );
 		}
 
 		/// <summary>
@@ -1512,7 +1610,14 @@ namespace MsgPack
 		[Obsolete( "Use PackStringHeader(Int32) or Use PackBinaryHeader(Int32) instead." )]
 		public Task PackRawHeaderAsync( int length, CancellationToken cancellationToken )
 		{
-			return this.PackRawHeaderAsyncCore( length, cancellationToken );
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+			return this.PackStringHeaderAsyncCore( length, cancellationToken );
 		}
 
 #endif // FEATURE_TAP
@@ -1525,6 +1630,13 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackStringHeader( int length )
 		{
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
 			this.PackStringHeaderCore( length );
 			return this;
 		}
@@ -1539,6 +1651,13 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringHeaderAsync( int length )
 		{
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
 			return this.PackStringHeaderAsyncCore( length );
 		}
 
@@ -1551,6 +1670,13 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringHeaderAsync( int length, CancellationToken cancellationToken )
 		{
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
 			return this.PackStringHeaderAsyncCore( length, cancellationToken );
 		}
 
@@ -1564,6 +1690,19 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackBinaryHeader( int length )
 		{
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+			{
+				// In compat mode, use raw(str) header.
+				this.PackStringHeaderCore( length );
+				return this;
+			}
 			this.PackBinaryHeaderCore( length );
 			return this;
 		}
@@ -1578,6 +1717,18 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackBinaryHeaderAsync( int length )
 		{
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+			{
+				// In compat mode, use raw(str) header.
+				return this.PackStringHeaderAsyncCore( length );
+			}
 			return this.PackBinaryHeaderAsyncCore( length );
 		}
 
@@ -1590,6 +1741,18 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackBinaryHeaderAsync( int length, CancellationToken cancellationToken )
 		{
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+			{
+				// In compat mode, use raw(str) header.
+				return this.PackStringHeaderAsyncCore( length, cancellationToken );
+			}
 			return this.PackBinaryHeaderAsyncCore( length, cancellationToken );
 		}
 
@@ -1645,113 +1808,13 @@ namespace MsgPack
 		///		Bookkeep byte length to be packed on current stream as the bytes should represent well formed encoded string.
 		/// </summary>
 		/// <param name="length">A length of encoded byte array.</param>
-		protected void PackStringHeaderCore( int length )
+		protected virtual void PackStringHeaderCore( int length )
 		{
-			if ( length < 0 )
+			if ( length < 32 )
 			{
-				ThrowCannotBeNegativeException( "length" );
+				this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) ) );
+				return;
 			}
-
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			this.PrivatePackRawHeaderCore( length, true );
-		}
-
-#if FEATURE_TAP
-
-		/// <summary>
-		///		Bookkeep byte length to be packed on current stream as the bytes should represent well formed encoded string asynchronously.
-		/// </summary>
-		/// <param name="length">A length of encoded byte array.</param>
-		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		protected Task PackStringHeaderAsyncCore( int length )
-		{
-			return this.PackStringHeaderAsyncCore( length, CancellationToken.None );
-		}
-
-		/// <summary>
-		///		Bookkeep byte length to be packed on current stream as the bytes should represent well formed encoded string asynchronously.
-		/// </summary>
-		/// <param name="length">A length of encoded byte array.</param>
-		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
-		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		protected Task PackStringHeaderAsyncCore( int length, CancellationToken cancellationToken )
-		{
-			if ( length < 0 )
-			{
-				ThrowCannotBeNegativeException( "length" );
-			}
-
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			return this.PrivatePackRawHeaderAsyncCore( length, true, cancellationToken );
-		}
-
-#endif // FEATURE_TAP
-
-		/// <summary>
-		///		Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string.
-		/// </summary>
-		/// <param name="length">A length of byte array.</param>
-		protected void PackBinaryHeaderCore( int length )
-		{
-			if ( length < 0 )
-			{
-				ThrowCannotBeNegativeException( "length" );
-			}
-
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			this.PrivatePackRawHeaderCore( length, false );
-		}
-
-#if FEATURE_TAP
-
-		/// <summary>
-		///		Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string asynchronously.
-		/// </summary>
-		/// <param name="length">A length of byte array.</param>
-		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		protected Task PackBinaryHeaderAsyncCore( int length )
-		{
-			return this.PackBinaryHeaderAsyncCore( length, CancellationToken.None );
-		}
-
-		/// <summary>
-		///		Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string asynchronously.
-		/// </summary>
-		/// <param name="length">A length of byte array.</param>
-		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
-		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-		protected Task PackBinaryHeaderAsyncCore( int length, CancellationToken cancellationToken )
-		{
-			if ( length < 0 )
-			{
-				ThrowCannotBeNegativeException( "length" );
-			}
-
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			return this.PrivatePackRawHeaderAsyncCore( length, false, cancellationToken );
-		}
-
-#endif // FEATURE_TAP
-
-		private void PrivatePackRawHeaderCore( int length, bool isString )
-		{
-			Contract.Assert( 0 <= length, "0 <= length" );
-
-			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
-			{
-				if ( length < 32 )
-				{
-					this.WriteByte( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) ) );
-					return;
-				}
 
 				if ( length <= Byte.MaxValue && ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
 				{
@@ -1781,55 +1844,33 @@ namespace MsgPack
 						this.WriteByte( ( byte )( length & 0xFF ) );
 					}
 				}
-			}
-			else
-			{
-				// !isString && compat options is not set.
-
-				if ( length <= Byte.MaxValue )
-				{
-					this.WriteByte( MessagePackCode.Bin8 );
-					unchecked
-					{
-						this.WriteByte( ( byte )( length & 0xFF ) );
-					}
-				}
-				else if ( length <= UInt16.MaxValue )
-				{
-					this.WriteByte( MessagePackCode.Bin16 );
-					unchecked
-					{
-						this.WriteByte( ( byte )( ( length >> 8 ) & 0xFF ) );
-						this.WriteByte( ( byte )( length & 0xFF ) );
-					}
-				}
-				else
-				{
-					this.WriteByte( MessagePackCode.Bin32 );
-					unchecked
-					{
-						this.WriteByte( ( byte )( ( length >> 24 ) & 0xFF ) );
-						this.WriteByte( ( byte )( ( length >> 16 ) & 0xFF ) );
-						this.WriteByte( ( byte )( ( length >> 8 ) & 0xFF ) );
-						this.WriteByte( ( byte )( length & 0xFF ) );
-					}
-				}
-			}
 		}
 
 #if FEATURE_TAP
 
-		private async Task PrivatePackRawHeaderAsyncCore( int length, bool isString, CancellationToken cancellationToken )
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes should represent well formed encoded string asynchronously.
+		/// </summary>
+		/// <param name="length">A length of encoded byte array.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected Task PackStringHeaderAsyncCore( int length )
 		{
-			Contract.Assert( 0 <= length, "0 <= length" );
+			return this.PackStringHeaderAsyncCore( length, CancellationToken.None );
+		}
 
-			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes should represent well formed encoded string asynchronously.
+		/// </summary>
+		/// <param name="length">A length of encoded byte array.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackStringHeaderAsyncCore( int length, CancellationToken cancellationToken )
+		{
+			if ( length < 32 )
 			{
-				if ( length < 32 )
-				{
-					await this.WriteByteAsync( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) ), cancellationToken ).ConfigureAwait( false );
-					return;
-				}
+				await this.WriteByteAsync( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) ), cancellationToken ).ConfigureAwait( false );
+				return;
+			}
 
 				if ( length <= Byte.MaxValue && ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
 				{
@@ -1859,11 +1900,66 @@ namespace MsgPack
 						await this.WriteByteAsync( ( byte )( length & 0xFF ), cancellationToken ).ConfigureAwait( false );
 					}
 				}
-			}
-			else
-			{
-				// !isString && compat options is not set.
+		}
 
+#endif // FEATURE_TAP
+
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string.
+		/// </summary>
+		/// <param name="length">A length of byte array.</param>
+		protected virtual void PackBinaryHeaderCore( int length )
+		{
+				if ( length <= Byte.MaxValue )
+				{
+					this.WriteByte( MessagePackCode.Bin8 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( length & 0xFF ) );
+					}
+				}
+				else if ( length <= UInt16.MaxValue )
+				{
+					this.WriteByte( MessagePackCode.Bin16 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( ( length >> 8 ) & 0xFF ) );
+						this.WriteByte( ( byte )( length & 0xFF ) );
+					}
+				}
+				else
+				{
+					this.WriteByte( MessagePackCode.Bin32 );
+					unchecked
+					{
+						this.WriteByte( ( byte )( ( length >> 24 ) & 0xFF ) );
+						this.WriteByte( ( byte )( ( length >> 16 ) & 0xFF ) );
+						this.WriteByte( ( byte )( ( length >> 8 ) & 0xFF ) );
+						this.WriteByte( ( byte )( length & 0xFF ) );
+					}
+				}
+		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string asynchronously.
+		/// </summary>
+		/// <param name="length">A length of byte array.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected Task PackBinaryHeaderAsyncCore( int length )
+		{
+			return this.PackBinaryHeaderAsyncCore( length, CancellationToken.None );
+		}
+
+		/// <summary>
+		///		Bookkeep byte length to be packed on current stream as the bytes should not represent well formed encoded string asynchronously.
+		/// </summary>
+		/// <param name="length">A length of byte array.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackBinaryHeaderAsyncCore( int length, CancellationToken cancellationToken )
+		{
 				if ( length <= Byte.MaxValue )
 				{
 					await this.WriteByteAsync( MessagePackCode.Bin8, cancellationToken ).ConfigureAwait( false );
@@ -1892,7 +1988,6 @@ namespace MsgPack
 						await this.WriteByteAsync( ( byte )( length & 0xFF ), cancellationToken ).ConfigureAwait( false );
 					}
 				}
-			}
 		}
 
 #endif // FEATURE_TAP
@@ -1915,16 +2010,21 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asCollection = value as ICollection<byte>;
-			if ( asCollection == null )
+			if ( value == null )
 			{
-				this.PrivatePackRaw( value );
+				this.PrivatePackNullCore();
+				return this;
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				this.PackRawCore( asArray );
 			}
 			else
 			{
-				this.PrivatePackRaw( asCollection );
+				this.PackRawCore( value.ToArray() );
 			}
-
 			return this;
 		}
 
@@ -1942,16 +2042,21 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asByteArray = value as byte[];
-			if ( asByteArray == null )
+			if ( value == null )
 			{
-				this.PrivatePackRaw( value );
+				this.PrivatePackNullCore();
+				return this;
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				this.PackRawCore( asArray );
 			}
 			else
 			{
-				this.PrivatePackRaw( asByteArray );
+				this.PackRawCore( value.ToArray() );
 			}
-
 			return this;
 		}
 
@@ -1969,63 +2074,25 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PrivatePackRaw( value );
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return this;
+			}
+
+			this.PackRawCore( value );
 			return this;
 		}
 
-		private void PrivatePackRaw( ICollection<byte> value )
+
+		/// <summary>
+		///		Packs specified byte array(it may or may not be string to current stream.
+		/// </summary>
+		/// <param name="value">A byte array.</param>
+		protected virtual void PackRawCore( byte[] value )
 		{
-			if ( value == null )
-			{
-				this.PrivatePackNullCore();
-				return;
-			}
-
-			this.PrivatePackRawHeaderCore( value.Count, /*isString:*/ true );
-			this.WriteBytes( value );
-		}
-
-		private void PrivatePackRaw( byte[] value )
-		{
-			if ( value == null )
-			{
-				this.PrivatePackNullCore();
-				return;
-			}
-
-			this.PrivatePackRawCore( value, false );
-		}
-
-		private void PrivatePackRaw( IEnumerable<byte> value )
-		{
-			if ( value == null )
-			{
-				this.PrivatePackNullCore();
-				return;
-			}
-
-			this.PrivatePackRawCore( value );
-		}
-
-		private void PrivatePackRawCore( byte[] value, bool isImmutable )
-		{
-			this.PrivatePackRawHeaderCore( value.Length, /*isString:*/ true );
-			this.WriteBytes( value, isImmutable );
-		}
-
-		private void PrivatePackRawCore( IEnumerable<byte> value )
-		{
-			if ( !this.CanSeek )
-			{
-				// buffered
-				this.PrivatePackRawCore( value.ToArray(), true );
-			}
-			else
-			{
-				// Header
-				this.WriteByte( MessagePackCode.Raw32 );
-				this.StreamWrite( value, ( items, _ ) => this.PrivatePackRawBodyCore( items ), null );
-			}
+			this.PackStringHeaderCore( value.Length );
+			this.WriteBytes( value, false );
 		}
 
 #if FEATURE_TAP
@@ -2059,16 +2126,20 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asCollection = value as ICollection<byte>;
-			if ( asCollection == null )
+			if ( value == null )
 			{
-				return this.PrivatePackRawAsync( value, cancellationToken );
+				return this.PrivatePackNullAsyncCore( cancellationToken );
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				return this.PackRawAsyncCore( asArray, cancellationToken );
 			}
 			else
 			{
-				return this.PrivatePackRawAsync( asCollection, cancellationToken );
+				return this.PackRawAsyncCore( value.ToArray(), cancellationToken );
 			}
-
 		}
 
 		/// <summary>
@@ -2100,16 +2171,20 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asByteArray = value as byte[];
-			if ( asByteArray == null )
+			if ( value == null )
 			{
-				return this.PrivatePackRawAsync( value, cancellationToken );
+				return this.PrivatePackNullAsyncCore( cancellationToken );
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				return this.PackRawAsyncCore( asArray, cancellationToken );
 			}
 			else
 			{
-				return this.PrivatePackRawAsync( asByteArray, cancellationToken );
+				return this.PackRawAsyncCore( value.ToArray(), cancellationToken );
 			}
-
 		}
 
 		/// <summary>
@@ -2141,62 +2216,25 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			return this.PrivatePackRawAsync( value, cancellationToken );
-		}
-
-		private async Task PrivatePackRawAsync( ICollection<byte> value, CancellationToken cancellationToken )
-		{
 			if ( value == null )
 			{
-				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
-				return;
+				return this.PrivatePackNullAsyncCore( cancellationToken );
 			}
 
-			await this.PrivatePackRawHeaderAsyncCore( value.Count, /*isString:*/ true, cancellationToken ).ConfigureAwait( false );
-			await this.WriteBytesAsync( value, cancellationToken ).ConfigureAwait( false );
+			return this.PackRawAsyncCore( value, cancellationToken );
 		}
 
-		private async Task PrivatePackRawAsync( byte[] value, CancellationToken cancellationToken )
+
+		/// <summary>
+		///		Packs specified byte array(it may or may not be string to current stream asynchronously.
+		/// </summary>
+		/// <param name="value">A byte array.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackRawAsyncCore( byte[] value, CancellationToken cancellationToken )
 		{
-			if ( value == null )
-			{
-				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
-				return;
-			}
-
-			await this.PrivatePackRawAsyncCore( value, false, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackRawAsync( IEnumerable<byte> value, CancellationToken cancellationToken )
-		{
-			if ( value == null )
-			{
-				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
-				return;
-			}
-
-			await this.PrivatePackRawAsyncCore( value, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackRawAsyncCore( byte[] value, bool isImmutable, CancellationToken cancellationToken )
-		{
-			await this.PrivatePackRawHeaderAsyncCore( value.Length, /*isString:*/ true, cancellationToken ).ConfigureAwait( false );
-			await this.WriteBytesAsync( value, isImmutable, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackRawAsyncCore( IEnumerable<byte> value, CancellationToken cancellationToken )
-		{
-			if ( !this.CanSeek )
-			{
-				// buffered
-				await this.PrivatePackRawAsyncCore( value.ToArray(), true, cancellationToken ).ConfigureAwait( false );
-			}
-			else
-			{
-				// Header
-				await this.WriteByteAsync( MessagePackCode.Raw32, cancellationToken ).ConfigureAwait( false );
-				await this.StreamWriteAsync( value, ( items, _, cts ) => this.PrivatePackRawBodyAsyncCore( items, cts ), null, cancellationToken ).ConfigureAwait( false );
-			}
+			await this.PackStringHeaderAsyncCore( value.Length, cancellationToken ).ConfigureAwait( false );
+			await this.WriteBytesAsync( value, false, cancellationToken ).ConfigureAwait( false );
 		}
 
 #endif // FEATURE_TAP
@@ -2219,16 +2257,37 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asCollection = value as ICollection<byte>;
-			if ( asCollection == null )
+			if ( value == null )
 			{
-				this.PrivatePackBinary( value );
+				this.PrivatePackNullCore();
+				return this;
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					this.PackBinaryCore( asArray );
+				}
+				else
+				{
+					this.PackRawCore( asArray );
+				}
+	
 			}
 			else
 			{
-				this.PrivatePackBinary( asCollection );
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					this.PackBinaryCore( value.ToArray() );
+				}
+				else
+				{
+					this.PackRawCore( value.ToArray() );
+				}
+	
 			}
-
 			return this;
 		}
 
@@ -2246,16 +2305,37 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asByteArray = value as byte[];
-			if ( asByteArray == null )
+			if ( value == null )
 			{
-				this.PrivatePackBinary( value );
+				this.PrivatePackNullCore();
+				return this;
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					this.PackBinaryCore( asArray );
+				}
+				else
+				{
+					this.PackRawCore( asArray );
+				}
+	
 			}
 			else
 			{
-				this.PrivatePackBinary( asByteArray );
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					this.PackBinaryCore( value.ToArray() );
+				}
+				else
+				{
+					this.PackRawCore( value.ToArray() );
+				}
+	
 			}
-
 			return this;
 		}
 
@@ -2273,72 +2353,33 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PrivatePackBinary( value );
-			return this;
-		}
-
-		private void PrivatePackBinary( ICollection<byte> value )
-		{
 			if ( value == null )
 			{
 				this.PrivatePackNullCore();
-				return;
+				return this;
 			}
 
-			this.PrivatePackRawHeaderCore( value.Count, /*isString:*/ false );
-			this.WriteBytes( value );
-		}
-
-		private void PrivatePackBinary( byte[] value )
-		{
-			if ( value == null )
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
 			{
-				this.PrivatePackNullCore();
-				return;
-			}
-
-			this.PrivatePackBinaryCore( value, false );
-		}
-
-		private void PrivatePackBinary( IEnumerable<byte> value )
-		{
-			if ( value == null )
-			{
-				this.PrivatePackNullCore();
-				return;
-			}
-
-			this.PrivatePackBinaryCore( value );
-		}
-
-		private void PrivatePackBinaryCore( byte[] value, bool isImmutable )
-		{
-			this.PrivatePackRawHeaderCore( value.Length, /*isString:*/ false );
-			this.WriteBytes( value, isImmutable );
-		}
-
-		private void PrivatePackBinaryCore( IEnumerable<byte> value )
-		{
-			if ( !this.CanSeek )
-			{
-				// buffered
-				this.PrivatePackBinaryCore( value.ToArray(), true );
+				this.PackBinaryCore( value );
 			}
 			else
 			{
-				// Header
-				// Use biggest data size because actual binary length is not known.
-				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
-				{
-					this.WriteByte( MessagePackCode.Raw32 );
-				}
-				else
-				{
-					this.WriteByte( MessagePackCode.Bin32 );
-				}
-
-				this.StreamWrite( value, ( items, _ ) => this.PrivatePackRawBodyCore( items ), null );
+				this.PackRawCore( value );
 			}
+
+			return this;
+		}
+
+
+		/// <summary>
+		///		Packs specified byte array(it should not be string to current stream.
+		/// </summary>
+		/// <param name="value">A byte array.</param>
+		protected virtual void PackBinaryCore( byte[] value )
+		{
+			this.PackBinaryHeaderCore( value.Length );
+			this.WriteBytes( value, false );
 		}
 
 #if FEATURE_TAP
@@ -2372,16 +2413,36 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asCollection = value as ICollection<byte>;
-			if ( asCollection == null )
+			if ( value == null )
 			{
-				return this.PrivatePackBinaryAsync( value, cancellationToken );
+				return this.PrivatePackNullAsyncCore( cancellationToken );
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					return this.PackBinaryAsyncCore( asArray, cancellationToken );
+				}
+				else
+				{
+					return this.PackRawAsyncCore( asArray, cancellationToken );
+				}
+	
 			}
 			else
 			{
-				return this.PrivatePackBinaryAsync( asCollection, cancellationToken );
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					return this.PackBinaryAsyncCore( value.ToArray(), cancellationToken );
+				}
+				else
+				{
+					return this.PackRawAsyncCore( value.ToArray(), cancellationToken );
+				}
+	
 			}
-
 		}
 
 		/// <summary>
@@ -2413,16 +2474,36 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			var asByteArray = value as byte[];
-			if ( asByteArray == null )
+			if ( value == null )
 			{
-				return this.PrivatePackBinaryAsync( value, cancellationToken );
+				return this.PrivatePackNullAsyncCore( cancellationToken );
+			}
+
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					return this.PackBinaryAsyncCore( asArray, cancellationToken );
+				}
+				else
+				{
+					return this.PackRawAsyncCore( asArray, cancellationToken );
+				}
+	
 			}
 			else
 			{
-				return this.PrivatePackBinaryAsync( asByteArray, cancellationToken );
+				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+				{
+					return this.PackBinaryAsyncCore( value.ToArray(), cancellationToken );
+				}
+				else
+				{
+					return this.PackRawAsyncCore( value.ToArray(), cancellationToken );
+				}
+	
 			}
-
 		}
 
 		/// <summary>
@@ -2454,71 +2535,33 @@ namespace MsgPack
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			return this.PrivatePackBinaryAsync( value, cancellationToken );
-		}
-
-		private async Task PrivatePackBinaryAsync( ICollection<byte> value, CancellationToken cancellationToken )
-		{
 			if ( value == null )
 			{
-				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
-				return;
+				return this.PrivatePackNullAsyncCore( cancellationToken );
 			}
 
-			await this.PrivatePackRawHeaderAsyncCore( value.Count, /*isString:*/ false, cancellationToken ).ConfigureAwait( false );
-			await this.WriteBytesAsync( value, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackBinaryAsync( byte[] value, CancellationToken cancellationToken )
-		{
-			if ( value == null )
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
 			{
-				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
-				return;
-			}
-
-			await this.PrivatePackBinaryAsyncCore( value, false, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackBinaryAsync( IEnumerable<byte> value, CancellationToken cancellationToken )
-		{
-			if ( value == null )
-			{
-				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
-				return;
-			}
-
-			await this.PrivatePackBinaryAsyncCore( value, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackBinaryAsyncCore( byte[] value, bool isImmutable, CancellationToken cancellationToken )
-		{
-			await this.PrivatePackRawHeaderAsyncCore( value.Length, /*isString:*/ false, cancellationToken ).ConfigureAwait( false );
-			await this.WriteBytesAsync( value, isImmutable, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackBinaryAsyncCore( IEnumerable<byte> value, CancellationToken cancellationToken )
-		{
-			if ( !this.CanSeek )
-			{
-				// buffered
-				await this.PrivatePackBinaryAsyncCore( value.ToArray(), true, cancellationToken ).ConfigureAwait( false );
+				return this.PackBinaryAsyncCore( value, cancellationToken );
 			}
 			else
 			{
-				// Header
-				// Use biggest data size because actual binary length is not known.
-				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
-				{
-					await this.WriteByteAsync( MessagePackCode.Raw32, cancellationToken ).ConfigureAwait( false );
-				}
-				else
-				{
-					await this.WriteByteAsync( MessagePackCode.Bin32, cancellationToken ).ConfigureAwait( false );
-				}
-
-				await this.StreamWriteAsync( value, ( items, _, cts ) => this.PrivatePackRawBodyAsyncCore( items, cts ), null, cancellationToken ).ConfigureAwait( false );
+				return this.PackRawAsyncCore( value, cancellationToken );
 			}
+
+		}
+
+
+		/// <summary>
+		///		Packs specified byte array(it should not be string to current stream asynchronously.
+		/// </summary>
+		/// <param name="value">A byte array.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual async Task PackBinaryAsyncCore( byte[] value, CancellationToken cancellationToken )
+		{
+			await this.PackBinaryHeaderAsyncCore( value.Length, cancellationToken ).ConfigureAwait( false );
+			await this.WriteBytesAsync( value, false, cancellationToken ).ConfigureAwait( false );
 		}
 
 #endif // FEATURE_TAP
@@ -2535,7 +2578,14 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackString( IEnumerable<char> value )
 		{
-			this.PackStringCore( value, Encoding.UTF8 );
+
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return this;
+			}
+
+			this.PackRawCore( value );
 			return this;
 		}
 
@@ -2569,32 +2619,16 @@ namespace MsgPack
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			this.PrivatePackString( value, encoding );
-		}
-
-		private void PrivatePackString( IEnumerable<char> value, Encoding encoding )
-		{
-			Contract.Assert( encoding != null, "encoding != null" );
-
 			if ( value == null )
 			{
 				this.PrivatePackNullCore();
 				return;
 			}
 
-			this.PrivatePackStringCore( value, encoding );
-		}
-
-		private void PrivatePackStringCore( IEnumerable<char> value, Encoding encoding )
-		{
-			Contract.Assert( value != null, "value != null" );
-			Contract.Assert( encoding != null, "encoding != null" );
-
-			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value.ToArray() );
-			this.PrivatePackRawHeaderCore( encoded.Length, /*isString:*/ true );
-			this.WriteBytes( encoded, true );
+			this.PackRawCore( encoded );
 		}
+
 
 #if FEATURE_TAP
 
@@ -2606,7 +2640,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringAsync( IEnumerable<char> value )
 		{
-			return this.PackStringAsyncCore( value, Encoding.UTF8 );
+			return this.PackStringAsync( value, CancellationToken.None );
 		}
 
 		/// <summary>
@@ -2619,7 +2653,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringAsync( IEnumerable<char> value, Encoding encoding )
 		{
-			return this.PackStringAsyncCore( value, encoding );
+			return this.PackStringAsync( value, encoding, CancellationToken.None );
 		}
 
 		/// <summary>
@@ -2643,7 +2677,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringAsync( IEnumerable<char> value, CancellationToken cancellationToken )
 		{
-			return this.PackStringAsyncCore( value, Encoding.UTF8, cancellationToken );
+			if ( value == null )
+			{
+				return this.PrivatePackNullAsyncCore( cancellationToken );
+			}
+
+			return this.PackRawAsyncCore( value, cancellationToken );
 		}
 
 		/// <summary>
@@ -2668,7 +2707,7 @@ namespace MsgPack
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="encoding" /> is <c>null</c>.</exception>
-		protected virtual Task PackStringAsyncCore( IEnumerable<char> value, Encoding encoding, CancellationToken cancellationToken )
+		protected virtual async Task PackStringAsyncCore( IEnumerable<char> value, Encoding encoding, CancellationToken cancellationToken )
 		{
 			if ( encoding == null )
 			{
@@ -2678,32 +2717,16 @@ namespace MsgPack
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			return this.PrivatePackStringAsync( value, encoding, cancellationToken );
-		}
-
-		private async Task PrivatePackStringAsync( IEnumerable<char> value, Encoding encoding, CancellationToken cancellationToken )
-		{
-			Contract.Assert( encoding != null, "encoding != null" );
-
 			if ( value == null )
 			{
 				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
 				return;
 			}
 
-			await this.PrivatePackStringAsyncCore( value, encoding, cancellationToken ).ConfigureAwait( false );
-		}
-
-		private async Task PrivatePackStringAsyncCore( IEnumerable<char> value, Encoding encoding, CancellationToken cancellationToken )
-		{
-			Contract.Assert( value != null, "value != null" );
-			Contract.Assert( encoding != null, "encoding != null" );
-
-			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value.ToArray() );
-			await this.PrivatePackRawHeaderAsyncCore( encoded.Length, /*isString:*/ true, cancellationToken ).ConfigureAwait( false );
-			await this.WriteBytesAsync( encoded, true, cancellationToken ).ConfigureAwait( false );
+			await this.PackRawAsyncCore( encoded, cancellationToken ).ConfigureAwait( false );
 		}
+
 
 #endif // FEATURE_TAP
 
@@ -2715,7 +2738,14 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Packer PackString( string value )
 		{
-			this.PackStringCore( value, Encoding.UTF8 );
+
+			if ( value == null )
+			{
+				this.PrivatePackNullCore();
+				return this;
+			}
+
+			this.PackRawCore( value );
 			return this;
 		}
 
@@ -2749,32 +2779,16 @@ namespace MsgPack
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			this.PrivatePackString( value, encoding );
-		}
-
-		private void PrivatePackString( string value, Encoding encoding )
-		{
-			Contract.Assert( encoding != null, "encoding != null" );
-
 			if ( value == null )
 			{
 				this.PrivatePackNullCore();
 				return;
 			}
 
-			this.PrivatePackStringCore( value, encoding );
-		}
-
-		private void PrivatePackStringCore( string value, Encoding encoding )
-		{
-			Contract.Assert( value != null, "value != null" );
-			Contract.Assert( encoding != null, "encoding != null" );
-
-			// TODO: streaming encoding
 			var encoded = encoding.GetBytes( value );
-			this.PrivatePackRawHeaderCore( encoded.Length, /*isString:*/ true );
-			this.WriteBytes( encoded, true );
+			this.PackRawCore( encoded );
 		}
+
 
 #if FEATURE_TAP
 
@@ -2786,7 +2800,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringAsync( string value )
 		{
-			return this.PackStringAsyncCore( value, Encoding.UTF8 );
+			return this.PackStringAsync( value, CancellationToken.None );
 		}
 
 		/// <summary>
@@ -2799,7 +2813,7 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringAsync( string value, Encoding encoding )
 		{
-			return this.PackStringAsyncCore( value, encoding );
+			return this.PackStringAsync( value, encoding, CancellationToken.None );
 		}
 
 		/// <summary>
@@ -2823,7 +2837,12 @@ namespace MsgPack
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public Task PackStringAsync( string value, CancellationToken cancellationToken )
 		{
-			return this.PackStringAsyncCore( value, Encoding.UTF8, cancellationToken );
+			if ( value == null )
+			{
+				return this.PrivatePackNullAsyncCore( cancellationToken );
+			}
+
+			return this.PackRawAsyncCore( value, cancellationToken );
 		}
 
 		/// <summary>
@@ -2848,7 +2867,7 @@ namespace MsgPack
 		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
 		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="encoding" /> is <c>null</c>.</exception>
-		protected virtual Task PackStringAsyncCore( string value, Encoding encoding, CancellationToken cancellationToken )
+		protected virtual async Task PackStringAsyncCore( string value, Encoding encoding, CancellationToken cancellationToken )
 		{
 			if ( encoding == null )
 			{
@@ -2858,31 +2877,69 @@ namespace MsgPack
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			return this.PrivatePackStringAsync( value, encoding, cancellationToken );
-		}
-
-		private async Task PrivatePackStringAsync( string value, Encoding encoding, CancellationToken cancellationToken )
-		{
-			Contract.Assert( encoding != null, "encoding != null" );
-
 			if ( value == null )
 			{
 				await this.PrivatePackNullAsyncCore( cancellationToken ).ConfigureAwait( false );
 				return;
 			}
 
-			await this.PrivatePackStringAsyncCore( value, encoding, cancellationToken ).ConfigureAwait( false );
+			var encoded = encoding.GetBytes( value );
+			await this.PackRawAsyncCore( encoded, cancellationToken ).ConfigureAwait( false );
 		}
 
-		private async Task PrivatePackStringAsyncCore( string value, Encoding encoding, CancellationToken cancellationToken )
-		{
-			Contract.Assert( value != null, "value != null" );
-			Contract.Assert( encoding != null, "encoding != null" );
 
-			// TODO: streaming encoding
-			var encoded = encoding.GetBytes( value );
-			await this.PrivatePackRawHeaderAsyncCore( encoded.Length, /*isString:*/ true, cancellationToken ).ConfigureAwait( false );
-			await this.WriteBytesAsync( encoded, true, cancellationToken ).ConfigureAwait( false );
+#endif // FEATURE_TAP
+
+		/// <summary>
+		///		Packs specified <see cref="String" /> to current stream with UTF-8 <see cref="Encoding"/>.
+		/// </summary>
+		/// <param name="value">A string.</param>
+		protected virtual void PackRawCore( string value )
+		{
+			this.PackStringCore( value, Encoding.UTF8 );
+		}
+
+		private void PackRawCore( IEnumerable<char> value )
+		{
+#if !NETSTANDARD1_1
+			var asString = value as string;
+			if ( asString == null )
+			{
+				asString = new String( value.ToArray() );
+			}
+#else
+			var asString = new String( value.ToArray() );
+#endif // !NETSTANDARD1_1
+
+			this.PackStringCore( asString, Encoding.UTF8 );
+		}
+
+#if FEATURE_TAP
+
+		/// <summary>
+		///		Packs specified <see cref="String" /> to current stream with UTF-8 <see cref="Encoding"/> asynchronously.
+		/// </summary>
+		/// <param name="value">A string.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+		protected virtual Task PackRawAsyncCore( string value, CancellationToken cancellationToken )
+		{
+			return this.PackStringAsyncCore( value, Encoding.UTF8, cancellationToken );
+		}
+
+		private Task PackRawAsyncCore( IEnumerable<char> value, CancellationToken cancellationToken )
+		{
+#if !NETSTANDARD1_1
+			var asString = value as string;
+			if ( asString == null )
+			{
+				asString = new String( value.ToArray() );
+			}
+#else
+			var asString = new String( value.ToArray() );
+#endif // !NETSTANDARD1_1
+
+			return this.PackStringAsyncCore( asString, Encoding.UTF8, cancellationToken );
 		}
 
 #endif // FEATURE_TAP
@@ -3180,7 +3237,7 @@ namespace MsgPack
 		#region -- Ext --
 
 		/// <summary>
-		/// Packs an extended type value.
+		///		Packs an extended type value.
 		/// </summary>
 		/// <param name="typeCode">A type code of the extended type value.</param>
 		/// <param name="body">A binary value portion of the extended type value.</param>
@@ -3195,10 +3252,15 @@ namespace MsgPack
 				ThrowArgumentNullException( "body" );
 			}
 
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
+			{
+				ThrowExtTypeIsProhibitedException();
+			}
+
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			this.PrivatePackExtendedTypeValueCore( typeCode, body );
+			this.PackExtendedTypeValueCore( typeCode, body );
 			return this;
 		}
 
@@ -3217,17 +3279,22 @@ namespace MsgPack
 				ThrowMissingBodyOfExtTypeValueException( "mpeto" );
 			}
 
-			this.PrivatePackExtendedTypeValueCore( mpeto.TypeCode, mpeto.Body );
-			return this;
-		}
-
-		private void PrivatePackExtendedTypeValueCore( byte typeCode, byte[] body )
-		{
 			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
 			{
 				ThrowExtTypeIsProhibitedException();
 			}
 
+			this.PackExtendedTypeValueCore( mpeto.TypeCode, mpeto.Body );
+			return this;
+		}
+
+		/// <summary>
+		///		Packs an extended type value.
+		/// </summary>
+		/// <param name="typeCode">A type code of the extended type value.</param>
+		/// <param name="body">A binary value portion of the extended type value.</param>
+		protected virtual void PackExtendedTypeValueCore( byte typeCode, byte[] body )
+		{
 			switch ( body.Length )
 			{
 				case 1:
@@ -3290,7 +3357,7 @@ namespace MsgPack
 
 #if FEATURE_TAP
 		/// <summary>
-		/// Packs an extended type value asynchronously.
+		///		Packs an extended type value asynchronously.
 		/// </summary>
 		/// <param name="typeCode">A type code of the extended type value.</param>
 		/// <param name="body">A binary value portion of the extended type value.</param>
@@ -3317,7 +3384,7 @@ namespace MsgPack
 		}
 
 		/// <summary>
-		/// Packs an extended type value asynchronously.
+		///		Packs an extended type value asynchronously.
 		/// </summary>
 		/// <param name="typeCode">A type code of the extended type value.</param>
 		/// <param name="body">A binary value portion of the extended type value.</param>
@@ -3333,10 +3400,15 @@ namespace MsgPack
 				ThrowArgumentNullException( "body" );
 			}
 
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
+			{
+				ThrowExtTypeIsProhibitedException();
+			}
+
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
-			return this.PrivatePackExtendedTypeValueAsyncCore( typeCode, body, cancellationToken );
+			return this.PackExtendedTypeValueAsyncCore( typeCode, body, cancellationToken );
 		}
 
 		/// <summary>
@@ -3355,16 +3427,22 @@ namespace MsgPack
 				ThrowMissingBodyOfExtTypeValueException( "mpeto" );
 			}
 
-			return this.PrivatePackExtendedTypeValueAsyncCore( mpeto.TypeCode, mpeto.Body, cancellationToken );
-		}
-
-		private async Task PrivatePackExtendedTypeValueAsyncCore( byte typeCode, byte[] body, CancellationToken cancellationToken )
-		{
 			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
 			{
 				ThrowExtTypeIsProhibitedException();
 			}
 
+			return this.PackExtendedTypeValueAsyncCore( mpeto.TypeCode, mpeto.Body, cancellationToken );
+		}
+
+		/// <summary>
+		///		Packs an extended type value asynchronously.
+		/// </summary>
+		/// <param name="typeCode">A type code of the extended type value.</param>
+		/// <param name="body">A binary value portion of the extended type value.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		protected virtual async Task PackExtendedTypeValueAsyncCore( byte typeCode, byte[] body, CancellationToken cancellationToken )
+		{
 			switch ( body.Length )
 			{
 				case 1:

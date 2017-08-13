@@ -1189,7 +1189,7 @@ namespace MsgPack.Serialization
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 #else
-				Assert.Inconclusive( ".NET 3.5 does not support dynamic." );
+				Assert.Ignore( ".NET 3.5 does not support dynamic." );
 #endif // !NETFX_35 && !AOT && !SILVERLIGHT
 				return;
 			}

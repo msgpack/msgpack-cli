@@ -30,7 +30,10 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Security;
+#if SILVERLIGHT
 using System.Web.UI;
+#endif // SILVERLIGHT
+
 using NUnit.Compatibility;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;

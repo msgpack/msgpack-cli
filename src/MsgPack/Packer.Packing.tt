@@ -131,14 +131,14 @@ for ( var bits = 16; bits < 128; bits *= 2 )
 					if ( !isAsync )
 					{
 #>
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 <#
 					}
 					else
 					{
 #>
-			return this.PrivatePackAsyncCore( value, cancellationToken );
+			return this.PackAsyncCore( value, cancellationToken );
 <#
 					}
 				}
@@ -148,7 +148,27 @@ for ( var bits = 16; bits < 128; bits *= 2 )
 <#
 			} // w/ | w/o cancel
 #>
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= Async( isAsync ) #>Core( <#= typeName #> value<#= Parameter( isAsync ) #> )
+		/// <summary>
+		///		Packs <see cref="<#= typeName #>"/> value to current stream<#= AsyncSummarySuffix( isAsync ) #>.
+		/// </summary>
+		/// <param name="value"><see cref="<#= typeName #>"/> value.</param>
+<#
+				if ( isAsync )
+				{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+<#
+				}
+
+				if ( !isSigned )
+				{
+#>
+		[CLSCompliant( false )]
+<#
+				}
+#>
+		protected virtual <#= AsyncReturn( isAsync ) #> Pack<#= Async( isAsync ) #>Core( <#= typeName #> value<#= Parameter( isAsync ) #> )
 		{
 			if ( <#= Await( isAsync, "this.TryPackTiny" + ( isSigned ? "Signed" : "Unsigned" ) + "Integer" +  Async( isAsync ) + "( value" + LastArgument( isAsync ) + " )" ) #> )
 			{
@@ -338,14 +358,14 @@ foreach ( var isAsync in new [] { false, true } )
 			if ( !isAsync )
 			{
 #>
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 <#
 			}
 			else
 			{
 #>
-			return this.PrivatePackAsyncCore( value<#= LastArgument( isAsync ) #> );
+			return this.PackAsyncCore( value<#= LastArgument( isAsync ) #> );
 <#
 			}
 		}
@@ -356,7 +376,20 @@ foreach ( var isAsync in new [] { false, true } )
 	} // w/ | w/o cancel
 #>
 
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= Async( isAsync ) #>Core( float value<#= Parameter( isAsync ) #> )
+		/// <summary>
+		///		Packs <see cref="Single"/> value to current stream<#= AsyncSummarySuffix( isAsync ) #>.
+		/// </summary>
+		/// <param name="value"><see cref="Single"/> value.</param>
+<#
+		if ( isAsync )
+		{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+<#
+		}
+#>
+		protected virtual <#= AsyncReturn( isAsync ) #> Pack<#= Async( isAsync ) #>Core( float value<#= Parameter( isAsync ) #> )
 		{
 			<#= Await( isAsync, "this.WriteByte" + Async( isAsync ) + "( MessagePackCode.Real32" + LastArgument( isAsync ) + " )" ) #>;
 
@@ -448,14 +481,14 @@ foreach ( var isAsync in new [] { false, true } )
 			if ( !isAsync )
 			{
 #>
-			this.PrivatePackCore( value );
+			this.PackCore( value );
 			return this;
 <#
 			}
 			else
 			{
 #>
-			return this.PrivatePackAsyncCore( value<#= LastArgument( isAsync ) #> );
+			return this.PackAsyncCore( value<#= LastArgument( isAsync ) #> );
 <#
 			}
 		}
@@ -466,7 +499,20 @@ foreach ( var isAsync in new [] { false, true } )
 	} // w/ | w/o cancel
 #>
 
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= Async( isAsync ) #>Core( double value<#= Parameter( isAsync ) #> )
+		/// <summary>
+		///		Packs <see cref="Double"/> value to current stream<#= AsyncSummarySuffix( isAsync ) #>.
+		/// </summary>
+		/// <param name="value"><see cref="Double"/> value.</param>
+<#
+		if ( isAsync )
+		{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+<#
+		}
+#>
+		protected virtual <#= AsyncReturn( isAsync ) #> Pack<#= Async( isAsync ) #>Core( double value<#= Parameter( isAsync ) #> )
 		{
 			<#= Await( isAsync, "this.WriteByte" + Async( isAsync ) + "( MessagePackCode.Real64" + LastArgument( isAsync ) + " )" ) #>;
 			unchecked
@@ -546,6 +592,14 @@ foreach ( var item in
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
 		public <#= ReturnThis( isAsync ) #> Pack<#= item.Type #>Header<#= Async( isAsync ) #>( int count<#= Parameter( withCancel ) #> )
 		{
+			if ( count < 0 )
+			{
+				ThrowCannotBeNegativeException( "count" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
+
 <#
 			if ( !isAsync )
 			{
@@ -581,7 +635,7 @@ foreach ( var item in
 <#
 			}
 #>
-		protected <#= Return( isAsync ) #> Pack<#= item.Type #>Header<#= Async( isAsync ) #>Core( int count<#= Parameter( withCancel ) #> )
+		protected <#= ( !isAsync || withCancel ) ? "virtual " : String.Empty #><#= !isAsync ? "void" : withCancel ? "async Task" : "Task" #> Pack<#= item.Type #>Header<#= Async( isAsync ) #>Core( int count<#= Parameter( withCancel ) #> )
 		{
 <#
 			if ( isAsync && !withCancel )
@@ -593,25 +647,6 @@ foreach ( var item in
 			else
 			{
 #>
-			if ( count < 0 )
-			{
-				ThrowCannotBeNegativeException( "count" );
-			}
-
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			<#= isAsync ? "return " : String.Empty #>this.PrivatePack<#= item.Type #>Header<#= Async( isAsync ) #>Core( count<#= LastArgument( isAsync ) #> );
-<#
-			}
-#>
-		}
-
-<#
-		} // w/ | w/o cancel
-#>
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= item.Type #>Header<#= Async( isAsync ) #>Core( int count<#= Parameter( isAsync ) #> )
-		{
 #if !UNITY
 			Contract.Assert( 0 <= count, "0 <= count" );
 #endif // !UNITY
@@ -639,12 +674,17 @@ foreach ( var item in
 #>
 				}
 			}
-		}
 <#
+			}
+#>
+		}
+
+<#
+		} // w/ | w/o cancel
+
 		if ( isAsync )
 		{
 #>
-
 #endif // FEATURE_TAP
 <#
 		}
@@ -718,18 +758,50 @@ foreach ( var item in stringBinaryItems )
 #>
 		public <#= ReturnThis( isAsync ) #> Pack<#= item.Type #>Header<#= Async( isAsync ) #>( int length<#= Parameter( withCancel ) #> )
 		{
+			if ( length < 0 )
+			{
+				ThrowCannotBeNegativeException( "length" );
+			}
+
+			Contract.EndContractBlock();
+			this.VerifyNotDisposed();
 <#
+			if ( item.Type == "Binary" )
+			{
+#>
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
+			{
+				// In compat mode, use raw(str) header.
+<#
+				if ( !isAsync )
+				{
+#>
+				this.PackStringHeaderCore( length );
+				return this;
+<#
+				}
+				else
+				{
+#>
+				return this.PackStringHeaderAsyncCore( length<#= LastArgument( withCancel ) #> );
+<#
+				} // if !isAsync
+#>
+			}
+<#
+			} // if item.Type == "Binary"
+
 			if ( !isAsync )
 			{
 #>
-			this.Pack<#= item.Type #>HeaderCore( length );
+			this.Pack<#= item.Type == "Raw" ? "String" : item.Type #>HeaderCore( length );
 			return this;
 <#
 			}
 			else
 			{
 #>
-			return this.Pack<#= item.Type #>HeaderAsyncCore( length<#= LastArgument( withCancel ) #> );
+			return this.Pack<#= item.Type == "Raw" ? "String" : item.Type #>HeaderAsyncCore( length<#= LastArgument( withCancel ) #> );
 <#
 			}
 #>
@@ -799,7 +871,7 @@ foreach ( var item in stringBinaryItems )
 			else
 			{
 #>
-		protected <#= Return( isAsync ) #> Pack<#= item.Type #>Header<#= Async( isAsync ) #>Core( int length<#= Parameter( withCancel ) #> )
+		protected <#= ( !isAsync || withCancel ) ? "virtual " : String.Empty #><#= !isAsync ? "void" : withCancel ? "async Task" : "Task" #> Pack<#= item.Type #>Header<#= Async( isAsync ) #>Core( int length<#= Parameter( withCancel ) #> )
 		{
 <#
 				if ( isAsync && !withCancel )
@@ -810,17 +882,19 @@ foreach ( var item in stringBinaryItems )
 				}
 				else
 				{
+					if ( item.Type == "String" )
+					{
 #>
-			if ( length < 0 )
+			if ( length < 32 )
 			{
-				ThrowCannotBeNegativeException( "length" );
+				<#= Await( isAsync, "this.WriteByte" + Async( isAsync ) + "( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) )" + LastArgument( isAsync ) + " )" ) #>;
+				return;
 			}
 
-			Contract.EndContractBlock();
-			this.VerifyNotDisposed();
-
-			<#= isAsync ? "return " : String.Empty #>this.PrivatePackRawHeader<#= Async( isAsync ) #>Core( length, <#= ( item.Type == "String" ).ToString().ToLowerInvariant() #><#= LastArgument( isAsync ) #> );
 <#
+					}
+
+					WritePackBinary( isString: item.Type == "String", isAsync: isAsync );
 				}
 #>
 		}
@@ -841,54 +915,6 @@ foreach ( var item in stringBinaryItems )
 	} // sync | async
 }
 // End String/Binary header core
-
-foreach ( var isAsync in new [] { false, true } )
-{
-	if ( isAsync )
-	{
-#>
-#if FEATURE_TAP
-
-<#
-	}
-#>
-		private <#= AsyncReturn( isAsync ) #> PrivatePackRawHeader<#= Async( isAsync ) #>Core( int length, bool isString<#= Parameter( isAsync ) #> )
-		{
-			Contract.Assert( 0 <= length, "0 <= length" );
-
-			if ( isString || ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
-			{
-				if ( length < 32 )
-				{
-					<#= Await( isAsync, "this.WriteByte" + Async( isAsync ) + "( unchecked( ( byte )( MessagePackCode.MinimumFixedRaw | length ) )" + LastArgument( isAsync ) + " )" ) #>;
-					return;
-				}
-
-<#
-	WritePackBinary( isString: true, isAsync: isAsync );
-#>
-			}
-			else
-			{
-				// !isString && compat options is not set.
-
-<#
-	WritePackBinary( isString: false, isAsync: isAsync );
-#>
-			}
-		}
-<#
-	if ( isAsync )
-	{
-#>
-
-#endif // FEATURE_TAP
-<#
-	}
-#>
-
-<#
-} // sync | async
 #>
 		#endregion -- Collection Header --
 
@@ -918,9 +944,9 @@ foreach ( var item in
 		foreach ( var parameter in
 			new []
 			{
-				new { Type = "IEnumerable<byte>",	AsType = "ICollection<byte>",	AsName = "asCollection",	Label = "byte sequence",	Description = "Source bytes its size is not known." },
-				new { Type = "IList<byte>",			AsType = "byte[]",				AsName = "asByteArray",		Label = "byte collection",	Description = "Source bytes its size is known." },
-				new { Type = "byte[]",				AsType = default( string ),		AsName = default( string ),	Label = "byte array",		Description = "A byte array." }
+				new { Type = "IEnumerable<byte>",	Label = "byte sequence",	Description = "Source bytes its size is not known." },
+				new { Type = "IList<byte>",			Label = "byte collection",	Description = "Source bytes its size is known." },
+				new { Type = "byte[]",				Label = "byte array",		Description = "A byte array." }
 			}
 		)
 		{
@@ -970,26 +996,44 @@ foreach ( var item in
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
+			if ( value == null )
+			{
+				<#= isAsync ? "return " : String.Empty #>this.PrivatePackNull<#= Async( isAsync ) #>Core(<#= Argument( isAsync )#>);
 <#
-					if ( parameter.AsType != null )
+					if ( !isAsync )
 					{
 #>
-			var <#= parameter.AsName #> = value as <#= parameter.AsType #>;
-			if ( <#= parameter.AsName #> == null )
-			{
-				<#= isAsync ? "return " : String.Empty #>this.PrivatePack<#= item.Type #><#= Async( isAsync ) #>( value<#= LastArgument( isAsync ) #> );
-			}
-			else
-			{
-				<#= isAsync ? "return " : String.Empty #>this.PrivatePack<#= item.Type #><#= Async( isAsync ) #>( <#= parameter.AsName #><#= LastArgument( isAsync ) #> );
+				return this;
+<#
+					}
+#>
 			}
 
 <#
+					if ( parameter.Type == "byte[]" )
+					{
+						WriteCallPackBinaryCore( item.Type, "value", isAsync );
 					}
 					else
 					{
 #>
-			<#= isAsync ? "return " : String.Empty #>this.PrivatePack<#= item.Type #><#= Async( isAsync ) #>( value<#= LastArgument( isAsync ) #> );
+			var asArray = value as byte[];
+			if ( asArray != null )
+			{
+<#
+						PushIndent( 1 );
+						WriteCallPackBinaryCore( item.Type, "asArray", isAsync );
+						PopIndent();
+#>
+			}
+			else
+			{
+<#
+						PushIndent( 1 );
+						WriteCallPackBinaryCore( item.Type, "value.ToArray()", isAsync );
+						PopIndent();
+#>
+			}
 <#
 					}
 
@@ -1007,85 +1051,24 @@ foreach ( var item in
 			} // w/ | w/o cancel
 		} // end parameter foreach
 #>
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= item.Type #><#= Async( isAsync ) #>( ICollection<byte> value<#= Parameter( isAsync ) #> )
-		{
-			if ( value == null )
+
+		/// <summary>
+		///		Packs specified byte array(<#= item.TypeNote #> to current stream<#= AsyncSummarySuffix( isAsync ) #>.
+		/// </summary>
+		/// <param name="value">A byte array.</param>
+<#
+			if ( isAsync )
 			{
-				<#= Await( isAsync, "this.PrivatePackNull" + Async( isAsync ) + "Core(" + Argument( isAsync ) + ")" ) #>;
-				return;
-			}
-
-			<#= Await( isAsync, "this.PrivatePackRawHeader" + Async( isAsync ) + "Core( value.Count, /*isString:*/ " + ( item.Type == "Raw" ).ToString().ToLowerInvariant() + LastArgument( isAsync ) + " )" ) #>;
-			<#= Await( isAsync, "this.WriteBytes" + Async( isAsync ) + "( value" + LastArgument( isAsync ) + " )" ) #>;
-		}
-
-<#
-		foreach ( var type in 
-			new [] 
-			{ 
-				new { Name = "byte[]",				ExtraArguments = ", false" },
-				new { Name = "IEnumerable<byte>",	ExtraArguments = String.Empty }
-			}
-		)
-		{
 #>
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= item.Type #><#= Async( isAsync ) #>( <#= type.Name #> value<#= Parameter( isAsync ) #> )
-		{
-			if ( value == null )
-			{
-				<#= Await( isAsync, "this.PrivatePackNull" + Async( isAsync ) + "Core(" + Argument( isAsync ) + ")" ) #>;
-				return;
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+<#
 			}
-
-			<#= Await( isAsync, "this.PrivatePack" + item.Type + Async( isAsync ) + "Core( value" + type.ExtraArguments + LastArgument( isAsync ) + " )" ) #>;
-		}
-
-<#
-		} // end foreach
 #>
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= item.Type #><#= Async( isAsync ) #>Core( byte[] value, bool isImmutable<#= Parameter( isAsync ) #> )
+		protected virtual <#= AsyncReturn( isAsync ) #> Pack<#= item.Type #><#= Async( isAsync ) #>Core( byte[] value<#= Parameter( isAsync ) #> )
 		{
-			<#= Await( isAsync, "this.PrivatePackRawHeader" + Async( isAsync ) + "Core( value.Length, /*isString:*/ " + ( item.Type == "Raw" ).ToString().ToLowerInvariant() + LastArgument( isAsync ) + " )" ) #>;
-			<#= Await( isAsync, "this.WriteBytes" + Async( isAsync ) + "( value, isImmutable" + LastArgument( isAsync ) + " )" ) #>;
-		}
-
-		private <#= AsyncReturn( isAsync ) #> PrivatePack<#= item.Type #><#= Async( isAsync ) #>Core( IEnumerable<byte> value<#= Parameter( isAsync ) #> )
-		{
-			if ( !this.CanSeek )
-			{
-				// buffered
-				<#= Await( isAsync, "this.PrivatePack" + item.Type + Async( isAsync ) + "Core( value.ToArray(), true" + LastArgument( isAsync ) + " )" ) #>;
-			}
-			else
-			{
-				// Header
-<#
-		if ( item.Type == "Raw" )
-		{
-#>
-				<#= Await( isAsync, "this.WriteByte" + Async( isAsync ) + "( MessagePackCode.Raw32" + LastArgument( isAsync )  + " )" ) #>;
-<#
-		}
-		else
-		{
-#>
-				// Use biggest data size because actual binary length is not known.
-				if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) != 0 )
-				{
-					<#= Await( isAsync, "this.WriteByte" + Async( isAsync ) + "( MessagePackCode.Raw32" + LastArgument( isAsync ) + " )" ) #>;
-				}
-				else
-				{
-					<#= Await( isAsync, "this.WriteByte" + Async( isAsync ) + "( MessagePackCode.Bin32" + LastArgument( isAsync ) + " )" ) #>;
-				}
-
-<#
-		}
-
-		var lamdaParameter = isAsync ? ", cts" : String.Empty;
-#>
-				<#= Await( isAsync, "this.StreamWrite" + Async( isAsync ) + "( value, ( items, _" + lamdaParameter + " ) => this.PrivatePackRawBody" + Async( isAsync )  + "Core( items" + lamdaParameter + " ), null" + LastArgument( isAsync ) + " )" ) #>;
-			}
+			<#= Await( isAsync, "this.Pack" + ( item.Type == "Raw" ? "String" : item.Type ) + "Header" + Async( isAsync ) + "Core( value.Length" + LastArgument( isAsync ) + " )" ) #>;
+			<#= Await( isAsync, "this.WriteBytes" + Async( isAsync ) + "( value, false" + LastArgument( isAsync ) + " )" ) #>;
 		}
 <#
 		if ( isAsync )
@@ -1173,21 +1156,74 @@ foreach ( var item in stringItems )
 				}
 #>
 		/// <exception cref="ObjectDisposedException">This instance has been disposed.</exception>
-		public <#=  ReturnThis( isAsync ) #> PackString<#= Async( isAsync ) #>( <#= item.Type #> value<#= withEncoding ? ", Encoding encoding" : String.Empty #><#= Parameter( withCancel ) #> )
+		public <#= ReturnThis( isAsync ) #> PackString<#= Async( isAsync ) #>( <#= item.Type #> value<#= withEncoding ? ", Encoding encoding" : String.Empty #><#= Parameter( withCancel ) #> )
 		{
 <#
 				if ( !isAsync )
 				{
+					if ( withEncoding )
+					{
 #>
-			this.PackStringCore( value, <#= withEncoding ? "encoding" : "Encoding.UTF8" #> );
+			this.PackStringCore( value, encoding );
+<#
+					}
+					else
+					{
+#>
+
+			if ( value == null )
+			{
+				<#= isAsync ? "return " : String.Empty #>this.PrivatePackNull<#= Async( isAsync ) #>Core(<#= Argument( isAsync )#>);
+<#
+					if ( !isAsync )
+					{
+#>
+				return this;
+<#
+					}
+#>
+			}
+
+			this.PackRawCore( value );
+<#
+					}
+#>
 			return this;
+<#
+				}
+				else if ( !withCancel )
+				{
+#>
+			return this.PackStringAsync( value<#= withEncoding ? ", encoding" : String.Empty #>, CancellationToken.None );
 <#
 				}
 				else
 				{
+					if ( withEncoding )
+					{
 #>
-			return this.PackStringAsyncCore( value, <#= withEncoding ? "encoding" : "Encoding.UTF8" #><#= LastArgument( withCancel ) #> );
+			return this.PackStringAsyncCore( value, encoding<#= LastArgument( withCancel ) #> );
 <#
+					}
+					else
+					{
+#>
+			if ( value == null )
+			{
+				<#= isAsync ? "return " : String.Empty #>this.PrivatePackNull<#= Async( isAsync ) #>Core(<#= Argument( isAsync )#>);
+<#
+					if ( !isAsync )
+					{
+#>
+				return this;
+<#
+					}
+#>
+			}
+
+			return this.PackRawAsyncCore( value<#= LastArgument( withCancel ) #> );
+<#
+					}
 				}
 #>
 		}
@@ -1216,7 +1252,7 @@ foreach ( var item in stringItems )
 			}
 #>
 		/// <exception cref="ArgumentNullException"><paramref name="encoding" /> is <c>null</c>.</exception>
-		protected <#= ( !isAsync || withCancel ) ? "virtual " : String.Empty #><#= Return( isAsync ) #> PackString<#= Async( isAsync ) #>Core( <#= item.Type #> value, Encoding encoding<#= Parameter( withCancel ) #> )
+		protected <#= ( !isAsync || withCancel ) ? "virtual " : String.Empty #><#= AsyncReturn( isAsync, withCancel ) #> PackString<#= Async( isAsync ) #>Core( <#= item.Type #> value, Encoding encoding<#= Parameter( withCancel ) #> )
 		{
 <#
 			if ( isAsync && !withCancel )
@@ -1236,7 +1272,14 @@ foreach ( var item in stringItems )
 			Contract.EndContractBlock();
 			this.VerifyNotDisposed();
 
-			<#= isAsync ? "return " : String.Empty #>this.PrivatePackString<#= Async( isAsync ) #>( value, encoding<#= LastArgument( isAsync ) #> );
+			if ( value == null )
+			{
+				<#= Await( isAsync, "this.PrivatePackNull" + Async( isAsync ) + "Core(" + Argument( isAsync ) + ")" ) #>;
+				return;
+			}
+
+			var encoded = encoding.GetBytes( value<#= item.Type != "string" ? ".ToArray()" : String.Empty #> );
+			<#= Await( isAsync, "this.PackRaw" + Async( isAsync ) + "Core( encoded" + LastArgument( isAsync ) + " )" ) #>;
 <#
 			}
 #>
@@ -1244,31 +1287,6 @@ foreach ( var item in stringItems )
 
 <#
 		} // w/ | w/o cancel
-#>
-		private <#= AsyncReturn( isAsync ) #> PrivatePackString<#= Async( isAsync ) #>( <#= item.Type #> value, Encoding encoding<#= Parameter( isAsync ) #> )
-		{
-			Contract.Assert( encoding != null, "encoding != null" );
-
-			if ( value == null )
-			{
-				<#= Await( isAsync, "this.PrivatePackNull" + Async( isAsync ) + "Core(" + Argument( isAsync ) + ")" ) #>;
-				return;
-			}
-
-			<#= Await( isAsync, "this.PrivatePackString" + Async( isAsync ) + "Core( value, encoding" + LastArgument( isAsync ) + " )" ) #>;
-		}
-
-		private <#= isAsync ? "async Task" : "void" #> PrivatePackString<#= Async( isAsync ) #>Core( <#= item.Type #> value, Encoding encoding<#= Parameter( isAsync ) #> )
-		{
-			Contract.Assert( value != null, "value != null" );
-			Contract.Assert( encoding != null, "encoding != null" );
-
-			// TODO: streaming encoding
-			var encoded = encoding.GetBytes( value<#= item.Type != "string" ? ".ToArray()" : String.Empty #> );
-			<#= Await( isAsync, "this.PrivatePackRawHeader" + Async( isAsync ) + "Core( encoded.Length, /*isString:*/ true" + LastArgument( isAsync ) + " )" ) #>;
-			<#= Await( isAsync, "this.WriteBytes" + Async( isAsync ) + "( encoded, true" + LastArgument( isAsync ) + " )" ) #>;
-		}
-<#
 
 		if ( isAsync )
 		{
@@ -1281,7 +1299,60 @@ foreach ( var item in stringItems )
 
 <#
 	} // sync | async
-}
+} // foreach item
+
+foreach ( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+
+<#
+	}
+#>
+		/// <summary>
+		///		Packs specified <see cref="String" /> to current stream with UTF-8 <see cref="Encoding"/><#= AsyncSummarySuffix( isAsync ) #>.
+		/// </summary>
+		/// <param name="value">A string.</param>
+<#
+			if ( isAsync )
+			{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+		/// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+<#
+			}
+#>
+		protected virtual <#= Return( isAsync ) #> PackRaw<#= Async( isAsync ) #>Core( string value<#= Parameter( isAsync ) #> )
+		{
+			<#= isAsync ? "return " : String.Empty #>this.PackString<#= Async( isAsync ) #>Core( value, Encoding.UTF8<#= LastArgument( isAsync ) #> );
+		}
+
+		private <#= Return( isAsync ) #> PackRaw<#= Async( isAsync ) #>Core( IEnumerable<char> value<#= Parameter( isAsync ) #> )
+		{
+#if !NETSTANDARD1_1
+			var asString = value as string;
+			if ( asString == null )
+			{
+				asString = new String( value.ToArray() );
+			}
+#else
+			var asString = new String( value.ToArray() );
+#endif // !NETSTANDARD1_1
+
+			<#= isAsync ? "return " : String.Empty #>this.PackString<#= Async( isAsync ) #>Core( asString, Encoding.UTF8<#= LastArgument( isAsync ) #> );
+		}
+
+<#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+
+<#
+	}
+} // foreach isAsync
 // End string w/ header
 #>
 		#endregion -- String with Header  --
@@ -1651,7 +1722,7 @@ foreach ( var isAsync in new [] { false, true } )
 	{
 #>
 		/// <summary>
-		/// Packs an extended type value<#= AsyncSummarySuffix( isAsync ) #>.
+		///		Packs an extended type value<#= AsyncSummarySuffix( isAsync ) #>.
 		/// </summary>
 		/// <param name="typeCode">A type code of the extended type value.</param>
 		/// <param name="body">A binary value portion of the extended type value.</param>
@@ -1695,6 +1766,11 @@ foreach ( var isAsync in new [] { false, true } )
 				ThrowArgumentNullException( "body" );
 			}
 
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
+			{
+				ThrowExtTypeIsProhibitedException();
+			}
+
 			this.VerifyNotDisposed();
 			Contract.EndContractBlock();
 
@@ -1702,14 +1778,14 @@ foreach ( var isAsync in new [] { false, true } )
 			if ( !isAsync )
 			{
 #>
-			this.PrivatePackExtendedTypeValueCore( typeCode, body );
+			this.PackExtendedTypeValueCore( typeCode, body );
 			return this;
 <#
 			}
 			else
 			{
 #>
-			return this.PrivatePackExtendedTypeValueAsyncCore( typeCode, body<#= LastArgument( isAsync ) #> );
+			return this.PackExtendedTypeValueAsyncCore( typeCode, body<#= LastArgument( isAsync ) #> );
 <#
 			}
 		}
@@ -1760,18 +1836,23 @@ foreach ( var isAsync in new [] { false, true } )
 				ThrowMissingBodyOfExtTypeValueException( "mpeto" );
 			}
 
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
+			{
+				ThrowExtTypeIsProhibitedException();
+			}
+
 <#
 			if ( !isAsync )
 			{
 #>
-			this.PrivatePackExtendedTypeValueCore( mpeto.TypeCode, mpeto.Body );
+			this.PackExtendedTypeValueCore( mpeto.TypeCode, mpeto.Body );
 			return this;
 <#
 			}
 			else
 			{
 #>
-			return this.PrivatePackExtendedTypeValueAsyncCore( mpeto.TypeCode, mpeto.Body<#= LastArgument( isAsync ) #> );
+			return this.PackExtendedTypeValueAsyncCore( mpeto.TypeCode, mpeto.Body<#= LastArgument( isAsync ) #> );
 <#
 			}
 		}
@@ -1781,13 +1862,21 @@ foreach ( var isAsync in new [] { false, true } )
 <#
 	} // w/ | w/o cancel
 #>
-		private <#= AsyncReturn( isAsync ) #> PrivatePackExtendedTypeValue<#= Async( isAsync ) #>Core( byte typeCode, byte[] body<#= Parameter( isAsync ) #> )
+		/// <summary>
+		///		Packs an extended type value<#= AsyncSummarySuffix( isAsync ) #>.
+		/// </summary>
+		/// <param name="typeCode">A type code of the extended type value.</param>
+		/// <param name="body">A binary value portion of the extended type value.</param>
+<#
+	if ( isAsync )
+	{
+#>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.</param>
+<#
+	}
+#>
+		protected virtual <#= AsyncReturn( isAsync ) #> PackExtendedTypeValue<#= Async( isAsync ) #>Core( byte typeCode, byte[] body<#= Parameter( isAsync ) #> )
 		{
-			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) != 0 )
-			{
-				ThrowExtTypeIsProhibitedException();
-			}
-
 			switch ( body.Length )
 			{
 <#
@@ -1983,6 +2072,30 @@ void WritePackBinary( bool isString, bool isAsync )
 					}
 				}
 <#+
+}
+
+void WriteCallPackBinaryCore( string itemType, string variable, bool isAsync )
+{
+	if ( itemType == "Binary" )
+	{
+#>
+			if ( ( this._compatibilityOptions & PackerCompatibilityOptions.PackBinaryAsRaw ) == 0 )
+			{
+				<#= isAsync ? "return " : String.Empty #>this.PackBinary<#= Async( isAsync ) #>Core( <#= variable #><#= LastArgument( isAsync ) #> );
+			}
+			else
+			{
+				<#= isAsync ? "return " : String.Empty #>this.PackRaw<#= Async( isAsync ) #>Core( <#= variable #><#= LastArgument( isAsync ) #> );
+			}
+
+<#+
+	}
+	else
+	{
+#>
+			<#= isAsync ? "return " : String.Empty #>this.Pack<#= itemType #><#= Async( isAsync ) #>Core( <#= variable #><#= LastArgument( isAsync ) #> );
+<#+
+	}
 }
 
 private static string Async( bool isAsync )

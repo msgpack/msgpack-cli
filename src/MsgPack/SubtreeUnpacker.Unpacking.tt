@@ -32,8 +32,8 @@ using System;
 
 namespace MsgPack
 {
-	// This file was generated from SubtreeUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit SubtreeUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from SubtreeUnpacker.Unpacking.tt and Core.ttinclude T4Template.
+	// Do not modify this file. Edit SubtreeUnpacker.Unpacking.tt and Core.ttinclude instead.
 
 	partial class SubtreeUnpacker
 	{
@@ -140,23 +140,23 @@ if ( this._itemsCount.Count == 0 )
 	return false;
 }
 
-if ( !this._root.ReadSubtree<#= typeName #>( <#= isDeep #>out result ) )
+if ( !this._root.Read<#= typeName #>( <#= isDeep #>out result ) )
 {
 	return false;
 }
 
-switch ( this._root.InternalCollectionType )
+switch ( this._internalRoot.CollectionType )
 {
-	case ItemsUnpacker.CollectionType.Array:
+	case CollectionType.Array:
 	{
-		this._itemsCount.Push( this._root.InternalItemsCount );
+		this._itemsCount.Push( this._root.ItemsCount );
 		this._unpacked.Push( 0 );
 		this._isMap.Push( false );
 		break;
 	}
-	case ItemsUnpacker.CollectionType.Map:
+	case CollectionType.Map:
 	{
-		this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+		this._itemsCount.Push( this._root.ItemsCount * 2 );
 		this._unpacked.Push( 0 );
 		this._isMap.Push( true );
 		break;

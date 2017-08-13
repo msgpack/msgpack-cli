@@ -79,7 +79,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -87,7 +87,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_FixExt1_AndBinaryLengthIs1TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xD4, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -158,7 +158,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -166,7 +166,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_FixExt2_AndBinaryLengthIs2TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xD5, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 1 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -237,7 +237,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -245,7 +245,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_FixExt4_AndBinaryLengthIs4TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xD6, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 3 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -316,7 +316,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -324,7 +324,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_FixExt8_AndBinaryLengthIs8TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xD7, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 7 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -395,7 +395,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -403,7 +403,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_FixExt16_AndBinaryLengthIs16TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xD8, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 15 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -532,7 +532,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -540,7 +540,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext8_AndBinaryLengthIs1TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC7, 1, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -611,7 +611,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -619,7 +619,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext8_AndBinaryLengthIs17TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC7, 17, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -690,7 +690,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -698,7 +698,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext8_AndBinaryLengthIs255TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC7, 0xFF, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -827,7 +827,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -835,7 +835,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext16_AndBinaryLengthIs1TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC8, 0, 1, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -906,7 +906,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -914,7 +914,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext16_AndBinaryLengthIs17TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC8, 0, 17, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -985,7 +985,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -993,7 +993,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext16_AndBinaryLengthIs255TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC8, 0, 0xFF, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1064,7 +1064,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1072,7 +1072,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext16_AndBinaryLengthIs256TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC8, 1, 0, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1143,7 +1143,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1151,7 +1151,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext16_AndBinaryLengthIs65535TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC8, 0xFF, 0xFF, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1280,7 +1280,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1288,7 +1288,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext32_AndBinaryLengthIs1TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC9, 0, 0, 0, 1, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 0 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1359,7 +1359,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1367,7 +1367,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext32_AndBinaryLengthIs17TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC9, 0, 0, 0, 17, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 16 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1438,7 +1438,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1446,7 +1446,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext32_AndBinaryLengthIs255TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC9, 0, 0, 0, 0xFF, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 254 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1517,7 +1517,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1525,7 +1525,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext32_AndBinaryLengthIs256TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC9, 0, 0, 1, 0, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 255 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1596,7 +1596,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1604,7 +1604,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext32_AndBinaryLengthIs65535TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC9, 0, 0, 0xFF, 0xFF, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 65534 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]
@@ -1675,7 +1675,7 @@ namespace MsgPack
 				)
 			)
 			{
-				Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+				Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 			}
 		}
 		
@@ -1683,7 +1683,7 @@ namespace MsgPack
 		public void TestUnpackMessagePackExtendedTypeObject_Ext32_AndBinaryLengthIs65536TooShort_Fail_ByteArray()
 		{
 			var buffer = new byte[] { 0xC9, 0, 1, 0, 0, 1 }.Concat( Enumerable.Repeat( ( byte )0xFF, 65535 ) ).ToArray();
-			Assert.Throws<InvalidMessagePackStreamException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
+			Assert.Throws<UnpackException>( () => Unpacking.UnpackExtendedTypeObject( buffer ) );
 		}
 
 		[Test]

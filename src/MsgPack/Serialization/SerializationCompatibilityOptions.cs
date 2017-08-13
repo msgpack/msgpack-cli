@@ -106,7 +106,7 @@ namespace MsgPack.Serialization
 		/// </value>
 		/// <remarks>
 		///		Historically, MessagePack for CLI ignored packability interfaces (<see cref="IPackable"/>, <see cref="IUnpackable"/>, 
-		///		<see cref="IAsyncPackable"/> and <see cref="IAsyncUnpackable"/>) for collection which implements <see cref="IEquatable{T}"/> (except <see cref="String"/> and its kinds).
+		///		<c>IAsyncPackable"</c> and <c>IAsyncUnpackable</c>) for collection which implements <see cref="IEquatable{T}"/> (except <see cref="String"/> and its kinds).
 		///		As of 0.7, the generator respects such interfaces even if the target type is collection.
 		///		Although this behavior is desirable and correct, setting this property <c>true</c> turn out the new behavior for backward compatibility.
 		/// </remarks>

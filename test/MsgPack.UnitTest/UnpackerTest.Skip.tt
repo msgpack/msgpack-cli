@@ -13,7 +13,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -44,13 +44,11 @@ using Is = NUnit.Framework.Is;
 
 namespace MsgPack
 {
-	// This file was generated from UnpackerTest.Skip.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit UnpackerTest.Skip.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from UnpackerTest.Skip.tt T4Template.
+	// Do not modify this file. Edit UnpackerTest.Skip.tt instead.
 
 	// ReSharper disable once InconsistentNaming
-	[TestFixture]
-	[Timeout( 500 )]
-	public partial class UnpackerTest_Skip
+	partial class UnpackerTest
 	{
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -64,12 +62,24 @@ foreach( var isAsync in new [] { false, true } )
 	}
 #>
 		[Test]
-		public <#= AsyncTest( isAsync ) #>_Empty_Null()
+		public <#= Test( isAsync ) #>_Empty_Null()
 		{
-			using ( var stream = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.Null );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					Assert.That( target.Skip<#= isAsync ? "Async" : String.Empty #>()<#= isAsync ? ".Result" : String.Empty #>, Is.Null );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 
@@ -77,7 +87,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_FixNum_1()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 1 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -87,7 +97,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_Scalar_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xD2, 0x1, 0x2, 0x3, 0x4 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -97,7 +107,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_ContinuousScalar_ReportedSeparately()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xD2, 0x1, 0x2, 0x3, 0x4, 0x1 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 5L ) );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 1L ) );
@@ -108,7 +118,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_RawEmpty_0()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA0 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -118,7 +128,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_FixRaw_1()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA1, ( byte )'A' } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -128,7 +138,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_Raw_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xDB, 0x0, 0x0, 0x0, 0x1, ( byte )'A' } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -138,7 +148,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_ContinuousRaw_ReportedSeparately()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xA2, ( byte )'A', ( byte )'B', 0xA2, ( byte )'C', ( byte )'D' } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 3L ) );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 3L ) );
@@ -150,7 +160,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_FixArrayEmpty_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x90 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -160,7 +170,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_FixArrayFixNum_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x1, 0x2 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -170,7 +180,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_ArrayEmpty_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x0 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -179,10 +189,9 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_ArrayScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var stream = new MemoryStream( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDD, 0x0, 0x0, 0x0, 0x2, 0xD2, 0x1, 0x2, 0x3, 0x4, 0xD2, 0x1, 0x2, 0x3, 0x4 } );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -191,7 +200,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_CotinuousArray_ReportsSeparately()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x91, 0x3 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 3L ) );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 2L ) );
@@ -202,7 +211,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_NestedArray_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x91, 0x1, 0x91, 0x1 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -212,7 +221,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_NestedArrayContainsEmpty_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x90, 0x91, 0x1 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -223,7 +232,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_FixMapEmpty_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x80 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -233,7 +242,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_FixMapFixNum_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x1, 0x2, 0x2 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -243,7 +252,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_MapEmpty_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0xDF, 0x0, 0x0, 0x0, 0x0 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -252,10 +261,9 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_MapScalar_AsIs()
 		{
-			using ( var stream = new MemoryStream() )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var stream = new MemoryStream( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
-				stream.Feed( new byte[] { 0xDE, 0x0, 0x2, 0xD0, 0x1, 0xD0, 0x1, 0xD0, 0x2, 0xD0, 0x2 } );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
 		}
@@ -264,7 +272,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_CotinuousMap_ReportsSeparately()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x1, 0x2, 0x2, 0x81, 0x3, 0x3 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 5L ) );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 3L ) );
@@ -275,7 +283,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_NestedMap_AsIs()
 		{
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x81, 0x2, 0x2, 0x3, 0x81, 0x4, 0x4 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -284,8 +292,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_SubtreeReader_NestedMapContainsEmpty_AsIs()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x80, 0x2, 0x81, 0x3, 0x3 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( stream.Length ) );
 			}
@@ -295,8 +320,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_SubtreeReader_NestedArray_AsIs()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x91, 0x1, 0x91, 0x1 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
@@ -318,8 +360,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_SubtreeReader_NestedArrayContainsEmpty_AsIs()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var stream = new MemoryStream( new byte[] { 0x92, 0x90, 0x91, 0x1 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
@@ -341,8 +400,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_BetweenSubtreeReader_NestedArray_AsIs()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var stream = new MemoryStream( new byte[] { 0x93, 0x91, 0x1, 0x2, 0x91, 0x1 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
@@ -365,8 +441,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_SubtreeReader_NestedMap_AsIs()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x81, 0x2, 0x2, 0x3, 0x81, 0x4, 0x4 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
 				Assert.That( target.IsMapHeader );
@@ -395,8 +488,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_NestedMapContainsEmpty_AsIs()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var stream = new MemoryStream( new byte[] { 0x82, 0x1, 0x80, 0x2, 0x81, 0x3, 0x3 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
 				Assert.That( target.IsMapHeader );
@@ -424,8 +534,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( isAsync ) #>_BetweenSubtreeReader_NestedMap_AsIs()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var stream = new MemoryStream( new byte[] { 0x83, 0x1, 0x81, 0x2, 0x2, 0x3, 0x3, 0x4, 0x81, 0x4, 0x4 } ) )
-			using ( var target = Unpacker.Create( stream, false ) )
+			using ( var target = this.CreateUnpacker( stream ) )
 			{
 				Assert.That( <#= AwaitRead( "target", isAsync ) #>() );
 				Assert.That( <#= AwaitSkip( "target", isAsync ) #>(), Is.EqualTo( 1 ) );
@@ -527,6 +654,16 @@ private static string AsyncTest( bool isAsync )
 			CultureInfo.InvariantCulture,
 			"{0} TestSkip{1}",
 			isAsync ? "async Task" : "void",
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Test( bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void TestSkip{0}",
 			isAsync ? "Async" : String.Empty
 		);
 }

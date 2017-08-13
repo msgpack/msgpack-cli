@@ -26,6 +26,7 @@
     <Preserve Path="System\Collections\Generic\*" />
     <Preserve Path="App.xaml" />
     <Preserve Path="App.xaml.cs" />
+    <Preserve Path="Augments.cs" />
     <Exclude Path="gen\*" />
     <Exclude Path="Serialization\PreGenerated*" />
     <Exclude Path="Serialization\_SetUpFixture.cs" />
@@ -50,6 +51,7 @@
     <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
     <Exclude Path="Serialization\TempFileDependentAssemblyManager.cs" />
     <Exclude Path="_SetUpFixture.cs" />
+    <Exclude Path="AssertEx.cs" />
     <Exclude Path="TestSuite.cs" />
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
@@ -147,6 +149,7 @@
     <Exclude Path="Serialization\AppendableReadOnlyCollections.cs" />
     <Exclude Path="Serialization\RoslynCodeGeneration.cs" />
     <Preserve Path="Serialization\CodeDomCodeGeneration.cs" />
+    <Preserve Path="Augments.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\Task.cs" />
     <Preserve Path="Dummies\System.Threading.Tasks\TaskFactory.cs" />
     <Preserve Path="Mono\System\AggregateException.cs" />
@@ -162,6 +165,7 @@
     <Exclude File="*.ps1" />
     <Exclude File="*.tt" />
     <Exclude File="*.ttinclude" />
+    <Exclude Path="AssertEx.cs" />
   </Project>
 
   <Project Name="MsgPack.UnitTest.CodeDom.Net35" Base="MsgPack.UnitTest.CodeDom">

@@ -32,7 +32,7 @@ using MsgPack.Serialization.Reflection;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Wraps non-generic <see cref="IMessagePackSingleObjectSerializer"/> to avoid AOT issue.
+	///		Wraps non-generic <see cref="MessagePackSerializer"/> to avoid AOT issue.
 	/// </summary>
 	/// <typeparam name="T">The type to be serialized.</typeparam>
 	internal class TypedMessagePackSerializerWrapper<T> : MessagePackSerializer<T>, ICollectionInstanceFactory
@@ -45,6 +45,11 @@ namespace MsgPack.Serialization
 		{
 			this._underlyingSerializer = underlying;
 			this._underlyingFactory = underlying as ICollectionInstanceFactory;
+		}
+
+		internal override SerializerCapabilities InternalGetCapabilities()
+		{
+			return this._underlyingSerializer.InternalGetCapabilities();
 		}
 
 		protected internal override void PackToCore( Packer packer, T objectTree )

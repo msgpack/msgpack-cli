@@ -1,8 +1,8 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2015-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,15 +18,10 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
 
 namespace MsgPack
 {
-#if FEATURE_TAP
 	/// <summary>
 	///		Provides static utility methods for <see cref="AsyncReadResult{T}"/>.
 	/// </summary>
@@ -53,6 +48,15 @@ namespace MsgPack
 			// Fast-path
 			return default( AsyncReadResult<T> );
 		}
+
+		internal static AsyncReadResult<Int32OffsetValue<T>> Success<T>( T returnValue, int offset )
+		{
+			return new AsyncReadResult<Int32OffsetValue<T>>( new Int32OffsetValue<T>( returnValue, offset ), true );
+		}
+
+		internal static AsyncReadResult<Int64OffsetValue<T>> Success<T>( T returnValue, long offset )
+		{
+			return new AsyncReadResult<Int64OffsetValue<T>>( new Int64OffsetValue<T>( returnValue, offset ), true );
+		}
 	}
-#endif // FEATURE_TAP
 }

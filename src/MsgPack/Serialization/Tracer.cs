@@ -1,8 +1,8 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,17 +18,22 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Diagnostics;
-#if NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || ( UNITY && !MSGPACK_UNITY_FULL )
 using System.Globalization;
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || ( UNITY && !MSGPACK_UNITY_FULL )
 
 namespace MsgPack.Serialization
 {
 	internal static class Tracer
 	{
 		public static readonly TraceSource Emit = new TraceSource( "MsgPack.Serialization.Emit" );
+		public static readonly TraceSource Binding = new TraceSource( "MsgPack.Serialization.Binding" );
 		public static readonly TraceSource Tracing = new TraceSource( "MsgPack.Serialization.Tracing" );
 
 		public static class EventId
@@ -56,7 +61,7 @@ namespace MsgPack.Serialization
 		}
 	}
 
-#if NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || ( UNITY && !MSGPACK_UNITY_FULL )
 	internal enum TraceEventType
 	{
 		Critical = 1,
@@ -78,13 +83,17 @@ namespace MsgPack.Serialization
 		[Conditional( "TRACE" )]
 		public void TraceEvent( TraceEventType eventType, int id, string format, params object[] args )
 		{
+#if !UNITY
 			Debug.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} {1}: {2} : {3}", this._name, eventType, id, String.Format( CultureInfo.InvariantCulture, format, args ) ) );
+#endif // !UNITY
 		}
 
 		[Conditional( "TRACE" )]
 		public void TraceData( TraceEventType eventType, int id, object data )
 		{
+#if !UNITY
 			Debug.WriteLine( String.Format( CultureInfo.InvariantCulture, "{0} {1}: {2} : {3}", this._name, eventType, id, data ) );
+#endif // !UNITY
 		}
 	}
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3

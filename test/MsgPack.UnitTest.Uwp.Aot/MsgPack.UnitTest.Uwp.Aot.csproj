@@ -18,12 +18,12 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>MsgPack.UnitTest.Uwp.Aot_TemporaryKey.pfx</PackageCertificateKeyFile>
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">14.0</UnitTestPlatformVersion>
-    <PackageCertificateThumbprint>FF0127D5ED0BF0BD54B400F1AE36CFC269007C27</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>C125CA52683091C62F7746FF9A159E44B2A18673</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -34,7 +34,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\ARM\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>ARM</PlatformTarget>
@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -70,7 +70,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -134,11 +134,38 @@
     <Compile Include="..\MsgPack.UnitTest.Xamarin.iOS\Serialization\AotTest.cs">
       <Link>Serialization\AotTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
+      <Link>AssertEx.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayPackerTest.Allocation.cs">
+      <Link>ByteArrayPackerTest.Allocation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayPackerTest.cs">
+      <Link>ByteArrayPackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.cs">
+      <Link>ByteArrayUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.Ext.cs">
+      <Link>ByteArrayUnpackerTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.Raw.cs">
+      <Link>ByteArrayUnpackerTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.Scalar.cs">
+      <Link>ByteArrayUnpackerTest.Scalar.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
       <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionValidatingByteArrayUnpackerTest.cs">
+      <Link>CollectionValidatingByteArrayUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionValidatingStreamUnpackerTest.cs">
+      <Link>CollectionValidatingStreamUnpackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.cs">
       <Link>DirectConversionTest.cs</Link>
@@ -151,6 +178,12 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\ExceptionTest.cs">
       <Link>ExceptionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\FastByteArrayUnpackerTest.cs">
+      <Link>FastByteArrayUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\FastStreamUnpackerTest.cs">
+      <Link>FastStreamUnpackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
       <Link>GenericExceptionTester.cs</Link>
@@ -1622,17 +1655,14 @@
     <Compile Include="..\MsgPack.UnitTest\MessageUnpackableTest.cs">
       <Link>MessageUnpackableTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerFactoryTest.cs">
+      <Link>PackerFactoryTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.cs">
       <Link>PackerTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\PackerTest.Miscs.cs">
-      <Link>PackerTest.Miscs.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.cs">
       <Link>PackerTest.Pack.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.Miscs.cs">
-      <Link>PackerTest.Pack.Miscs.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.PackBinary.cs">
       <Link>PackerTest.PackBinary.cs</Link>
@@ -1808,11 +1838,26 @@
     <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
       <Link>SplittingStream.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
-      <Link>SubtreeUnpackerTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\StreamPackerTest.cs">
+      <Link>StreamPackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.cs">
+      <Link>StreamUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Ext.cs">
+      <Link>StreamUnpackerTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Raw.cs">
+      <Link>StreamUnpackerTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Scalar.cs">
+      <Link>StreamUnpackerTest.Scalar.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
       <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerFactoryTest.cs">
+      <Link>UnpackerFactoryTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.cs">
       <Link>UnpackerTest.cs</Link>
@@ -1834,6 +1879,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Skip.Variations.cs">
       <Link>UnpackerTest.Skip.Variations.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Subtree.cs">
+      <Link>UnpackerTest.Subtree.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Array.cs">
       <Link>UnpackingTest.Combinations.Array.cs</Link>

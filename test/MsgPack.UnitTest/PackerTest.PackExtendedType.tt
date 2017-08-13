@@ -11,7 +11,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ namespace MsgPack
 	// This file was generated from PackerTest.PackExtendedType.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit PackerTest.PackExtendedType.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class PackerTest_Pack
+	partial class PackerTest
 	{
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -85,11 +85,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackExtendedTypeValue", isAsync ) #>_ExtendedTypeObject_Object_Length<#= testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, <#= testCase.Item1 #> ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				<#= Await( "packer.PackExtendedTypeValue", isAsync ) #>( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( <#= testCase.Item2.Length #> ).ToArray(),
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", testCase.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } )
@@ -105,10 +105,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackExtendedTypeValue", isAsync ) #>_ExtendedTypeObject_Object_Length<#= testCase.Item1 #>_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, <#= testCase.Item1 #> ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( new MessagePackExtendedTypeObject( 1, body ) ) );
+				<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -116,11 +116,11 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackExtendedTypeValue", isAsync ) #>_ExtendedTypeObject_Primitives_Length<#= testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, <#= testCase.Item1 #> ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				<#= Await( "packer.PackExtendedTypeValue", isAsync ) #>( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( <#= testCase.Item2.Length #> ).ToArray(),
 					Is.EqualTo( new byte[] { <#= String.Join( ", ", testCase.Item2.Select( b => "0x" + b.ToString( "X" ) ) ) #> } )
@@ -136,10 +136,10 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackExtendedTypeValue", isAsync ) #>_ExtendedTypeObject_Primitives_Length<#= testCase.Item1 #>_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, <#= testCase.Item1 #> ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, body ) );
+				<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, body ) );
 			}
 		}
 <#
@@ -150,9 +150,9 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackExtendedTypeValue", isAsync ) #>_ExtendedTypeObject_Primitives_Null_ByteArray()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, null ) );
+				<#= Throws( isAsync ) #><ArgumentNullException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( 1, null ) );
 			}
 		}
 		
@@ -160,9 +160,9 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "PackExtendedTypeValue", isAsync ) #>_ExtendedTypeObject_Object_Invalid()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><ArgumentException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( default( MessagePackExtendedTypeObject ) ) );
+				<#= Throws( isAsync ) #><ArgumentException>( <#= AsyncLambda( "packer.PackExtendedTypeValue", isAsync ) #>( default( MessagePackExtendedTypeObject ) ) );
 			}
 		}
 
@@ -216,7 +216,7 @@ private static string AsyncLambdaTest( string method, bool isAsync )
 
 private static string Throws( bool isAsync )
 {
-	return isAsync ? "ThrowsAsync" : "Throws";
+	return isAsync ? "AssertEx.ThrowsAsync" : "Assert.Throws";
 }
 
 private static string AsyncLambda( string expressionBody, bool isAsync )

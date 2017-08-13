@@ -3,7 +3,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2016 FUJIWARA, Yusuke
+// Copyright (C) 2016-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -38,8 +38,7 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.Object.tt T4Template.
 	// Do not modify this file. Edit UnpackerTest.Object.tt instead.
 
-	[TestFixture]
-	public partial class UnpackerTest_Object
+	partial class UnpackerTest
 	{
 		[Test]
 		public void TestReadObjectFromPositiveFixNum()
@@ -50,7 +49,7 @@ namespace MsgPack
 				var value = 1;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -69,7 +68,7 @@ namespace MsgPack
 				var value = -1;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -88,7 +87,7 @@ namespace MsgPack
 				var value = -32;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -107,7 +106,7 @@ namespace MsgPack
 				var value = 0x80;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -126,7 +125,7 @@ namespace MsgPack
 				var value = Int16.MinValue;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -145,7 +144,7 @@ namespace MsgPack
 				var value = UInt16.MaxValue;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -164,7 +163,7 @@ namespace MsgPack
 				var value = Int32.MinValue;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -183,7 +182,7 @@ namespace MsgPack
 				var value = UInt32.MaxValue;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -202,7 +201,7 @@ namespace MsgPack
 				var value = Int64.MinValue;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -221,7 +220,7 @@ namespace MsgPack
 				var value = UInt64.MaxValue;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -240,7 +239,7 @@ namespace MsgPack
 				var value = Single.Epsilon;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -259,7 +258,7 @@ namespace MsgPack
 				var value = Double.Epsilon;
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -278,7 +277,7 @@ namespace MsgPack
 				var value = Enumerable.Repeat( 1, 16 ).ToArray();
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -298,7 +297,7 @@ namespace MsgPack
 				var value = Enumerable.Repeat( 1, UInt16.MaxValue ).ToArray();
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -318,7 +317,7 @@ namespace MsgPack
 				var value = Enumerable.Repeat( 1, UInt16.MaxValue + 1 ).ToArray();
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -338,7 +337,7 @@ namespace MsgPack
 				var value = Enumerable.Range( 1, 16 ).ToDictionary( i => i, i => ~i );
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -358,7 +357,7 @@ namespace MsgPack
 				var value = Enumerable.Range( 1, UInt16.MaxValue ).ToDictionary( i => i, i => ~i );
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -378,7 +377,7 @@ namespace MsgPack
 				var value = Enumerable.Range( 1, UInt16.MaxValue + 1 ).ToDictionary( i => i, i => ~i );
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -398,7 +397,7 @@ namespace MsgPack
 				var value = new String( Enumerable.Repeat( 'a', 16 ).ToArray() );
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -418,7 +417,7 @@ namespace MsgPack
 				var value = new String( Enumerable.Repeat( 'a', Byte.MaxValue ).ToArray() );
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -438,7 +437,7 @@ namespace MsgPack
 				var value = new String( Enumerable.Repeat( 'a', UInt16.MaxValue + 1 ).ToArray() );
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -458,7 +457,7 @@ namespace MsgPack
 				var value = new String( Enumerable.Repeat( 'a', UInt16.MaxValue + 1 ).ToArray() );
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -478,7 +477,7 @@ namespace MsgPack
 				var value = Enumerable.Repeat( ( byte )1, 16 ).ToArray();
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -498,7 +497,7 @@ namespace MsgPack
 				var value = Enumerable.Repeat( ( byte )1, UInt16.MaxValue ).ToArray();
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );
@@ -518,7 +517,7 @@ namespace MsgPack
 				var value = Enumerable.Repeat( ( byte )1, UInt16.MaxValue + 1 ).ToArray();
 				packer.Pack( value );
 				buffer.Position = 0;
-				using ( var unpacker = Unpacker.Create( buffer ) )
+				using ( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					MessagePackObject result;
 					Assert.That( unpacker.ReadObject( out result ) );

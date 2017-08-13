@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@
 #endregion -- License Terms --
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -31,47 +29,24 @@ using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
-using System.IO;
 
 namespace MsgPack
 {
-	[TestFixture]
-	public partial class PackerTest
+	public abstract partial class PackerTest
 	{
-		[Test]
-		public void TestCreate_OwnsStreamIsTrue_StreamIsClosed()
+		private sealed class Packable : IPackable
 		{
-			using ( var stream = new MemoryStream() )
+			public void PackToMessage( Packer packer, PackingOptions options )
 			{
-				using ( var packer = Packer.Create( stream, true ) ) { }
-
-				try
-				{
-					stream.ReadByte();
-					Assert.Fail();
-				}
-				catch ( ObjectDisposedException ) { }
+				// 0xC3
+				packer.Pack( true );
 			}
 		}
 
-		[Test]
-		public void TestCreate_OwnsStreamIsFalse_StreamIsNotClosed()
-		{
-			using ( var stream = new MemoryStream() )
-			{
-				using ( var packer = Packer.Create( stream, false ) ) { }
+		protected abstract Packer CreatePacker( MemoryStream stream );
 
-				Assert.That( stream.ReadByte(), Is.EqualTo( -1 ) );
-			}
-		}
+		protected abstract Packer CreatePacker( MemoryStream stream, PackerCompatibilityOptions compatibilityOptions );
 
-		[Test]
-		public void TestCreate_StreamIsNull()
-		{
-			using ( var stream = new MemoryStream() )
-			{
-				Assert.Throws<ArgumentNullException>( () => { using ( var packer = Packer.Create( null, true ) ) { } } );
-			}
-		}
+		protected abstract byte[] GetResult( Packer packer );
 	}
 }

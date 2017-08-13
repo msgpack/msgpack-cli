@@ -299,7 +299,7 @@ namespace MsgPack.Serialization
 
 			this._serializationMethod = serializationMethod;
 			this._underlyingType = Enum.GetUnderlyingType( targetType );
-			var members = Enum.GetValues(targetType ) as object[];
+			var members = Enum.GetValues( targetType );
 			this._serializationMapping = new Dictionary<object, string>( members.Length );
 			this._deserializationMapping = new Dictionary<string, object>( members.Length );
 			foreach ( var member in members )

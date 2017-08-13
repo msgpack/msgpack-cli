@@ -47,7 +47,7 @@ var __numerics =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ namespace MsgPack
 	// This file was generated from PackerTest.PackT.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit PackerTest.PackT.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class PackerTest_Pack
+	partial class PackerTest
 	{
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -103,12 +103,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackT", isAsync ) #>_<#= __numeric.Item1 #>_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #><#= "<" + __numeric.Item2 + ">" #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -128,12 +128,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackT", isAsync ) #>_Nullable<#= __numeric.Item2.Name #>_NotNull_AsValue()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #><#= "<" + __numeric.Item2 + "?>" #>( <#= __numeric.Item3 #> );
 				Assert.AreEqual(
 					<#= __numeric.Item4 #>,
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -142,12 +142,12 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "PackT", isAsync ) #>_Nullable<#= __numeric.Item2.Name #>_Null_AsNil()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #><#= "<" + __numeric.Item2 + "?>" #>( default( <#= __numeric.Item2 #>?  ) );
 				Assert.AreEqual(
 					new byte[]{ 0xC0 },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -177,12 +177,12 @@ foreach( var isAsync in new [] { false, true } )
 		{
 			<#= testCase.DeclaringType #> value = null;
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( value );
 				Assert.AreEqual(
 					new byte[] { <#= testCase.Bytes #> },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -195,12 +195,12 @@ foreach( var isAsync in new [] { false, true } )
 		{
 			var value = new MessagePackObject[] { 1, 2, 3 };
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( value );
 				Assert.AreEqual(
 					new byte[] { 0x93, 0x1, 0x2, 0x3 },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -210,12 +210,12 @@ foreach( var isAsync in new [] { false, true } )
 		{
 			var value = new MessagePackObjectDictionary() { { 1, 1 }, { 2, 2 } };
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( value );
 				Assert.AreEqual(
 					new byte[] { 0x82, 0x1, 0x1, 0x2, 0x2 },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}
@@ -225,12 +225,12 @@ foreach( var isAsync in new [] { false, true } )
 		{
 			var value = new Packable();
 			using ( var buffer = new MemoryStream() )
-			using ( var packer = Packer.Create( buffer ) )
+			using ( var packer = CreatePacker( buffer ) )
 			{
 				<#= Await( "packer.Pack", isAsync ) #>( value );
 				Assert.AreEqual(
 					 new byte[] { 0xC3 },
-					buffer.ToArray()
+					this.GetResult( packer )
 				);
 			}
 		}

@@ -1,40 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <ProjectSync>
-  <Project Name="MsgPack.Net35" Base="MsgPack">
-    <Preserve Path="Properties\AssemblyInfo.cs" />
-    <Exclude Path="Serialization\AbstractSerializers\SerializerBuilder`2.Tuple.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\AbstractReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\FSharpCollectionSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\FSharpMapSerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableDictionarySerializer`3.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\ImmutableStackSerializer`2.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyCollectionMessagePackSerializer`2.cs" />
-    <Exclude Path="Serialization\EmittingSerializers\CallbackReadOnlyDictionaryMessagePackSerializer`3.cs" />
-    <Exclude Path="Serialization\ExpressionSerializers\*" />
-    <Exclude Path="Serialization\Metadata\_Type.cs" />
-    <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
-    <Exclude Path="BufferedStream.cs" />
-    <Exclude File="*.tt" />
-    <Exclude File="*.ttinclude" />
-    <Preserve Path="Contract.cs" />
-    <Preserve Path="Delegates.tt" />
-    <Preserve Path="Delegates.cs" />
-    <Preserve Path="NetFxCompatibilities.cs" />
-    <Preserve Path="Volatile.cs" />
-    <Preserve Path="Tuple`n.tt" />
-    <Preserve Path="Tuple`n.cs" />
-    <Exclude Path="TupleItems.cs" />
-  </Project>
-
-  <!-- TOOD: should be project.json -->
-  <!-- .Uwp is testing purpose only, this is just .NET Native test target for .NET Standard 1.3 configuration -->
   <Project Name="MsgPack.Uwp" Base="MsgPack">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="BufferedStream.cs" />
@@ -72,13 +37,14 @@
     <Exclude File="*.ttinclude" />
   </Project>
 
-  <Project Name="MsgPack.Unity.Full" Base="MsgPack.Xamarin.iOS">
+  <Project Name="MsgPack.Unity.Full" Base="MsgPack.Uwp">
     <Preserve Path="Properties\AssemblyInfo.cs" />
     <Preserve Path="Serialization\AotHelper*.tt" />
     <Preserve Path="Serialization\AotHelper*.cs" />
     <Preserve Path="Serialization\NonGenericMessagePackSerializer.cs" />
     <Preserve Path="Serialization\TypedMessagePackSerializerWrapper`1.cs" />
     <Preserve Path="Serialization\EnumTypedMessagePackSerializerWrapper`1.cs" />
+    <Preserve Path="Serialization\Tracer.cs" />
     <Preserve Path="CorLibOnlyHelper*.tt" />
     <Preserve Path="CorLibOnlyHelper*.cs" />
     <Preserve Path="MPContract.cs" />
@@ -87,6 +53,11 @@
     <Exclude Path="Serialization\CollectionSerializers\DictionarySerializerBase`3.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyCollectionMessagePackSerializer`2.cs" />
     <Exclude Path="Serialization\CollectionSerializers\ReadOnlyDictionaryMessagePackSerializer`3.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Exclude Path="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+    <Exclude Path="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
     <Exclude Path="Serialization\DefaultSerializers\FSharpCollectionSerializer`2.cs" />
     <Exclude Path="Serialization\DefaultSerializers\FSharpMapSerializer`3.cs" />
     <Exclude Path="Serialization\DefaultSerializers\ImmutableCollectionSerializer`2.cs" />
@@ -98,8 +69,13 @@
     <Exclude Path="Serialization\DefaultSerializers\System_Numerics_ComplexMessagePackSerializer.cs" />
     <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
+    <Exclude Path="BufferedStream.cs" />
+    <Exclude Path="NetStandardCompatibility.cs" />
+    <Exclude Path="TaskAugument.cs" />
     <Exclude Path="UnsafeNativeMethods.cs" />
     <Exclude Path="Validation.cs" />
+    <Exclude Path="project.json" />
+    <Exclude File="*.snk" />
   </Project>
 
   <Project Name="MsgPack.Unity" Base="MsgPack.Unity.Full">
@@ -145,6 +121,7 @@
     <Exclude Path="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Exclude Path="BufferedStream.cs" />
     <Exclude Path="NetStandardCompatibility.cs" />
+    <Exclude Path="TaskAugument.cs" />
     <Exclude Path="project.json" />
   </Project>
 
@@ -160,5 +137,6 @@
     <Exclude Path="Serialization\Reflection\ReflectionHelpers.cs" />
     <Exclude Path="BufferedStream.cs" />
     <Exclude Path="NetStandardCompatibility.cs" />
+    <Exclude Path="TaskAugument.cs" />
   </Project>
 </ProjectSync>

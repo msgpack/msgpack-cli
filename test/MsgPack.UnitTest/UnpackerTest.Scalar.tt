@@ -78,7 +78,7 @@ var __reals =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -113,9 +113,7 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.Scalar.tt T4Template.
 	// Do not modify this file. Edit UnpackerTest.Scalar.tt instead.
 
-	[TestFixture]
-	[Timeout( 500 )]
-	public class UnpackerTest_Scalar
+	partial class UnpackerTest
 	{
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -136,23 +134,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
-#pragma warning disable 612,618
-				var result = unpacker.Data;
-#pragma warning restore 612,618
-				Assert.IsTrue( result.HasValue );
-				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
+			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
@@ -171,35 +153,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
-<#
-			if( !isAsync )
-			{
-#>
-				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
-<#
-			}
-			else
-			{
-#>
-				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
-				Assert.IsTrue( ret.Success );
-				result = ret.Value;
-<#
-			}
-#>
-				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
+			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
 <#
@@ -233,23 +187,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
-#pragma warning disable 612,618
-				var result = unpacker.Data;
-#pragma warning restore 612,618
-				Assert.IsTrue( result.HasValue );
-				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
+			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
@@ -268,35 +206,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
-<#
-			if( !isAsync )
-			{
-#>
-				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
-<#
-			}
-			else
-			{
-#>
-				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
-				Assert.IsTrue( ret.Success );
-				result = ret.Value;
-<#
-			}
-#>
-				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item3 #> ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
+			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
 <#
@@ -330,23 +240,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
-#pragma warning disable 612,618
-				var result = unpacker.Data;
-#pragma warning restore 612,618
-				Assert.IsTrue( result.HasValue );
-				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
+			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
 #pragma warning disable 612,618
@@ -365,35 +259,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>()
 		{
 			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
-<#
-			if( !isAsync )
-			{
-#>
-				Assert.IsTrue( <#= Read( isNullable, __testCase.Item3 ) #> );
-<#
-			}
-			else
-			{
-#>
-				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
-				Assert.IsTrue( ret.Success );
-				result = ret.Value;
-<#
-			}
-#>
-				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( <#= __testCase.Item2 #> ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
+			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
 <#
@@ -434,35 +300,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( isAsync, true, __scalarType ) #>()
 		{
 			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
-			using( var unpacker = Unpacker.Create( buffer ) )
-			{
-				<#= __scalarType.Name #>? result;
-<#
-			if( !isAsync )
-			{
-#>
-				Assert.IsTrue( <#= Read( true, __scalarType ) #> );
-<#
-			}
-			else
-			{
-#>
-				var ret = <#= ReadAwait( true, __scalarType ) #>;
-				Assert.IsTrue( ret.Success );
-				result = ret.Value;
-<#
-			}
-#>
-				Assert.That( result, Is.Null );
-			}
-		}
-
-		[Test]
-		public <#= AsyncTest( isAsync, true, __scalarType ) #>_Splitted()
-		{
-			using( var buffer = new MemoryStream( new byte[] { 0xC0 } ) )
-			using( var splitted = new SplittingStream( buffer ) )
-			using( var unpacker = Unpacker.Create( splitted ) )
+			using( var unpacker = this.CreateUnpacker( buffer ) )
 			{
 				<#= __scalarType.Name #>? result;
 <#
@@ -549,7 +387,7 @@ foreach( var realType in realTypes )
 			{
 				packer.Pack( <#= integerCase.Min #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					<#= realType.Name #> result;
 					Assert.That( unpacker.Read<#= realType.Name #>( out result ) );
@@ -566,7 +404,7 @@ foreach( var realType in realTypes )
 			{
 				packer.Pack( <#= integerCase.Max #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					<#= realType.Name #> result;
 					Assert.That( unpacker.Read<#= realType.Name #>( out result ) );
@@ -586,7 +424,7 @@ foreach( var realType in realTypes )
 			{
 				packer.Pack( 0 );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					<#= realType.Name #> result;
 					Assert.That( unpacker.Read<#= realType.Name #>( out result ) );
@@ -612,7 +450,7 @@ foreach( var integerType in integerTypes )
 			{
 				packer.Pack( <#= realCase.Negative #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 <#
 		if( shouldOverflowInNegative )
@@ -647,7 +485,7 @@ foreach( var integerType in integerTypes )
 			{
 				packer.Pack( <#= realCase.Positive #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					<#= integerType.Name #> result;
 					Assert.That( unpacker.Read<#= integerType.Name #>( out result ) );
@@ -664,7 +502,7 @@ foreach( var integerType in integerTypes )
 			{
 				packer.Pack( <#= realCase.LittleNegative #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					<#= integerType.Name #> result;
 					Assert.That( unpacker.Read<#= integerType.Name #>( out result ) );
@@ -681,7 +519,7 @@ foreach( var integerType in integerTypes )
 			{
 				packer.Pack( <#= realCase.LittlePositive #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					<#= integerType.Name #> result;
 					Assert.That( unpacker.Read<#= integerType.Name #>( out result ) );
@@ -698,7 +536,7 @@ foreach( var integerType in integerTypes )
 			{
 				packer.Pack( <#= realCase.Zero #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 					<#= integerType.Name #> result;
 					Assert.That( unpacker.Read<#= integerType.Name #>( out result ) );
@@ -724,7 +562,7 @@ foreach( var integerType in integerTypes )
 			{
 				packer.Pack( <#= integerCase.Min #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 <#
 		if ( shouldBeOverflow )
@@ -762,7 +600,7 @@ foreach( var integerType in integerTypes )
 			{
 				packer.Pack( <#= integerCase.Max #> );
 				buffer.Position = 0;
-				using( var unpacker = Unpacker.Create( buffer ) )
+				using( var unpacker = this.CreateUnpacker( buffer ) )
 				{
 <#
 		if ( shouldBeOverflow )

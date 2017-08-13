@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -37,17 +37,17 @@ namespace MsgPack
 	// This file was generated from PackerTest.PackExtendedType.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit PackerTest.PackExtendedType.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	partial class PackerTest_Pack
+	partial class PackerTest
 	{
 		[Test]
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length0()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x0, 0x1 } )
@@ -63,7 +63,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length0_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -74,11 +74,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length0()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x0, 0x1 } )
@@ -94,7 +94,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length0_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -104,11 +104,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length1()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD4, 0x1 } )
@@ -124,7 +124,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length1_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -135,11 +135,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length1()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD4, 0x1 } )
@@ -155,7 +155,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length1_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -165,11 +165,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length2()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD5, 0x1 } )
@@ -185,7 +185,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length2_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -196,11 +196,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length2()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD5, 0x1 } )
@@ -216,7 +216,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length2_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -226,11 +226,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length3()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x3, 0x1 } )
@@ -246,7 +246,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length3_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -257,11 +257,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length3()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x3, 0x1 } )
@@ -277,7 +277,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length3_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -287,11 +287,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length4()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD6, 0x1 } )
@@ -307,7 +307,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length4_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -318,11 +318,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length4()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD6, 0x1 } )
@@ -338,7 +338,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length4_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -348,11 +348,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length5()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x5, 0x1 } )
@@ -368,7 +368,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length5_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -379,11 +379,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length5()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x5, 0x1 } )
@@ -399,7 +399,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length5_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -409,11 +409,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length8()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD7, 0x1 } )
@@ -429,7 +429,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length8_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -440,11 +440,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length8()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD7, 0x1 } )
@@ -460,7 +460,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length8_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -470,11 +470,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length9()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x9, 0x1 } )
@@ -490,7 +490,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length9_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -501,11 +501,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length9()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x9, 0x1 } )
@@ -521,7 +521,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length9_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -531,11 +531,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length16()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD8, 0x1 } )
@@ -551,7 +551,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length16_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -562,11 +562,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length16()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD8, 0x1 } )
@@ -582,7 +582,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length16_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -592,11 +592,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length17()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x11, 0x1 } )
@@ -612,7 +612,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length17_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -623,11 +623,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length17()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x11, 0x1 } )
@@ -643,7 +643,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length17_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -653,11 +653,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length255()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0xFF, 0x1 } )
@@ -673,7 +673,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length255_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -684,11 +684,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length255()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0xFF, 0x1 } )
@@ -704,7 +704,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length255_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -714,11 +714,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length256()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0x1, 0x0, 0x1 } )
@@ -734,7 +734,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length256_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -745,11 +745,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length256()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0x1, 0x0, 0x1 } )
@@ -765,7 +765,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length256_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -775,11 +775,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length65535()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0xFF, 0xFF, 0x1 } )
@@ -795,7 +795,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length65535_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -806,11 +806,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length65535()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0xFF, 0xFF, 0x1 } )
@@ -826,7 +826,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length65535_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -836,11 +836,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length65536()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 6 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC9, 0x0, 0x1, 0x0, 0x0, 0x1 } )
@@ -856,7 +856,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Length65536_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( new MessagePackExtendedTypeObject( 1, body ) ) );
@@ -867,11 +867,11 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length65536()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				packer.PackExtendedTypeValue( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 6 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC9, 0x0, 0x1, 0x0, 0x0, 0x1 } )
@@ -887,7 +887,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Length65536_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				Assert.Throws<InvalidOperationException>( () => packer.PackExtendedTypeValue( 1, body ) );
@@ -898,7 +898,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Primitives_Null_ByteArray()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				Assert.Throws<ArgumentNullException>( () => packer.PackExtendedTypeValue( 1, null ) );
 			}
@@ -908,7 +908,7 @@ namespace MsgPack
 		public void TestPackExtendedTypeValue_ExtendedTypeObject_Object_Invalid()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
 				Assert.Throws<ArgumentException>( () => packer.PackExtendedTypeValue( default( MessagePackExtendedTypeObject ) ) );
 			}
@@ -920,11 +920,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length0()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x0, 0x1 } )
@@ -940,10 +940,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length0_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -951,11 +951,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length0()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x0, 0x1 } )
@@ -971,21 +971,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length0_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 0 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length1()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD4, 0x1 } )
@@ -1001,10 +1001,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length1_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1012,11 +1012,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length1()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD4, 0x1 } )
@@ -1032,21 +1032,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length1_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 1 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length2()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD5, 0x1 } )
@@ -1062,10 +1062,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length2_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1073,11 +1073,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length2()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD5, 0x1 } )
@@ -1093,21 +1093,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length2_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 2 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length3()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x3, 0x1 } )
@@ -1123,10 +1123,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length3_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1134,11 +1134,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length3()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x3, 0x1 } )
@@ -1154,21 +1154,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length3_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 3 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length4()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD6, 0x1 } )
@@ -1184,10 +1184,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length4_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1195,11 +1195,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length4()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD6, 0x1 } )
@@ -1215,21 +1215,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length4_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 4 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length5()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x5, 0x1 } )
@@ -1245,10 +1245,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length5_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1256,11 +1256,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length5()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x5, 0x1 } )
@@ -1276,21 +1276,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length5_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 5 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length8()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD7, 0x1 } )
@@ -1306,10 +1306,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length8_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1317,11 +1317,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length8()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD7, 0x1 } )
@@ -1337,21 +1337,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length8_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 8 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length9()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x9, 0x1 } )
@@ -1367,10 +1367,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length9_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1378,11 +1378,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length9()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x9, 0x1 } )
@@ -1398,21 +1398,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length9_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 9 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length16()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD8, 0x1 } )
@@ -1428,10 +1428,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length16_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1439,11 +1439,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length16()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 2 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xD8, 0x1 } )
@@ -1459,21 +1459,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length16_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 16 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length17()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x11, 0x1 } )
@@ -1489,10 +1489,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length17_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1500,11 +1500,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length17()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0x11, 0x1 } )
@@ -1520,21 +1520,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length17_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 17 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length255()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0xFF, 0x1 } )
@@ -1550,10 +1550,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length255_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1561,11 +1561,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length255()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 3 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC7, 0xFF, 0x1 } )
@@ -1581,21 +1581,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length255_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 255 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length256()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0x1, 0x0, 0x1 } )
@@ -1611,10 +1611,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length256_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1622,11 +1622,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length256()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0x1, 0x0, 0x1 } )
@@ -1642,21 +1642,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length256_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 256 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length65535()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0xFF, 0xFF, 0x1 } )
@@ -1672,10 +1672,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length65535_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1683,11 +1683,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length65535()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 4 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC8, 0xFF, 0xFF, 0x1 } )
@@ -1703,21 +1703,21 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length65535_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65535 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		[Test]
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length65536()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 6 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC9, 0x0, 0x1, 0x0, 0x0, 0x1 } )
@@ -1733,10 +1733,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Length65536_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( new MessagePackExtendedTypeObject( 1, body ) ) );
 			}
 		}
 
@@ -1744,11 +1744,11 @@ namespace MsgPack
 		public async Task TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length65536()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.None ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.None ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
 				await packer.PackExtendedTypeValueAsync( 1, body );
-				var packed = buffer.ToArray();
+				var packed = this.GetResult( packer );
 				Assert.That(
 					packed.Take( 6 ).ToArray(),
 					Is.EqualTo( new byte[] { 0xC9, 0x0, 0x1, 0x0, 0x0, 0x1 } )
@@ -1764,10 +1764,10 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Length65536_WithCompatibilityOption()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
+			using( var packer = CreatePacker( buffer, PackerCompatibilityOptions.ProhibitExtendedTypeObjects ) )
 			{
 				var body = Enumerable.Range( 1, 65536 ).Select( i => ( byte )( i % Byte.MaxValue ) ).ToArray();
-				Assert.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
+				AssertEx.ThrowsAsync<InvalidOperationException>( async () => await packer.PackExtendedTypeValueAsync( 1, body ) );
 			}
 		}
 		
@@ -1775,9 +1775,9 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Primitives_Null_ByteArray()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentNullException>( async () => await packer.PackExtendedTypeValueAsync( 1, null ) );
+				AssertEx.ThrowsAsync<ArgumentNullException>( async () => await packer.PackExtendedTypeValueAsync( 1, null ) );
 			}
 		}
 		
@@ -1785,9 +1785,9 @@ namespace MsgPack
 		public void TestPackExtendedTypeValueAsync_ExtendedTypeObject_Object_Invalid()
 		{
 			using( var buffer = new MemoryStream() )
-			using( var packer = Packer.Create( buffer ) )
+			using( var packer = CreatePacker( buffer ) )
 			{
-				Assert.ThrowsAsync<ArgumentException>( async () => await packer.PackExtendedTypeValueAsync( default( MessagePackExtendedTypeObject ) ) );
+				AssertEx.ThrowsAsync<ArgumentException>( async () => await packer.PackExtendedTypeValueAsync( default( MessagePackExtendedTypeObject ) ) );
 			}
 		}
 

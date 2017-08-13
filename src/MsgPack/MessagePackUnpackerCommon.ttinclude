@@ -1,0 +1,286 @@
+﻿<#@ include file="..\Core.ttinclude" #>
+<#@ include file=".\MessagePackUnpackerCommon.Read.ttinclude" #>
+<#@ include file=".\MessagePackUnpackerCommon.Skip.ttinclude" #>
+<#@ import namespace="System.Collections.Generic" #><#+
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+private void WriteCommon(
+	string offsetExpression,
+	ReadMethodContext context,
+	Action<ReadMethodContext> prologue,
+	Action<ReadMethodContext, string> epilogue,
+	Action<ReadMethodContext, int, string, Action<int>, bool> readBytes, // context, indentLevel, lengthExpression, onFail, isAsync
+	bool isPseudoAsync
+)
+{
+	this.WriteReadOverrides( context, prologue, epilogue, readBytes, isPseudoAsync );
+	this.WriteSkipOverrides( offsetExpression );
+#>
+		public sealed override bool ReadObject( out MessagePackObject result )
+		{
+			return this.ReadObject( /* isDeep*/true, out result );
+		}
+
+#if FEATURE_TAP
+
+		public sealed override Task<AsyncReadResult<MessagePackObject>> ReadObjectAsync( CancellationToken cancellationToken )
+		{
+			return this.ReadObjectAsync( /* isDeep*/true,  cancellationToken );
+		}
+
+#endif // FEATURE_TAP
+
+		protected sealed override bool ReadCore()
+		{
+			MessagePackObject value;
+			var success = this.ReadObject( /* isDeep */false, out value );
+			if ( success )
+			{
+				this._data = value;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+#if FEATURE_TAP
+
+		protected sealed override async Task<bool> ReadAsyncCore( CancellationToken cancellationToken )
+		{
+			var result = await this.ReadObjectAsync( /* isDeep */false, cancellationToken ).ConfigureAwait( false );
+			if ( result.Success )
+			{
+				this._data = result.Value;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+#endif // FEATURE_TAP
+
+		private void ThrowUnassignedMessageTypeException( int header )
+		{
+#if DEBUG
+			Contract.Assert( header == 0xC1, "Unhandled header:" + header.ToString( "X2" ) );
+#endif // DEBUG
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
+			throw new UnassignedMessageTypeException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					isRealOffset
+						? "Unknown header value 0x{0:X} at position {1:#,0}"
+						: "Unknown header value 0x{0:X} at offset {1:#,0}",
+					header,
+					offsetOrPosition
+				)
+			);
+		}
+
+		private void CheckLength( uint length, ReadValueResult type )
+		{
+			if ( length > Int32.MaxValue )
+			{
+				this.ThrowTooLongLengthException( length, type );
+			}
+		}
+
+		private void ThrowTooLongLengthException( uint length, ReadValueResult type )
+		{
+			string message;
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
+
+			if ( ( type & ReadValueResult.ArrayTypeMask ) == ReadValueResult.ArrayTypeMask )
+			{
+				message =
+					isRealOffset
+					? "MessagePack for CLI cannot handle large array (0x{0:X} elements) which has more than Int32.MaxValue elements, at position {1:#,0}"
+					: "MessagePack for CLI cannot handle large array (0x{0:X} elements) which has more than Int32.MaxValue elements, at offset {1:#,0}";
+			}
+			else if ( ( type & ReadValueResult.MapTypeMask ) == ReadValueResult.MapTypeMask )
+			{
+				message =
+					isRealOffset
+					? "MessagePack for CLI cannot handle large map (0x{0:X} entries) which has more than Int32.MaxValue entries, at position {1:#,0}"
+					: "MessagePack for CLI cannot handle large map (0x{0:X} entries) which has more than Int32.MaxValue entries, at offset {1:#,0}";
+			}
+			else if ( ( type & ReadValueResult.ExtTypeMask ) == ReadValueResult.ExtTypeMask )
+			{
+				message =
+					isRealOffset
+					? "MessagePack for CLI cannot handle large ext type (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at position {1:#,0}"
+					: "MessagePack for CLI cannot handle large ext type (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at offset {1:#,0}";
+			}
+			else
+			{
+				message =
+					isRealOffset
+					? "MessagePack for CLI cannot handle large binary or string (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at position {1:#,0}"
+					: "MessagePack for CLI cannot handle large binary or string (0x{0:X} bytes) which has more than Int32.MaxValue bytes, at offset {1:#,0}";
+			}
+
+			throw new MessageNotSupportedException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					message,
+					length,
+					offsetOrPosition
+				)
+			);
+		}
+
+		private void ThrowTypeException( string type, ReadValueResult header )
+		{
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
+			var byteHeader = header.ToByte();
+			throw new MessageTypeException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					isRealOffset
+					? "Cannot convert '{0}' header from type '{2}'(0x{1:X}) in position {3:#,0}."
+					: "Cannot convert '{0}' header from type '{2}'(0x{1:X}) in offset {3:#,0}.",
+					type,
+					byteHeader,
+					MessagePackCode.ToString( byteHeader ),
+					offsetOrPosition
+				)
+			);
+		}
+
+		private void ThrowTypeException( Type type, ReadValueResult header )
+		{
+			long offsetOrPosition;
+			var isRealOffset = this.GetPreviousPosition( out offsetOrPosition );
+			var byteHeader = header.ToByte();
+			throw new MessageTypeException(
+				String.Format(
+					CultureInfo.CurrentCulture,
+					isRealOffset
+					? "Cannot convert '{0}' type value from type '{2}'(0x{1:X}) in position {3:#,0}."
+					: "Cannot convert '{0}' type value from type '{2}'(0x{1:X}) in offset {3:#,0}.",
+					type,
+					byteHeader,
+					MessagePackCode.ToString( byteHeader ),
+					offsetOrPosition
+				)
+			);
+		}
+<#+
+} // WriteCommon
+
+private void WriteBeginAsyncRegion( bool isAsync )
+{
+	if ( !isAsync )
+	{
+		return;
+	}
+#>
+#if FEATURE_TAP
+
+<#+
+} // WriteBeginAsyncRegion
+
+private void WriteEndAsyncRegion( bool isAsync )
+{
+	if ( !isAsync )
+	{
+		return;
+	}
+#>
+#endif // FEATURE_TAP
+
+<#+
+} // WriteEndAsyncRegion
+
+private static readonly string[] scalarTypes =
+	new []
+	{
+		"Byte", "SByte",
+		"Int16", "UInt16",
+		"Int32", "UInt32",
+		"Int64", "UInt64",
+		"Single",
+		"Double"
+	};
+private static readonly Dictionary<string, string> primitiveNames =
+	new Dictionary<string, string>
+	{
+		{ "Byte",	"byte" },
+		{ "SByte",	"sbyte" },
+		{ "Int16",	"short" },
+		{ "UInt16",	"ushort" },
+		{ "Int32",	"int" },
+		{ "UInt32",	"uint" },
+		{ "Int64",	"long" },
+		{ "UInt64",	"ulong" },
+		{ "Single",	"float" },
+		{ "Double", "double" }
+	};
+// type: return-type
+private static readonly Dictionary<string, string> lengthTypes =
+	new Dictionary<string, string>
+	{
+		{ "Byte", "int" },
+		{ "UInt16", "int" },
+		{ "UInt32", "long" }
+	};
+
+
+private static string Await( bool isAsync, string expression )
+{
+	return ( isAsync ? "await ": String.Empty ) + expression + ( isAsync ? ".ConfigureAwait( false )" : String.Empty );
+}
+
+private static string AsyncSuffix( bool isAsync )
+{
+	return isAsync ? "Async": String.Empty;
+}
+
+private static string AsyncReturnValue( string type, bool isAsync )
+{
+	return ( isAsync ? "async Task<" : String.Empty ) + type + ( isAsync ? ">" : String.Empty );
+}
+
+private static string Parameter( bool isAsync )
+{
+	return isAsync ? " CancellationToken cancellationToken " : String.Empty;
+}
+
+private static string LastParameter( bool isAsync )
+{
+	return isAsync ? ", CancellationToken cancellationToken " : String.Empty;
+}
+
+private static string LastArgument( bool isAsync )
+{
+	return isAsync ? ", cancellationToken" : String.Empty;
+}
+
+private static string Argument( bool isAsync )
+{
+	return isAsync ? " cancellationToken " : String.Empty;
+}
+#>

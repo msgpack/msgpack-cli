@@ -94,6 +94,7 @@ namespace MsgPack
 			TestExecutionContext context = new TestExecutionContext();
 			context.WorkDirectory = Environment.CurrentDirectory;
 			CallContext.SetData( "NUnit.Framework.TestContext", context );
+			//UnityTestHelper.AddBindingTraceLogger( m => UnityEngine.Debug.Log( m ) );
 		}
 
 		/// <summary>

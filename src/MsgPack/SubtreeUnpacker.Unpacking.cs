@@ -23,8 +23,8 @@ using System;
 
 namespace MsgPack
 {
-	// This file was generated from SubtreeUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit SubtreeUnpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from SubtreeUnpacker.Unpacking.tt and Core.ttinclude T4Template.
+	// Do not modify this file. Edit SubtreeUnpacker.Unpacking.tt and Core.ttinclude instead.
 
 	partial class SubtreeUnpacker
 	{
@@ -38,23 +38,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeBoolean( out result ) )
+			if ( !this._root.ReadBoolean( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -79,23 +79,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableBoolean( out result ) )
+			if ( !this._root.ReadNullableBoolean( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -120,23 +120,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeByte( out result ) )
+			if ( !this._root.ReadByte( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -161,23 +161,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableByte( out result ) )
+			if ( !this._root.ReadNullableByte( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -202,23 +202,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeSByte( out result ) )
+			if ( !this._root.ReadSByte( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -243,23 +243,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableSByte( out result ) )
+			if ( !this._root.ReadNullableSByte( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -284,23 +284,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeInt16( out result ) )
+			if ( !this._root.ReadInt16( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -325,23 +325,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableInt16( out result ) )
+			if ( !this._root.ReadNullableInt16( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -366,23 +366,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeUInt16( out result ) )
+			if ( !this._root.ReadUInt16( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -407,23 +407,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableUInt16( out result ) )
+			if ( !this._root.ReadNullableUInt16( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -448,23 +448,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeInt32( out result ) )
+			if ( !this._root.ReadInt32( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -489,23 +489,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableInt32( out result ) )
+			if ( !this._root.ReadNullableInt32( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -530,23 +530,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeUInt32( out result ) )
+			if ( !this._root.ReadUInt32( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -571,23 +571,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableUInt32( out result ) )
+			if ( !this._root.ReadNullableUInt32( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -612,23 +612,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeInt64( out result ) )
+			if ( !this._root.ReadInt64( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -653,23 +653,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableInt64( out result ) )
+			if ( !this._root.ReadNullableInt64( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -694,23 +694,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeUInt64( out result ) )
+			if ( !this._root.ReadUInt64( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -735,23 +735,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableUInt64( out result ) )
+			if ( !this._root.ReadNullableUInt64( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -776,23 +776,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeSingle( out result ) )
+			if ( !this._root.ReadSingle( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -817,23 +817,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableSingle( out result ) )
+			if ( !this._root.ReadNullableSingle( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -858,23 +858,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeDouble( out result ) )
+			if ( !this._root.ReadDouble( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -899,23 +899,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeNullableDouble( out result ) )
+			if ( !this._root.ReadNullableDouble( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -941,23 +941,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeArrayLength( out result ) )
+			if ( !this._root.ReadArrayLength( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -982,23 +982,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeMapLength( out result ) )
+			if ( !this._root.ReadMapLength( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -1023,23 +1023,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeBinary( out result ) )
+			if ( !this._root.ReadBinary( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -1064,23 +1064,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeString( out result ) )
+			if ( !this._root.ReadString( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -1105,23 +1105,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeMessagePackExtendedTypeObject( out result ) )
+			if ( !this._root.ReadMessagePackExtendedTypeObject( out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;
@@ -1146,23 +1146,23 @@ namespace MsgPack
 				return false;
 			}
 			
-			if ( !this._root.ReadSubtreeObject( /* isDeep */true, out result ) )
+			if ( !this._internalRoot.ReadObject( /* isDeep */true, out result ) )
 			{
 				return false;
 			}
 			
-			switch ( this._root.InternalCollectionType )
+			switch ( this._internalRoot.CollectionType )
 			{
-				case ItemsUnpacker.CollectionType.Array:
+				case CollectionType.Array:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount );
+					this._itemsCount.Push( this._root.ItemsCount );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( false );
 					break;
 				}
-				case ItemsUnpacker.CollectionType.Map:
+				case CollectionType.Map:
 				{
-					this._itemsCount.Push( this._root.InternalItemsCount * 2 );
+					this._itemsCount.Push( this._root.ItemsCount * 2 );
 					this._unpacked.Push( 0 );
 					this._isMap.Push( true );
 					break;

@@ -1,0 +1,434 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ assembly Name="System.Numerics" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#
+
+var __integers =
+	new Tuple<string, BigInteger, string, Type>[]
+	{
+		// Label, Expected Value, byte array, Exepected Type
+		Tuple.Create( "Int64MinValue",			new BigInteger( Int64.MinValue ),	"new byte[] { 0xD3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }",	typeof( long ) ),
+		Tuple.Create( "Int32MinValue",			new BigInteger( Int32.MinValue ),	"new byte[] { 0xD2, 0x80, 0x00, 0x00, 0x00 }",							typeof( long ) ),
+		Tuple.Create( "Int16MinValue",			new BigInteger( Int16.MinValue ),	"new byte[] { 0xD1, 0x80, 0x00 }",										typeof( long ) ),
+		Tuple.Create( "SByteMinValue",			new BigInteger( SByte.MinValue ),	"new byte[] { 0xD0, 0x80 }",											typeof( long ) ),
+		Tuple.Create( "NegativeFixNumMinValue",	new BigInteger( -32 ),				"new byte[] { 0xE0 }",													typeof( long ) ),
+		Tuple.Create( "MinusOne",				new BigInteger( -1 ),				"new byte[] { 0xFF }",													typeof( long ) ),
+		Tuple.Create( "Zero",					new BigInteger( 0 ),				"new byte[] { 0x0 }",													typeof( ulong ) ),
+		Tuple.Create( "PlusOne",				new BigInteger( 1 ),				"new byte[] { 0x1 }",													typeof( ulong ) ),
+		Tuple.Create( "PositiveFixNumMaxValue",	new BigInteger( 127 ),				"new byte[] { 0x7F }",													typeof( ulong ) ),
+		Tuple.Create( "ByteMaxValue",			new BigInteger( Byte.MaxValue ),	"new byte[] { 0xCC, 0xFF }",											typeof( ulong ) ),
+		Tuple.Create( "UInt16MaxValue",			new BigInteger( UInt16.MaxValue ),	"new byte[] { 0xCD, 0xFF, 0xFF }",										typeof( ulong ) ),
+		Tuple.Create( "UInt32MaxValue",			new BigInteger( UInt32.MaxValue ),	"new byte[] { 0xCE, 0xFF, 0xFF, 0xFF, 0xFF }",							typeof( ulong ) ),
+		Tuple.Create( "UInt64MaxValue",			new BigInteger( UInt64.MaxValue ),	"new byte[] { 0xCF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }",	typeof( ulong ) ),
+	};
+
+var __booleans =
+	new Tuple<string, bool, string, Type>[]
+	{
+		// Label, Expected Value, byte array, Exepected Type
+		Tuple.Create( "BooleanTrue", true, "new byte[] { 0xC3 }", typeof( bool ) ),
+		Tuple.Create( "BooleanFalse", false, "new byte[] { 0xC2 }", typeof( bool ) ),
+	};
+
+var __reals =
+	new Tuple<string, string, Type, string>[]
+	{
+		// Label, byte array, Exepected Type, Testing Expression
+		Tuple.Create( "SingleMaxValue", "new byte[] { 0xCA, 0x7F, 0x7F, 0xFF, 0xFF }", typeof( float ), "Single.MaxValue.Equals(" ),
+		Tuple.Create( "DoubleMaxValue", "new byte[] { 0xCB, 0x7F, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }", typeof( double ), "Double.MaxValue.Equals("  ),
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from ByteArrayUnpackerTest.Scalar.tt T4Template.
+	// Do not modify this file. Edit ByteArrayUnpackerTest.Scalar.tt instead.
+
+	partial class ByteArrayUnpackerTest
+	{
+<#
+foreach( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
+	foreach( var __testCase in __integers )
+	{
+		var length = __testCase.Item3.Count( c => c == ',' ) + 1;
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Extra()
+		{
+			var data = <#= __testCase.Item3 #>;
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2 #> ) );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+			}
+		}
+<#
+		foreach( var isNullable in new [] { false, true } )
+		{
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Extra()
+		{
+			var data = <#= __testCase.Item3 #>;
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2 #> ) );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset -1, Is.EqualTo( data.Length ) );
+			}
+		}
+<#
+		} // foreach( var isNullable
+	} // foreach( var __testCase
+
+	foreach( var __testCase in __booleans )
+	{
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Extra()
+		{
+			var data = <#= __testCase.Item3 #>;
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( ( <#= __testCase.Item4 #> )result.Value, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+			}
+		}
+<#
+		foreach( var isNullable in new [] { false, true } )
+		{
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item4 ) #>_<#= __testCase.Item1 #>_Extra()
+		{
+			var data = <#= __testCase.Item3 #>;
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
+				<#= __testCase.Item4.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item4 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item4 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result<#= isNullable ? ".Value" : String.Empty #>, Is.EqualTo( <#= __testCase.Item2.ToString( CultureInfo.InvariantCulture ).ToLowerInvariant() #> ) );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+			}
+		}
+<#
+		} // foreach( var isNullable
+	} // foreach( var __testCase
+
+	foreach( var __testCase in __reals )
+	{
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync ) #>_<#= __testCase.Item1 #>_Extra()
+		{
+			var data = <#= __testCase.Item2 #>;
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
+				Assert.IsTrue( <#= ReadAwait( isAsync ) #> );
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+				Assert.That( <#= __testCase.Item4 #> ( <#= __testCase.Item3 #> )result.Value ) );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+			}
+		}
+<#
+		foreach( var isNullable in new [] { false, true } )
+		{
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync, isNullable, __testCase.Item3 ) #>_<#= __testCase.Item1 #>_Extra()
+		{
+			var data = <#= __testCase.Item2 #>;
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
+				<#= __testCase.Item3.Name #><#= isNullable ? "?" : String.Empty #> result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( isNullable, __testCase.Item3 ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( isNullable, __testCase.Item3 ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( <#= __testCase.Item4 #> result<#= isNullable ? ".Value" : String.Empty #> ) );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+			}
+		}
+<#
+		} // foreach( var isNullable
+	} // foreach( var __testCase
+
+	foreach ( var __scalarType in 
+		new []
+		{
+			typeof( bool ), typeof( float ), typeof ( double ),
+			typeof( sbyte ), typeof( short ), typeof ( int ), typeof ( long ),
+			typeof( byte ), typeof( ushort ), typeof ( uint ), typeof ( ulong ),
+		}
+	)
+	{
+#>
+
+		[Test]
+		public <#= AsyncTest( isAsync, true, __scalarType ) #>_Extra()
+		{
+			var data = new byte[] { 0xC0 };
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
+				<#= __scalarType.Name #>? result;
+<#
+			if( !isAsync )
+			{
+#>
+				Assert.IsTrue( <#= Read( true, __scalarType ) #> );
+<#
+			}
+			else
+			{
+#>
+				var ret = <#= ReadAwait( true, __scalarType ) #>;
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#
+			}
+#>
+				Assert.That( result, Is.Null );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+			}
+		}
+<#
+	} // foreach( var __scalarType
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+	}
+} // foreach( var isAsync
+#>
+	}
+}
+<#+
+private static string AsyncTest( bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} TestRead{1}",
+			isAsync ? "async Task" : "void",
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Test( bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void TestRead{0}",
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string AsyncTest( bool isAsync, bool isNullable, Type type )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0} TestRead{1}{2}{3}",
+			isAsync ? "async Task" : "void",
+			isNullable ? "Nullable" : String.Empty,
+			type.Name,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Test( bool isAsync, bool isNullable, Type type )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void TestRead{0}{1}{2}",
+			isNullable ? "Nullable" : String.Empty,
+			type.Name,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string ReadAwait( bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}unpacker.Read{1}()",
+			isAsync ? "await " : String.Empty,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Read( bool isNullable, Type type )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"unpacker.Read{0}{1}( out result )",
+			isNullable ? "Nullable" : String.Empty,
+			type.Name
+		);
+}
+
+private static string ReadAwait( bool isNullable, Type type )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"await unpacker.Read{0}{1}Async()",
+			isNullable ? "Nullable" : String.Empty,
+			type.Name
+		);
+}
+#>

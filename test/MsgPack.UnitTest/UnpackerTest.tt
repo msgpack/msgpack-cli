@@ -49,27 +49,21 @@ namespace MsgPack
 	// This file was generated from UnpackerTest.tt and StreamingUnapkcerBase.ttinclude T4Template.
 	// Do not modify this file. Edit UnpackerTest.tt and StreamingUnapkcerBase.ttinclude instead.
 
-	[TestFixture]
-	[Timeout( 500 )]
-	public class UnpackerTest
+	public abstract partial class UnpackerTest
 	{
-		[Test]
-		public void TestCreate_StreamIsNull()
-		{
-			Assert.Throws<ArgumentNullException>( () => { using ( Unpacker.Create( null ) ) { } } );
-		}
+		protected abstract bool ShouldCheckStreamPosition { get; }
 
-		[Test]
-		public void TestCreate_OwnsStreamisFalse_NotDisposeStream()
-		{
-			using ( var stream = new MemoryStream() )
-			{
-				using ( Unpacker.Create( stream, false ) ) { }
+		protected abstract bool ShouldCheckSubtreeUnpacker { get; }
 
-				// Should not throw ObjectDisposedException.
-				stream.WriteByte( 1 );
-			}
-		}
+		protected abstract bool CanReadFromEmptySource { get; }
+
+		protected abstract bool MayFailToRollback { get; }
+
+		protected abstract Unpacker CreateUnpacker( MemoryStream stream );
+
+		protected abstract bool CanRevert( Unpacker unpacker );
+
+		protected abstract long GetOffset( Unpacker unpacker );
 
 <#
 foreach( var isAsync in new [] { false, true } )
@@ -86,7 +80,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Read", isAsync ) #>_ScalarSequence_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2, 0x3 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
 				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
@@ -101,7 +95,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Read", isAsync ) #>_Array_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x93, 0x1, 0x2, 0x3 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 #pragma warning disable 612,618
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
@@ -127,7 +121,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Read", isAsync ) #>_Map_AsIs()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x83, 0x1, 0x1, 0x2, 0x2, 0x3, 0x3 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 #pragma warning disable 612,618
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
@@ -161,7 +155,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Read", isAsync ) #>_ReadInTail_NoEffect()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2, 0x3 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "1st" );
 				Assert.That( rootUnpacker.LastReadData.Equals( 1 ) );
@@ -178,8 +172,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "Read", isAsync ) #>_ReadInSubtreeTail_NoEffect()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Top Level" );
 				Assert.That( rootUnpacker.IsArrayHeader );
@@ -203,15 +214,32 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "Read", isAsync ) #>_InSubtreeMode_Fail()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Failed to first read" );
 
 				using ( var subTreeUnpacker = rootUnpacker.ReadSubtree() )
 				{
 					// To be failed.
-					Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "rootUnpacker.Read", isAsync ) #>() );
+					<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "rootUnpacker.Read", isAsync ) #>() );
 				}
 			}
 		}
@@ -219,8 +247,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_IsScalar_Fail()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Failed to first read" );
 
@@ -239,8 +284,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_NestedArray_Success()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x94, 0x91, 0x1, 0x90, 0xC0, 0x92, 0x1, 0x2, 0x91, 0x1 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
 
@@ -295,8 +357,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_NestedMap_Success()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x84, 0x1, 0x81, 0x1, 0x1, 0x2, 0x80, 0x3, 0xC0, 0x4, 0x82, 0x1, 0x1, 0x2, 0x2, 0x81, 0x1, 0x1 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
 
@@ -367,8 +446,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_Nested_ReadGrandchildren_Success()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 0x1, 0x91, 0x1, 0x2 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), Is.True );
 
@@ -394,8 +490,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InLeafBody_Fail()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
-			using ( var rootUnpacker = Unpacker.Create( buffer ) )
+			using ( var rootUnpacker = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "rootUnpacker.Read", isAsync ) #>(), "Failed to first read" );
 
@@ -418,19 +531,53 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "Read", isAsync ) #>_UnderSkipping()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Skip", isAsync ) #>(), Is.Null, "Precondition" );
-				Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+				<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
 			}
 		}
 
 		[Test]
 		public <#= AsyncTest( "GetEnumerator", isAsync ) #>_UnderSkipping()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Skip", isAsync ) #>(), Is.Null, "Precondition" );
 				Assert.Throws<InvalidOperationException>( () =>
@@ -447,8 +594,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_UnderSkipping()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0xD1, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Skip", isAsync ) #>(), Is.Null, "Precondition" );
 				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
@@ -458,12 +622,28 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "Read", isAsync ) #>_UnderEnumerating()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				foreach ( var item in target )
 				{
-					Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+					<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
 				}
 			}
 		}
@@ -471,12 +651,28 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "Skip", isAsync ) #>_UnderEnumerating()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				foreach ( var item in target )
 				{
-					Assert.<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Skip", isAsync ) #>() );
+					<#= Throws( isAsync ) #><InvalidOperationException>( <#= AsyncLambda( "target.Skip", isAsync ) #>() );
 				}
 			}
 		}
@@ -484,8 +680,24 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "ReadSubtree", isAsync ) #>_UnderEnumerating()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				foreach ( var item in target )
 				{
@@ -497,8 +709,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InRootHead_Success()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x91, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
 				Assert.That( target.IsArrayHeader );
@@ -518,8 +747,24 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncLambdaTest( "ReadSubtree", isAsync ) #>_InScalar()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0xD0, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.Throws<InvalidOperationException>( () => target.ReadSubtree() );
 			}
@@ -531,8 +776,25 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadSubtree", isAsync ) #>_InNestedScalar()
 		{
+			if ( !this.ShouldCheckSubtreeUnpacker )
+			{
+<#
+	if ( isAsync )
+	{
+#>
+#if MSTEST
+				// MSTEST cannot handle inconclusive in async test correctly.
+				await Task.Delay( 0 );
+				return;
+#endif // MSTEST
+<#
+	}
+#>
+				Assert.Ignore( "Cannot test subtree unpacker in " + this.GetType().Name );
+			}
+
 			using ( var buffer = new MemoryStream( new byte[] { 0x81, 0x1, 0x91, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
 				Assert.That( target.IsMapHeader, Is.True );
@@ -546,7 +808,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_OneScalar_AsScalar()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
@@ -559,7 +821,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_TwoScalar_AsTwoScalar()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x1, 0x2 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result1 = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result1.HasValue );
@@ -574,13 +836,25 @@ foreach( var isAsync in new [] { false, true } )
 		}
 
 		[Test]
-		public <#= AsyncTest( "ReadItem", isAsync ) #>_Empty_Null()
+		public <#= Test( "ReadItem", isAsync ) #>_Empty_Null()
 		{
-			using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			if ( this.CanReadFromEmptySource )
 			{
-				var result = <#= Await( "target.ReadItem", isAsync ) #>();
-				Assert.That( result.HasValue, Is.False );
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				using ( var target = this.CreateUnpacker( buffer ) )
+				{
+					var result = target.ReadItem<#= isAsync ? "Async" : String.Empty #>()<#= isAsync ? ".Result" : String.Empty #>;
+					Assert.That( result.HasValue, Is.False );
+				}
+			}
+			else
+			{
+				using ( var buffer = new MemoryStream( new byte[ 0 ] ) )
+				{
+					Assert.Throws<ArgumentException>(
+						() => this.CreateUnpacker( buffer )
+					);
+				}
 			}
 		}
 
@@ -588,7 +862,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_Array_AsSingleArray()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
@@ -604,7 +878,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_Map_AsSingleMap()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x82, 0x1, 0x2, 0x3, 0x4 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
@@ -620,7 +894,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_ArrayFollowingScalar_AsSingleArrayAndScalar()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x1, 0x2, 0x3 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
@@ -640,7 +914,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_MapFollowingScalar_AsSingleMapAndScalar()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x82, 0x1, 0x2, 0x3, 0x4, 0x5 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result =<#= Await( " target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
@@ -660,7 +934,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_ArrayOfArray_AsSingleArray()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x92, 0x92, 11, 12, 0x92, 21, 22 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
@@ -681,7 +955,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadItem", isAsync ) #>_MapOfMap_AsSingleMap()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x82, 1, 0x82, 11, 1, 12, 2, 2, 0x82, 21, 1, 22, 2 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				var result = <#= Await( "target.ReadItem", isAsync ) #>();
 				Assert.That( result.HasValue );
@@ -700,7 +974,7 @@ foreach( var isAsync in new [] { false, true } )
 		[Test]
 		public <#= AsyncTest( "ReadString", isAsync ) #>_Clob()
 		{
-			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( Char.ConvertFromUtf32 ) );
+			var str = String.Concat( Enumerable.Range( 0, 0x1FFFF ).Where( i => i < 0xD800 || 0xDFFF < i ).Select( ConvertFromUtf32 ) );
 			var encoded = Encoding.UTF8.GetBytes( str );
 			using ( var buffer =
 				new MemoryStream(
@@ -710,7 +984,7 @@ foreach( var isAsync in new [] { false, true } )
 					.ToArray()
 				)
 			)
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				string result;
 <#
@@ -737,7 +1011,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Read", isAsync ) #>_EmptyArray_RecognizeEmptyArray()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x90, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
 				Assert.That( target.IsArrayHeader );
@@ -750,7 +1024,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadArrayLength", isAsync ) #>_EmptyArray_RecognizeEmptyArray()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x90, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				long result;
 <#
@@ -780,7 +1054,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "Read", isAsync ) #>_EmptyMap_RecognizeEmptyMap()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x80, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				Assert.That( <#= Await( "target.Read", isAsync ) #>() );
 				Assert.That( target.IsMapHeader );
@@ -793,7 +1067,7 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncTest( "ReadMapLength", isAsync ) #>_EmptyMap_RecognizeEmptyMap()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0x80, 0x1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
 				long result;
 <#
@@ -823,9 +1097,9 @@ foreach( var isAsync in new [] { false, true } )
 		public <#= AsyncLambdaTest( "Read", isAsync ) #>_InvalidHeader_MessageTypeException()
 		{
 			using ( var buffer = new MemoryStream( new byte[] { 0xC1 } ) )
-			using ( var target = Unpacker.Create( buffer ) )
+			using ( var target = this.CreateUnpacker( buffer ) )
 			{
-				Assert.<#= Throws( isAsync ) #><UnassignedMessageTypeException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
+				<#= Throws( isAsync ) #><UnassignedMessageTypeException>( <#= AsyncLambda( "target.Read", isAsync ) #>() );
 			}
 		}
 
@@ -839,6 +1113,47 @@ foreach( var isAsync in new [] { false, true } )
 	}
 } // foreach(isAsync)
 #>
+
+		private static string ConvertFromUtf32( int utf32 )
+		{
+#if !SILVERLIGHT
+			return Char.ConvertFromUtf32( utf32 );
+#else
+			// From coreclr source: https://github.com/dotnet/coreclr/blob/master/src/mscorlib/shared/System/Char.cs
+
+			// For UTF32 values from U+00D800 ~ U+00DFFF, we should throw.  They
+			// are considered as irregular code unit sequence, but they are not illegal.
+			if ( ( utf32 < 0 || utf32 > 0x10ffff ) || ( utf32 >= 0x00d800 && utf32 <= 0x00dfff ) )
+			{
+				throw new ArgumentOutOfRangeException( "utf32" );
+			}
+
+			if ( utf32 < 0x10000 )
+			{
+				// This is a BMP character.
+				return ( Char.ToString( ( char )utf32 ) );
+			}
+
+			// This is a supplementary character.  Convert it to a surrogate pair in UTF-16.
+			utf32 -= 0x10000;
+			uint surrogate = 0; // allocate 2 chars worth of stack space
+			char[] chars = new char[ 2 ];
+			chars[0] = ( char )( ( utf32 / 0x400 ) + ( int )'\ud800' );
+			chars[1] = ( char )( ( utf32 % 0x400 ) + ( int )'\udc00' );
+			return new String( chars );
+#endif // SILVERLIGHT
+		}
+
+		protected sealed class NonSeekableStream : MemoryStream
+		{
+			public override bool CanSeek
+			{
+				get { return false; }
+			}
+
+			public NonSeekableStream( byte[] buffer )
+				: base( buffer ) { }
+		}
 	}
 }
 <#+
@@ -850,6 +1165,17 @@ private static string AsyncTest( string method, bool isAsync )
 			CultureInfo.InvariantCulture,
 			"{0} Test{1}{2}",
 			isAsync ? "async Task" : "void",
+			method,
+			isAsync ? "Async" : String.Empty
+		);
+}
+
+private static string Test( string method, bool isAsync )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"void Test{0}{1}",
 			method,
 			isAsync ? "Async" : String.Empty
 		);
@@ -880,7 +1206,7 @@ private static string AsyncLambdaTest( string method, bool isAsync )
 
 private static string Throws( bool isAsync )
 {
-	return isAsync ? "ThrowsAsync" : "Throws";
+	return isAsync ? "AssertEx.ThrowsAsync" : "Assert.Throws";
 }
 
 private static string AsyncLambda( string expressionBody, bool isAsync )

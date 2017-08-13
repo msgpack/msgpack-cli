@@ -22,7 +22,9 @@
 // ***********************************************************************
 
 using System;
+#if SILVERLIGHT
 using System.Web.UI;
+#endif // SILVERLIGHT
 using NUnit.Framework.Interfaces;
 
 namespace NUnit.Framework.Internal

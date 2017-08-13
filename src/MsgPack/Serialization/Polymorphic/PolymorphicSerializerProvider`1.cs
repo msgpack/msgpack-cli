@@ -1,4 +1,4 @@
-#region -- License Terms --
+﻿#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
@@ -46,6 +46,7 @@ namespace MsgPack.Serialization.Polymorphic
 		public PolymorphicSerializerProvider( SerializationContext context, MessagePackSerializer defaultSerializer )
 		{
 			this._defaultSerializer = MessagePackSerializer.Wrap<T>( context, defaultSerializer );
+			this._defaultSchema = PolymorphismSchema.Create( typeof( T ), null );
 		}
 #endif
 

@@ -31,6 +31,7 @@ var excludingTypes =
 	new HashSet<string>
 	{
 		"System.ArgIterator",
+		"System.ValueTuple",
 		"System.RuntimeArgumentHandle",
 		"System.TypedReference",
 		"System.Void",
@@ -60,8 +61,14 @@ var excludingTypes =
 		"System.Security.Cryptography.CngProperty",
 		"System.Security.Cryptography.CngPropertyOptions",
 		"System.Security.Cryptography.CngUIProtectionLevels",
+		"System.Security.Cryptography.ECCurve",
 		"System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction",
 		"System.Security.Cryptography.ECKeyXmlFormat",
+		"System.Security.Cryptography.ECParameters",
+		"System.Security.Cryptography.ECPoint",
+		"System.Security.Cryptography.HashAlgorithmName",
+		"System.Security.Cryptography.RSAEncryptionPaddingMode",
+		"System.Security.Cryptography.RSASignaturePaddingMode",
 		"System.Security.Cryptography.SignatureVerificationResult",
 		"System.Security.Cryptography.X509Certificates.TrustStatus",
 		"System.Reflection.AssemblyContentType",

@@ -1,8 +1,9 @@
-﻿#region -- License Terms --
+﻿
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,8 +31,8 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-	// This file was generated from Unpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude T4Template.
-	// Do not modify this file. Edit Unpacker.Unpacking.tt and StreamingUnapkcerBase.ttinclude instead.
+	// This file was generated from Unpacker.Unpacking.tt and Unpacker.Unpacking.ttinclude T4Template.
+	// Do not modify this file. Edit Unpacker.Unpacking.tt and Unpacker.Unpacking.ttinclude instead.
 
 	partial class Unpacker
 	{
@@ -1985,7 +1986,6 @@ namespace MsgPack
 
 #endif // FEATURE_TAP
 
-
 		/// <summary>
 		///		Reads next array length value from current stream.
 		///	</summary>
@@ -2076,7 +2076,6 @@ namespace MsgPack
 		}
 
 #endif // FEATURE_TAP
-
 
 		/// <summary>
 		///		Reads next map length value from current stream.
@@ -2402,5 +2401,6 @@ namespace MsgPack
 		}
 
 #endif // FEATURE_TAP
+
 	}
 }

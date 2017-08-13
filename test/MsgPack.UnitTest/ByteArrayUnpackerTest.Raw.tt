@@ -1,0 +1,309 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+<#
+
+var testSituations =
+	new []
+	{
+		// Suffix, Value Type, Unit Value Expression, Expected Value Expression Format, is str
+		Tuple.Create( "String", "String", "'A'", "new String( {0}, {1} )", true ),
+		Tuple.Create( "Binary", "Byte[]", "0xFF", "Enumerable.Repeat( {0}, {1} ).ToArray()", false )
+	};
+var strVariations =
+	new []
+	{
+		// Label, Length, Header Bytes, Header Type, Expected Read Length in Limited cases
+		Tuple.Create( "FixStr", 0, "0xA0", "String", 0 ), // Will fail to read entire header
+		Tuple.Create( "FixStr", 0x1F, "0xBF", "String", 1 ), // Will fail to read body
+		Tuple.Create( "Str8", 0, "0xD9, 0", "String", 1 ), // Will fail to read length
+		Tuple.Create( "Str8", 0xFF, "0xD9, 0xFF", "String", 2 ), // Will fail to read body
+		Tuple.Create( "Str16", 0, "0xDA, 0, 0", "String", 1 ), // Will fail to read length
+		Tuple.Create( "Str16", 0xFFFF, "0xDA, 0xFF, 0xFF", "String", 3 ), // Will fail to read body
+		Tuple.Create( "Str32", 0, "0xDB, 0, 0, 0, 0", "String", 1 ), // Will fail to read length
+		Tuple.Create( "Str32", 0x10000, "0xDB, 0, 1, 0, 0", "String", 5 ), // Will fail to read body
+	};
+
+var binVariations =
+	new []
+	{
+		// Label, Length, Header Bytes, Expected Read Length in Limited cases
+		Tuple.Create( "Bin8", 0, "0xC4, 0", "Byte[]", 1 ), // Will fail to read length
+		Tuple.Create( "Bin8", 0xFF, "0xC4, 0xFF", "Byte[]", 2 ), // Will fail to read body
+		Tuple.Create( "Bin16", 0, "0xC5, 0, 0", "Byte[]", 1 ), // Will fail to read length
+		Tuple.Create( "Bin16", 0xFFFF, "0xC5, 0xFF, 0xFF", "Byte[]", 3 ), // Will fail to read body
+		Tuple.Create( "Bin32", 0, "0xC6, 0, 0, 0, 0", "Byte[]", 1 ), // Will fail to read length
+		Tuple.Create( "Bin32", 0x10000, "0xC6, 0, 1, 0, 0", "Byte[]", 5 ), // Will fail to read body
+	};
+
+#>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	// This file was generated from ByteArrayUnpackerTest.Raw.tt T4Template.
+	// Do not modify this file. Edit ByteArrayUnpackerTest.Raw.tt instead.
+
+	partial class ByteArrayUnpackerTest
+	{
+<#
+foreach( var isAsync in new [] { false, true } )
+{
+	if ( isAsync )
+	{
+#>
+
+#if FEATURE_TAP
+<#
+	}
+
+	foreach( var testSituation in testSituations )
+	{
+		foreach( var testCase in strVariations )
+		{
+			PutTest( testSituation, testCase, testSituation.Item5 || testCase.Item2 == 0, isAsync );
+		}
+
+		// can be bin stream.
+		foreach( var testCase in binVariations )
+		{
+			PutTest( testSituation, testCase, false, isAsync );
+		}
+	}
+
+	if ( isAsync )
+	{
+#>
+
+#endif // FEATURE_TAP
+
+<#
+	}
+}
+#>
+	}
+}
+<#+
+private void PutTest( Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string, int> testCase, bool canConvertToString, bool isAsync )
+{
+	// FIXME: too short data, too long data
+	var readDataMethodPrefix = "TestRead_" + testCase.Item1 + "_" + testCase.Item2 + ( isAsync ? "Async" : String.Empty ) + "_As" + testSituation.Item1;
+	PutTestMethod( readDataMethodPrefix, testSituation, testCase, canConvertToString, PutTestUnpackDataBody, isAsync );
+
+	var readDirectMethodPrefix = "TestRead" + testSituation.Item1 + "_" + testCase.Item1 + ( isAsync ? "Async" : String.Empty ) + "_" + testCase.Item2;
+	PutTestMethod( readDirectMethodPrefix, testSituation, testCase, canConvertToString, PutTestUnpackDirectBody, isAsync );
+}
+
+private void PutTestUnpackDataBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool isExtraOrSplit, int expectedReadLength, bool isAsync )
+{
+	if ( isExtraOrSplit )
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.IsTrue( unpacker.Read() );
+<#+
+		}
+		else
+		{
+#>
+				Assert.IsTrue( await unpacker.ReadAsync() );
+<#+
+		}
+#>
+
+#pragma warning disable 612,618
+				var result = unpacker.Data;
+#pragma warning restore 612,618
+				Assert.IsTrue( result.HasValue );
+
+<#+
+		if ( testSituation.Item2 == sourceType )
+		{
+#>
+				Assert.That( ( <#= sourceType #> )result.Value, Is.EqualTo( <#= expectedValue #> ) );
+				Assert.That( result.Value.UnderlyingType, Is.EqualTo( typeof( <#= sourceType #> ) ) );
+<#+
+		}
+#>
+
+				// raw/str always can be byte[]
+				var asBinary = ( byte[] )result.Value;
+
+<#+
+		if ( canConvertToString )
+		{
+#>
+				var asString = ( String )result.Value;
+<#+
+		}
+		else
+		{
+#>
+				Assert.Throws<InvalidOperationException>( () => { var asString = ( String )result.Value; } );
+<#+
+		}
+
+		if ( canConvertToString )
+		{
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( string ) ).GetValueOrDefault() );
+<#+
+		}
+		else
+		{
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( string ) ).GetValueOrDefault(), Is.False );
+<#+
+		}
+#>
+				Assert.That( result.Value.IsTypeOf( typeof( byte[] ) ).GetValueOrDefault() );
+
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+<#+
+	}
+	else
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read() );
+<#+
+		}
+		else
+		{
+#>
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () => await unpacker.ReadAsync() );
+<#+
+		}
+#>
+
+				// Only header is read.
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( <#= expectedReadLength #> ) );
+<#+
+	}
+}
+
+private void PutTestUnpackDirectBody( Tuple<string, string, string, string, bool> testSituation, string sourceType, string expectedValue, bool canConvertToString, bool isExtraOrSplit, int expectedReadLength, bool isAsync )
+{
+	if ( !isAsync || isExtraOrSplit )
+	{
+#>
+				<#= testSituation.Item2 #> result;
+
+<#+
+	}
+
+	if ( isExtraOrSplit )
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.IsTrue( unpacker.Read<#= testSituation.Item1 #>( out result ) );
+<#+
+		}
+		else
+		{
+#>
+				var ret = await unpacker.Read<#= testSituation.Item1 #>Async();
+				Assert.IsTrue( ret.Success );
+				result = ret.Value;
+<#+
+		}
+#>
+
+				Assert.That( result, Is.EqualTo( <#= expectedValue #> ) );
+
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( data.Length ) );
+<#+
+	}
+	else
+	{
+		if ( !isAsync )
+		{
+#>
+				Assert.Throws<InvalidMessagePackStreamException>( () => unpacker.Read<#= testSituation.Item1 #>( out result ) );
+<#+
+		}
+		else
+		{
+#>
+				AssertEx.ThrowsAsync<InvalidMessagePackStreamException>( async () =>  await unpacker.Read<#= testSituation.Item1 #>Async() );
+<#+
+		}
+#>
+
+				// Only header is read.
+				// -1 is prepended extra bytes length
+				Assert.That( unpacker.Offset - 1, Is.EqualTo( <#= expectedReadLength #> ) );
+<#+
+	}
+}
+
+private void PutTestMethod( string methodName, Tuple<string, string, string, string, bool> testSituation, Tuple<string, int, string, string, int> testCase, bool canConvertToString, Action<Tuple<string, string, string, string, bool>, string, string, bool, bool, int, bool> putTestBody, bool isAsync )
+{
+	var expectedValue = String.Format( CultureInfo.InvariantCulture, testSituation.Item4, testSituation.Item3, testCase.Item2 );
+#>
+
+		[Test]
+		public <#= AsyncVoid( isAsync ) #> <#= methodName #>_Extra()
+		{
+			var data =
+				new byte[] { <#= testCase.Item3 #> }
+				.Concat( Enumerable.Repeat( ( byte )<#= testSituation.Item3 #>, <#= testCase.Item2 #> ) ).ToArray();
+			using( var unpacker = this.CreateUnpacker( PrependAppendExtra( data ), 1 ) )
+			{
+				// Verify initial offset (prepended bytes length)
+				Assert.That( unpacker.Offset, Is.EqualTo( 1 ) );
+
+<#+
+				putTestBody( testSituation, testCase.Item4, expectedValue, canConvertToString, true, testCase.Item5, isAsync );
+#>
+			}
+		}
+<#+
+}
+
+private static string AsyncVoid( bool isAsync )
+{
+	return ( isAsync ) ? "async Task" : "void";
+}
+#>

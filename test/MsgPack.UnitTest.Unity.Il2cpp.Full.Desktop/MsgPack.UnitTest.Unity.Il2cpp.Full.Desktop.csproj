@@ -58,6 +58,9 @@
     <Compile Include="..\..\src\MsgPack.Net35\Tuple`n.cs">
       <Link>Tuple`n.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Net35\Augments.cs">
+      <Link>Augments.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest.Net35\Dummies\System.Threading.Tasks\Task.cs">
       <Link>Dummies\System.Threading.Tasks\Task.cs</Link>
     </Compile>
@@ -409,8 +412,32 @@
     <Compile Include="..\MsgPack.UnitTest\BigEndianBinaryTest.cs">
       <Link>BigEndianBinaryTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayPackerTest.Allocation.cs">
+      <Link>ByteArrayPackerTest.Allocation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayPackerTest.cs">
+      <Link>ByteArrayPackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.cs">
+      <Link>ByteArrayUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.Ext.cs">
+      <Link>ByteArrayUnpackerTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.Raw.cs">
+      <Link>ByteArrayUnpackerTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\ByteArrayUnpackerTest.Scalar.cs">
+      <Link>ByteArrayUnpackerTest.Scalar.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
       <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionValidatingByteArrayUnpackerTest.cs">
+      <Link>CollectionValidatingByteArrayUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionValidatingStreamUnpackerTest.cs">
+      <Link>CollectionValidatingStreamUnpackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\DirectConversionTest.cs">
       <Link>DirectConversionTest.cs</Link>
@@ -420,6 +447,12 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\EqualsTest.cs">
       <Link>EqualsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\FastByteArrayUnpackerTest.cs">
+      <Link>FastByteArrayUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\FastStreamUnpackerTest.cs">
+      <Link>FastStreamUnpackerTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
       <Link>GenericExceptionTester.cs</Link>
@@ -487,17 +520,14 @@
     <Compile Include="..\MsgPack.UnitTest\MessageUnpackableTest.cs">
       <Link>MessageUnpackableTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\PackerFactoryTest.cs">
+      <Link>PackerFactoryTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.cs">
       <Link>PackerTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\PackerTest.Miscs.cs">
-      <Link>PackerTest.Miscs.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.cs">
       <Link>PackerTest.Pack.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\PackerTest.Pack.Miscs.cs">
-      <Link>PackerTest.Pack.Miscs.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\PackerTest.PackBinary.cs">
       <Link>PackerTest.PackBinary.cs</Link>
@@ -667,11 +697,26 @@
     <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
       <Link>SplittingStream.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\SubtreeUnpackerTest.cs">
-      <Link>SubtreeUnpackerTest.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\StreamPackerTest.cs">
+      <Link>StreamPackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.cs">
+      <Link>StreamUnpackerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Ext.cs">
+      <Link>StreamUnpackerTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Raw.cs">
+      <Link>StreamUnpackerTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamUnpackerTest.Scalar.cs">
+      <Link>StreamUnpackerTest.Scalar.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
       <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerFactoryTest.cs">
+      <Link>UnpackerFactoryTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.cs">
       <Link>UnpackerTest.cs</Link>
@@ -694,6 +739,9 @@
     <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Skip.Variations.cs">
       <Link>UnpackerTest.Skip.Variations.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackerTest.Subtree.cs">
+      <Link>UnpackerTest.Subtree.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.cs">
       <Link>UnpackingTest.cs</Link>
     </Compile>
@@ -707,6 +755,7 @@
       <Link>UnpackingTest.Scalar.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityTestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

@@ -26,7 +26,7 @@ using System.Runtime.Serialization;
 using NUnit.Framework;
 #else
 using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
-using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.DataTestMethodAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
 using Assert = NUnit.Framework.Assert;
 using Is = NUnit.Framework.Is;
 #endif
