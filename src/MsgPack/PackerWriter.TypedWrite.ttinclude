@@ -1,0 +1,58 @@
+﻿<#@ include file="..\Core.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#+
+private static readonly string[] scalarTypes =
+	new []
+	{
+		"byte",
+		"ushort",
+		"uint",
+		"ulong",
+		"float",
+		"double"
+	};
+
+private static readonly HashSet<string> nonBulletables =
+	new HashSet<string>
+	{
+		"float",
+		"double"
+	};
+
+private static readonly Dictionary<string, int> lengthes =
+	new Dictionary<string, int>
+	{
+		{ "byte", 1 },
+		{ "ushort", 2 },
+		{ "uint", 4 },
+		{ "ulong", 8 },
+		{ "float", 4 },
+		{ "double", 8 }
+	};
+
+private void WriteToBits( string type, string variable, out string bitsVariableName )
+{
+	if ( nonBulletables.Contains( type ) )
+	{
+#>
+			var bits = ToBits( <#= variable #> );
+<#+
+		bitsVariableName = "bits";
+	}
+	else
+	{
+		bitsVariableName = variable;
+	}
+}
+
+private void WriteShiftCore( int index, int bytesLengthOfType, string variable, string buffer, Func<int, string> offsetGenerator )
+{
+	var shiftSize = ( bytesLengthOfType - index - 1 ) * 8;
+	var shift = shiftSize == 0 ? String.Empty : ( " >> " + shiftSize.ToString( CultureInfo.InvariantCulture ) );
+#>
+			<#= buffer #>[ <#= offsetGenerator( index ) #> ] = unchecked( ( byte )( <#= variable #><#= shift #> & 0xFF ) );
+<#+
+}
+#>

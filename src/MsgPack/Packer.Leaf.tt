@@ -1,0 +1,158 @@
+﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\Core.ttinclude" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+#endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
+
+namespace MsgPack
+{
+	// This file was generated from Packer.Leaf.tt and Core.ttinclude T4Template.
+	// Do not modify this file. Edit Packer.Leaf.tt and Core.ttinclude instead.
+
+<#
+foreach ( var kind in 
+	new []
+	{
+		"Stream",
+		"ByteArray"
+	}
+)
+{
+#>
+
+	partial class Default<#= kind #>Packer
+	{
+<#
+	foreach ( var isAsync in new [] { false, true } )
+	{
+		if ( isAsync )
+		{
+#>
+#if FEATURE_TAP
+
+<#
+		}
+
+		foreach ( var type in
+			new []
+			{
+				new { Name = "bool",				Suffix = String.Empty },
+				new { Name = "byte",				Suffix = String.Empty },
+				new { Name = "short",				Suffix = String.Empty },
+				new { Name = "int",					Suffix = String.Empty },
+				new { Name = "long",				Suffix = String.Empty },
+				new { Name = "sbyte",				Suffix = String.Empty },
+				new { Name = "ushort",				Suffix = String.Empty },
+				new { Name = "uint",				Suffix = String.Empty },
+				new { Name = "ulong",				Suffix = String.Empty },
+				new { Name = "float",				Suffix = String.Empty },
+				new { Name = "double",				Suffix = String.Empty },
+				new { Name = "string",				Suffix = "Raw" },
+				new { Name = "byte[]",				Suffix = "Raw" },
+				new { Name = "byte[]",				Suffix = "Binary" },
+			}
+		)
+		{
+#>
+		<#= DeclareOverride( isAsync, type.Suffix, type.Name + " value" ) #>
+		{
+			<#= Delegate( isAsync, type.Suffix, "value" ) #>
+		}
+
+<#
+		} // foreach scalar type
+
+		foreach ( var type in new [] { "Array", "Map", "Binary", "String" } )
+		{
+#>
+		<#= DeclareOverride( isAsync, type + "Header", "int count" ) #>
+		{
+			<#= Delegate( isAsync, type + "Header", "unchecked( ( uint )count )" ) #>
+		}
+
+<#
+		} // foreach collection type
+#>
+		<#= DeclareOverride( isAsync, "ExtendedTypeValue", "byte typeCode, byte[] body" ) #>
+		{
+			<#= Delegate( isAsync, "ExtendedTypeValue", "typeCode, body" ) #>
+		}
+
+<#
+
+		if ( isAsync )
+		{
+#>
+#endif // FEATURE_TAP
+<#
+		}
+	} // foreach isAsync
+#>
+	}
+<#
+}	// kind
+#>
+}
+<#+
+private static string DeclareOverride( bool isAsync, string type, string parameters )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"protected override {0} Pack{1}{2}Core( {3}{4} )",
+			isAsync ? "Task" : "void",
+			type,
+			isAsync ? "Async" : String.Empty,
+			parameters,
+			isAsync ? ", CancellationToken cancellationToken" : String.Empty
+		);
+}
+
+private static string Delegate( bool isAsync, string type, string arguments )
+{
+	return
+		String.Format(
+			CultureInfo.InvariantCulture,
+			"{0}this._core.Pack{1}{2}( {3}{4} );",
+			isAsync ? "return " : String.Empty,
+			type,
+			isAsync ? "Async" : String.Empty,
+			arguments,
+			isAsync ? ", cancellationToken" : String.Empty
+		);
+}
+#>

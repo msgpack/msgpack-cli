@@ -37,6 +37,29 @@ namespace MsgPack
 	/// </summary>
 	internal static class EncodingExtensions
 	{
+		public static /* unsafe */ bool EncodeString( this Encoder source, char[]/* char* */ chars, ref int charsOffset, ref int charsLength, byte[] /* byte* */ buffer, int bufferOffset, int bufferCount, out int bytesUsed )
+		{
+			bool isCompleted;
+			int charsUsed;
+			source.Convert(
+				chars,
+				charsOffset,
+				charsLength,
+				buffer,
+				bufferOffset,
+				bufferCount,
+				false,
+				out charsUsed,
+				out bytesUsed,
+				out isCompleted
+			);
+
+			charsOffset += charsUsed;
+			charsLength -= charsUsed;
+
+			return isCompleted;
+		}
+
 		public static bool DecodeString( this Decoder source, byte[] bytes, int bytesOffset, int bytesLength, char[] buffer, StringBuilder result )
 		{
 			bool isCompleted;

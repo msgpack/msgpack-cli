@@ -34,7 +34,7 @@ namespace MsgPack
 	/// <summary>
 	///		Basic <see cref="Packer"/> implementation using managed <see cref="Stream"/>.
 	/// </summary>
-	internal class StreamPacker : Packer
+	internal abstract class StreamPacker : Packer
 	{
 		private readonly Stream _stream;
 		private readonly bool _ownsStream;
@@ -49,7 +49,7 @@ namespace MsgPack
 			get { return this._stream.Position; }
 		}
 
-		public StreamPacker( Stream stream, PackerCompatibilityOptions compatibilityOptions, PackerUnpackerStreamOptions streamOptions )
+		protected StreamPacker( Stream stream, PackerCompatibilityOptions compatibilityOptions, PackerUnpackerStreamOptions streamOptions )
 			: base( compatibilityOptions )
 		{
 			if ( stream == null )

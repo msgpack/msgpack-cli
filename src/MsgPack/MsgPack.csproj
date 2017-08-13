@@ -153,6 +153,11 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Update="ByteArrayPackerWriter.TypedWrite.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ByteArrayPackerWriter.TypedWrite.tt</DependentUpon>
+    </Compile>
     <Compile Update="DefaultByteArrayUnpacker.Unpacking.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -162,6 +167,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DefaultStreamUnpacker.Unpacking.tt</DependentUpon>
+    </Compile>
+    <Compile Update="MessagePackPacker`1.Pack.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackPacker`1.Pack.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Packer.Leaf.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Packer.Leaf.tt</DependentUpon>
+    </Compile>
+    <Compile Update="StreamPackerWriter.TypedWrite.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StreamPackerWriter.TypedWrite.tt</DependentUpon>
     </Compile>
     <Compile Update="Unpacker.Unpacking.cs">
       <DependentUpon>Unpacker.Unpacking.tt</DependentUpon>
@@ -318,13 +338,31 @@
     <None Include="..\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
+    <None Include="MessagePackPacker`1.Pack.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackPacker`1.Pack.tt</DependentUpon>
+    </None>
+    <None Include="Packer.Leaf.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Packer.Leaf.tt</DependentUpon>
+    </None>
     <None Update="DefaultByteArrayUnpacker.Unpacking.tt">
       <LastGenOutput>DefaultByteArrayUnpacker.Unpacking.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
+    <None Update="MessagePackPacker`1.Pack.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackPacker`1.Pack.cs</LastGenOutput>
+    </None>
     <None Update="MessagePackUnpacker.Read.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MessagePackUnpacker.Read.cs</LastGenOutput>
+    </None>
+    <None Update="Packer.Leaf.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Packer.Leaf.cs</LastGenOutput>
     </None>
     <None Update="Serialization\DefaultSerializers\DefaultSerializers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -361,6 +399,14 @@
     <None Update="DefaultStreamUnpacker.Unpacking.tt">
       <LastGenOutput>DefaultStreamUnpacker.Unpacking.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="ByteArrayPackerWriter.TypedWrite.tt">
+      <LastGenOutput>ByteArrayPackerWriter.TypedWrite.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="StreamPackerWriter.TypedWrite.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamPackerWriter.TypedWrite.cs</LastGenOutput>
     </None>
     <None Update="Unpacker.Leaf.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
