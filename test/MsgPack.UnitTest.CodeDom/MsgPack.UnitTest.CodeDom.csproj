@@ -1,51 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{23F8ABB1-F41A-4150-B5D5-9A7AA60E05D2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack.UnitTest.CodeDom</AssemblyName>
-    <!-- TODO: netstandard2.0 -->
-    <TargetFrameworks>net46;net35;</TargetFrameworks>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- TODO: netcoreapp2.0 -->
+    <TargetFrameworks>net46</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
-    <DefineConstants>$(DefineConstants);NETFX_35;</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
-    <DefineConstants>$(DefineConstants);NETFX_46;</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' != 'net35'">
-    <DefineConstants>$(DefineConstants);FEATURE_TAP;</DefineConstants>
+  <Import Project="..\..\MsgPack.Common.props" />
+  <PropertyGroup>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.1" />
@@ -95,14 +64,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
-      <Project>{5bcec32e-990e-4de5-945f-bd27326a7418}</Project>
-      <Name>MsgPack</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MsgPack.UnitTest\MsgPack.UnitTest.csproj">
-      <Project>{3889c9be-0473-4b41-80e8-c4c923e837e7}</Project>
-      <Name>MsgPack.UnitTest</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj" />
+    <ProjectReference Include="..\MsgPack.UnitTest\MsgPack.UnitTest.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
