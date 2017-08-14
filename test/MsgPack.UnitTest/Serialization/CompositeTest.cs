@@ -64,7 +64,7 @@ namespace MsgPack.Serialization
 #if NETFX_35
 			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
 #else
-			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
+			SerializerDebugging.SetCodeCompiler( RoslynCodeGeneration.Compile );
 #endif // NETFX_35
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 		}
