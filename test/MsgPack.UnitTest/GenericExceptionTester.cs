@@ -146,7 +146,9 @@ namespace MsgPack
 			this.TestInnerExceptionConstructor_Null_SetToDefaultMessageAndNullInnerException();
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			this.TestSerialization();
+#if !NETSTANDARD2_0
 			this.TestSerializationOnPartialTrust();
+#endif // !NETSTANDARD2_0
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
@@ -221,7 +223,11 @@ namespace MsgPack
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private void TestSerialization()
 		{
+#if !NETSTANDARD2_0
 			Assert.That( typeof( T ), Is.BinarySerializable );
+#else // !NETSTANDARD2_0
+			Assert.That( typeof( T ).IsSerializable, Is.True );
+#endif // !NETSTANDARD2_0
 			var innerMessage = Guid.NewGuid().ToString();
 			var message = Guid.NewGuid().ToString();
 			var target = this._innerExceptionConstructor( message, new Exception( innerMessage ) );
@@ -238,6 +244,7 @@ namespace MsgPack
 			}
 		}
 
+#if !NETSTANDARD2_0
 		private void TestSerializationOnPartialTrust()
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
@@ -325,6 +332,7 @@ namespace MsgPack
 			var assemblyName = type.Assembly.GetName();
 			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
+#endif // !NETSTANDARD2_0
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }

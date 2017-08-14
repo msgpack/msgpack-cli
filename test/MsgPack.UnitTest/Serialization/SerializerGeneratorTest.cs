@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ namespace MsgPack.Serialization
 		}
 
 		#region -- Compat --
+#if !NETSTANDARD2_0
 #pragma warning disable 0618
 		[Test]
 		public void TestGenerateAssemblyFile_WithDefault_DllIsGeneratedOnAppBase()
@@ -253,8 +254,10 @@ namespace MsgPack.Serialization
 			}
 		}
 #pragma warning restore 0618
-		#endregion -- Compat --
+#endif // !NETSTANDARD2_0
+#endregion -- Compat --
 
+#if !NETSTANDARD2_0
 		[Test]
 		public void TestGenerateAssembly_WithDefault_DllIsGeneratedOnAppBase()
 		{
@@ -471,7 +474,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#region -- Issue102 --
+#region -- Issue102 --
 
 		[Test]
 		public void TestGenerateAssembly_DefaultEnumSerializationMethod_IsReflected()
@@ -502,9 +505,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue102--
+#endregion -- Issue102--
 
-		#region -- Issue107 --
+#region -- Issue107 --
 
 		[Test]
 		public void TestGenerateSerializerCodeAssembly_WithDefaultNamespace()
@@ -561,9 +564,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue107 --
+#endregion -- Issue107 --
 
-		#region -- Issue105 --
+#region -- Issue105 --
 
 		[Test]
 		public void TestGenerateSerializerCodeAssembly_WithBuiltInSupportedTypes_Ignored()
@@ -589,9 +592,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue105 --
+#endregion -- Issue105 --
 
-		#region -- Issue106 --
+#region -- Issue106 --
 
 		[Test]
 		public void TestGenerateSerializerCodeAssembly_ElementTypes_Generated()
@@ -648,7 +651,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue106 --
+#endregion -- Issue106 --
+
+#endif // !NETSTANDARD2_0
 
 		[Test]
 		public void TestGenerateCode_WithDefault_CSFileGeneratedOnAppBase()
@@ -905,8 +910,8 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#region -- Issue102 --
-
+#region -- Issue102 --
+#if !NETSTANDARD2_0
 		[Test]
 		public void TestGenerateCode_DefaultEnumSerializationMethod_IsReflected()
 		{
@@ -938,9 +943,10 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue102 --
+#endif // !NETSTANDARD2_0
+#endregion -- Issue102 --
 
-		#region -- Issue107 --
+#region -- Issue107 --
 
 		[Test]
 		public void TestGenerateSerializerSourceCodes_WithoutNamespace_Default()
@@ -1052,9 +1058,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue107 --
+#endregion -- Issue107 --
 
-		#region -- Issue105 --
+#region -- Issue105 --
 
 		[Test]
 		public void TestGenerateSerializerSourceCodes_WithBuiltInSupportedTypes_Ignored()
@@ -1082,9 +1088,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue105 --
+#endregion -- Issue105 --
 
-		#region -- Issue106 --
+#region -- Issue106 --
 
 		[Test]
 		public void TestGenerateSerializerSourceCodes_ElementTypes_Generated()
@@ -1145,9 +1151,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue106 --
+#endregion -- Issue106 --
 
-		#region -- Issue 120 --
+#region -- Issue 120 --
 
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_Generated()
@@ -1220,9 +1226,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue 120 --
+#endregion -- Issue 120 --
 
-		#region -- Issue 121 --
+#region -- Issue 121 --
 
 		[Test]
 		public void TestGenerateSerializerSourceCodes_MemberTypesOfElementTypes_ValueType_WithNullable_GeneratedWithNullable()
@@ -1434,11 +1440,11 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-		#endregion -- Issue 121 --
+#endregion -- Issue 121 --
 
-		#region -- Issue 138 --
+#region -- Issue 138 --
 
-
+#if !NETSTANDARD2_0
 		[Test]
 		public void TestGenerateSerializerCodeAssembly_WithoutNamespace_Default()
 		{
@@ -1544,9 +1550,11 @@ namespace MsgPack.Serialization
 				}
 			}
 		}
-		#endregion -- Issue 138 --
+#endif // !NETSTANDARD2_0
 
-		#region -- Issue 203 --
+#endregion -- Issue 138 --
+
+#region -- Issue 203 --
 
 		[Test]
 		public void TestRecursiveAbstractCollection_GenericList_OK()
@@ -1602,8 +1610,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		#endregion -- Issue 203 --
+#endregion -- Issue 203 --
 
+#if !NETSTANDARD2_0
 		private static void TestOnWorkerAppDomain( string geneartedAssemblyFilePath, PackerCompatibilityOptions packerCompatibilityOptions, SerializationMethod method, byte[] bytesValue, byte[] expectedPackedValue, TestType testType )
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
@@ -1695,6 +1704,7 @@ namespace MsgPack.Serialization
 				AppDomain.Unload( workerDomain );
 			}
 		}
+#endif // !NETSTANDARD2_0
 
 		private static void AssertValidCode( IEnumerable<SerializerCodeGenerationResult> results )
 		{

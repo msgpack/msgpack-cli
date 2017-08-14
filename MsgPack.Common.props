@@ -64,6 +64,9 @@
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netcoreapp1.0'">
     <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netcoreapp2.0'">
+    <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
     <DefineConstants>$(DefineConstants);__MOBILE__;AOT;XAMARIN;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
   </PropertyGroup>

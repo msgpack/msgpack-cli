@@ -4,7 +4,7 @@
     <ProjectGuid>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>MsgPack</AssemblyName>
-    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;MonoAndroid10;Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;netstandard2.0;MonoAndroid10;Xamarin.iOS10</TargetFrameworks>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NuspecFile>$(SolutionDir)/msgpack.nuspec</NuspecFile>
@@ -75,6 +75,13 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Reflection.Emit" Version="4.0.1" />
     <PackageReference Include="System.Reflection.Emit.LightWeight" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="NETStandard.Library" Version="2.0.0" />
+    <PackageReference Include="System.CodeDom" Version="4.4.0" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit.LightWeight" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -502,7 +509,7 @@
     <Compile Remove="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Compile Remove="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
     <Compile Include="AsyncReadResult.cs" />
     <Compile Include="AsyncReadResult`1.cs" />
     <Compile Include="TaskAugument.cs" />

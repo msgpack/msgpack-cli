@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -22,18 +22,22 @@
 #endregion -- License Terms --
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 
 using MsgPack.Serialization.AbstractSerializers;
 using MsgPack.Serialization.CodeDomSerializers;
+
+#if !NETSTANDARD2_0
+using System.CodeDom;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Reflection;
+using System.Reflection.Emit;
+
 using MsgPack.Serialization.EmittingSerializers;
+#endif // !NETSTANDARD2_0
 
 namespace MsgPack.Serialization
 {
@@ -57,8 +61,13 @@ namespace MsgPack.Serialization
 	///			If you want to get such fine grained control for them, you should implement own hand made serializers.
 	///		</note>
 	/// </remarks>
-	public class SerializerGenerator
+	public
+#if NETSTANDARD2_0
+	static
+#endif // NETSTANDARD2_0
+	class SerializerGenerator
 	{
+#if !NETSTANDARD2_0
 		/// <summary>
 		///		Gets the type of the root object which will be serialized/deserialized.
 		/// </summary>
@@ -285,6 +294,8 @@ namespace MsgPack.Serialization
 		{
 			return new SerializerAssemblyGenerationLogic().Generate( targetTypes, configuration );
 		}
+#endif // !NETSTANDARD2_0
+
 		/// <summary>
 		///		Generates source codes which implement auto-generated serializer types for specified types with default configuration.
 		/// </summary>
@@ -553,6 +564,7 @@ namespace MsgPack.Serialization
 			protected abstract Func<Type, ISerializerCodeGenerator> CreateGeneratorFactory( SerializationContext context );
 		}
 
+#if !NETSTANDARD2_0
 		private sealed class SerializerAssemblyGenerationLogic : SerializerGenerationLogic<SerializerAssemblyGenerationConfiguration>
 		{
 			protected override EmitterFlavor EmitterFlavor
@@ -582,6 +594,7 @@ namespace MsgPack.Serialization
 				return type => new AssemblyBuilderSerializerBuilder( type, type.GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes ) );
 			}
 		}
+#endif // !NETSTANDARD2_0
 
 		private sealed class SerializerCodesGenerationLogic : SerializerGenerationLogic<SerializerCodeGenerationConfiguration>
 		{

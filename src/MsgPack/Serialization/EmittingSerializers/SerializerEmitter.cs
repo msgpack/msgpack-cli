@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -78,12 +78,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // DEBUG
 			this._isDebuggable = isDebuggable;
 
-#if DEBUG && !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if DEBUG && !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			if ( isDebuggable && SerializerDebugging.DumpEnabled )
 			{
 				SerializerDebugging.PrepareDump( host.Assembly as AssemblyBuilder );
 			}
-#endif // DEBUG && !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // DEBUG && !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 		}
 
 		#region -- Field --

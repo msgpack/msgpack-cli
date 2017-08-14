@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2016 FUJIWARA, Yusuke
+// Copyright (C) 2014-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -88,11 +88,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 			);
 			var ctor = 
 				this._typeBuilder
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 				.CreateType()
 #else
 				.CreateTypeInfo().AsType()
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 				.GetRuntimeConstructor( ContextAndEnumSerializationMethodConstructorParameterTypes );
 #if DEBUG
 			Contract.Assert( ctor != null, "ctor != null" );

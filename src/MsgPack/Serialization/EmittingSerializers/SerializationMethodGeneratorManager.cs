@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -169,7 +169,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				assemblyName = typeof( SerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
 				var dedicatedAssemblyBuilder =
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 					AppDomain.CurrentDomain.DefineDynamicAssembly(
 						new AssemblyName( assemblyName ),
 						isDebuggable
@@ -189,13 +189,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 						new AssemblyName( assemblyName ),
 						isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run
 					);
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 
 				SetUpAssemblyBuilderAttributes( dedicatedAssemblyBuilder, isDebuggable );
 				this._assembly = dedicatedAssemblyBuilder;
 			}
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			if ( isDebuggable )
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, assemblyName + ".dll", true );
@@ -206,7 +206,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 #else
 			this._module = this._assembly.DefineDynamicModule( assemblyName );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 		}
 
 		internal static void SetUpAssemblyBuilderAttributes( AssemblyBuilder dedicatedAssemblyBuilder, bool isDebuggable )

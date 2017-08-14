@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -203,6 +203,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !NETSTANDARD1_3
+#if !NETSTANDARD2_0
 		[ThreadStatic]
 		private static AssemblyBuilder _assemblyBuilder;
 
@@ -239,6 +240,7 @@ namespace MsgPack.Serialization
 			_moduleBuilder =
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
+#endif // !NETSTANDARD2_0
 
 #if !FERATURE_CONCURRENT
 		private static volatile DependentAssemblyManager _dependentAssemblyManager = DependentAssemblyManager.Default;
@@ -313,6 +315,7 @@ namespace MsgPack.Serialization
 			set { _onTheFlyCodeDomEnabled = value; }
 		}
 
+#if !NETSTANDARD2_0
 		/// <summary>
 		///		Creates the new type builder for the serializer.
 		/// </summary>
@@ -345,6 +348,7 @@ namespace MsgPack.Serialization
 			}
 #endif // !NET35
 		}
+#endif // !NETSTANDARD2_0
 
 		/// <summary>
 		///		Resets debugging states.
@@ -352,8 +356,10 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Reset()
 		{
+#if !NETSTANDARD2_0
 			_assemblyBuilder = null;
 			_moduleBuilder = null;
+#endif // !NETSTANDARD2_0
 			_dumpEnabled = false;
 
 			if ( _ilTraceWriter != null )

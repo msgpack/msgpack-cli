@@ -4,35 +4,30 @@
     <ProjectGuid>{23F8ABB1-F41A-4150-B5D5-9A7AA60E05D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>MsgPack.UnitTest.CodeDom</AssemblyName>
-    <!-- TODO: netcoreapp2.0 -->
-    <TargetFrameworks>net46</TargetFrameworks>
+    <TargetFrameworks>net46;netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <!-- Run netcoreapp2.0 as .NET Standard 2.0 -->
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.1" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
-    <PackageReference Include="System.Collections.NonGeneric" Version="4.0.1" />
-    <PackageReference Include="System.Collections.Specialized" Version="4.0.1" />
-    <PackageReference Include="System.Data.Common" Version="4.1.0" />
-    <PackageReference Include="System.Diagnostics.Contracts" Version="4.0.1" />
-    <PackageReference Include="System.IO.MemoryMappedFiles" Version="4.0.0" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.1.1" />
-    <PackageReference Include="System.Runtime.Numerics" Version="4.0.1" />
-    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.1.1" />
-    <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.0.0" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net35' or '$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net35' ">
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>

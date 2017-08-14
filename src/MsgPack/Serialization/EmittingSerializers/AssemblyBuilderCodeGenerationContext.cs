@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -101,6 +101,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
 		public IEnumerable<SerializerCodeGenerationResult> Generate()
 		{
+#if NETSTANDARD2_0
+			throw new PlatformNotSupportedException( "Assembly generation is not supported in .NET Standard." );
+#else
 			var assemblyFileName = this._assemblyBuilder.GetName().Name + ".dll";
 			this._assemblyBuilder.Save( assemblyFileName );
 			var assemblyFilePath =
@@ -121,6 +124,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 							s.SerializerTypeName
 						) 
 				);
+#endif // NETSTANDARD2_0
 		}
 	}
 }

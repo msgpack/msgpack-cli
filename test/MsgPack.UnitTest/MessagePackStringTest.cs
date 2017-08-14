@@ -159,7 +159,7 @@ namespace MsgPack
 
 #endif // !UNITY && !SILVERLIGHT && !AOT && !NETFX_CORE && !NETSTANDARD1_3
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE && !NETSTANDARD2_0
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -171,6 +171,7 @@ namespace MsgPack
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var evidence = new Evidence();
+
 #if MONO || NET35
 #pragma warning disable 0612
 			// TODO: patching
@@ -368,6 +369,6 @@ namespace MsgPack
 
 			return Tuple.Create( tinyAvg, smallAvg, mediumAvg, largeAvg );
 		}
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE && !NETSTANDRD2_0
 	}
 }

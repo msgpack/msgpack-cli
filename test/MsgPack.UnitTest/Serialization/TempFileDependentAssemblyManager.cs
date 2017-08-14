@@ -92,35 +92,37 @@ namespace MsgPack.Serialization
 
 		protected override IEnumerable<string> GetRuntimeAssemblies()
 		{
-#if NETSTANDARD1_3
+#if NETSTANDARD2_0
 			if ( this._baseDirectory == null )
 			{
 				yield break;
 			}
 
-			// TODO: X-Plat
-			var referenceAssemblyDirectory = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ProgramFilesX86 ), @"Reference Assemblies\Microsoft\Framework\.NETCore\v4.5.1" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Collections.dll" );
-			yield return Path.Combine( this._baseDirectory, "System.Collections.NonGeneric.dll" );
-			yield return Path.Combine( this._baseDirectory, "System.Collections.Specialized.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Diagnostics.Debug.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Diagnostics.Tools.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Globalization.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Linq.dll" );
-			yield return Path.Combine( this._baseDirectory, "System.Numerics.Vectors.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Reflection.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Reflection.Extensions.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Reflection.Primitives.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.Extensions.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.Numerics.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Runtime.Serialization.Primitives.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Threading.dll" );
-			yield return Path.Combine( referenceAssemblyDirectory, "System.Threading.Tasks.dll" );
-			yield return Path.Combine( this._baseDirectory, "MsgPack.Core.dll" );
-			yield return Path.Combine( this._baseDirectory, "MsgPack.Serialization.dll" );
+			// Get directory which locates System.Private.Corelib.dll
+			var coreSdkAssemblyDirectory = Path.GetDirectoryName( typeof( object ).Assembly.Location );
+			// .NET Standard 2.0 library should refer netstandard.dll
+			yield return Path.Combine( coreSdkAssemblyDirectory, "netstandard.dll" );
+			yield return typeof( object ).Assembly.Location; // System.Private.Corelib.dll
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Runtime.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Collections.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Collections.NonGeneric.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Collections.Specialized.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Diagnostics.Debug.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Diagnostics.Tools.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Globalization.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Linq.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Numerics.Vectors.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Reflection.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Reflection.Extensions.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Reflection.Primitives.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Runtime.Extensions.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Runtime.Numerics.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Runtime.Serialization.Primitives.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Threading.dll" );
+			yield return Path.Combine( coreSdkAssemblyDirectory, "System.Threading.Tasks.dll" );
+			yield return Path.Combine( this._baseDirectory, "MsgPack.dll" );
 #else
-			yield return typeof( object ).Assembly.Location; // System.dll
+			yield return typeof( object ).Assembly.Location; // mscorlib.dll
 			yield return typeof( Stack<> ).Assembly.Location; // System.dll
 #if NET35
 			yield return typeof( Enumerable ).Assembly.Location; // System.Core.dll
@@ -130,7 +132,7 @@ namespace MsgPack.Serialization
 #endif // NET35
 			yield return typeof( MessagePackObject ).Assembly.Location;
 			yield return typeof( SerializationContext ).Assembly.Location;
-#endif // NETSTANDARD1_1
+#endif // NETSTANDARD2_0
 		}
 	}
 }
