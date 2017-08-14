@@ -113,7 +113,13 @@ namespace MsgPack
 					Assert.That( streamUnpacker.DebugOwnsStream, Is.False );
 #if !SILVERLIGHT
 					Assert.That( streamUnpacker.DebugSource, Is.Not.SameAs( stream ) );
+#if NETSTANDARD1_1 || NETSTANDARD1_3
+					// Avoid type name conflicts between netcoreapp and msgpack
+					Assert.That( streamUnpacker.DebugSource.GetType().FullName, Is.EqualTo( "System.IO.BufferedStream" ) );
+					Assert.That( streamUnpacker.DebugSource.GetType().GetAssembly().FullName, Is.EqualTo( typeof( MessagePackObject ).GetAssembly().FullName ) );
+#else // NETSTANDARD1_1 || NETSTANDARD1_3
 					Assert.That( streamUnpacker.DebugSource, Is.InstanceOf<BufferedStream>() );
+#endif // // NETSTANDARD1_1 || NETSTANDARD1_3
 #else
 					Assert.That( streamUnpacker.DebugSource, Is.SameAs( stream ) );
 #endif // !SILVERLIGHT
