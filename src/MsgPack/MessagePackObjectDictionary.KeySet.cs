@@ -48,9 +48,9 @@ namespace MsgPack
 		[SuppressMessage( "Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible", Justification = "ICollection implementing dictionary should return ICollection implementing values." )]
 #if !UNITY
 		public sealed partial class KeySet :
-#if !NETFX_35
+#if !NET35
 			ISet<MessagePackObject>,
-#endif // !NETFX_35
+#endif // !NET35
 #else
 		public sealed partial class KeyCollection :
 #endif // !UNITY
@@ -219,7 +219,7 @@ namespace MsgPack
 			}
 
 #if !UNITY
-#if !NETFX_35
+#if !NET35
 			bool ISet<MessagePackObject>.Add( MessagePackObject item )
 			{
 				throw new NotSupportedException();
@@ -234,7 +234,7 @@ namespace MsgPack
 			{
 				throw new NotSupportedException();
 			}
-#endif // !NETFX_35
+#endif // !NET35
 
 			/// <summary>
 			///		Determines whether this set is proper subset of the specified collection.
@@ -338,7 +338,7 @@ namespace MsgPack
 				return SetOperation.SetEquals( this, other );
 			}
 
-#if !NETFX_35
+#if !NET35
 			void ISet<MessagePackObject>.SymmetricExceptWith( IEnumerable<MessagePackObject> other )
 			{
 				throw new NotSupportedException();
@@ -348,7 +348,7 @@ namespace MsgPack
 			{
 				throw new NotSupportedException();
 			}
-#endif // !NETFX_35
+#endif // !NET35
 #endif // !UNITY
 
 			/// <summary>

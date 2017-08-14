@@ -144,12 +144,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly ModuleBuilder _module;
 		private readonly bool _isDebuggable;
 
-#if NETFX_35
+#if NET35
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "isCollectable", Justification = "Used in other platforms" )]
-#endif // NETFX_35
-#if !NETFX_35
+#endif // NET35
+#if !NET35
 		[SecuritySafeCritical]
-#endif // !NETFX_35
+#endif // !NET35
 		private SerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable, AssemblyBuilder assemblyBuilder )
 		{
 			this._isDebuggable = isDebuggable;
@@ -174,11 +174,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 						new AssemblyName( assemblyName ),
 						isDebuggable
 						? AssemblyBuilderAccess.RunAndSave
-#if !NETFX_35
+#if !NET35
 						: ( isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run )
 #else
 						: AssemblyBuilderAccess.Run
-#endif // !NETFX_35
+#endif // !NET35
 #if DEBUG
 						,
 						SerializerDebugging.DumpDirectory
@@ -233,7 +233,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { 8 }
 				)
 			);
-#if !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
 					// ReSharper disable once AssignNullToNotNullAttribute
@@ -243,7 +243,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { true }
 				)
 			);
-#endif // !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		/// <summary>

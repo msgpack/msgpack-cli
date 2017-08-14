@@ -69,9 +69,9 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 using System.Numerics;
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 using System.Reflection;
 #if !SILVERLIGHT
 using System.Runtime.InteropServices.ComTypes;
@@ -235,11 +235,11 @@ namespace MsgPack.Serialization
 			SerializerDebugging.DeletePastTemporaries();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
 
-#if NETFX_35
+#if NET35
 			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
 #else
 			SerializerDebugging.SetCodeCompiler( RoslynCodeGeneration.Compile );
-#endif // NETFX_35
+#endif // NET35
 
 			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.TestDirectory;
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
@@ -1071,7 +1071,7 @@ namespace MsgPack.Serialization
 	if ( !forIos )
 	{
 #>
-#if !NETFX_35
+#if !NET35
 		[Test]
 		public void TestTuple1()
 		{
@@ -1223,7 +1223,7 @@ namespace MsgPack.Serialization
 			}
 		}
 #endif // FEATURE_TAP
-#endif // !NETFX_35
+#endif // !NET35
 <#+
 	}
 #>
@@ -2478,7 +2478,7 @@ namespace MsgPack.Serialization
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
-#if !NETFX_35 && !UNITY && !SILVERLIGHT
+#if !NET35 && !UNITY && !SILVERLIGHT
 
 		[Test]
 		public void TestReadOnlyCollectionInterfaceDefault()
@@ -2572,7 +2572,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !NETFX_35 && !UNITY && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !SILVERLIGHT
 
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{

@@ -84,9 +84,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					return ArraySerializer.Create<T>( context, schema );
 				}
 				case CollectionDetailedKind.GenericList:
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 				case CollectionDetailedKind.GenericSet:
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 				case CollectionDetailedKind.GenericCollection:
 				{
 					return

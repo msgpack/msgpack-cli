@@ -21,9 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NETFX_35
+#if NET35
 using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
-#endif // NETFX_35
+#endif // NET35
 using System.IO;
 using System.Text;
 #if !MSTEST

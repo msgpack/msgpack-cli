@@ -97,11 +97,11 @@ namespace MsgPack.Serialization.Reflection
 				String.Concat(
 					source.Name,
 					'[',
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetName() ) ),
 #else
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetName() ).ToArray() ),
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 					']'
 				);
 		}
@@ -150,11 +150,11 @@ namespace MsgPack.Serialization.Reflection
 					ReflectionAbstractions.TypeDelimiter,
 					source.Name,
 					'[',
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetFullName() ) ),
 #else
 					String.Join( ", ", source.GetGenericArguments().Select( t => t.GetFullName() ).ToArray() ),
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 					']'
 				);
 		}

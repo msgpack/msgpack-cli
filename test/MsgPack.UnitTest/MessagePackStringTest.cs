@@ -20,9 +20,9 @@
 
 using System;
 using System.Diagnostics;
-#if NETFX_35
+#if NET35
 using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
-#endif // NETFX_35
+#endif // NET35
 using System.Security;
 #if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 using System.Security.Permissions;
@@ -171,7 +171,7 @@ namespace MsgPack
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var evidence = new Evidence();
-#if MONO || NETFX_35
+#if MONO || NET35
 #pragma warning disable 0612
 			// TODO: patching
 			// currently, Mono does not declare AddHostEvidence
@@ -181,7 +181,7 @@ namespace MsgPack
 #else
 			evidence.AddHostEvidence( new Zone( SecurityZone.Internet ) );
 			var permisions = SecurityManager.GetStandardSandbox( evidence );
-#endif // if MONO || NETFX_35
+#endif // if MONO || NET35
 			AppDomain workerDomain = AppDomain.CreateDomain( "PartialTrust", evidence, appDomainSetUp, permisions, GetStrongName( this.GetType() ), GetStrongName( typeof( Assert ) ) );
 			try
 			{
@@ -200,7 +200,7 @@ namespace MsgPack
 			}
 		}
 		
-#if MONO || NETFX_35
+#if MONO || NET35
 		private static PermissionSet GetDefaultInternetZoneSandbox()
 		{
 			var permissions = new PermissionSet( PermissionState.None );
@@ -219,9 +219,9 @@ namespace MsgPack
 			permissions.AddPermission(
 				new SecurityPermission(
 					SecurityPermissionFlag.Execution
-#if NETFX_35
+#if NET35
 					| SecurityPermissionFlag.SkipVerification
-#endif // if NETFX_35
+#endif // if NET35
 				)
 			);
 			permissions.AddPermission(
@@ -233,7 +233,7 @@ namespace MsgPack
 			
 			return permissions;
 		}
-#endif // if MONO || NETFX_35
+#endif // if MONO || NET35
 
 		public static void TestEqualsWorker()
 		{

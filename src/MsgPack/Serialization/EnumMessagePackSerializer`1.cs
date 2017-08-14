@@ -183,7 +183,7 @@ namespace MsgPack.Serialization
 				if ( !this._deserializationMapping.TryGetValue( asString, out result ) )
 				{
 					// May be undefined value which should be numeric, or PacakCasing.
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 					try
 					{
 						result = ( TEnum ) Enum.Parse( typeof( TEnum ), asString, false );
@@ -212,7 +212,7 @@ namespace MsgPack.Serialization
 								)
 							);
 					}
-#endif // NETFX_35 || UNITY
+#endif // NET35 || UNITY
 				}
 
 				return result;

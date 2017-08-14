@@ -912,7 +912,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !UNITY || MSGPACK_UNITY_FULL
 
 #if !WINDOWS_PHONE
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 	internal sealed class System_Numerics_BigIntegerMessagePackSerializer : MessagePackSerializer< System.Numerics.BigInteger >
 	{
@@ -970,7 +970,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // FEATURE_TAP
 
 	}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 #endif // !WINDOWS_PHONE
 #endif // !UNITY || MSGPACK_UNITY_FULL
 	// ReSharper restore RedundantCast

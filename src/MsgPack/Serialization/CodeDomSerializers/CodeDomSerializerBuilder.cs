@@ -1198,9 +1198,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		}
 
 #if DEBUG
-#if !NETFX_35
+#if !NET35
 		[SecuritySafeCritical]
-#endif // !NETFX_35
+#endif // !NET35
 		private static Type PrepareSerializerConstructorCreation( CodeDomContext codeGenerationContext )
 		{
 			if ( !SerializerDebugging.OnTheFlyCodeGenerationEnabled )

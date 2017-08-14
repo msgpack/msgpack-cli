@@ -344,7 +344,7 @@ namespace MsgPack.Serialization
 				);
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		// Tuple items
 
 		/// <summary>
@@ -381,7 +381,7 @@ namespace MsgPack.Serialization
 				throw new ArgumentException( "An arity of itemSchemaList does not match for an arity of the tuple.", "itemSchemaList" );
 			}
 		}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 		internal PolymorphismSchema FilterSelf()
 		{

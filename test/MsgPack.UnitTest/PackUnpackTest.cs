@@ -161,7 +161,7 @@ namespace MsgPack
 			Console.WriteLine( "Medium String ({1:#,###.0} chars): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 		}
 
-#if !NETFX_35
+#if !NET35
 		[Test]
 		[Timeout( 3000000 )]
 #if !HEAVY_TEST

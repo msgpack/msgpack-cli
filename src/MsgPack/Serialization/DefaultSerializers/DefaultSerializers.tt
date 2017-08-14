@@ -276,7 +276,7 @@ foreach( Type type in types )
 	if ( notInNetFX35.Contains( type ) )
 	{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#
 	}
 
@@ -522,7 +522,7 @@ foreach( var ctor in ctors )
 	if ( notInNetFX35.Contains( type ) )
 	{
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#
 	}
 

@@ -61,11 +61,11 @@ namespace MsgPack.Serialization
 
 			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
-#if NETFX_35
+#if NET35
 			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
 #else
 			SerializerDebugging.SetCodeCompiler( RoslynCodeGeneration.Compile );
-#endif // NETFX_35
+#endif // NET35
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 		}
 

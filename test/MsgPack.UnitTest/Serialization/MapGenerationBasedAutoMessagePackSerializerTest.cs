@@ -37,9 +37,9 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 using System.Numerics;
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 using System.Reflection;
 #if !SILVERLIGHT
 using System.Runtime.InteropServices.ComTypes;
@@ -1112,7 +1112,7 @@ namespace MsgPack.Serialization
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
-#if !NETFX_35 && !UNITY && !SILVERLIGHT
+#if !NET35 && !UNITY && !SILVERLIGHT
 
 		[Test]
 		public void TestReadOnlyCollectionInterfaceDefault()
@@ -1196,7 +1196,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#endif // !NETFX_35 && !UNITY && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !SILVERLIGHT
 
 		private void TestCore<T>( T value, Func<Stream, T> unpacking, Func<T, T, bool> comparer )
 		{
@@ -8948,7 +8948,7 @@ namespace MsgPack.Serialization
 
 		#endregion ------ KnownType.DictionaryTypes ------
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		#region ------ KnownType.TupleTypes ------
 
 #if !UNITY
@@ -10511,7 +10511,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 		#endregion ------ KnownType.TupleTypes ------
-#endif // #if !NETFX_35 && !UNITY
+#endif // #if !NET35 && !UNITY
 
 		#endregion ---- KnownType ----
 		#region ---- RuntimeType ----
@@ -13585,7 +13585,7 @@ namespace MsgPack.Serialization
 
 		#endregion ------ RuntimeType.DictionaryTypes ------
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		#region ------ RuntimeType.TupleTypes ------
 
 #if !UNITY
@@ -15148,7 +15148,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 
 		#endregion ------ RuntimeType.TupleTypes ------
-#endif // #if !NETFX_35 && !UNITY
+#endif // #if !NET35 && !UNITY
 
 		#endregion ---- RuntimeType ----
 
@@ -15171,9 +15171,9 @@ namespace MsgPack.Serialization
 				target.DictionaryKnownValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 1 } } };
 				target.DictionaryKnownContainerRuntimeValue = new Dictionary<string, FileSystemEntry> { { "Key", new FileEntry { Name = "File", Size = 2 } } };
 				target.DictionaryObjectRuntimeValue = new Dictionary<string, object> { { "Key", new FileEntry { Name = "File", Size = 3 } } };
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 				target.Tuple = Tuple.Create<string, FileSystemEntry, FileSystemEntry, object>( "ABC", new FileEntry { Name = "File", Size = 1 }, new FileEntry { Name = "File", Size = 3 }, new FileEntry { Name = "File", Size = 3 } );
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 				var serializer = context.GetSerializer<PolymorphicMemberTypeMixed>();
 				
 				using ( var buffer = new MemoryStream() )
@@ -15210,10 +15210,10 @@ namespace MsgPack.Serialization
 					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.InstanceOf( target.DictionaryKnownContainerRuntimeValue.GetType() ), "DictionaryKnownContainerRuntimeValue" );
 					Assert.That( result.DictionaryObjectRuntimeValue, Is.EqualTo( target.DictionaryObjectRuntimeValue ), "DictionaryObjectRuntimeValue" );
 					Assert.That( result.DictionaryObjectRuntimeValue, Is.InstanceOf( target.DictionaryObjectRuntimeValue.GetType() ), "DictionaryObjectRuntimeValue" );
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 					Assert.That( result.Tuple, Is.EqualTo( target.Tuple ), "Tuple" );
 					Assert.That( result.Tuple, Is.InstanceOf( target.Tuple.GetType() ), "Tuple" );
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 				}
 		}
 
@@ -15246,9 +15246,9 @@ namespace MsgPack.Serialization
 					Assert.That( result.DictionaryKnownValue, Is.Null );
 					Assert.That( result.DictionaryKnownContainerRuntimeValue, Is.Null );
 					Assert.That( result.DictionaryObjectRuntimeValue, Is.Null );
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 					Assert.That( result.Tuple, Is.Null );
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 				}
 		}
 
@@ -15727,7 +15727,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.EquivalentTo( target.Value ) );
 			}
 		}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestTupleAbstractType_Success()
@@ -15748,7 +15748,7 @@ namespace MsgPack.Serialization
 				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
 			}
 		}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15776,7 +15776,7 @@ namespace MsgPack.Serialization
 			var target = new DuplicatedKnownDictionaryKey();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownDictionaryKey>() );
 		}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15786,7 +15786,7 @@ namespace MsgPack.Serialization
 			var target = new DuplicatedKnownTupleItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownTupleItem>() );
 		}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15814,7 +15814,7 @@ namespace MsgPack.Serialization
 			var target = new KnownAndRuntimeDictionaryKey();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeDictionaryKey>() );
 		}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -15824,7 +15824,7 @@ namespace MsgPack.Serialization
 			var target = new KnownAndRuntimeTupleItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeTupleItem>() );
 		}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 		// Issue 137
 		[Test]
 		[Category( "PolymorphicSerialization" )]
@@ -17450,7 +17450,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( 123456789.0987654321m, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 		[Test]
 		public void TestBigIntegerField()
 		{
@@ -17463,8 +17463,8 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue, 2 ).ToArray(), GetSerializationContext() );
 		}
 		
-#endif // !NETFX_35 && !WINDOWS_PHONE
-#if !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 		[Test]
 		public void TestComplexField()
 		{
@@ -17477,7 +17477,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new Complex( 1.3, 2.4 ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 		[Test]
 		public void TestDictionaryEntryField()
 		{
@@ -17502,7 +17502,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 		[Test]
 		public void TestKeyValuePairStringComplexField()
 		{
@@ -17515,7 +17515,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 		[Test]
 		public void TestStringField()
 		{
@@ -17744,7 +17744,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.DateTime>[] ), GetSerializationContext() );
 		}	
 		
-#if !NETFX_35
+#if !NET35
 		[Test]
 		public void TestObservableCollectionDateTimeField()
 		{
@@ -17769,7 +17769,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ObservableCollection<DateTime>[] ), GetSerializationContext() );
 		}	
 		
-#endif // !NETFX_35
+#endif // !NET35
 		[Test]
 		public void TestHashSetDateTimeField()
 		{
@@ -17818,7 +17818,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ICollection<DateTime>[] ), GetSerializationContext() );
 		}	
 		
-#if !NETFX_35
+#if !NET35
 		[Test]
 		public void TestISetDateTimeField()
 		{
@@ -17843,7 +17843,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ISet<DateTime>[] ), GetSerializationContext() );
 		}	
 		
-#endif // !NETFX_35
+#endif // !NET35
 		[Test]
 		public void TestIListDateTimeField()
 		{
@@ -18060,7 +18060,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<System.Object>[] ), GetSerializationContext() );
 		}	
 		
-#if !NETFX_35
+#if !NET35
 		[Test]
 		public void TestObservableCollectionObjectField()
 		{
@@ -18085,7 +18085,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ObservableCollection<Object>[] ), GetSerializationContext() );
 		}	
 		
-#endif // !NETFX_35
+#endif // !NET35
 		[Test]
 		public void TestHashSetObjectField()
 		{
@@ -18134,7 +18134,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ICollection<Object>[] ), GetSerializationContext() );
 		}	
 		
-#if !NETFX_35
+#if !NET35
 		[Test]
 		public void TestISetObjectField()
 		{
@@ -18159,7 +18159,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( ISet<Object>[] ), GetSerializationContext() );
 		}	
 		
-#endif // !NETFX_35
+#endif // !NET35
 		[Test]
 		public void TestIListObjectField()
 		{
@@ -18376,7 +18376,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( MsgPack.Serialization.StringKeyedCollection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
-#if !NETFX_35
+#if !NET35
 		[Test]
 		public void TestObservableCollection_MessagePackObjectField()
 		{
@@ -18401,7 +18401,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
-#endif // !NETFX_35
+#endif // !NET35
 		[Test]
 		public void TestHashSet_MessagePackObjectField()
 		{
@@ -18450,7 +18450,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ICollection<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
-#if !NETFX_35
+#if !NET35
 		[Test]
 		public void TestISet_MessagePackObjectField()
 		{
@@ -18475,7 +18475,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( System.Collections.Generic.ISet<MsgPack.MessagePackObject>[] ), GetSerializationContext() );
 		}	
 		
-#endif // !NETFX_35
+#endif // !NET35
 		[Test]
 		public void TestIList_MessagePackObjectField()
 		{

@@ -22,9 +22,9 @@
 #define UNITY
 #endif
 
-#if !NETFX_40 && !NETFX_35 && !UNITY && !SILVERLIGHT
-#define NETFX_45
-#endif // !NETFX_40 && !NETFX_35 && !UNITY && !SILVERLIGHT
+#if !NET40 && !NET35 && !UNITY && !SILVERLIGHT
+#define NET45
+#endif // !NET40 && !NET35 && !UNITY && !SILVERLIGHT
 using System;
 using System.Collections.Generic;
 #if CORE_CLR || UNITY || NETSTANDARD1_1
@@ -34,9 +34,9 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Globalization;
 using System.Linq;
-#if NETFX_45
+#if NET45
 using System.Threading;
-#endif // NETFX_45
+#endif // NET45
 
 namespace MsgPack.Serialization
 {
@@ -177,9 +177,9 @@ namespace MsgPack.Serialization
 
 		private void RemoveCore( string name, byte typeCode )
 		{
-#if DEBUG && NETFX_45
+#if DEBUG && NET45
 			Contract.Assert( Monitor.IsEntered( this._syncRoot ) );
-#endif // DEBUG && NETFX_45
+#endif // DEBUG && NET45
 			var shouldBeTrue = this._types.Remove( typeCode );
 			Contract.Assert( shouldBeTrue );
 			shouldBeTrue = this._index.Remove( name );
