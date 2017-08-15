@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -67,7 +67,7 @@ namespace MsgPack.Serialization
 				EmitResult result;
 				if ( SerializerDebugging.DumpEnabled )
 				{
-					var assemblyPath = Path.Combine( SerializerDebugging.DumpDirectory, assemblyName + ".dll" );
+					var assemblyPath = Path.Combine( SerializerDebugging.DumpDirectory ?? Path.GetTempPath(), assemblyName + ".dll" );
 
 					using ( var fileStream = File.OpenWrite( assemblyPath ) )
 					{
