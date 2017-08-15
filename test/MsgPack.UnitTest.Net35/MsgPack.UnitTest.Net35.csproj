@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\MsgPack.UnitTest\**\*.cs" />
+    <Compile Remove="..\MsgPack.UnitTest\obj\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="..\MsgPack.UnitTest\gen\**\*.cs" />

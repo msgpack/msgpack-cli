@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\MsgPack.UnitTest.CodeDom\**\*.cs" />
+    <Compile Remove="..\MsgPack.UnitTest.CodeDom\obj\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
