@@ -72,6 +72,8 @@
     <DefineConstants>$(DefineConstants);__ANDROID__</DefineConstants>
     <TargetFrameworkRootPath Condition="'$(VsInstallRoot)' != ''">$(VsInstallRoot)\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\</TargetFrameworkRootPath>
     <ImplicitlyExpandDesignTimeFacades>true</ImplicitlyExpandDesignTimeFacades>
+    <!-- Workaround for VS 15.3 -->
+    <NuGetTargetMoniker>MonoAndroid,Version=1.0</NuGetTargetMoniker>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
     <DefineConstants>$(DefineConstants);__IOS__</DefineConstants>
@@ -597,7 +599,10 @@
     <!-- For VS, use $(MSBuildExtensionsPath) -->
     <VSMSBuildExtensionsPath>$(MSBuildExtensionsPath)</VSMSBuildExtensionsPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(XamarinMSBuildExtensionsPath)' == ''">
+    <XamarinMSBuildExtensionsPath>$(VSMSBuildExtensionsPath)</XamarinMSBuildExtensionsPath>
+  </PropertyGroup>
   <Import Project="$(VSMSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition="'$(TargetFramework)' == 'uap10.0'" />
-  <Import Project="$(VSMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10'" />
-  <Import Project="$(VSMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10'" />
+  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10'" />
+  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10'" />
 </Project>
