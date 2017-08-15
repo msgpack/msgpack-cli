@@ -23,6 +23,12 @@
     <DefineConstants>$(DefineConstants);NETFX_CORE;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
     <NoWarn>;2008</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == 'ARM'">
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -493,9 +499,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MsgPack, Version=0.9.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
+    <Reference Include="MsgPack, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\MsgPack\bin\Debug\netstandard1.1\MsgPack.dll</HintPath>
+      <HintPath>..\..\src\netstandard\bin\Debug\netstandard1.1\MsgPack.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics.Vectors, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Numerics.Vectors.4.1.1-rc2-24027\lib\portable-net45+win8\System.Numerics.Vectors.dll</HintPath>

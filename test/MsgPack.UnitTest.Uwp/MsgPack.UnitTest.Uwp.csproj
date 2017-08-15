@@ -21,6 +21,7 @@
     <DocumentationFile></DocumentationFile>
     <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>

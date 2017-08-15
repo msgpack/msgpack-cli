@@ -36,7 +36,6 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="build.cmd" />
-    <None Include="build.sh" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -45,6 +44,9 @@
   <PropertyGroup>
     <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">$(ProjectDir)\build.cmd $(SolutionDir) $(ConfigurationName)</PreBuildEvent>
     <PreBuildEvent Condition="'$(OS)' != 'Windows_NT'">echo This project supports only Windows specific builds.</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)\build.cmd $(SolutionDir) $(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

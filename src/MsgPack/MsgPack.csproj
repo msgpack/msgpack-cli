@@ -526,6 +526,6 @@
     <XamarinMSBuildExtensionsPath>$(VSMSBuildExtensionsPath)</XamarinMSBuildExtensionsPath>
   </PropertyGroup>
   <Import Project="$(VSMSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition="'$(TargetFramework)' == 'uap10.0'" />
-  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10'" />
-  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10'" />
+  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10' and $(SkipXamarin) != 'true'" />
+  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10' and $(SkipXamarin) != 'true'" />
 </Project>

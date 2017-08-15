@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -17,6 +17,8 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#pragma warning disable 3016
 
 using System;
 using System.Collections.Generic;

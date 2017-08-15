@@ -1,4 +1,4 @@
-﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ template debug="true" hostSpecific="true" #>
 <#@ output extension=".cs" #>
 <#@ Assembly Name="System.Core" #>
 <#@ Assembly Name="System.Windows.Forms" #>
@@ -28,6 +28,10 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#if MSTEST
+#pragma warning disable 162
+#endif // MSTEST
 
 using System;
 using System.IO;
