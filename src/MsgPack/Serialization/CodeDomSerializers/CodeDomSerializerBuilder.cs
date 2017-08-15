@@ -354,7 +354,7 @@ namespace MsgPack.Serialization.CodeDomSerializers
 			statements = statements.ToArray();
 			Contract.Assert( statements.All( c => c.IsStatement ) );
 #endif
-			return CodeDomConstruct.Statement( statements.SelectMany( s => s.AsStatements() ) );
+			return CodeDomConstruct.Statement( statements.SelectMany( s => s.AsStatements().ToArray() ) );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated internally" )]
