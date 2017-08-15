@@ -25,10 +25,20 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
+  <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
+    <!-- Workaround for VS 15.3 -->
+    <NuGetTargetMoniker>MonoAndroid,Version=1.0</NuGetTargetMoniker>
+  </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'uap10.0' and '$(TargetFramework)' != 'netstandard1.1' and '$(TargetFramework)' != 'netstandard1.3' and '$(TargetFramework)' != 'netstandard2.0'">
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" Condition="'$(TargetFramework)' != 'net35'" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
+    <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Collections" Version="4.0.11" />
