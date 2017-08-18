@@ -16,28 +16,25 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
+
 #endregion -- License Terms --
 
 using System;
+using System.Globalization;
 
 namespace MsgPack
 {
-	internal static class Augments
+	/// <summary>
+	///     Custom <see cref="CultureInfo" /> which uses full width hiphen for negative sign.!--
+	/// </summary>
+	internal sealed class LegacyJapaneseCultureInfo : CultureInfo
 	{
-		public static T[] ToArray<T>( this ArraySegment<T> source )
+		public LegacyJapaneseCultureInfo()
+			: base( "ja-NP" )
 		{
-			var result = new T[ source.Count ];
-			if ( result.Length > 0 )
-			{
-				Array.Copy( source.Array, source.Offset, result, 0, source.Count );
-			}
-
-			return result;
-		}
-
-		public static long ToUnixTimeSeconds( this DateTimeOffset source )
-		{
-			return source.UtcDateTime.Ticks / TimeSpan.TicksPerSecond - 62135596800;
+			var numberFormatInfo = CultureInfo.InvariantCulture.NumberFormat.Clone() as NumberFormatInfo;
+			numberFormatInfo.NegativeSign = "\uFF0D"; // Full width hiphen
+			this.NumberFormat = NumberFormatInfo.ReadOnly( numberFormatInfo );
 		}
 	}
 }

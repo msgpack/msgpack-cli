@@ -1,0 +1,150 @@
+<#+
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+private static readonly DateTimeOffset MinDateTime = DateTimeOffset.MinValue;
+private static readonly DateTimeOffset MaxDateTime = DateTimeOffset.MaxValue;
+private static readonly DateTimeOffset DistinguishsableDateTime = new DateTimeOffset( 1234, 5, 6, 7, 8, 9, TimeSpan.Zero );
+private static readonly DateTimeOffset UnixEpoch = new DateTimeOffset( 1970, 1, 1, 0, 0, 0, TimeSpan.Zero );
+private static readonly long UnixEpochInSeconds = UnixEpoch.ToUnixTimeSeconds();
+private static readonly int DayOffsetOfUnixEpoch = TimeSpan.FromSeconds( new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc ).Ticks / 10000000 ).Days;
+// 2932897
+//  719162
+
+private static readonly Dictionary<string, TestCase> StandardTestCases =
+	new []
+	{
+		new TestCase { Label = "Zero",					Seconds = 0,											Nanoseconds = 0,			Year = 1970,			Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 0, 	DayOfYear = 1,		IsLeapYear = false,	DayOfWeek = DayOfWeek.Thursday },
+		new TestCase { Label = "Minus1Sec",				Seconds = -1,											Nanoseconds = 0,			Year = 1969,			Month = 12,	Day = 31,	Hour = 23,	Minute = 59,	Second = 59, 	DayOfYear = 365,	IsLeapYear = false,	DayOfWeek = DayOfWeek.Wednesday },
+		new TestCase { Label = "Plus1Sec",				Seconds = 1,											Nanoseconds = 0,			Year = 1970,			Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 1, 	DayOfYear = 1,		IsLeapYear = false,	DayOfWeek = DayOfWeek.Thursday },
+		new TestCase { Label = "Minus1Nsec",			Seconds = -1,											Nanoseconds = 999999999,	Year = 1969,			Month = 12,	Day = 31,	Hour = 23,	Minute = 59,	Second = 59, 	DayOfYear = 365,	IsLeapYear = false,	DayOfWeek = DayOfWeek.Wednesday },
+		new TestCase { Label = "Plus1Nsec",				Seconds = 0,											Nanoseconds = 1,			Year = 1970,			Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 0, 	DayOfYear = 1,		IsLeapYear = false,	DayOfWeek = DayOfWeek.Thursday },
+		new TestCase { Label = "DateTimeMin",			Seconds = MinDateTime.ToUnixTimeSeconds(),				Nanoseconds = 0,			Year = 1,				Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 0, 	DayOfYear = 1,		IsLeapYear = false,	DayOfWeek = DayOfWeek.Monday },
+		new TestCase { Label = "DateTimeMax",			Seconds = MaxDateTime.ToUnixTimeSeconds(),				Nanoseconds = 0,			Year = 9999,			Month = 12,	Day = 31,	Hour = 23,	Minute = 59,	Second = 59, 	DayOfYear = 365,	IsLeapYear = false,	DayOfWeek = DayOfWeek.Friday },
+		// Note: this case is used in many location!
+		new TestCase { Label = "DateTimeMinMinus1Day",	Seconds = MinDateTime.ToUnixTimeSeconds() - 86400,		Nanoseconds = 0,			Year = 0,				Month = 12,	Day = 31,	Hour = 0,	Minute = 0,		Second = 0, 	DayOfYear = 366,	IsLeapYear = true,	DayOfWeek = DayOfWeek.Sunday },
+		new TestCase { Label = "DateTimeMaxPlus1Day",	Seconds = MaxDateTime.ToUnixTimeSeconds() + 86400,		Nanoseconds = 0,			Year = 10000,			Month = 1,	Day = 1,	Hour = 23,	Minute = 59,	Second = 59, 	DayOfYear = 1,		IsLeapYear = true,	DayOfWeek = DayOfWeek.Saturday },
+		new TestCase { Label = "DateTimeMinMinus1Sec",	Seconds = MinDateTime.ToUnixTimeSeconds() - 1,			Nanoseconds = 0,			Year = 0,				Month = 12,	Day = 31,	Hour = 23,	Minute = 59,	Second = 59, 	DayOfYear = 366,	IsLeapYear = true,	DayOfWeek = DayOfWeek.Sunday },
+		new TestCase { Label = "DateTimeMaxPlus1Sec",	Seconds = MaxDateTime.ToUnixTimeSeconds() + 1,			Nanoseconds = 0,			Year = 10000,			Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 0, 	DayOfYear = 1,		IsLeapYear = true,	DayOfWeek = DayOfWeek.Saturday },
+		new TestCase { Label = "DateTimeMinMinus1Nsec",	Seconds = MinDateTime.ToUnixTimeSeconds() - 1,			Nanoseconds = 999999999,	Year = 0,				Month = 12,	Day = 31,	Hour = 23,	Minute = 59,	Second = 59, 	DayOfYear = 366,	IsLeapYear = true,	DayOfWeek = DayOfWeek.Sunday },
+		new TestCase { Label = "DateTimeMaxPlus1Nsec",	Seconds = MaxDateTime.ToUnixTimeSeconds(),				Nanoseconds = 1,			Year = 9999,			Month = 12,	Day = 31,	Hour = 23,	Minute = 59,	Second = 59, 	DayOfYear = 365,	IsLeapYear = false,	DayOfWeek = DayOfWeek.Friday },
+		new TestCase { Label = "TimestampMin",			Seconds = Int64.MinValue,								Nanoseconds = 0,			Year = -584554047284,	Month = 2,	Day = 23,	Hour = 16,	Minute = 59,	Second = 44, 	DayOfYear = 54,		IsLeapYear = true,	DayOfWeek = ( DayOfWeek )( int )Math.Abs( ( ( Int64.MinValue + UnixEpochInSeconds ) / 86400 + ( int )UnixEpoch.DayOfWeek ) % 7 ) },
+		new TestCase { Label = "TimestampMax",			Seconds = Int64.MaxValue,								Nanoseconds = 999999999,	Year = 584554051223,	Month = 11,	Day = 9,	Hour = 7,	Minute = 0,		Second = 16, 	DayOfYear = 313,	IsLeapYear = false,	DayOfWeek = ( DayOfWeek )( int )Math.Abs( ( ( Int64.MaxValue + UnixEpochInSeconds ) / 86400 + ( int )UnixEpoch.DayOfWeek ) % 7 ) },
+		new TestCase { Label = "Distinguishable",		Seconds = DistinguishsableDateTime.ToUnixTimeSeconds(),	Nanoseconds = 123456789,	Year = 1234,			Month = 5,	Day = 6,	Hour = 7,	Minute = 8,		Second = 9, 	DayOfYear = 126,	IsLeapYear = false,	DayOfWeek = DayOfWeek.Saturday },
+	}.Concat(
+		new []
+		{
+			// All data will be x-03-01 to test DayOfYear of leap year
+			new { Year = 0,		DaysFromEpoch = -306 - DayOffsetOfUnixEpoch,								IsLeapYear = true },
+			new { Year = 1,		DaysFromEpoch = 59 - DayOffsetOfUnixEpoch,									IsLeapYear = false },
+			new { Year = 4,		DaysFromEpoch = 365 * 3 + 60 - DayOffsetOfUnixEpoch,						IsLeapYear = true },
+			new { Year = 100,	DaysFromEpoch = 365 * 75 + 366 * 24 + 59 - DayOffsetOfUnixEpoch,			IsLeapYear = false },
+			new { Year = 400,	DaysFromEpoch = 365 * 303 + 366 * 96 + 60 - DayOffsetOfUnixEpoch,			IsLeapYear = true },
+			new { Year = 10000,	DaysFromEpoch = 3652059 + 60 - DayOffsetOfUnixEpoch,						IsLeapYear = true },
+			new { Year = 10001,	DaysFromEpoch = 3652059 + 366 + 59 - DayOffsetOfUnixEpoch,					IsLeapYear = false },
+			new { Year = 10100,	DaysFromEpoch = 3652059 + 365 * 75 + 366 * 25 + 59 - DayOffsetOfUnixEpoch,	IsLeapYear = false },
+			new { Year = 10400,	DaysFromEpoch = 3652059 + 365 * 303 + 366 * 97 + 60 - DayOffsetOfUnixEpoch,	IsLeapYear = true },
+			new { Year = -1,	DaysFromEpoch = -672 - DayOffsetOfUnixEpoch,								IsLeapYear = false },
+			new { Year = -3,	DaysFromEpoch = -1402 - DayOffsetOfUnixEpoch,								IsLeapYear = false },
+			new { Year = -4,	DaysFromEpoch = -1767 - DayOffsetOfUnixEpoch,								IsLeapYear = true },
+			new { Year = -99,	DaysFromEpoch = -36466 - DayOffsetOfUnixEpoch,								IsLeapYear = false },
+			new { Year = -100,	DaysFromEpoch = -36831 - DayOffsetOfUnixEpoch,								IsLeapYear = false },
+			new { Year = -399,	DaysFromEpoch = -146038 - DayOffsetOfUnixEpoch,								IsLeapYear = false },
+			new { Year = -400,	DaysFromEpoch = -146403 - DayOffsetOfUnixEpoch,								IsLeapYear = true },
+		}.Select( x => 
+			new TestCase
+			{
+				Label = "Year" + x.Year.ToString().Replace( "-", "Minus" ),
+				Seconds = x.DaysFromEpoch * 86400L,
+				Nanoseconds = 0,
+				Year = x.Year,
+				Month = 3,
+				Day = 1,
+				Hour = 0,
+				Minute = 0,
+				Second = 0,
+				DayOfYear = x.IsLeapYear ? 61 : 60,
+				IsLeapYear = x.IsLeapYear,
+				DayOfWeek = ( DayOfWeek )Math.Abs( ( ( x.DaysFromEpoch % 7 ) + 7 + ( int )UnixEpoch.DayOfWeek ) % 7 )
+			}
+		)
+	).Select( x => x.SetupStrings() )
+	.ToDictionary( x => x.Label );
+
+private static readonly Dictionary<string, TestCase> ParseToStringTestCases =
+	new []
+	{
+		new TestCase { Label = "Zero",				Seconds = -62167219200L,							Year = 0,		Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 0,		Nanoseconds = 0	},
+		new TestCase { Label = "FullDigits",		Seconds = -30585822590L,							Year = 1000,	Month = 10,	Day = 10,	Hour = 10,	Minute = 10,	Second = 10,	Nanoseconds = 123456789	},
+		new TestCase { Label = "YearMinus1",		Seconds = -62167219200L - 31536000L,				Year = -1,		Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 0,		Nanoseconds = 0	},
+		new TestCase { Label = "YearMinus1000",		Seconds = -62167219200L - 31556908800L,				Year = -1000,	Month = 1,	Day = 1,	Hour = 0,	Minute = 0,		Second = 0,		Nanoseconds = 0	},
+		new TestCase { Label = "Year10000",			Seconds = 253402300800 + 24487810,					Year = 10000,	Month = 10,	Day = 10,	Hour = 10,	Minute = 10,	Second = 10,	Nanoseconds = 123456789	},
+		new TestCase { Label = "YearMinus10000",	Seconds = -62167219200L - 315569088000L + 24055810,	Year = -10000,	Month = 10,	Day = 10,	Hour = 10,	Minute = 10,	Second = 10,	Nanoseconds = 123456789	},
+	}.Select( x => x.SetupStrings() )
+	.Concat(
+		new []
+		{
+			StandardTestCases[ "TimestampMin" ],
+			StandardTestCases[ "TimestampMax" ]
+		}
+	).ToDictionary( x => x.Label );
+
+private sealed class TestCase
+{
+	public string Label { get; set; }
+	public long Seconds { get; set; }
+	public int Nanoseconds { get; set; }
+	public string SortableString { get; set; }
+	public string RoundTripString { get; set; }
+
+	public long Year { get; set; }
+	public int Month { get; set; }
+	public int Day { get; set; }
+	public int Hour { get; set; }
+	public int Minute { get; set; }
+	public int Second { get; set; }
+	public int DayOfYear { get; set; }
+	public DayOfWeek DayOfWeek { get; set; }
+
+	public bool IsLeapYear { get; set; }
+
+	public TestCase() { }
+
+	public TestCase SetupStrings()
+	{
+		this.SortableString = $"{this.Year:0000}-{this.Month:00}-{this.Day:00}T{this.Hour:00}:{this.Minute:00}:{this.Second:00}Z";
+		this.RoundTripString = $"{this.Year:0000}-{this.Month:00}-{this.Day:00}T{this.Hour:00}:{this.Minute:00}:{this.Second:00}.{this.Nanoseconds:000000000}Z";
+		return this;
+	}
+}
+
+private static string ToFullWidthNegativeSign( string value )
+{
+	if ( value.Length < 2 )
+	{
+		return value;
+	}
+
+	if ( value[ 0 ] != '-' )
+	{
+		return value;
+	}
+
+	return '\uFF0D' + value.Substring( 1 );
+}
+#>
