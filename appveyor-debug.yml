@@ -8,6 +8,8 @@ assembly_info:
   assembly_version: $(AssemblyBaseVersion).0
   assembly_file_version: $(AssemblyBaseVersion).{build}
   assembly_informational_version: $(PackageVersion)
+environment:
+  XamarinMSBuildExtensionsPath: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\
 install:
 - cmd: >-
     cd .\build
