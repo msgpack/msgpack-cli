@@ -34,18 +34,18 @@ namespace MsgPack.Serialization
 		NonGenericList,
 		GenericDictionary,
 		NonGenericDictionary,
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		GenericSet,
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 		GenericCollection,
 		NonGenericCollection,
 		GenericEnumerable,
 		NonGenericEnumerable,
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 		GenericReadOnlyList,
 		GenericReadOnlyCollection,
 		GenericReadOnlyDictionary,
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 		Unserializable
 	}
 }

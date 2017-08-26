@@ -21,9 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if NETFX_35
+#if NET35
 using System.Linq;
-#endif // NETFX_35
+#endif // NET35
 using System.Reflection;
 using System.Threading;
 
@@ -44,11 +44,11 @@ namespace MsgPack.Serialization
 
 		protected override void Record( IEnumerable<string> assemblies )
 		{
-#if !NETFX_35
+#if !NET35
 			File.AppendAllLines( GetHistoryFilePath(), assemblies );
 #else
 			File.AppendAllText( GetHistoryFilePath(), String.Join( Environment.NewLine, assemblies.ToArray() ) + Environment.NewLine );
-#endif // !NETFX_35
+#endif // !NET35
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
@@ -122,12 +122,12 @@ namespace MsgPack.Serialization
 #else
 			yield return typeof( object ).Assembly.Location; // System.dll
 			yield return typeof( Stack<> ).Assembly.Location; // System.dll
-#if NETFX_35
+#if NET35
 			yield return typeof( Enumerable ).Assembly.Location; // System.Core.dll
 #else
 			yield return typeof( Action<,,,,,,,,,,> ).Assembly.Location; // System.Core.dll
 			yield return typeof( System.Numerics.BigInteger ).Assembly.Location; // System.Numerics.dll
-#endif // NETFX_35
+#endif // NET35
 			yield return typeof( MessagePackObject ).Assembly.Location;
 			yield return typeof( SerializationContext ).Assembly.Location;
 #endif // NETSTANDARD1_1

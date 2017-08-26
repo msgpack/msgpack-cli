@@ -34,7 +34,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 using System.Numerics;
 #endif
 using System.Reflection;
@@ -274,7 +274,7 @@ namespace MsgPack.Serialization
 			get { return this._DecimalField; }
 			set { this._DecimalField = value; }
 		}
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 		private BigInteger _BigIntegerField;
 		
 		public BigInteger BigIntegerField
@@ -282,8 +282,8 @@ namespace MsgPack.Serialization
 			get { return this._BigIntegerField; }
 			set { this._BigIntegerField = value; }
 		}
-#endif // !NETFX_35 && !WINDOWS_PHONE
-#if !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 		private Complex _ComplexField;
 		
 		public Complex ComplexField
@@ -291,7 +291,7 @@ namespace MsgPack.Serialization
 			get { return this._ComplexField; }
 			set { this._ComplexField = value; }
 		}
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 		private DictionaryEntry _DictionaryEntryField;
 		
 		public DictionaryEntry DictionaryEntryField
@@ -306,7 +306,7 @@ namespace MsgPack.Serialization
 			get { return this._KeyValuePairStringDateTimeOffsetField; }
 			set { this._KeyValuePairStringDateTimeOffsetField = value; }
 		}
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 		private KeyValuePair<String, Complex> _KeyValuePairStringComplexField;
 		
 		public KeyValuePair<String, Complex> KeyValuePairStringComplexField
@@ -314,7 +314,7 @@ namespace MsgPack.Serialization
 			get { return this._KeyValuePairStringComplexField; }
 			set { this._KeyValuePairStringComplexField = value; }
 		}
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 		private String _StringField;
 		
 		public String StringField
@@ -357,7 +357,7 @@ namespace MsgPack.Serialization
 			get { return this._ArraySegmentDecimalField; }
 			set { this._ArraySegmentDecimalField = value; }
 		}
-#if !NETFX_35
+#if !NET35
 		private System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> _Tuple_Int32_String_MessagePackObject_ObjectField;
 		
 		public System.Tuple<System.Int32, System.String, MsgPack.MessagePackObject, System.Object> Tuple_Int32_String_MessagePackObject_ObjectField
@@ -365,7 +365,7 @@ namespace MsgPack.Serialization
 			get { return this._Tuple_Int32_String_MessagePackObject_ObjectField; }
 			set { this._Tuple_Int32_String_MessagePackObject_ObjectField = value; }
 		}
-#endif // !NETFX_35
+#endif // !NET35
 		private MsgPack.Image _Image_Field;
 		
 		public MsgPack.Image Image_Field
@@ -397,14 +397,14 @@ namespace MsgPack.Serialization
 		{
 			get { return this._StringKeyedCollection_DateTimeField; }
 		}
-#if !NETFX_35
+#if !NET35
 		private ObservableCollection<DateTime> _ObservableCollectionDateTimeField = new ObservableCollection<DateTime>();
 		
 		public ObservableCollection<DateTime> ObservableCollectionDateTimeField
 		{
 			get { return this._ObservableCollectionDateTimeField; }
 		}
-#endif // !NETFX_35
+#endif // !NET35
 		private HashSet<DateTime> _HashSetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 		
 		public HashSet<DateTime> HashSetDateTimeField
@@ -417,14 +417,14 @@ namespace MsgPack.Serialization
 		{
 			get { return this._ICollectionDateTimeField; }
 		}
-#if !NETFX_35
+#if !NET35
 		private ISet<DateTime> _ISetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() );
 		
 		public ISet<DateTime> ISetDateTimeField
 		{
 			get { return this._ISetDateTimeField; }
 		}
-#endif // !NETFX_35
+#endif // !NET35
 		private IList<DateTime> _IListDateTimeField = new List<DateTime>();
 		
 		public IList<DateTime> IListDateTimeField
@@ -497,14 +497,14 @@ namespace MsgPack.Serialization
 		{
 			get { return this._StringKeyedCollection_ObjectField; }
 		}
-#if !NETFX_35
+#if !NET35
 		private ObservableCollection<Object> _ObservableCollectionObjectField = new ObservableCollection<Object>();
 		
 		public ObservableCollection<Object> ObservableCollectionObjectField
 		{
 			get { return this._ObservableCollectionObjectField; }
 		}
-#endif // !NETFX_35
+#endif // !NET35
 		private HashSet<Object> _HashSetObjectField = new HashSet<Object>();
 		
 		public HashSet<Object> HashSetObjectField
@@ -517,14 +517,14 @@ namespace MsgPack.Serialization
 		{
 			get { return this._ICollectionObjectField; }
 		}
-#if !NETFX_35
+#if !NET35
 		private ISet<Object> _ISetObjectField = new HashSet<Object>();
 		
 		public ISet<Object> ISetObjectField
 		{
 			get { return this._ISetObjectField; }
 		}
-#endif // !NETFX_35
+#endif // !NET35
 		private IList<Object> _IListObjectField = new List<Object>();
 		
 		public IList<Object> IListObjectField
@@ -581,14 +581,14 @@ namespace MsgPack.Serialization
 		{
 			get { return this._StringKeyedCollection_MessagePackObjectField; }
 		}
-#if !NETFX_35
+#if !NET35
 		private System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> _ObservableCollection_MessagePackObjectField = new ObservableCollection<MessagePackObject>();
 		
 		public System.Collections.ObjectModel.ObservableCollection<MsgPack.MessagePackObject> ObservableCollection_MessagePackObjectField
 		{
 			get { return this._ObservableCollection_MessagePackObjectField; }
 		}
-#endif // !NETFX_35
+#endif // !NET35
 		private System.Collections.Generic.HashSet<MsgPack.MessagePackObject> _HashSet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() );
 		
 		public System.Collections.Generic.HashSet<MsgPack.MessagePackObject> HashSet_MessagePackObjectField
@@ -601,14 +601,14 @@ namespace MsgPack.Serialization
 		{
 			get { return this._ICollection_MessagePackObjectField; }
 		}
-#if !NETFX_35
+#if !NET35
 		private System.Collections.Generic.ISet<MsgPack.MessagePackObject> _ISet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() );
 		
 		public System.Collections.Generic.ISet<MsgPack.MessagePackObject> ISet_MessagePackObjectField
 		{
 			get { return this._ISet_MessagePackObjectField; }
 		}
-#endif // !NETFX_35
+#endif // !NET35
 		private System.Collections.Generic.IList<MsgPack.MessagePackObject> _IList_MessagePackObjectField = new List<MessagePackObject>();
 		
 		public System.Collections.Generic.IList<MsgPack.MessagePackObject> IList_MessagePackObjectField
@@ -659,39 +659,39 @@ namespace MsgPack.Serialization
 			this._GuidField = Guid.NewGuid();
 			this._CharField = '　';
 			this._DecimalField = 123456789.0987654321m;
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 			this._BigIntegerField = new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue;
-#endif // !NETFX_35 && !WINDOWS_PHONE
-#if !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 			this._ComplexField = new Complex( 1.3, 2.4 );
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 			this._DictionaryEntryField = new DictionaryEntry( new MessagePackObject( "Key" ), new MessagePackObject( "Value" ) );
 			this._KeyValuePairStringDateTimeOffsetField = new KeyValuePair<String, DateTimeOffset>( "Key", DateTimeOffset.UtcNow );
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 			this._KeyValuePairStringComplexField = new KeyValuePair<String, Complex>( "Key", new Complex( 1.3, 2.4 ) );
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 			this._StringField = "StringValue";
 			this._ByteArrayField = new Byte[]{ 1, 2, 3, 4 };
 			this._CharArrayField = "ABCD".ToCharArray();
 			this._ArraySegmentByteField = new ArraySegment<Byte>( new Byte[]{ 1, 2, 3, 4 } );
 			this._ArraySegmentInt32Field = new ArraySegment<Int32>( new Int32[]{ 1, 2, 3, 4 } );
 			this._ArraySegmentDecimalField = new ArraySegment<Decimal>( new Decimal[]{ 1, 2, 3, 4 } );
-#if !NETFX_35
+#if !NET35
 			this._Tuple_Int32_String_MessagePackObject_ObjectField = new Tuple<Int32, String, MessagePackObject, Object>( 1, "ABC", new MessagePackObject( "abc" ), new MessagePackObject( "123" ) ) ;
-#endif // !NETFX_35
+#endif // !NET35
 			this._Image_Field = new Image(){ uri = "http://example.com/logo.png", title = "logo", width = 160, height = 120, size = 13612 };
 			this._ListDateTimeField = new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._DictionaryStringDateTimeField = new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } };
 			this._CollectionDateTimeField = new Collection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._StringKeyedCollection_DateTimeField = new StringKeyedCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
-#if !NETFX_35
+#if !NET35
 			this._ObservableCollectionDateTimeField = new ObservableCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
-#endif // !NETFX_35
+#endif // !NET35
 			this._HashSetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._ICollectionDateTimeField = new SimpleCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
-#if !NETFX_35
+#if !NET35
 			this._ISetDateTimeField = new HashSet<DateTime>( DictionaryTestHelper.GetEqualityComparer<DateTime>() ){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
-#endif // !NETFX_35
+#endif // !NET35
 			this._IListDateTimeField = new List<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
 			this._IDictionaryStringDateTimeField = new Dictionary<String, DateTime>(){ { "Yesterday", DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ) }, { "Today", DateTime.UtcNow } };
 			this._AddOnlyCollection_DateTimeField = new AddOnlyCollection<DateTime>(){ DateTime.UtcNow.Subtract( TimeSpan.FromDays( 1 ) ), DateTime.UtcNow };
@@ -707,14 +707,14 @@ namespace MsgPack.Serialization
 			this._DictionaryObjectObjectField = new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
 			this._CollectionObjectField = new Collection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._StringKeyedCollection_ObjectField = new StringKeyedCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#if !NETFX_35
+#if !NET35
 			this._ObservableCollectionObjectField = new ObservableCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#endif // !NETFX_35
+#endif // !NET35
 			this._HashSetObjectField = new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._ICollectionObjectField = new SimpleCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#if !NETFX_35
+#if !NET35
 			this._ISetObjectField = new HashSet<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#endif // !NETFX_35
+#endif // !NET35
 			this._IListObjectField = new List<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._IDictionaryObjectObjectField = new Dictionary<Object, Object>(){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
 			this._AddOnlyCollection_ObjectField = new AddOnlyCollection<Object>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
@@ -724,14 +724,14 @@ namespace MsgPack.Serialization
 			this._Dictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
 			this._Collection_MessagePackObjectField = new Collection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._StringKeyedCollection_MessagePackObjectField = new StringKeyedCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#if !NETFX_35
+#if !NET35
 			this._ObservableCollection_MessagePackObjectField = new ObservableCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#endif // !NETFX_35
+#endif // !NET35
 			this._HashSet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._ICollection_MessagePackObjectField = new SimpleCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#if !NETFX_35
+#if !NET35
 			this._ISet_MessagePackObjectField = new HashSet<MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
-#endif // !NETFX_35
+#endif // !NET35
 			this._IList_MessagePackObjectField = new List<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
 			this._IDictionary_MessagePackObject_MessagePackObjectField = new Dictionary<MessagePackObject, MessagePackObject>( DictionaryTestHelper.GetEqualityComparer<MessagePackObject>() ){ { new MessagePackObject( "1" ), new MessagePackObject( 1 ) }, { new MessagePackObject( "2" ), new MessagePackObject( 2 ) } };
 			this._AddOnlyCollection_MessagePackObjectField = new AddOnlyCollection<MessagePackObject>(){ new MessagePackObject( 1 ), new MessagePackObject( 2 ) };
@@ -779,39 +779,39 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._GuidField, this._GuidField );
 			AutoMessagePackSerializerTest.Verify( expected._CharField, this._CharField );
 			AutoMessagePackSerializerTest.Verify( expected._DecimalField, this._DecimalField );
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._BigIntegerField, this._BigIntegerField );
-#endif // !NETFX_35 && !WINDOWS_PHONE
-#if !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._ComplexField, this._ComplexField );
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._DictionaryEntryField, this._DictionaryEntryField );
 			AutoMessagePackSerializerTest.Verify( expected._KeyValuePairStringDateTimeOffsetField, this._KeyValuePairStringDateTimeOffsetField );
-#if !NETFX_35 && !WINDOWS_PHONE
+#if !NET35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._KeyValuePairStringComplexField, this._KeyValuePairStringComplexField );
-#endif // !NETFX_35 && !WINDOWS_PHONE
+#endif // !NET35 && !WINDOWS_PHONE
 			AutoMessagePackSerializerTest.Verify( expected._StringField, this._StringField );
 			AutoMessagePackSerializerTest.Verify( expected._ByteArrayField, this._ByteArrayField );
 			AutoMessagePackSerializerTest.Verify( expected._CharArrayField, this._CharArrayField );
 			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentByteField, this._ArraySegmentByteField );
 			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentInt32Field, this._ArraySegmentInt32Field );
 			AutoMessagePackSerializerTest.Verify( expected._ArraySegmentDecimalField, this._ArraySegmentDecimalField );
-#if !NETFX_35
+#if !NET35
 			AutoMessagePackSerializerTest.Verify( expected._Tuple_Int32_String_MessagePackObject_ObjectField, this._Tuple_Int32_String_MessagePackObject_ObjectField );
-#endif // !NETFX_35
+#endif // !NET35
 			AutoMessagePackSerializerTest.Verify( expected._Image_Field, this._Image_Field );
 			AutoMessagePackSerializerTest.Verify( expected._ListDateTimeField, this._ListDateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._DictionaryStringDateTimeField, this._DictionaryStringDateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._CollectionDateTimeField, this._CollectionDateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._StringKeyedCollection_DateTimeField, this._StringKeyedCollection_DateTimeField );
-#if !NETFX_35
+#if !NET35
 			AutoMessagePackSerializerTest.Verify( expected._ObservableCollectionDateTimeField, this._ObservableCollectionDateTimeField );
-#endif // !NETFX_35
+#endif // !NET35
 			AutoMessagePackSerializerTest.Verify( expected._HashSetDateTimeField, this._HashSetDateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._ICollectionDateTimeField, this._ICollectionDateTimeField );
-#if !NETFX_35
+#if !NET35
 			AutoMessagePackSerializerTest.Verify( expected._ISetDateTimeField, this._ISetDateTimeField );
-#endif // !NETFX_35
+#endif // !NET35
 			AutoMessagePackSerializerTest.Verify( expected._IListDateTimeField, this._IListDateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._IDictionaryStringDateTimeField, this._IDictionaryStringDateTimeField );
 			AutoMessagePackSerializerTest.Verify( expected._AddOnlyCollection_DateTimeField, this._AddOnlyCollection_DateTimeField );
@@ -827,14 +827,14 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._DictionaryObjectObjectField, this._DictionaryObjectObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._CollectionObjectField, this._CollectionObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._StringKeyedCollection_ObjectField, this._StringKeyedCollection_ObjectField );
-#if !NETFX_35
+#if !NET35
 			AutoMessagePackSerializerTest.Verify( expected._ObservableCollectionObjectField, this._ObservableCollectionObjectField );
-#endif // !NETFX_35
+#endif // !NET35
 			AutoMessagePackSerializerTest.Verify( expected._HashSetObjectField, this._HashSetObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._ICollectionObjectField, this._ICollectionObjectField );
-#if !NETFX_35
+#if !NET35
 			AutoMessagePackSerializerTest.Verify( expected._ISetObjectField, this._ISetObjectField );
-#endif // !NETFX_35
+#endif // !NET35
 			AutoMessagePackSerializerTest.Verify( expected._IListObjectField, this._IListObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._IDictionaryObjectObjectField, this._IDictionaryObjectObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._AddOnlyCollection_ObjectField, this._AddOnlyCollection_ObjectField );
@@ -844,14 +844,14 @@ namespace MsgPack.Serialization
 			AutoMessagePackSerializerTest.Verify( expected._Dictionary_MessagePackObject_MessagePackObjectField, this._Dictionary_MessagePackObject_MessagePackObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._Collection_MessagePackObjectField, this._Collection_MessagePackObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._StringKeyedCollection_MessagePackObjectField, this._StringKeyedCollection_MessagePackObjectField );
-#if !NETFX_35
+#if !NET35
 			AutoMessagePackSerializerTest.Verify( expected._ObservableCollection_MessagePackObjectField, this._ObservableCollection_MessagePackObjectField );
-#endif // !NETFX_35
+#endif // !NET35
 			AutoMessagePackSerializerTest.Verify( expected._HashSet_MessagePackObjectField, this._HashSet_MessagePackObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._ICollection_MessagePackObjectField, this._ICollection_MessagePackObjectField );
-#if !NETFX_35
+#if !NET35
 			AutoMessagePackSerializerTest.Verify( expected._ISet_MessagePackObjectField, this._ISet_MessagePackObjectField );
-#endif // !NETFX_35
+#endif // !NET35
 			AutoMessagePackSerializerTest.Verify( expected._IList_MessagePackObjectField, this._IList_MessagePackObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._IDictionary_MessagePackObject_MessagePackObjectField, this._IDictionary_MessagePackObject_MessagePackObjectField );
 			AutoMessagePackSerializerTest.Verify( expected._AddOnlyCollection_MessagePackObjectField, this._AddOnlyCollection_MessagePackObjectField );
@@ -1154,7 +1154,7 @@ namespace MsgPack.Serialization
 				return;
 			}
 
-#if !NETFX_35
+#if !NET35
 			if ( expected is IStructuralEquatable )
 			{
 				Assert.That(
@@ -1185,12 +1185,12 @@ namespace MsgPack.Serialization
 
 			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 			{
-#if !NETFX_35 && !AOT && !SILVERLIGHT
+#if !NET35 && !AOT && !SILVERLIGHT
 				Verify( ( ( dynamic )expected ).Key, ( ( dynamic )actual ).Key );
 				Verify( ( ( dynamic )expected ).Value, ( ( dynamic )actual ).Value );
 #else
 				Assert.Ignore( ".NET 3.5 does not support dynamic." );
-#endif // !NETFX_35 && !AOT && !SILVERLIGHT
+#endif // !NET35 && !AOT && !SILVERLIGHT
 				return;
 			}
 
@@ -5841,7 +5841,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 		#endregion ------ KnownType.DictionaryTypes ------
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		#region ------ KnownType.TupleTypes ------
 #if !UNITY
 
@@ -7319,7 +7319,7 @@ namespace MsgPack.Serialization
 
 #endif // !UNITY
 		#endregion ------ KnownType.TupleTypes ------
-#endif // #if !NETFX_35 && !UNITY
+#endif // #if !NET35 && !UNITY
 
 		#endregion ---- KnownType ----
 		#region ---- RuntimeType ----
@@ -10311,7 +10311,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 		#endregion ------ RuntimeType.DictionaryTypes ------
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		#region ------ RuntimeType.TupleTypes ------
 #if !UNITY
 
@@ -11684,7 +11684,7 @@ namespace MsgPack.Serialization
 
 #endif // !UNITY
 		#endregion ------ RuntimeType.TupleTypes ------
-#endif // #if !NETFX_35 && !UNITY
+#endif // #if !NET35 && !UNITY
 
 		#endregion ---- RuntimeType ----
 	public class PolymorphicMemberTypeMixed
@@ -11719,13 +11719,13 @@ namespace MsgPack.Serialization
 		public IDictionary<string, FileSystemEntry> DictionaryKnownContainerRuntimeValue { get; set; }
 		[MessagePackRuntimeCollectionItemType]
 		public IDictionary<string, object> DictionaryObjectRuntimeValue { get; set; }
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[MessagePackKnownTupleItemType( 2, "1", typeof( FileEntry ) )]
 		[MessagePackKnownTupleItemType( 2, "2", typeof( DirectoryEntry ) )]
 		[MessagePackRuntimeTupleItemType( 3 )]
 		[MessagePackRuntimeTupleItemType( 4 )]
 		public Tuple<string, FileSystemEntry, FileSystemEntry, object> Tuple { get; set; }
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 		public PolymorphicMemberTypeMixed() { }
 	}
@@ -11922,7 +11922,7 @@ namespace MsgPack.Serialization
 
 		public InterfaceCollectionRuntimeType() { }
 	}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 
 	public class TupleAbstractType
 	{
@@ -11935,7 +11935,7 @@ namespace MsgPack.Serialization
 		public TupleAbstractType() { }
 	}
 
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 	public class DuplicatedKnownMember
 	{
@@ -11963,7 +11963,7 @@ namespace MsgPack.Serialization
 
 		public DuplicatedKnownDictionaryKey() { }
 	}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 	public class DuplicatedKnownTupleItem
 	{
 		[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
@@ -11972,7 +11972,7 @@ namespace MsgPack.Serialization
 
 		public DuplicatedKnownTupleItem() { }
 	}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 	public class KnownAndRuntimeMember
 	{
@@ -12000,7 +12000,7 @@ namespace MsgPack.Serialization
 
 		public KnownAndRuntimeDictionaryKey() { }
 	}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 	public class KnownAndRuntimeTupleItem
 	{
 		[MessagePackKnownTupleItemType( 1, "1", typeof( FileEntry ) )]
@@ -12009,7 +12009,7 @@ namespace MsgPack.Serialization
 
 		public KnownAndRuntimeTupleItem() { }
 	}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 	public interface IFileSystemEntry { }
 

@@ -33,9 +33,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		///		Generates codes for this context.
 		/// </summary>
 		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
-#if !NETFX_35
+#if !NET35
 		[SecuritySafeCritical]
-#endif // !NETFX_35
+#endif // !NET35
 		IEnumerable<SerializerCodeGenerationResult> Generate();
 
 		/// <summary>
@@ -46,9 +46,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 		/// </value>
 		SerializationContext SerializationContext
 		{
-#if !NETFX_35
+#if !NET35
 			[SecuritySafeCritical]
-#endif // !NETFX_35
+#endif // !NET35
 			get;
 		}
 	}

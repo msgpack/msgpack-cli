@@ -103,10 +103,10 @@ namespace MsgPack.Serialization
 			result.Add( typeof( Collection<#= "<" + collectionElementType + "[]>" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( HashSet<#= "<" + collectionElementType + "[]>" #> ) ); 
-#if !NETFX_35
+#if !NET35
 			result.Add( typeof( ObservableCollection<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( ObservableCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
-#endif // !NETFX_35
+#endif // !NET35
 			result.Add( typeof( StringKeyedCollection<#= "<" + collectionElementType + ">" #> ) ); 
 			result.Add( typeof( StringKeyedCollection<#= "<" + collectionElementType + "[]>" #> ) ); 
 <#
@@ -140,7 +140,7 @@ namespace MsgPack.Serialization
 			if ( !wasNet35Supported )
 			{
 #>
-#endif // !NETFX_35
+#endif // !NET35
 <#				
 			}
 		}
@@ -149,7 +149,7 @@ namespace MsgPack.Serialization
 			if ( wasNet35Supported )
 			{
 #>
-#if !NETFX_35
+#if !NET35
 <#				
 			}
 		}
@@ -162,7 +162,7 @@ namespace MsgPack.Serialization
 	if ( !wasNet35Supported )
 	{
 #>
-#endif // !NETFX_35
+#endif // !NET35
 <#				
 	}
 #>

@@ -78,9 +78,9 @@ namespace MsgPack.Serialization.Polymorphic
 							String.Join(
 								CultureInfo.CurrentCulture.TextInfo.ListSeparator,
 								typeHandleTypeCodeMapping.Select( kv => kv.Key )
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 								.Select( b => b.ToString( CultureInfo.InvariantCulture ) ).ToArray()
-#endif // NETFX_35 || UNITY
+#endif // NET35 || UNITY
  )
 						)
 					);

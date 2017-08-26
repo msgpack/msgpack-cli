@@ -29,9 +29,9 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[SuppressUnmanagedCodeSecurity]
 #endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
-#if !NETFX_35
+#if !NET35
 	[SecurityCritical]
-#endif // !NETFX_35
+#endif // !NET35
 	internal static class UnsafeNativeMethods
 	{
 		private static int _libCAvailability = 0;
@@ -40,18 +40,18 @@ namespace MsgPack
 		private const int _libCAvailability_LibC = 2;
 		private const int _libCAvailability_None = -1;
 
-#if NETFX_35
+#if NET35
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule", Justification = "OK, this is SecurityCritical" )]
-#endif // NETFX_35
+#endif // NET35
 		[DllImport( "msvcrt", CallingConvention = CallingConvention.Cdecl, EntryPoint = "memcmp", ExactSpelling = true, SetLastError = false )]
 		private static extern int memcmpVC( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size );
 
 #if !NETFX_CORE
 		// libc is for non Windows environment.
 		// Note that libc caused compilation error on .NET Native, so the DllImport itself should not be included in the first time.
-#if NETFX_35
+#if NET35
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule", Justification = "OK, this is SecurityCritical" )]
-#endif // NETFX_35
+#endif // NET35
 		[DllImport( "libc", CallingConvention = CallingConvention.Cdecl, EntryPoint = "memcmp", ExactSpelling = true, SetLastError = false )]
 		private static extern int memcmpLibC( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size );
 #endif // !NETFX_CORE

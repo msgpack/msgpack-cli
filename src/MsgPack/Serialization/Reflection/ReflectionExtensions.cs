@@ -242,9 +242,9 @@ namespace MsgPack.Serialization.Reflection
 			AddString( result, source, MethodImplAttributes.NoInlining, "noinlining" );
 #if !UNITY
 			AddString( result, source, MethodImplAttributes.NoOptimization, "nooptimization" );
-#if !NETFX_35 && !NETFX_40
+#if !NET35 && !NET40
 			AddString( result, source, MethodImplAttributes.AggressiveInlining, "aggressiveinlining" );
-#endif // !NETFX_35 && !NETFX_40
+#endif // !NET35 && !NET40
 #endif // !UNITY
 
 			return result.ToString();

@@ -98,13 +98,13 @@ namespace MsgPack.Serialization
 		internal static readonly MethodInfo ForPolymorphicDictionaryCodeTypeMappingMethod =
 			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicDictionary", new[] { typeof( Type ), typeof( IDictionary<string, Type> ), typeof( PolymorphismSchema ), typeof( PolymorphismSchema ) } );
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		/// <summary>
 		///		ForPolymorphicTuple( Type targetType, PolymorphismSchema[] itemSchemaList )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicTupleMethod =
 			typeof( PolymorphismSchema ).GetMethod( "ForPolymorphicTuple", new[] { typeof( Type ), typeof( PolymorphismSchema[]) } );
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 		internal static readonly ConstructorInfo CodeTypeMapConstructor =
 			typeof( Dictionary<,> ).MakeGenericType( typeof( string ), typeof( Type ) )
@@ -168,7 +168,7 @@ namespace MsgPack.Serialization
 
 					break;
 				}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 				case PolymorphismSchemaChildrenType.TupleItems:
 				{
 					buffer.Append( ", TupleItemsSchema:[" );
@@ -196,7 +196,7 @@ namespace MsgPack.Serialization
 
 					break;
 				}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 			}
 
 			buffer.Append( '}' );
@@ -341,7 +341,7 @@ namespace MsgPack.Serialization
 				}
 				default:
 				{
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 					if ( TupleItems.IsTuple( member.GetMemberValueType() ) )
 					{
 						if ( table.TupleItems.Count == 0 )
@@ -373,7 +373,7 @@ namespace MsgPack.Serialization
 							);
 					}
 					else
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 					{
 						if ( !table.Member.Exists )
 						{
@@ -400,25 +400,25 @@ namespace MsgPack.Serialization
 			public readonly TypeTableEntry Member;
 			public readonly TypeTableEntry CollectionItem;
 			public readonly TypeTableEntry DictionaryKey;
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 			public readonly IList<TypeTableEntry> TupleItems;
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 			private TypeTable(
 				TypeTableEntry member,
 				TypeTableEntry collectionItem,
 				TypeTableEntry dictionaryKey
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 				, IList<TypeTableEntry> tupleItems
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 			)
 			{
 				this.Member = member;
 				this.CollectionItem = collectionItem;
 				this.DictionaryKey = dictionaryKey;
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 				this.TupleItems = tupleItems;
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 			}
 
 			public static TypeTable Create( MemberInfo member, PolymorphismSchema defaultSchema )
@@ -428,18 +428,18 @@ namespace MsgPack.Serialization
 						TypeTableEntry.Create( member, PolymorphismTarget.Member, defaultSchema ),
 						TypeTableEntry.Create( member, PolymorphismTarget.CollectionItem, defaultSchema.TryGetItemSchema() ),
 						TypeTableEntry.Create( member, PolymorphismTarget.DictionaryKey, defaultSchema.TryGetKeySchema() )
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 						, TypeTableEntry.CreateTupleItems( member )
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 					);
 			}
 		}
 
 		private sealed class TypeTableEntry
 		{
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 			private static readonly TypeTableEntry[] EmptyEntries = new TypeTableEntry[ 0 ];
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 			private readonly Dictionary<string, Type> _knownTypeMapping = new Dictionary<string, Type>();
 
@@ -490,7 +490,7 @@ namespace MsgPack.Serialization
 				return result;
 			}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 			public static TypeTableEntry[] CreateTupleItems( MemberInfo member )
 			{
 				if ( !TupleItems.IsTuple( member.GetMemberValueType() ) )
@@ -512,7 +512,7 @@ namespace MsgPack.Serialization
 
 				return result;
 			}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 			private void Interpret( IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber )
 			{

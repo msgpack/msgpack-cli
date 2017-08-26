@@ -29,9 +29,9 @@ namespace MsgPack.Serialization.Metadata
 	internal static partial class _Unpacker
 	{
 		public static readonly MethodInfo Read = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
-#if !NETFX_35
+#if !NET35
 		public static readonly PropertyInfo ItemsCount = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.ItemsCount );
-#endif // !NETFX_35
+#endif // !NET35
 		public static readonly PropertyInfo IsArrayHeader = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsArrayHeader );
 		public static readonly PropertyInfo IsMapHeader = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsMapHeader );
 #if FEATURE_TAP

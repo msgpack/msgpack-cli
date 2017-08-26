@@ -241,7 +241,7 @@ namespace MsgPack
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var evidence = new Evidence();
-#if MONO || NETFX_35
+#if MONO || NET35
 #pragma warning disable 0612
 			// TODO: patching
 			// currently, Mono does not declare AddHostEvidence
@@ -274,7 +274,7 @@ namespace MsgPack
 			}
 		}
 
-#if MONO || NETFX_35
+#if MONO || NET35
 		private static PermissionSet GetDefaultInternetZoneSandbox()
 		{
 			var permissions = new PermissionSet( PermissionState.None );
@@ -304,7 +304,7 @@ namespace MsgPack
 			
 			return permissions;
 		}
-#endif // if MONO || NETFX_35
+#endif // if MONO || NET35
 
 		public static void TestSerializationOnPartialTrustCore()
 		{

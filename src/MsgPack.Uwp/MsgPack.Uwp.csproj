@@ -2,108 +2,41 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9D65A105-FB03-40DB-9185-8C695B8EE8D6}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack</AssemblyName>
-    <DefaultLanguage>ja-JP</DefaultLanguage>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;AOT;NETSTANDARD1_3;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>2008,3001,3002</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <Import Project="..\..\MsgPack.Common.props" />
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;AOT;NETSTANDARD1_3;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release'">
+    <OutputPath>$(SolutionDir)\bin\uap10\</OutputPath>
+    <DocumentationFile>$(SolutionDir)\bin\uap10\MsgPack.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\uap10\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;AOT;NETSTANDARD1_3;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\uap10\MsgPack.XML</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
-    <PlatformTarget>ARM</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ARM\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
+  <PropertyGroup Condition="'$(Platform)' == 'ARM'">
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
-    <PlatformTarget>ARM</PlatformTarget>
-    <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
+  <PropertyGroup Condition="'$(Platform)' == 'x64'">
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
@@ -317,26 +250,26 @@
     <Compile Include="..\MsgPack\Serialization\CollectionKind.cs">
       <Link>Serialization\CollectionKind.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs">
-      <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs">
       <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs">
+      <Link>Serialization\CollectionSerializers\CollectionMessagePackSerializerBase`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\CollectionSerializerHelpers.cs">
       <Link>Serialization\CollectionSerializers\CollectionSerializerHelpers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs">
-      <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs">
       <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializer`3.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs">
-      <Link>Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs">
+      <Link>Serialization\CollectionSerializers\DictionaryMessagePackSerializerBase`3.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\EnumerableMessagePackSerializer`2.cs">
       <Link>Serialization\CollectionSerializers\EnumerableMessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs">
+      <Link>Serialization\CollectionSerializers\EnumerableMessagePackSerializerBase`2.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\ICollectionInstanceFactory.cs">
       <Link>Serialization\CollectionSerializers\ICollectionInstanceFactory.cs</Link>
@@ -347,11 +280,11 @@
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericDictionaryMessagePackSerializer`1.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs">
-      <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs">
+      <Link>Serialization\CollectionSerializers\NonGenericEnumerableMessagePackSerializerBase`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs">
       <Link>Serialization\CollectionSerializers\NonGenericListMessagePackSerializer`1.cs</Link>
@@ -506,11 +439,11 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_KeyValuePair_2MessagePackSerializer`2.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs">
-      <Link>Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_List_1MessagePackSerializer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\System_Collections_Generic_ListOfMessagePackObjectMessagePackSerializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs">
       <Link>Serialization\DefaultSerializers\System_Collections_Generic_Queue_1MessagePackSerializer`1.cs</Link>
@@ -569,14 +502,14 @@
     <Compile Include="..\MsgPack\Serialization\EnumMemberSerializationMethod.cs">
       <Link>Serialization\EnumMemberSerializationMethod.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializer`1.cs">
+      <Link>Serialization\EnumMessagePackSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerHelpers.cs">
       <Link>Serialization\EnumMessagePackSerializerHelpers.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializerProvider.cs">
       <Link>Serialization\EnumMessagePackSerializerProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\EnumMessagePackSerializer`1.cs">
-      <Link>Serialization\EnumMessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EnumNameTransformers.cs">
       <Link>Serialization\EnumNameTransformers.cs</Link>
@@ -644,14 +577,14 @@
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializer.Factories.cs">
       <Link>Serialization\MessagePackSerializer.Factories.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer`1.cs">
+      <Link>Serialization\MessagePackSerializer`1.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerExtensions.cs">
       <Link>Serialization\MessagePackSerializerExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\MessagePackSerializerProvider.cs">
       <Link>Serialization\MessagePackSerializerProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\MessagePackSerializer`1.cs">
-      <Link>Serialization\MessagePackSerializer`1.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\NilImplication.cs">
       <Link>Serialization\NilImplication.cs</Link>
@@ -667,9 +600,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\PackHelpers.cs">
       <Link>Serialization\PackHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\PolymorphicTypeVerificationContext.cs">
-      <Link>Serialization\PolymorphicTypeVerificationContext.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicDeserializer.cs">
       <Link>Serialization\Polymorphic\IPolymorphicDeserializer.cs</Link>
@@ -695,6 +625,9 @@
     <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoding.cs">
       <Link>Serialization\Polymorphic\TypeInfoEncoding.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\PolymorphicTypeVerificationContext.cs">
+      <Link>Serialization\PolymorphicTypeVerificationContext.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Constructors.cs">
       <Link>Serialization\PolymorphismSchema.Constructors.cs</Link>
     </Compile>
@@ -712,6 +645,12 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\PolymorphismType.cs">
       <Link>Serialization\PolymorphismType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
+      <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
+      <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.CollectionTraits.cs">
       <Link>Serialization\ReflectionExtensions.CollectionTraits.cs</Link>
@@ -766,12 +705,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs">
       <Link>Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs">
-      <Link>Serialization\Reflection\GenericTypeExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs">
-      <Link>Serialization\Reflection\ReflectionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\ResolveSerializerEventArgs.cs">
       <Link>Serialization\ResolveSerializerEventArgs.cs</Link>

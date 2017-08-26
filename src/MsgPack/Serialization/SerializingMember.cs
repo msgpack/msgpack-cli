@@ -65,7 +65,7 @@ namespace MsgPack.Serialization
 			this.MemberName = member == null ? null : contract.Name;
 		}
 
-#if !NETFX_35
+#if !NET35
 		// For Tuple
 		public SerializingMember( string name )
 		{
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization
 			this.Contract = default ( DataMemberContract );
 			this.MemberName = name;
 		}
-#endif // !NETFX_35
+#endif // !NET35
 
 		public EnumMemberSerializationMethod GetEnumMemberSerializationMethod()
 		{

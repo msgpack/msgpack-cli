@@ -1062,11 +1062,11 @@ namespace MsgPack.Serialization
 	}
 }
 #if TRACING
-#if ( SILVERLIGHT && !WINDOWS_PHONE ) || NETFX_35 || NETFX_40 || UNITY
+#if ( SILVERLIGHT && !WINDOWS_PHONE ) || NET35 || NET40 || UNITY
 namespace System.Runtime.CompilerServices
 {
 	[AttributeUsage( AttributeTargets.Parameter, Inherited = false )]
 	internal sealed class CallerMemberNameAttribute : Attribute { }
 }
-#endif // SILVERLIGHT || NETFX_35 || NETFX_40 || UNITY
+#endif // SILVERLIGHT || NET35 || NET40 || UNITY
 #endif // TRACING

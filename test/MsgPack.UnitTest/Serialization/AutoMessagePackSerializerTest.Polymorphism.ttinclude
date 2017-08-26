@@ -349,7 +349,7 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 #>
 		#endregion ------ <#= attributeType.Name #>.DictionaryTypes ------
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		#region ------ <#= attributeType.Name #>.TupleTypes ------
 <#+
 		}
@@ -374,7 +374,7 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 		{
 #>
 		#endregion ------ <#= attributeType.Name #>.TupleTypes ------
-#endif // #if !NETFX_35 && !UNITY
+#endif // #if !NET35 && !UNITY
 
 		#endregion ---- <#= attributeType.Name #> ----
 <#+
@@ -852,7 +852,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#+
 			}
 
@@ -868,7 +868,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 			}
 		}
@@ -895,7 +895,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#+
 			}
 #>
@@ -904,7 +904,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 			}
 		}
@@ -925,7 +925,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#+
 			}
 #>
@@ -935,7 +935,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 			}
 		}
@@ -965,7 +965,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#+
 			}
 #>
@@ -974,7 +974,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 			if ( member.IsTuple )
 			{
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 			}
 		}
@@ -1102,7 +1102,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 	if ( generateTypes )
 	{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 
 	public class TupleAbstractType
 	{
@@ -1115,14 +1115,14 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 		public TupleAbstractType() { }
 	}
 
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 	}
 
 	if ( generateMethods )
 	{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[Test]
 		[Category( "PolymorphicSerialization" )]
 		public void TestTupleAbstractType_Success()
@@ -1143,7 +1143,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 				Assert.That( result.Value, Is.InstanceOf( target.Value.GetType() ) );
 			}
 		}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 	}
 
@@ -1197,7 +1197,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 		if ( generateTypes )
 		{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 	public class <#= tupleItemClassName #>
 	{
 <#+
@@ -1219,18 +1219,18 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 
 		public <#= tupleItemClassName #>() { }
 	}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 		}
 
 		if ( generateMethods )
 		{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#+
 			GenerateAttributeErrorTestMethod( testCase.Name + "TupleItem", tupleItemClassName );
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#+
 		}
 	}

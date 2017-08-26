@@ -120,9 +120,9 @@ namespace MsgPack.Serialization.EmittingSerializers
 				this.CollectionToBeAdded = ILConstruct.Argument( 1, targetTypeDefinition, "collection" );
 				this.ItemToAdd = ILConstruct.Argument( 2, traits.ElementType, "item" );
 				if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
-#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !SILVERLIGHT
 					|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !SILVERLIGHT
  )
 				{
 					this.KeyToAdd = ILConstruct.Argument( 2, traits.ElementType.GetGenericArguments()[ 0 ], "key" );

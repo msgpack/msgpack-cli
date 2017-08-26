@@ -2,12 +2,8 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{0F930636-458B-401F-9EAF-F4F05E93BCC9}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack.UnitTest</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
@@ -20,74 +16,29 @@
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">14.0</UnitTestPlatformVersion>
     <PackageCertificateThumbprint>0CEFF2E3DC6DD3A7245B2FB641B6DE056C5A79D9</PackageCertificateThumbprint>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
+  <Import Project="..\..\MsgPack.Common.props" />
+  <PropertyGroup>
+    <DocumentationFile></DocumentationFile>
+    <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ARM\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
+  <PropertyGroup Condition="'$(Platform)' == 'ARM'">
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
-    <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
+  <PropertyGroup Condition="'$(Platform)' == 'x64'">
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
@@ -164,9 +115,6 @@
     <Compile Include="..\MsgPack.UnitTest\FastStreamUnpackerTest.cs">
       <Link>FastStreamUnpackerTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
-      <Link>GenericExceptionTester.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_ImageSerializer.cs">
       <Link>gen\MsgPack_ImageSerializer.cs</Link>
     </Compile>
@@ -197,29 +145,29 @@
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassMemberRuntimeTypeSerializer.cs">
       <Link>gen\MsgPack_Serialization_AbstractClassMemberRuntimeTypeSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObject_Serializer.cs">
       <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTime_Serializer.cs">
       <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTime_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32Array_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32Array_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32_Serializer.cs">
       <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32Array_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer.cs">
       <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AnnotatedClassSerializer.cs">
       <Link>gen\MsgPack_Serialization_AnnotatedClassSerializer.cs</Link>
@@ -1427,53 +1375,53 @@
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObjectSerializer.cs">
       <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObjectSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObject_Serializer.cs">
       <Link>gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_DateTime_Serializer.cs">
       <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_DateTime_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_Int32Array_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_Int32Array_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_Int32_Serializer.cs">
       <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_Int32_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_ObjectArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_ObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_Int32Array_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_Object_Serializer.cs">
       <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_Object_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_ObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObject_Serializer.cs">
       <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTime_Serializer.cs">
       <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTime_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32Array_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32Array_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32_Serializer.cs">
       <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_ObjectArray_Serializer.cs">
-      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_ObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32Array_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_Object_Serializer.cs">
       <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_ObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_TestValueTypeSerializer.cs">
       <Link>gen\MsgPack_Serialization_TestValueTypeSerializer.cs</Link>
@@ -1493,80 +1441,83 @@
     <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs">
       <Link>gen\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.cs">
-      <Link>gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObject_Serializer.cs">
       <Link>gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.cs">
-      <Link>gen\System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_DateTime_Serializer.cs">
       <Link>gen\System_Collections_Generic_HashSet_1_System_DateTime_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_Int32Array_Serializer.cs">
-      <Link>gen\System_Collections_Generic_HashSet_1_System_Int32Array_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_Int32_Serializer.cs">
       <Link>gen\System_Collections_Generic_HashSet_1_System_Int32_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_ObjectArray_Serializer.cs">
-      <Link>gen\System_Collections_Generic_HashSet_1_System_ObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_Int32Array_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_Int32Array_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_Object_Serializer.cs">
       <Link>gen\System_Collections_Generic_HashSet_1_System_Object_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_ObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_DateTimeArray_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_Collection_1_System_DateTimeArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_Int32Array_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_Collection_1_System_Int32Array_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_DateTimeArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_Int32_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_Collection_1_System_Int32_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_ObjectArray_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_Collection_1_System_ObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_Int32Array_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_Object_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_Collection_1_System_Object_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_ObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObject_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTimeArray_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTime_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTime_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTimeArray_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32_Serializer.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs">
-      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs</Link>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs">
       <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\gen\System_DayOfWeekSerializer.cs">
       <Link>gen\System_DayOfWeekSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\GenericExceptionTester.cs">
+      <Link>GenericExceptionTester.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Image.cs">
       <Link>Image.cs</Link>

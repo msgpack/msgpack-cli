@@ -172,7 +172,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					isAddItemRequired = false;
 					break;
 				}
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
 				{
 					isUnpackFromRequired = false;
@@ -186,7 +186,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					isAddItemRequired = true;
 					break;
 				}
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				default:
 				{
 					isUnpackFromRequired = false;

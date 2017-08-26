@@ -46,9 +46,9 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[Serializable]
 #endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 	[SecuritySafeCritical]
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 	[DebuggerDisplay( "{DebuggerDisplayString}" )]
 	[DebuggerTypeProxy( typeof( MessagePackStringDebuggerProxy ) )]
 	internal sealed class MessagePackString
@@ -316,9 +316,9 @@ namespace MsgPack
 		}
 #endif
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[SecuritySafeCritical]
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 		private static bool UnsafeFastEquals( byte[] x, byte[] y )
 		{
 #if DEBUG

@@ -285,9 +285,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 				this.CollectionToBeAdded = CodeDomConstruct.Parameter( targetTypeDefinition, "collection" );
 				this.ItemToAdd = CodeDomConstruct.Parameter( traits.ElementType, "item" );
 				if ( traits.DetailedCollectionType == CollectionDetailedKind.GenericDictionary
-#if !NETFX_35 && !NETFX_40
+#if !NET35 && !NET40
 					|| traits.DetailedCollectionType == CollectionDetailedKind.GenericReadOnlyDictionary
-#endif // !NETFX_35 && !NETFX_40
+#endif // !NET35 && !NET40
 				)
 				{
 					this.KeyToAdd = CodeDomConstruct.Parameter( traits.ElementType.GetGenericArguments()[ 0 ], "key" );
@@ -629,9 +629,9 @@ namespace MsgPack.Serialization.CodeDomSerializers
 		///		Generates codes for this context.
 		/// </summary>
 		/// <returns>A <see cref="SerializerCodeGenerationResult"/> collection which correspond to genereated codes.</returns>
-#if !NETFX_35
+#if !NET35
 		[SecuritySafeCritical]
-#endif // !NETFX_35
+#endif // !NET35
 		public IEnumerable<SerializerCodeGenerationResult> Generate()
 		{
 			Contract.Assert( this._declaringTypes != null, "_declaringTypes != null" );

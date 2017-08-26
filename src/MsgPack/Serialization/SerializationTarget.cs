@@ -804,7 +804,7 @@ namespace MsgPack.Serialization
 			return new SerializationTarget( EmptyMembers, collectionConstructor, EmptyStrings, canDeserialize );
 		}
 
-#if !NETFX_35
+#if !NET35
 		public static SerializationTarget CreateForTuple( IList<Type> itemTypes )
 		{
 			return new SerializationTarget( itemTypes.Select( ( _, i ) => new SerializingMember( GetTupleItemNameFromIndex( i ) ) ).ToArray(), null, null, true );
@@ -814,7 +814,7 @@ namespace MsgPack.Serialization
 		{
 			return "Item" + ( i + 1 ).ToString( "D", CultureInfo.InvariantCulture );
 		}
-#endif // !NETFX_35
+#endif // !NET35
 
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )

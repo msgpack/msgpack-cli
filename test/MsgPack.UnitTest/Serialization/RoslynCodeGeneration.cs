@@ -34,7 +34,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Defines Roslyn based code generation logic for unit testing.
 	/// </summary>
-	internal static class RoslyCodeGeneration
+	internal static class RoslynCodeGeneration
 	{
 		private static int _suffix = 0;
 

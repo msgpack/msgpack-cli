@@ -29,7 +29,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Defines common interface for parameter of <see cref="NilImplicationHandler{TCondition,TPackingParameter,TAction,TUnpackedParameter}.OnUnpacked"/> method and its template methods.
 	/// </summary>
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 	internal interface INilImplicationHandlerOnUnpackedParameter<TAction> : INilImplicationHandlerParameter
 #else
 	internal interface INilImplicationHandlerOnUnpackedParameter<out TAction> : INilImplicationHandlerParameter

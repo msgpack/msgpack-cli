@@ -95,22 +95,22 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext();
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList<> ) ), Is.EqualTo( typeof( List<> ) ) );
-#if !NETFX_35
+#if !NET35
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ISet<> ) ), Is.EqualTo( typeof( HashSet<> ) ) );
 #endif
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
-#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !SILVERLIGHT
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyCollection<> ) ), Is.EqualTo( typeof( List<> ) ) );
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !SILVERLIGHT
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable<> ) ), Is.EqualTo( typeof( List<> ) ) );
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
-#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !SILVERLIGHT
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyDictionary<,> ) ), Is.EqualTo( typeof( Dictionary<,> ) ) );
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !SILVERLIGHT
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IList ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
-#if !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !SILVERLIGHT
 		    Assert.That( context.DefaultCollectionTypes.Get( typeof( IReadOnlyList<> ) ), Is.EqualTo( typeof( List<> ) ) );
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !SILVERLIGHT
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( ICollection ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IEnumerable ) ), Is.EqualTo( typeof( List<MessagePackObject> ) ) );
 			Assert.That( context.DefaultCollectionTypes.Get( typeof( IDictionary ) ), Is.EqualTo( typeof( MessagePackObjectDictionary ) ) );
@@ -436,9 +436,9 @@ namespace MsgPack.Serialization
 			var result = context.GetSerializer<Image>();
 			Assert.That( raised, Is.EqualTo( 1 ) );
 			Assert.That( result, Is.Not.Null );
-#if !NETFX_35 && !AOT && !NETFX_CORE && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NET35 && !AOT && !NETFX_CORE && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			Assert.That( result.GetType().GetAssembly().IsDynamic );
-#endif // !NETFX_35 && !AOT && !NETFX_CORE && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NET35 && !AOT && !NETFX_CORE && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 

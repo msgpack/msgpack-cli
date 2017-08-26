@@ -27,9 +27,9 @@
 #endif
 
 using System;
-#if !NETFX_35 && !UNITY && !WINDOWS_PHONE
+#if !NET35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Concurrent;
-#endif // !NETFX_35 && !UNITY && !WINDOWS_PHONE
+#endif // !NET35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Generic;
 using System.Diagnostics;
 #if CORE_CLR || UNITY || NETSTANDARD1_1
@@ -338,12 +338,12 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Dump()
 		{
-#if !NETFX_35
+#if !NET35
 			if ( _assemblyBuilder != null )
 			{
 				_assemblyBuilder.Save( _assemblyBuilder.GetName().Name + ".dll" );
 			}
-#endif // !NETFX_35
+#endif // !NET35
 		}
 
 		/// <summary>
@@ -369,17 +369,17 @@ namespace MsgPack.Serialization
 #endif // !NETSTANDARD1_3
 #endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if NET35 || UNITY || SILVERLIGHT
 		private static int _useLegacyNullMapEntryHandling;
 #else
 		private static bool _useLegacyNullMapEntryHandling;
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // NET35 || UNITY || SILVERLIGHT
 
 		internal static bool UseLegacyNullMapEntryHandling
 		{
 			get
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if NET35 || UNITY || SILVERLIGHT
 				return Volatile.Read( ref _useLegacyNullMapEntryHandling ) == 1;
 #else
 				return Volatile.Read( ref _useLegacyNullMapEntryHandling );
@@ -387,7 +387,7 @@ namespace MsgPack.Serialization
 			}
 			set
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if NET35 || UNITY || SILVERLIGHT
 				Volatile.Write( ref _useLegacyNullMapEntryHandling, value ? 1 : 0 );
 #else
 				Volatile.Write( ref _useLegacyNullMapEntryHandling, value );

@@ -81,11 +81,11 @@ namespace MsgPack.Serialization
 			SerializerDebugging.DeletePastTemporaries();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
 
-#if NETFX_35
+#if NET35
 			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
 #else
-			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
-#endif // NETFX_35
+			SerializerDebugging.SetCodeCompiler( RoslynCodeGeneration.Compile );
+#endif // NET35
 
 			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.TestDirectory;
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );

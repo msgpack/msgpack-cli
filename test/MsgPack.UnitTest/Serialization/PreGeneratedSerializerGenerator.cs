@@ -37,7 +37,7 @@ namespace MsgPack.Serialization
 				new SerializerCodeGenerationConfiguration
 				{
 					Namespace = "MsgPack.Serialization.GeneratedSerializers",
-#if NETFX_35
+#if NET35
 					OutputDirectory = "\\temp-gen35",
 #else
 					OutputDirectory = "\\temp-gen",

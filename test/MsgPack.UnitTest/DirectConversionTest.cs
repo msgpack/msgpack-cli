@@ -21,9 +21,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NETFX_35
+#if NET35
 using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
-#endif // NETFX_35
+#endif // NET35
 using System.IO;
 using System.Text;
 #if !MSTEST
@@ -102,7 +102,7 @@ namespace MsgPack
 			var sw = Stopwatch.StartNew();
 			var avg = 0.0;
 			Random random = new Random();
-#if !SKIP_LARGE_TEST && !NETFX_35
+#if !SKIP_LARGE_TEST && !NET35
 			var sb = new StringBuilder( 1000 * 1000 * 200 );
 #else
 			var sb = new StringBuilder( 1000 * 200 );
@@ -140,7 +140,7 @@ namespace MsgPack
 			sw.Stop();
 			Debug.WriteLine( "Medium String ({1:#.0}): {0:0.###} msec/object", sw.ElapsedMilliseconds / 100.0, avg );
 			sw.Reset();
-#if !SKIP_LARGE_TEST && !NETFX_35
+#if !SKIP_LARGE_TEST && !NET35
 			sw.Start();
 
 			avg = 0.0;
