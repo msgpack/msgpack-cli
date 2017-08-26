@@ -23,6 +23,7 @@
     <NoWarn>;2008</NoWarn>
     <!-- NOTE: Set true for AOT testing. This value is set to false to reduce CI build time. -->
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)' == 'x86'">
     <PlatformTarget>x86</PlatformTarget>

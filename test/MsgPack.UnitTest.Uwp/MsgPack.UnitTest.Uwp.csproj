@@ -22,6 +22,7 @@
     <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;FEATURE_TAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <SignAssembly>false</SignAssembly>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
@@ -1915,7 +1916,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MsgPack, Version=0.9.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
+    <Reference Include="MsgPack, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\src\MsgPack\bin\Debug\netstandard1.3\MsgPack.dll</HintPath>
     </Reference>
