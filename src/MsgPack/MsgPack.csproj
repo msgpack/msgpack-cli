@@ -9,14 +9,12 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NuspecFile>$(SolutionDir)/msgpack.nuspec</NuspecFile>
   </PropertyGroup>
+  <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and ('$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10')">
     <OutputPath>..\..\bin\$(TargetFramework)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
     <OutputPath>..\..\bin\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
-    <OutputPath>bin\$(Configuration)\$(TargetFramework)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' != 'Release' and ('$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10')">
     <OutputPath>bin\$(Configuration)\$(TargetFramework)\</OutputPath>
@@ -24,7 +22,6 @@
   <PropertyGroup Condition="'$(Configuration)' != 'Release' and '$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
     <!-- Workaround for VS 15.3 -->
     <NuGetTargetMoniker>MonoAndroid,Version=1.0</NuGetTargetMoniker>
