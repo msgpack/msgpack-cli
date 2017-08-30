@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,10 +28,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 using MsgPack.Serialization.CodeDomSerializers;
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 #if !NETFX_CORE
 using Microsoft.FSharp.Collections;
 #endif // !NETFX_CORE
@@ -68,37 +68,42 @@ namespace MsgPack.Serialization
 		[SetUp]
 		public void SetUp()
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 			//SerializerDebugging.TraceEnabled = true;
 			//SerializerDebugging.DumpEnabled = true;
 			if ( SerializerDebugging.TraceEnabled )
 			{
 				Tracer.Emit.Listeners.Clear();
 				Tracer.Emit.Switch.Level = SourceLevels.All;
+#if NETSTANDARD2_0
+				Tracer.Emit.Listeners.Add( new TextWriterTraceListener( Console.Out ) );
+#else // NETSTANDRD2_0
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+#endif // NETSTANDRD2_0
 			}
 
 			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.DeletePastTemporaries();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
 
-#if NETFX_35
+#if NET35
 			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
 #else
-			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
-#endif // NETFX_35
+			SerializerDebugging.SetCodeCompiler( RoslynCodeGeneration.Compile );
+#endif // NET35
 
 			SerializerDebugging.DumpDirectory = TestContext.CurrentContext.TestDirectory;
 			SerializerDebugging.AddRuntimeAssembly( typeof( ImmutableList ).Assembly.Location );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 			if ( SerializerDebugging.DumpEnabled && this.CanDump )
 			{
+#if !NETSTANDARD2_0
 				try
 				{
 					SerializerDebugging.Dump();
@@ -111,11 +116,14 @@ namespace MsgPack.Serialization
 				{
 					SerializationMethodGeneratorManager.Refresh();
 				}
+#else // !NETSTANDARD2_0
+				SerializationMethodGeneratorManager.Refresh();
+#endif // !NETSTANDARD2_0
 			}
 
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 		}
 #endif // !NETFX_CORE && !SDILVERLIGHT && !AOT
 

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -270,11 +270,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // DEBUG
 			}
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			type = this._unpackingContextType.CreateType();
 #else
 			type = this._unpackingContextType.CreateTypeInfo().AsType();
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			constructor = type.GetConstructors().Single();
 		}
 
@@ -407,11 +407,11 @@ namespace MsgPack.Serialization.EmittingSerializers
 				( _, il ) => CreateDefaultObjectConstructor( contextfulConstructor, il )
 			);
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			var ctor = this._typeBuilder.CreateType().GetConstructor( ConstructorParameterTypesWithoutCapabilities );
 #else
 			var ctor = this._typeBuilder.CreateTypeInfo().GetConstructor( ConstructorParameterTypesWithoutCapabilities );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 
 #if DEBUG
 			Contract.Assert( ctor != null, "ctor != null" );

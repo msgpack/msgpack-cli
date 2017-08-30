@@ -254,9 +254,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 using System.Globalization;
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !WINDOWS_PHONE && !NET35 && !UNITY
 using System.Numerics;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !WINDOWS_PHONE && !NET35 && !UNITY
 using System.Reflection;
 using System.Text;
 
@@ -328,7 +328,7 @@ foreach( Type type in structTypes )
 	if( notInNet45s.Contains( type ) )
 	{
 #>
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 <#
 	}
 
@@ -349,7 +349,7 @@ foreach( Type type in structTypes )
 	if( notInNet35s.Contains( type ) )
 	{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#
 	}
 
@@ -373,7 +373,7 @@ foreach( Type type in structTypes )
 	if( notInNet35s.Contains( type ) )
 	{
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#
 	}
 
@@ -394,7 +394,7 @@ foreach( Type type in structTypes )
 	if( notInNet45s.Contains( type ) )
 	{
 #>
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 <#
 	}
 
@@ -431,7 +431,7 @@ foreach( Type type in classTypes )
 	if( notInNet45s.Contains( type ) )
 	{
 #>
-#if !NETFX_40 && !NETFX_45
+#if !NET40 && !NET45
 <#
 	}
 
@@ -445,7 +445,7 @@ foreach( Type type in classTypes )
 	if( notInNet35s.Contains( type ) )
 	{
 #>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 <#
 	}
 
@@ -479,7 +479,7 @@ foreach( Type type in classTypes )
 	if( notInNet35s.Contains( type ) )
 	{
 #>
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 <#
 	}
 
@@ -493,7 +493,7 @@ foreach( Type type in classTypes )
 	if( notInNet45s.Contains( type ) )
 	{
 #>
-#endif // !NETFX_40 && !NETFX_45
+#endif // !NET40 && !NET45
 <#
 	}
 

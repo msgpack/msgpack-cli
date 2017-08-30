@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -146,6 +146,9 @@ namespace MsgPack
 			this.TestInnerExceptionConstructor_Null_SetToDefaultMessageAndNullInnerException();
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			this.TestSerialization();
+#if !NETSTANDARD2_0
+			this.TestSerializationOnPartialTrust();
+#endif // !NETSTANDARD2_0
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
@@ -220,7 +223,11 @@ namespace MsgPack
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private void TestSerialization()
 		{
+#if !NETSTANDARD2_0
 			Assert.That( typeof( T ), Is.BinarySerializable );
+#else // !NETSTANDARD2_0
+			Assert.That( typeof( T ).IsSerializable, Is.True );
+#endif // !NETSTANDARD2_0
 			var innerMessage = Guid.NewGuid().ToString();
 			var message = Guid.NewGuid().ToString();
 			var target = this._innerExceptionConstructor( message, new Exception( innerMessage ) );
@@ -237,11 +244,12 @@ namespace MsgPack
 			}
 		}
 
+#if !NETSTANDARD2_0
 		private void TestSerializationOnPartialTrust()
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var evidence = new Evidence();
-#if MONO || NETFX_35
+#if MONO || NET35
 #pragma warning disable 0612
 			// TODO: patching
 			// currently, Mono does not declare AddHostEvidence
@@ -274,7 +282,7 @@ namespace MsgPack
 			}
 		}
 
-#if MONO || NETFX_35
+#if MONO || NET35
 		private static PermissionSet GetDefaultInternetZoneSandbox()
 		{
 			var permissions = new PermissionSet( PermissionState.None );
@@ -304,7 +312,7 @@ namespace MsgPack
 			
 			return permissions;
 		}
-#endif // if MONO || NETFX_35
+#endif // if MONO || NET35
 
 		public static void TestSerializationOnPartialTrustCore()
 		{
@@ -324,6 +332,7 @@ namespace MsgPack
 			var assemblyName = type.Assembly.GetName();
 			return new StrongName( new StrongNamePublicKeyBlob( assemblyName.GetPublicKey() ), assemblyName.Name, assemblyName.Version );
 		}
+#endif // !NETSTANDARD2_0
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }

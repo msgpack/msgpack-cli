@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -169,12 +169,14 @@ namespace MsgPack.Serialization
 		[MessagePackMember( 7 )]
 		public readonly int NonSerializedPublicReadOnlyField;
 
+#pragma warning disable 169
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 // MessagePackMember and MessagePackIgnore cannot coexist.
 		[NonSerialized]
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[MessagePackMember( 8 )]
 		// ReSharper disable once InconsistentNaming
 		private int NonSerializedNonPublicField;
+#pragma warning restore 169
 
 		private readonly List<int> _collectionReadOnlyProperty;
 		[MessagePackMember( 9 )]

@@ -29,9 +29,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 using System.Globalization;
-#if !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#if !WINDOWS_PHONE && !NET35 && !UNITY
 using System.Numerics;
-#endif // !WINDOWS_PHONE && !NETFX_35 && !UNITY
+#endif // !WINDOWS_PHONE && !NET35 && !UNITY
 using System.Reflection;
 using System.Text;
 
@@ -94,11 +94,11 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.UInt32 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt32MessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.UInt64 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UInt64MessagePackSerializer( ownerContext ) );
 #if !NETSTANDARD1_1
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 			dictionary.Add( typeof( System.Security.Cryptography.HashAlgorithmName ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer( ownerContext ) );
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #endif // !NETSTANDARD1_1
 #if !NETSTANDARD1_1
 #if !SILVERLIGHT
@@ -108,61 +108,61 @@ namespace MsgPack.Serialization
 #endif // !SILVERLIGHT
 #endif // !NETSTANDARD1_1
 #if !WINDOWS_PHONE
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.BigInteger ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_BigIntegerMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 #endif // !WINDOWS_PHONE
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Matrix3x2 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_Matrix3x2MessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Matrix4x4 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_Matrix4x4MessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Plane ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_PlaneMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Quaternion ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_QuaternionMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Vector2 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_Vector2MessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Vector3 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_Vector3MessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
-#if !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
+#if !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Vector4 ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_Vector4MessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !NETFX_45 && !SILVERLIGHT
+#endif // !NET35 && !UNITY && !NET40 && !NET45 && !SILVERLIGHT
 			dictionary.Add( typeof( System.ArraySegment<> ).TypeHandle, typeof( System_ArraySegment_1MessagePackSerializer<> ) );
 			dictionary.Add( typeof( System.Globalization.CultureInfo ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Globalization_CultureInfoMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( System.Collections.DictionaryEntry ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Collections_DictionaryEntryMessagePackSerializer( ownerContext ) );
@@ -184,11 +184,11 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( System.Collections.Generic.Queue<> ).TypeHandle, typeof( System_Collections_Generic_Queue_1MessagePackSerializer<> ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if !WINDOWS_PHONE
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Numerics.Complex ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_Numerics_ComplexMessagePackSerializer( ownerContext ) );
 #endif // !UNITY || MSGPACK_UNITY_FULL
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 #endif // !WINDOWS_PHONE
 #if !UNITY || MSGPACK_UNITY_FULL
 			dictionary.Add( typeof( System.Uri ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_UriMessagePackSerializer( ownerContext ) );

@@ -175,14 +175,14 @@ namespace MsgPack.Serialization.DefaultSerializers
 #endif // !UNITY
 
 #if !UNITY
-#if SILVERLIGHT || NETFX_35 || NETFX_40
+#if SILVERLIGHT || NET35 || NET40
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "context", Justification = "Used in other platform" )]
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "targetType", Justification = "Used in other platform" )]
 #endif // SILVERLIGHT
 		// ReSharper disable UnusedParameter.Local
 		private static MessagePackSerializer TryCreateImmutableCollectionSerializer( SerializationContext context, Type targetType, PolymorphismSchema schema )
 		{
-#if NETFX_35 || NETFX_40 || SILVERLIGHT
+#if NET35 || NET40 || SILVERLIGHT
 			// ImmutableCollections does not support above platforms.
 			return null;
 #else
@@ -259,10 +259,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 					// ReSharper restore HeuristicUnreachableCode
 				}
 			}
-#endif // NETFX_35 || NETFX_40 || SILVERLIGHT
+#endif // NET35 || NET40 || SILVERLIGHT
 		}
 
-#if !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+#if !NET35 && !NET40 && !SILVERLIGHT
 		private static ImmutableCollectionType DetermineImmutableCollectionType( Type targetType )
 		{
 			if ( targetType.Namespace != "System.Collections.Immutable" 
@@ -333,7 +333,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 		}
-#endif // !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+#endif // !NET35 && !NET40 && !SILVERLIGHT
 #endif // !UNITY
 
 		public static MessagePackSerializer TryCreateAbstractCollectionSerializer( SerializationContext context, Type abstractType, Type concreteType, PolymorphismSchema schema )
@@ -358,9 +358,9 @@ namespace MsgPack.Serialization.DefaultSerializers
 			switch ( traits.DetailedCollectionType )
 			{
 				case CollectionDetailedKind.GenericList:
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 				case CollectionDetailedKind.GenericSet:
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 				case CollectionDetailedKind.GenericCollection:
 				{
 #if !UNITY
@@ -372,7 +372,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return new AbstractCollectionMessagePackSerializer( context, abstractType, concreteType, traits, schema );
 #endif
 				}
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyList:
 				case CollectionDetailedKind.GenericReadOnlyCollection:
 				{
@@ -385,7 +385,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return new AbstractCollectionMessagePackSerializer( context, abstractType, concreteType, traits, schema );
 #endif
 				}
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericEnumerable:
 				{
 #if !UNITY
@@ -413,7 +413,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return new AbstractDictionaryMessagePackSerializer( context, abstractType, concreteType, genericArgumentOfKeyValuePair[ 0 ], genericArgumentOfKeyValuePair[ 1 ], traits, schema );
 #endif
 				}
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
 				{
 					var genericArgumentOfKeyValuePair = traits.ElementType.GetGenericArguments();
@@ -430,7 +430,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					return new AbstractDictionaryMessagePackSerializer( context, abstractType, concreteType, genericArgumentOfKeyValuePair[ 0 ], genericArgumentOfKeyValuePair[ 1 ], traits, schema );
 #endif
 				}
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.NonGenericList:
 				{
 #if !UNITY
@@ -516,13 +516,13 @@ namespace MsgPack.Serialization.DefaultSerializers
 				}
 			}
 
-#if !UNITY && !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+#if !UNITY && !NET35 && !NET40 && !SILVERLIGHT
 			// ImmutableCollections does not support above platforms.
 			if ( DetermineImmutableCollectionType( type ) != ImmutableCollectionType.Unknown )
 			{
 				return true;
 			}
-#endif // !UNITY && !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+#endif // !UNITY && !NET35 && !NET40 && !SILVERLIGHT
 
 			if ( preferReflectionBasedSerializer )
 			{
@@ -599,7 +599,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-#if !NETFX_35 && !NETFX_40 && !SILVERLIGHT
+#if !NET35 && !NET40 && !SILVERLIGHT
 
 		[Preserve( AllMembers = true )]
 		private sealed class ImmutableCollectionSerializerFactory<T, TItem> : IGenericBuiltInSerializerFactory
@@ -789,7 +789,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 		[Preserve( AllMembers = true )]
 		private sealed class ReadOnlyCollectionSerializerFactory<TCollection, TItem> : IVariantSerializerFactory
 			where TCollection : IReadOnlyCollection<TItem>
@@ -801,7 +801,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return new AbstractReadOnlyCollectionMessagePackSerializer<TCollection, TItem>( context, targetType, schema );
 			}
 		}
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 
 		[Preserve( AllMembers = true )]
 #if SILVERLIGHT
@@ -820,7 +820,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 			}
 		}
 
-#if !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 		[Preserve( AllMembers = true )]
 		private sealed class ReadOnlyDictionarySerializerFactory<TDictionary, TKey, TValue> : IVariantSerializerFactory
 			where TDictionary : IReadOnlyDictionary<TKey, TValue>
@@ -832,11 +832,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 				return new AbstractReadOnlyDictionaryMessagePackSerializer<TDictionary, TKey, TValue>( context, targetType, schema );
 			}
 		}
-#endif // !NETFX_35 && !UNITY && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !UNITY && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 		// ReSharper restore MemberHidesStaticFromOuterClass
 #endif // !UNITY
 
-#if !NETFX_35 && !NETFX_40 && !SILVERLIGHT && !UNITY
+#if !NET35 && !NET40 && !SILVERLIGHT && !UNITY
 		private enum ImmutableCollectionType
 		{
 			Unknown = 0,
@@ -852,6 +852,6 @@ namespace MsgPack.Serialization.DefaultSerializers
 			FSharpMap,
 			FSharpSet,
 		}
-#endif // !NETFX_35 && !NETFX_40 && !SILVERLIGHT && !UNITY
+#endif // !NET35 && !NET40 && !SILVERLIGHT && !UNITY
 	}
 }

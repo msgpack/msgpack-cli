@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -144,12 +144,12 @@ namespace MsgPack.Serialization.EmittingSerializers
 		private readonly ModuleBuilder _module;
 		private readonly bool _isDebuggable;
 
-#if NETFX_35
+#if NET35
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "isCollectable", Justification = "Used in other platforms" )]
-#endif // NETFX_35
-#if !NETFX_35
+#endif // NET35
+#if !NET35
 		[SecuritySafeCritical]
-#endif // !NETFX_35
+#endif // !NET35
 		private SerializationMethodGeneratorManager( bool isDebuggable, bool isCollectable, AssemblyBuilder assemblyBuilder )
 		{
 			this._isDebuggable = isDebuggable;
@@ -169,16 +169,16 @@ namespace MsgPack.Serialization.EmittingSerializers
 			{
 				assemblyName = typeof( SerializationMethodGeneratorManager ).Namespace + ".GeneratedSerealizers" + Interlocked.Increment( ref _assemblySequence );
 				var dedicatedAssemblyBuilder =
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 					AppDomain.CurrentDomain.DefineDynamicAssembly(
 						new AssemblyName( assemblyName ),
 						isDebuggable
 						? AssemblyBuilderAccess.RunAndSave
-#if !NETFX_35
+#if !NET35
 						: ( isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run )
 #else
 						: AssemblyBuilderAccess.Run
-#endif // !NETFX_35
+#endif // !NET35
 #if DEBUG
 						,
 						SerializerDebugging.DumpDirectory
@@ -189,13 +189,13 @@ namespace MsgPack.Serialization.EmittingSerializers
 						new AssemblyName( assemblyName ),
 						isCollectable ? AssemblyBuilderAccess.RunAndCollect : AssemblyBuilderAccess.Run
 					);
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 
 				SetUpAssemblyBuilderAttributes( dedicatedAssemblyBuilder, isDebuggable );
 				this._assembly = dedicatedAssemblyBuilder;
 			}
 
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			if ( isDebuggable )
 			{
 				this._module = this._assembly.DefineDynamicModule( assemblyName, assemblyName + ".dll", true );
@@ -206,7 +206,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 #else
 			this._module = this._assembly.DefineDynamicModule( assemblyName );
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 		}
 
 		internal static void SetUpAssemblyBuilderAttributes( AssemblyBuilder dedicatedAssemblyBuilder, bool isDebuggable )
@@ -233,7 +233,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { 8 }
 				)
 			);
-#if !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			dedicatedAssemblyBuilder.SetCustomAttribute(
 				new CustomAttributeBuilder(
 					// ReSharper disable once AssignNullToNotNullAttribute
@@ -243,7 +243,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 					new object[] { true }
 				)
 			);
-#endif // !NETFX_35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NET35 && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
 
 		/// <summary>

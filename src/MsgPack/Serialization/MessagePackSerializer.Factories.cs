@@ -37,11 +37,11 @@ using System.Runtime.Serialization;
 
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.ReflectionSerializers;
-#if !SILVERLIGHT && !NETFX_35 && !UNITY
+#if !SILVERLIGHT && !NET35 && !UNITY
 using System.Collections.Concurrent;
-#else // !SILVERLIGHT && !NETFX_35 && !UNITY
+#else // !SILVERLIGHT && !NET35 && !UNITY
 using System.Collections.Generic;
-#endif // !SILVERLIGHT && !NETFX_35 && !UNITY
+#endif // !SILVERLIGHT && !NET35 && !UNITY
 #if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
@@ -292,12 +292,12 @@ namespace MsgPack.Serialization
 		}
 
 #if !UNITY
-#if !SILVERLIGHT && !NETFX_35
+#if !SILVERLIGHT && !NET35
 		private static readonly ConcurrentDictionary<Type, Func<SerializationContext, MessagePackSerializer>> _creatorCache = new ConcurrentDictionary<Type, Func<SerializationContext, MessagePackSerializer>>();
 #else
 		private static readonly object _syncRoot = new object();
 		private static readonly Dictionary<Type, Func<SerializationContext, MessagePackSerializer>> _creatorCache = new Dictionary<Type, Func<SerializationContext, MessagePackSerializer>>();
-#endif // !SILVERLIGHT && !NETFX_35
+#endif // !SILVERLIGHT && !NET35
 #endif // !UNITY
 
 		/// <summary>
@@ -367,7 +367,7 @@ namespace MsgPack.Serialization
 							typeof( Func<SerializationContext, MessagePackSerializer> )
 						) as Func<SerializationContext, MessagePackSerializer>
 				);
-#elif SILVERLIGHT || NETFX_35
+#elif SILVERLIGHT || NET35
 			Func<SerializationContext, MessagePackSerializer> factory;
 
 			lock ( _syncRoot )
@@ -601,7 +601,7 @@ namespace MsgPack.Serialization
 					{
 						return ReflectionSerializerHelper.CreateReflectionEnumMessagePackSerializer<T>( context );
 					}
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 					if ( TupleItems.IsTuple( typeof( T ) ) )
 					{
 						return
@@ -610,7 +610,7 @@ namespace MsgPack.Serialization
 								( schema ?? PolymorphismSchema.Default ).ChildSchemaList
 							);
 					}
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 					SerializationTarget.VerifyType( typeof( T ) );
 					var target = SerializationTarget.Prepare( context, typeof( T ) );

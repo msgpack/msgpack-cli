@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,9 +27,9 @@
 #endif
 
 using System;
-#if !NETFX_35 && !UNITY && !WINDOWS_PHONE
+#if !NET35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Concurrent;
-#endif // !NETFX_35 && !UNITY && !WINDOWS_PHONE
+#endif // !NET35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Generic;
 using System.Diagnostics;
 #if CORE_CLR || UNITY || NETSTANDARD1_1
@@ -203,6 +203,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !NETSTANDARD1_3
+#if !NETSTANDARD2_0
 		[ThreadStatic]
 		private static AssemblyBuilder _assemblyBuilder;
 
@@ -239,6 +240,7 @@ namespace MsgPack.Serialization
 			_moduleBuilder =
 				_assemblyBuilder.DefineDynamicModule( "ExpressionTreeSerializerLogics", "ExpressionTreeSerializerLogics.dll", true );
 		}
+#endif // !NETSTANDARD2_0
 
 #if !FERATURE_CONCURRENT
 		private static volatile DependentAssemblyManager _dependentAssemblyManager = DependentAssemblyManager.Default;
@@ -313,6 +315,7 @@ namespace MsgPack.Serialization
 			set { _onTheFlyCodeDomEnabled = value; }
 		}
 
+#if !NETSTANDARD2_0
 		/// <summary>
 		///		Creates the new type builder for the serializer.
 		/// </summary>
@@ -338,13 +341,14 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Dump()
 		{
-#if !NETFX_35
+#if !NET35
 			if ( _assemblyBuilder != null )
 			{
 				_assemblyBuilder.Save( _assemblyBuilder.GetName().Name + ".dll" );
 			}
-#endif // !NETFX_35
+#endif // !NET35
 		}
+#endif // !NETSTANDARD2_0
 
 		/// <summary>
 		///		Resets debugging states.
@@ -352,8 +356,10 @@ namespace MsgPack.Serialization
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "For unit testing" )]
 		public static void Reset()
 		{
+#if !NETSTANDARD2_0
 			_assemblyBuilder = null;
 			_moduleBuilder = null;
+#endif // !NETSTANDARD2_0
 			_dumpEnabled = false;
 
 			if ( _ilTraceWriter != null )
@@ -369,17 +375,17 @@ namespace MsgPack.Serialization
 #endif // !NETSTANDARD1_3
 #endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if NET35 || UNITY || SILVERLIGHT
 		private static int _useLegacyNullMapEntryHandling;
 #else
 		private static bool _useLegacyNullMapEntryHandling;
-#endif // NETFX_35 || UNITY || SILVERLIGHT
+#endif // NET35 || UNITY || SILVERLIGHT
 
 		internal static bool UseLegacyNullMapEntryHandling
 		{
 			get
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if NET35 || UNITY || SILVERLIGHT
 				return Volatile.Read( ref _useLegacyNullMapEntryHandling ) == 1;
 #else
 				return Volatile.Read( ref _useLegacyNullMapEntryHandling );
@@ -387,7 +393,7 @@ namespace MsgPack.Serialization
 			}
 			set
 			{
-#if NETFX_35 || UNITY || SILVERLIGHT
+#if NET35 || UNITY || SILVERLIGHT
 				Volatile.Write( ref _useLegacyNullMapEntryHandling, value ? 1 : 0 );
 #else
 				Volatile.Write( ref _useLegacyNullMapEntryHandling, value );

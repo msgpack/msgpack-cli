@@ -29,18 +29,18 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 using System.Security;
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 
 namespace MsgPack.Serialization
 {
 	/// <summary>
 	///		Specialized <see cref="TypeKeyRepository"/> for serializers.
 	/// </summary>
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 	[SecuritySafeCritical]
-#endif // !NETFX_35
+#endif // !NET35
 	internal sealed class SerializerTypeKeyRepository : TypeKeyRepository
 	{
 #if UNITY

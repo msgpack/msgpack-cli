@@ -2,12 +2,9 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{70CB94DD-DA45-47AE-A370-940A094B9F10}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack.UnitTest</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
@@ -23,48 +20,26 @@
     <AppXPackage>True</AppXPackage>
     <AppxPackageIncludePrivateSymbols>true</AppxPackageIncludePrivateSymbols>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_PHONE_APP;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
+  <Import Project="..\..\MsgPack.Common.props" />
+  <PropertyGroup>
+    <DocumentationFile></DocumentationFile>
+    <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_PHONE_APP;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
     <NoWarn>;2008</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\ARM\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>full</DebugType>
+  <PropertyGroup Condition="'$(Platform)' == 'ARM'">
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
-    <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoWarn>;2008</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -77,6 +52,9 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\_SetUpFixture.cs">
+      <Link>_SetUpFixture.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
       <Link>AssertEx.cs</Link>
     </Compile>
@@ -224,6 +202,15 @@
     <Compile Include="..\MsgPack.UnitTest\PackUnpackTest.Scalar.cs">
       <Link>PackUnpackTest.Scalar.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
+      <Link>Serialization\_SetUpFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
+      <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAttributeTest.cs">
+      <Link>Serialization\MessagePackMemberAttributeTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
       <Link>Serialization\AddOnlyCollection`1.cs</Link>
     </Compile>
@@ -296,12 +283,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\MapReflectionBasedEnumSerializationTest.cs">
       <Link>Serialization\MapReflectionBasedEnumSerializationTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAndDataMemberMixedTarget.cs">
-      <Link>Serialization\MessagePackMemberAndDataMemberMixedTarget.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackMemberAttributeTest.cs">
-      <Link>Serialization\MessagePackMemberAttributeTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\MessagePackSerializerTest.cs">
       <Link>Serialization\MessagePackSerializerTest.cs</Link>
     </Compile>
@@ -361,9 +342,6 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\VersioningTest.cs">
       <Link>Serialization\VersioningTest.cs</Link>
-    </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\_SetUpFixture.cs">
-      <Link>Serialization\_SetUpFixture.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
       <Link>SplittingStream.cs</Link>
@@ -473,9 +451,6 @@
     <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Scalar.cs">
       <Link>UnpackingTest.Scalar.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\_SetUpFixture.cs">
-      <Link>_SetUpFixture.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -510,9 +485,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MsgPack, Version=0.9.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
+    <Reference Include="MsgPack, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\MsgPack\bin\Debug\netstandard1.1\MsgPack.dll</HintPath>
+      <HintPath>..\..\src\netstandard\bin\Debug\netstandard1.1\MsgPack.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

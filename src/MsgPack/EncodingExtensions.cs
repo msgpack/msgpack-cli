@@ -38,9 +38,9 @@ namespace MsgPack
 	internal static class EncodingExtensions
 	{
 #if FEATURE_POINTER_CONVERSION
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[System.Security.SecuritySafeCritical]
-#endif // !NETFX_35 && !UNITY
+#endif // !NET35 && !UNITY
 		public static unsafe bool EncodeString( this Encoder source, char* pChar, int charsLength, byte* pBuffer, int bufferCount, out int charsUsed, out int bytesUsed )
 		{
 			bool isCompleted;

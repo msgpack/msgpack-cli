@@ -1,38 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == ''">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == ''">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsgPack</RootNamespace>
     <AssemblyName>MsgPack</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;MonoAndroid10;Xamarin.iOS10</TargetFrameworks>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;netstandard2.0;MonoAndroid10;Xamarin.iOS10</TargetFrameworks>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <AssemblyOriginatorKeyFile>..\MsgPack.snk</AssemblyOriginatorKeyFile>
-    <NuspecFile>../../msgpack.nuspec</NuspecFile>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <SignAssembly>true</SignAssembly>
+    <NuspecFile>$(SolutionDir)/msgpack.nuspec</NuspecFile>
   </PropertyGroup>
+  <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and ('$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10')">
     <OutputPath>..\..\bin\$(TargetFramework)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
     <OutputPath>..\..\bin\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
-    <OutputPath>bin\$(Configuration)\$(TargetFramework)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' != 'Release' and ('$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10')">
     <OutputPath>bin\$(Configuration)\$(TargetFramework)\</OutputPath>
@@ -40,91 +22,20 @@
   <PropertyGroup Condition="'$(Configuration)' != 'Release' and '$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
-    <DocumentationFile>$(OutputPath)\MsgPack.XML</DocumentationFile>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
-    <DocumentationFile>$(OutputPath)\$(TargetFramework)\MsgPack.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
-    <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net35'">
-    <DefineConstants>$(DefineConstants);NETFX_35;FEATURE_POINTER_CONVERSION</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
-    <DefineConstants>$(DefineConstants);NETFX_45;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
-    <DefineConstants>$(DefineConstants);NETFX_46;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <DefineConstants>$(DefineConstants);FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_MEMCOPY</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
-    <DefineConstants>$(DefineConstants);__MOBILE__;AOT;XAMARIN;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
-    <DefineConstants>$(DefineConstants);__ANDROID__</DefineConstants>
-    <TargetFrameworkRootPath Condition="'$(VsInstallRoot)' != ''">$(VsInstallRoot)\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\</TargetFrameworkRootPath>
-    <ImplicitlyExpandDesignTimeFacades>true</ImplicitlyExpandDesignTimeFacades>
     <!-- Workaround for VS 15.3 -->
     <NuGetTargetMoniker>MonoAndroid,Version=1.0</NuGetTargetMoniker>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
-    <DefineConstants>$(DefineConstants);__IOS__</DefineConstants>
-    <TargetFrameworkRootPath Condition="'$(VsInstallRoot)' != ''">$(VsInstallRoot)\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\</TargetFrameworkRootPath>
-    <ImplicitlyExpandDesignTimeFacades>true</ImplicitlyExpandDesignTimeFacades>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
-    <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_UWP;NETSTANDARD1_3;AOT</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    <DocumentationFile>bin\Debug\MsgPack.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'PerformanceTest|AnyCPU'">
-    <DefineConstants>$(DefineConstants);PERFORMANCE_TEST</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Instrument|AnyCPU'">
-    <DefineConstants>$(DefineConstants);PERFORMANCE_TEST</DefineConstants>
-    <Optimize>false</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CodeAnalysis|AnyCPU'">
-    <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'uap10.0' and '$(TargetFramework)' != 'netstandard1.1' and '$(TargetFramework)' != 'netstandard1.3' and '$(TargetFramework)' != 'netstandard2.0'">
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" Condition="'$(TargetFramework)' != 'net35'" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
+    <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Collections" Version="4.0.11" />
@@ -161,6 +72,13 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Reflection.Emit" Version="4.0.1" />
     <PackageReference Include="System.Reflection.Emit.LightWeight" Version="4.0.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="NETStandard.Library" Version="2.0.0" />
+    <PackageReference Include="System.CodeDom" Version="4.4.0" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit.LightWeight" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -516,11 +434,13 @@
     <Compile Remove="Serialization\Metadata\_Type.cs" />
     <Compile Remove="Serialization\ReflectionSerializers\ReflectionTupleMessagePackSerializer`1.cs" />
     <Compile Remove="TupleItems.cs" />
-    <Compile Include="..\MsgPack.Net35\Contract.cs" />
-    <Compile Include="..\MsgPack.Net35\Delegates.cs" />
-    <Compile Include="..\MsgPack.Net35\NetFxCompatibilities.cs" />
-    <Compile Include="..\MsgPack.Net35\Volatile.cs" />
-    <Compile Include="..\MsgPack.Net35\Tuple`n.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
+    <Compile Remove="Contract.cs" />
+    <Compile Remove="Delegates.cs" />
+    <Compile Remove="NetFxCompatibilities.cs" />
+    <Compile Remove="Volatile.cs" />
+    <Compile Remove="Tuple`n.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <Compile Remove="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
@@ -586,7 +506,7 @@
     <Compile Remove="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
     <Compile Remove="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
     <Compile Include="AsyncReadResult.cs" />
     <Compile Include="AsyncReadResult`1.cs" />
     <Compile Include="TaskAugument.cs" />
@@ -603,6 +523,6 @@
     <XamarinMSBuildExtensionsPath>$(VSMSBuildExtensionsPath)</XamarinMSBuildExtensionsPath>
   </PropertyGroup>
   <Import Project="$(VSMSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition="'$(TargetFramework)' == 'uap10.0'" />
-  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10'" />
-  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10'" />
+  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10' and $(SkipXamarin) != 'true'" />
+  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10' and $(SkipXamarin) != 'true'" />
 </Project>

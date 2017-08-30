@@ -1,4 +1,4 @@
-﻿ 
+ 
  
 #region -- License Terms --
 //
@@ -19,6 +19,10 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#if MSTEST
+#pragma warning disable 162
+#endif // MSTEST
 
 using System;
 using System.IO;

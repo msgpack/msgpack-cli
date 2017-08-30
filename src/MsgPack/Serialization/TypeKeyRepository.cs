@@ -43,7 +43,7 @@ namespace MsgPack.Serialization
 	///		Repository for key type with RWlock scheme.
 	/// </summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification = "Repository should not be disposable because it may be shared so it is difficult to determine disposition timing" )]
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 	[SecuritySafeCritical]
 #endif
 	internal class TypeKeyRepository
@@ -74,12 +74,12 @@ namespace MsgPack.Serialization
 			this._table = table;
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[SecuritySafeCritical]
 #endif
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification = "CER is OK" )]
-#endif // NETFX_35 || UNITY
+#endif // NET35 || UNITY
 		private Dictionary<RuntimeTypeHandle, object> GetClonedTable()
 		{
 			bool holdsReadLock = false;
@@ -113,12 +113,12 @@ namespace MsgPack.Serialization
 			return this.GetCore( type, out matched, out genericDefinitionMatched );
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[SecuritySafeCritical]
 #endif
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification = "CER is OK" )]
-#endif // NETFX_35 || UNITY
+#endif // NET35 || UNITY
 		private bool GetCore( Type type, out object matched, out object genericDefinitionMatched )
 		{
 			bool holdsReadLock = false;
@@ -174,12 +174,12 @@ namespace MsgPack.Serialization
 			return this.RegisterCore( type, entry, nullableType, nullableValue, options );
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[SecuritySafeCritical]
 #endif
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification = "CER is OK" )]
-#endif // NETFX_35 || UNITY
+#endif // NET35 || UNITY
 		private bool RegisterCore( Type key, object value, Type nullableType, object nullableValue, SerializerRegistrationOptions options )
 		{
 			var allowOverwrite = ( options & SerializerRegistrationOptions.AllowOverride ) != 0;
@@ -243,12 +243,12 @@ namespace MsgPack.Serialization
 			return this.UnregisterCore( type );
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[SecuritySafeCritical]
 #endif
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification = "CER is OK" )]
-#endif // NETFX_35 || UNITY
+#endif // NET35 || UNITY
 		private bool UnregisterCore( Type key )
 		{
 			if ( this._table.ContainsKey( key.TypeHandle ) )
@@ -282,7 +282,7 @@ namespace MsgPack.Serialization
 			return false;
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[SecuritySafeCritical]
 #endif
 		internal bool Contains( Type type )
@@ -313,7 +313,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !NETFX_35 && !UNITY
+#if !NET35 && !UNITY
 		[SecuritySafeCritical]
 #endif
 		internal IEnumerable<KeyValuePair<Type, object>> GetEntries()

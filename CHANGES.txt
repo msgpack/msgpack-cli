@@ -701,3 +701,5 @@ Release 0.9.0 2017-8-26
   * Fix enum serialization throws NullReferenceException in Unity. Issue #215.
   * Fix MessagePackSerializer.Capability does not work correctly in Unity.
   * Fix polymorphic serializer error in Unity.
+
+Release 1.0.0-beta1 T.B.D.

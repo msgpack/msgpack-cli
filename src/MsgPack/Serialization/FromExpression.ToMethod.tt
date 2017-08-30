@@ -73,7 +73,7 @@ foreach( Type __action in __actions )
 	if ( __notAvailableOnWP )
 	{
 #>
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NET35
 <#
 	}
 #>
@@ -100,7 +100,7 @@ foreach( Type __func in __funcs )
 	if ( __notAvailableOnWP )
 	{
 #>
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NET35
 <#
 	}
 #>

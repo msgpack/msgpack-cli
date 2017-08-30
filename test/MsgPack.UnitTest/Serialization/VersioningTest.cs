@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -56,16 +56,20 @@ namespace MsgPack.Serialization
 			{
 				Tracer.Emit.Listeners.Clear();
 				Tracer.Emit.Switch.Level = SourceLevels.All;
+#if NETSTANDARD2_0
+				Tracer.Emit.Listeners.Add( new TextWriterTraceListener( Console.Out ) );
+#else // NETSTANDRD2_0
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+#endif // NETSTANDRD2_0
 			}
 
 			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
-#if NETFX_35
+#if NET35
 			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
 #else
-			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
-#endif // NETFX_35
+			SerializerDebugging.SetCodeCompiler( RoslynCodeGeneration.Compile );
+#endif // NET35
 
 			SerializerDebugging.AddRuntimeAssembly( typeof( AddOnlyCollection<> ).Assembly.Location );
 			if ( typeof( AddOnlyCollection<> ).Assembly != this.GetType().Assembly )
@@ -79,6 +83,7 @@ namespace MsgPack.Serialization
 		{
 			if ( SerializerDebugging.DumpEnabled )
 			{
+#if !NETSTANDARD2_0
 				try
 				{
 					SerializerDebugging.Dump();
@@ -91,6 +96,9 @@ namespace MsgPack.Serialization
 				{
 					SerializationMethodGeneratorManager.Refresh();
 				}
+#else // !NETSTANDARD2_0
+				SerializationMethodGeneratorManager.Refresh();
+#endif // !NETSTANDARD2_0
 			}
 
 			SerializerDebugging.Reset();

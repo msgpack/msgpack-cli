@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 //   Major : Represents Major update like re-architecting, remove obsoleted APIs etc.
 //   Minor : Represents Minor update like adding new feature, obsoleting APIs, fix specification issues, etc.
 //   Build/Revision : Always 0 since CLI implementations does not care these number, so these changes cause some binding failures.
-[assembly: AssemblyVersion( "0.9.0.0" )]
+[assembly: AssemblyVersion( "1.0.0.0" )]
 
 // This version represents libarary 'version' for human beings.
 //   Major : Same as AssemblyVersion.
@@ -43,5 +43,5 @@ using System.Runtime.InteropServices;
 //   Build : Bug fixes and improvements, which does not break API contract, but may break some code depends on internal implementation behaviors.
 //           For example, some programs use reflection to retrieve private fields, analyse human readable exception messages or stack trace, or so.
 //   Revision : Reserced. It might be used to indicate target platform or patch.
-[assembly: AssemblyInformationalVersion( "0.9.0-dev" )]
+[assembly: AssemblyInformationalVersion( "1.0.0-dev" )]
 

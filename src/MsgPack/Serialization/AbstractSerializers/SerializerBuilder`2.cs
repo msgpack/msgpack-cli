@@ -84,20 +84,20 @@ namespace MsgPack.Serialization.AbstractSerializers
 					return typeof( EnumerableMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
 				case CollectionDetailedKind.GenericCollection:
-#if !NETFX_35
+#if !NET35
 				case CollectionDetailedKind.GenericSet:
-#endif // !NETFX_35
+#endif // !NET35
 				case CollectionDetailedKind.GenericList:
 				{
 					return typeof( CollectionMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
-#if !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyCollection:
 				case CollectionDetailedKind.GenericReadOnlyList:
 				{
 					return typeof( ReadOnlyCollectionMessagePackSerializer<,> ).MakeGenericType( targetType, traits.ElementType );
 				}
-#endif // !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
@@ -108,7 +108,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							keyValuePairGenericArguments[ 1 ]
 						);
 				}
-#if !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
 				{
 					var keyValuePairGenericArguments = traits.ElementType.GetGenericArguments();
@@ -119,7 +119,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							keyValuePairGenericArguments[ 1 ]
 						);
 				}
-#endif // !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.NonGenericEnumerable:
 				{
 					return typeof( NonGenericEnumerableMessagePackSerializer<> ).MakeGenericType( targetType );
@@ -266,7 +266,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						targetInfo = null;
 						this.BuildNullableSerializer( context, nullableUnderlyingType );
 					}
-#if !NETFX_35
+#if !NET35
 					else if ( TupleItems.IsTuple( this.TargetType ) )
 					{
 						this.BuildTupleSerializer( context, ( schema ?? PolymorphismSchema.Default ).ChildSchemaList, out targetInfo );

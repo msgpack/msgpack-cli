@@ -174,7 +174,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY || CORE_CLR || NETSTANDARD1_1
+#if NET35 || NET40 || SILVERLIGHT || UNITY || CORE_CLR || NETSTANDARD1_1
 		private sealed class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
 		{
 			private readonly IDictionary<TKey, TValue> _underlying;
@@ -268,6 +268,6 @@ namespace MsgPack.Serialization
 				throw new NotSupportedException();
 			}
 		}
-#endif // NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+#endif // NET35 || NET40 || SILVERLIGHT || UNITY
 	}
 }

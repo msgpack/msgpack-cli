@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -20,9 +20,9 @@
 
 using System;
 using System.Diagnostics;
-#if NETFX_35
+#if NET35
 using Debug = System.Console; // For missing Debug.WriteLine(String, params Object[])
-#endif // NETFX_35
+#endif // NET35
 using System.Security;
 #if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 using System.Security.Permissions;
@@ -139,12 +139,17 @@ namespace MsgPack
 			Assert.AreEqual( String.Empty, target.ToString() );
 		}
 
-#if !UNITY && !SILVERLIGHT && !AOT && !NETFX_CORE
 		[Test]
 		public void TestEqualsFullTrust()
 		{
 			var result = TestEqualsCore();
+#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+			Assert.That( MessagePackString.IsFastEqualsDisabled, Is.True );
+#else // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			Assert.That( MessagePackString.IsFastEqualsDisabled, Is.False );
+#endif // SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
+#endif // !UNITY && !WINDOWS_PHONE && !NETFX_CORE
 			Debug.WriteLine( "TestEqualsFullTrust" );
 			ShowResult( result );
 		}
@@ -157,9 +162,7 @@ namespace MsgPack
 			Debug.WriteLine( "Large(100,000 chars) : {0:#,0.0} usec", result.Item4 );
 		}
 
-#endif // !UNITY && !SILVERLIGHT && !AOT
-
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE && !NETSTANDARD2_0
 		private static StrongName GetStrongName( Type type )
 		{
 			var assemblyName = type.Assembly.GetName();
@@ -171,7 +174,8 @@ namespace MsgPack
 		{
 			var appDomainSetUp = new AppDomainSetup() { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 			var evidence = new Evidence();
-#if MONO || NETFX_35
+
+#if MONO || NET35
 #pragma warning disable 0612
 			// TODO: patching
 			// currently, Mono does not declare AddHostEvidence
@@ -181,7 +185,7 @@ namespace MsgPack
 #else
 			evidence.AddHostEvidence( new Zone( SecurityZone.Internet ) );
 			var permisions = SecurityManager.GetStandardSandbox( evidence );
-#endif // if MONO || NETFX_35
+#endif // if MONO || NET35
 			AppDomain workerDomain = AppDomain.CreateDomain( "PartialTrust", evidence, appDomainSetUp, permisions, GetStrongName( this.GetType() ), GetStrongName( typeof( Assert ) ) );
 			try
 			{
@@ -200,7 +204,7 @@ namespace MsgPack
 			}
 		}
 		
-#if MONO || NETFX_35
+#if MONO || NET35
 		private static PermissionSet GetDefaultInternetZoneSandbox()
 		{
 			var permissions = new PermissionSet( PermissionState.None );
@@ -219,9 +223,9 @@ namespace MsgPack
 			permissions.AddPermission(
 				new SecurityPermission(
 					SecurityPermissionFlag.Execution
-#if NETFX_35
+#if NET35
 					| SecurityPermissionFlag.SkipVerification
-#endif // if NETFX_35
+#endif // if NET35
 				)
 			);
 			permissions.AddPermission(
@@ -233,7 +237,7 @@ namespace MsgPack
 			
 			return permissions;
 		}
-#endif // if MONO || NETFX_35
+#endif // if MONO || NET35
 
 		public static void TestEqualsWorker()
 		{
@@ -241,6 +245,8 @@ namespace MsgPack
 			AppDomain.CurrentDomain.SetData( "TestEqualsWorker.Performance", result );
 			AppDomain.CurrentDomain.SetData( "MessagePackString.IsFastEqualsDisabled", MessagePackString.IsFastEqualsDisabled );
 		}
+
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETFX_CORE && !NETSTANDARD2_0
 
 		private static Tuple<double, double, double, double> TestEqualsCore()
 		{
@@ -319,7 +325,8 @@ namespace MsgPack
 			var sw = new Stopwatch();
 			for ( int i = 0; i < iteration; i++ )
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				for ( int x = 0; x < values.Length; x++ )
 				{
 					Assert.That( values[ x ].Equals( null ), Is.False );
@@ -330,7 +337,11 @@ namespace MsgPack
 					}
 				}
 				sw.Stop();
-				tinyAvg = Math.Min( tinyAvg, sw.Elapsed.Ticks * 10.0 / ( values.Length * values.Length ) );
+#if SILVERLIGHT && !WINDOWS_PHONE
+				tinyAvg = Math.Min( tinyAvg, sw.ElapsedMilliseconds * 1000.0 / ( values.Length * values.Length ) );
+#else
+				tinyAvg = Math.Min( tinyAvg, sw.Elapsed.Ticks / 10.0 / ( values.Length * values.Length ) );
+#endif
 			}
 
 			var smallX = new MessagePackString( new String( 'A', 16 ) );
@@ -338,10 +349,15 @@ namespace MsgPack
 
 			for ( int i = 0; i < iteration; i++ )
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				Assert.That( smallX.Equals( smallY ), Is.True );
 				sw.Stop();
-				smallAvg = Math.Min( smallAvg, sw.Elapsed.Ticks * 10.0 );
+#if SILVERLIGHT && !WINDOWS_PHONE
+				smallAvg = Math.Min( smallAvg, sw.ElapsedMilliseconds * 1000.0 );
+#else
+				smallAvg = Math.Min( smallAvg, sw.Elapsed.Ticks / 10.0 );
+#endif
 			}
 
 			var mediumX = new MessagePackString( new String( 'A', 1000 ) );
@@ -349,10 +365,15 @@ namespace MsgPack
 
 			for ( int i = 0; i < iteration; i++ )
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				Assert.That( mediumX.Equals( mediumY ), Is.True );
 				sw.Stop();
-				mediumAvg = Math.Min( mediumAvg, sw.Elapsed.Ticks * 10.0 );
+#if SILVERLIGHT && !WINDOWS_PHONE
+				mediumAvg = Math.Min( mediumAvg, sw.ElapsedMilliseconds * 1000.0 );
+#else
+				mediumAvg = Math.Min( mediumAvg, sw.Elapsed.Ticks / 10.0 );
+#endif
 			}
 
 			var largeX = new MessagePackString( new String( 'A', 100000 ) );
@@ -360,14 +381,18 @@ namespace MsgPack
 
 			for ( int i = 0; i < iteration; i++ )
 			{
-				sw.Restart();
+				sw.Reset();
+				sw.Start();
 				Assert.That( largeX.Equals( largeY ), Is.True );
 				sw.Stop();
-				largeAvg = Math.Min( largeAvg, sw.Elapsed.Ticks * 10.0 );
+#if SILVERLIGHT && !WINDOWS_PHONE
+				largeAvg = Math.Min( largeAvg, sw.ElapsedMilliseconds * 1000.0 );
+#else
+				largeAvg = Math.Min( largeAvg, sw.Elapsed.Ticks / 10.0 );
+#endif
 			}
 
 			return Tuple.Create( tinyAvg, smallAvg, mediumAvg, largeAvg );
 		}
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }

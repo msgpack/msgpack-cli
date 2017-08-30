@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,7 +26,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
 #if !MSTEST
 using NUnit.Framework;
@@ -43,6 +45,7 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public class CompositeTest
 	{
+#if !NETSTANDARD1_3
 		[SetUp]
 		public void SetUp()
 		{
@@ -53,16 +56,20 @@ namespace MsgPack.Serialization
 			{
 				Tracer.Emit.Listeners.Clear();
 				Tracer.Emit.Switch.Level = SourceLevels.All;
+#if NETSTANDARD2_0
+				Tracer.Emit.Listeners.Add( new TextWriterTraceListener( Console.Out ) );
+#else // NETSTANDRD2_0
 				Tracer.Emit.Listeners.Add( new ConsoleTraceListener() );
+#endif // NETSTANDRD2_0
 			}
 
 			SerializerDebugging.DependentAssemblyManager = new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory );
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = true;
-#if NETFX_35
+#if NET35
 			SerializerDebugging.SetCodeCompiler( CodeDomCodeGeneration.Compile );
 #else
-			SerializerDebugging.SetCodeCompiler( RoslyCodeGeneration.Compile );
-#endif // NETFX_35
+			SerializerDebugging.SetCodeCompiler( RoslynCodeGeneration.Compile );
+#endif // NET35
 			SerializerDebugging.AddRuntimeAssembly( this.GetType().Assembly.Location );
 		}
 
@@ -71,19 +78,28 @@ namespace MsgPack.Serialization
 		{
 			if ( SerializerDebugging.DumpEnabled )
 			{
+#if !NETSTANDARD2_0
 				try
 				{
 					SerializerDebugging.Dump();
+				}
+				catch ( NotSupportedException ex )
+				{
+					Console.Error.WriteLine( ex );
 				}
 				finally
 				{
 					SerializationMethodGeneratorManager.Refresh();
 				}
+#else // !NETSTANDARD2_0
+				SerializationMethodGeneratorManager.Refresh();
+#endif // !NETSTANDARD2_0
 			}
 
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
 		}
+#endif // !NETSTANDARD1_3
 
 		[Test]
 		public void TestArrayFieldBased()
@@ -97,6 +113,7 @@ namespace MsgPack.Serialization
 			TestCore( EmitterFlavor.FieldBased, SerializationMethod.Map, new AssemblyBuilderSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
 
+#if !NETSTANDARD1_3
 		[Test]
 		public void TestArrayCodeDomBased()
 		{
@@ -108,6 +125,7 @@ namespace MsgPack.Serialization
 		{
 			TestCore( EmitterFlavor.CodeDomBased, SerializationMethod.Map, new CodeDomSerializerBuilder( typeof( DirectoryItem ), typeof( DirectoryItem ).GetCollectionTraits( CollectionTraitOptions.Full, allowNonCollectionEnumerableTypes: false ) ) );
 		}
+#endif // !NETSTANDARD1_3
 
 		private static void TestCore( EmitterFlavor emittingFlavor, SerializationMethod serializationMethod, ISerializerBuilder generator )
 		{
@@ -131,7 +149,9 @@ namespace MsgPack.Serialization
 					SerializationMethod = serializationMethod,
 					SerializerOptions =
 					{
+#if !NETSTANDARD1_3
 						GeneratorOption = SerializationMethodGeneratorOption.CanDump,
+#endif // !NETSTANDARD1_3
 						EmitterFlavor = emittingFlavor
 					}
 				};

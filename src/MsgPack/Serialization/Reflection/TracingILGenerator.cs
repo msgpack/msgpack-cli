@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // NLiblet
 //
-// Copyright (C) 2011-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2011-2017 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -352,7 +352,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -364,7 +364,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			return result;
 		}
 
@@ -374,7 +374,7 @@ namespace MsgPack.Serialization.Reflection
 			var result = this._underlying.DeclareLocal( localType, pinned );
 			this._localDeclarations.Add( result, name );
 			// TODO: NLiblet
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			if ( !this._isInDynamicMethod && this._isDebuggable )
 			{
 				try
@@ -386,7 +386,7 @@ namespace MsgPack.Serialization.Reflection
 					this._isInDynamicMethod = true;
 				}
 			}
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 			return result;
 		}
 #endif // DEBUG
@@ -663,7 +663,7 @@ namespace MsgPack.Serialization.Reflection
 		#region -- Calli --
 
 #if DEBUG
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 		/// <summary>
 		///		Emit 'calli' instruction for indirect unmanaged function call.
 		/// </summary>
@@ -710,7 +710,7 @@ namespace MsgPack.Serialization.Reflection
 			this._underlying.EmitCalli( OpCodes.Calli, managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 		}
 
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 #endif // DEBUG
 		#endregion
 #endif // !SILVERLIGHT
@@ -809,7 +809,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitRet();
 		}
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETSTANDARD2_0
 		/// <summary>
 		///		Emit 'calli' instruction for indirect unmanaged function call as tail call.
 		/// </summary>
@@ -867,7 +867,7 @@ namespace MsgPack.Serialization.Reflection
 			this.EmitCalli( managedCallingConventions, returnType, requiredParameterTypes, optionalParameterTypes );
 			this.EmitRet();
 		}
-#endif // SILVERLIGHT
+#endif // SILVERLIGHT && !NETSTANDARD2_0
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // DEBUG
 

@@ -1962,21 +1962,21 @@ namespace MsgPack.Serialization.AbstractSerializers
 				case CollectionDetailedKind.GenericCollection:
 				case CollectionDetailedKind.GenericEnumerable:
 				case CollectionDetailedKind.GenericList:
-#if !NETFX_35
+#if !NET35
 				case CollectionDetailedKind.GenericSet:
-#if !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyCollection:
 				case CollectionDetailedKind.GenericReadOnlyList:
-#endif // !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
-#endif // !NETFX_35
+#endif // !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35
 				{
 					comparisonType = this.CollectionTraits.ElementType;
 					break;
 				}
 				case CollectionDetailedKind.GenericDictionary:
-#if !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#if !NET35 && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				case CollectionDetailedKind.GenericReadOnlyDictionary:
-#endif // !NETFX_35 && !NETFX_40 && !( SILVERLIGHT && !WINDOWS_PHONE )
+#endif // !NET35 && !NET40 && !( SILVERLIGHT && !WINDOWS_PHONE )
 				{
 					comparisonType = this.CollectionTraits.ElementType.GetGenericArguments()[ 0 ];
 					break;
@@ -2255,7 +2255,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					}
 					break;
 				}
-#if !WINDOWS_PHONE && !NETFX_35
+#if !WINDOWS_PHONE && !NET35
 				case PolymorphismSchemaChildrenType.TupleItems:
 				{
 					if ( schema.ChildSchemaList.Count == 0 )
@@ -2326,7 +2326,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						);
 					break;
 				}
-#endif // !WINDOWS_PHONE && !NETFX_35
+#endif // !WINDOWS_PHONE && !NET35
 				default:
 				{
 					foreach ( var instruction in

@@ -264,7 +264,7 @@ namespace MsgPack
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3
 		}
 
-#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+#if NET35 || NET40 || SILVERLIGHT || UNITY
 		public static Delegate CreateDelegate( this MethodInfo source, Type delegateType )
 		{
 			return Delegate.CreateDelegate( delegateType, source );
@@ -275,7 +275,7 @@ namespace MsgPack
 			return Delegate.CreateDelegate( delegateType, target, source );
 		}
 
-#endif // NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+#endif // NET35 || NET40 || SILVERLIGHT || UNITY
 
 #if NETSTANDARD1_1 || NETSTANDARD1_3
 		public static MethodInfo GetMethod( this Type source, string name )
@@ -408,12 +408,12 @@ namespace MsgPack
 			return Attribute.GetCustomAttribute( source, typeof( T ) ) as T;
 		}
 
-#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+#if NET35 || NET40 || SILVERLIGHT || UNITY
 		public static bool IsDefined( this MemberInfo source, Type attributeType )
 		{
 			return Attribute.IsDefined( source, attributeType );
 		}
-#endif // NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+#endif // NET35 || NET40 || SILVERLIGHT || UNITY
 
 #if !SILVERLIGHT
 		public static Type GetAttributeType( this CustomAttributeData source )
@@ -436,14 +436,14 @@ namespace MsgPack
 
 		public static string GetCultureName( this AssemblyName source )
 		{
-#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+#if NET35 || NET40 || SILVERLIGHT || UNITY
 			return source.CultureInfo == null ? null : source.CultureInfo.Name;
 #else
 			return source.CultureName;
 #endif
 		}
 
-#if NETFX_35 || UNITY
+#if NET35 || UNITY
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this MemberInfo source )
 		{
 			return CustomAttributeData.GetCustomAttributes( source );
@@ -453,7 +453,7 @@ namespace MsgPack
 		{
 			return CustomAttributeData.GetCustomAttributes( source );
 		}
-#endif // NETFX_35 || UNITY
+#endif // NET35 || UNITY
 
 #if NETSTANDARD1_1 || NETSTANDARD1_3
 		public static IEnumerable<CustomAttributeData> GetCustomAttributesData( this ParameterInfo source )
@@ -532,7 +532,7 @@ namespace MsgPack
 
 		public static bool GetHasDefaultValue( this ParameterInfo source )
 		{
-#if NETFX_35 || NETFX_40 || SILVERLIGHT || UNITY
+#if NET35 || NET40 || SILVERLIGHT || UNITY
 			return source.DefaultValue != DBNull.Value;
 #else
 			return source.HasDefaultValue;

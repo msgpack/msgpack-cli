@@ -31,7 +31,7 @@ using System.ComponentModel;
 using System.Collections.Concurrent;
 #else // !FEATURE_CONCURRENT
 using System.Collections.Generic;
-#endif // !SILVERLIGHT && !NETFX_35 && !UNITY
+#endif // !SILVERLIGHT && !NET35 && !UNITY
 #if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else

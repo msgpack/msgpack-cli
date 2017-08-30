@@ -32,13 +32,13 @@ namespace MsgPack
 		{
 			get
 			{
-#if NETFX_45 || NETSTANDARD1_1
+#if NET45 || NETSTANDARD1_1
 				var tcs = new TaskCompletionSource<object>();
 				tcs.SetResult( null );
 				return tcs.Task;
 #else
 				return Task.CompletedTask;
-#endif // NETFX_45 || NETSTANDARD1_1
+#endif // NET45 || NETSTANDARD1_1
 			}
 		}
 	}
