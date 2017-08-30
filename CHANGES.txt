@@ -702,4 +702,15 @@ Release 0.9.0 2017-8-26
   * Fix MessagePackSerializer.Capability does not work correctly in Unity.
   * Fix polymorphic serializer error in Unity.
 
+Release 0.9.1 2017-8-30
+
+  BUG FIXES
+  * Fix ByteArrayPacker throws IndexOutOfBoundException when the buffer remaining bytes is equal to packed scalar size. #252
+
 Release 1.0.0-beta1 T.B.D.
+
+  NEW FEATURES
+  * .NET Standard 2.0 which supports serializer source code generation on .NET Core. Note that serializer assembly generation is not supported.
+
+  BUG FIXES
+  * Fix ByteArrayPacker throws IndexOutOfBoundException when the buffer remaining bytes is equal to packed scalar size. #252
