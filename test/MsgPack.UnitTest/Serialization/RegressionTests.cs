@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -445,6 +445,22 @@ namespace MsgPack.Serialization
 		public class SingleValueObject
 		{
 			public string Value { get; set; }
+		}
+
+		[Test]
+		public void TestIssue252()
+		{
+			var context = new SerializationContext();
+			var serializer = context.GetSerializer<Issue252Class>();
+			var bytes = serializer.PackSingleObject( new Issue252Class() );
+			Assert.That( bytes.Length, Is.EqualTo( MessagePackSerializer.BufferSize + 1 ), Binary.ToHexString( bytes ) );
+		}
+
+		public class Issue252Class
+		{
+			// BufferSize - sizeof( Int32 property ) - sizeof( byte array type header with 1bit length ) - sizeof( array header );
+			public byte[] ByteArray = new byte[ MessagePackSerializer.BufferSize - sizeof( int ) - sizeof( byte ) - 1 - 1 ];
+			public int Int32 = Int32.MaxValue;
 		}
 	}
 }
