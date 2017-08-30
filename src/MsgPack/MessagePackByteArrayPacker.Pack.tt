@@ -1,4 +1,4 @@
-﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ template debug="true" hostSpecific="true" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ Assembly Name="System.Core.dll" #>
 <#@ import namespace="System" #>
@@ -77,9 +77,10 @@ namespace MsgPack
 			var buffer = this._buffer;
 			var offset = this._offset;
 			var remains = buffer.Length - offset;
-			if ( remains < sizeof( <#= type #> ) && !this._allocator.TryAllocate( buffer, sizeof( <#= type #> ), out buffer ) )
+			const int requiredSize = sizeof( <#= type #> ) + 1;
+			if ( remains < requiredSize && !this._allocator.TryAllocate( buffer, requiredSize, out buffer ) )
 			{
-				this.ThrowEofException( sizeof( <#= type #> ) );
+				this.ThrowEofException( requiredSize );
 			}
 
 			buffer[ offset ] = header;

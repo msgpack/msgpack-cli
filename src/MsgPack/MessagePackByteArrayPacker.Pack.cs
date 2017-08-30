@@ -1,4 +1,4 @@
-﻿
+
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -981,9 +981,10 @@ namespace MsgPack
 			var buffer = this._buffer;
 			var offset = this._offset;
 			var remains = buffer.Length - offset;
-			if ( remains < sizeof( byte ) && !this._allocator.TryAllocate( buffer, sizeof( byte ), out buffer ) )
+			const int requiredSize = sizeof( byte ) + 1;
+			if ( remains < requiredSize && !this._allocator.TryAllocate( buffer, requiredSize, out buffer ) )
 			{
-				this.ThrowEofException( sizeof( byte ) );
+				this.ThrowEofException( requiredSize );
 			}
 
 			buffer[ offset ] = header;
@@ -1000,9 +1001,10 @@ namespace MsgPack
 			var buffer = this._buffer;
 			var offset = this._offset;
 			var remains = buffer.Length - offset;
-			if ( remains < sizeof( ushort ) && !this._allocator.TryAllocate( buffer, sizeof( ushort ), out buffer ) )
+			const int requiredSize = sizeof( ushort ) + 1;
+			if ( remains < requiredSize && !this._allocator.TryAllocate( buffer, requiredSize, out buffer ) )
 			{
-				this.ThrowEofException( sizeof( ushort ) );
+				this.ThrowEofException( requiredSize );
 			}
 
 			buffer[ offset ] = header;
@@ -1020,9 +1022,10 @@ namespace MsgPack
 			var buffer = this._buffer;
 			var offset = this._offset;
 			var remains = buffer.Length - offset;
-			if ( remains < sizeof( uint ) && !this._allocator.TryAllocate( buffer, sizeof( uint ), out buffer ) )
+			const int requiredSize = sizeof( uint ) + 1;
+			if ( remains < requiredSize && !this._allocator.TryAllocate( buffer, requiredSize, out buffer ) )
 			{
-				this.ThrowEofException( sizeof( uint ) );
+				this.ThrowEofException( requiredSize );
 			}
 
 			buffer[ offset ] = header;
@@ -1042,9 +1045,10 @@ namespace MsgPack
 			var buffer = this._buffer;
 			var offset = this._offset;
 			var remains = buffer.Length - offset;
-			if ( remains < sizeof( ulong ) && !this._allocator.TryAllocate( buffer, sizeof( ulong ), out buffer ) )
+			const int requiredSize = sizeof( ulong ) + 1;
+			if ( remains < requiredSize && !this._allocator.TryAllocate( buffer, requiredSize, out buffer ) )
 			{
-				this.ThrowEofException( sizeof( ulong ) );
+				this.ThrowEofException( requiredSize );
 			}
 
 			buffer[ offset ] = header;
@@ -1069,9 +1073,10 @@ namespace MsgPack
 			var buffer = this._buffer;
 			var offset = this._offset;
 			var remains = buffer.Length - offset;
-			if ( remains < sizeof( float ) && !this._allocator.TryAllocate( buffer, sizeof( float ), out buffer ) )
+			const int requiredSize = sizeof( float ) + 1;
+			if ( remains < requiredSize && !this._allocator.TryAllocate( buffer, requiredSize, out buffer ) )
 			{
-				this.ThrowEofException( sizeof( float ) );
+				this.ThrowEofException( requiredSize );
 			}
 
 			buffer[ offset ] = header;
@@ -1092,9 +1097,10 @@ namespace MsgPack
 			var buffer = this._buffer;
 			var offset = this._offset;
 			var remains = buffer.Length - offset;
-			if ( remains < sizeof( double ) && !this._allocator.TryAllocate( buffer, sizeof( double ), out buffer ) )
+			const int requiredSize = sizeof( double ) + 1;
+			if ( remains < requiredSize && !this._allocator.TryAllocate( buffer, requiredSize, out buffer ) )
 			{
-				this.ThrowEofException( sizeof( double ) );
+				this.ThrowEofException( requiredSize );
 			}
 
 			buffer[ offset ] = header;
