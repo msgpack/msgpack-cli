@@ -602,7 +602,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"-584554047284-02-23T16:59:44.000000000Z",
+					"-292277022657-01-27T08:29:52.000000000Z",
 					"o",
 					null,
 					DateTimeStyles.None
@@ -617,7 +617,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"-584554047284-02-23T16:59:44.000000000Z",
+					"-292277022657-01-27T08:29:52.000000000Z",
 					"o",
 					null,
 					DateTimeStyles.None,
@@ -633,7 +633,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"-584554047284-02-23T16:59:44.000000000Z",
+					"-292277022657-01-27T08:29:52.000000000Z",
 					"O",
 					null,
 					DateTimeStyles.None
@@ -648,7 +648,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"-584554047284-02-23T16:59:44.000000000Z",
+					"-292277022657-01-27T08:29:52.000000000Z",
 					"O",
 					null,
 					DateTimeStyles.None,
@@ -664,7 +664,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"-584554047284-02-23T16:59:44Z",
+					"-292277022657-01-27T08:29:52Z",
 					"s",
 					null,
 					DateTimeStyles.None
@@ -679,7 +679,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"-584554047284-02-23T16:59:44Z",
+					"-292277022657-01-27T08:29:52Z",
 					"s",
 					null,
 					DateTimeStyles.None,
@@ -695,7 +695,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"584554051223-11-09T07:00:16.999999999Z",
+					"292277026596-12-04T15:30:07.999999999Z",
 					"o",
 					null,
 					DateTimeStyles.None
@@ -710,7 +710,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"584554051223-11-09T07:00:16.999999999Z",
+					"292277026596-12-04T15:30:07.999999999Z",
 					"o",
 					null,
 					DateTimeStyles.None,
@@ -726,7 +726,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"584554051223-11-09T07:00:16.999999999Z",
+					"292277026596-12-04T15:30:07.999999999Z",
 					"O",
 					null,
 					DateTimeStyles.None
@@ -741,7 +741,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"584554051223-11-09T07:00:16.999999999Z",
+					"292277026596-12-04T15:30:07.999999999Z",
 					"O",
 					null,
 					DateTimeStyles.None,
@@ -757,7 +757,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"584554051223-11-09T07:00:16Z",
+					"292277026596-12-04T15:30:07Z",
 					"s",
 					null,
 					DateTimeStyles.None
@@ -772,7 +772,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"584554051223-11-09T07:00:16Z",
+					"292277026596-12-04T15:30:07Z",
 					"s",
 					null,
 					DateTimeStyles.None,

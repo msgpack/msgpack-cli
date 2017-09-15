@@ -457,12 +457,12 @@ namespace MsgPack
 		{
 			var value =
 				new Timestamp.Value(
-					-584554047284,
-					2,
-					23,
-					16,
-					59,
-					44,
+					-292277022657,
+					1,
+					27,
+					8,
+					29,
+					52,
 					0
 				);
 			Assert.That(
@@ -471,7 +471,7 @@ namespace MsgPack
 					CultureInfo.InvariantCulture,
 					ref value
 				),
-				Is.EqualTo( "-584554047284-02-23T16:59:44.000000000Z" )
+				Is.EqualTo( "-292277022657-01-27T08:29:52.000000000Z" )
 			);
 		}
 
@@ -480,12 +480,12 @@ namespace MsgPack
 		{
 			var value =
 				new Timestamp.Value(
-					-584554047284,
-					2,
-					23,
-					16,
-					59,
-					44,
+					-292277022657,
+					1,
+					27,
+					8,
+					29,
+					52,
 					0
 				);
 			Assert.That(
@@ -494,7 +494,7 @@ namespace MsgPack
 					CultureInfo.InvariantCulture,
 					ref value
 				),
-				Is.EqualTo( "-584554047284-02-23T16:59:44.000000000Z" )
+				Is.EqualTo( "-292277022657-01-27T08:29:52.000000000Z" )
 			);
 		}
 
@@ -503,12 +503,12 @@ namespace MsgPack
 		{
 			var value =
 				new Timestamp.Value(
-					-584554047284,
-					2,
-					23,
-					16,
-					59,
-					44,
+					-292277022657,
+					1,
+					27,
+					8,
+					29,
+					52,
 					0
 				);
 			Assert.That(
@@ -517,7 +517,7 @@ namespace MsgPack
 					CultureInfo.InvariantCulture,
 					ref value
 				),
-				Is.EqualTo( "-584554047284-02-23T16:59:44Z" )
+				Is.EqualTo( "-292277022657-01-27T08:29:52Z" )
 			);
 		}
 
@@ -526,12 +526,12 @@ namespace MsgPack
 		{
 			var value =
 				new Timestamp.Value(
-					584554051223,
-					11,
-					9,
+					292277026596,
+					12,
+					4,
+					15,
+					30,
 					7,
-					0,
-					16,
 					999999999
 				);
 			Assert.That(
@@ -540,7 +540,7 @@ namespace MsgPack
 					CultureInfo.InvariantCulture,
 					ref value
 				),
-				Is.EqualTo( "584554051223-11-09T07:00:16.999999999Z" )
+				Is.EqualTo( "292277026596-12-04T15:30:07.999999999Z" )
 			);
 		}
 
@@ -549,12 +549,12 @@ namespace MsgPack
 		{
 			var value =
 				new Timestamp.Value(
-					584554051223,
-					11,
-					9,
+					292277026596,
+					12,
+					4,
+					15,
+					30,
 					7,
-					0,
-					16,
 					999999999
 				);
 			Assert.That(
@@ -563,7 +563,7 @@ namespace MsgPack
 					CultureInfo.InvariantCulture,
 					ref value
 				),
-				Is.EqualTo( "584554051223-11-09T07:00:16.999999999Z" )
+				Is.EqualTo( "292277026596-12-04T15:30:07.999999999Z" )
 			);
 		}
 
@@ -572,12 +572,12 @@ namespace MsgPack
 		{
 			var value =
 				new Timestamp.Value(
-					584554051223,
-					11,
-					9,
+					292277026596,
+					12,
+					4,
+					15,
+					30,
 					7,
-					0,
-					16,
 					999999999
 				);
 			Assert.That(
@@ -586,7 +586,7 @@ namespace MsgPack
 					CultureInfo.InvariantCulture,
 					ref value
 				),
-				Is.EqualTo( "584554051223-11-09T07:00:16Z" )
+				Is.EqualTo( "292277026596-12-04T15:30:07Z" )
 			);
 		}
 

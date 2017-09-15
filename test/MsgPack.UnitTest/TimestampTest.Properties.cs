@@ -350,49 +350,49 @@ namespace MsgPack
 		[Test]
 		public void TestProperties_TimestampMin()
 		{
-			// -584554047284-02-23T16:59:44.000000000Z
+			// -292277022657-01-27T08:29:52.000000000Z
 			var target = new Timestamp( -9223372036854775808, 0 );
 			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( -9223372036854775808 ), "UnixEpochSecondsPart" );
 			Assert.That( target.NanosecondsPart, Is.EqualTo( 0 ), "NanosecondsPart" );
 
-			Assert.That( target.Year, Is.EqualTo( -584554047284 ), "Year" );
-			Assert.That( target.Month, Is.EqualTo( 2 ), "Month" );
-			Assert.That( target.Day, Is.EqualTo( 23 ), "Day" );
-			Assert.That( target.Hour, Is.EqualTo( 16 ), "Hour" );
-			Assert.That( target.Minute, Is.EqualTo( 59 ), "Minute" );
-			Assert.That( target.Second, Is.EqualTo( 44 ), "Second" );
+			Assert.That( target.Year, Is.EqualTo( -292277022657 ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( 1 ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( 27 ), "Day" );
+			Assert.That( target.Hour, Is.EqualTo( 8 ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( 29 ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( 52 ), "Second" );
 
 			Assert.That( target.Millisecond, Is.EqualTo( 0 ), "Millisecond" );
 			Assert.That( target.Microsecond, Is.EqualTo( 0 ), "Microsecond" );
 			Assert.That( target.Nanosecond, Is.EqualTo( 0 ), "Nanosecond" );
 
-			Assert.That( target.DayOfYear, Is.EqualTo( 54 ), "DayOfYear" );
+			Assert.That( target.DayOfYear, Is.EqualTo( 27 ), "DayOfYear" );
 			Assert.That( target.DayOfWeek, Is.EqualTo( DayOfWeek.Saturday ), "DayOfWeek" );
-			Assert.That( target.IsLeapYear, Is.EqualTo( true ), "IsLeapYear" );
+			Assert.That( target.IsLeapYear, Is.EqualTo( false ), "IsLeapYear" );
 		}
 
 		[Test]
 		public void TestProperties_TimestampMax()
 		{
-			// 584554051223-11-09T07:00:16.999999999Z
+			// 292277026596-12-04T15:30:07.999999999Z
 			var target = new Timestamp( 9223372036854775807, 999999999 );
 			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( 9223372036854775807 ), "UnixEpochSecondsPart" );
 			Assert.That( target.NanosecondsPart, Is.EqualTo( 999999999 ), "NanosecondsPart" );
 
-			Assert.That( target.Year, Is.EqualTo( 584554051223 ), "Year" );
-			Assert.That( target.Month, Is.EqualTo( 11 ), "Month" );
-			Assert.That( target.Day, Is.EqualTo( 9 ), "Day" );
-			Assert.That( target.Hour, Is.EqualTo( 7 ), "Hour" );
-			Assert.That( target.Minute, Is.EqualTo( 0 ), "Minute" );
-			Assert.That( target.Second, Is.EqualTo( 16 ), "Second" );
+			Assert.That( target.Year, Is.EqualTo( 292277026596 ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( 12 ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( 4 ), "Day" );
+			Assert.That( target.Hour, Is.EqualTo( 15 ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( 30 ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( 7 ), "Second" );
 
 			Assert.That( target.Millisecond, Is.EqualTo( 999 ), "Millisecond" );
 			Assert.That( target.Microsecond, Is.EqualTo( 999 ), "Microsecond" );
 			Assert.That( target.Nanosecond, Is.EqualTo( 999 ), "Nanosecond" );
 
-			Assert.That( target.DayOfYear, Is.EqualTo( 313 ), "DayOfYear" );
-			Assert.That( target.DayOfWeek, Is.EqualTo( DayOfWeek.Sunday ), "DayOfWeek" );
-			Assert.That( target.IsLeapYear, Is.EqualTo( false ), "IsLeapYear" );
+			Assert.That( target.DayOfYear, Is.EqualTo( 339 ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( DayOfWeek.Monday ), "DayOfWeek" );
+			Assert.That( target.IsLeapYear, Is.EqualTo( true ), "IsLeapYear" );
 		}
 
 		[Test]
