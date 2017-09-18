@@ -706,6 +706,7 @@ Release 0.9.1 2017-8-30
 
   BUG FIXES
   * Fix ByteArrayPacker throws IndexOutOfBoundException when the buffer remaining bytes is equal to packed scalar size. #252
+  * Fix new unpacker cannot unpack reserved ext types.
 
 Release 1.0.0-beta1 T.B.D.
 

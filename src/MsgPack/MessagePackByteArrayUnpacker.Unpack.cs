@@ -3039,7 +3039,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = new MessagePackExtendedTypeObject( typeCode, body );
+			result = MessagePackExtendedTypeObject.Unpack( typeCode, body );
 			return true;
 		}
 

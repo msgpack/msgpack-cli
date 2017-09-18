@@ -1,4 +1,4 @@
-﻿<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Runtime.InteropServices" #><#+
 //
@@ -618,14 +618,14 @@ private void WriteReadExt(
 		{
 #>
 
-			result = new MessagePackExtendedTypeObject( typeCode, body );
+			result = MessagePackExtendedTypeObject.Unpack( typeCode, body );
 			return true;
 <#+
 		}
 		else
 		{
 #>
-			return AsyncReadResult.Success( new MessagePackExtendedTypeObject( typeCode, body ), <#= context.OffsetExpression #> );
+			return AsyncReadResult.Success( MessagePackExtendedTypeObject.Unpack( typeCode, body ), <#= context.OffsetExpression #> );
 <#+
 		}
 #>
