@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015-2017 FUJIWARA, Yusuke
+// Copyright (C) 2015-2016 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
-using System.Runtime.Serialization;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,107 +36,80 @@ using System.Threading.Tasks;
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		<see cref="DateTimeOffset"/> serializer using Unix Epoc or native representation.
+	///		<see cref="Timestamp"/> serializer using Unix Epoc or native representation.
 	/// </summary>
-	internal class DateTimeOffsetMessagePackSerializer : MessagePackSerializer<DateTimeOffset>
+	internal class TimestampMessagePackSerializer : MessagePackSerializer<Timestamp>
 	{
 		private readonly DateTimeConversionMethod _conversion;
 
-		public DateTimeOffsetMessagePackSerializer( SerializationContext ownerContext, DateTimeConversionMethod conversion )
+		public TimestampMessagePackSerializer( SerializationContext ownerContext, DateTimeConversionMethod conversion )
 			: base( ownerContext, SerializerCapabilities.PackTo | SerializerCapabilities.UnpackFrom )
 		{
 			this._conversion = conversion;
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
-		protected internal override void PackToCore( Packer packer, DateTimeOffset objectTree )
+		protected internal override void PackToCore( Packer packer, Timestamp objectTree )
 		{
 			if ( this._conversion == DateTimeConversionMethod.Timestamp )
 			{
-				packer.Pack( Timestamp.FromDateTimeOffset( objectTree ).Encode() );
+				packer.Pack( objectTree.Encode() );
 			}
 			else if ( this._conversion == DateTimeConversionMethod.Native )
 			{
-				packer.PackArrayHeader( 2 );
-				packer.Pack( objectTree.DateTime.ToBinary() );
-				unchecked
-				{
-					packer.Pack( ( short )( objectTree.Offset.Hours * 60 + objectTree.Offset.Minutes ) );
-				}
+				packer.Pack( objectTree.ToDateTime().ToBinary() );
 			}
 			else
 			{
 #if DEBUG
 				Contract.Assert( this._conversion == DateTimeConversionMethod.UnixEpoc );
 #endif // DEBUG
-				packer.Pack( MessagePackConvert.FromDateTimeOffset( objectTree ) );
+				packer.Pack( MessagePackConvert.FromDateTimeOffset( objectTree.ToDateTimeOffset() ) );
 			}
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
-		protected internal override DateTimeOffset UnpackFromCore( Unpacker unpacker )
+		protected internal override Timestamp UnpackFromCore( Unpacker unpacker )
 		{
 			if ( unpacker.LastReadData.IsTypeOf<MessagePackExtendedTypeObject>().GetValueOrDefault() )
 			{
-				return Timestamp.Decode( unpacker.LastReadData.DeserializeAsMessagePackExtendedTypeObject() ).ToDateTimeOffset();
+				return Timestamp.Decode( unpacker.LastReadData.AsMessagePackExtendedTypeObject() );
 			}
-			else if ( unpacker.IsArrayHeader )
+			else if ( this._conversion == DateTimeConversionMethod.UnixEpoc )
 			{
-				if ( UnpackHelpers.GetItemsCount( unpacker ) != 2 )
-				{
-					SerializationExceptions.ThrowInvalidArrayItemsCount( unpacker, typeof( DateTimeOffset ), 2 );
-				}
-
-				long ticks;
-				if ( !unpacker.ReadInt64( out ticks ) )
-				{
-					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
-				}
-
-				short offsetMinutes;
-				if ( !unpacker.ReadInt16( out offsetMinutes ) )
-				{
-					SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
-				}
-
-				return new DateTimeOffset( DateTime.FromBinary( ticks ), TimeSpan.FromMinutes( offsetMinutes ) );
+				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.DeserializeAsInt64() );
 			}
 			else
 			{
-				return MessagePackConvert.ToDateTimeOffset( unpacker.LastReadData.DeserializeAsInt64() );
+				return new DateTimeOffset( DateTime.FromBinary( unpacker.LastReadData.DeserializeAsInt64() ), TimeSpan.Zero );
 			}
 		}
 
 #if FEATURE_TAP
 
-		protected internal override async Task PackToAsyncCore( Packer packer, DateTimeOffset objectTree, CancellationToken cancellationToken )
+		protected internal override async Task PackToAsyncCore( Packer packer, Timestamp objectTree, CancellationToken cancellationToken )
 		{
 			if ( this._conversion == DateTimeConversionMethod.Timestamp )
 			{
-				await packer.PackAsync( Timestamp.FromDateTimeOffset( objectTree ).Encode(), cancellationToken ).ConfigureAwait( false );
+				await packer.PackAsync( objectTree.Encode(), cancellationToken ).ConfigureAwait( false );
 			}
 			else if ( this._conversion == DateTimeConversionMethod.Native )
 			{
-				await packer.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
-				await packer.PackAsync( objectTree.DateTime.ToBinary(), cancellationToken ).ConfigureAwait( false );
-				unchecked
-				{
-					await packer.PackAsync( ( short )( objectTree.Offset.Hours * 60 + objectTree.Offset.Minutes ), cancellationToken ).ConfigureAwait( false );
-				}
+				await packer.PackAsync( objectTree.ToDateTime().ToBinary(), cancellationToken ).ConfigureAwait( false );
 			}
 			else
 			{
 #if DEBUG
 				Contract.Assert( this._conversion == DateTimeConversionMethod.UnixEpoc );
 #endif // DEBUG
-				await packer.PackAsync( MessagePackConvert.FromDateTimeOffset( objectTree ), cancellationToken ).ConfigureAwait( false );
+				await packer.PackAsync( MessagePackConvert.FromDateTimeOffset( objectTree.ToDateTimeOffset() ), cancellationToken ).ConfigureAwait( false );
 			}
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Transfers all catched exceptions." )]
-		protected internal override Task<DateTimeOffset> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
+		protected internal override Task<Timestamp> UnpackFromAsyncCore( Unpacker unpacker, CancellationToken cancellationToken )
 		{
-			var tcs = new TaskCompletionSource<DateTimeOffset>();
+			var tcs = new TaskCompletionSource<Timestamp>();
 			try
 			{
 				tcs.SetResult( this.UnpackFromCore( unpacker ) );

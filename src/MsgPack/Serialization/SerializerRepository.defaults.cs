@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 	// ReSharper disable RedundantNameQualifier
 	partial class SerializerRepository 
 	{
-		internal const int DefaultTableCapacity = 56;
+		internal const int DefaultTableCapacity = 58;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
@@ -66,12 +66,14 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_ByteArrayMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( DateTime ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, false ) );
 			dictionary.Add( typeof( DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, false ) );
+			dictionary.Add( typeof( Timestamp ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.TimestampMessagePackSerializerProvider( ownerContext, false ) );
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, false ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			// DateTime, DateTimeOffset, and FILETIME must have nullable providers.
 			dictionary.Add( typeof( DateTime? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, true ) );
 			dictionary.Add( typeof( DateTimeOffset? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, true ) );
+			dictionary.Add( typeof( Timestamp? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.TimestampMessagePackSerializerProvider( ownerContext, true ) );
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY

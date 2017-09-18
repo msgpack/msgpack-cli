@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -313,7 +313,7 @@ namespace MsgPack.Serialization
 			get { return this._defaultCollectionTypes; }
 		}
 
-		private int _defaultDateTimeConversionMethod;
+		private int _defaultDateTimeConversionMethod = ( int )DateTimeConversionMethod.Timestamp;
 
 		/// <summary>
 		///		Gets or sets the default <see cref="DateTime"/> conversion methods of built-in serializers.
@@ -336,6 +336,7 @@ namespace MsgPack.Serialization
 				{
 					case DateTimeConversionMethod.Native:
 					case DateTimeConversionMethod.UnixEpoc:
+					case DateTimeConversionMethod.Timestamp:
 					{
 						break;
 					}

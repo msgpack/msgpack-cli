@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -55,6 +55,24 @@ namespace MsgPack.Serialization.DefaultSerializers
 			try
 			{
 				return source.AsString();
+			}
+			catch ( InvalidOperationException ex )
+			{
+				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The unpacked value is not expected type. {0}", ex.Message ), ex );
+			}
+		}
+
+		/// <summary>
+		///		Invokes <see cref="MessagePackObject.AsMessagePackExtendedTypeObject()"/> in deserializaton manner.
+		/// </summary>
+		/// <param name="source"><see cref="MessagePackExtendedTypeObject"/>.</param>
+		/// <returns>A deserialized value.</returns>
+		/// <exception cref="SerializationException"><paramref name="source"/> is not expected type.</exception>
+		public static MessagePackExtendedTypeObject DeserializeAsMessagePackExtendedTypeObject( this MessagePackObject source )
+		{
+			try
+			{
+				return source.AsMessagePackExtendedTypeObject();
 			}
 			catch ( InvalidOperationException ex )
 			{

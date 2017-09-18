@@ -49,6 +49,24 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		Many binding such as Java uses this resolution, so this option gives maximom interoperability.
 		/// </remarks>
-		UnixEpoc = 2
+		UnixEpoc = 2,
+
+		/// <summary>
+		///		Uses MsgPack timestamp format, that is, Gregirian 1970-01-01 based, nanoseconds resolution, with reserved ext type format.
+		/// </summary>
+		/// <remarks>
+		///		<para>
+		///			As of 1.0, this value became default.
+		///		</para>
+		///		<para>
+		///			This is best choice for interoperability and prevents accidental data loss, but old implementation does not recognize this type.
+		///			For backward compability purposes, use <see cref="Native"/> or <see cref="UnixEpoc"/> instead.
+		///		</para>
+		///		<para>
+		///			Note that <see cref="DateTime"/> and <see cref="DateTimeOffset"/> cannot hold nanoseconds value.
+		///			If you can depend on this assembly, consider <see cref="Timestamp"/> for date-time typed members to maximize interoperability for other languages.
+		///		</para>
+		/// </remarks>
+		Timestamp = 3
 	}
 }

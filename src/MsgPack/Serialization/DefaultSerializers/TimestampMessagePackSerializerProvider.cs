@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+// Copyright (C) 2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -24,44 +24,43 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace MsgPack.Serialization.DefaultSerializers
 {
 	/// <summary>
-	///		Provides runtime selection ability for <see cref="FILETIME"/> serialization.
+	///		Provides runtime selection ability for <see cref="Timestamp"/> serialization.
 	/// </summary>
-	internal class FileTimeMessagePackSerializerProvider : MessagePackSerializerProvider
+	internal class TimestampMessagePackSerializerProvider : MessagePackSerializerProvider
 	{
 		private readonly MessagePackSerializer _unixEpoc;
 		private readonly MessagePackSerializer _native;
 		private readonly MessagePackSerializer _timestamp;
 
-		public FileTimeMessagePackSerializerProvider( SerializationContext context, bool isNullable )
+		public TimestampMessagePackSerializerProvider( SerializationContext context, bool isNullable )
 		{
 			if ( isNullable )
 			{
 #if !UNITY
 				this._unixEpoc =
-					new NullableMessagePackSerializer<FILETIME>( context, new UnixEpocFileTimeMessagePackSerializer( context ) );
+					new NullableMessagePackSerializer<Timestamp>( context, new TimestampMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc ) );
 				this._native =
-					new NullableMessagePackSerializer<FILETIME>( context, new NativeFileTimeMessagePackSerializer( context ) );
+					new NullableMessagePackSerializer<Timestamp>( context, new TimestampMessagePackSerializer( context, DateTimeConversionMethod.Native ) );
 				this._timestamp =
-					new NullableMessagePackSerializer<FILETIME>( context, new TimestampFileTimeMessagePackSerializer( context ) );
+					new NullableMessagePackSerializer<Timestamp>( context, new TimestampMessagePackSerializer( context, DateTimeConversionMethod.Timestamp ) );
 #else
 				this._unixEpoc =
-					new NullableMessagePackSerializer( context, typeof( FILETIME? ), new UnixEpocFileTimeMessagePackSerializer( context ) );
-				this._native = 
-					new NullableMessagePackSerializer( context, typeof( FILETIME? ), new NativeFileTimeMessagePackSerializer( context ) );
-				this._timestamp = 
-					new NullableMessagePackSerializer( context, typeof( FILETIME? ), new TimestampFileTimeMessagePackSerializer( context ) );
+					new NullableMessagePackSerializer( context, typeof( Timestamp? ), new TimestampMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc ) );
+				this._native =
+					new NullableMessagePackSerializer( context, typeof( Timestamp? ), new TimestampMessagePackSerializer( context, DateTimeConversionMethod.Native ) );
+				this._timestamp =
+					new NullableMessagePackSerializer( context, typeof( Timestamp? ), new TimestampMessagePackSerializer( context, DateTimeConversionMethod.Timestamp ) );
 #endif // !UNITY
 			}
 			else
 			{
-				this._unixEpoc = new UnixEpocFileTimeMessagePackSerializer( context );
-				this._native = new NativeFileTimeMessagePackSerializer( context );
-				this._timestamp = new TimestampFileTimeMessagePackSerializer( context );
+				this._unixEpoc = new TimestampMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc );
+				this._native = new TimestampMessagePackSerializer( context, DateTimeConversionMethod.Native );
+				this._timestamp = new TimestampMessagePackSerializer( context, DateTimeConversionMethod.Timestamp );
 			}
 		}
 
@@ -105,7 +104,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 					throw new NotSupportedException(
 						String.Format(
 							CultureInfo.CurrentCulture,
-							"Unknown {0} value '{1:G}'({1:D})'",
+							"Unknown {0} value '{1:G}'({1:D})",
 							typeof( DateTimeConversionMethod ),
 							context.DefaultDateTimeConversionMethod
 						)

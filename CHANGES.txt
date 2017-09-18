@@ -713,6 +713,7 @@ Release 1.0.0-beta1 T.B.D.
   NEW FEATURES
   * .NET Standard 2.0 which supports serializer source code generation on .NET Core. Note that serializer assembly generation is not supported.
   * MessagePackSerializer.UnpackMessagePackObject(byte[]) utility method.
+  * MessagePack timestamp type support. This includes interoperability with DateTime/DateTimeOffset as well as MsgPack.Timespan type with basic arithmatics, properties, and conversions.
 
   BUG FIXES
   * Fix ByteArrayPacker throws IndexOutOfBoundException when the buffer remaining bytes is equal to packed scalar size. #252

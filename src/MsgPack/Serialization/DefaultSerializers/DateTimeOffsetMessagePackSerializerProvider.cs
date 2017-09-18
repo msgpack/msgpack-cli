@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly MessagePackSerializer _unixEpoc;
 		private readonly MessagePackSerializer _native;
+		private readonly MessagePackSerializer _timestamp;
 
 		public DateTimeOffsetMessagePackSerializerProvider( SerializationContext context, bool isNullable )
 		{
@@ -44,17 +45,22 @@ namespace MsgPack.Serialization.DefaultSerializers
 					new NullableMessagePackSerializer<DateTimeOffset>( context, new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc ) );
 				this._native =
 					new NullableMessagePackSerializer<DateTimeOffset>( context, new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Native ) );
+				this._timestamp =
+					new NullableMessagePackSerializer<DateTimeOffset>( context, new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Timestamp ) );
 #else
 				this._unixEpoc =
 					new NullableMessagePackSerializer( context, typeof( DateTimeOffset? ), new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc ) );
 				this._native =
 					new NullableMessagePackSerializer( context, typeof( DateTimeOffset? ), new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Native ) );
+				this._timestamp =
+					new NullableMessagePackSerializer( context, typeof( DateTimeOffset? ), new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Timestamp ) );
 #endif // !UNITY
 			}
 			else
 			{
 				this._unixEpoc = new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.UnixEpoc );
 				this._native = new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Native );
+				this._timestamp = new DateTimeOffsetMessagePackSerializer( context, DateTimeConversionMethod.Timestamp );
 			}
 		}
 
@@ -72,6 +78,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 					{
 						return this._unixEpoc;
 					}
+					case DateTimeConversionMethod.Timestamp:
+					{
+						return this._timestamp;
+					}
 				}
 			}
 
@@ -84,6 +94,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 				case DateTimeConversionMethod.UnixEpoc:
 				{
 					return this._unixEpoc;
+				}
+				case DateTimeConversionMethod.Timestamp:
+				{
+					return this._timestamp;
 				}
 				default:
 				{
