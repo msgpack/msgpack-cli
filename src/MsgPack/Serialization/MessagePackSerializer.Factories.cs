@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -664,6 +664,25 @@ namespace MsgPack.Serialization
 		public static MessagePackObject UnpackMessagePackObject( Stream stream )
 		{
 			return _singleTonMpoDeserializer.Unpack( stream );
+		}
+
+		/// <summary>
+		///		Directly deserialize specified MessagePack byte array as <see cref="MessagePackObject"/> tree.
+		/// </summary>
+		/// <param name="buffer">The stream which contains deserializing data.</param>
+		/// <returns>A <see cref="MessagePackObject"/> which is root of the deserialized MessagePack object tree.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="buffer"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		This method is convinient wrapper for <see cref="MessagePackSerializer.Get{T}(SerializationContext)"/> for <see cref="MessagePackObject"/>.
+		///		<note>
+		///			You cannot override this method behavior because this method uses private <see cref="SerializationContext"/> instead of default context which is able to be accessed via <see cref="SerializationContext.Default"/>.
+		///		</note>
+		/// </remarks>
+		public static MessagePackObject UnpackMessagePackObject( byte[] buffer )
+		{
+			return _singleTonMpoDeserializer.UnpackSingleObject( buffer );
 		}
 
 		/// <summary>
