@@ -446,6 +446,15 @@
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\System_VersionMessagePackSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\TimestampDateTimeMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\TimestampDateTimeMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\TimestampMessagePackSerializer.cs">
+      <Link>Serialization\DefaultSerializers\TimestampMessagePackSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Serialization\DefaultSerializers\TimestampMessagePackSerializerProvider.cs">
+      <Link>Serialization\DefaultSerializers\TimestampMessagePackSerializerProvider.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs">
       <Link>Serialization\DefaultSerializers\UnixEpocDateTimeMessagePackSerializer.cs</Link>
     </Compile>
@@ -742,6 +751,42 @@
     </Compile>
     <Compile Include="..\MsgPack\SubtreeUnpacker.Unpacking.cs">
       <Link>SubtreeUnpacker.Unpacking.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.Calculation.cs">
+      <Link>Timestamp.Calculation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.Comparison.cs">
+      <Link>Timestamp.Comparison.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.Conversion.cs">
+      <Link>Timestamp.Conversion.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.cs">
+      <Link>Timestamp.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.ParseExact.cs">
+      <Link>Timestamp.ParseExact.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.Properties.cs">
+      <Link>Timestamp.Properties.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.ToString.cs">
+      <Link>Timestamp.ToString.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\Timestamp.TryParseExact.cs">
+      <Link>Timestamp.TryParseExact.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\TimestampParseResult.cs">
+      <Link>TimestampParseResult.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\TimestampStringConverter.cs">
+      <Link>TimestampStringConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\TimestampStringConverter.Parse.cs">
+      <Link>TimestampStringConverter.Parse.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack\TimestampStringConverter.ToString.cs">
+      <Link>TimestampStringConverter.ToString.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\TupleItems.cs">
       <Link>TupleItems.cs</Link>
