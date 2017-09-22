@@ -28,17 +28,25 @@ using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.Numerics;
-#endif // !NET35
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+#endif // !NET35 && !UNITY
 
 namespace MsgPack
 {
 	partial struct Timestamp
 	{
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
 		private static readonly BigInteger NanoToSecondsAsBigInteger = new BigInteger( 1000 * 1000 * 1000 );
-#endif // !NET35
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+#endif // !NET35 && !UNITY
 
 		/// <summary>
 		///		Adds a specified <see cref="TimeSpan"/> to this instance.
@@ -88,7 +96,10 @@ namespace MsgPack
 			return this.Add( -offset );
 		}
 
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
+
 		/// <summary>
 		///		Adds a specified nanoseconds represented as a <see cref="BigInteger"/> from this instance.
 		/// </summary>
@@ -158,7 +169,10 @@ namespace MsgPack
 
 			return seconds * SecondsToNanos + nanos;
 		}
-#endif // !NET35
+
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+#endif // !NET35 && !UNITY
 
 		/// <summary>
 		///		Calculates a <see cref="Timestamp"/> with specified <see cref="Timestamp"/> and an offset represented as <see cref="TimeSpan"/>.
@@ -182,7 +196,9 @@ namespace MsgPack
 			return value.Subtract( offset );
 		}
 
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
 
 		/// <summary>
 		///		Calculates a <see cref="Timestamp"/> with specified <see cref="Timestamp"/> and a nanoseconds offset represented as <see cref="BigInteger"/>.
@@ -216,6 +232,9 @@ namespace MsgPack
 		{
 			return left.Subtract( right );
 		}
-#endif // !NET35
+
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+#endif // !NET35 && !UNITY
 	}
 }

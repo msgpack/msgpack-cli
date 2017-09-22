@@ -29,9 +29,14 @@
 
 using System;
 using System.Globalization;
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.Numerics;
-#endif // !NET35
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -73,7 +78,9 @@ WriteSubtractTestsOverflow( "TimeSpan", "MinMinus1Sec",		Int64.MinValue,	9999999
 WriteSubtractTestsOverflow( "TimeSpan", "MaxPlus1Tick",		Int64.MaxValue,	999999900,	"TimeSpan.FromTicks( -1 )" );
 WriteSubtractTestsOverflow( "TimeSpan", "MinMinus1Tick",	Int64.MinValue,	000000099,	"TimeSpan.FromTicks( 1 )" );
 #>
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
 
 <#
 // Timestamp + BigInteger -> Timestamp
@@ -112,7 +119,9 @@ WriteDifferentiateTests( "MaxMin",				Int64.MaxValue,	999999999,	Int64.MinValue,
 WriteDifferentiateTests( "MinMax",				Int64.MinValue, 0,			Int64.MaxValue,		999999999,	"new BigInteger( Int64.MinValue ) * 1000000000 - new BigInteger( Int64.MaxValue ) * 1000000000 - 999999999" );
 #>
 
-#endif // !NET35
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
 	}
 }
 <#+

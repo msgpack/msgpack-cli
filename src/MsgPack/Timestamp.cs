@@ -169,7 +169,7 @@ namespace MsgPack
 			return result;
 		}
 
-#if NETSTANDARD1_1 || NETSTANDARD1_3
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || SILVERLIGHT
 
 		// Slow alternative
 		internal static long DivRem( long dividend, long divisor, out long remainder )
@@ -178,14 +178,14 @@ namespace MsgPack
 			return dividend / divisor;
 		}
 
-#else // NETSTANDARD1_1 || NETSTANDARD1_3
+#else // NETSTANDARD1_1 || NETSTANDARD1_3 || SILVERLIGHT
 
 		internal static long DivRem( long dividend, long divisor, out long remainder )
 		{
 			return Math.DivRem( dividend, divisor, out remainder );
 		}
 
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || SILVERLIGHT
 
 		internal struct Value
 		{

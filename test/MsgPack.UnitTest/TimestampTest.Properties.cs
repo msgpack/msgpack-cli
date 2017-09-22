@@ -810,8 +810,8 @@ namespace MsgPack
 			var target = Timestamp.UtcNow;
 			var after = DateTimeOffset.UtcNow;
 			// Assert before <= now <= after
-			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( before.ToUnixTimeSeconds() ).Or.GreaterThan( before.ToUnixTimeSeconds() ) );
-			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( after.ToUnixTimeSeconds() ).Or.LessThan( after.ToUnixTimeSeconds() ) );
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( before ) / 1000 ).Or.GreaterThan( MessagePackConvert.FromDateTimeOffset( before ) ) );
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( after ) / 1000 ).Or.LessThan( MessagePackConvert.FromDateTimeOffset( after ) ) );
 		}
 
 		[Test]
@@ -821,8 +821,8 @@ namespace MsgPack
 			var target = Timestamp.Today;
 			var after = new DateTimeOffset( DateTimeOffset.UtcNow.Date, TimeSpan.Zero );
 			// Assert before <= today <= after
-			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( before.ToUnixTimeSeconds() ).Or.GreaterThan( before.ToUnixTimeSeconds() ) );
-			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( after.ToUnixTimeSeconds() ).Or.LessThan( after.ToUnixTimeSeconds() ) );
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( before ) / 1000 ).Or.GreaterThan( MessagePackConvert.FromDateTimeOffset( before ) ) );
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( after ) / 1000 ).Or.LessThan( MessagePackConvert.FromDateTimeOffset( after ) ) );
 		}
 
 		[Test]

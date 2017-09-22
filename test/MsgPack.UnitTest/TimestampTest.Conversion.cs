@@ -219,56 +219,56 @@ namespace MsgPack
 		[Test]
 		public void TestToDateTime_OverflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTime() );
 		}
 
 		[Test]
 		public void TestToDateTime_OverflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1, 0 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1, 0 );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTime() );
 		}
 
 		[Test]
 		public void TestExplicitDateTime_OverflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTime )source; } );
 		}
 
 		[Test]
 		public void TestExplicitDateTime_OverflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1, 0 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1, 0 );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTime )source; } );
 		}
 
 		[Test]
 		public void TestToDateTime_UnderflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTime() );
 		}
 
 		[Test]
 		public void TestToDateTime_UnderflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() -1L, 999999999 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) -1L, 999999999 );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTime() );
 		}
 
 		[Test]
 		public void TestExplicitDateTime_UnderflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTime )source; } );
 		}
 
 		[Test]
 		public void TestExplicitDateTime_UnderflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() - 1, 999999999 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1, 999999999 );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTime )source; } );
 		}
 
@@ -470,56 +470,56 @@ namespace MsgPack
 		[Test]
 		public void TestToDateTimeOffset_OverflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTimeOffset() );
 		}
 
 		[Test]
 		public void TestToDateTimeOffset_OverflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1, 0 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1, 0 );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTimeOffset() );
 		}
 
 		[Test]
 		public void TestExplicitDateTimeOffset_OverflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTimeOffset )source; } );
 		}
 
 		[Test]
 		public void TestExplicitDateTimeOffset_OverflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1, 0 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1, 0 );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTimeOffset )source; } );
 		}
 
 		[Test]
 		public void TestToDateTimeOffset_UnderflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTimeOffset() );
 		}
 
 		[Test]
 		public void TestToDateTimeOffset_UnderflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() -1L, 999999999 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) -1L, 999999999 );
 			Assert.Throws<InvalidOperationException>( () => source.ToDateTimeOffset() );
 		}
 
 		[Test]
 		public void TestExplicitDateTimeOffset_UnderflowSeconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTimeOffset )source; } );
 		}
 
 		[Test]
 		public void TestExplicitDateTimeOffset_UnderflowNanoseconds()
 		{
-			var source = new Timestamp( DateTimeOffset.MinValue.ToUnixTimeSeconds() - 1, 999999999 );
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1, 999999999 );
 			Assert.Throws<InvalidOperationException>( () => { var x = ( DateTimeOffset )source; } );
 		}
 

@@ -489,11 +489,11 @@ namespace MsgPack
 			{
 				var now = DateTimeOffset.UtcNow;
 				return new Timestamp(
-#if !NET35 && !NET45 && !NETSTANDARD1_1
+#if !NET35 && !NET45 && !NETSTANDARD1_1 && !UNITY && !SILVERLIGHT
 					now.ToUnixTimeSeconds(),
-#else // !NET35 && !NET45 && !NETSTANDARD1_1
+#else // !NET35 && !NET45 && !NETSTANDARD1_1 && !UNITY && !SILVERLIGHT
 					( now.Ticks / TimeSpan.TicksPerSecond ) - UnixEpochInSeconds,
-#endif // !NET35 && !NET45 && !NETSTANDARD1_1
+#endif // !NET35 && !NET45 && !NETSTANDARD1_1 && !UNITY && !SILVERLIGHT
 					unchecked( ( int )( now.Ticks % 10000000 * 100 ) )
 				);
 			}

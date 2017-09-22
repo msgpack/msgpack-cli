@@ -29,9 +29,9 @@
 
 using System;
 using System.Globalization;
-#if NET35
+#if ( NET35 || SILVERLIGHT ) && !WINDOWS_UWP
 using System.Threading;
-#endif // NET35
+#endif // ( NET35 || SILVERLIGHT ) && !WINDOWS_UWP
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -165,17 +165,19 @@ foreach ( var @case in
 			);
 		}
 
+#if !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
+
 		[Test]
 		public void TestToString_String_IFormatProvider_<#= @case.Label #>_<#= variation.Format #>_null_CurrentCultureIsUsed()
 		{
 			var originalCurrentCulture = CultureInfo.CurrentCulture;
 			try
 			{
-#if !NET35
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				CultureInfo.CurrentCulture = 
-#else // !NET35
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				Thread.CurrentThread.CurrentCulture =
-#endif // !NET35
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
 				Assert.That(
 					new Timestamp(
@@ -187,14 +189,16 @@ foreach ( var @case in
 			}
 			finally
 			{
-#if !NET35
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				CultureInfo.CurrentCulture = 
-#else // !NET35
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				Thread.CurrentThread.CurrentCulture =
-#endif // !NET35
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					originalCurrentCulture;
 			}
 		}
+
+#endif // !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
 
 <#
 	}
@@ -227,17 +231,19 @@ foreach ( var @case in
 			);
 		}
 
+#if !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
+
 		[Test]
 		public void TestToString_AsOFormatAndNullIFormatProvider()
 		{
 			var originalCurrentCulture = CultureInfo.CurrentCulture;
 			try
 			{
-#if !NET35
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				CultureInfo.CurrentCulture = 
-#else // !NET35
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				Thread.CurrentThread.CurrentCulture =
-#endif // !NET35
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
 				Assert.That(
 					new Timestamp(
@@ -249,14 +255,16 @@ foreach ( var @case in
 			}
 			finally
 			{
-#if !NET35
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				CultureInfo.CurrentCulture = 
-#else // !NET35
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				Thread.CurrentThread.CurrentCulture =
-#endif // !NET35
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					originalCurrentCulture;
 			}
 		}
+
+#endif // !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
 
 		[Test]
 		public void TestToString_IFormatProvider_AsOFormat()
@@ -270,17 +278,19 @@ foreach ( var @case in
 			);
 		}
 
+#if !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
+
 		[Test]
 		public void TestToString_String_AsNullIFormatProvider()
 		{
 			var originalCurrentCulture = CultureInfo.CurrentCulture;
 			try
 			{
-#if !NET35
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				CultureInfo.CurrentCulture = 
-#else // !NET35
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				Thread.CurrentThread.CurrentCulture =
-#endif // !NET35
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
 				Assert.That(
 					new Timestamp(
@@ -292,13 +302,16 @@ foreach ( var @case in
 			}
 			finally
 			{
-#if !NET35
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				CultureInfo.CurrentCulture = 
-#else // !NET35
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 				Thread.CurrentThread.CurrentCulture =
-#endif // !NET35
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					originalCurrentCulture;
 			}
 		}
+
+#endif // !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
+
 	}
 }

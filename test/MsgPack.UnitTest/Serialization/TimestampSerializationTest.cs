@@ -20,7 +20,9 @@
 
 using System;
 using System.IO;
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 using System.Runtime.InteropServices.ComTypes;
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 
 using MsgPack.Serialization.DefaultSerializers;
 
@@ -51,7 +53,9 @@ namespace MsgPack.Serialization
 				Timestamp = now,
 				DateTime = dateTimeNow.AddSeconds( 1 ).UtcDateTime,
 				DateTimeOffset = dateTimeNow.AddSeconds( 2 ),
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 				FileTime = now.Add( TimeSpan.FromSeconds( 3 ) ).ToDateTime().ToWin32FileTimeUtc()
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			};
 
 			using ( var buffer = new MemoryStream() )
@@ -117,7 +121,9 @@ namespace MsgPack.Serialization
 						Assert.That( result.Timestamp, Is.EqualTo( new Timestamp( now.UnixEpochSecondsPart, now.NanosecondsPart / 100 * 100 ) ) );
 						Assert.That( result.DateTime, Is.EqualTo( now.ToDateTime().AddSeconds( 1 ) ) );
 						Assert.That( result.DateTimeOffset, Is.EqualTo( now.ToDateTimeOffset().AddSeconds( 2 ) ) );
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						Assert.That( result.FileTime, Is.EqualTo( now.Add( TimeSpan.FromSeconds( 3 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart % 100 ) ) ).ToDateTime().ToWin32FileTimeUtc() ) );
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						break;
 					}
 					case DateTimeConversionMethod.UnixEpoc:
@@ -125,7 +131,9 @@ namespace MsgPack.Serialization
 						Assert.That( result.Timestamp, Is.EqualTo( new Timestamp( now.UnixEpochSecondsPart, now.NanosecondsPart / 1000000 * 1000000 ) ) );
 						Assert.That( result.DateTime, Is.EqualTo( now.ToDateTime().AddSeconds( 1 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart / 100 % 10000 ) ) ) );
 						Assert.That( result.DateTimeOffset, Is.EqualTo( now.ToDateTimeOffset().AddSeconds( 2 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart / 100 % 10000 ) ) ) );
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						Assert.That( result.FileTime, Is.EqualTo( now.Add( TimeSpan.FromSeconds( 3 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart / 100 % 10000 ) ) ).ToDateTime().ToWin32FileTimeUtc() ) );
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						break;
 					}
 					case DateTimeConversionMethod.Timestamp:
@@ -133,7 +141,9 @@ namespace MsgPack.Serialization
 						Assert.That( result.Timestamp, Is.EqualTo( now ) );
 						Assert.That( result.DateTime, Is.EqualTo( now.ToDateTime().AddSeconds( 1 ) ) );
 						Assert.That( result.DateTimeOffset, Is.EqualTo( now.ToDateTimeOffset().AddSeconds( 2 ) ) );
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						Assert.That( result.FileTime, Is.EqualTo( now.Add( TimeSpan.FromSeconds( 3 ) ).ToDateTime().ToWin32FileTimeUtc() ) );
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						break;
 					}
 				}
@@ -230,7 +240,9 @@ namespace MsgPack.Serialization
 						Assert.That( result.Timestamp, Is.EqualTo( new Timestamp( now.UnixEpochSecondsPart, now.NanosecondsPart / 100 * 100 ) ) );
 						Assert.That( result.DateTime, Is.EqualTo( now.ToDateTime().AddSeconds( 1 ) ) );
 						Assert.That( result.DateTimeOffset, Is.EqualTo( now.ToDateTimeOffset().AddSeconds( 2 )) );
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						Assert.That( result.FileTime, Is.EqualTo( now.Add( TimeSpan.FromSeconds( 3 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart % 100 ) ) ).ToDateTime().ToWin32FileTimeUtc() ) );
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						break;
 					}
 					case DateTimeConversionMethod.UnixEpoc:
@@ -238,7 +250,9 @@ namespace MsgPack.Serialization
 						Assert.That( result.Timestamp, Is.EqualTo( new Timestamp( now.UnixEpochSecondsPart, now.NanosecondsPart / 1000000 * 1000000 ) ) );
 						Assert.That( result.DateTime, Is.EqualTo( now.ToDateTime().AddSeconds( 1 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart / 100 % 10000 ) ) ) );
 						Assert.That( result.DateTimeOffset, Is.EqualTo( now.ToDateTimeOffset().AddSeconds( 2 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart / 100 % 10000 ) ) ) );
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						Assert.That( result.FileTime, Is.EqualTo( now.Add( TimeSpan.FromSeconds( 3 ).Subtract( TimeSpan.FromTicks( now.NanosecondsPart / 100 % 10000 ) ) ).ToDateTime().ToWin32FileTimeUtc() ) );
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						break;
 					}
 					case DateTimeConversionMethod.Timestamp:
@@ -246,7 +260,9 @@ namespace MsgPack.Serialization
 						Assert.That( result.Timestamp, Is.EqualTo( now ) );
 						Assert.That( result.DateTime, Is.EqualTo( now.ToDateTime().AddSeconds( 1 ) ) );
 						Assert.That( result.DateTimeOffset, Is.EqualTo( now.ToDateTimeOffset().AddSeconds( 2 ) ) );
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						Assert.That( result.FileTime, Is.EqualTo( now.Add( TimeSpan.FromSeconds( 3 ) ).ToDateTime().ToWin32FileTimeUtc() ) );
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 						break;
 					}
 				}
@@ -274,7 +290,11 @@ namespace MsgPack.Serialization
 
 	public class ClassHasTimestamp
 	{
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 		internal const int MemberCount = 4;
+#else // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
+		internal const int MemberCount = 3;
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 
 		[MessagePackMember( 0 )]
 		public Timestamp Timestamp { get; set; }
@@ -282,7 +302,9 @@ namespace MsgPack.Serialization
 		public DateTime DateTime { get; set; }
 		[MessagePackMember( 2 )]
 		public DateTimeOffset DateTimeOffset { get; set; }
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 		[MessagePackMember( 3 )]
 		public FILETIME FileTime { get; set; }
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 	}
 }

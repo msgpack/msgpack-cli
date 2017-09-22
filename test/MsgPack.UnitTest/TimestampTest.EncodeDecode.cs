@@ -22,9 +22,6 @@
 using System;
 using System.Globalization;
 using System.Linq;
-#if !NET35
-using System.Numerics;
-#endif // !NET35
 
 using MsgPack.Serialization;
 

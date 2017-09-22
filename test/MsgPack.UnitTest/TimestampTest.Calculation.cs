@@ -21,9 +21,14 @@
 
 using System;
 using System.Globalization;
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
 using System.Numerics;
-#endif // !NET35
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -446,7 +451,9 @@ namespace MsgPack
 			Assert.Throws<OverflowException>( () => { var x = @base - operand; } );
 		}
 
-#if !NET35
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
 
 		[Test]
 		public void TestAdd_BigInteger_Same()
@@ -983,6 +990,8 @@ namespace MsgPack
 		}
 
 
-#endif // !NET35
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
 	}
 }
