@@ -1,4 +1,4 @@
-﻿
+
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -657,7 +657,7 @@ namespace MsgPack.Serialization
 #endif // !SILVERLIGHT
 			this._TimeSpanField = TimeSpan.FromMilliseconds( 123456789 );
 			this._GuidField = Guid.NewGuid();
-			this._CharField = '　';
+			this._CharField = '�@';
 			this._DecimalField = 123456789.0987654321m;
 #if !NET35 && !WINDOWS_PHONE
 			this._BigIntegerField = new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue;
@@ -1105,10 +1105,10 @@ namespace MsgPack.Serialization
 			if ( expected is DateTime )
 			{
 				Assert.That(
-					( DateTime )( object )expected == ( DateTime )( object )actual,
+					( ( DateTime )( object )expected ).ToUniversalTime() == ( DateTime )( object )actual,
 					"Expected:{1:O}({2},{3}){0}Actual :{4:O}({5},{6})",
 					Environment.NewLine,
-					expected,
+					expected == null ? null : ( object )( ( DateTime )( object )expected ).ToUniversalTime(),
 					expected == null ? "(null)" : expected.GetType().FullName,
 					( ( DateTime )( object )expected ).Kind,
 					actual,
@@ -1136,8 +1136,12 @@ namespace MsgPack.Serialization
 				var actuals = ( IDictionary )actual;
 				foreach ( DictionaryEntry entry in ( ( IDictionary )expected ) )
 				{
-					Assert.That( actuals.Contains( entry.Key ), "'{0}' is not in '[{1}]'", entry.Key, String.Join( ", ", actuals.Keys.OfType<object>().Select( o => o == null ? String.Empty : o.ToString() ).ToArray() ) );
-					Verify( entry.Value, actuals[ entry.Key ] );
+					var key =
+						entry.Key is DateTime
+							? ( object )( ( DateTime )entry.Key ).ToUniversalTime()
+							: entry.Key;
+					Assert.That( actuals.Contains( key ), "'{0}' is not in '[{1}]'", key, String.Join( ", ", actuals.Keys.OfType<object>().Select( o => o == null ? String.Empty : o.ToString() ).ToArray() ) );
+					Verify( entry.Value, actuals[ key ] );
 				}
 				return;
 			}
@@ -13666,7 +13670,7 @@ namespace MsgPack.Serialization
 		{
 			var ext = unpacker.LastReadData.AsMessagePackExtendedTypeObject();
 			Assert.That( ext.TypeCode, Is.EqualTo( 1 ) );
-			return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ) ).ToUniversalTime();
+			return new DateTime( BigEndianBinary.ToInt64( ext.Body, 0 ), DateTimeKind.Utc );
 		}
 	}
 

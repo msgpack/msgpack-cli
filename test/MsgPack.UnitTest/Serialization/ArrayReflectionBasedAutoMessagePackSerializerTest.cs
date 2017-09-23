@@ -88,9 +88,15 @@ namespace MsgPack.Serialization
 			return context;
 		}
 
-		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
+		private static SerializationContext NewSerializationContext()
+		{
+			return NewSerializationContext( PackerCompatibilityOptions.None, DateTimeConversionMethod.Timestamp );
+		}
+
+		private static SerializationContext NewSerializationContext( PackerCompatibilityOptions compatibilityOptions, DateTimeConversionMethod dateTimeConversionMethod )
 		{
 			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.Array };
+			context.DefaultDateTimeConversionMethod = dateTimeConversionMethod;
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.ReflectionBased;
 #if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			context.SerializerOptions.DisablePrivilegedAccess = true;
@@ -245,18 +251,46 @@ namespace MsgPack.Serialization
 		public void TestDateTime()
 		{
 			TestCore(
-				DateTime.Now,
-				stream => DateTime.FromBinary( Unpacking.UnpackInt64( stream ) ),
+				DateTime.UtcNow,
+				stream => MessagePackSerializer.UnpackMessagePackObject( stream ).AsTimestamp().ToDateTime(),
 				( x, y ) => x.Equals( y ),
 				context =>
 				{
-					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
 				}
 			);
 		}
 
 		[Test]
 		public void TestDateTimeOffset()
+		{
+			TestCore(
+				DateTimeOffset.UtcNow,
+				stream => MessagePackSerializer.UnpackMessagePackObject( stream ).AsTimestamp().ToDateTimeOffset(),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeNative()
+		{
+			TestCore(
+				DateTime.Now,
+				stream => DateTime.FromBinary( Unpacking.UnpackInt64( stream ) ),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeOffsetNative()
 		{
 			TestCore(
 				DateTimeOffset.Now,
@@ -268,7 +302,7 @@ namespace MsgPack.Serialization
 				( x, y ) => x.Equals( y ),
 				context =>
 				{
-					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
 				}
 			);
 		}
@@ -1203,7 +1237,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyBytes_Classic()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.Classic );
+			var context = NewSerializationContext( PackerCompatibilityOptions.Classic, DateTimeConversionMethod.Native );
 			var serializer = this.CreateTarget<byte[]>( context );
 			using ( var stream = new MemoryStream() )
 			{
@@ -4104,7 +4138,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ClassicContext()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.Classic );
+			var context = NewSerializationContext( PackerCompatibilityOptions.Classic, DateTimeConversionMethod.Native );
 			var serializer = context.GetSerializer<byte[]>();
 
 			using ( var stream = new MemoryStream() )
@@ -4117,7 +4151,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext( PackerCompatibilityOptions.None, DateTimeConversionMethod.Timestamp );
 			var serializer = CreateTarget<byte[]>( context );
 
 			using ( var stream = new MemoryStream() )
@@ -4129,8 +4163,8 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ClassicContext()
 		{
-			var context = NewSerializationContext( SerializationContext.CreateClassicContext().CompatibilityOptions.PackerCompatibilityOptions );
-			context.Serializers.Register( new CustomDateTimeSerealizer() );
+			var context = NewSerializationContext( SerializationContext.CreateClassicContext().CompatibilityOptions.PackerCompatibilityOptions, SerializationContext.CreateClassicContext().DefaultDateTimeConversionMethod );
+			context.Serializers.RegisterOverride( new CustomDateTimeSerealizer() );
 			var serializer = CreateTarget<DateTime>( context );
 
 			using ( var stream = new MemoryStream() )
@@ -4146,7 +4180,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = NewSerializationContext( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
+			var context = NewSerializationContext( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions, SerializationContext.Default.DefaultDateTimeConversionMethod );
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			var serializer = CreateTarget<DateTime>( context );
 
@@ -4163,7 +4197,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = CreateTarget<DateTime>( context );
@@ -4181,7 +4215,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_Default_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
 
 			using ( var stream = new MemoryStream() )
@@ -4199,7 +4233,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractInt32Collection>( context ) );
 		}
@@ -4207,7 +4241,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
 
@@ -4226,7 +4260,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
 			var serializer1 = CreateTarget<WithAbstractInt32Collection>( context );
 
@@ -4259,7 +4293,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
@@ -4341,7 +4375,7 @@ namespace MsgPack.Serialization
 		{
 			using ( var buffer = new MemoryStream(data) )
 			{
-				var serializer = MessagePackSerializer.Get<T>( NewSerializationContext( PackerCompatibilityOptions.None ) );
+				var serializer = MessagePackSerializer.Get<T>( NewSerializationContext() );
 				var result = serializer.Unpack( buffer );
 				assertion( result );
 			}
@@ -7750,7 +7784,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenericDerived_Value_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target =
 				new GenericValueClass
 				{
@@ -7777,7 +7811,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenericDerived_Reference_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target =
 				new GenericReferenceClass
 				{
@@ -7804,7 +7838,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenericRecordDerived_Value_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target =
 				new GenericRecordValueClass( 1, 2 );
 			var serializer = context.GetSerializer<GenericRecordValueClass>();
@@ -7823,7 +7857,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestGenericRecordDerived_Reference_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target =
 				new GenericRecordReferenceClass( "1", "2" );
 			var serializer = context.GetSerializer<GenericRecordReferenceClass>();
@@ -8837,11 +8871,13 @@ namespace MsgPack.Serialization
 					Assert.That( asList[ 1 ].IsTypeOf<byte[]>().Value );
 					Assert.That( asList[ 1 ].AsBinary(), Is.EqualTo( target.Data ) );
 
-					Assert.That( asList[ 2 ].IsTypeOf<long>().Value );
-					Assert.That( asList[ 2 ].AsInt64(), Is.EqualTo( target.TimeStamp.ToBinary() ) );
+					Assert.That( asList[ 2 ].IsTypeOf<MessagePackExtendedTypeObject>().Value );
+					var timestamp = asList[ 2 ].AsTimestamp();
+					Assert.That( timestamp.ToDateTime(), Is.EqualTo( target.TimeStamp.ToUniversalTime() ) );
 
 					Assert.That( asList[ 3 ].IsDictionary );
-					Assert.That( asList[ 3 ].AsDictionary().Single().Key.AsInt64(), Is.EqualTo( target.History.Single().Key.ToBinary() ) );
+					var historyKey = asList[ 3 ].AsDictionary().Single().Key.AsTimestamp();
+					Assert.That( historyKey.ToDateTime(), Is.EqualTo( target.History.Single().Key.ToUniversalTime() ) );
 					Assert.That( asList[ 3 ].AsDictionary().Single().Value.AsString(), Is.EqualTo( target.History.Single().Value ) );
 
 					Assert.That( asList[ 4 ].IsArray );
@@ -9272,7 +9308,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteProperty>();
 				
@@ -9298,7 +9334,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObject>();
 				
@@ -9323,7 +9359,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteField>();
 				
@@ -9349,7 +9385,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObject>();
 				
@@ -9374,7 +9410,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructor>();
 				
@@ -9400,7 +9436,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -9425,7 +9461,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructor>();
 				
@@ -9451,7 +9487,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -9476,7 +9512,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructor>();
 				
@@ -9502,7 +9538,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObject>();
 				
@@ -9527,7 +9563,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadWriteProperty>();
 				
@@ -9553,7 +9589,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObject>();
 				
@@ -9578,7 +9614,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadWriteField>();
 				
@@ -9604,7 +9640,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObject>();
 				
@@ -9629,7 +9665,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructor>();
 				
@@ -9655,7 +9691,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -9680,7 +9716,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructor>();
 				
@@ -9706,7 +9742,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -9731,7 +9767,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructor>();
 				
@@ -9757,7 +9793,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObject>();
 				
@@ -9782,7 +9818,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteProperty>();
 				
@@ -9808,7 +9844,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObject>();
 				
@@ -9833,7 +9869,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteField>();
 				
@@ -9859,7 +9895,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObject>();
 				
@@ -9884,7 +9920,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructor>();
 				
@@ -9910,7 +9946,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -9935,7 +9971,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructor>();
 				
@@ -9961,7 +9997,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -9986,7 +10022,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructor>();
 				
@@ -10012,7 +10048,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObject>();
 				
@@ -10037,7 +10073,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadWriteProperty>();
 				
@@ -10063,7 +10099,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObject>();
 				
@@ -10088,7 +10124,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_StringReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadWriteField>();
 				
@@ -10114,7 +10150,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObject>();
 				
@@ -10139,7 +10175,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructor>();
 				
@@ -10165,7 +10201,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -10190,7 +10226,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructor>();
 				
@@ -10216,7 +10252,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -10241,7 +10277,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructor>();
 				
@@ -10267,7 +10303,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObject>();
 				
@@ -10292,7 +10328,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteProperty>();
 				
@@ -10318,7 +10354,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObject>();
 				
@@ -10344,7 +10380,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteField>();
 				
@@ -10370,7 +10406,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObject>();
 				
@@ -10396,7 +10432,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -10422,7 +10458,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -10448,7 +10484,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -10474,7 +10510,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -10500,7 +10536,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -10526,7 +10562,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObject>();
 				
@@ -10555,7 +10591,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteProperty>();
 				
@@ -10581,7 +10617,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteField>();
 				
@@ -10607,7 +10643,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionProperty>();
 				
@@ -10633,7 +10669,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionProperty>();
 				
@@ -10659,7 +10695,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionField>();
 				
@@ -10685,7 +10721,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteProperty>();
 				
@@ -10711,7 +10747,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteField>();
 				
@@ -10737,7 +10773,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionProperty>();
 				
@@ -10763,7 +10799,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionProperty>();
 				
@@ -10789,7 +10825,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionField>();
 				
@@ -10815,7 +10851,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteProperty>();
 				
@@ -10841,7 +10877,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteField>();
 				
@@ -10867,7 +10903,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionProperty>();
 				
@@ -10893,7 +10929,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionProperty>();
 				
@@ -10919,7 +10955,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionField>();
 				
@@ -10945,7 +10981,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteProperty>();
 				
@@ -10971,7 +11007,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteField>();
 				
@@ -10997,7 +11033,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionProperty>();
 				
@@ -11023,7 +11059,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionProperty>();
 				
@@ -11049,7 +11085,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionField>();
 				
@@ -11075,7 +11111,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteProperty>();
 				
@@ -11101,7 +11137,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteField>();
 				
@@ -11127,7 +11163,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfGetOnlyCollectionProperty>() );
 		}
@@ -11141,7 +11177,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty.Initialize();
 #if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionProperty>() );
@@ -11171,7 +11207,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_List_ListObjectItselfReadOnlyCollectionField>() );
 		}
@@ -11188,7 +11224,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteProperty>();
 				
@@ -11214,7 +11250,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteField>();
 				
@@ -11240,7 +11276,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty>();
 				
@@ -11266,7 +11302,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty>();
 				
@@ -11292,7 +11328,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField>();
 				
@@ -11318,7 +11354,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty>();
 				
@@ -11344,7 +11380,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField>();
 				
@@ -11370,7 +11406,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty>();
 				
@@ -11396,7 +11432,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty>();
 				
@@ -11422,7 +11458,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField>();
 				
@@ -11448,7 +11484,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteProperty>();
 				
@@ -11474,7 +11510,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteField>();
 				
@@ -11500,7 +11536,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty>();
 				
@@ -11526,7 +11562,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty>();
 				
@@ -11552,7 +11588,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField>();
 				
@@ -11578,7 +11614,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty>();
 				
@@ -11604,7 +11640,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField>();
 				
@@ -11630,7 +11666,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty>();
 				
@@ -11656,7 +11692,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty>();
 				
@@ -11682,7 +11718,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField>();
 				
@@ -11708,7 +11744,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteProperty>();
 				
@@ -11734,7 +11770,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteField>();
 				
@@ -11760,7 +11796,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty>();
 				
@@ -11786,7 +11822,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty>();
 				
@@ -11812,7 +11848,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField>();
 				
@@ -11838,7 +11874,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteProperty>();
 				
@@ -11864,7 +11900,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteField>();
 				
@@ -11890,7 +11926,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty>();
 				
@@ -11916,7 +11952,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty>();
 				
@@ -11942,7 +11978,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField>();
 				
@@ -11968,7 +12004,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteProperty>();
 				
@@ -11994,7 +12030,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteField>();
 				
@@ -12020,7 +12056,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty>();
 				
@@ -12046,7 +12082,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty>();
 				
@@ -12072,7 +12108,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionField>();
 				
@@ -12098,7 +12134,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteProperty>();
 				
@@ -12124,7 +12160,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteField>();
 				
@@ -12150,7 +12186,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty>();
 				
@@ -12176,7 +12212,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty>();
 				
@@ -12202,7 +12238,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionField>();
 				
@@ -12228,7 +12264,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteProperty>();
 				
@@ -12254,7 +12290,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteField>();
 				
@@ -12280,7 +12316,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
 		}
@@ -12294,7 +12330,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty.Initialize();
 #if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionProperty>() );
@@ -12324,7 +12360,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadOnlyCollectionField>() );
 		}
@@ -12342,7 +12378,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteProperty>();
 				
@@ -12368,7 +12404,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteField>();
 				
@@ -12394,7 +12430,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor( Tuple.Create( "1" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor>();
 				
@@ -12420,7 +12456,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor>();
 				
@@ -12446,7 +12482,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor( Tuple.Create( "1" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor>();
 				
@@ -12472,7 +12508,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteProperty>();
 				
@@ -12498,7 +12534,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteField>();
 				
@@ -12524,7 +12560,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -12550,7 +12586,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -12576,7 +12612,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -12602,7 +12638,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteProperty>();
 				
@@ -12628,7 +12664,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteField>();
 				
@@ -12654,7 +12690,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor>();
 				
@@ -12680,7 +12716,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor>();
 				
@@ -12706,7 +12742,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor>();
 				
@@ -12732,7 +12768,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteProperty>();
 				
@@ -12758,7 +12794,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteField>();
 				
@@ -12784,7 +12820,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor>();
 				
@@ -12810,7 +12846,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor>();
 				
@@ -12836,7 +12872,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor>();
 				
@@ -12862,7 +12898,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteProperty>();
 				
@@ -12888,7 +12924,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteField>();
 				
@@ -12914,7 +12950,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor>();
 				
@@ -12940,7 +12976,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor>();
 				
@@ -12966,7 +13002,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor>();
 				
@@ -12992,7 +13028,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteProperty>();
 				
@@ -13018,7 +13054,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteField>();
 				
@@ -13044,7 +13080,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -13070,7 +13106,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -13096,7 +13132,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -13122,7 +13158,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteProperty>();
 				
@@ -13148,7 +13184,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteField>();
 				
@@ -13174,7 +13210,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -13200,7 +13236,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -13226,7 +13262,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -13252,7 +13288,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteProperty>();
 				
@@ -13278,7 +13314,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteField>();
 				
@@ -13304,7 +13340,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -13330,7 +13366,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -13356,7 +13392,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -13382,7 +13418,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteProperty>();
 				
@@ -13408,7 +13444,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteField>();
 				
@@ -13434,7 +13470,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -13460,7 +13496,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -13486,7 +13522,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -13512,7 +13548,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteProperty>();
 				
@@ -13538,7 +13574,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteField>();
 				
@@ -13564,7 +13600,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor>();
 				
@@ -13590,7 +13626,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor>();
 				
@@ -13616,7 +13652,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor>();
 				
@@ -13642,7 +13678,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteProperty>();
 				
@@ -13668,7 +13704,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteField>();
 				
@@ -13694,7 +13730,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -13720,7 +13756,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -13746,7 +13782,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -13772,7 +13808,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteProperty>();
 				
@@ -13798,7 +13834,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteField>();
 				
@@ -13824,7 +13860,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -13850,7 +13886,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -13876,7 +13912,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -13909,7 +13945,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteProperty>();
 				
@@ -13935,7 +13971,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObject>();
 				
@@ -13960,7 +13996,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteField>();
 				
@@ -13986,7 +14022,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObject>();
 				
@@ -14011,7 +14047,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructor>();
 				
@@ -14037,7 +14073,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -14062,7 +14098,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructor>();
 				
@@ -14088,7 +14124,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -14113,7 +14149,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructor>();
 				
@@ -14139,7 +14175,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject( new Version( 1, 2, 3, 4 ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObject>();
 				
@@ -14164,7 +14200,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteProperty>();
 				
@@ -14190,7 +14226,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObject>();
 				
@@ -14215,7 +14251,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteField>();
 				
@@ -14241,7 +14277,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObject>();
 				
@@ -14266,7 +14302,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructor>();
 				
@@ -14292,7 +14328,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -14317,7 +14353,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructor>();
 				
@@ -14343,7 +14379,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -14368,7 +14404,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructor>();
 				
@@ -14394,7 +14430,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject( new DateTime( 1982, 1, 29, 15, 46, 12, DateTimeKind.Utc ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObject>();
 				
@@ -14419,7 +14455,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteProperty>();
 				
@@ -14445,7 +14481,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObject>();
 				
@@ -14470,7 +14506,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteField>();
 				
@@ -14496,7 +14532,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObject>();
 				
@@ -14521,7 +14557,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructor>();
 				
@@ -14547,7 +14583,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -14572,7 +14608,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructor>();
 				
@@ -14598,7 +14634,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -14623,7 +14659,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructor>();
 				
@@ -14649,7 +14685,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject( 123 );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObject>();
 				
@@ -14674,7 +14710,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteProperty>();
 				
@@ -14700,7 +14736,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObject>();
 				
@@ -14725,7 +14761,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteField>();
 				
@@ -14751,7 +14787,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObject>();
 				
@@ -14776,7 +14812,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructor>();
 				
@@ -14802,7 +14838,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -14827,7 +14863,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructor>();
 				
@@ -14853,7 +14889,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -14878,7 +14914,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructor>();
 				
@@ -14904,7 +14940,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject_AsMpo()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject( "ABC" );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObject>();
 				
@@ -14929,7 +14965,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteProperty>();
 				
@@ -14955,7 +14991,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObject>();
 				
@@ -14981,7 +15017,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteField>();
 				
@@ -15007,7 +15043,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObject>();
 				
@@ -15033,7 +15069,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -15059,7 +15095,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObject>();
 				
@@ -15085,7 +15121,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -15111,7 +15147,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObject>();
 				
@@ -15137,7 +15173,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -15163,7 +15199,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject( new FileEntry { Name = "file", Size = 1 } );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObject>();
 				
@@ -15192,7 +15228,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteProperty>();
 				
@@ -15218,7 +15254,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteField>();
 				
@@ -15244,7 +15280,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionProperty>();
 				
@@ -15270,7 +15306,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionProperty>();
 				
@@ -15296,7 +15332,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionField>();
 				
@@ -15322,7 +15358,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteProperty>();
 				
@@ -15348,7 +15384,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteField>();
 				
@@ -15374,7 +15410,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionProperty>();
 				
@@ -15400,7 +15436,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionProperty>();
 				
@@ -15426,7 +15462,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionField>();
 				
@@ -15452,7 +15488,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteProperty>();
 				
@@ -15478,7 +15514,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteField>();
 				
@@ -15504,7 +15540,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionProperty>();
 				
@@ -15530,7 +15566,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionProperty>();
 				
@@ -15556,7 +15592,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionField>();
 				
@@ -15582,7 +15618,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteProperty>();
 				
@@ -15608,7 +15644,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteField>();
 				
@@ -15634,7 +15670,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionProperty>();
 				
@@ -15660,7 +15696,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionProperty>();
 				
@@ -15686,7 +15722,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionField>();
 				
@@ -15712,7 +15748,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteProperty>();
 				
@@ -15738,7 +15774,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteField>();
 				
@@ -15764,7 +15800,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfGetOnlyCollectionProperty>() );
 		}
@@ -15778,7 +15814,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty.Initialize();
 #if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionProperty>() );
@@ -15808,7 +15844,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadOnlyCollectionField>() );
 		}
@@ -15825,7 +15861,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteProperty>();
 				
@@ -15851,7 +15887,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteField>();
 				
@@ -15877,7 +15913,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionProperty>();
 				
@@ -15903,7 +15939,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionProperty>();
 				
@@ -15929,7 +15965,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionField>();
 				
@@ -15955,7 +15991,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteProperty>();
 				
@@ -15981,7 +16017,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteField>();
 				
@@ -16007,7 +16043,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionProperty>();
 				
@@ -16033,7 +16069,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionProperty>();
 				
@@ -16059,7 +16095,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionField>();
 				
@@ -16085,7 +16121,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteProperty>();
 				
@@ -16111,7 +16147,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteField>();
 				
@@ -16137,7 +16173,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionProperty>();
 				
@@ -16163,7 +16199,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionProperty>();
 				
@@ -16189,7 +16225,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionField>();
 				
@@ -16215,7 +16251,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteProperty>();
 				
@@ -16241,7 +16277,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteField>();
 				
@@ -16267,7 +16303,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionProperty>();
 				
@@ -16293,7 +16329,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionProperty>();
 				
@@ -16319,7 +16355,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionField>();
 				
@@ -16345,7 +16381,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteProperty>();
 				
@@ -16371,7 +16407,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteField>();
 				
@@ -16397,7 +16433,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionProperty>();
 				
@@ -16423,7 +16459,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionProperty>();
 				
@@ -16449,7 +16485,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionField>();
 				
@@ -16475,7 +16511,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteProperty>();
 				
@@ -16501,7 +16537,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteField>();
 				
@@ -16527,7 +16563,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionProperty>();
 				
@@ -16553,7 +16589,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionProperty>();
 				
@@ -16579,7 +16615,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionField>();
 				
@@ -16605,7 +16641,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteProperty>();
 				
@@ -16631,7 +16667,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteField>();
 				
@@ -16657,7 +16693,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionProperty>();
 				
@@ -16683,7 +16719,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionProperty>();
 				
@@ -16709,7 +16745,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionField>();
 				
@@ -16735,7 +16771,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteProperty>();
 				
@@ -16761,7 +16797,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteField>();
 				
@@ -16787,7 +16823,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionProperty>();
 				
@@ -16813,7 +16849,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionProperty>();
 				
@@ -16839,7 +16875,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionField>();
 				
@@ -16865,7 +16901,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteProperty>();
 				
@@ -16891,7 +16927,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteField>();
 				
@@ -16917,7 +16953,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfGetOnlyCollectionProperty>() );
 		}
@@ -16931,7 +16967,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty.Initialize();
 #if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionProperty>() );
@@ -16961,7 +16997,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField.Initialize();
 			Assert.Throws<SerializationException>( () => context.GetSerializer<PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadOnlyCollectionField>() );
 		}
@@ -16979,7 +17015,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteProperty>();
 				
@@ -17005,7 +17041,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteField>();
 				
@@ -17031,7 +17067,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor( Tuple.Create( "1" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructor>();
 				
@@ -17057,7 +17093,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructor>();
 				
@@ -17083,7 +17119,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor( Tuple.Create( "1" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructor>();
 				
@@ -17109,7 +17145,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteProperty>();
 				
@@ -17135,7 +17171,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteField>();
 				
@@ -17161,7 +17197,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -17187,7 +17223,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -17213,7 +17249,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -17239,7 +17275,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteProperty>();
 				
@@ -17265,7 +17301,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteField>();
 				
@@ -17291,7 +17327,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructor>();
 				
@@ -17317,7 +17353,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructor>();
 				
@@ -17343,7 +17379,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as object ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructor>();
 				
@@ -17369,7 +17405,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteProperty>();
 				
@@ -17395,7 +17431,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteField>();
 				
@@ -17421,7 +17457,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructor>();
 				
@@ -17447,7 +17483,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructor>();
 				
@@ -17473,7 +17509,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructor>();
 				
@@ -17499,7 +17535,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteProperty>();
 				
@@ -17525,7 +17561,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteField>();
 				
@@ -17551,7 +17587,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructor>();
 				
@@ -17577,7 +17613,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructor>();
 				
@@ -17603,7 +17639,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructor>();
 				
@@ -17629,7 +17665,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteProperty>();
 				
@@ -17655,7 +17691,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteField>();
 				
@@ -17681,7 +17717,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -17707,7 +17743,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -17733,7 +17769,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, "2", "3", "4", "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -17759,7 +17795,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteProperty>();
 				
@@ -17785,7 +17821,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteField>();
 				
@@ -17811,7 +17847,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -17837,7 +17873,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -17863,7 +17899,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -17889,7 +17925,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteProperty>();
 				
@@ -17915,7 +17951,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteField>();
 				
@@ -17941,7 +17977,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -17967,7 +18003,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -17993,7 +18029,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", new FileEntry { Name = "4", Size = 4 } as FileSystemEntry, "5", "6", "7") );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -18019,7 +18055,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteProperty>();
 				
@@ -18045,7 +18081,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteField>();
 				
@@ -18071,7 +18107,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -18097,7 +18133,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -18123,7 +18159,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -18149,7 +18185,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteProperty>();
 				
@@ -18175,7 +18211,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteField>();
 				
@@ -18201,7 +18237,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructor>();
 				
@@ -18227,7 +18263,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructor>();
 				
@@ -18253,7 +18289,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", "8" ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructor>();
 				
@@ -18279,7 +18315,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteProperty>();
 				
@@ -18305,7 +18341,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteField>();
 				
@@ -18331,7 +18367,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -18357,7 +18393,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -18383,7 +18419,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( "1", "2", "3", "4", "5", "6", "7", new FileEntry { Name = "8", Size = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -18409,7 +18445,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteProperty>();
 				
@@ -18435,7 +18471,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField.Initialize();
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteField>();
 				
@@ -18461,7 +18497,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructor>();
 				
@@ -18487,7 +18523,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructor>();
 				
@@ -18513,7 +18549,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor( Tuple.Create( new FileEntry { Name = "1", Size = 1 } as FileSystemEntry, new DirectoryEntry { Name = "2", ChildCount = 2 } as FileSystemEntry, new FileEntry { Name = "3", Size = 3 } as FileSystemEntry, new DirectoryEntry { Name = "4", ChildCount = 4 } as FileSystemEntry, new FileEntry { Name = "5", Size = 5 } as FileSystemEntry, new DirectoryEntry { Name = "6", ChildCount = 6 } as FileSystemEntry, new FileEntry { Name = "7", Size = 7 } as FileSystemEntry, new DirectoryEntry { Name = "8", ChildCount = 8 } as FileSystemEntry ) );
 			var serializer = context.GetSerializer<PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructor>();
 				
@@ -18541,7 +18577,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeMixed_Success()
 		{
-				var context = NewSerializationContext( PackerCompatibilityOptions.None );
+				var context = NewSerializationContext();
 				var target = new PolymorphicMemberTypeMixed();
 				target.NormalVanilla = "ABC";
 				target.NormalRuntime = new FileEntry { Name = "File", Size = 1 };
@@ -18606,7 +18642,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphicMemberTypeMixed_Null_Success()
 		{
-				var context = NewSerializationContext( PackerCompatibilityOptions.None );
+				var context = NewSerializationContext();
 				var target = new PolymorphicMemberTypeMixed();
 				var serializer = context.GetSerializer<PolymorphicMemberTypeMixed>();
 				
@@ -18641,7 +18677,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassMemberNoAttribute_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
 
 			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassMemberNoAttribute>() );
@@ -18651,7 +18687,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassMemberKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassMemberKnownType { Value = new FileEntry { Name = "file", Size = 1 } };
 
 			var serializer = context.GetSerializer<AbstractClassMemberKnownType>();
@@ -18673,7 +18709,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassMemberRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassMemberRuntimeType { Value = new FileEntry { Name = "file", Size = 1 } };
 
 			var serializer = context.GetSerializer<AbstractClassMemberRuntimeType>();
@@ -18695,7 +18731,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassListItemNoAttribute_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassListItemNoAttribute { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassListItemNoAttribute>() );
@@ -18705,7 +18741,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassListItemKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassListItemKnownType { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<AbstractClassListItemKnownType>();
@@ -18728,7 +18764,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassListItemRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassListItemRuntimeType { Value = new List<AbstractFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<AbstractClassListItemRuntimeType>();
@@ -18751,7 +18787,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassDictKeyNoAttribute_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassDictKeyNoAttribute { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<AbstractClassDictKeyNoAttribute>() );
@@ -18761,7 +18797,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassDictKeyKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassDictKeyKnownType { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<AbstractClassDictKeyKnownType>();
@@ -18784,7 +18820,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassDictKeyRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new AbstractClassDictKeyRuntimeType { Value = new Dictionary<AbstractFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<AbstractClassDictKeyRuntimeType>();
@@ -18807,7 +18843,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceMemberNoAttribute_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceMemberNoAttribute { Value = new FileEntry { Name = "file", Size = 1 } };
 
 			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceMemberNoAttribute>() );
@@ -18817,7 +18853,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceMemberKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceMemberKnownType { Value = new FileEntry { Name = "file", Size = 1 } };
 
 			var serializer = context.GetSerializer<InterfaceMemberKnownType>();
@@ -18839,7 +18875,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceMemberRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceMemberRuntimeType { Value = new FileEntry { Name = "file", Size = 1 } };
 
 			var serializer = context.GetSerializer<InterfaceMemberRuntimeType>();
@@ -18861,7 +18897,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceListItemNoAttribute_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceListItemNoAttribute { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceListItemNoAttribute>() );
@@ -18871,7 +18907,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceListItemKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceListItemKnownType { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<InterfaceListItemKnownType>();
@@ -18894,7 +18930,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceListItemRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceListItemRuntimeType { Value = new List<IFileSystemEntry>{ new FileEntry { Name = "file", Size = 1 } } };
 
 			var serializer = context.GetSerializer<InterfaceListItemRuntimeType>();
@@ -18917,7 +18953,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceDictKeyNoAttribute_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceDictKeyNoAttribute { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			Assert.Throws<NotSupportedException>( ()=> context.GetSerializer<InterfaceDictKeyNoAttribute>() );
@@ -18927,7 +18963,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceDictKeyKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceDictKeyKnownType { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<InterfaceDictKeyKnownType>();
@@ -18950,7 +18986,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceDictKeyRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new InterfaceDictKeyRuntimeType { Value = new Dictionary<IFileSystemEntry, string> { { new FileEntry { Name = "file", Size = 1 }, "ABC" } } };
 
 			var serializer = context.GetSerializer<InterfaceDictKeyRuntimeType>();
@@ -18973,7 +19009,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassCollectionNoAttribute_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
 			var target = new AbstractClassCollectionNoAttribute { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
@@ -18997,7 +19033,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassCollectionKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
 			var target = new AbstractClassCollectionKnownType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
@@ -19021,7 +19057,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAbstractClassCollectionRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( KeyedCollection<string, string> ), typeof( EchoKeyedCollection<string, string> ) );
 			var target = new AbstractClassCollectionRuntimeType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
@@ -19045,7 +19081,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceCollectionNoAttribute_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
 			var target = new InterfaceCollectionNoAttribute { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
@@ -19069,7 +19105,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceCollectionKnownType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
 			var target = new InterfaceCollectionKnownType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
@@ -19093,7 +19129,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestInterfaceCollectionRuntimeType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<string> ), typeof( EchoKeyedCollection<string, string> ) );
 			var target = new InterfaceCollectionRuntimeType { Value = new EchoKeyedCollection<string, string> { "ABC" } };
 
@@ -19117,7 +19153,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTupleAbstractType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new TupleAbstractType { Value = Tuple.Create( new FileEntry { Name = "1", Size = 1 } as AbstractFileSystemEntry, new FileEntry { Name = "2", Size = 2 } as IFileSystemEntry, new FileEntry { Name = "3", Size = 3 } as AbstractFileSystemEntry, new FileEntry { Name = "4", Size = 4 } as IFileSystemEntry ) };
 			var serializer = context.GetSerializer<TupleAbstractType>();
 
@@ -19139,7 +19175,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_DuplicatedKnownMember_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new DuplicatedKnownMember();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownMember>() );
 		}
@@ -19148,7 +19184,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_DuplicatedKnownCollectionItem_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new DuplicatedKnownCollectionItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownCollectionItem>() );
 		}
@@ -19157,7 +19193,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_DuplicatedKnownDictionaryKey_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new DuplicatedKnownDictionaryKey();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownDictionaryKey>() );
 		}
@@ -19167,7 +19203,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_DuplicatedKnownTupleItem_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new DuplicatedKnownTupleItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<DuplicatedKnownTupleItem>() );
 		}
@@ -19177,7 +19213,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_KnownAndRuntimeMember_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new KnownAndRuntimeMember();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeMember>() );
 		}
@@ -19186,7 +19222,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_KnownAndRuntimeCollectionItem_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new KnownAndRuntimeCollectionItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeCollectionItem>() );
 		}
@@ -19195,7 +19231,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_KnownAndRuntimeDictionaryKey_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new KnownAndRuntimeDictionaryKey();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeDictionaryKey>() );
 		}
@@ -19205,7 +19241,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_KnownAndRuntimeTupleItem_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new KnownAndRuntimeTupleItem();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<KnownAndRuntimeTupleItem>() );
 		}
@@ -19215,7 +19251,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestGlobalNamespace()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new HasGlobalNamespaceType { GlobalType = new TypeInGlobalNamespace { Value = "ABC" } };
 			var serializer = context.GetSerializer<HasGlobalNamespaceType>();
 				
@@ -19238,7 +19274,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public async Task TestGlobalNamespaceAsync()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new HasGlobalNamespaceType { GlobalType = new TypeInGlobalNamespace { Value = "ABC" } };
 			var serializer = context.GetSerializer<HasGlobalNamespaceType>();
 				
@@ -19272,7 +19308,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphismAttributesInType()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			context.GetSerializer<IKnownTypePolymorphic>();
 			context.GetSerializer<IRuntimeTypePolymorphic>();
@@ -19285,7 +19321,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownType_AttributeIsNothing_Field_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19311,7 +19347,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownType_AttributeIsNothing_Property_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19337,7 +19373,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownType_AttributeIsKnown_Field_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19365,7 +19401,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownType_AttributeIsKnown_Property_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19393,7 +19429,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownType_AttributeIsRuntime_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19420,7 +19456,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownType_AttributeIsRuntime_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19447,7 +19483,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeType_AttributeIsNothing_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19474,7 +19510,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeType_AttributeIsNothing_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19501,7 +19537,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeType_AttributeIsKnown_Field_Known_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19524,7 +19560,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeType_AttributeIsKnown_Property_Known_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19547,7 +19583,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeType_AttributeIsRuntime_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19574,7 +19610,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeType_AttributeIsRuntime_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19601,7 +19637,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeCollection_AttributeIsNothing_Field_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19627,7 +19663,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeCollection_AttributeIsNothing_Property_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19653,7 +19689,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeCollection_AttributeIsKnown_Field_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19681,7 +19717,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeCollection_AttributeIsKnown_Property_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19709,7 +19745,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeCollection_AttributeIsRuntime_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19736,7 +19772,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeCollection_AttributeIsRuntime_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19763,7 +19799,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeCollection_AttributeIsNothing_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19790,7 +19826,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeCollection_AttributeIsNothing_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19817,7 +19853,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeCollection_AttributeIsKnown_Field_Known_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19840,7 +19876,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeCollection_AttributeIsKnown_Property_Known_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19863,7 +19899,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeCollection_AttributeIsRuntime_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19890,7 +19926,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeCollection_AttributeIsRuntime_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19917,7 +19953,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeDictionary_AttributeIsNothing_Field_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19943,7 +19979,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeDictionary_AttributeIsNothing_Property_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19969,7 +20005,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeDictionary_AttributeIsKnown_Field_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -19997,7 +20033,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeDictionary_AttributeIsKnown_Property_Known()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20025,7 +20061,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeDictionary_AttributeIsRuntime_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20052,7 +20088,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestKnownTypeDictionary_AttributeIsRuntime_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20079,7 +20115,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeDictionary_AttributeIsNothing_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20106,7 +20142,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeDictionary_AttributeIsNothing_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20133,7 +20169,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeDictionary_AttributeIsKnown_Field_Known_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20156,7 +20192,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeDictionary_AttributeIsKnown_Property_Known_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20179,7 +20215,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeDictionary_AttributeIsRuntime_Field_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20206,7 +20242,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestRuntimeTypeDictionary_AttributeIsRuntime_Property_Runtime()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -20238,7 +20274,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_PublicVerifierType_PublicStaticMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForPublicTypeVerifierPublicStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20257,7 +20293,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_PublicVerifierType_NonPublicStaticMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForPublicTypeVerifierPrivateStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20276,7 +20312,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_PublicVerifierType_PublicInstanceMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForPublicTypeVerifierPublicInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20295,7 +20331,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_PublicVerifierType_NonPublicInstanceMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForPublicTypeVerifierPrivateInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20314,7 +20350,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_NonPublicVerifierType_PublicStaticMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPublicStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20333,7 +20369,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_NonPublicVerifierType_NonPublicStaticMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPrivateStaticAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20352,7 +20388,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_NonPublicVerifierType_PublicInstanceMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPublicInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20371,7 +20407,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_NonPublicVerifierType_NonPublicInstanceMethod_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { ForNonPublicTypeVerifierPrivateInstanceAllowAll = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -20390,7 +20426,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestSpecifiedTypeVerifierIsNotFound_BecauseNoMethods_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierNoMethods { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierNoMethods>() );
@@ -20405,7 +20441,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestSpecifiedTypeVerifierIsNotFound_BecauseVoidReturnMethod_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierVoidReturnMethod { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierVoidReturnMethod>() );
@@ -20420,7 +20456,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestSpecifiedTypeVerifierIsNotFound_BecauseNoParametersMethod_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierNoParametersMethod { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierNoParametersMethod>() );
@@ -20435,7 +20471,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestSpecifiedTypeVerifierIsNotFound_BecauseExtraParametersMethod_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new RuntimeTypePolymorphicWithInvalidVerifierExtraParametersMethod { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<RuntimeTypePolymorphicWithInvalidVerifierExtraParametersMethod>() );
@@ -20450,7 +20486,7 @@ namespace MsgPack.Serialization
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierDoesNotLoadTypeItself()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var serializer = context.GetSerializer<IRuntimeTypePolymorphicWithVerification>();
 			
 			using ( var buffer = new MemoryStream() )
