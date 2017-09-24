@@ -1,4 +1,4 @@
-
+Ôªø
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -657,7 +657,7 @@ namespace MsgPack.Serialization
 #endif // !SILVERLIGHT
 			this._TimeSpanField = TimeSpan.FromMilliseconds( 123456789 );
 			this._GuidField = Guid.NewGuid();
-			this._CharField = 'Å@';
+			this._CharField = '\u3000';
 			this._DecimalField = 123456789.0987654321m;
 #if !NET35 && !WINDOWS_PHONE
 			this._BigIntegerField = new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue;

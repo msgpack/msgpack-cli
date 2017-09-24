@@ -1,4 +1,4 @@
-<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ include file="AutoMessagePackSerializerTest.Polymorphism.ttinclude" #>
 <#@ assembly name="System.Core.dll" #>
@@ -63,7 +63,7 @@ var fields =
 		new Tuple<Object, string, string, bool>( typeof( FILETIME ), String.Empty, "ToFileTime( DateTime.UtcNow )", true ),
 		new Tuple<Object, string, string, bool>( typeof( TimeSpan ), String.Empty, "TimeSpan.FromMilliseconds( 123456789 )", true ),
 		new Tuple<Object, string, string, bool>( typeof( Guid ), String.Empty, "Guid.NewGuid()", true ),
-		new Tuple<Object, string, string, bool>( typeof( Char ), String.Empty, "'\u3000'", true ),
+		new Tuple<Object, string, string, bool>( typeof( Char ), String.Empty, "'\\u3000'", true ),
 		new Tuple<Object, string, string, bool>( typeof( Decimal ), String.Empty, "123456789.0987654321m", true ),
 		new Tuple<Object, string, string, bool>( typeof( BigInteger ), String.Empty, "new BigInteger( UInt64.MaxValue ) + UInt64.MaxValue", true ),
 		new Tuple<Object, string, string, bool>( typeof( Complex ), String.Empty, "new Complex( 1.3, 2.4 )", true ),
