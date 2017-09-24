@@ -26,9 +26,9 @@
 #define AOT
 #endif
 
-#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 #define FEATURE_EMIT
-#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 
 using System;
 using System.IO;
@@ -49,7 +49,9 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
 #if FEATURE_EMIT
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
 #endif // FEATURE_EMIT
 
@@ -252,6 +254,7 @@ namespace MsgPack.Serialization
 			ISerializerBuilder builder;
 			switch ( context.SerializerOptions.EmitterFlavor )
 			{
+#if !NETSTANDARD1_3
 				case EmitterFlavor.CodeDomBased:
 				{
 #if DEBUG
@@ -268,10 +271,11 @@ namespace MsgPack.Serialization
 
 					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
 					break;
-#else
+#else // DEBUG
 					throw new NotSupportedException();
-#endif
+#endif // DEBUG
 				}
+#endif // !NETSTANDARD1_3
 				case EmitterFlavor.FieldBased:
 				{
 					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
