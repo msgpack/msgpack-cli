@@ -1425,7 +1425,10 @@ namespace MsgPack.Serialization.CodeDomSerializers
 										context,
 										schema,
 										dependentSerializer.Key.PolymorphismSchema
-									).SelectMany( st => st.AsStatements() ).ToArray()
+									)
+									// inner ToArray() is required for .net core app 2.0 LINQ
+									.SelectMany( st => st.AsStatements().ToArray() )
+									.ToArray()
 								);
 
 								schemaExpression = new CodeVariableReferenceExpression( variableName );
