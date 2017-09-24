@@ -769,6 +769,9 @@
       <LastGenOutput>UnpackerTest.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MessagePackObjectTest.RuntimeSerialization.cs" Condition="'$(TargetFramework)' == 'netcoreapp1.0' or '$(TargetFramework)' == 'netcoreapp2.0'" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
