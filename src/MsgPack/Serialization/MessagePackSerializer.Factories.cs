@@ -33,6 +33,10 @@
 using System;
 using System.IO;
 using System.Globalization;
+#if AOT
+using System.Linq;
+using System.Reflection;
+#endif // AOT
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -537,9 +541,10 @@ namespace MsgPack.Serialization
 
 #if AOT
 		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
-			typeof( MessagePackSerializer ).GetRuntimeMethod( 
-				"CreateInternal", 
-				new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) }
+			typeof( MessagePackSerializer ).GetRuntimeMethods()
+			.Single( m =>
+				m.Name == "CreateInternal"
+				&& m.GetParameterTypes().SequenceEqual( new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) } )
 			);
 
 		internal static MessagePackSerializer CreateInternal( SerializationContext context, Type targetType, PolymorphismSchema schema )

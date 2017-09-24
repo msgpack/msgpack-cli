@@ -208,7 +208,7 @@ namespace MsgPack
 			return
 				source.GetRuntimeMethods()
 					.SingleOrDefault(
-						m => m.Name == name && m.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameters )
+						m => m.IsPublic && m.Name == name && m.GetParameters().Select( p => p.ParameterType ).SequenceEqual( parameters )
 					);
 		}
 
@@ -218,7 +218,7 @@ namespace MsgPack
 			return
 				source.GetMethod(
 					name,
-					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic,
+					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public,
 					null,
 					parameters,
 					null
@@ -280,7 +280,7 @@ namespace MsgPack
 #if NETSTANDARD1_1 || NETSTANDARD1_3
 		public static MethodInfo GetMethod( this Type source, string name )
 		{
-			return source.GetRuntimeMethods().SingleOrDefault( m => m.Name == name && m.DeclaringType == source );
+			return source.GetRuntimeMethods().SingleOrDefault( m => m.IsPublic && m.Name == name && m.DeclaringType == source );
 		}
 
 		public static MethodInfo GetMethod( this Type source, string name, Type[] parameters )

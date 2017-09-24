@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -526,7 +526,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context.GetDeclaredField( FieldName.UnpackTo ),
 					this.EmitNewPrivateMethodDelegateExpression(
 						context,
-						this.BaseClass.GetRuntimeMethod( MethodName.UnpackToCore, parameterTypes )
+						this.BaseClass.GetRuntimeMethods().Single( m => m.Name == MethodName.UnpackToCore && m.GetParameterTypes().SequenceEqual( parameterTypes ) )
 					)
 				);
 
@@ -542,7 +542,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						context.GetDeclaredField( FieldName.UnpackTo + "Async" ),
 						this.EmitNewPrivateMethodDelegateExpression(
 							context,
-							this.BaseClass.GetRuntimeMethod( MethodName.UnpackToAsyncCore, asyncParameterTypes )
+							this.BaseClass.GetRuntimeMethods().Single( m => m.Name == MethodName.UnpackToAsyncCore && m.GetParameterTypes().SequenceEqual( asyncParameterTypes ) )
 						)
 					);
 
