@@ -19,13 +19,24 @@
 #endregion -- License Terms --
 
 using System;
+#if !NETSTANDARD2_0
 using System.CodeDom.Compiler;
+#endif // !NETSTANDARD2_0
 using System.Collections;
 using System.Collections.Generic;
+#if NETSTANDARD2_0
+using System.Globalization;
+#endif // NETSTANDARD2_0
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+
+#if NETSTANDARD2_0
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
+#endif // NETSTANDARD2_0
 
 using MsgPack.Serialization.Reflection;
 
@@ -1708,6 +1719,8 @@ namespace MsgPack.Serialization
 
 		private static void AssertValidCode( IEnumerable<SerializerCodeGenerationResult> results )
 		{
+#if !NETSTANDARD2_0
+
 			var result =
 				CodeDomProvider
 				.CreateProvider( "C#" )
@@ -1735,13 +1748,87 @@ namespace MsgPack.Serialization
 			{
 				File.Delete( result.PathToAssembly );
 			}
+
+#else // !NETSTANDARD2_0
+
+			var assemblyName = "CodeGenerationAssembly" + DateTime.UtcNow.ToString( "yyyyMMddHHmmssfff" );
+			var metadataList =
+				new TempFileDependentAssemblyManager( TestContext.CurrentContext.TestDirectory ).CodeSerializerDependentAssemblies
+				.Concat( new[] { Assembly.GetExecutingAssembly().Location } )
+				.Select(
+					a =>
+						a is string
+							? AssemblyMetadata.CreateFromFile( a as string )
+							: AssemblyMetadata.CreateFromImage( a as byte[] )
+				).ToArray();
+			try
+			{
+				var compilation =
+					CSharpCompilation.Create(
+						assemblyName,
+						results.Select( r => CSharpSyntaxTree.ParseText( File.ReadAllText( r.FilePath ) ) ),
+						metadataList.Select( m => m.GetReference() ),
+						new CSharpCompilationOptions(
+							OutputKind.DynamicallyLinkedLibrary,
+							optimizationLevel: OptimizationLevel.Debug,
+							// Suppress CS0436 because gen/*.cs will conflict with testing serializers.
+							specificDiagnosticOptions: new[] { new KeyValuePair<string, ReportDiagnostic>( "CS0436", ReportDiagnostic.Suppress ) }
+						)
+					);
+
+				var emitOptions = new EmitOptions( runtimeMetadataVersion: "v4.0.30319" );
+				EmitResult result;
+				using ( var buffer = new MemoryStream() )
+				{
+					result = compilation.Emit( buffer, options: emitOptions );
+				}
+
+				Assert.That(
+					result.Diagnostics.Any( d => d.Severity == DiagnosticSeverity.Error || d.Severity == DiagnosticSeverity.Warning ),
+					Is.False,
+					String.Join( Environment.NewLine, GetCompileErrorLines( result.Diagnostics ).ToArray() )
+				);
+			}
+			finally
+			{
+				foreach ( var metadata in metadataList )
+				{
+					metadata.Dispose();
+				}
+			}
+#endif // !NETSTANDARD2_0
 		}
+
+#if !NETSTANDARD2_0
 
 		private static IEnumerable<string> GetCompileErrorLines( CompilerError error )
 		{
 			yield return error.ToString();
 			yield return File.ReadAllLines( error.FileName ).Skip( error.Line - 1 ).First();
 		}
+
+#else // !NETSTANDARD2_0
+
+		private static IEnumerable<string> GetCompileErrorLines( IEnumerable<Diagnostic> diagnostics )
+		{
+			return
+				diagnostics.Select(
+					( diagnostic, i ) =>
+						String.Format(
+							CultureInfo.InvariantCulture,
+							"[{0}]{1}:{2}:(File:{3}, Line:{4}, Column:{5}):{6}",
+							i,
+							diagnostic.Severity,
+							diagnostic.Id,
+							diagnostic.Location.GetLineSpan().Path,
+							diagnostic.Location.GetLineSpan().StartLinePosition.Line,
+							diagnostic.Location.GetLineSpan().StartLinePosition.Character,
+							diagnostic.GetMessage()
+						)
+				);
+		}
+
+#endif // !NETSTANDARD2_0
 
 		public sealed class Tester : MarshalByRefObject
 		{
