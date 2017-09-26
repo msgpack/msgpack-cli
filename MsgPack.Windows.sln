@@ -385,7 +385,8 @@ Global
 		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|ARM.ActiveCfg = Release|ARM
 		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|ARM.Build.0 = Release|ARM
-		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|x64.ActiveCfg = Release|x64
 		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|x64.Build.0 = Release|x64
 		{9D65A105-FB03-40DB-9185-8C695B8EE8D6}.Release|x86.ActiveCfg = Release|x86

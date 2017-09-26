@@ -707,3 +707,7 @@ Release 0.9.1 2017-8-30
   BUG FIXES
   * Fix ByteArrayPacker throws IndexOutOfBoundException when the buffer remaining bytes is equal to packed scalar size. #252
 
+Release 0.9.2 2017-09-25
+
+  BUG FIXES
+  * Fix UAP build drop does not exists in nupkg. #186
