@@ -30,7 +30,11 @@ namespace MsgPack
 	internal sealed class LegacyJapaneseCultureInfo : CultureInfo
 	{
 		public LegacyJapaneseCultureInfo()
-			: base( "ja-NP" )
+#if NETSTANDARD1_1 || NETSTANDARD1_3 || SILVERLIGHT
+			: base( "ja-JP" )
+#else
+			: base( "ja-JP", true )
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || SILVERLIGHT
 		{
 			var numberFormatInfo = CultureInfo.InvariantCulture.NumberFormat.Clone() as NumberFormatInfo;
 			numberFormatInfo.NegativeSign = "\uFF0D"; // Full width hiphen
