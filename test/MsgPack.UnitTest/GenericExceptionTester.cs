@@ -300,7 +300,8 @@ namespace MsgPack
 			);
 			permissions.AddPermission(
 				new SecurityPermission(
-					SecurityPermissionFlag.Execution
+					SecurityPermissionFlag.Execution |
+					SecurityPermissionFlag.SkipVerification // for unsafe code
 				)
 			);
 			permissions.AddPermission(
