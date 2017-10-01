@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -73,6 +73,10 @@ namespace MsgPack.Serialization
 				{
 					return DateTimeConversionMethod.UnixEpoc;
 				}
+				case DateTimeMemberConversionMethod.Timestamp:
+				{
+					return DateTimeConversionMethod.Timestamp;
+				}
 				default:
 				{
 					return context.DefaultDateTimeConversionMethod;
@@ -89,8 +93,9 @@ namespace MsgPack.Serialization
 				|| dateTimeType == typeof( FILETIME )
 				|| dateTimeType == typeof( FILETIME? )
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
-				// DateTimeOffset? is not have to be treat specially.
-				|| dateTimeType == typeof( DateTimeOffset );
+				// DateTimeOffset? and Timestamp? do not have to be treat specially.
+				|| dateTimeType == typeof( DateTimeOffset )
+				|| dateTimeType == typeof( Timestamp );
 		}
 	}
 }

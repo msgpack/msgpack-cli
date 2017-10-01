@@ -1,0 +1,641 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ include file="TimestampTest.Common.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+#endregion -- License Terms --
+
+using System;
+using System.Globalization;
+using System.Linq;
+#if ( NET35 || SILVERLIGHT ) && !WINDOWS_UWP
+using System.Threading;
+#endif // ( NET35 || SILVERLIGHT ) && !WINDOWS_UWP
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	partial class TimestampTest
+	{
+<#
+// Success
+foreach ( var @case in ParseToStringTestCases.Values )
+{
+	foreach ( var variation in 
+		new []
+		{
+			new { FormatLabel = "LowerO", Format = "o", Value = @case.RoundTripString,	HasSubseconds = true },
+			new { FormatLabel = "UpperO", Format = "O", Value = @case.RoundTripString,	HasSubseconds = true },
+			new { FormatLabel = "LowerS", Format = "s", Value = @case.SortableString,	HasSubseconds = false },
+		}
+	)
+	{
+#>
+		[Test]
+		public void TestParseExact_WithDateTimeStyles_<#= @case.Label #>_<#= variation.FormatLabel #>()
+		{
+			Assert.That(
+				Timestamp.ParseExact(
+					"<#= @variation.Value #>",
+					"<#= @variation.Format #>",
+					null,
+					DateTimeStyles.None
+				),
+				Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) )
+			);
+		}
+
+		[Test]
+		public void TestTryParseExact_<#= @case.Label #>_<#= variation.FormatLabel #>()
+		{
+			Timestamp result;
+			Assert.That(
+				Timestamp.TryParseExact(
+					"<#= @variation.Value #>",
+					"<#= @variation.Format #>",
+					null,
+					DateTimeStyles.None,
+					out result
+				),
+				Is.True
+			);
+			Assert.That( result, Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) ) );
+		}
+
+<#
+	}
+} // Success
+
+// DateTimeStyles
+foreach ( var @case in
+	new []
+	{
+		new { Kind = "LeadingWhite",	AdjustValue = new Func<string, string>( x => " " + x ),			ShouldSuccess = new Func<string[], bool>( x => x.Contains( "AllowLeadingWhite" ) ) },
+		new { Kind = "TrailingWhite",	AdjustValue = new Func<string, string>( x => x + " " ),			ShouldSuccess = new Func<string[], bool>( x => x.Contains( "AllowTrailingWhite" ) ) },
+		new { Kind = "BothWhite",		AdjustValue = new Func<string, string>( x => " " + x + " " ),	ShouldSuccess = new Func<string[], bool>( x => x.Contains( "AllowLeadingWhite" ) && x.Contains( "AllowTrailingWhite" ) ) },
+	}
+)
+{
+	foreach ( var styles in 
+		new []
+		{
+			new [] { "None" },
+			new [] { "AllowLeadingWhite" },
+			new [] { "AllowTrailingWhite" },
+			new [] { "AllowLeadingWhite", "AllowTrailingWhite" }
+		}
+	)
+	{
+		foreach ( var variation in 
+			new []
+			{
+				new { FormatLabel = "LowerO", Format = "o", Value = "1970-01-01T00:00:01.000000000Z" },
+				new { FormatLabel = "UpperO", Format = "O", Value = "1970-01-01T00:00:01.000000000Z" },
+				new { FormatLabel = "LowerS", Format = "s", Value = "1970-01-01T00:00:01Z" },
+			}
+		)
+		{
+			var shouldSuccess = @case.ShouldSuccess( styles );
+			var suffix = $"{String.Join( "Or", styles )}_Format{variation.FormatLabel}_{@case.Kind}Is{( shouldSuccess ? String.Empty : "Not" )}Allowed";
+#>
+		[Test]
+		public void TestTryParseExact_WithDateTimeStyles_<#= suffix #>()
+		{
+			Timestamp result;
+			Assert.That(
+				Timestamp.TryParseExact(
+					"<#= @case.AdjustValue( variation.Value ) #>",
+					"<#= variation.Format #>",
+					null,
+					<#= String.Join( " | ", styles.Select( x => "DateTimeStyles." + x ) ) #>,
+					out result
+				),
+				Is.<#= shouldSuccess #>
+			);
+			Assert.That( result, Is.EqualTo( <#= shouldSuccess ? "new Timestamp( 1, 0 )" : "default( Timestamp )" #> ) );
+		}
+
+		[Test]
+		public void TestParseExact_WithDateTimeStyles_<#= suffix #>()
+		{
+<#
+			if ( shouldSuccess )
+			{
+#>
+			Assert.That(
+<#
+			}
+			else // if shouldSuccess
+			{
+#>
+			Assert.Throws<FormatException>( () =>
+<#
+			} // if shouldSuccess
+#>
+				Timestamp.ParseExact(
+					"<#= @case.AdjustValue( variation.Value ) #>",
+					"<#= variation.Format #>",
+					null,
+					<#= String.Join( " | ", styles.Select( x => "DateTimeStyles." + x ) ) #>
+				)
+<#
+			if ( shouldSuccess )
+			{
+#>
+				, Is.EqualTo( <#= shouldSuccess ? "new Timestamp( 1, 0 )" : "default( Timestamp )" #> )
+<#
+			} // if shouldSuccess
+#>
+			);
+		}
+
+<#
+		}
+	}
+} // DateTimeStyles
+
+// Overload
+#>
+		[Test]
+		public void TestParseExact_WithoutDateTimeStyles_AsNone()
+		{
+			Assert.Throws<FormatException>(
+				() => Timestamp.ParseExact(
+					" 1970-01-01T00:00:00.123456789Z",
+					"o",
+					null
+				)
+			);
+		}
+
+<#
+
+// Invariant
+foreach ( var @case in 
+	new []
+	{
+		StandardTestCases[ "Zero" ],
+		StandardTestCases[ "YearMinus1" ]
+	}
+)
+{
+	foreach ( var variation in 
+		new []
+		{
+			new { Format = "o", Value = @case.RoundTripString,	HasSubseconds = true },
+			new { Format = "s", Value = @case.SortableString,	HasSubseconds = false },
+		}
+	)
+	{
+#>
+		[Test]
+		public void TestParseExact_IFormatProvider_<#= @case.Label #>_<#= variation.Format #>_InvariantCulture()
+		{
+			Assert.That(
+				Timestamp.ParseExact(
+					"<#= variation.Value #>",
+					"<#= variation.Format #>",
+					CultureInfo.InvariantCulture,
+					DateTimeStyles.None
+				),
+				Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) )
+			);
+		}
+		
+		[Test]
+		public void TestTryParseExact_IFormatProvider_<#= @case.Label #>_<#= variation.Format #>_InvariantCulture()
+		{
+			Timestamp result;
+			Assert.That(
+				Timestamp.TryParseExact(
+					"<#= variation.Value #>",
+					"<#= variation.Format #>",
+					CultureInfo.InvariantCulture,
+					DateTimeStyles.None,
+					out result
+				),
+				Is.True
+			);
+			Assert.That( result, Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) ) );
+		}
+
+<#
+	}
+} // Invariant
+
+// Current/Custom
+foreach ( var @case in 
+	new []
+	{
+		StandardTestCases[ "Distinguishable" ],
+		StandardTestCases[ "YearMinus1" ]
+	}
+)
+{
+	foreach ( var variation in 
+		new []
+		{
+			new { Format = "o", Value = ToFullWidthNegativeSign( @case.RoundTripString ),	HasSubseconds = true },
+			new { Format = "s", Value = ToFullWidthNegativeSign( @case.SortableString ),	HasSubseconds = false },
+		}
+	)
+	{
+#>
+		[Test]
+		public void TestParseExact_<#= @case.Label #>_<#= variation.Format #>_CustomCulture_UsedForNegativeSign()
+		{
+			Assert.That(
+				Timestamp.ParseExact(
+					"<#= variation.Value #>",
+					"<#= variation.Format #>",
+					new LegacyJapaneseCultureInfo(),
+					DateTimeStyles.None
+				),
+				Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) )
+			);
+		}
+		
+		[Test]
+		public void TestTryParseExact_<#= @case.Label #>_<#= variation.Format #>_CustomCulture_UsedForNegativeSign()
+		{
+			Timestamp result;
+			Assert.That(
+				Timestamp.TryParseExact(
+					"<#= variation.Value #>",
+					"<#= variation.Format #>",
+					new LegacyJapaneseCultureInfo(),
+					DateTimeStyles.None,
+					out result
+				),
+				Is.True
+			);
+			Assert.That( result, Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) ) );
+		}
+
+#if !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
+
+		[Test]
+		public void TestParseExact_<#= @case.Label #>_<#= variation.Format #>_null_CurrentCultureIsUsed()
+		{
+			var originalCurrentCulture = CultureInfo.CurrentCulture;
+			try
+			{
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				CultureInfo.CurrentCulture = 
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				Thread.CurrentThread.CurrentCulture =
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
+				Assert.That(
+					Timestamp.ParseExact(
+						"<#= variation.Value #>",
+						"<#= variation.Format #>",
+						null,
+						DateTimeStyles.None
+					),
+					Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) )
+				);
+			}
+			finally
+			{
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				CultureInfo.CurrentCulture = 
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				Thread.CurrentThread.CurrentCulture =
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+					originalCurrentCulture;
+			}
+		}
+		
+		[Test]
+		public void TestTryParseExact_<#= @case.Label #>_<#= variation.Format #>_null_CurrentCultureIsUsed()
+		{
+			var originalCurrentCulture = CultureInfo.CurrentCulture;
+			try
+			{
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				CultureInfo.CurrentCulture = 
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				Thread.CurrentThread.CurrentCulture =
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
+				Timestamp result;
+				Assert.That(
+					Timestamp.TryParseExact(
+						"<#= variation.Value #>",
+						"<#= variation.Format #>",
+						null,
+						DateTimeStyles.None,
+						out result
+					),
+					Is.True
+				);
+				Assert.That( result, Is.EqualTo( new Timestamp( <#= @case.Seconds #>, <#= variation.HasSubseconds ? @case.Nanoseconds : 0 #> ) ) );
+			}
+			finally
+			{
+#if ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				CultureInfo.CurrentCulture = 
+#else // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+				Thread.CurrentThread.CurrentCulture =
+#endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
+					originalCurrentCulture;
+			}
+		}
+
+#endif // !WINDOWS_PHONE && !WINDOWS_PHONE_APP && !NETFX_CORE
+
+<#
+	}
+} // Current/Custom
+
+// ParseErrors
+foreach ( var @case in 
+	new []
+	{
+		new { Kind = "EmptyValue",						Seconds = String.Empty,						Nanoseconds = String.Empty,		IsNanosecondsCase = false },
+		new { Kind = "InvalidYearValue",				Seconds = "AAAA-01-01T00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooShortYearDigit",				Seconds = "001-01-01T00:00:00",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooSmallYearValue",				Seconds = "-584554047285-01-01T00:00:00",	Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooLargeYearValue",				Seconds = "584554051224-01-01T00:00:00",	Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidYearMonthDelimiter",		Seconds = "1970/01-01T00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidMonthValue",				Seconds = "1970-AA-01T00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooShortMonthDigit",				Seconds = "1970-1-01T00:00:00",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooSmallMonthValue",				Seconds = "A-01-01T00:00:00",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooLargeMonthValue",				Seconds = "A-01-01T00:00:00",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidMonthDayDelimiter",		Seconds = "1970-01/01T00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidDayValue",					Seconds = "1970-01-AAT00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooShortDayDigit",				Seconds = "1970-01-1T00:00:00",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooLargeDayValue",				Seconds = "1970-01-32T00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooSmallDayValue",				Seconds = "1970-01-00T00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidDayHourDelimiter",			Seconds = "1970-01-01_00:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidHourValue",				Seconds = "1970-01-01TAA:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooShortHourDigit",				Seconds = "1970-01-01T0:00:00",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooLargeHourValue",				Seconds = "1970-01-01T24:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooSmallHourValue",				Seconds = "1970-01-01T-01:00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidHourMinuteDelimiter",		Seconds = "1970-01-01T00-00:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidMinuteValue",				Seconds = "1970-01-01T00:AA:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooShortMinuteDigit",				Seconds = "1970-01-01T00:0:00",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooLargeMinuteValue",				Seconds = "1970-01-01T00:60:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooSmallMinuteValue",				Seconds = "1970-01-01T00:-01:00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidMinuteSecondDelimiter",	Seconds = "1970-01-01T00:00-00",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidSecondValue",				Seconds = "1970-01-01T00:00:AA",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooShortSecondDigit",				Seconds = "1970-01-01T00:00:0",				Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooLargeSecondValue",				Seconds = "1970-01-01T00:00:60",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "TooSmallSecondValue",				Seconds = "1970-01-01T00:00:-01",			Nanoseconds = ".123456789",		IsNanosecondsCase = false },
+		new { Kind = "InvalidNanosecondDelimiter",		Seconds = "1970-01-01T00:00:00",			Nanoseconds = "_123456789",		IsNanosecondsCase = true },
+		new { Kind = "InvalidNanosecondValue",			Seconds = "1970-01-01T00:00:00",			Nanoseconds = ".AAABBBCCC",		IsNanosecondsCase = true },
+		new { Kind = "TooShortNanosecondDigit",			Seconds = "1970-01-01T00:00:00",			Nanoseconds = ".12345678",		IsNanosecondsCase = true },
+		new { Kind = "TooLargeNanosecondValue",			Seconds = "1970-01-01T00:00:00",			Nanoseconds = ".1000000000",	IsNanosecondsCase = true },
+		new { Kind = "TooSmallNanosecondValue",			Seconds = "1970-01-01T00:00:00",			Nanoseconds = ".-000000001",	IsNanosecondsCase = true }
+	}
+)
+{
+	foreach ( var variation in
+		new []
+		{
+			new { Format = "o", HasNanoseconds = true },
+			new { Format = "s", HasNanoseconds = false }
+		}
+	)
+	{
+		if ( @case.IsNanosecondsCase && !variation.HasNanoseconds )
+		{
+			 // skip
+			 continue;
+		}
+
+#>
+		[Test]
+		public void TestParseExact_ParseError_<#= @case.Kind #>_<#= variation.Format #>()
+		{
+			Assert.Throws<FormatException>(
+				() => Timestamp.ParseExact(
+					"<#= @case.Seconds #><#= variation.HasNanoseconds ? @case.Nanoseconds : String.Empty #>Z",
+					"<#= variation.Format #>",
+					null,
+					DateTimeStyles.None
+				)
+			);
+		}
+
+		[Test]
+		public void TestTryParseExact_ParseError_<#= @case.Kind #>_<#= variation.Format #>()
+		{
+			Timestamp result;
+			Assert.That(
+				Timestamp.TryParseExact(
+					"<#= @case.Seconds #><#= variation.HasNanoseconds ? @case.Nanoseconds : String.Empty #>Z",
+					"<#= variation.Format #>",
+					null,
+					DateTimeStyles.None,
+					out result
+				),
+				Is.False
+			);
+			Assert.That( result, Is.EqualTo( default( Timestamp ) ) );
+		}
+
+<#
+	}
+} // ParseErrors
+
+// ParseError - MissingUtcSign
+foreach ( var variation in
+	new []
+	{
+		new { Format = "o", HasNanoseconds = true },
+		new { Format = "s", HasNanoseconds = false }
+	}
+)
+{
+#>
+
+		[Test]
+		public void TestParseExact_ParseError_MissingUtcSign_<#= variation.Format #>()
+		{
+			Assert.Throws<FormatException>(
+				() => Timestamp.ParseExact(
+					"1970-01-01T00:00:00<#= variation.HasNanoseconds ? ".123456789" : String.Empty #>",
+					"<#= variation.Format #>",
+					null,
+					DateTimeStyles.None
+				)
+			);
+		}
+
+		[Test]
+		public void TestTryParseExact_ParseError_MissingUtcSign_<#= variation.Format #>()
+		{
+			Timestamp result;
+			Assert.That(
+				Timestamp.TryParseExact(
+					"1970-01-01T00:00:00<#= variation.HasNanoseconds ? ".123456789" : String.Empty #>",
+					"<#= variation.Format #>",
+					null,
+					DateTimeStyles.None,
+					out result
+				),
+				Is.False
+			);
+			Assert.That( result, Is.EqualTo( default( Timestamp ) ) );
+		}
+
+<#
+} // ParseErrors - MissingUtcSign
+
+// Argument Errors
+foreach ( var @case in
+	new []
+	{
+		new { Label = "NullValue",			Arguments = "null, \"o\"",						Styles = "DateTimeStyles.None",					IsStylesCase = false,	Exception = "ArgumentNullException" },
+		new { Label = "NullFormat",			Arguments = "null, \"o\"",						Styles = "DateTimeStyles.None",					IsStylesCase = false,	Exception = "ArgumentNullException" },
+		new { Label = "UnsupportedFormat",	Arguments = "\"1970-01-01T00:00:00\", \"G\"",	Styles = "DateTimeStyles.None",					IsStylesCase = false,	Exception = "ArgumentException" },
+		new { Label = "InvalidStyles",		Arguments = "\"1970-01-01T00:00:00\", \"o\"",	Styles = "DateTimeStyles.AdjustToUniversal",	IsStylesCase = true,	Exception = "ArgumentException" },
+	}
+)
+{
+#>
+		[Test]
+		public void TestParseExact_WithDateTimeStyles_<#= @case.Label #>()
+		{
+			Assert.Throws<<#= @case.Exception #>>(
+				() => Timestamp.ParseExact( <#= @case.Arguments #>, CultureInfo.InvariantCulture, <#= @case.Styles #> )
+			);
+		}
+
+<#
+	if ( !@case.IsStylesCase )
+	{
+#>
+		[Test]
+		public void TestParseExact_WithoutDateTimeStyles_<#= @case.Label #>()
+		{
+			Assert.Throws<<#= @case.Exception #>>(
+				() => Timestamp.ParseExact( <#= @case.Arguments #>, CultureInfo.InvariantCulture )
+			);
+		}
+
+<#
+	} // if !@case.IsStylesCase
+#>
+		[Test]
+		public void TestTryParseExact_<#= @case.Label #>()
+		{
+			Timestamp result;
+			Assert.Throws<<#= @case.Exception #>>(
+				() => Timestamp.TryParseExact( <#= @case.Arguments #>, CultureInfo.InvariantCulture, <#= @case.Styles #>, out result )
+			);
+		}
+<#
+} // Argument Errors
+#>
+
+		[Test]
+		public void TestParseExact_DatesAD()
+		{
+			var seconds = <#= DateTimeOffset.MinValue.ToUnixTimeSeconds() #>L;
+			foreach ( var year in Enumerable.Range( 1, 802 ) )
+			{
+				var isLeapYear = year % 400 == 0 || ( year % 4 == 0 && year % 100 != 0 );
+				foreach ( var dayOfYear in Enumerable.Range( 1, isLeapYear ? 366 : 365 ) )
+				{
+					var expected = new DateTimeOffset( year, 1, 1, 0, 0, 0, TimeSpan.Zero ).AddDays( dayOfYear - 1 );
+					var target = Timestamp.ParseExact( String.Format( CultureInfo.InvariantCulture, "{0:yyyy-MM-dd'T'HH:mm:ss}.000000000Z", expected ), "o", null );
+					Assert.That( expected.DayOfYear, Is.EqualTo( dayOfYear ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.Year, Is.EqualTo( expected.Year ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.Month, Is.EqualTo( expected.Month ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.Day, Is.EqualTo( expected.Day ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "{0:yyyy-MM-dd}", expected );
+
+					seconds += 24 * 60 * 60;
+				}
+			}
+		}
+
+		[Test]
+		public void TestParseExact_DatesBC()
+		{
+			var seconds = <#= DateTimeOffset.MinValue.ToUnixTimeSeconds() #>L;
+			var dayOfWeek = ( long )DateTimeOffset.MinValue.DayOfWeek;
+
+			foreach ( var year in Enumerable.Range( 1, 802 ).Select( x => 1 - x ) )
+			{
+				var isLeapYear = year % 400 == 0 || ( year % 4 == 0 && year % 100 != 0 );
+				var month = 12;
+				var day = 31;
+				var daysInMonths = isLeapYear ? DaysInMonthsInLeapYear : DaysInMonthsInNonLeapYear;
+
+				foreach ( var dayOfYear in Enumerable.Range( 1, isLeapYear ? 366 : 365 ).Reverse() )
+				{
+					seconds -= 24 * 60 * 60;
+					dayOfWeek--;
+					if ( dayOfWeek < 0 )
+					{
+						dayOfWeek = 6;
+					}
+
+					var target = Timestamp.ParseExact( String.Format( CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}T00:00:00.000000000Z", year, month, day ), "o", null );
+					Assert.That( target.DayOfYear, Is.EqualTo( dayOfYear ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.Year, Is.EqualTo( year ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.Month, Is.EqualTo( month ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.Day, Is.EqualTo( day ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.DayOfWeek, Is.EqualTo( ( DayOfWeek )dayOfWeek ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+
+					if ( day == 1 )
+					{
+						month--;
+						day = daysInMonths[ month ];
+					}
+					else
+					{
+						day--;
+					}
+				}
+			}
+		}
+	}
+}

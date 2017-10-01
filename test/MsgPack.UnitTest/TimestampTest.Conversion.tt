@@ -1,0 +1,178 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ include file="TimestampTest.Common.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+#endregion -- License Terms --
+
+using System;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	partial class TimestampTest
+	{
+<#
+foreach ( var type in new [] { "DateTime", "DateTimeOffset" } )
+{
+	foreach ( var @case in new [] { "UtcNow", "MinValue", "MaxValue" } )
+	{
+		WriteConversionTest( $"From{type}_{@case}_OK",		$"{type}.{@case}",		$"Timestamp.From{type}( {{0}} )",	null,	null );
+		WriteConversionTest( $"Implicit{type}_{@case}_OK",	$"{type}.{@case}",		$"( Timestamp ){{0}}",				null,	null );
+	}
+
+	WriteConversionTest( $"To{type}_UtcNow_OK",			$"Timestamp.UtcNow",	$"{{0}}.To{type}()",				null,	"AssertUtc( {0} )" );
+	WriteConversionTest( $"Explicit{type}_UtcNow_OK",	$"Timestamp.UtcNow",	$"( {type} ){{0}}",					null,	"AssertUtc( {0} )" );
+
+	WriteConversionTest( $"From{type}_Now_AsUtc",		$"{type}.Now",	$"Timestamp.From{type}( {{0}} )",	x => x + ".ToUniversalTime()",	null );
+	WriteConversionTest( $"Implicit{type}_Now_AsUtc",	$"{type}.Now",	$"( Timestamp ){{0}}",				x => x + ".ToUniversalTime()",	null );
+#>
+		[Test]
+		public void TestTo<#= type #>_OverflowSeconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
+			Assert.Throws<InvalidOperationException>( () => source.To<#= type #>() );
+		}
+
+		[Test]
+		public void TestTo<#= type #>_OverflowNanoseconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1, 0 );
+			Assert.Throws<InvalidOperationException>( () => source.To<#= type #>() );
+		}
+
+		[Test]
+		public void TestExplicit<#= type #>_OverflowSeconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1L, checked( ( int )( DateTimeOffset.MaxValue.Ticks % 10000000 * 100 ) ) );
+			Assert.Throws<InvalidOperationException>( () => { var x = ( <#= type #> )source; } );
+		}
+
+		[Test]
+		public void TestExplicit<#= type #>_OverflowNanoseconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MaxValue ) + 1, 0 );
+			Assert.Throws<InvalidOperationException>( () => { var x = ( <#= type #> )source; } );
+		}
+
+		[Test]
+		public void TestTo<#= type #>_UnderflowSeconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
+			Assert.Throws<InvalidOperationException>( () => source.To<#= type #>() );
+		}
+
+		[Test]
+		public void TestTo<#= type #>_UnderflowNanoseconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) -1L, 999999999 );
+			Assert.Throws<InvalidOperationException>( () => source.To<#= type #>() );
+		}
+
+		[Test]
+		public void TestExplicit<#= type #>_UnderflowSeconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1L, checked( ( int )( DateTimeOffset.MinValue.Ticks % 10000000 * 100 ) ) );
+			Assert.Throws<InvalidOperationException>( () => { var x = ( <#= type #> )source; } );
+		}
+
+		[Test]
+		public void TestExplicit<#= type #>_UnderflowNanoseconds()
+		{
+			var source = new Timestamp( MessagePackConvert.FromDateTimeOffset( DateTimeOffset.MinValue ) - 1, 999999999 );
+			Assert.Throws<InvalidOperationException>( () => { var x = ( <#= type #> )source; } );
+		}
+
+		private static void AssertSubseconds( <#= type #> target, Timestamp expected )
+		{
+			var ticks = target.Ticks % 10000;
+			Assert.That( ticks / 10, Is.EqualTo( expected.Microsecond ), "Microsecond" );
+			Assert.That( ticks % 10, Is.EqualTo( expected.Nanosecond / 100 ), "Nanosecond" );
+		}
+
+		private static void AssertSubseconds( Timestamp target, <#= type #> expected )
+		{
+			var ticks = expected.Ticks % 10000;
+			Assert.That( target.Microsecond, Is.EqualTo( ticks / 10 ), "Microsecond" );
+			Assert.That( target.Nanosecond, Is.EqualTo( ( ticks % 10 ) * 100 ), "Nanosecond" );
+		}
+<#
+}
+#>
+	}
+}
+<#+
+private void WriteConversionTest( string name, string sourceExpression, string convesionExpression, Func<string, string> expectedExpressionProvider, string extraAssertion )
+{
+#>
+		[Test]
+		public void Test<#= name #>()
+		{
+			var source = <#= sourceExpression #>;
+			var target = <#= String.Format( convesionExpression, "source" ) #>;
+			var expected = <#= expectedExpressionProvider?.Invoke( "source" ) ?? "source" #>;
+<#+
+	foreach ( var property in
+		new []
+		{
+			"Year",
+			"Month",
+			"Day",
+			"DayOfYear",
+			"DayOfWeek",
+			"Hour",
+			"Minute",
+			"Second",
+			"Millisecond"
+		}
+	)
+	{
+#>
+			Assert.That( target.<#= property #>, Is.EqualTo( expected.<#= property #> ), "<#= property #>" );
+<#+
+	}
+#>
+			AssertSubseconds( target, expected );
+<#+
+	if ( extraAssertion != null )
+	{
+#>
+			<#= String.Format( extraAssertion, "target" ) #>;
+<#+
+	}
+#>
+		}
+
+<#+
+}
+#>

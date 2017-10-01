@@ -1,0 +1,188 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ include file="TimestampTest.Common.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+#endregion -- License Terms --
+
+using System;
+using System.Globalization;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	partial class TimestampTest
+	{
+<#
+foreach ( var @case in
+	new []
+	{
+		new { Label = "Identical",								Result = ComparisonResult.Equal,	Seconds = 1,	Nanoseconds = 1 },
+		new { Label = "LargeBySecond",							Result = ComparisonResult.Large,	Seconds = 2,	Nanoseconds = 1 },
+		new { Label = "LargeByNanosecond",						Result = ComparisonResult.Large,	Seconds = 1,	Nanoseconds = 2 },
+		new { Label = "LargeBySecondEvenIfNanosecondIsSmall",	Result = ComparisonResult.Large,	Seconds = 2,	Nanoseconds = 0 },
+		new { Label = "SmallBySecond",							Result = ComparisonResult.Small,	Seconds = 0,	Nanoseconds = 1 },
+		new { Label = "SmallByNanosecond",						Result = ComparisonResult.Small,	Seconds = 1,	Nanoseconds = 0 },
+		new { Label = "SmallBySecondEvenIfNanosecondIsLarge",	Result = ComparisonResult.Small,	Seconds = 0,	Nanoseconds = 2 },
+	}
+)
+{
+#>
+		[Test]
+		public void TestIEquatableEquals_<#= @case.Label #>_<#= @case.Result == ComparisonResult.Equal #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ).Equals( new Timestamp( 1, 1 ) ),
+				Is.<#= @case.Result == ComparisonResult.Equal #>
+			);
+		}
+
+		[Test]
+		public void TestEquals_<#= @case.Label #>_<#= @case.Result == ComparisonResult.Equal #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ).Equals( ( object )new Timestamp( 1, 1 ) ),
+				Is.<#= @case.Result == ComparisonResult.Equal #>
+			);
+		}
+
+		[Test]
+		public void TestCompareTo_<#= @case.Label #>_<#= EncodeResult( @case.Result ) #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ).CompareTo( new Timestamp( 1, 1 ) ),
+				Is.EqualTo( <#= @case.Result.ToString( "D", CultureInfo.InvariantCulture ) #> )
+			);
+		}
+
+		[Test]
+		public void TestIComparableCompareTo_<#= @case.Label #>_<#= EncodeResult( @case.Result ) #>()
+		{
+			Assert.That(
+				( ( IComparable )new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ) ).CompareTo( new Timestamp( 1, 1 ) ),
+				Is.EqualTo( <#= @case.Result.ToString( "D", CultureInfo.InvariantCulture ) #> )
+			);
+		}
+
+		[Test]
+		public void TestCompare_<#= @case.Label #>_<#= EncodeResult( @case.Result ) #>()
+		{
+			Assert.That(
+				Timestamp.Compare( new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ), new Timestamp( 1, 1 ) ),
+				Is.EqualTo( <#= @case.Result.ToString( "D", CultureInfo.InvariantCulture ) #> )
+			);
+		}
+
+		[Test]
+		public void TestEqualityOperator_<#= @case.Label #>_<#= @case.Result == ComparisonResult.Equal #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ) == new Timestamp( 1, 1 ),
+				Is.<#= @case.Result == ComparisonResult.Equal #>
+			);
+		}
+
+		[Test]
+		public void TestInequalityOperator_<#= @case.Label #>_<#= @case.Result != ComparisonResult.Equal #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ) != new Timestamp( 1, 1 ),
+				Is.<#= @case.Result != ComparisonResult.Equal #>
+			);
+		}
+
+		[Test]
+		public void TestGreaterThanOperator_<#= @case.Label #>_<#= @case.Result == ComparisonResult.Large #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ) > new Timestamp( 1, 1 ),
+				Is.<#= @case.Result == ComparisonResult.Large #>
+			);
+		}
+
+		[Test]
+		public void TestGreaterThanOrEqualOperator_<#= @case.Label #>_<#= @case.Result != ComparisonResult.Small #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ) >= new Timestamp( 1, 1 ),
+				Is.<#= @case.Result != ComparisonResult.Small #>
+			);
+		}
+
+		[Test]
+		public void TestLessThanOperator_<#= @case.Label #>_<#= @case.Result == ComparisonResult.Small #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ) < new Timestamp( 1, 1 ),
+				Is.<#= @case.Result == ComparisonResult.Small #>
+			);
+		}
+
+		[Test]
+		public void TestLessThanOrEqualOperator_<#= @case.Label #>_<#= @case.Result != ComparisonResult.Large #>()
+		{
+			Assert.That(
+				new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> ) <= new Timestamp( 1, 1 ),
+				Is.<#= @case.Result != ComparisonResult.Large #>
+			);
+		}
+
+<#
+}
+#>
+		[Test]
+		public void TestEquals_null_False()
+		{
+			Assert.That( new Timestamp( 1, 1 ).Equals( null ), Is.False );
+		}
+
+		[Test]
+		public void TestIComparableCompareTo_null_AlwaysLarge()
+		{
+			Assert.That( ( ( IComparable )Timestamp.MinValue ).CompareTo( null ), Is.EqualTo( 1 ) );
+		}
+	}
+}
+<#+
+private static string EncodeResult( ComparisonResult result )
+{
+	return ( ( int )result ).ToString( CultureInfo.InvariantCulture ).Replace( "-", "Minus" );
+}
+
+private enum ComparisonResult
+{
+	Equal = 0,
+	Large = 1,
+	Small = -1
+}
+#>

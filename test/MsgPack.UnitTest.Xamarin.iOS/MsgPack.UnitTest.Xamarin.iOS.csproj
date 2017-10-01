@@ -1547,6 +1547,9 @@
     <Compile Include="..\MsgPack.UnitTest\Image.cs">
       <Link>Image.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\LegacyJapaneseCultureInfo.cs">
+      <Link>LegacyJapaneseCultureInfo.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackConvertTest.cs">
       <Link>MessagePackConvertTest.cs</Link>
     </Compile>
@@ -1775,6 +1778,9 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs">
       <Link>Serialization\TestValueType.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TimestampSerializationTest.cs">
+      <Link>Serialization\TimestampSerializationTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs">
       <Link>Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs</Link>
     </Compile>
@@ -1810,6 +1816,30 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
       <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Calculation.cs">
+      <Link>TimestampTest.Calculation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Comparison.cs">
+      <Link>TimestampTest.Comparison.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Conversion.cs">
+      <Link>TimestampTest.Conversion.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.cs">
+      <Link>TimestampTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.EncodeDecode.cs">
+      <Link>TimestampTest.EncodeDecode.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Parse.cs">
+      <Link>TimestampTest.Parse.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Properties.cs">
+      <Link>TimestampTest.Properties.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.ToString.cs">
+      <Link>TimestampTest.ToString.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\UnpackerFactoryTest.cs">
       <Link>UnpackerFactoryTest.cs</Link>

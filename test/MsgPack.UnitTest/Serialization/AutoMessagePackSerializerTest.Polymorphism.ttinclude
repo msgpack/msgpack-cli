@@ -1,4 +1,4 @@
-﻿<#@ import namespace="System" #>
+<#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Globalization" #>
 <#@ import namespace="System.Linq" #>
@@ -7,7 +7,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -489,7 +489,7 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 		[Category( "PolymorphicSerialization" )]
 		public void TestGlobalNamespace()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new HasGlobalNamespaceType { GlobalType = new TypeInGlobalNamespace { Value = "ABC" } };
 			var serializer = context.GetSerializer<HasGlobalNamespaceType>();
 				
@@ -512,7 +512,7 @@ private IEnumerable<TestTargetType> GeneratePolymorphismTestPartsCore( bool gene
 		[Category( "PolymorphicSerialization" )]
 		public async Task TestGlobalNamespaceAsync()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new HasGlobalNamespaceType { GlobalType = new TypeInGlobalNamespace { Value = "ABC" } };
 			var serializer = context.GetSerializer<HasGlobalNamespaceType>();
 				
@@ -720,7 +720,7 @@ private void GeneratePolymorphicTestMethods( string targetType, TypeKind kind, M
 		[Category( "PolymorphicSerialization" )]
 		public void Test<#= targetType + "_" + label #>()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 <#+
 	if ( ( kind & TypeKind.HasConstructor ) == TypeKind.HasConstructor )
 	{
@@ -887,7 +887,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 		[Category( "PolymorphicSerialization" )]
 		public void Test<#= typeName #>_Success()
 		{
-				var context = NewSerializationContext( PackerCompatibilityOptions.None );
+				var context = NewSerializationContext();
 				var target = new <#= typeName #>();
 <#+
 		foreach ( var member in members )
@@ -947,7 +947,7 @@ private void GeneratePolymorphicTestsForMixed( bool generateTypes, bool generate
 		[Category( "PolymorphicSerialization" )]
 		public void Test<#= typeName #>_Null_Success()
 		{
-				var context = NewSerializationContext( PackerCompatibilityOptions.None );
+				var context = NewSerializationContext();
 				var target = new <#= typeName #>();
 				var serializer = context.GetSerializer<#= "<" + typeName + ">" #>();
 				
@@ -1127,7 +1127,7 @@ private void GenerateErrorPatterns( bool generateTypes, bool generateMethods, IC
 		[Category( "PolymorphicSerialization" )]
 		public void TestTupleAbstractType_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new TupleAbstractType { Value = Tuple.Create( <#= String.Join( ", ", Enumerable.Range( 1, 4 ).Select( i => String.Format( CultureInfo.InvariantCulture, "new FileEntry {{ Name = \"{0}\", Size = {0} }} as {1}FileSystemEntry", i, i % 2 == 1 ? "Abstract" : "I" ) ) ) #> ) };
 			var serializer = context.GetSerializer<TupleAbstractType>();
 
@@ -1265,7 +1265,7 @@ private void GenerateAbstractTypeTestMethod( string typeName, string initializer
 		[Category( "PolymorphicSerialization" )]
 		public void Test<#= typeName #>_<#= success ? "Success" : "Fail" #>()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 <#+
 	if ( abstractCollectionType != null && concreteCollectionType != null )
 	{
@@ -1357,7 +1357,7 @@ private void GenerateAttributeErrorTestMethod(  string testCaseName, string type
 		[Category( "PolymorphicSerialization" )]
 		public void TestAttribute_<#= testCaseName #>_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new <#= typeName #>();
 			Assert.Throws<SerializationException>( ()=> context.GetSerializer<#= "<" + typeName + ">" #>() );
 		}
@@ -1671,7 +1671,7 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 		[Category( "PolymorphicSerialization" )]
 		public void TestPolymorphismAttributesInType()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			context.GetSerializer<IKnownTypePolymorphic>();
 			context.GetSerializer<IRuntimeTypePolymorphic>();
@@ -1691,7 +1691,7 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 		[Category( "PolymorphicSerialization" )]
 		public void Test<#= testCase.PolymorphismKind #>Type<#= testCase.TypeKind #>_AttributeIs<#= testCase.Result ?? "Nothing" #>_<#= suffix #>_<#= testCase.Result ?? testCase.PolymorphismKind #><#= failsOnPack ? "_Fail" : String.Empty #>()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.SerializationMethod = SerializationMethod.Map;
 			SetUpDefaultCollectionsForPolymorphism( context );
 
@@ -1772,7 +1772,7 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierSelection_<#= typeSpec.IsPublicType ? "Public" : "NonPublic" #>VerifierType_<#= methodSpec.IsPublicMethod ? "Public" : "NonPublic" #><#= methodSpec.IsStaticMethod ? "Static" : "Instance" #>Method_OK()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			SetUpDefaultCollectionsForPolymorphism( context );
 			var target = new PolymorphicHolder { For<#= typeSpec.VerifierTypeName #><#= methodSpec.VerifierMethodName #> = new PolymorphicValueA { Value = "Foo" } };
 			var serializer = context.GetSerializer<PolymorphicHolder>();
@@ -1807,7 +1807,7 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 		[Category( "PolymorphicSerialization" )]
 		public void TestSpecifiedTypeVerifierIsNotFound_Because<#= reason #>_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = new <#= typeName #> { Value = "Foo" };
 			
 			var ex = Assert.Catch<SerializationException>( () => context.GetSerializer<<#= typeName #>>() );
@@ -1826,7 +1826,7 @@ private void GeneratePolymorohismExtensionTests( bool generateTypes, bool genera
 		[Category( "PolymorphicSerialization" )]
 		public void TestTypeVerifierDoesNotLoadTypeItself()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var serializer = context.GetSerializer<IRuntimeTypePolymorphicWithVerification>();
 			
 			using ( var buffer = new MemoryStream() )

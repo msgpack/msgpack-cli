@@ -1,8 +1,8 @@
-﻿<#
+<#
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -135,6 +135,20 @@ var excludes =
 		// .NET 4.6 Types -- comment out when you face T4Template problems
 		typeof( System.Diagnostics.Tracing.EventSourceOptions ),
 		typeof( System.Threading.AsyncLocalValueChangedArgs<> ),
+		// .NET 4.7 Types -- comment out when you face T4Template problems
+		typeof( System.Security.Cryptography.ECCurve ),
+		typeof( System.Security.Cryptography.ECParameters ),
+		typeof( System.Security.Cryptography.ECPoint ),
+		// ValueTuples -- should be supported via tuple support
+		typeof( System.ValueTuple ),
+		typeof( System.ValueTuple<> ),
+		typeof( System.ValueTuple<,> ),
+		typeof( System.ValueTuple<,,> ),
+		typeof( System.ValueTuple<,,,> ),
+		typeof( System.ValueTuple<,,,,> ),
+		typeof( System.ValueTuple<,,,,,> ),
+		typeof( System.ValueTuple<,,,,,,> ),
+		typeof( System.ValueTuple<,,,,,,,> ),
 	};
 var structTypes = 
 	typeof( object ).Assembly.GetTypes()
@@ -270,7 +284,7 @@ namespace MsgPack.Serialization
 	// ReSharper disable RedundantNameQualifier
 	partial class <#= typeName #> 
 	{
-		internal const int DefaultTableCapacity = <#= structTypes.Where( t => !t.IsEnum ).Count() + classTypes.Length + 19 #>;
+		internal const int DefaultTableCapacity = <#= structTypes.Where( t => !t.IsEnum ).Count() + classTypes.Length + 21 #>;
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This API is naturally coupled with many types" )]
 		internal static Dictionary<RuntimeTypeHandle, object> InitializeDefaultTable( SerializationContext ownerContext )
@@ -291,12 +305,14 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( Byte[] ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.<#= typeof( Byte ).FullName.Replace( Type.Delimiter, '_' ).Replace( '`', '_' ) #>ArrayMessagePackSerializer( ownerContext ) );
 			dictionary.Add( typeof( DateTime ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, false ) );
 			dictionary.Add( typeof( DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, false ) );
+			dictionary.Add( typeof( Timestamp ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.TimestampMessagePackSerializerProvider( ownerContext, false ) );
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, false ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			// DateTime, DateTimeOffset, and FILETIME must have nullable providers.
 			dictionary.Add( typeof( DateTime? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, true ) );
 			dictionary.Add( typeof( DateTimeOffset? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, true ) );
+			dictionary.Add( typeof( Timestamp? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.TimestampMessagePackSerializerProvider( ownerContext, true ) );
 #if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
 #endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY && !UNITY

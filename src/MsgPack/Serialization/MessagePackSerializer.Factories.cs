@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -26,13 +26,17 @@
 #define AOT
 #endif
 
-#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 #define FEATURE_EMIT
-#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
 
 using System;
 using System.IO;
 using System.Globalization;
+#if AOT
+using System.Linq;
+using System.Reflection;
+#endif // AOT
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -49,7 +53,9 @@ using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
 #if FEATURE_EMIT
 using MsgPack.Serialization.AbstractSerializers;
+#if !NETSTANDARD1_3
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !NETSTANDARD1_3
 using MsgPack.Serialization.EmittingSerializers;
 #endif // FEATURE_EMIT
 
@@ -252,6 +258,7 @@ namespace MsgPack.Serialization
 			ISerializerBuilder builder;
 			switch ( context.SerializerOptions.EmitterFlavor )
 			{
+#if !NETSTANDARD1_3
 				case EmitterFlavor.CodeDomBased:
 				{
 #if DEBUG
@@ -268,10 +275,11 @@ namespace MsgPack.Serialization
 
 					builder = new CodeDomSerializerBuilder( typeof( T ), collectionTraits );
 					break;
-#else
+#else // DEBUG
 					throw new NotSupportedException();
-#endif
+#endif // DEBUG
 				}
+#endif // !NETSTANDARD1_3
 				case EmitterFlavor.FieldBased:
 				{
 					builder = new AssemblyBuilderSerializerBuilder( typeof( T ), collectionTraits );
@@ -533,9 +541,10 @@ namespace MsgPack.Serialization
 
 #if AOT
 		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
-			typeof( MessagePackSerializer ).GetRuntimeMethod( 
-				"CreateInternal", 
-				new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) }
+			typeof( MessagePackSerializer ).GetRuntimeMethods()
+			.Single( m =>
+				m.Name == "CreateInternal"
+				&& m.GetParameterTypes().SequenceEqual( new []{ typeof( SerializationContext ), typeof( PolymorphismSchema ) } )
 			);
 
 		internal static MessagePackSerializer CreateInternal( SerializationContext context, Type targetType, PolymorphismSchema schema )
@@ -664,6 +673,25 @@ namespace MsgPack.Serialization
 		public static MessagePackObject UnpackMessagePackObject( Stream stream )
 		{
 			return _singleTonMpoDeserializer.Unpack( stream );
+		}
+
+		/// <summary>
+		///		Directly deserialize specified MessagePack byte array as <see cref="MessagePackObject"/> tree.
+		/// </summary>
+		/// <param name="buffer">The stream which contains deserializing data.</param>
+		/// <returns>A <see cref="MessagePackObject"/> which is root of the deserialized MessagePack object tree.</returns>
+		/// <exception cref="ArgumentNullException">
+		///		<paramref name="buffer"/> is <c>null</c>.
+		/// </exception>
+		/// <remarks>
+		///		This method is convinient wrapper for <see cref="MessagePackSerializer.Get{T}(SerializationContext)"/> for <see cref="MessagePackObject"/>.
+		///		<note>
+		///			You cannot override this method behavior because this method uses private <see cref="SerializationContext"/> instead of default context which is able to be accessed via <see cref="SerializationContext.Default"/>.
+		///		</note>
+		/// </remarks>
+		public static MessagePackObject UnpackMessagePackObject( byte[] buffer )
+		{
+			return _singleTonMpoDeserializer.UnpackSingleObject( buffer );
 		}
 
 		/// <summary>

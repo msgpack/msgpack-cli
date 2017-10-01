@@ -1,0 +1,247 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ include file="TimestampTest.Common.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+#endregion -- License Terms --
+
+using System;
+using System.Globalization;
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
+using System.Numerics;
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	partial class TimestampTest
+	{
+<#
+// Timestamp + TimeSpan -> Timestamp
+WriteAddTests( "TimeSpan", "Same",			1,	1,			"TimeSpan.Zero",				1,	1 );
+WriteAddTests( "TimeSpan", "1Sec",			1,	1,			"TimeSpan.FromSeconds( 1 )",	2,	1 );
+WriteAddTests( "TimeSpan", "1Tick",			1,	1,			"TimeSpan.FromTicks( 1 )",		1,	101 );
+WriteAddTests( "TimeSpan", "Minus1Sec",		1,	1,			"TimeSpan.FromSeconds( -1 )",	0,	1 );
+WriteAddTests( "TimeSpan", "Minus1Tick",	1,	101,		"TimeSpan.FromTicks( -1 )",		1,	1 );
+WriteAddTests( "TimeSpan", "MoveUp",		1,	999999900,	"TimeSpan.FromTicks( 1 )",		2,	0 );
+WriteAddTests( "TimeSpan", "MoveDown",		1,	000000099,	"TimeSpan.FromTicks( -1 )",		0,	999999999 );
+WriteAddTestsOverflow( "TimeSpan", "MaxPlus1Sec",	Int64.MaxValue,	0,			"TimeSpan.FromSeconds( 1 )" );
+WriteAddTestsOverflow( "TimeSpan", "MinMinus1Sec",	Int64.MinValue,	999999999,	"TimeSpan.FromSeconds( -1 )" );
+WriteAddTestsOverflow( "TimeSpan", "MaxPlus1Tick",	Int64.MaxValue,	999999900,	"TimeSpan.FromTicks( 1 )" );
+WriteAddTestsOverflow( "TimeSpan", "MinMinus1ick",	Int64.MinValue,	000000099,	"TimeSpan.FromTicks( -1 )" );
+
+// Timestamp - TimeSpan -> Timestamp
+WriteSubtractTests( "TimeSpan", "Same",			1,	1,			"TimeSpan.Zero",				1,	1 );
+WriteSubtractTests( "TimeSpan", "1Sec",			1,	1,			"TimeSpan.FromSeconds( 1 )",	0,	1 );
+WriteSubtractTests( "TimeSpan", "1Tick",		1,	101,			"TimeSpan.FromTicks( 1 )",	1,	1 );
+WriteSubtractTests( "TimeSpan", "Minus1Sec",	1,	1,			"TimeSpan.FromSeconds( -1 )",	2,	1 );
+WriteSubtractTests( "TimeSpan", "Minus1Tick",	1,	1,			"TimeSpan.FromTicks( -1 )",		1,	101 );
+WriteSubtractTests( "TimeSpan", "MoveUp",		1,	999999900,	"TimeSpan.FromTicks( -1 )",		2,	0 );
+WriteSubtractTests( "TimeSpan", "MoveDown",		1,	000000099,	"TimeSpan.FromTicks( 1 )",		0,	999999999 );
+WriteSubtractTestsOverflow( "TimeSpan", "MaxPlus1Sec",		Int64.MaxValue,	0,			"TimeSpan.FromSeconds( -1 )" );
+WriteSubtractTestsOverflow( "TimeSpan", "MinMinus1Sec",		Int64.MinValue,	999999999,	"TimeSpan.FromSeconds( 1 )" );
+WriteSubtractTestsOverflow( "TimeSpan", "MaxPlus1Tick",		Int64.MaxValue,	999999900,	"TimeSpan.FromTicks( -1 )" );
+WriteSubtractTestsOverflow( "TimeSpan", "MinMinus1Tick",	Int64.MinValue,	000000099,	"TimeSpan.FromTicks( 1 )" );
+#>
+#if !NET35 && !UNITY
+#if !WINDOWS_PHONE
+#if !UNITY || MSGPACK_UNITY_FULL
+
+<#
+// Timestamp + BigInteger -> Timestamp
+WriteAddTests( "BigInteger", "Same",		1,	1,			"BigInteger.Zero",	1,	1 );
+WriteAddTests( "BigInteger", "1Sec",		1,	1,			"1000000000",		2,	1 );
+WriteAddTests( "BigInteger", "1Nsec",		1,	1,			"1",				1,	2 );
+WriteAddTests( "BigInteger", "Minus1Sec",	1,	1,			"-1000000000",		0,	1 );
+WriteAddTests( "BigInteger", "Minus1Nsec",	1,	1,			"-1",				1,	0 );
+WriteAddTests( "BigInteger", "MoveUp",		1,	999999999,	"2",				2,	1 );
+WriteAddTests( "BigInteger", "MoveDown",	1,	000000000,	"-2",				0,	999999998 );
+WriteAddTestsOverflow( "BigInteger", "MaxPlus1Sec",		Int64.MaxValue,	0,			"1000000000" );
+WriteAddTestsOverflow( "BigInteger", "MinMinus1Sec",	Int64.MinValue,	999999999,	"-1000000000" );
+WriteAddTestsOverflow( "BigInteger", "MaxPlus1Nsec",	Int64.MaxValue,	999999999,	"1" );
+WriteAddTestsOverflow( "BigInteger", "MinMinus1Nsec",	Int64.MinValue,	000000000,	"-1" );
+
+// Timestamp - BigInteger -> Timestamp
+WriteSubtractTests( "BigInteger", "Same",		1,	1,			"BigInteger.Zero",	1,	1 );
+WriteSubtractTests( "BigInteger", "1Sec",		1,	1,			"1000000000",		0,	1 );
+WriteSubtractTests( "BigInteger", "1Nsec",		1,	1,			"1",				1,	0 );
+WriteSubtractTests( "BigInteger", "Minus1Sec",	1,	1,			"-1000000000",		2,	1 );
+WriteSubtractTests( "BigInteger", "Minus1Nsec",	1,	1,			"-1",				1,	2 );
+WriteSubtractTests( "BigInteger", "MoveUp",		1,	999999999,	"-2",				2,	1 );
+WriteSubtractTests( "BigInteger", "MoveDown",	1,	000000000,	"2",				0,	999999998 );
+WriteSubtractTestsOverflow( "BigInteger", "MaxPlus1Sec",	Int64.MaxValue,	0,			"-1000000000" );
+WriteSubtractTestsOverflow( "BigInteger", "MinMinus1Sec",	Int64.MinValue,	999999999,	"1000000000" );
+WriteSubtractTestsOverflow( "BigInteger", "MaxPlus1Nsec",	Int64.MaxValue,	999999999,	"-1" );
+WriteSubtractTestsOverflow( "BigInteger", "MinMinus1Nsec",	Int64.MinValue,	000000000,	"1" );
+
+// Timestamp - Timestamp -> BigInteger
+WriteDifferentiateTests( "Same",				1,				1,			1,					1,			"new BigInteger( 0 )" );
+WriteDifferentiateTests( "1Sec",				1,				1,			1,					0,			"new BigInteger( 1 )" );
+WriteDifferentiateTests( "1Nsec",				1,				1,			0,					1,			"new BigInteger( 1000000000 )" );
+WriteDifferentiateTests( "MoveDown",			2,				1,			1,					2,			"new BigInteger( 999999999 )" );
+WriteDifferentiateTests( "PositiveNegative",	1,				2,			-1,					1,			"new BigInteger( 2000000001 )" );
+WriteDifferentiateTests( "MaxMin",				Int64.MaxValue,	999999999,	Int64.MinValue,		0,			"new BigInteger( Int64.MaxValue ) * 1000000000 + 999999999 - new BigInteger( Int64.MinValue ) * 1000000000" );
+WriteDifferentiateTests( "MinMax",				Int64.MinValue, 0,			Int64.MaxValue,		999999999,	"new BigInteger( Int64.MinValue ) * 1000000000 - new BigInteger( Int64.MaxValue ) * 1000000000 - 999999999" );
+#>
+
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+#endif // !UNITY || MSGPACK_UNITY_FULL
+	}
+}
+<#+
+private void WriteAddTests( string type, string label, long baseSeconds, int baseNanoseconds, string operand, long resultSeconds, int resultNanoseconds )
+{
+#>
+		[Test]
+		public void TestAdd_<#= type #>_<#= label #>()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			var result = @base.Add( operand );
+			Assert.That( result.UnixEpochSecondsPart, Is.EqualTo( <#= resultSeconds #> ) );
+			Assert.That( result.NanosecondsPart, Is.EqualTo( <#= resultNanoseconds #> ) );
+		}
+
+		[Test]
+		public void TestAdditionOperator_<#= type #>_<#= label #>()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			var result = @base + operand;
+			Assert.That( result.UnixEpochSecondsPart, Is.EqualTo( <#= resultSeconds #> ) );
+			Assert.That( result.NanosecondsPart, Is.EqualTo( <#= resultNanoseconds #> ) );
+		}
+
+<#+
+} // WriteAddTests
+
+private void WriteAddTestsOverflow( string type, string label, long baseSeconds, int baseNanoseconds, string operand )
+{
+#>
+		[Test]
+		public void TestAdd_<#= type #>_<#= label #>_Overflow()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			Assert.Throws<OverflowException>( () => @base.Add( operand ) );
+	}
+
+		[Test]
+		public void TestAdditionOperator_<#= type #>_<#= label #>_Overflow()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			Assert.Throws<OverflowException>( () => { var x = @base + operand; } );
+		}
+
+<#+
+} // WriteAddTestsOverflow
+
+private void WriteSubtractTests( string type, string label, long baseSeconds, int baseNanoseconds, string operand, long resultSeconds, int resultNanoseconds )
+{
+#>
+		[Test]
+		public void TestSubtract_<#= type #>_<#= label #>()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			var result = @base.Subtract( operand );
+			Assert.That( result.UnixEpochSecondsPart, Is.EqualTo( <#= resultSeconds #> ) );
+			Assert.That( result.NanosecondsPart, Is.EqualTo( <#= resultNanoseconds #> ) );
+		}
+
+		[Test]
+		public void TestSubtractionOperator_<#= type #>_<#= label #>()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			var result = @base - operand;
+			Assert.That( result.UnixEpochSecondsPart, Is.EqualTo( <#= resultSeconds #> ) );
+			Assert.That( result.NanosecondsPart, Is.EqualTo( <#= resultNanoseconds #> ) );
+		}
+
+<#+
+} // WriteSubtractTests
+
+private void WriteSubtractTestsOverflow( string type, string label, long baseSeconds, int baseNanoseconds, string operand )
+{
+#>
+		[Test]
+		public void TestSubtract_<#= type #>_<#= label #>_Overflow()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			Assert.Throws<OverflowException>( () => @base.Subtract( operand ) );
+		}
+
+		[Test]
+		public void TestSubtractionOperator_<#= type #>_<#= label #>_Overflow()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = <#= operand #>;
+			Assert.Throws<OverflowException>( () => { var x = @base - operand; } );
+		}
+
+<#+
+} // WriteSubtractTestsOverflow
+
+private void WriteDifferentiateTests( string label, long baseSeconds, int baseNanoseconds, long operandSeconds, int operandNanoseconds, string result )
+{
+#>
+		[Test]
+		public void TestSubtract_Timestamp_<#= label #>()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>L, <#= baseNanoseconds #> );
+			var operand = new Timestamp( <#= operandSeconds #>L, <#= operandNanoseconds #> );
+			var result = @base.Subtract( operand );
+			Assert.That( result, Is.EqualTo( <#= result #> ) );
+		}
+
+		[Test]
+		public void TestSubtractionOperator_Timstamp_<#= label #>()
+		{
+			var @base = new Timestamp( <#= baseSeconds #>, <#= baseNanoseconds #> );
+			var operand = new Timestamp( <#= operandSeconds #>, <#= operandNanoseconds #> );
+			var result = @base - operand;
+			Assert.That( result, Is.EqualTo( <#= result #> ) );
+		}
+
+<#+
+} // WriteDifferentiateTests
+#>

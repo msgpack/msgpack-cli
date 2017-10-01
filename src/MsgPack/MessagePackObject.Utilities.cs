@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -44,9 +44,9 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 	partial struct MessagePackObject : IPackable
 #if FEATURE_TAP
 		, IAsyncPackable
@@ -1782,6 +1782,23 @@ namespace MsgPack
 						return null;
 					}
 				}
+			}
+		}
+
+		/// <summary>
+		///		Gets a this object as a <see cref="Timestamp"/> value.
+		/// </summary>
+		/// <returns>A <see cref="Timestamp"/> value.</returns>
+		/// <exception cref="InvalidOperationException">This object does not represent <see cref="Timestamp"/> value.</exception>
+		public Timestamp AsTimestamp()
+		{
+			try
+			{
+				return Timestamp.Decode( this.AsMessagePackExtendedTypeObject() );
+			}
+			catch(ArgumentException ex)
+			{
+				throw new InvalidOperationException( ex.Message, ex );
 			}
 		}
 

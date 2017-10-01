@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -20,6 +20,9 @@
 
 using System;
 using System.Linq;
+#if FEATURE_TAP
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.AbstractSerializers
 {
@@ -77,7 +80,11 @@ namespace MsgPack.Serialization.AbstractSerializers
 #if FEATURE_TAP
 				isAsync ? MethodName.UnpackFromAsyncCore : 
 #endif // FEATURE_TAP
-			MethodName.UnpackFromCore;
+				MethodName.UnpackFromCore;
+#if FEATURE_TAP
+			var asyncMethodReturnType = typeof( Task<> ).MakeGenericType( underlyingType );
+#endif // FEATURE_TAP
+
 			context.BeginMethodOverride( methodName );
 
 			var result = this.DeclareLocal( context, this.TargetType, "result" );
@@ -87,11 +94,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 					context,
 					this.EmitGetSerializerExpression( context, underlyingType, null, null ),
 #if FEATURE_TAP
-					isAsync ? typeof( MessagePackSerializer<> ).MakeGenericType( underlyingType ).GetMethod( "UnpackFromAsync", SerializerBuilderHelper.UnpackFromAsyncParameterTypes ) :
+					isAsync 
+					? typeof( MessagePackSerializer<> ).MakeGenericType( underlyingType ).GetMethods()
+						.Single( m => m.IsPublic && m.Name == "UnpackFromAsync" && m.ReturnType == asyncMethodReturnType && m.GetParameterTypes().SequenceEqual( SerializerBuilderHelper.UnpackFromAsyncParameterTypes ) ) :
 #endif // FEATURE_TAP
 					typeof( MessagePackSerializer<> ).MakeGenericType( underlyingType ).GetMethod( "UnpackFrom" ),
 					context.Unpacker
 				);
+
 
 			context.EndMethodOverride( 
 				methodName, 

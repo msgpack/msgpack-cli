@@ -146,13 +146,19 @@ namespace MsgPack.Serialization
 #>
 		}
 
-		private static SerializationContext  NewSerializationContext( PackerCompatibilityOptions compatibilityOptions )
+		private static SerializationContext NewSerializationContext()
+		{
+			return NewSerializationContext( PackerCompatibilityOptions.None, DateTimeConversionMethod.Timestamp );
+		}
+
+		private static SerializationContext NewSerializationContext( PackerCompatibilityOptions compatibilityOptions, DateTimeConversionMethod dateTimeConversionMethod )
 		{
 <#+
 	if ( !forIos )
 	{
 #>
 			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = SerializationMethod.<#= serializationMethod #> };
+			context.DefaultDateTimeConversionMethod = dateTimeConversionMethod;
 			context.SerializerOptions.EmitterFlavor = EmitterFlavor.<#= emitterFlavor #>;
 #if SILVERLIGHT && !SILVERLIGHT_PRIVILEGED
 			context.SerializerOptions.DisablePrivilegedAccess = true;
@@ -337,18 +343,46 @@ namespace MsgPack.Serialization
 		public void TestDateTime()
 		{
 			TestCore(
-				DateTime.Now,
-				stream => DateTime.FromBinary( Unpacking.UnpackInt64( stream ) ),
+				DateTime.UtcNow,
+				stream => MessagePackSerializer.UnpackMessagePackObject( stream ).AsTimestamp().ToDateTime(),
 				( x, y ) => x.Equals( y ),
 				context =>
 				{
-					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
 				}
 			);
 		}
 
 		[Test]
 		public void TestDateTimeOffset()
+		{
+			TestCore(
+				DateTimeOffset.UtcNow,
+				stream => MessagePackSerializer.UnpackMessagePackObject( stream ).AsTimestamp().ToDateTimeOffset(),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeNative()
+		{
+			TestCore(
+				DateTime.Now,
+				stream => DateTime.FromBinary( Unpacking.UnpackInt64( stream ) ),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeOffsetNative()
 		{
 			TestCore(
 				DateTimeOffset.Now,
@@ -360,7 +394,7 @@ namespace MsgPack.Serialization
 				( x, y ) => x.Equals( y ),
 				context =>
 				{
-					Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
 				}
 			);
 		}
@@ -1252,7 +1286,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyBytes_Classic()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.Classic );
+			var context = NewSerializationContext( PackerCompatibilityOptions.Classic, DateTimeConversionMethod.Native );
 			var serializer = this.CreateTarget<byte[]>( context );
 			using ( var stream = new MemoryStream() )
 			{
@@ -2324,7 +2358,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ClassicContext()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.Classic );
+			var context = NewSerializationContext( PackerCompatibilityOptions.Classic, DateTimeConversionMethod.Native );
 			var serializer = context.GetSerializer<byte[]>();
 
 			using ( var stream = new MemoryStream() )
@@ -2337,7 +2371,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestBinary_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext( PackerCompatibilityOptions.None, DateTimeConversionMethod.Timestamp );
 			var serializer = CreateTarget<byte[]>( context );
 
 			using ( var stream = new MemoryStream() )
@@ -2352,8 +2386,8 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ClassicContext()
 		{
-			var context = NewSerializationContext( SerializationContext.CreateClassicContext().CompatibilityOptions.PackerCompatibilityOptions );
-			context.Serializers.Register( new CustomDateTimeSerealizer() );
+			var context = NewSerializationContext( SerializationContext.CreateClassicContext().CompatibilityOptions.PackerCompatibilityOptions, SerializationContext.CreateClassicContext().DefaultDateTimeConversionMethod );
+			context.Serializers.RegisterOverride( new CustomDateTimeSerealizer() );
 			var serializer = CreateTarget<DateTime>( context );
 
 			using ( var stream = new MemoryStream() )
@@ -2369,7 +2403,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = NewSerializationContext( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions );
+			var context = NewSerializationContext( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions, SerializationContext.Default.DefaultDateTimeConversionMethod );
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			var serializer = CreateTarget<DateTime>( context );
 
@@ -2386,7 +2420,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_ContextWithPackerCompatilibyOptionsNone()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.None;
 			var serializer = CreateTarget<DateTime>( context );
@@ -2404,7 +2438,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_Default_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
 
 			using ( var stream = new MemoryStream() )
@@ -2422,7 +2456,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_WithoutRegistration_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Unregister( typeof( IList<> ) );
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractInt32Collection>( context ) );
 		}
@@ -2430,7 +2464,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistration_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<> ), typeof( Collection<> ) );
 			var serializer = CreateTarget<WithAbstractInt32Collection>( context );
 
@@ -2449,7 +2483,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_KnownCollections_ExplicitRegistrationForSpecific_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			context.DefaultCollectionTypes.Register( typeof( IList<int> ), typeof( Collection<int> ) );
 			var serializer1 = CreateTarget<WithAbstractInt32Collection>( context );
 
@@ -2482,7 +2516,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestAbstractTypes_NotACollection_Fail()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			Assert.Throws<NotSupportedException>( () => DoKnownCollectionTest<WithAbstractNonCollection>( context ) );
 		}
 
@@ -2574,7 +2608,7 @@ namespace MsgPack.Serialization
 		{
 			using ( var buffer = new MemoryStream(data) )
 			{
-				var serializer = MessagePackSerializer.Get<T>( NewSerializationContext( PackerCompatibilityOptions.None ) );
+				var serializer = MessagePackSerializer.Get<T>( NewSerializationContext() );
 				var result = serializer.Unpack( buffer );
 				assertion( result );
 			}
@@ -3240,7 +3274,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void Test<#= target #>Derived_<#= type #>_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target =
 <#+
 				var field = type == "Value" ? "1" : "\"1\"";
@@ -3323,7 +3357,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestNullable_<#= testCase.Label #>_NonNull_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = <#= testCase.Value #>;
 			var serializer = MessagePackSerializer.CreateInternal<#= "<" + testCase.Type + "?>" #>( context, null );
 
@@ -3339,7 +3373,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestNullable_<#= testCase.Label #>_Null_Success()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.None );
+			var context = NewSerializationContext();
 			var target = default( <#= testCase.Type #>? );
 			var serializer = MessagePackSerializer.CreateInternal<#= "<" + testCase.Type + "?>" #>( context, null );
 
@@ -3933,11 +3967,13 @@ namespace MsgPack.Serialization
 					Assert.That( asList[ 1 ].IsTypeOf<byte[]>().Value );
 					Assert.That( asList[ 1 ].AsBinary(), Is.EqualTo( target.Data ) );
 
-					Assert.That( asList[ 2 ].IsTypeOf<long>().Value );
-					Assert.That( asList[ 2 ].AsInt64(), Is.EqualTo( target.TimeStamp.ToBinary() ) );
+					Assert.That( asList[ 2 ].IsTypeOf<MessagePackExtendedTypeObject>().Value );
+					var timestamp = asList[ 2 ].AsTimestamp();
+					Assert.That( timestamp.ToDateTime(), Is.EqualTo( target.TimeStamp.ToUniversalTime() ) );
 
 					Assert.That( asList[ 3 ].IsDictionary );
-					Assert.That( asList[ 3 ].AsDictionary().Single().Key.AsInt64(), Is.EqualTo( target.History.Single().Key.ToBinary() ) );
+					var historyKey = asList[ 3 ].AsDictionary().Single().Key.AsTimestamp();
+					Assert.That( historyKey.ToDateTime(), Is.EqualTo( target.History.Single().Key.ToUniversalTime() ) );
 					Assert.That( asList[ 3 ].AsDictionary().Single().Value.AsString(), Is.EqualTo( target.History.Single().Value ) );
 
 					Assert.That( asList[ 4 ].IsArray );
@@ -3957,10 +3993,13 @@ namespace MsgPack.Serialization
 					Assert.That( asDictionary[ "Data" ].IsTypeOf<byte[]>().Value );
 					Assert.That( asDictionary[ "Data" ].AsBinary(), Is.EqualTo( target.Data ) );
 
-					Assert.That( asDictionary[ "TimeStamp" ].IsTypeOf<long>().Value );
-					Assert.That( asDictionary[ "TimeStamp" ].AsInt64(), Is.EqualTo( target.TimeStamp.ToBinary() ) );
+					Assert.That( asDictionary[ "TimeStamp" ].IsTypeOf<MessagePackExtendedTypeObject>().Value );
+					var timestamp = asDictionary[ "TimeStamp" ].AsTimestamp();
+					Assert.That( timestamp.ToDateTime(), Is.EqualTo( target.TimeStamp.ToUniversalTime() ) );
 
-					Assert.That( asDictionary[ "History" ].AsDictionary().Single().Key.AsInt64(), Is.EqualTo( target.History.Single().Key.ToBinary() ) );
+					Assert.That( asDictionary[ "History" ].IsDictionary );
+					var historyKey = asDictionary[ "History" ].AsDictionary().Single().Key.AsTimestamp();
+					Assert.That( historyKey.ToDateTime(), Is.EqualTo( target.History.Single().Key.ToUniversalTime() ) );
 					Assert.That( asDictionary[ "History" ].AsDictionary().Single().Value.AsString(), Is.EqualTo( target.History.Single().Value ) );
 
 					Assert.That( asDictionary[ "Points" ].IsArray );

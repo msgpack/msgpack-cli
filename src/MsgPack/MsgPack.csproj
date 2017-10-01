@@ -504,6 +504,7 @@
     <Compile Remove="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
     <Compile Remove="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
     <Compile Remove="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
+    <Compile Remove="Serialization\DefaultSerializers\TimestampFileTimeMessagePackSerializer.cs" />
     <Compile Remove="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">

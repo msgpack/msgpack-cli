@@ -8089,7 +8089,7 @@ namespace MsgPack
 				return false;
 			}
 
-			result = new MessagePackExtendedTypeObject( typeCode, body );
+			result = MessagePackExtendedTypeObject.Unpack( typeCode, body );
 			return true;
 		}
 
@@ -8427,7 +8427,7 @@ namespace MsgPack
 			{
 				return AsyncReadResult.Fail<Int64OffsetValue<MessagePackExtendedTypeObject>>();
 			}
-			return AsyncReadResult.Success( new MessagePackExtendedTypeObject( typeCode, body ), offset );
+			return AsyncReadResult.Success( MessagePackExtendedTypeObject.Unpack( typeCode, body ), offset );
 		}
 
 		public sealed override async Task<AsyncReadResult<MessagePackExtendedTypeObject?>> ReadNullableMessagePackExtendedTypeObjectAsync( CancellationToken cancellationToken )

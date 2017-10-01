@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2015-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -52,7 +52,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, DateTimeOffset objectTree )
 		{
-			if ( this._conversion == DateTimeConversionMethod.Native )
+			if ( this._conversion == DateTimeConversionMethod.Timestamp )
+			{
+				packer.Pack( Timestamp.FromDateTimeOffset( objectTree ).Encode() );
+			}
+			else if ( this._conversion == DateTimeConversionMethod.Native )
 			{
 				packer.PackArrayHeader( 2 );
 				packer.Pack( objectTree.DateTime.ToBinary() );
@@ -73,7 +77,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override DateTimeOffset UnpackFromCore( Unpacker unpacker )
 		{
-			if ( unpacker.IsArrayHeader )
+			if ( unpacker.LastReadData.IsTypeOf<MessagePackExtendedTypeObject>().GetValueOrDefault() )
+			{
+				return Timestamp.Decode( unpacker.LastReadData.DeserializeAsMessagePackExtendedTypeObject() ).ToDateTimeOffset();
+			}
+			else if ( unpacker.IsArrayHeader )
 			{
 				if ( UnpackHelpers.GetItemsCount( unpacker ) != 2 )
 				{
@@ -104,7 +112,11 @@ namespace MsgPack.Serialization.DefaultSerializers
 
 		protected internal override async Task PackToAsyncCore( Packer packer, DateTimeOffset objectTree, CancellationToken cancellationToken )
 		{
-			if ( this._conversion == DateTimeConversionMethod.Native )
+			if ( this._conversion == DateTimeConversionMethod.Timestamp )
+			{
+				await packer.PackAsync( Timestamp.FromDateTimeOffset( objectTree ).Encode(), cancellationToken ).ConfigureAwait( false );
+			}
+			else if ( this._conversion == DateTimeConversionMethod.Native )
 			{
 				await packer.PackArrayHeaderAsync( 2, cancellationToken ).ConfigureAwait( false );
 				await packer.PackAsync( objectTree.DateTime.ToBinary(), cancellationToken ).ConfigureAwait( false );

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( this.Source, Is.Not.Null );
 				NUnit.Framework.Assert.That( map[ "Source" ].AsString(), Is.EqualTo( this.Source.ToString() ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "TimeStamp" ) );
-				NUnit.Framework.Assert.That( DateTime.FromBinary( map[ "TimeStamp" ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( map[ "TimeStamp" ].AsTimestamp().ToDateTime(), Is.EqualTo( this.TimeStamp.ToUniversalTime() ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "Data" ) );
 				NUnit.Framework.Assert.That( map[ "Data" ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( map.ContainsKey( "History" ) );
@@ -72,7 +72,7 @@ namespace MsgPack.Serialization
 				NUnit.Framework.Assert.That( array[ 0 ].AsBinary(), Is.EqualTo( this.Data ) );
 				NUnit.Framework.Assert.That( array[ 1 ].AsDictionary().Count, Is.EqualTo( this.History.Count ) );
 				NUnit.Framework.Assert.That( array[ 2 ].AsString(), Is.EqualTo( this.Source.ToString() ) );
-				NUnit.Framework.Assert.That( DateTime.FromBinary( array[ 3 ].AsInt64() ), Is.EqualTo( this.TimeStamp ) );
+				NUnit.Framework.Assert.That( array[ 3 ].AsTimestamp().ToDateTime(), Is.EqualTo( this.TimeStamp.ToUniversalTime() ) );
 			}
 		}
 	}

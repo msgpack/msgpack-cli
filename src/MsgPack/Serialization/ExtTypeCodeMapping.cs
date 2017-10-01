@@ -89,6 +89,7 @@ namespace MsgPack.Serialization
 			this._syncRoot = new object();
 			this._index = new Dictionary<string, byte>( 2 );
 			this._types = new Dictionary<byte, string>( 2 );
+			this.AddInternal( KnownExtTypeName.Timestamp, KnownExtTypeCode.Timestamp );
 			this.Add( KnownExtTypeName.MultidimensionalArray, KnownExtTypeCode.MultidimensionalArray );
 		}
 
@@ -107,7 +108,11 @@ namespace MsgPack.Serialization
 		{
 			ValidateName( name );
 			ValidateTypeCode( typeCode );
+			return this.AddInternal( name, typeCode );
+		}
 
+		private bool AddInternal( string name, byte typeCode )
+		{
 			lock ( this._syncRoot )
 			{
 				try

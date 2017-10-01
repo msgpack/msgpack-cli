@@ -1,0 +1,164 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ include file="TimestampTest.Common.ttinclude" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Linq" #>
+#region -- License Terms --
+//
+// MessagePack for CLI
+//
+// Copyright (C) 2017 FUJIWARA, Yusuke
+//
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+//
+
+#endregion -- License Terms --
+
+using System;
+using System.Linq;
+#if !MSTEST
+using NUnit.Framework;
+#else
+using TestFixtureAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestClassAttribute;
+using TestAttribute = Microsoft.VisualStudio.TestPlatform.UnitTestFramework.TestMethodAttribute;
+using TimeoutAttribute = NUnit.Framework.TimeoutAttribute;
+using Assert = NUnit.Framework.Assert;
+using Is = NUnit.Framework.Is;
+#endif
+
+namespace MsgPack
+{
+	partial class TimestampTest
+	{
+<#
+foreach ( var @case in StandardTestCases.Values )
+{
+#>
+		[Test]
+		public void TestProperties_<#= @case.Label #>()
+		{
+			// <#= @case.RoundTripString #>
+			var target = new Timestamp( <#= @case.Seconds #>, <#= @case.Nanoseconds #> );
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( <#= @case.Seconds #> ), "UnixEpochSecondsPart" );
+			Assert.That( target.NanosecondsPart, Is.EqualTo( <#= @case.Nanoseconds #> ), "NanosecondsPart" );
+
+			Assert.That( target.Year, Is.EqualTo( <#= @case.Year #> ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( <#= @case.Month #> ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( <#= @case.Day #> ), "Day" );
+			Assert.That( target.Hour, Is.EqualTo( <#= @case.Hour #> ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( <#= @case.Minute #> ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( <#= @case.Second #> ), "Second" );
+
+			Assert.That( target.Millisecond, Is.EqualTo( <#= @case.Nanoseconds / 1000000 #> ), "Millisecond" );
+			Assert.That( target.Microsecond, Is.EqualTo( <#= @case.Nanoseconds / 1000 % 1000 #> ), "Microsecond" );
+			Assert.That( target.Nanosecond, Is.EqualTo( <#= @case.Nanoseconds % 1000 #> ), "Nanosecond" );
+
+			Assert.That( target.DayOfYear, Is.EqualTo( <#= @case.DayOfYear #> ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( DayOfWeek.<#= @case.DayOfWeek #> ), "DayOfWeek" );
+			Assert.That( target.IsLeapYear, Is.EqualTo( <#= @case.IsLeapYear ? "true" : "false" #> ), "IsLeapYear" );
+		}
+
+<#
+}
+#>
+		[Test]
+		public void TestUtcNow()
+		{
+			var before = DateTimeOffset.UtcNow;
+			var target = Timestamp.UtcNow;
+			var after = DateTimeOffset.UtcNow;
+			// Assert before <= now <= after
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( before ) / 1000 ).Or.GreaterThan( MessagePackConvert.FromDateTimeOffset( before ) ) );
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( after ) / 1000 ).Or.LessThan( MessagePackConvert.FromDateTimeOffset( after ) ) );
+		}
+
+		[Test]
+		public void TestToday()
+		{
+			var before = new DateTimeOffset( DateTimeOffset.UtcNow.Date, TimeSpan.Zero );
+			var target = Timestamp.Today;
+			var after = new DateTimeOffset( DateTimeOffset.UtcNow.Date, TimeSpan.Zero );
+			// Assert before <= today <= after
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( before ) / 1000 ).Or.GreaterThan( MessagePackConvert.FromDateTimeOffset( before ) ) );
+			Assert.That( target.UnixEpochSecondsPart, Is.EqualTo( MessagePackConvert.FromDateTimeOffset( after ) / 1000 ).Or.LessThan( MessagePackConvert.FromDateTimeOffset( after ) ) );
+		}
+
+		[Test]
+		public void TestProperties_DatesAD()
+		{
+			var seconds = <#= DateTimeOffset.MinValue.ToUnixTimeSeconds() #>L;
+			foreach ( var year in Enumerable.Range( 1, 802 ) )
+			{
+				var isLeapYear = year % 400 == 0 || ( year % 4 == 0 && year % 100 != 0 );
+				foreach ( var dayOfYear in Enumerable.Range( 1, isLeapYear ? 366 : 365 ) )
+				{
+					var target = new Timestamp( seconds, 0 );
+					var expected = new DateTimeOffset( year, 1, 1, 0, 0, 0, TimeSpan.Zero ).AddDays( dayOfYear - 1 );
+					Assert.That( expected.DayOfYear, Is.EqualTo( dayOfYear ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.Year, Is.EqualTo( expected.Year ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.Month, Is.EqualTo( expected.Month ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.Day, Is.EqualTo( expected.Day ), "{0:yyyy-MM-dd}", expected );
+					Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "{0:yyyy-MM-dd}", expected );
+
+					seconds += 24 * 60 * 60;
+				}
+			}
+		}
+
+		[Test]
+		public void TestProperties_DatesBC()
+		{
+			var seconds = <#= DateTimeOffset.MinValue.ToUnixTimeSeconds() #>L;
+			var dayOfWeek = ( long )DateTimeOffset.MinValue.DayOfWeek;
+
+			foreach ( var year in Enumerable.Range( 1, 802 ).Select( x => 1 - x ) )
+			{
+				var isLeapYear = year % 400 == 0 || ( year % 4 == 0 && year % 100 != 0 );
+				var month = 12;
+				var day = 31;
+				var daysInMonths = isLeapYear ? DaysInMonthsInLeapYear : DaysInMonthsInNonLeapYear;
+
+				foreach ( var dayOfYear in Enumerable.Range( 1, isLeapYear ? 366 : 365 ).Reverse() )
+				{
+					seconds -= 24 * 60 * 60;
+					dayOfWeek--;
+					if ( dayOfWeek < 0 )
+					{
+						dayOfWeek = 6;
+					}
+
+					var target = new Timestamp( seconds, 0 );
+					Assert.That( target.DayOfYear, Is.EqualTo( dayOfYear ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.Year, Is.EqualTo( year ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.Month, Is.EqualTo( month ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.Day, Is.EqualTo( day ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+					Assert.That( target.DayOfWeek, Is.EqualTo( ( DayOfWeek )dayOfWeek ), "{0:0000}-{1:00}-{2:00}", year, month, day );
+
+					if ( day == 1 )
+					{
+						month--;
+						day = daysInMonths[ month ];
+					}
+					else
+					{
+						day--;
+					}
+				}
+			}
+		}
+	}
+}

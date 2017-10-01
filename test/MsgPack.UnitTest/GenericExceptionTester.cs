@@ -260,7 +260,7 @@ namespace MsgPack
 			evidence.AddHostEvidence( new Zone( SecurityZone.Internet ) );
 			var permisions = SecurityManager.GetStandardSandbox( evidence );
 #endif
-			AppDomain workerDomain = AppDomain.CreateDomain( "PartialTrust", evidence, appDomainSetUp, permisions, GetStrongName( this.GetType() ) );
+			AppDomain workerDomain = AppDomain.CreateDomain( "PartialTrust", evidence, appDomainSetUp, permisions, GetStrongName( this.GetType() ), GetStrongName( typeof( Assert ) ) );
 			try
 			{
 				var innerMessage = Guid.NewGuid().ToString();
@@ -273,7 +273,7 @@ namespace MsgPack
 				var target = workerDomain.GetData( "MsgPack.GenericExceptionTester.Target" ) as T;
 				Assert.That( target, Is.Not.Null );
 				Assert.That( target.Message, Is.EqualTo( target.Message ) );
-				Assert.That( target.InnerException, Is.Not.Null.And.TypeOf( typeof( Exception ) ) );
+				Assert.That( target.InnerException is Exception, target.InnerException == null ? "(null)" : target.InnerException.GetType().ToString() );
 				Assert.That( target.InnerException.Message, Is.EqualTo( target.InnerException.Message ) );
 			}
 			finally
@@ -300,7 +300,8 @@ namespace MsgPack
 			);
 			permissions.AddPermission(
 				new SecurityPermission(
-					SecurityPermissionFlag.Execution
+					SecurityPermissionFlag.Execution |
+					SecurityPermissionFlag.SkipVerification // for unsafe code
 				)
 			);
 			permissions.AddPermission(
@@ -322,7 +323,7 @@ namespace MsgPack
 			var target = instance.CreateTargetInstance( message, new Exception( innerMessage ) );
 			Assert.That( target, Is.Not.Null );
 			Assert.That( target.Message, Is.EqualTo( target.Message ) );
-			Assert.That( target.InnerException, Is.Not.Null.And.TypeOf( typeof( Exception ) ) );
+			Assert.That( target.InnerException is Exception, target.InnerException == null ? "(null)" : target.InnerException.GetType().ToString() );
 			Assert.That( target.InnerException.Message, Is.EqualTo( target.InnerException.Message ) );
 			AppDomain.CurrentDomain.SetData( "MsgPack.GenericExceptionTester.Target", target );
 		}

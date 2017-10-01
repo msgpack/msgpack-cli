@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -1337,7 +1337,7 @@ namespace MsgPack
 			Assert.That( array[ 4 ], Is.EqualTo( MessagePackObject.Nil ) );
 		}
 
-#if !NETFX_CORE && !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETFX_CORE && !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 		[Test]
 		public void TestRuntimeSerialization_NotEmpty_RoundTripped()
 		{
@@ -1351,7 +1351,7 @@ namespace MsgPack
 				Assert.AreEqual( target, deserialized );
 			}
 		}
-#endif // !NETFX_CORE && !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETFX_CORE && !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
 
 		private sealed class MyClass { }
 	}

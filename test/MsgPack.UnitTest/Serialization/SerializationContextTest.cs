@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -204,7 +204,7 @@ namespace MsgPack.Serialization
 		public void TestDefault_SafeAndEasySettings()
 		{
 			Assert.That( SerializationContext.Default, Is.Not.Null );
-			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
 			Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
 			Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
@@ -237,7 +237,7 @@ namespace MsgPack.Serialization
 				Assert.That( result, Is.SameAs( previous ) );
 				// result is default settings.
 				Assert.That( result, Is.Not.Null );
-				Assert.That( result.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+				Assert.That( result.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
 				Assert.That( result.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
 				Assert.That( result.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
@@ -259,7 +259,7 @@ namespace MsgPack.Serialization
 			}
 
 			// Verify restore
-			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
 			Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
 			Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );

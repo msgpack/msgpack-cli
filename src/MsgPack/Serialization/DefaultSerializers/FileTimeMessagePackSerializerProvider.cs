@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 	{
 		private readonly MessagePackSerializer _unixEpoc;
 		private readonly MessagePackSerializer _native;
+		private readonly MessagePackSerializer _timestamp;
 
 		public FileTimeMessagePackSerializerProvider( SerializationContext context, bool isNullable )
 		{
@@ -45,17 +46,22 @@ namespace MsgPack.Serialization.DefaultSerializers
 					new NullableMessagePackSerializer<FILETIME>( context, new UnixEpocFileTimeMessagePackSerializer( context ) );
 				this._native =
 					new NullableMessagePackSerializer<FILETIME>( context, new NativeFileTimeMessagePackSerializer( context ) );
+				this._timestamp =
+					new NullableMessagePackSerializer<FILETIME>( context, new TimestampFileTimeMessagePackSerializer( context ) );
 #else
 				this._unixEpoc =
 					new NullableMessagePackSerializer( context, typeof( FILETIME? ), new UnixEpocFileTimeMessagePackSerializer( context ) );
 				this._native = 
 					new NullableMessagePackSerializer( context, typeof( FILETIME? ), new NativeFileTimeMessagePackSerializer( context ) );
+				this._timestamp = 
+					new NullableMessagePackSerializer( context, typeof( FILETIME? ), new TimestampFileTimeMessagePackSerializer( context ) );
 #endif // !UNITY
 			}
 			else
 			{
 				this._unixEpoc = new UnixEpocFileTimeMessagePackSerializer( context );
 				this._native = new NativeFileTimeMessagePackSerializer( context );
+				this._timestamp = new TimestampFileTimeMessagePackSerializer( context );
 			}
 		}
 
@@ -73,6 +79,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 					{
 						return this._unixEpoc;
 					}
+					case DateTimeConversionMethod.Timestamp:
+					{
+						return this._timestamp;
+					}
 				}
 			}
 
@@ -85,6 +95,10 @@ namespace MsgPack.Serialization.DefaultSerializers
 				case DateTimeConversionMethod.UnixEpoc:
 				{
 					return this._unixEpoc;
+				}
+				case DateTimeConversionMethod.Timestamp:
+				{
+					return this._timestamp;
 				}
 				default:
 				{

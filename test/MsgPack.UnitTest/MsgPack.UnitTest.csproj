@@ -19,7 +19,7 @@
     <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.7.1" />
+    <PackageReference Include="NUnit" Version="3.8.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
@@ -243,6 +243,41 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Update="TimestampTest.Calculation.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.Calculation.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TimestampTest.Comparison.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.Comparison.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TimestampTest.Conversion.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.Conversion.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TimestampTest.EncodeDecode.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.EncodeDecode.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TimestampTest.Parse.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.Parse.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TimestampTest.Properties.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.Properties.tt</DependentUpon>
+    </Compile>
+    <Compile Update="TimestampTest.ToString.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.ToString.tt</DependentUpon>
+    </Compile>
     <Compile Update="UnpackerTest.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -413,6 +448,11 @@
     <None Include="cases_compact.mpac">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TimestampTest.EncodeDecode.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimestampTest.EncodeDecode.tt</DependentUpon>
+    </None>
     <None Update="DirectConversionTest.Scalar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DirectConversionTest.Scalar.cs</LastGenOutput>
@@ -552,6 +592,34 @@
     <None Update="TestRandom.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TestRandom.cs</LastGenOutput>
+    </None>
+    <None Update="TimestampTest.EncodeDecode.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimestampTest.EncodeDecode.cs</LastGenOutput>
+    </None>
+    <None Update="TimestampTest.Calculation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimestampTest.Calculation.cs</LastGenOutput>
+    </None>
+    <None Update="TimestampTest.Comparison.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimestampTest.Comparison.cs</LastGenOutput>
+    </None>
+    <None Update="TimestampTest.Conversion.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimestampTest.Conversion.cs</LastGenOutput>
+    </None>
+    <None Update="TimestampTest.Parse.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimestampTest.Parse.cs</LastGenOutput>
+    </None>
+    <None Update="TimestampTest.Properties.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimestampTest.Properties.cs</LastGenOutput>
+    </None>
+    <None Update="TimestampTest.ToString.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimestampTest.ToString.cs</LastGenOutput>
     </None>
     <None Update="UnpackerTest.Ext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -700,6 +768,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>UnpackerTest.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MessagePackObjectTest.RuntimeSerialization.cs" Condition="'$(TargetFramework)' == 'netcoreapp1.0' or '$(TargetFramework)' == 'netcoreapp2.0'" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

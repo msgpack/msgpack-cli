@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -33,6 +33,11 @@ namespace MsgPack
 			}
 
 			return result;
+		}
+
+		public static long ToUnixTimeSeconds( this DateTimeOffset source )
+		{
+			return source.UtcDateTime.Ticks / TimeSpan.TicksPerSecond - 62135596800;
 		}
 	}
 }
