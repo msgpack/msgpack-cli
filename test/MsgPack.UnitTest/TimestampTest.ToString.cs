@@ -688,6 +688,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						-23215049511,
@@ -735,6 +741,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						-23215049511,
@@ -782,6 +794,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						-62193657600,
@@ -829,6 +847,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						-62193657600,
@@ -889,6 +913,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						-62193657600,
@@ -936,6 +966,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						-62193657600,

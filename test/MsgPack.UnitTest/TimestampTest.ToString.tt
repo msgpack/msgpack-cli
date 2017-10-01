@@ -179,6 +179,12 @@ foreach ( var @case in
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						<#= @case.Seconds #>,
@@ -245,6 +251,12 @@ foreach ( var @case in
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						<#= StandardTestCases[ "YearMinus1" ].Seconds #>,
@@ -292,6 +304,12 @@ foreach ( var @case in
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					new Timestamp(
 						<#= StandardTestCases[ "YearMinus1" ].Seconds #>,

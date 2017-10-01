@@ -2059,6 +2059,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					Timestamp.ParseExact(
 						"1234-05-06T07:08:09.123456789Z",
@@ -2092,6 +2098,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Timestamp result;
 				Assert.That(
 					Timestamp.TryParseExact(
@@ -2163,6 +2175,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					Timestamp.ParseExact(
 						"1234-05-06T07:08:09Z",
@@ -2196,6 +2214,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Timestamp result;
 				Assert.That(
 					Timestamp.TryParseExact(
@@ -2267,6 +2291,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					Timestamp.ParseExact(
 						"Å|0001-03-01T00:00:00.000000000Z",
@@ -2300,6 +2330,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Timestamp result;
 				Assert.That(
 					Timestamp.TryParseExact(
@@ -2371,6 +2407,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Assert.That(
 					Timestamp.ParseExact(
 						"Å|0001-03-01T00:00:00Z",
@@ -2404,6 +2446,12 @@ namespace MsgPack
 				Thread.CurrentThread.CurrentCulture =
 #endif // ( !NET35 && !SILVERLIGHT ) || WINDOWS_UWP
 					new LegacyJapaneseCultureInfo();
+
+				if ( !( CultureInfo.CurrentCulture is LegacyJapaneseCultureInfo ) || CultureInfo.CurrentCulture.NumberFormat.NegativeSign != "\uFF0D" )
+				{
+					Assert.Ignore( "This platform does not support custom culture correctly." );
+				}
+
 				Timestamp result;
 				Assert.That(
 					Timestamp.TryParseExact(
