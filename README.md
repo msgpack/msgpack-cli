@@ -56,6 +56,8 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
 ### For .NET Framework
 
 1. Install Visual Studio 2017 (Community edition is OK) and 2015 (for MsgPack.Windows.sln).
+    * You must install .NET Framework 3.5, 4.x, .NET Core, and Xamarin dev tools to build all builds successfully.
+      If you do not want to install options, edit `<TargetFrameworks>` element in `*.csproj` files to exclude platforms you want to exclude.
 2. Run with Visual Studio Developer Command Prompt:
 
     msbuild MsgPack.sln
