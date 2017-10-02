@@ -78,8 +78,7 @@ Or open one of above solution files in your IDE and run build command in it.
 
 ### For Mono
 
-Open MsgPack.mono.sln with MonoDevelop and then click **Build** menu item.
-(Of cource, you can build via xbuild.)
+You can build MsgPack.sln and MsgPack.Xamarin.sln with `msbuild` in latest Mono. Note that `xbuild` does not work because it does not support latest csproj format.
 
 ### Own Unity 3D Build
 
