@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -24,12 +24,20 @@
 #endif
 
 using System;
-using System.Threading;
 #if CORE_CLR || UNITY || NETSTANDARD1_1
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+using System.Reflection;
+using System.Reflection.Emit;
+#endif // NETSTANDARD1_3 || NETSTANDARD2_0
+using System.Runtime.CompilerServices;
+using System.Threading;
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+using MsgPack.Serialization.EmittingSerializers;
+#endif // NETSTANDARD1_3 || NETSTANDARD2_0
 
 namespace MsgPack.Serialization
 {
@@ -59,7 +67,7 @@ namespace MsgPack.Serialization
 			set { Volatile.Write( ref this._emitterFlavor, ( int )value ); }
 		}
 
-#if !AOT
+#if !UNITY
 
 		private int _generatorOption;
 
@@ -135,7 +143,45 @@ namespace MsgPack.Serialization
 #endif // !FEATURE_CONCURRENT
 			}
 		}
-#endif // !AOT
+
+		private static bool CanEmit = DetermineCanEmit();
+
+		[MethodImpl( MethodImplOptions.NoInlining )]
+		private static bool DetermineCanEmit()
+		{
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+			try
+			{
+				return DetermineCanEmitCore();
+			}
+			catch
+			{
+				return false;
+			}
+#elif NETFX_CORE || UNITY
+			return false;
+#else
+			// Desktop etc.
+			return true;
+#endif
+		}
+
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+
+		[MethodImpl( MethodImplOptions.NoInlining )]
+		private static bool DetermineCanEmitCore()
+		{
+			return SerializationMethodGeneratorManager.Fast != null;
+		}
+
+#endif // NETSTANDARD1_3 || NETSTANDARD2_0
+
+		internal bool CanRuntimeCodeGeneration
+		{
+			get { return CanEmit && !this.DisableRuntimeCodeGeneration; }
+		}
+
+#endif // !UNITY
 
 #if !FEATURE_CONCURRENT
 		private volatile bool _isNonPublicAccessDisabled;
