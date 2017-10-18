@@ -43,6 +43,8 @@ using System.Security;
 #else
 #error Unexpected Xamarin!
 #endif // XAMARIN
+#elif NETSTANDARD2_0
+".NET Standard 2.0"
 #else
 ".NET Framework 4.6"
 #endif // NET4_5..
