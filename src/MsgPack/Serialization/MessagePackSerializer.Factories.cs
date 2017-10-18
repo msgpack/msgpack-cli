@@ -23,20 +23,19 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
-#define AOT
 #endif
 
-#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
 #define FEATURE_EMIT
-#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
 
 using System;
 using System.IO;
 using System.Globalization;
-#if AOT
+#if UNITY
 using System.Linq;
 using System.Reflection;
-#endif // AOT
+#endif // UNITY
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -216,7 +215,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // DEBUG
 
-#if DEBUG && !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#if DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
 			SerializerDebugging.TraceEmitEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
@@ -224,14 +223,14 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#endif // DEBUG && !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
 			Type concreteType = null;
 			CollectionTraits collectionTraits =
-#if AOT
+#if UNITY
 				typeof( T ).GetCollectionTraits( CollectionTraitOptions.None, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
 #else
 				typeof( T ).GetCollectionTraits( CollectionTraitOptions.Full, context.CompatibilityOptions.AllowNonCollectionEnumerableTypes );
-#endif // AOT
+#endif // UNITY
 
 			if ( typeof( T ).GetIsAbstract() || typeof( T ).GetIsInterface() )
 			{
@@ -361,7 +360,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
 #endif // DEBUG
 
-#if AOT
+#if UNITY
 			return CreateInternal( context, targetType, null );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
@@ -412,7 +411,7 @@ namespace MsgPack.Serialization
 				);
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3
 			return factory( context );
-#endif // AOT
+#endif // UNITY
 		}
 
 		/// <summary>
@@ -539,7 +538,7 @@ namespace MsgPack.Serialization
 			return context.GetSerializer( targetType, providerParameter );
 		}
 
-#if AOT
+#if UNITY
 		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
 			typeof( MessagePackSerializer ).GetRuntimeMethods()
 			.Single( m =>
@@ -563,7 +562,7 @@ namespace MsgPack.Serialization
 				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as MessagePackSerializer;
 #endif // UNITY
 		}
-#endif // AOT
+#endif // UNITY
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{

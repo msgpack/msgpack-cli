@@ -20,7 +20,6 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
-#define AOT
 #endif
 
 using System;
@@ -46,7 +45,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializerOptions
 	{
-#if AOT || SILVERLIGHT
+#if UNITY || SILVERLIGHT
 		private int _emitterFlavor = ( int )EmitterFlavor.ReflectionBased;
 #else
 		private int _emitterFlavor = ( int )EmitterFlavor.FieldBased;
@@ -250,9 +249,9 @@ namespace MsgPack.Serialization
 #if FEATURE_TAP
 			this.WithAsync = true;
 #endif // FEATURE_TAP
-#if !AOT
+#if !UNITY
 			this.GeneratorOption = SerializationMethodGeneratorOption.Fast;
-#endif // !AOT
+#endif // !UNITY
 		}
 	}
 }

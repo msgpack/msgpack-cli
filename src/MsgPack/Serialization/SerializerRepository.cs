@@ -20,7 +20,6 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
-#define AOT
 #endif
 
 using System;
@@ -141,7 +140,7 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 		}
 
-#if AOT
+#if UNITY
 		internal MessagePackSerializer Get( SerializationContext context, Type targetType, object providerParameter )
 		{
 			if ( context == null )
@@ -158,7 +157,7 @@ namespace MsgPack.Serialization
 			var asProvider = result as MessagePackSerializerProvider;
 			return ( asProvider != null ? asProvider.Get( context, providerParameter ) : result ) as MessagePackSerializer;
 		}
-#endif // AOT
+#endif // UNITY
 
 		/// <summary>
 		///		Registers a <see cref="MessagePackSerializer{T}"/>.

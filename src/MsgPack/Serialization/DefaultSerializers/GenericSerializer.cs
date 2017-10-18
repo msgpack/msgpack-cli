@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -125,12 +125,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 		private static MessagePackSerializer CreateListSerializer( SerializationContext context, Type itemType, PolymorphismSchema schema )
 		{
-#if DEBUG && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
+#if DEBUG
 			if ( SerializerDebugging.AvoidsGenericSerializer )
 			{
 				return null;
 			}
-#endif // DEBUG && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // DEBUG
 			return
 				ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
 					typeof( ListInstanceFactory<> ).MakeGenericType( itemType )
@@ -146,12 +146,12 @@ namespace MsgPack.Serialization.DefaultSerializers
 #if !UNITY
 		private static MessagePackSerializer CreateDictionarySerializer( SerializationContext context, Type keyType, Type valueType, PolymorphismSchema schema )
 		{
-#if DEBUG && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
+#if DEBUG
 			if ( SerializerDebugging.AvoidsGenericSerializer )
 			{
 				return null;
 			}
-#endif // DEBUG && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // DEBUG
 			return
 				ReflectionExtensions.CreateInstancePreservingExceptionType<IGenericBuiltInSerializerFactory>(
 					typeof( DictionaryInstanceFactory<,> ).MakeGenericType( keyType, valueType )

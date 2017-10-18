@@ -4,38 +4,22 @@
     <ProjectGuid>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>MsgPack</AssemblyName>
-    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;netstandard2.0;MonoAndroid10;Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;netstandard2.0;</TargetFrameworks>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NuspecFile>$(SolutionDir)/msgpack.nuspec</NuspecFile>
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
-  <PropertyGroup Condition="'$(Configuration)' == 'Release' and ('$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10')">
-    <OutputPath>..\..\bin\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <OutputPath>..\..\bin\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' != 'Release' and ('$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10')">
-    <OutputPath>bin\$(Configuration)\$(TargetFramework)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' != 'Release' and '$(TargetFramework)' != 'MonoAndroid10' and '$(TargetFramework)' != 'Xamarin.iOS10'">
+  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
     <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
-    <!-- Workaround for VS 15.3 -->
-    <NuGetTargetMoniker>MonoAndroid,Version=1.0</NuGetTargetMoniker>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'uap10.0' and '$(TargetFramework)' != 'netstandard1.1' and '$(TargetFramework)' != 'netstandard1.3' and '$(TargetFramework)' != 'netstandard2.0'">
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" Condition="'$(TargetFramework)' != 'net35'" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10'">
-    <Reference Include="Mono.Android" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
-    <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Collections" Version="4.0.11" />
@@ -446,7 +430,7 @@
     <Compile Remove="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
     <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0'">
     <Compile Remove="Serialization\CodeDomSerializers\*.*" />
     <Compile Remove="Serialization\CodeGenerationSink.cs" />
     <Compile Remove="Serialization\DependentAssemblyManager.cs" />
@@ -469,7 +453,7 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
     <Compile Remove="UnsafeNativeMethods.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'uap10.0'">
     <Compile Remove="Serialization\AbstractSerializers\**\*.*" />
     <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Compile Remove="Serialization\EmittingSerializers\**\*.*" />
@@ -500,14 +484,7 @@
     <Compile Remove="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
     <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
-    <Compile Remove="Serialization\DefaultSerializers\FileTimeMessagePackSerializerProvider.cs" />
-    <Compile Remove="Serialization\DefaultSerializers\NativeFileTimeMessagePackSerializer.cs" />
-    <Compile Remove="Serialization\DefaultSerializers\UnixEpocFileTimeMessagePackSerializer.cs" />
-    <Compile Remove="Serialization\DefaultSerializers\TimestampFileTimeMessagePackSerializer.cs" />
-    <Compile Remove="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'uap10.0' or '$(TargetFramework)' == 'MonoAndroid10' or '$(TargetFramework)' == 'Xamarin.iOS10'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'uap10.0'">
     <Compile Include="AsyncReadResult.cs" />
     <Compile Include="AsyncReadResult`1.cs" />
     <Compile Include="TaskAugument.cs" />
@@ -520,10 +497,4 @@
     <!-- For VS, use $(MSBuildExtensionsPath) -->
     <VSMSBuildExtensionsPath>$(MSBuildExtensionsPath)</VSMSBuildExtensionsPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(XamarinMSBuildExtensionsPath)' == ''">
-    <XamarinMSBuildExtensionsPath>$(VSMSBuildExtensionsPath)</XamarinMSBuildExtensionsPath>
-  </PropertyGroup>
-  <Import Project="$(VSMSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition="'$(TargetFramework)' == 'uap10.0'" />
-  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" Condition="'$(TargetFramework)' == 'MonoAndroid10' and $(SkipXamarin) != 'true'" />
-  <Import Project="$(XamarinMSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(TargetFramework)' == 'Xamarin.iOS10' and $(SkipXamarin) != 'true'" />
 </Project>

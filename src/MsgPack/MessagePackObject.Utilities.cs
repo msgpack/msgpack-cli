@@ -922,7 +922,7 @@ namespace MsgPack
 			}
 
 			// Lifting support.
-#if ( NETSTANDARD1_1 || NETSTANDARD1_3 ) && !XAMARIN
+#if ( NETSTANDARD1_1 || NETSTANDARD1_3 )
 			switch ( NetStandardCompatibility.GetTypeCode( type ) )
 #else
 			switch ( Type.GetTypeCode( type ) )
