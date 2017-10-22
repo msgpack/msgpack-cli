@@ -421,7 +421,7 @@ namespace MsgPack.Serialization
 			TestCore(
 				DateTimeOffset.UtcNow,
 				stream => MessagePackConvert.ToDateTimeOffset( Unpacking.UnpackInt64( stream ) ),
-				( x, y ) => CompareDateTime( x.DateTime.ToUniversalTime(), y.DateTime.ToUniversalTime() ),
+				CompareDateTime,
 				context =>
 				{
 					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
@@ -450,7 +450,7 @@ namespace MsgPack.Serialization
 			TestCore(
 				( DateTimeOffset? )DateTimeOffset.UtcNow,
 				stream => MessagePackConvert.ToDateTimeOffset( Unpacking.UnpackInt64( stream ) ),
-				( x, y ) => CompareDateTime( x.Value.DateTime.ToUniversalTime(), y.Value.DateTime.ToUniversalTime() ),
+				CompareDateTime,
 				context =>
 				{
 					context.GetSerializer<DateTimeOffset?>();
@@ -465,6 +465,16 @@ namespace MsgPack.Serialization
 		}
 
 		private static bool CompareDateTime( DateTime? x, DateTime? y )
+		{
+			return CompareDateTime( x.Value, y.Value );
+		}
+
+		private static bool CompareDateTime( DateTimeOffset x, DateTimeOffset y )
+		{
+			return CompareDateTime( x.DateTime, y.DateTime ) && x.Offset == y.Offset;
+		}
+
+		private static bool CompareDateTime( DateTimeOffset? x, DateTimeOffset? y )
 		{
 			return CompareDateTime( x.Value, y.Value );
 		}
@@ -529,7 +539,7 @@ namespace MsgPack.Serialization
 				Assert.That( CompareDateTime( result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #>.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpoc<#= suffix #>, input.UnixEpoc<#= suffix #> );
 
 <#+
-					suffix = String.Format( CultureInfo.InvariantCulture, "DateTimeOffset{0}.DateTime", memberType );
+				suffix = String.Format( CultureInfo.InvariantCulture, "DateTimeOffset{0}", memberType );
 				if ( contextSetting == "Native" )
 				{
 #>
