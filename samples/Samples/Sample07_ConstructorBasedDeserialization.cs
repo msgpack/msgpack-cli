@@ -27,13 +27,13 @@ using NUnit.Framework; // For running checking
 namespace Samples
 {
 	/// <summary>
-	///		A sample to describe constructor related behavior.
+	///	A sample to describe constructor related behavior.
 	/// </summary>
 	[TestFixture]
 	public class ConstructorBasedDeserializationSample
 	{
 		/// <summary>
-		///		Demonstrates constructor based deserialization.
+		///	Demonstrates constructor based deserialization.
 		/// </summary>
 		[Test]
 		public void DoConstructorBasedDeserialization()
@@ -62,7 +62,7 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		"Record" class which has getters and parameterful constructor.
+	///	"Record" class which has getters and parameterful constructor.
 	/// </summary>
 	public class MySimpleRecordClass
 	{
@@ -75,8 +75,8 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		A example class which has getters and parameterless and parameterful constructor,
-	///		and the parameterful constructor is qualified with MessagePackDeserializationConstructor.
+	///	A example class which has getters and parameterless and parameterful constructor,
+	///	and the parameterful constructor is qualified with MessagePackDeserializationConstructor.
 	/// </summary>
 	public class MyComplexRecordClass
 	{

@@ -29,7 +29,7 @@ using NUnit.Framework; // For running checking
 namespace Samples
 {
 	/// <summary>
-	///		A sample code to describe SerializationContext usage.
+	///	A sample code to describe SerializationContext usage.
 	/// </summary>
 	[TestFixture]
 	public class PackageAndUnpackableSample
@@ -51,11 +51,11 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		A custom serializer sample: Serialize <see cref="System.DateTime"/> as UTC.
+	///	A custom serializer sample: Serialize <see cref="System.DateTime"/> as UTC.
 	/// </summary>
 	public class PackableUnpackableObject : IPackable, IUnpackable
 	{
-		// Imagine whien you cannot use auto-generated serializer so you have to implement custom serializer for own type easily.
+		// Imagine when you cannot use auto-generated serializer so you have to implement custom serializer for own type easily.
 		public long Id { get; set; }
 		public string Name { get; set; }
 
