@@ -27,12 +27,15 @@ using NUnit.Framework; // For running checking
 
 namespace Samples
 {
-	[TestFixture]
+    /// <summary>
+    ///	A sample code to describe async methods.
+    /// </summary>
+    [TestFixture]
 	public class AsyncSample
 	{
-		/// <summary>
-		///		Demonstrates async methods.
-		/// </summary>
+        /// <summary>
+        /// Has object serialized and deserialized asynchronously.
+        /// </summary>
 		[Test]
 		public async Task RunAsync()
 		{

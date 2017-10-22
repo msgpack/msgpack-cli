@@ -29,7 +29,7 @@ using NUnit.Framework; // For running checking
 namespace Samples
 {
 	/// <summary>
-	///		A sample code for explore MessagePackObject.
+	///	A sample code for explore MessagePackObject.
 	/// </summary>
 	[TestFixture]
 	public class HandlingDynamicObjectSample
@@ -91,7 +91,7 @@ namespace Samples
 			// byte[] is byte[], as you know.
 			Debug.WriteLine( "Image : {0}({1})", asDictionary[ "Image" ], asDictionary[ "Image" ].UnderlyingType );
 
-			// 4. Now MessagePackSerializer handle MessagePackObject directly.
+			// 4. Now MessagePackSerializer handles MessagePackObject directly.
 			var mpo = serializer.ToMessagePackObject( targetObject );
 			var asDictionary2 = mpo.AsDictionary();
 			Debug.WriteLine( "---- ToMessagePackObject ----" );
@@ -100,7 +100,7 @@ namespace Samples
 			Debug.WriteLine( "Date : {0}({1})", asDictionary2[ "Date" ], asDictionary2[ "Date" ].UnderlyingType );
 			Debug.WriteLine( "Image : {0}({1})", asDictionary2[ "Image" ], asDictionary2[ "Image" ].UnderlyingType );
 
-			// reversing
+			// 5. Use MessagePackSerializer to deserialize target object from MessagePackObject
 			var targetObject2 = serializer.FromMessagePackObject( mpo );
 			Debug.WriteLine( "---- FromMessagePackObject ----" );
 			Debug.WriteLine( "Id : {0}", targetObject2.Id );

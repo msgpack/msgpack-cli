@@ -29,7 +29,7 @@ using NUnit.Framework; // For running checking
 namespace Samples
 {
 	/// <summary>
-	///		A sample code to describe SerializationContext usage.
+	///	A sample code to describe SerializationContext usage.
 	/// </summary>
 	[TestFixture]
 	public class CustomSerializerSample
@@ -50,7 +50,7 @@ namespace Samples
 			// 3. Get a serializer instance with customized settings.
 			var serializer = MessagePackSerializer.Get<DateTime>( context );
 
-			// Test it.
+			// 4. Test Serialization and Deserialization.
 			var dateTime = DateTime.Now;
 			serializer.Pack( stream, dateTime );
 			stream.Position = 0;
@@ -61,7 +61,7 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		A custom serializer sample: Serialize <see cref="System.DateTime"/> as UTC.
+	///	A custom serializer sample: Serialize <see cref="System.DateTime"/> as UTC.
 	/// </summary>
 	public class NetUtcDateTimeSerializer : MessagePackSerializer<DateTime>
 	{

@@ -29,7 +29,7 @@ using NUnit.Framework; // For running checking
 namespace Samples
 {
 	/// <summary>
-	///		A sample code to describe SerializationContext usage.
+	///	A sample code to describe SerializationContext usage.
 	/// </summary>
 	[TestFixture]
 	public class SerializationContextAndOptionsSample

@@ -26,9 +26,15 @@ using NUnit.Framework; // For running checking
 
 namespace Samples
 {
+    /// <summary>
+    /// A sample code to describe byte array based behavior.
+    /// </summary>
 	[TestFixture]
 	public class Sample10_ByteArrayBased
 	{
+        /// <summary>
+        /// Uses byte array for serialization and deserialization.
+        /// </summary>
 		[Test]
 		public void SimpleBufferCase()
 		{

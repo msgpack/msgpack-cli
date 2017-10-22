@@ -26,8 +26,11 @@ using MsgPack.Serialization;
 
 namespace Samples
 {
-	// You can tweak serialization behavior via custom attributes.
-	public class MessagePackMemberSample
+    /// <summary>
+    /// Sample code to describe MessagePackMember usage.
+    /// </summary>
+    /// <remarks>You can tweak serialization behavior via custom attributes.</remarks>
+    public class MessagePackMemberSample
 	{
 		[MessagePackMember(
 			0, // Specify 0 based index for serialized array. You should specify this value to ensure interoperability with other platform bindings.

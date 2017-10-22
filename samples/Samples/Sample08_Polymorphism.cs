@@ -28,13 +28,13 @@ using NUnit.Framework; // For running checking
 namespace Samples
 {
 	/// <summary>
-	///		A sample to describe polymorphism.
+	///	A sample to describe polymorphism.
 	/// </summary>
 	[TestFixture]
 	public class PolymorphismSample
 	{
 		/// <summary>
-		///		Demonstrates basic polymorphism.
+		///	Demonstrates basic polymorphism.
 		/// </summary>
 		[Test]
 		public void Polymorphism()
@@ -78,7 +78,7 @@ namespace Samples
 		}
 
 		/// <summary>
-		///		Demonstrates polymorphism without enclosing type and its attributes.
+		///	Demonstrates polymorphism without enclosing type and its attributes.
 		/// </summary>
 		[Test]
 		public void DirectPolymorphism()
@@ -153,7 +153,7 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		Sample base type.
+	///	Sample base type.
 	/// </summary>
 	public interface IFileSystemObject
 	{
@@ -161,7 +161,7 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		Sample derived type 1.
+	///	Sample derived type 1.
 	/// </summary>
 	public class FileObject : IFileSystemObject
 	{
@@ -169,7 +169,7 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		Sample derived type 2.
+	///	Sample derived type 2.
 	/// </summary>
 	public class DirectoryObject : IFileSystemObject
 	{
@@ -177,16 +177,17 @@ namespace Samples
 	}
 
 	/// <summary>
-	///		Sample type verifier.
+	///	Sample type verifier.
 	/// </summary>
 	public static class SampleTypeVerifier
 	{
-		/// <summary>
-		///		Sample type verifier. The signature of this method is important.
-		/// </summary>
-		/// <param name="context">The context which has information of deserializing type.</param>
-		/// <returns>True for accepting; otherwise, false.</returns>
-		public static bool Verify( PolymorphicTypeVerificationContext context )
+        /// <summary>
+        ///	Sample type verifier.
+        /// </summary>
+        /// <remarks>The signature of this method is important.</remarks>
+        /// <param name="context">The context which has information of deserializing type.</param>
+        /// <returns>True for accepting; otherwise, false.</returns>
+        public static bool Verify( PolymorphicTypeVerificationContext context )
 		{
 			// You should put type verification logic to prevent unexpected code execution via specified type.
 			// 1. Check context.LoadingAssemblyName here to verify the assembly is known for you.
