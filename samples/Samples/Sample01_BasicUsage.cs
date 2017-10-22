@@ -30,7 +30,7 @@ using NUnit.Framework; // For running checking
 namespace Samples
 {
 	/// <summary>
-	///		A simple sample code for basic serialization/deserialization.
+	///	A simple sample code for basic serialization/deserialization.
 	/// </summary>
 	[TestFixture]
 	public class BasicUsageSample
@@ -76,7 +76,12 @@ namespace Samples
 		}
 	}
 
-	// Note: If you want to interop with other platform using SerializationMethod.Array (default), you should use [MessagePackMember]. See Sample06 for details.
+	/// <summary>
+	///	Simple class that will be used for serialization/deserialization.
+	/// </summary>
+	/// <remarks>
+	/// If you want to interop with other platform using SerializationMethod.Array (default), you should use [MessagePackMember]. See Sample06 for details.
+	/// </remarks>
 	public class PhotoEntry
 	{
 		public long Id { get; set; }
