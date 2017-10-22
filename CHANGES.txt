@@ -723,3 +723,8 @@ Release 1.0.0-beta1 2017-10-01
   * Fix ByteArrayPacker throws IndexOutOfBoundException when the buffer remaining bytes is equal to packed scalar size. #252
   * Fix UAP build drop does not exists in nupkg. #186
   * Fix new unpacker cannot unpack reserved ext types.
+
+Relase 1.0.0-beta2 (T.B.D.)
+
+  CHANGES
+  * Xamarin builds are now integrated to .NET Standard 2.0.
