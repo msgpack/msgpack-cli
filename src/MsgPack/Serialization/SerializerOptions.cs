@@ -34,9 +34,9 @@ using System.Reflection.Emit;
 #endif // NETSTANDARD1_3 || NETSTANDARD2_0
 using System.Runtime.CompilerServices;
 using System.Threading;
-#if NETSTANDARD1_3 || NETSTANDARD2_0
+#if ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
 using MsgPack.Serialization.EmittingSerializers;
-#endif // NETSTANDARD1_3 || NETSTANDARD2_0
+#endif // ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
 
 namespace MsgPack.Serialization
 {
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization
 		[MethodImpl( MethodImplOptions.NoInlining )]
 		private static bool DetermineCanEmit()
 		{
-#if NETSTANDARD1_3 || NETSTANDARD2_0
+#if ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
 			try
 			{
 				return DetermineCanEmitCore();
@@ -165,7 +165,7 @@ namespace MsgPack.Serialization
 #endif
 		}
 
-#if NETSTANDARD1_3 || NETSTANDARD2_0
+#if ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
 
 		[MethodImpl( MethodImplOptions.NoInlining )]
 		private static bool DetermineCanEmitCore()
@@ -173,7 +173,7 @@ namespace MsgPack.Serialization
 			return SerializationMethodGeneratorManager.Fast != null;
 		}
 
-#endif // NETSTANDARD1_3 || NETSTANDARD2_0
+#endif // ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
 
 		internal bool CanRuntimeCodeGeneration
 		{

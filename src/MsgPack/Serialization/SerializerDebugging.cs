@@ -107,7 +107,7 @@ namespace MsgPack.Serialization
 		}
 #endif // DEBUG
 
-#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 #if DEBUG
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
@@ -160,7 +160,7 @@ namespace MsgPack.Serialization
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
 		}
 #endif // DEBUG
-#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 
 		/// <summary>
 		///		Traces the polymorphic schema event.
@@ -172,20 +172,20 @@ namespace MsgPack.Serialization
 		public static void TracePolimorphicSchemaEvent( string format, MemberInfo memberInfo, PolymorphismSchema schema )
 		{
 #if DEBUG
-#if !UNITY && !SILVERLIGHT
+#if !UNITY && !SILVERLIGHT && !WINDOWS_UWP
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.PolimorphicSchema, Tracer.EventId.PolimorphicSchema, format, memberInfo, schema == null ? "(null)" : schema.DebugString );
-#endif // !UNITY && !SILVERLIGHT
+#endif // !UNITY && !SILVERLIGHT && !WINDOWS_UWP
 #endif
 		}
 
 #if DEBUG
 
-#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 		/// <summary>
 		///		Flushes the trace data.
 		/// </summary>
@@ -372,7 +372,7 @@ namespace MsgPack.Serialization
 			ResetDependentAssemblies();
 		}
 #endif // !NETSTANDARD1_3
-#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 
 #if NET35 || UNITY || SILVERLIGHT
 		private static int _useLegacyNullMapEntryHandling;

@@ -25,17 +25,17 @@
 #define UNITY
 #endif
 
-#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_PHONE && !WINDOWS_UWP
 #define FEATURE_EMIT
-#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_PHONE && !WINDOWS_UWP
 
 using System;
 using System.IO;
 using System.Globalization;
-#if UNITY
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 using System.Linq;
 using System.Reflection;
-#endif // UNITY
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP
 using System.Runtime.Serialization;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -215,7 +215,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // DEBUG
 
-#if DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#if DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 			SerializerDebugging.TraceEmitEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
@@ -223,7 +223,7 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#endif // DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 			Type concreteType = null;
 			CollectionTraits collectionTraits =
 #if UNITY
@@ -360,7 +360,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
 #endif // DEBUG
 
-#if UNITY
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 			return CreateInternal( context, targetType, null );
 #else
 			// MPS.Create should always return new instance, and creator delegate should be cached for performance.
@@ -411,7 +411,7 @@ namespace MsgPack.Serialization
 				);
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3
 			return factory( context );
-#endif // UNITY
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP
 		}
 
 		/// <summary>
@@ -538,7 +538,7 @@ namespace MsgPack.Serialization
 			return context.GetSerializer( targetType, providerParameter );
 		}
 
-#if UNITY
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 		private static readonly System.Reflection.MethodInfo CreateInternal_2 = 
 			typeof( MessagePackSerializer ).GetRuntimeMethods()
 			.Single( m =>
@@ -562,7 +562,7 @@ namespace MsgPack.Serialization
 				as Func<SerializationContext, PolymorphismSchema, object> )( context, schema ) as MessagePackSerializer;
 #endif // UNITY
 		}
-#endif // UNITY
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP
 
 		internal static MessagePackSerializer<T> CreateReflectionInternal<T>( SerializationContext context, Type concreteType, PolymorphismSchema schema )
 		{

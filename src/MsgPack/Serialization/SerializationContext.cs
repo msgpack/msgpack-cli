@@ -39,9 +39,9 @@ using System.Diagnostics.Contracts;
 #if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Linq;
 #endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
-#if UNITY
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP 
 using System.Reflection;
-#endif // UNITY
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP 
 using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -61,10 +61,10 @@ namespace MsgPack.Serialization
 		private static readonly object DefaultContextSyncRoot = new object();
 #endif // UNITY
 
-#if UNITY
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 		private static readonly MethodInfo GetSerializer1Method =
 			typeof( SerializationContext ).GetRuntimeMethod( "GetSerializer", new[] { typeof( object ) } );
-#endif // UNITY
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP 
 
 
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
@@ -965,11 +965,11 @@ namespace MsgPack.Serialization
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
-#if !UNITY
+#if !UNITY && !WINDOWS_PHONE && !WINDOWS_UWP
 				Metadata._SerializationContext.GetSerializer1_Parameter_Method
-#else
+#else // !UNITY && !WINDOWS_PHONE && !WINDOWS_UWP
 				GetSerializer1Method
-#endif // !UNITY
+#endif // !UNITY && !WINDOWS_PHONE && !WINDOWS_UWP
 				.MakeGenericMethod( typeof( T ) ).CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
