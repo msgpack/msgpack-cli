@@ -20,9 +20,9 @@
 
 using System;
 using System.Collections.Generic;
-#if !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
+#if !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID
 using System.Diagnostics;
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !XAMARIN && !UNITY_IPHONE && !UNITY_ANDROID
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !UNITY_IPHONE && !UNITY_ANDROID
 using System.IO;
 
 #if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
@@ -45,7 +45,7 @@ namespace MsgPack.Serialization
 	[TestFixture]
 	public partial class VersioningTest
 	{
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 		[SetUp]
 		public void SetUp()
 		{
@@ -104,7 +104,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.Reset();
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
 		}
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 
 		private static MessagePackSerializer<T> CreateSerializer<T>( EmitterFlavor flavor )
 		{

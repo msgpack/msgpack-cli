@@ -24,10 +24,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 using MsgPack.Serialization.CodeDomSerializers;
-using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1
+using MsgPack.Serialization.EmittingSerializers;
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 #if !MSTEST
 using NUnit.Framework;
 #else

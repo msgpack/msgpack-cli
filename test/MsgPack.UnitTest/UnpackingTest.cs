@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -342,7 +342,7 @@ namespace MsgPack
 			Assert.That( readCountExtra, Is.EqualTo( 0 ) );
 		}
 
-#if !NETFX_CORE && !SILVERLIGHT && !XAMDROID
+#if !NETFX_CORE && !SILVERLIGHT && !XAMARIN
 		[Test]
 		public void TestUnpackByteStream_Stream_LengthIsGreaterThanInt32MaxValue_CanReadToEnd()
 		{
@@ -381,7 +381,7 @@ namespace MsgPack
 				File.Delete( filePath );
 			}
 		}
-#endif // !NETFX_CORE && !SILVERLIGHT && !XAMDROID
+#endif // !NETFX_CORE && !SILVERLIGHT && !XAMARIN
 
 		[Test]
 		public void TestUnpackByteStream_Stream_Empty_AsIsAndBounded()

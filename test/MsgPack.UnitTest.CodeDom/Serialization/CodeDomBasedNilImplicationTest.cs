@@ -24,10 +24,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 using MsgPack.Serialization.CodeDomSerializers;
-using MsgPack.Serialization.EmittingSerializers;
 #endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1
+using MsgPack.Serialization.EmittingSerializers;
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -56,7 +58,7 @@ namespace MsgPack.Serialization
 		{
 			return MessagePackSerializer.CreateInternal<T>( context, PolymorphismSchema.Default );
 		}
-#if !SILVERLIGHT && !AOT && !UNITY
+#if !SILVERLIGHT && !AOT && !UNITY && !XAMARIN
 
 		[SetUp]
 		public void SetUp()
@@ -122,7 +124,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
-#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 
 		// ------ Creation ------
 

@@ -50,10 +50,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 #if SILVERLIGHT
 // For DateTime.ToBinary() extension method
 using MsgPack.Serialization.DefaultSerializers;
