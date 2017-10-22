@@ -776,7 +776,7 @@ namespace MsgPack
 					-62193657600,
 					0
 				).ToString( "o", new LegacyJapaneseCultureInfo() ),
-				Is.EqualTo( "Å|0001-03-01T00:00:00.000000000Z" )
+				Is.EqualTo( "\uFF0D0001-03-01T00:00:00.000000000Z" )
 			);
 		}
 
@@ -805,7 +805,7 @@ namespace MsgPack
 						-62193657600,
 						0
 					).ToString( "o", null ),
-					Is.EqualTo( "Å|0001-03-01T00:00:00.000000000Z" )
+					Is.EqualTo( "\uFF0D0001-03-01T00:00:00.000000000Z" )
 				);
 			}
 			finally
@@ -829,7 +829,7 @@ namespace MsgPack
 					-62193657600,
 					0
 				).ToString( "s", new LegacyJapaneseCultureInfo() ),
-				Is.EqualTo( "Å|0001-03-01T00:00:00Z" )
+				Is.EqualTo( "\uFF0D0001-03-01T00:00:00Z" )
 			);
 		}
 
@@ -858,7 +858,7 @@ namespace MsgPack
 						-62193657600,
 						0
 					).ToString( "s", null ),
-					Is.EqualTo( "Å|0001-03-01T00:00:00Z" )
+					Is.EqualTo( "\uFF0D0001-03-01T00:00:00Z" )
 				);
 			}
 			finally
@@ -924,7 +924,7 @@ namespace MsgPack
 						-62193657600,
 						0
 					).ToString(),
-					Is.EqualTo( "Å|0001-03-01T00:00:00.000000000Z" )
+					Is.EqualTo( "\uFF0D0001-03-01T00:00:00.000000000Z" )
 				);
 			}
 			finally
@@ -948,7 +948,7 @@ namespace MsgPack
 					-62193657600,
 					0
 				).ToString( new LegacyJapaneseCultureInfo() ),
-				Is.EqualTo( "Å|0001-03-01T00:00:00.000000000Z" )
+				Is.EqualTo( "\uFF0D0001-03-01T00:00:00.000000000Z" )
 			);
 		}
 
@@ -977,7 +977,7 @@ namespace MsgPack
 						-62193657600,
 						0
 					).ToString( "s" ),
-					Is.EqualTo( "Å|0001-03-01T00:00:00Z" )
+					Is.EqualTo( "\uFF0D0001-03-01T00:00:00Z" )
 				);
 			}
 			finally

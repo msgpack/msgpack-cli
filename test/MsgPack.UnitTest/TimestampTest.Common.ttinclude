@@ -145,6 +145,6 @@ private static string ToFullWidthNegativeSign( string value )
 		return value;
 	}
 
-	return '\uFF0D' + value.Substring( 1 );
+	return "\\uFF0D" + value.Substring( 1 );
 }
 #>
