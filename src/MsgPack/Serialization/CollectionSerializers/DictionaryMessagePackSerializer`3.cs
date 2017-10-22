@@ -83,14 +83,35 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <returns>The count of the <paramref name="dictionary"/>.</returns>
 		protected override int GetCount( TDictionary dictionary )
 		{
-#if ( !UNITY ) || AOT_CHECK
+#if !NETSTANDARD2_0
 			return dictionary.Count;
-#else
+#else // NETSTANDARD2_0
+			if ( SerializerOptions.CanEmit )
+			{
+				return this.GetCountCore( dictionary );
+			}
+			else
+			{
+				return this.GetCountCoreAotSafe( dictionary );
+			}
+#endif // !NETSTANDARD2_0
+		}
+
+#if NETSTANDARD2_0
+
+		private int GetCountCore( TDictionary dictionary )
+		{
+			return dictionary.Count;
+		}
+
+		private int GetCountCoreAotSafe( TDictionary dictionary )
+		{
 			// .constraind call for TDictionary.get_Count/TDictionary.GetEnumerator() causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			return ( dictionary as IDictionary<TKey, TValue> ).Count;
-#endif // ( !UNITY ) || AOT_CHECK
 		}
+
+#endif // NETSTANDARD2_0
 
 		/// <summary>
 		///		Adds the deserialized item to the collection on <typeparamref name="TDictionary"/> specific manner
@@ -104,14 +125,36 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		protected override void AddItem( TDictionary dictionary, TKey key, TValue value )
 		{
-#if ( !UNITY && !XAMARIN ) || AOT_CHECK
+#if !NETSTANDARD2_0
 			dictionary.Add( key, value );
-#else
+#else // !NETSTANDARD2_0
+			if ( SerializerOptions.CanEmit)
+			{
+				this.AddItemCore( dictionary, key, value );
+			}
+			else
+			{
+				this.AddItemCoreAotSafe( dictionary, key, value );
+			}
+#endif // !NETSTANDARD2_0
+		}
+
+#if NETSTANDARD2_0
+
+		private void AddItemCore( TDictionary dictionary, TKey key, TValue value )
+		{
+			dictionary.Add( key, value );
+		}
+
+		private void AddItemCoreAotSafe( TDictionary dictionary, TKey key, TValue value )
+		{
 			// .constraind call for TDictionary.Add causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			( dictionary as IDictionary<TKey, TValue> ).Add( key, value );
-#endif // ( !UNITY && !XAMARIN ) || AOT_CHECK
 		}
+
+#endif // NETSTANDARD2_0
+
 	}
 
 #if UNITY

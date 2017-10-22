@@ -144,7 +144,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private static bool CanEmit = DetermineCanEmit();
+		internal static readonly bool CanEmit = DetermineCanEmit();
 
 		[MethodImpl( MethodImplOptions.NoInlining )]
 		private static bool DetermineCanEmit()
