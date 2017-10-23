@@ -56,28 +56,35 @@ See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
 ### For .NET Framework
 
 1. Install Visual Studio 2017 (Community edition is OK) and 2015 (for MsgPack.Windows.sln).
-2. Run with Visual Studio Developer Command Prompt:
+    * You must install .NET Framework 3.5, 4.x, .NET Core, and Xamarin dev tools to build all builds successfully.
+      If you do not want to install options, edit `<TargetFrameworks>` element in `*.csproj` files to exclude platforms you want to exclude.
+2. Install latest .NET Core SDK.
+3. Run with Visual Studio Developer Command Prompt:
 
+    msbuild MsgPack.sln /t:Restore
     msbuild MsgPack.sln
 
   Or (for Unity 3D drops):
 
+    msbuild MsgPack.compats.sln /t:Restore
     msbuild MsgPack.compats.sln
 
   Or (for Windows Runtime/Phone drops and Silverlight 5 drops):
 
+    msbuild MsgPack.Windows.sln /t:Restore
     msbuild MsgPack.Windows.sln
 
   Or (for Xamarin unit testing, you must have Xamarin Business or upper license and Mac machine on the LAN to build on Windows):
 
+    msbuild MsgPack.Xamarin.sln /t:Restore
     msbuild MsgPack.Xamarin.sln
 
 Or open one of above solution files in your IDE and run build command in it.
 
 ### For Mono
 
-Open MsgPack.mono.sln with MonoDevelop and then click **Build** menu item.
-(Of cource, you can build via xbuild.)
+1. Install latest Mono and .NET Core SDK.
+2. Now, you can build MsgPack.sln and MsgPack.Xamarin.sln with above instructions and `msbuild` in latest Mono. Note that `xbuild` does not work because it does not support latest csproj format.
 
 ### Own Unity 3D Build
 
