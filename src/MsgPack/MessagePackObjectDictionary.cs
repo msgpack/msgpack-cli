@@ -481,7 +481,7 @@ namespace MsgPack
 				return new MessagePackObject( asMessagePackString );
 			}
 
-#if ( NETSTANDARD1_1 || NETSTANDARD1_3 ) && !XAMARIN
+#if ( NETSTANDARD1_1 || NETSTANDARD1_3 )
 			switch ( NetStandardCompatibility.GetTypeCode( value.GetType() ) )
 #else
 			switch ( Type.GetTypeCode( value.GetType() ) )

@@ -20,7 +20,6 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
-#define AOT
 #endif
 
 using System;
@@ -40,9 +39,9 @@ using System.Diagnostics.Contracts;
 #if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Linq;
 #endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
-#if AOT
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP 
 using System.Reflection;
-#endif // AOT
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP 
 using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
@@ -62,10 +61,10 @@ namespace MsgPack.Serialization
 		private static readonly object DefaultContextSyncRoot = new object();
 #endif // UNITY
 
-#if AOT
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 		private static readonly MethodInfo GetSerializer1Method =
 			typeof( SerializationContext ).GetRuntimeMethod( "GetSerializer", new[] { typeof( object ) } );
-#endif // AOT
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP 
 
 
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
@@ -281,7 +280,7 @@ namespace MsgPack.Serialization
 			set { this._enumSerializationOptions.SerializationMethod = value; }
 		}
 
-#if !AOT
+#if !UNITY
 
 		/// <summary>
 		///		Gets or sets the <see cref="SerializationMethodGeneratorOption"/> to control code generation.
@@ -298,7 +297,7 @@ namespace MsgPack.Serialization
 			set { this._serializerGeneratorOptions.GeneratorOption = value; }
 		}
 
-#endif // !AOT
+#endif // !UNITY
 
 		private readonly DefaultConcreteTypeRepository _defaultCollectionTypes;
 
@@ -655,23 +654,23 @@ namespace MsgPack.Serialization
 
 						if ( serializer == null )
 						{
-#if !AOT
-							if ( this._serializerGeneratorOptions.DisableRuntimeCodeGeneration )
+#if !UNITY
+							if ( !this._serializerGeneratorOptions.CanRuntimeCodeGeneration )
 							{
-#endif // AOT
+#endif // !UNITY
 								// On debugging, or AOT only envs, use reflection based aproach.
 								serializer =
 									this.GetSerializerWithoutGeneration<T>( schema )
 									?? this.OnResolveSerializer<T>( schema )
 									?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
-#if !AOT
+#if !UNITY
 							}
 							else
 							{
 								// This thread creating new type serializer.
 								serializer = this.OnResolveSerializer<T>( schema ) ?? MessagePackSerializer.CreateInternal<T>( this, schema );
 							}
-#endif // !AOT
+#endif // !UNITY
 						}
 					}
 					else
@@ -960,21 +959,21 @@ namespace MsgPack.Serialization
 		private static class SerializerGetter<T>
 		{
 			private static readonly Func<SerializationContext, object, MessagePackSerializer<T>> _func =
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY
 				Delegate.CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> ),
 					Metadata._SerializationContext.GetSerializer1_Parameter_Method.MakeGenericMethod( typeof( T ) )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
 #else
-#if !AOT
+#if !UNITY && !WINDOWS_PHONE && !WINDOWS_UWP
 				Metadata._SerializationContext.GetSerializer1_Parameter_Method
-#else
+#else // !UNITY && !WINDOWS_PHONE && !WINDOWS_UWP
 				GetSerializer1Method
-#endif // !AOT
+#endif // !UNITY && !WINDOWS_PHONE && !WINDOWS_UWP
 				.MakeGenericMethod( typeof( T ) ).CreateDelegate(
 					typeof( Func<SerializationContext, object, MessagePackSerializer<T>> )
 				) as Func<SerializationContext, object, MessagePackSerializer<T>>;
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY && !XAMARIN
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !WINDOWS_PHONE && !UNITY
 
 			// ReSharper disable UnusedMember.Local
 			// This method is invoked via Reflection on SerializerGetter.Get().

@@ -89,10 +89,10 @@ namespace MsgPack.Serialization
 			return
 				dateTimeType == typeof( DateTime )
 				|| dateTimeType == typeof( DateTime? )
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY
 				|| dateTimeType == typeof( FILETIME )
 				|| dateTimeType == typeof( FILETIME? )
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !XAMARIN && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY
 				// DateTimeOffset? and Timestamp? do not have to be treat specially.
 				|| dateTimeType == typeof( DateTimeOffset )
 				|| dateTimeType == typeof( Timestamp );

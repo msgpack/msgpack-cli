@@ -18,7 +18,10 @@
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
-    <DocumentationFile></DocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <DefineConstants>$(DefineConstants);XAMARIN;NUNITLITE;NETSTANDARD2_0;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -31,6 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.CodeDom, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.CodeDom.4.4.0\lib\netstandard2.0\System.CodeDom.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="Xamarin.Android.NUnitLite" />
@@ -52,6 +58,7 @@
     <None Include="..\MsgPack.UnitTest\cases_compact.mpac">
       <Link>cases_compact.mpac</Link>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>

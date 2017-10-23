@@ -94,7 +94,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 
 #if !SILVERLIGHT
 
-		private static SerializationMethodGeneratorManager _canCollect = new SerializationMethodGeneratorManager( false, true, null );
+		private static SerializationMethodGeneratorManager _canCollect = Create( false, true, null );
 
 		/// <summary>
 		///		Get the singleton instance for can-collect mode.
@@ -105,7 +105,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 		}
 
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
-		private static SerializationMethodGeneratorManager _canDump = new SerializationMethodGeneratorManager( true, false, null );
+		private static SerializationMethodGeneratorManager _canDump = Create( true, false, null );
 
 		/// <summary>
 		///		Get the singleton instance for can-dump mode.
@@ -118,7 +118,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // !SILVERLIGHT
 
-		private static SerializationMethodGeneratorManager _fast = new SerializationMethodGeneratorManager( false, false, null );
+		private static SerializationMethodGeneratorManager _fast = Create( false, false, null );
 
 		/// <summary>
 		///		Get the singleton instance for fast mode.
@@ -128,15 +128,27 @@ namespace MsgPack.Serialization.EmittingSerializers
 			get { return _fast; }
 		}
 
+		private static SerializationMethodGeneratorManager Create( bool isDebuggable, bool isCollectable, AssemblyBuilder assemblyBuilder )
+		{
+			try
+			{
+				return new SerializationMethodGeneratorManager( isDebuggable, isCollectable, assemblyBuilder );
+			}
+			catch ( PlatformNotSupportedException )
+			{
+				return null;
+			}
+		}
+
 		internal static void Refresh()
 		{
 #if !SILVERLIGHT
-			_canCollect = new SerializationMethodGeneratorManager( false, true, null );
+			_canCollect = Create( false, true, null );
 #if !NETSTANDARD1_1 && !NETSTANDARD1_3
-			_canDump = new SerializationMethodGeneratorManager( true, false, null );
+			_canDump = Create( true, false, null );
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 #endif // !SILVERLIGHT
-			_fast = new SerializationMethodGeneratorManager( false, false, null );
+			_fast = Create( false, false, null );
 		}
 
 		// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable

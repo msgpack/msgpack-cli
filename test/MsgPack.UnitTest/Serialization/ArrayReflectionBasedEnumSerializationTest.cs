@@ -29,10 +29,12 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
 
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 
 #if !MSTEST
 using NUnit.Framework;
@@ -63,7 +65,7 @@ namespace MsgPack.Serialization
 			get { return false; }
 		}
 
-#if !SILVERLIGHT && !AOT
+#if !SILVERLIGHT && !AOT && !XAMARIN
 		[SetUp]
 		public void SetUp()
 		{
@@ -128,7 +130,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
 		}
-#endif // !SILVERLIGHT && !AOT
+#endif // !SILVERLIGHT && !AOT && !XAMARIN
 		private static void TestEnumForByNameCore<T>( Stream stream, T value, T deserialized, string property )
 		{
 				if ( property == null )

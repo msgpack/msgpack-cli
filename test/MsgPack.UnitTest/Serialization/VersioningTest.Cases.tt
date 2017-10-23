@@ -149,7 +149,7 @@ foreach( var method in new []{ "Array", "Map" } )
 			case "CodeDom":
 			{
 #>
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT && !XAMARIN
 <#
 				break;
 			}
@@ -204,7 +204,7 @@ foreach( var method in new []{ "Array", "Map" } )
 			case "CodeDom":
 			{
 #>
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !AOT && !SILVERLIGHT && !XAMARIN
 <#
 				break;
 			}

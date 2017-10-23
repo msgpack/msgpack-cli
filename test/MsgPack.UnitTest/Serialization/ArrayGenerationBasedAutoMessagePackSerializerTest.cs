@@ -50,10 +50,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 #endif // FEATURE_TAP
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 #if SILVERLIGHT
 // For DateTime.ToBinary() extension method
 using MsgPack.Serialization.DefaultSerializers;
@@ -253,7 +255,7 @@ namespace MsgPack.Serialization
 			TestCore(
 				DateTimeOffset.UtcNow,
 				stream => MessagePackConvert.ToDateTimeOffset( Unpacking.UnpackInt64( stream ) ),
-				( x, y ) => CompareDateTime( x.DateTime.ToUniversalTime(), y.DateTime.ToUniversalTime() ),
+				CompareDateTime,
 				context =>
 				{
 					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc;
@@ -282,7 +284,7 @@ namespace MsgPack.Serialization
 			TestCore(
 				( DateTimeOffset? )DateTimeOffset.UtcNow,
 				stream => MessagePackConvert.ToDateTimeOffset( Unpacking.UnpackInt64( stream ) ),
-				( x, y ) => CompareDateTime( x.Value.DateTime.ToUniversalTime(), y.Value.DateTime.ToUniversalTime() ),
+				CompareDateTime,
 				context =>
 				{
 					context.GetSerializer<DateTimeOffset?>();
@@ -297,6 +299,16 @@ namespace MsgPack.Serialization
 		}
 
 		private static bool CompareDateTime( DateTime? x, DateTime? y )
+		{
+			return CompareDateTime( x.Value, y.Value );
+		}
+
+		private static bool CompareDateTime( DateTimeOffset x, DateTimeOffset y )
+		{
+			return CompareDateTime( x.DateTime, y.DateTime ) && x.Offset == y.Offset;
+		}
+
+		private static bool CompareDateTime( DateTimeOffset? x, DateTimeOffset? y )
 		{
 			return CompareDateTime( x.Value, y.Value );
 		}
@@ -322,11 +334,11 @@ namespace MsgPack.Serialization
 
 
 				// Offset is preserved. 
-				Assert.That( result.VanillaDateTimeOffsetField.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
-				Assert.That( result.DefaultDateTimeOffsetField.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
-				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				Assert.That( result.VanillaDateTimeOffsetField, Is.EqualTo( input.VanillaDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField, input.VanillaDateTimeOffsetField );
+				Assert.That( result.DefaultDateTimeOffsetField, Is.EqualTo( input.DefaultDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField, input.DefaultDateTimeOffsetField );
+				Assert.That( result.NativeDateTimeOffsetField, Is.EqualTo( input.NativeDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField, input.NativeDateTimeOffsetField );
 				// UTC is forced.
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField );
 
 				// Kind is preserved.
 				Assert.That( result.VanillaDateTimeProperty, Is.EqualTo( input.VanillaDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
@@ -336,11 +348,11 @@ namespace MsgPack.Serialization
 
 
 				// Offset is preserved. 
-				Assert.That( result.VanillaDateTimeOffsetProperty.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
-				Assert.That( result.DefaultDateTimeOffsetProperty.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
-				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				Assert.That( result.VanillaDateTimeOffsetProperty, Is.EqualTo( input.VanillaDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty, input.VanillaDateTimeOffsetProperty );
+				Assert.That( result.DefaultDateTimeOffsetProperty, Is.EqualTo( input.DefaultDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty, input.DefaultDateTimeOffsetProperty );
+				Assert.That( result.NativeDateTimeOffsetProperty, Is.EqualTo( input.NativeDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty, input.NativeDateTimeOffsetProperty );
 				// UTC is forced.
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty );
 			}
 		}
 
@@ -365,11 +377,11 @@ namespace MsgPack.Serialization
 
 
 				// Offset is preserved. 
-				Assert.That( result.VanillaDateTimeOffsetField.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
-				Assert.That( result.DefaultDateTimeOffsetField.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
-				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				Assert.That( result.VanillaDateTimeOffsetField, Is.EqualTo( input.VanillaDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField, input.VanillaDateTimeOffsetField );
+				Assert.That( result.DefaultDateTimeOffsetField, Is.EqualTo( input.DefaultDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField, input.DefaultDateTimeOffsetField );
+				Assert.That( result.NativeDateTimeOffsetField, Is.EqualTo( input.NativeDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField, input.NativeDateTimeOffsetField );
 				// UTC == UTC
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField );
 
 				// Kind is preserved.
 				Assert.That( result.VanillaDateTimeProperty, Is.EqualTo( input.VanillaDateTimeProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
@@ -379,11 +391,11 @@ namespace MsgPack.Serialization
 
 
 				// Offset is preserved. 
-				Assert.That( result.VanillaDateTimeOffsetProperty.DateTime, Is.EqualTo( input.VanillaDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
-				Assert.That( result.DefaultDateTimeOffsetProperty.DateTime, Is.EqualTo( input.DefaultDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
-				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				Assert.That( result.VanillaDateTimeOffsetProperty, Is.EqualTo( input.VanillaDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty, input.VanillaDateTimeOffsetProperty );
+				Assert.That( result.DefaultDateTimeOffsetProperty, Is.EqualTo( input.DefaultDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty, input.DefaultDateTimeOffsetProperty );
+				Assert.That( result.NativeDateTimeOffsetProperty, Is.EqualTo( input.NativeDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty, input.NativeDateTimeOffsetProperty );
 				// UTC == UTC
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty );
 			}
 		}
 
@@ -408,11 +420,11 @@ namespace MsgPack.Serialization
 
 
 				// UTC is forced.
-				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
-				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
-				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetField, input.VanillaDateTimeOffsetField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField, input.VanillaDateTimeOffsetField );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetField, input.DefaultDateTimeOffsetField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField, input.DefaultDateTimeOffsetField );
+				Assert.That( result.NativeDateTimeOffsetField, Is.EqualTo( input.NativeDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField, input.NativeDateTimeOffsetField );
 				// UTC is forced.
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField );
 
 				// UTC is forced.
 				Assert.That( CompareDateTime( result.VanillaDateTimeProperty, input.VanillaDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
@@ -422,11 +434,11 @@ namespace MsgPack.Serialization
 
 
 				// UTC is forced.
-				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
-				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
-				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetProperty, input.VanillaDateTimeOffsetProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty, input.VanillaDateTimeOffsetProperty );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetProperty, input.DefaultDateTimeOffsetProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty, input.DefaultDateTimeOffsetProperty );
+				Assert.That( result.NativeDateTimeOffsetProperty, Is.EqualTo( input.NativeDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty, input.NativeDateTimeOffsetProperty );
 				// UTC is forced.
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty );
 			}
 		}
 
@@ -451,11 +463,11 @@ namespace MsgPack.Serialization
 
 
 				// UTC == UTC
-				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField.DateTime, input.VanillaDateTimeOffsetField.DateTime );
-				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField.DateTime, input.DefaultDateTimeOffsetField.DateTime );
-				Assert.That( result.NativeDateTimeOffsetField.DateTime, Is.EqualTo( input.NativeDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField.DateTime, input.NativeDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetField, input.VanillaDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetField, input.VanillaDateTimeOffsetField );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetField, input.DefaultDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetField, input.DefaultDateTimeOffsetField );
+				Assert.That( result.NativeDateTimeOffsetField, Is.EqualTo( input.NativeDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetField, input.NativeDateTimeOffsetField );
 				// UTC == UTC
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField.DateTime, input.UnixEpocDateTimeOffsetField.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetField, input.UnixEpocDateTimeOffsetField );
 
 				// UTC is forced.
 				Assert.That( CompareDateTime( result.VanillaDateTimeProperty, input.VanillaDateTimeProperty.ToUniversalTime() ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeProperty, input.VanillaDateTimeProperty );
@@ -465,11 +477,11 @@ namespace MsgPack.Serialization
 
 
 				// UTC == UTC
-				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty.DateTime, input.VanillaDateTimeOffsetProperty.DateTime );
-				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty.DateTime, input.DefaultDateTimeOffsetProperty.DateTime );
-				Assert.That( result.NativeDateTimeOffsetProperty.DateTime, Is.EqualTo( input.NativeDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty.DateTime, input.NativeDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.VanillaDateTimeOffsetProperty, input.VanillaDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.VanillaDateTimeOffsetProperty, input.VanillaDateTimeOffsetProperty );
+				Assert.That( CompareDateTime( result.DefaultDateTimeOffsetProperty, input.DefaultDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.DefaultDateTimeOffsetProperty, input.DefaultDateTimeOffsetProperty );
+				Assert.That( result.NativeDateTimeOffsetProperty, Is.EqualTo( input.NativeDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.NativeDateTimeOffsetProperty, input.NativeDateTimeOffsetProperty );
 				// UTC == UTC
-				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty.DateTime, input.UnixEpocDateTimeOffsetProperty.DateTime );
+				Assert.That( CompareDateTime( result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty ), "{0:O}({0:%K}) == {1:O}({1:%K})", result.UnixEpocDateTimeOffsetProperty, input.UnixEpocDateTimeOffsetProperty );
 			}
 		}
 

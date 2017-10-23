@@ -28,10 +28,12 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 using MsgPack.Serialization.CodeDomSerializers;
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
+#if !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 using MsgPack.Serialization.EmittingSerializers;
-#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
+#endif // !SILVERLIGHT && !AOT && !NETSTANDARD1_1
 #if !NETFX_CORE
 using Microsoft.FSharp.Collections;
 #endif // !NETFX_CORE
@@ -64,7 +66,7 @@ namespace MsgPack.Serialization
 			get { return true; }
 		}
 
-#if !NETFX_CORE && !SILVERLIGHT && !AOT
+#if !NETFX_CORE && !SILVERLIGHT && !AOT && !XAMARIN
 		[SetUp]
 		public void SetUp()
 		{
@@ -125,7 +127,7 @@ namespace MsgPack.Serialization
 			SerializerDebugging.OnTheFlyCodeGenerationEnabled = false;
 #endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD1_6
 		}
-#endif // !NETFX_CORE && !SDILVERLIGHT && !AOT
+#endif // !NETFX_CORE && !SDILVERLIGHT && !AOT && !XAMARIN
 
 		[Test]
 		public void QueueSerializationTest()

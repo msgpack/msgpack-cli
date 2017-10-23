@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -33,7 +33,7 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack
 {
 	[TestFixture]
-	[Timeout( 3000 )]
+	[Timeout( 30000 )]
 	public class FastByteArrayUnpackerTest : ByteArrayUnpackerTest
 	{
 		protected override bool ShouldCheckSubtreeUnpacker

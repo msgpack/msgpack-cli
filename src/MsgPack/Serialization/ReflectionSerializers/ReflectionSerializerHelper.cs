@@ -213,18 +213,18 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 			// CreateDelegate causes AOT error.
 			// So use reflection in AOT environment.
-#if !AOT || AOT_CHECK
-			try
+#if !UNITY
+			if ( SerializerOptions.CanEmit )
 			{
-				return collectionTraits.AddMethod.CreateDelegate( typeof( Action<TCollection, TItem> ) ) as Action<TCollection, TItem>;
+				try
+				{
+					return collectionTraits.AddMethod.CreateDelegate( typeof( Action<TCollection, TItem> ) ) as Action<TCollection, TItem>;
+				}
+				catch ( ArgumentException ) { }
 			}
-			catch ( ArgumentException )
-			{
-#endif // !AOT || AOT_CHECK
-				return ( collection, item ) => collectionTraits.AddMethod.InvokePreservingExceptionType( collection, item );
-#if !AOT || AOT_CHECK
-			}
-#endif // !AOT || AOT_CHECK
+#endif //! UNITY
+
+			return ( collection, item ) => collectionTraits.AddMethod.InvokePreservingExceptionType( collection, item );
 		}
 
 		public static void GetMetadata(

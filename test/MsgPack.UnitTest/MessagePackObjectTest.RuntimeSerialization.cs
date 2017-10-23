@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -18,7 +18,7 @@
 //
 #endregion -- License Terms --
 
-#if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !SILVERLIGHT
+#if !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !SILVERLIGHT && !NETSTANDARD2_0
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -171,4 +171,4 @@ namespace MsgPack
 		}
 	}
 }
-#endif // !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETFX_CORE && !WINDOWS_PHONE && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0

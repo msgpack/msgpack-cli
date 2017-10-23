@@ -2251,7 +2251,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"Å|0001-03-01T00:00:00.000000000Z",
+					"\uFF0D0001-03-01T00:00:00.000000000Z",
 					"o",
 					new LegacyJapaneseCultureInfo(),
 					DateTimeStyles.None
@@ -2266,7 +2266,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"Å|0001-03-01T00:00:00.000000000Z",
+					"\uFF0D0001-03-01T00:00:00.000000000Z",
 					"o",
 					new LegacyJapaneseCultureInfo(),
 					DateTimeStyles.None,
@@ -2299,7 +2299,7 @@ namespace MsgPack
 
 				Assert.That(
 					Timestamp.ParseExact(
-						"Å|0001-03-01T00:00:00.000000000Z",
+						"\uFF0D0001-03-01T00:00:00.000000000Z",
 						"o",
 						null,
 						DateTimeStyles.None
@@ -2339,7 +2339,7 @@ namespace MsgPack
 				Timestamp result;
 				Assert.That(
 					Timestamp.TryParseExact(
-						"Å|0001-03-01T00:00:00.000000000Z",
+						"\uFF0D0001-03-01T00:00:00.000000000Z",
 						"o",
 						null,
 						DateTimeStyles.None,
@@ -2367,7 +2367,7 @@ namespace MsgPack
 		{
 			Assert.That(
 				Timestamp.ParseExact(
-					"Å|0001-03-01T00:00:00Z",
+					"\uFF0D0001-03-01T00:00:00Z",
 					"s",
 					new LegacyJapaneseCultureInfo(),
 					DateTimeStyles.None
@@ -2382,7 +2382,7 @@ namespace MsgPack
 			Timestamp result;
 			Assert.That(
 				Timestamp.TryParseExact(
-					"Å|0001-03-01T00:00:00Z",
+					"\uFF0D0001-03-01T00:00:00Z",
 					"s",
 					new LegacyJapaneseCultureInfo(),
 					DateTimeStyles.None,
@@ -2415,7 +2415,7 @@ namespace MsgPack
 
 				Assert.That(
 					Timestamp.ParseExact(
-						"Å|0001-03-01T00:00:00Z",
+						"\uFF0D0001-03-01T00:00:00Z",
 						"s",
 						null,
 						DateTimeStyles.None
@@ -2455,7 +2455,7 @@ namespace MsgPack
 				Timestamp result;
 				Assert.That(
 					Timestamp.TryParseExact(
-						"Å|0001-03-01T00:00:00Z",
+						"\uFF0D0001-03-01T00:00:00Z",
 						"s",
 						null,
 						DateTimeStyles.None,

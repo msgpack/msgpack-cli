@@ -23,7 +23,6 @@
 
 #if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
 #define UNITY
-#define AOT
 #endif
 
 using System;
@@ -53,7 +52,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	internal static class SerializerDebugging
 	{
-#if !AOT
+#if !UNITY
 #if DEBUG
 		[ThreadStatic]
 		private static bool _traceEnabled;
@@ -87,7 +86,7 @@ namespace MsgPack.Serialization
 			set { _dumpEnabled = value; }
 		}
 #endif // DEBUG
-#endif // !AOT
+#endif // !UNITY
 
 #if DEBUG
 		[ThreadStatic]
@@ -108,7 +107,7 @@ namespace MsgPack.Serialization
 		}
 #endif // DEBUG
 
-#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 #if DEBUG
 		[ThreadStatic]
 		private static StringWriter _ilTraceWriter;
@@ -161,7 +160,7 @@ namespace MsgPack.Serialization
 			Tracer.Emit.TraceEvent( Tracer.EventType.DefineType, Tracer.EventId.DefineType, format, args );
 		}
 #endif // DEBUG
-#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 
 		/// <summary>
 		///		Traces the polymorphic schema event.
@@ -173,20 +172,20 @@ namespace MsgPack.Serialization
 		public static void TracePolimorphicSchemaEvent( string format, MemberInfo memberInfo, PolymorphismSchema schema )
 		{
 #if DEBUG
-#if !AOT && !SILVERLIGHT
+#if !UNITY && !SILVERLIGHT && !WINDOWS_UWP
 			if ( !_traceEnabled )
 			{
 				return;
 			}
 
 			Tracer.Emit.TraceEvent( Tracer.EventType.PolimorphicSchema, Tracer.EventId.PolimorphicSchema, format, memberInfo, schema == null ? "(null)" : schema.DebugString );
-#endif // !AOT && !SILVERLIGHT
+#endif // !UNITY && !SILVERLIGHT && !WINDOWS_UWP
 #endif
 		}
 
 #if DEBUG
 
-#if !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 		/// <summary>
 		///		Flushes the trace data.
 		/// </summary>
@@ -373,7 +372,7 @@ namespace MsgPack.Serialization
 			ResetDependentAssemblies();
 		}
 #endif // !NETSTANDARD1_3
-#endif // !AOT && !SILVERLIGHT && !NETSTANDARD1_1
+#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
 
 #if NET35 || UNITY || SILVERLIGHT
 		private static int _useLegacyNullMapEntryHandling;
