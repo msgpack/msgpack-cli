@@ -728,3 +728,9 @@ Relase 1.0.0-beta2 (T.B.D.)
 
   CHANGES
   * Xamarin builds are now integrated to .NET Standard 2.0.
+
+  NEW FEATURES
+  * ValueTuple support. #277
+
+  IMPROVEMENTS
+  * System.Tuple<T> detection now ignores their declaring assemblies.
