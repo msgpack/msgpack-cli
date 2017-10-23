@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -41,29 +41,30 @@ namespace MsgPack.Serialization.AbstractSerializers
 		{
 			var itemTypes = TupleItems.GetTupleItemTypes( this.TargetType );
 			targetInfo = SerializationTarget.CreateForTuple( itemTypes );
+			var isValueTuple = this.TargetType.GetIsValueType();
 
-			this.BuildTuplePackTo( context, itemTypes, itemSchemaList, false );
+			this.BuildTuplePackTo( context, itemTypes, itemSchemaList, isValueTuple, false );
 
 #if FEATURE_TAP
 			if ( this.WithAsync( context ) )
 			{
-				this.BuildTuplePackTo( context, itemTypes, itemSchemaList, true );
+				this.BuildTuplePackTo( context, itemTypes, itemSchemaList, isValueTuple, true );
 			}
 #endif // FEATURE_TAP
 
-			this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList, false );
+			this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList, isValueTuple, false );
 
 #if FEATURE_TAP
 			if ( this.WithAsync( context ) )
 			{
-				this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList, true );
+				this.BuildTupleUnpackFrom( context, itemTypes, itemSchemaList, isValueTuple, true );
 			}
 #endif // FEATURE_TAP
 		}
 
 		#region -- PackTo --
 
-		private void BuildTuplePackTo( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
+		private void BuildTuplePackTo( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isValueTuple, bool isAsync )
 		{
 			/*
 				 packer.PackArrayHeader( cardinarity );
@@ -84,17 +85,25 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					TypeDefinition.VoidType,
-					this.BuildTuplePackToCore( context, itemTypes, itemSchemaList, isAsync )
+					this.BuildTuplePackToCore( context, itemTypes, itemSchemaList, isValueTuple, isAsync )
 				)
 			);
 		}
 
-		private IEnumerable<TConstruct> BuildTuplePackToCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
+		private IEnumerable<TConstruct> BuildTuplePackToCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isValueTuple, bool isAsync )
+		{
+			return
+				isValueTuple
+					? BuildTuplePackToCore( context, itemTypes, itemSchemaList, ( t, n ) => t.GetField( n ), ( c, s, m ) => this.EmitGetFieldExpression( c, s, m ), isAsync )
+					: BuildTuplePackToCore( context, itemTypes, itemSchemaList, ( t, n ) => t.GetProperty( n ), ( c, s, m )=> this.EmitGetPropertyExpression( c, s, m ), isAsync );
+		}
+
+		private IEnumerable<TConstruct> BuildTuplePackToCore<TInfo>( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, Func<Type, string, TInfo> memberFactory, Func<TContext, TConstruct, TInfo, TConstruct> chainConstructFactory, bool isAsync )
 		{
 			// Note: cardinality is put as array length by PackHelper.
 			var depth = -1;
-			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
-			var propertyInvocationChain = new List<PropertyInfo>( itemTypes.Count % 7 + 1 );
+			var tupleTypeList = TupleItems.CreateTupleTypeList( this.TargetType );
+			var memberInvocationChain = new List<TInfo>( itemTypes.Count % 7 + 1 );
 			var packValueArguments =
 				new[] { context.Packer, context.PackToTarget }
 #if FEATURE_TAP
@@ -102,28 +111,28 @@ namespace MsgPack.Serialization.AbstractSerializers
 #endif // FEATURE_TAP
 				;
 
-			for ( int i = 0; i < itemTypes.Count; i++ )
+			for ( var i = 0; i < itemTypes.Count; i++ )
 			{
 				if ( i % 7 == 0 )
 				{
 					depth++;
 				}
 
-				for ( int j = 0; j < depth; j++ )
+				for ( var j = 0; j < depth; j++ )
 				{
 					// .TRest.TRest ...
-					var restProperty = tupleTypeList[ j ].GetProperty( "Rest" );
+					var restMember = memberFactory( tupleTypeList[ j ], "Rest" );
 #if DEBUG
-					Contract.Assert( restProperty != null );
+					Contract.Assert( restMember != null, tupleTypeList[ j ].GetFullName() + ".Rest is not defined" );
 #endif
-					propertyInvocationChain.Add( restProperty );
+					memberInvocationChain.Add( restMember );
 				}
 
-				var itemNProperty = tupleTypeList[ depth ].GetProperty( "Item" + ( ( i % 7 ) + 1 ) );
-				propertyInvocationChain.Add( itemNProperty );
+				var itemNMember = memberFactory( tupleTypeList[ depth ], "Item" + ( ( i % 7 ) + 1 ) );
+				memberInvocationChain.Add( itemNMember );
 #if DEBUG
 				Contract.Assert(
-					itemNProperty != null,
+					itemNMember != null,
 					tupleTypeList[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i
 				);
 #endif
@@ -144,15 +153,16 @@ namespace MsgPack.Serialization.AbstractSerializers
 							itemTypes[ count ],
 							context.Packer,
 							context.PackToTarget,
-							propertyInvocationChain,
+							memberInvocationChain,
 							itemSchemaList.Count == 0 ? null : itemSchemaList[ count ],
+							chainConstructFactory,
 							isAsync
 						)
 					),
 					packValueArguments
 				);
 
-				propertyInvocationChain.Clear();
+				memberInvocationChain.Clear();
 			}
 
 			var packHelperArguments =
@@ -215,13 +225,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 			yield return methodInvocation;
 		}
 
-		private IEnumerable<TConstruct> EmitPackTupleItemStatements(
+		private IEnumerable<TConstruct> EmitPackTupleItemStatements<TInfo>(
 			TContext context,
 			Type itemType,
 			TConstruct currentPacker,
 			TConstruct tuple,
-			IEnumerable<PropertyInfo> propertyInvocationChain,
+			IEnumerable<TInfo> memberInvocationChain,
 			PolymorphismSchema itemsSchema,
+			Func<TContext, TConstruct, TInfo, TConstruct> chainConstructFactory,
 			bool isAsync
 		)
 		{
@@ -232,8 +243,8 @@ namespace MsgPack.Serialization.AbstractSerializers
 					itemType,
 					NilImplication.Null,
 					null,
-					propertyInvocationChain.Aggregate(
-						tuple, ( propertySource, property ) => this.EmitGetPropertyExpression( context, propertySource, property )
+					memberInvocationChain.Aggregate(
+						tuple, ( memberSource, member ) => chainConstructFactory( context, memberSource, member )
 					),
 					null,
 					itemsSchema,
@@ -245,7 +256,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 
 		#region -- UnpackFrom --
 
-		private void BuildTupleUnpackFrom( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
+		private void BuildTupleUnpackFrom( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isValueTuple, bool isAsync )
 		{
 			/*
 			 * 	checked
@@ -283,14 +294,22 @@ namespace MsgPack.Serialization.AbstractSerializers
 				this.EmitSequentialStatements(
 					context,
 					this.TargetType,
-					this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList, isAsync )
+					this.BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList, isValueTuple, isAsync )
 				)
 			);
 		}
 
-		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isAsync )
+		private IEnumerable<TConstruct> BuildTupleUnpackFromCore( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, bool isValueTuple, bool isAsync )
 		{
-			var tupleTypeList = TupleItems.CreateTupleTypeList( itemTypes );
+			return
+				isValueTuple
+					? BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList, ( t, n ) => t.GetField( n ), isAsync )
+					: BuildTupleUnpackFromCore( context, itemTypes, itemSchemaList, ( t, n ) => t.GetProperty( n ), isAsync );
+		}
+
+		private IEnumerable<TConstruct> BuildTupleUnpackFromCore<TInfo>( TContext context, IList<Type> itemTypes, IList<PolymorphismSchema> itemSchemaList, Func<Type, string, TInfo> memberFactory, bool isAsync )
+		{
+			var tupleTypeList = TupleItems.CreateTupleTypeList( this.TargetType );
 			yield return
 				this.EmitCheckIsArrayHeaderExpression( context, context.Unpacker );
 
@@ -316,14 +335,14 @@ namespace MsgPack.Serialization.AbstractSerializers
 				;
 			for ( var i = 0; i < itemTypes.Count; i++ )
 			{
-				var propertyName = SerializationTarget.GetTupleItemNameFromIndex( i );
+				var memberName = SerializationTarget.GetTupleItemNameFromIndex( i );
 				var unpackedItem = context.DefineUnpackedItemParameterInSetValueMethods( itemTypes[ i ] );
-				var setUnpackValueOfMethodName = MethodNamePrefix.SetUnpackedValueOf + propertyName;
+				var setUnpackValueOfMethodName = MethodNamePrefix.SetUnpackedValueOf + memberName;
 
 				var index = i;
 				this.ExtractPrivateMethod(
 					context,
-					AdjustName( MethodNamePrefix.UnpackValue + propertyName, isAsync ),
+					AdjustName( MethodNamePrefix.UnpackValue + memberName, isAsync ),
 					false, // isStatic
 #if FEATURE_TAP
 					isAsync ? TypeDefinition.TaskType :
@@ -332,7 +351,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 					() => this.EmitUnpackItemValueStatement(
 						context,
 						itemTypes[ index ],
-						this.MakeStringLiteral( context, propertyName ),
+						this.MakeStringLiteral( context, memberName ),
 						context.TupleItemNilImplication,
 						null, // memberInfo
 						itemSchemaList.Count == 0 ? null : itemSchemaList[ index ],
@@ -355,7 +374,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 										context,
 										context.UnpackingContextInSetValueMethods,
 										unpackingContext.VariableType,
-										propertyName,
+										memberName,
 										unpackedItem
 									),
 								context.UnpackingContextInSetValueMethods,
@@ -368,7 +387,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			}
 
 			TConstruct currentTuple = null;
-			for ( int nest = tupleTypeList.Count - 1; nest >= 0; nest-- )
+			for ( var nest = tupleTypeList.Count - 1; nest >= 0; nest-- )
 			{
 				var gets =
 					Enumerable.Range( nest * 7, Math.Min( itemTypes.Count - nest * 7, 7 ) )
@@ -376,7 +395,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							this.EmitGetFieldExpression(
 								context,
 								context.UnpackingContextInCreateObjectFromContext,
-								new FieldDefinition( 
+								new FieldDefinition(
 									unpackingContext.VariableType,
 									SerializationTarget.GetTupleItemNameFromIndex( i ),
 									itemTypes[ i ]
@@ -388,13 +407,33 @@ namespace MsgPack.Serialization.AbstractSerializers
 					gets = gets.Concat( new[] { currentTuple } );
 				}
 
-				currentTuple =
-					this.EmitCreateNewObjectExpression(
-						context,
-						null, // Tuple is reference contextType.
-						tupleTypeList[ nest ].GetConstructors().Single(),
-						gets.ToArray()
-					);
+				var constructor = tupleTypeList[ nest ].GetConstructors().SingleOrDefault();
+				if ( constructor == null )
+				{
+					// arity 0 value tuple
+#if DEBUG
+					Contract.Assert( tupleTypeList[ nest ].GetFullName() == "System.ValueTuple", tupleTypeList[ nest ].GetFullName() + " == System.ValueTuple");
+#endif
+					currentTuple = this.MakeDefaultLiteral( context, tupleTypeList[ nest ] );
+				}
+				else
+				{
+					var tempVariable = default( TConstruct );
+
+					if ( tupleTypeList[ nest ].GetIsValueType() )
+					{
+						// Temp var is required for value type (that is, ValueTuple)
+						tempVariable = this.DeclareLocal( context, tupleTypeList[ nest ], context.GetUniqueVariableName( "tuple" ) );
+					}
+
+					currentTuple =
+						this.EmitCreateNewObjectExpression(
+							context,
+							tempVariable, // Tuple is reference contextType.
+							constructor,
+							gets.ToArray()
+						);
+				}
 			}
 
 #if DEBUG

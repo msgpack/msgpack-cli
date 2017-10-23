@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2016 FUJIWARA, Yusuke
+// Copyright (C) 2014-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	{
 		private readonly IList<Type> _tupleTypes;
 		private readonly IList<ConstructorInfo> _tupleConstructors;
-		private readonly IList<Func<T, Object>> _getters;
+		private readonly IList<Func<T, object>> _getters;
 		private readonly IList<MessagePackSerializer> _itemSerializers;
 
 		public ReflectionTupleMessagePackSerializer( SerializationContext ownerContext, IList<PolymorphismSchema> itemSchemas )
@@ -58,51 +58,84 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				itemTypes.Select(
 					( itemType, i ) => ownerContext.GetSerializer( itemType, itemSchemas.Count == 0 ? null : itemSchemas[ i ] ) 
 				).ToArray();
-			this._tupleTypes = TupleItems.CreateTupleTypeList( itemTypes );
-			this._tupleConstructors = this._tupleTypes.Select( tupleType => tupleType.GetConstructors().Single() ).ToArray();
-			this._getters = GetGetters( itemTypes, this._tupleTypes ).ToArray();
+			this._tupleTypes = TupleItems.CreateTupleTypeList( typeof( T ) );
+			this._tupleConstructors = this._tupleTypes.Select( tupleType => tupleType.GetConstructors().SingleOrDefault() ).ToArray();
+			this._getters =
+				typeof( T ).GetIsValueType()
+					? GetGetters(
+						itemTypes,
+						this._tupleTypes,
+						( type, name ) => type.GetField( name ),
+						f => f,
+						getters =>
+							tuple =>
+							{
+								object current = tuple;
+								foreach ( var getter in getters )
+								{
+									current = getter.GetValue( current );
+								}
+
+								return current;
+							}
+					).ToArray() 
+					: GetGetters(
+						itemTypes,
+						this._tupleTypes,
+						( type, name ) => type.GetProperty( name ),
+						p => p.GetGetMethod(),
+						getters =>
+							tuple =>
+							{
+								object current = tuple;
+								foreach ( var getter in getters )
+								{
+									current = getter.InvokePreservingExceptionType( current );
+								}
+
+								return current;
+							}
+					).ToArray();
 		}
 
-		private static IEnumerable<Func<T, Object>> GetGetters( IList<Type> itemTypes, IList<Type> tupleTypes )
+		private static IEnumerable<Func<T, object>> GetGetters<TInfo, TAccessor>(
+			IList<Type> itemTypes,
+			IList<Type> tupleTypes,
+			Func<Type, string, TInfo> metadataFactory,
+			Func<TInfo, TAccessor> accessorFactory,
+			Func<IEnumerable<TAccessor>, Func<T, object>> chainedGetterFactory
+		)
 		{
 			var depth = -1;
-			var propertyInvocationChain = new List<PropertyInfo>( itemTypes.Count % 7 + 1 );
-			for ( int i = 0; i < itemTypes.Count; i++ )
+			var memberInvocationChain = new List<TInfo>( itemTypes.Count % 7 + 1 );
+			for ( var i = 0; i < itemTypes.Count; i++ )
 			{
 				if ( i % 7 == 0 )
 				{
 					depth++;
 				}
 
-				for ( int j = 0; j < depth; j++ )
+				for ( var j = 0; j < depth; j++ )
 				{
 					// .TRest.TRest ...
-					var restProperty = tupleTypes[ j ].GetProperty( "Rest" );
-					Contract.Assert( restProperty != null, "restProperty != null" );
-					propertyInvocationChain.Add( restProperty );
+					var restMember = metadataFactory( tupleTypes[ j ], "Rest" );
+#if DEBUG
+					Contract.Assert( restMember != null, "restMember != null" );
+#endif // DEBUG
+					memberInvocationChain.Add( restMember );
 				}
 
-				var itemNProperty = tupleTypes[ depth ].GetProperty( "Item" + ( ( i % 7 ) + 1 ) );
-				propertyInvocationChain.Add( itemNProperty );
+				var itemNMember = metadataFactory( tupleTypes[ depth ], "Item" + ( ( i % 7 ) + 1 ) );
+				memberInvocationChain.Add( itemNMember );
 #if DEBUG
 				Contract.Assert(
-					itemNProperty != null,
+					itemNMember != null,
 					tupleTypes[ depth ].GetFullName() + "::Item" + ( ( i % 7 ) + 1 ) + " [ " + depth + " ] @ " + i );
 #endif // DEBUG
-				var getters = propertyInvocationChain.Select( property => property.GetGetMethod() ).ToArray();
-				yield return
-					 tuple =>
-					 {
-						 object current = tuple;
-						 foreach ( var getter in getters )
-						 {
-							 current = getter.InvokePreservingExceptionType( current );
-						 }
+				var getters = memberInvocationChain.Select( accessorFactory ).ToArray();
+				yield return chainedGetterFactory( getters );
 
-						 return current;
-					 };
-
-				propertyInvocationChain.Clear();
+				memberInvocationChain.Clear();
 			}
 		}
 
@@ -111,7 +144,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			// Put cardinality as array length.
 			packer.PackArrayHeader( this._itemSerializers.Count );
-			for ( int i = 0; i < this._itemSerializers.Count; i++ )
+			for ( var i = 0; i < this._itemSerializers.Count; i++ )
 			{
 				this._itemSerializers[ i ].PackTo( packer, this._getters[ i ]( objectTree ) );
 			}
@@ -123,7 +156,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		{
 			// Put cardinality as array length.
 			await packer.PackArrayHeaderAsync( this._itemSerializers.Count, cancellationToken ).ConfigureAwait( false );
-			for ( int i = 0; i < this._itemSerializers.Count; i++ )
+			for ( var i = 0; i < this._itemSerializers.Count; i++ )
 			{
 				await this._itemSerializers[ i ].PackToAsync( packer, this._getters[ i ]( objectTree ), cancellationToken ).ConfigureAwait( false );
 			}
@@ -197,7 +230,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private T CreateTuple( IList<object> unpackedItems )
 		{
 			object currentTuple = null;
-			for ( int nest = this._tupleTypes.Count - 1; nest >= 0; nest-- )
+			for ( var nest = this._tupleTypes.Count - 1; nest >= 0; nest-- )
 			{
 				var items = unpackedItems.Skip( nest * 7 ).Take( Math.Min( unpackedItems.Count, 7 ) ).ToList();
 				if ( currentTuple != null )
@@ -206,7 +239,9 @@ namespace MsgPack.Serialization.ReflectionSerializers
 				}
 
 				currentTuple =
-					this._tupleConstructors[ nest ].InvokePreservingExceptionType( items.ToArray() );
+					this._tupleConstructors[ nest ] == null
+						? ReflectionExtensions.CreateInstancePreservingExceptionType( this._tupleTypes[ nest ] )
+						: this._tupleConstructors[ nest ].InvokePreservingExceptionType( items.ToArray() );
 			}
 
 			return ( T )currentTuple;
