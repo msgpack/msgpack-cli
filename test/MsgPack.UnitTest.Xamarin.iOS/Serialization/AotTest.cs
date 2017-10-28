@@ -27,6 +27,9 @@ using System.Reflection;
 using MsgPack.Serialization.ReflectionSerializers;
 
 using NUnit.Framework;
+#if NETFX_CORE
+using TestFixtureSetUp = NUnit.Framework.OneTimeSetUpAttribute;
+#endif // NETFX_CORE
 
 namespace MsgPack.Serialization
 {

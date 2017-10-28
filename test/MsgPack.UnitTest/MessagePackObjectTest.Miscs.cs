@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -239,7 +239,7 @@ namespace MsgPack
 			}
 		}
 
-#if NUNITLITE
+#if NUNITLITE && !NETFX_CORE
 		private static class Does
 		{
 			public static NUnit.Framework.Constraints.Constraint Match( string regex )
@@ -247,6 +247,6 @@ namespace MsgPack
 				return Is.StringMatching( regex );
 			}
 		}
-#endif // NUNITLITE
-	}
+#endif // NUNITLITE && !NETFX_CORE
+    }
 }

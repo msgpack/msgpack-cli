@@ -38,9 +38,6 @@ namespace MsgPack
 			// duplicate the following line with a type from the referenced assembly
 			nunit.AddTestAssembly( typeof( MainPage ).GetTypeInfo().Assembly );
 
-			// Do you want to automatically run tests when the app starts?
-			nunit.AutoRun = true;
-
 			LoadApplication( nunit );
 		}
 	}
