@@ -27,7 +27,7 @@
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
-    <PackageReference Include="Microsoft.NETCore.App" Version="1.0.5" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.0.7" />
     <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />

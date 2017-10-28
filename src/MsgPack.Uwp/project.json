@@ -50,9 +50,9 @@
     "../MsgPack/Serialization/Tracer.cs"
   ],
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-    "System.Collections.NonGeneric": "4.0.1",
-    "System.Collections.Specialized": "4.0.1"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.3",
+    "System.Collections.NonGeneric": "4.3.0",
+    "System.Collections.Specialized": "4.3.0"
   },
   "frameworks": {
     "uap10.0": {}
