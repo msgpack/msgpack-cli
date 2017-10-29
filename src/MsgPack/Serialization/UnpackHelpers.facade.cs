@@ -1,4 +1,4 @@
-﻿ 
+ 
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -33,11 +33,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if ASSERT
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 #endif // ASSERT
 #if FEATURE_TAP
 using System.Threading;

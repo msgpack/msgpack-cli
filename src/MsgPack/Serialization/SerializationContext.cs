@@ -31,15 +31,15 @@ using System.Collections.Concurrent;
 #else // !FEATURE_CONCURRENT
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NET35 && !UNITY
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 #if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 using System.Linq;
 #endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
-#if UNITY || WINDOWS_PHONE || WINDOWS_UWP 
+#if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 using System.Reflection;
 #endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP 
 using System.Threading;
@@ -64,7 +64,7 @@ namespace MsgPack.Serialization
 #if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 		private static readonly MethodInfo GetSerializer1Method =
 			typeof( SerializationContext ).GetRuntimeMethod( "GetSerializer", new[] { typeof( object ) } );
-#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP 
+#endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP
 
 
 		// Set SerializerRepository null because it requires SerializationContext, so re-init in constructor.
@@ -878,19 +878,19 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer>() != null );
 #endif // DEBUG
 
-#if DEBUG && UNITY
+#if UNITY
 			try
 			{
-#endif // DEBUG && UNITY
+#endif // UNITY
 				return SerializerGetter.Instance.Get( this, targetType, providerParameter );
-#if DEBUG && UNITY
+#if UNITY
 			}
 			catch ( Exception ex )
 			{
 				AotHelper.HandleAotError( targetType, ex );
 				throw;
 			}
-#endif // DEBUG && UNITY
+#endif // UNITY
 		}
 
 		private sealed class SerializerGetter
@@ -954,7 +954,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !UNITY
+#if !UNITY && !UNITY
 		[Preserve( AllMembers = true )]
 		private static class SerializerGetter<T>
 		{
@@ -983,6 +983,6 @@ namespace MsgPack.Serialization
 			}
 			// ReSharper restore UnusedMember.Local
 		}
-#endif // !UNITY
+#endif // !UNITY && !UNITY
 	}
 }

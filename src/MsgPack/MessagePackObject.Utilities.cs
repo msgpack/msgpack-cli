@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;

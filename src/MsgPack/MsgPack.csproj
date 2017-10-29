@@ -447,7 +447,6 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0'">
     <Compile Include="BufferedStream.cs" />
-    <Compile Include="MPContract.cs" />
     <Compile Include="NetStandardCompatibility.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">

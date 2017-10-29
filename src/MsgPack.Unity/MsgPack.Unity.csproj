@@ -14,7 +14,7 @@
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);UNITY_IPHONE;AOT</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_MPCONTRACT;UNITY_IPHONE;AOT</DefineConstants>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release'">

@@ -38,11 +38,11 @@ using System.ComponentModel;
 #endif //!UNITY || MSGPACK_UNITY_FULL
 using System.Diagnostics;
 #if ASSERT
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 #endif // ASSERT
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -862,7 +862,7 @@ namespace MsgPack.Serialization
 			return AotHelper.GetEqualityComparer<T>();
 #endif // !UNITY
 		}
-		
+
 		/// <summary>
 		///		Gets the delegate which just returns the input ('identity' function).
 		/// </summary>

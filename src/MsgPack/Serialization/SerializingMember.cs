@@ -24,11 +24,11 @@
 
 using System;
 using System.Globalization;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using MPContract = MsgPack.MPContract;
 #else
 using MPContract = System.Diagnostics.Contracts.Contract;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Reflection;
 
 namespace MsgPack.Serialization

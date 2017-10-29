@@ -1,4 +1,4 @@
-﻿<#
+<#
 //
 // MessagePack for CLI
 //
@@ -53,6 +53,15 @@ var excludes =
 		typeof( System.Numerics.Quaternion ),
 		// Special handling on serializer:
 		typeof( System.Nullable<> ),
+		typeof( System.ValueTuple ),
+		typeof( System.ValueTuple<> ),
+		typeof( System.ValueTuple<,> ),
+		typeof( System.ValueTuple<,,> ),
+		typeof( System.ValueTuple<,,,> ),
+		typeof( System.ValueTuple<,,,,> ),
+		typeof( System.ValueTuple<,,,,,> ),
+		typeof( System.ValueTuple<,,,,,,> ),
+		typeof( System.ValueTuple<,,,,,,,> ),
 		// Not supported:
 		typeof( void ),
 		typeof( System.IntPtr ),
@@ -126,6 +135,9 @@ var excludes =
 		typeof( System.Security.Cryptography.CngProperty ),
 		typeof( System.Security.Cryptography.X509Certificates.X509ChainStatus ),
 		typeof( System.Security.Cryptography.HashAlgorithmName ),
+		typeof( System.Security.Cryptography.ECCurve ),
+		typeof( System.Security.Cryptography.ECParameters ),
+		typeof( System.Security.Cryptography.ECPoint ),
 		typeof( System.Threading.AsyncFlowControl ),
 		typeof( System.Threading.AsyncLocalValueChangedArgs<> ),
 		typeof( System.Threading.CancellationToken ),

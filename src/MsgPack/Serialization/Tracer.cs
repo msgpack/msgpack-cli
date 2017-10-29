@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -96,5 +96,5 @@ namespace MsgPack.Serialization
 #endif // !UNITY
 		}
 	}
-#endif // NETSTANDARD1_1 || NETSTANDARD1_3
+#endif // NETSTANDARD1_1 || NETSTANDARD1_3 || ( UNITY && !MSGPACK_UNITY_FULL )
 }

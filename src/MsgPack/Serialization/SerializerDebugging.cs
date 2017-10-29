@@ -31,11 +31,11 @@ using System.Collections.Concurrent;
 #endif // !NET35 && !UNITY && !WINDOWS_PHONE
 using System.Collections.Generic;
 using System.Diagnostics;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Globalization;
 using System.IO;
 using System.Linq;
