@@ -129,7 +129,16 @@ if ( $LastExitCode -ne 0 )
 
 Write-Host "Restore $slnWindows packages..."
 
-& $msbuild /t:restore $slnWindows $restoreOptions
+if ( $env:APPVEYOR -eq "True" )
+{
+	# Use nuget for legacy environments.
+	nuget restore $slnWindows -Verbosity quiet
+}
+else
+{
+	& $msbuild /t:restore $slnWindows $restoreOptions
+}
+
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnWindows"

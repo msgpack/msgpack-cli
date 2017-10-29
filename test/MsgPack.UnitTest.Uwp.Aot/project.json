@@ -1,13 +1,19 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.3",
-    "NUnit": "3.8.1",
+    "NUnit": "3.6.1",
     "nunit.xamarin": "3.6.1",
     "System.Collections.NonGeneric": "4.3.0",
     "System.Collections.Specialized": "4.3.0",
     "System.Data.Common": "4.3.0",
-    "System.Numerics.Vectors": "4.4.0",
-    "System.ValueTuple": "4.4.0",
+    "System.Diagnostics.Contracts": "4.3.0",
+    "System.Net.NameResolution": "4.3.0",
+    "System.Net.Primitives": "4.3.0",
+    "System.Numerics.Vectors": "4.3.0",
+    "System.Runtime.WindowsRuntime": "4.3.0",
+    "System.Threading.Overlapped": "4.3.0",
+    "System.ValueTuple": "4.3.1",
+    "Microsoft.Win32.Primitives" : "4.3.0",
     "Xamarin.Forms": "2.3.3.180"
   },
   "frameworks": {

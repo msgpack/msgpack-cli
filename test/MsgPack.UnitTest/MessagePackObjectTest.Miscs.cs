@@ -239,7 +239,7 @@ namespace MsgPack
 			}
 		}
 
-#if NUNITLITE && !NETFX_CORE
+#if NUNITLITE
 		private static class Does
 		{
 			public static NUnit.Framework.Constraints.Constraint Match( string regex )
