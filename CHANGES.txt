@@ -724,7 +724,7 @@ Release 1.0.0-beta1 2017-10-01
   * Fix UAP build drop does not exists in nupkg. #186
   * Fix new unpacker cannot unpack reserved ext types.
 
-Relase 1.0.0-beta2 (T.B.D.)
+Relase 1.0.0-beta2 2017-10-29
 
   CHANGES
   * Xamarin builds are now integrated to .NET Standard 2.0.
@@ -734,3 +734,5 @@ Relase 1.0.0-beta2 (T.B.D.)
 
   IMPROVEMENTS
   * System.Tuple<T> detection now ignores their declaring assemblies.
+  * Improve exception message in AOT error of Unity.
+  * .NET Standard 1.1/1.3 projects now do not depend on System.Linq.Expressions package.
