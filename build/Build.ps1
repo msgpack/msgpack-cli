@@ -34,23 +34,8 @@ else
 		Write-Error "Failed to locate MSBuild.exe which can build .NET Core and .NET 3.5. VS2017 is required."
 		exit 1
 	}
-	
-	# Ensure Android SDK for API level 10 is installed.
-	# Thanks to https://github.com/googlesamples/android-ndk/pull/80
-
-	[string]$env:ANDROID_HOME = "$env:localappdata/Android/android-sdk/"
-
-	if ( !( Test-Path "$env:ANDROID_HOME/tools/android.bat" ) )
-	{
-		Write-Error "Android SDK is required."
-		exit 1
-	}
 
 	./SetBuildEnv.ps1
-	if ( $env:SKIP_ANDROID_SDK_UPDATE -ne "True" )
-	{
-		./UpdateAndroidSdk.cmd
-	}
 }
 
 [string]$buildConfig = 'Release'
