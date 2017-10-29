@@ -26,7 +26,7 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _DictionaryEntry
 	{
-		public static readonly PropertyInfo Key = FromExpression.ToProperty( ( DictionaryEntry entry ) => entry.Key );
-		public static readonly PropertyInfo Value = FromExpression.ToProperty( ( DictionaryEntry entry ) => entry.Value );
+		public static readonly PropertyInfo Key = typeof( DictionaryEntry ).GetProperty( nameof( DictionaryEntry.Key ) );
+		public static readonly PropertyInfo Value = typeof( DictionaryEntry ).GetProperty( nameof( DictionaryEntry.Value ) );
 	}
 }

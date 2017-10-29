@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -22,10 +22,10 @@
 #define UNITY
 #endif
 
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // MPCONTRACT
 using System.Text;
 #if FEATURE_TAP
 #endif // FEATURE_TAP

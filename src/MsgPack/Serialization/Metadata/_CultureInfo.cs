@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2013 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ namespace MsgPack.Serialization.Metadata
 // ReSharper disable InconsistentNaming
 	internal static class _CultureInfo
 	{
-		public static readonly PropertyInfo InvariantCulture = FromExpression.ToProperty( () => CultureInfo.InvariantCulture );
+		public static readonly PropertyInfo InvariantCulture = typeof( CultureInfo ).GetProperty( nameof( CultureInfo.InvariantCulture ) );
 	}
 // ReSharper restore InconsistentNaming
 }

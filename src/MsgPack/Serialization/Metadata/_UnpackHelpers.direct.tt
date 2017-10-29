@@ -1,4 +1,4 @@
-﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ template debug="true" hostSpecific="true" #>
 <#@ output extension=".cs" #>
 <#@ Assembly Name="System.Core.dll" #>
 <#@ Assembly Name="System.Windows.Forms.dll" #>
@@ -22,7 +22,7 @@ Type[] _valueTypes =
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -40,11 +40,11 @@ Type[] _valueTypes =
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR
+#endif // FEATURE_MPCONTRACT
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
@@ -54,36 +54,58 @@ namespace MsgPack.Serialization.Metadata
 
 	partial class _UnpackHelpers
 	{
-		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods( false );
+		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods();
 		private static readonly Dictionary<Type, MethodInfo> _asyncDirectUnpackMethods =
 #if FEATURE_TAP
-		 GetDirectUnpackMethods( true );
+		 GetAsyncDirectUnpackMethods();
 #else
 		_directUnpackMethods;
 #endif // FEATURE_TAP
 
-		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods( bool forAsync )
+<#
+foreach ( var isAsync in new [] { false, true } )
+{
+	var suffix = isAsync ? "ValueAsync" : "Value";
+
+	if ( isAsync )
+	{
+#>
+#if FEATURE_TAP
+<#
+	}
+#>
+
+		private static Dictionary<Type, MethodInfo> Get<#= isAsync ? "Async" : String.Empty #>DirectUnpackMethods()
 		{
-			var suffix = forAsync ? "ValueAsync" : "Value";
 			return
 				new Dictionary<Type, MethodInfo>( <#= _valueTypes.Length + 3 #> )
 				{
 <#
-foreach( var type in _valueTypes )
-{
-	// NOTE: Allways use nullable version for nil implication.
+	foreach ( var type in _valueTypes )
+	{
+		// NOTE: Allways use nullable version for nil implication.
 #>
-			
-					{ typeof( <#= type.Name #> ), typeof( UnpackHelpers ).GetMethod( "Unpack<#= type.Name #>" + suffix ) },
-					{ typeof( <#= type.Name #>? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullable<#= type.Name #>" + suffix ) },
+					{ typeof( <#= type.Name #> ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.Unpack<#= type.Name + suffix #> ) ) },
+					{ typeof( <#= type.Name #>? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullable<#= type.Name + suffix #> ) ) },
+<#
+	}
+#>
+					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackString<#= suffix #> ) ) },
+					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackBinary<#= suffix #> ) ) },
+				};
+		}
+<#
+	if ( isAsync )
+	{
+#>
+#endif // FEATURE_TAP
+<#
+	}
+#>
+
 <#
 }
 #>
-					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackString" + suffix ) },
-					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinary" + suffix ) },
-				};
-		}
-
 		public static MethodInfo GetDirectUnpackMethod( Type type, bool forAsync )
 		{
 			MethodInfo result;

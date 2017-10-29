@@ -67,16 +67,16 @@ namespace MsgPack.Serialization
 			dictionary.Add( typeof( DateTime ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, false ) );
 			dictionary.Add( typeof( DateTimeOffset ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, false ) );
 			dictionary.Add( typeof( Timestamp ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.TimestampMessagePackSerializerProvider( ownerContext, false ) );
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, false ) );
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY
 			// DateTime, DateTimeOffset, and FILETIME must have nullable providers.
 			dictionary.Add( typeof( DateTime? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeMessagePackSerializerProvider( ownerContext, true ) );
 			dictionary.Add( typeof( DateTimeOffset? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.DateTimeOffsetMessagePackSerializerProvider( ownerContext, true ) );
 			dictionary.Add( typeof( Timestamp? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.TimestampMessagePackSerializerProvider( ownerContext, true ) );
-#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY && !UNITY
+#if ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY
 			dictionary.Add( typeof( System.Runtime.InteropServices.ComTypes.FILETIME? ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.FileTimeMessagePackSerializerProvider( ownerContext, true ) );
-#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY && !UNITY
+#endif // ( !SILVERLIGHT || WINDOWS_PHONE ) && !UNITY
 #if !NETFX_CORE && !NETSTANDARD1_1
 			dictionary.Add( typeof( DBNull ).TypeHandle, new MsgPack.Serialization.DefaultSerializers.System_DBNullMessagePackSerializer( ownerContext ) );
 #endif // !NETFX_CORE && !NETSTANDARD1_1

@@ -1679,9 +1679,6 @@
     <Compile Include="..\MsgPack.UnitTest\Serialization\FieldBasedNilImplicationTest.cs">
       <Link>Serialization\FieldBasedNilImplicationTest.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack.UnitTest\Serialization\FromExpressionTest.cs">
-      <Link>Serialization\FromExpressionTest.cs</Link>
-    </Compile>
     <Compile Include="..\MsgPack.UnitTest\Serialization\GenerationBasedNilImplicationTest.cs">
       <Link>Serialization\GenerationBasedNilImplicationTest.cs</Link>
     </Compile>

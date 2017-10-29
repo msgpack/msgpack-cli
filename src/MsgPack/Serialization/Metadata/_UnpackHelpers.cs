@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,19 +35,19 @@ namespace MsgPack.Serialization.Metadata
 	internal static partial class _UnpackHelpers
 	{
 		public static readonly MethodInfo GetItemsCount =
-			FromExpression.ToMethod( ( Unpacker unpacker ) => UnpackHelpers.GetItemsCount( unpacker ) );
+			typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.GetItemsCount ), new[] { typeof( Unpacker ) } );
 
 		/// <summary>
 		///		<see cref="UnpackHelpers.GetEqualityComparer{T}()"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo GetEqualityComparer_1Method =
-			typeof( UnpackHelpers ).GetMethod( "GetEqualityComparer" );
+			typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.GetEqualityComparer ) );
 
 		/// <summary>
 		///		<see cref="UnpackHelpers.UnpackCollection{T}(Unpacker,Int32,T,Action{MsgPack.Unpacker,T,int},Action{MsgPack.Unpacker,T,int,int})"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo UnpackCollection_1Method =
-			typeof( UnpackHelpers ).GetMethods().Single( m => m.Name == "UnpackCollection" && m.GetParameters().Length == 1 );
+			typeof( UnpackHelpers ).GetMethods().Single( m => m.Name == nameof( UnpackHelpers.UnpackCollection ) && m.GetParameters().Length == 1 );
 
 #if FEATURE_TAP
 
@@ -55,17 +55,17 @@ namespace MsgPack.Serialization.Metadata
 		///		<see cref="UnpackHelpers.UnpackCollectionAsync{T}(Unpacker,int,T,System.Func{Unpacker,T,int,CancellationToken,Task},Func{Unpacker,T,int,int,CancellationToken,Task},CancellationToken)"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo UnpackCollectionAsync_1Method =
-			typeof( UnpackHelpers ).GetMethods().Single( m => m.Name == "UnpackCollectionAsync" && m.GetParameters().Length == 1 );
+			typeof( UnpackHelpers ).GetMethods().Single( m => m.Name == nameof( UnpackHelpers.UnpackCollectionAsync ) && m.GetParameters().Length == 1 );
 
 		/// <summary>
 		///		<see cref="UnpackHelpers.ToNullable{T}"/> generic method.
 		/// </summary>
-		public static readonly MethodInfo ToNullable1Method = typeof( UnpackHelpers ).GetMethod( "ToNullable" );
+		public static readonly MethodInfo ToNullable1Method = typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.ToNullable ) );
 
 		/// <summary>
 		///		<see cref="UnpackHelpers.UnpackFromMessageAsync{T}(T,Unpacker,CancellationToken)"/> generic method.
 		/// </summary>
-		public static readonly MethodInfo UnpackFromMessageAsyncMethod = typeof( UnpackHelpers ).GetMethod( "UnpackFromMessageAsync" );
+		public static readonly MethodInfo UnpackFromMessageAsyncMethod = typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackFromMessageAsync ) );
 
 #endif // FEATURE_MAP
 
@@ -73,12 +73,12 @@ namespace MsgPack.Serialization.Metadata
 		///		<see cref="UnpackHelpers.GetIdentity{T}()"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo GetIdentity_1Method =
-			typeof( UnpackHelpers ).GetMethod( "GetIdentity" );
+			typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.GetIdentity ) );
 
 		/// <summary>
 		///		<see cref="UnpackHelpers.Unbox{T}()"/> generic method.
 		/// </summary>
 		public static readonly MethodInfo Unbox_1Method =
-			typeof( UnpackHelpers ).GetMethod( "Unbox" );
+			typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.Unbox ) );
 	}
 }

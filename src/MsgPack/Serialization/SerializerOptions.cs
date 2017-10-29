@@ -23,11 +23,11 @@
 #endif
 
 using System;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 #if NETSTANDARD1_3 || NETSTANDARD2_0
 using System.Reflection;
 using System.Reflection.Emit;

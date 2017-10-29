@@ -27,11 +27,11 @@
 #endif // !NET40 && !NET35 && !UNITY && !SILVERLIGHT
 using System;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Globalization;
 using System.Linq;
 #if NET45

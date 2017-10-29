@@ -45,11 +45,11 @@ using System.Collections.Concurrent;
 #else // !SILVERLIGHT && !NET35 && !UNITY
 using System.Collections.Generic;
 #endif // !SILVERLIGHT && !NET35 && !UNITY
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 #if FEATURE_EMIT
 using MsgPack.Serialization.AbstractSerializers;
 #if !NETSTANDARD1_3
@@ -788,6 +788,6 @@ namespace MsgPack.Serialization
 			// Ensure Dictionary<T, ?> is work.
 			AotHelper.PrepareEqualityComparer<T>();
 		}
-#endif // UNITY || UNITY
+#endif // UNITY
 	}
 }

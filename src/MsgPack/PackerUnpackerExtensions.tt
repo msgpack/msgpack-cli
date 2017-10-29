@@ -1,4 +1,4 @@
-﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ template debug="true" hostSpecific="true" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ include file="..\Core.ttinclude" #>
 <#@ Assembly Name="System.Core.dll" #>
@@ -35,11 +35,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Linq;
 #if FEATURE_TAP
 using System.Threading;

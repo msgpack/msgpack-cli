@@ -25,11 +25,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Linq;
 using System.Reflection;
 
@@ -233,7 +233,6 @@ namespace MsgPack
 				);
 		}
 
-#if DEBUG
 		public static PropertyInfo GetRuntimeProperty( this Type source, string name )
 		{
 			return
@@ -243,6 +242,7 @@ namespace MsgPack
 				);
 		}
 
+#if DEBUG
 		public static FieldInfo GetRuntimeField( this Type source, string name )
 		{
 			return

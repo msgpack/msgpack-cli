@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2015 FUJIWARA, Yusuke
+// Copyright (C) 2014-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,13 +26,14 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _FieldInfo
 	{
 #if !NETFX_CORE
-		public static readonly MethodInfo GetFieldFromHandle = FromExpression.ToMethod( ( RuntimeFieldHandle handle, RuntimeTypeHandle declaringType ) => FieldInfo.GetFieldFromHandle( handle, declaringType ) );
+		public static readonly MethodInfo GetFieldFromHandle =
+			typeof( FieldInfo ).GetMethod( nameof( FieldInfo.GetFieldFromHandle ), new[] { typeof( RuntimeFieldHandle ), typeof( RuntimeTypeHandle ) } );
 #endif // !NETFX_CORE
 
 		public static readonly MethodInfo GetValue =
-			FromExpression.ToMethod( ( FieldInfo @this, object obj ) => @this.GetValue( obj ) );
+			typeof( FieldInfo ).GetMethod( nameof( FieldInfo.GetValue ), new[] { typeof( object ) } );
 
 		public static readonly MethodInfo SetValue =
-			FromExpression.ToMethod( ( FieldInfo @this, object obj, object value ) => @this.SetValue( obj, value ) );
+			typeof( FieldInfo ).GetMethod( nameof( FieldInfo.SetValue ), new[] { typeof( object ), typeof( object ) } );
 	}
 }

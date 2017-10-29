@@ -24,11 +24,11 @@
 
 using System;
 using System.Diagnostics;
-#if CORE_CLR || UNITY || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || UNITY || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Globalization;
 using System.Linq;
 using System.Security;
@@ -266,7 +266,7 @@ namespace MsgPack
 				return false;
 			}
 
-#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE && !UNITY
 			if ( _isFastEqualsDisabled == 0 )
 			{
 				try
@@ -282,7 +282,7 @@ namespace MsgPack
 					Interlocked.Exchange( ref _isFastEqualsDisabled, 1 );
 				}
 			}
-#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE && !UNITY;
 
 			return SlowEquals( left._encoded, right._encoded );
 		}
@@ -300,7 +300,7 @@ namespace MsgPack
 			return true;
 		}
 
-#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#if !UNITY && !WINDOWS_PHONE && !NETFX_CORE && !UNITY
 #if SILVERLIGHT
 		private static int _isFastEqualsDisabled =
 			System.Windows.Application.Current.HasElevatedPermissions ? 0 : 1;
@@ -336,7 +336,7 @@ namespace MsgPack
 
 			return result == 0;
 		}
-#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE
+#endif // if !UNITY && !WINDOWS_PHONE && !NETFX_CORE && !UNITY;
 
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		[Serializable]

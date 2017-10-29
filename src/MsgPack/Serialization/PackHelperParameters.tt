@@ -1,4 +1,4 @@
-﻿<#@ template  debug="true" hostSpecific="true" #>
+<#@ template  debug="true" hostSpecific="true" #>
 <#@ output extension=".cs" #>
 <#@ import namespace="System" #>
 #region -- License Terms --

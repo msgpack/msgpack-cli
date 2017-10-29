@@ -30,8 +30,6 @@
     <PackageReference Include="System.Globalization" Version="4.0.11" />
     <PackageReference Include="System.IO" Version="4.1.0" />
     <PackageReference Include="System.Linq" Version="4.1.0" />
-    <!-- TODO: Remove -->
-    <PackageReference Include="System.Linq.Expressions" Version="4.1.0" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.1.1" />
     <PackageReference Include="System.ObjectModel" Version="4.0.12" />
     <PackageReference Include="System.Reflection" Version="4.1.0" />
@@ -173,11 +171,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DefaultSerializers.tt</DependentUpon>
     </Compile>
-    <Compile Update="Serialization\FromExpression.ToMethod.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FromExpression.ToMethod.tt</DependentUpon>
-    </Compile>
     <Compile Update="Serialization\Metadata\_UnpackHelpers.direct.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -275,10 +268,6 @@
     <None Update="Serialization\DefaultSerializers\ArraySerializer.Primitives.tt">
       <LastGenOutput>ArraySerializer.Primitives.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-    <None Update="Serialization\FromExpression.ToMethod.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FromExpression.ToMethod.cs</LastGenOutput>
     </None>
     <None Update="Serialization\MessagePackRuntimeTypeAttributes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -447,7 +436,6 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0'">
     <Compile Include="BufferedStream.cs" />
-    <Compile Include="MPContract.cs" />
     <Compile Include="NetStandardCompatibility.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">

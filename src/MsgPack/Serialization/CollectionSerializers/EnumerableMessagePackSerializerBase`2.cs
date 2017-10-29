@@ -53,7 +53,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </summary>
 		/// <param name="ownerContext">A <see cref="SerializationContext"/> which owns this serializer.</param>
 		/// <param name="schema">
-		///		The schema for collection itself or its items for the member this instance will be used to. 
+		///		The schema for collection itself or its items for the member this instMPCONTRACTance will be used to. 
 		///		<c>null</c> will be considered as <see cref="PolymorphismSchema.Default"/>.
 		/// </param>
 		/// <exception cref="ArgumentNullException">
