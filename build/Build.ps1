@@ -34,23 +34,8 @@ else
 		Write-Error "Failed to locate MSBuild.exe which can build .NET Core and .NET 3.5. VS2017 is required."
 		exit 1
 	}
-	
-	# Ensure Android SDK for API level 10 is installed.
-	# Thanks to https://github.com/googlesamples/android-ndk/pull/80
-
-	[string]$env:ANDROID_HOME = "$env:localappdata/Android/android-sdk/"
-
-	if ( !( Test-Path "$env:ANDROID_HOME/tools/android.bat" ) )
-	{
-		Write-Error "Android SDK is required."
-		exit 1
-	}
 
 	./SetBuildEnv.ps1
-	if ( $env:SKIP_ANDROID_SDK_UPDATE -ne "True" )
-	{
-		./UpdateAndroidSdk.cmd
-	}
 }
 
 [string]$buildConfig = 'Release'
@@ -72,6 +57,8 @@ if( $Rebuild )
 
 $buildOptions += "/p:Configuration=${buildConfig}"
 $restoreOptions = "/v:minimal"
+
+Write-Host "Clean up directories..."
 
 # Unity
 if ( !( Test-Path "./MsgPack-CLI" ) )
@@ -103,12 +90,17 @@ if ( !( Test-Path "./MsgPack-CLI/mpu" ) )
 }
 
 # build
+
+Write-Host "Restore $sln packages..."
+
 & $msbuild /t:restore $sln $restoreOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $sln"
 	exit $LastExitCode
 }
+
+Write-Host "Build $sln..."
 
 & $msbuild $sln $buildOptions
 if ( $LastExitCode -ne 0 )
@@ -117,12 +109,16 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
+Write-Host "Restore $slnCompat packages..."
+
 & $msbuild /t:restore $slnCompat $restoreOptions
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnCompat"
 	exit $LastExitCode
 }
+
+Write-Host "Build $slnCompat..."
 
 & $msbuild $slnCompat $buildOptions
 if ( $LastExitCode -ne 0 )
@@ -131,12 +127,25 @@ if ( $LastExitCode -ne 0 )
 	exit $LastExitCode
 }
 
-& $msbuild /t:restore $slnWindows $restoreOptions
+Write-Host "Restore $slnWindows packages..."
+
+if ( $env:APPVEYOR -eq "True" )
+{
+	# Use nuget for legacy environments.
+	nuget restore $slnWindows -Verbosity quiet
+}
+else
+{
+	& $msbuild /t:restore $slnWindows $restoreOptions
+}
+
 if ( $LastExitCode -ne 0 )
 {
 	Write-Error "Failed to restore $slnWindows"
 	exit $LastExitCode
 }
+
+Write-Host "Build $slnWindows..."
 
 & $msbuild $slnWindows $buildOptions
 if ( $LastExitCode -ne 0 )
@@ -147,6 +156,8 @@ if ( $LastExitCode -ne 0 )
 
 if ( $buildConfig -eq 'Release' )
 {
+	Write-Host "Build NuGet packages..."
+
 	& $msbuild ../src/MsgPack/MsgPack.csproj /t:pack /v:minimal /p:Configuration=$buildConfig /p:IncludeSource=true /p:NuspecProperties=version=$env:PackageVersion
 
 	Move-Item ../bin/*.nupkg ../dist/

@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -31,9 +31,6 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // CORE_CLR || UNITY || NETSTANDARD1_1
 using System.Linq;
-#if NETFX_CORE
-using System.Reflection;
-#endif
 
 namespace MsgPack
 {
@@ -45,56 +42,60 @@ namespace MsgPack
 		/// <summary>
 		///		Creates type list for nested tuples.
 		/// </summary>
-		/// <param name="itemTypes">The type list of tuple items, in order.</param>
+		/// <param name="rootTupleType">The type of base tuple.</param>
 		/// <returns>
 		///		The type list for nested tuples.
 		///		The order is from outer to inner.
 		/// </returns>
-		public static List<Type> CreateTupleTypeList( IList<Type> itemTypes )
+		public static List<Type> CreateTupleTypeList( Type rootTupleType )
 		{
-			var itemTypesStack = new Stack<List<Type>>( itemTypes.Count / 7 + 1 );
-			for ( int i = 0; i < itemTypes.Count / 7; i++ )
+			if ( !rootTupleType.GetIsGenericType() )
 			{
-				itemTypesStack.Push( itemTypes.Skip( i * 7 ).Take( 7 ).ToList() );
+				// arity 0 value tuple
+				return new List<Type>( 1 ) { rootTupleType };
 			}
 
-			if ( itemTypes.Count % 7 != 0 )
+			var assembly = rootTupleType.GetAssembly();
+			var baseName = rootTupleType.FullName.Remove( rootTupleType.FullName.IndexOf( '`' ) + 1 );
+			var result = new List<Type>();
+			var tupleType = rootTupleType;
+			while ( true )
 			{
-				itemTypesStack.Push( itemTypes.Skip( ( itemTypes.Count / 7 ) * 7 ).Take( itemTypes.Count % 7 ).ToList() );
-			}
-
-			var result = new List<Type>( itemTypesStack.Count );
-			while ( 0 < itemTypesStack.Count )
-			{
-				var itemTypesStackEntry = itemTypesStack.Pop();
-				if ( 0 < result.Count )
+				result.Add( tupleType );
+				if ( !tupleType.GetIsGenericType() )
 				{
-					itemTypesStackEntry.Add( result.Last() );
+					// arity 0
+					break;
 				}
 
-				var tupleType = Type.GetType( "System.Tuple`" + itemTypesStackEntry.Count, true ).MakeGenericType( itemTypesStackEntry.ToArray() );
-				result.Add( tupleType );
+				var itemTypes = tupleType.GetGenericArguments();
+				if ( itemTypes.Length < 8 )
+				{
+					// leaf tuple
+					break;
+				}
+
+				tupleType = itemTypes.Last();
 			}
 
-			result.Reverse();
 			return result;
 		}
 
 		public static IList<Type> GetTupleItemTypes( Type tupleType )
 		{
 #if DEBUG
-			Contract.Assert( tupleType.Name.StartsWith( "Tuple`" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ), "tupleType.Name.StartsWith( \"Tuple`\" ) && tupleType.GetAssembly().Equals( typeof( Tuple ).GetAssembly() )" );
+			Contract.Assert( IsTuple( tupleType ), "IsTuple( "+ tupleType.AssemblyQualifiedName + " )" );
 #endif // DEBUG
 			var arguments = tupleType.GetGenericArguments();
-			List<Type> itemTypes = new List<Type>( tupleType.GetGenericArguments().Length );
+			var itemTypes = new List<Type>( tupleType.GetGenericArguments().Length );
 			GetTupleItemTypes( arguments, itemTypes );
 			return itemTypes;
 		}
 
 		private static void GetTupleItemTypes( IList<Type> itemTypes, IList<Type> result )
 		{
-			int count = itemTypes.Count == 8 ? 7 : itemTypes.Count;
-			for ( int i = 0; i < count; i++ )
+			var count = itemTypes.Count == 8 ? 7 : itemTypes.Count;
+			for ( var i = 0; i < count; i++ )
 			{
 				result.Add( itemTypes[ i ] );
 			}
@@ -103,20 +104,21 @@ namespace MsgPack
 			{
 				var trest = itemTypes[ 7 ];
 #if DEBUG
-				Contract.Assert( trest.Name.StartsWith( "Tuple`" ) && trest.GetAssembly().Equals( typeof( Tuple ).GetAssembly() ), "trest.Name.StartsWith( \"Tuple`\" ) && trest.Assembly == typeof( Tuple ).Assembly" );
+				Contract.Assert( IsTuple( trest ), "IsTuple( " + trest.AssemblyQualifiedName + " )" );
 #endif // DEBUG
+				// Put nested tuple's item types recursively.
 				GetTupleItemTypes( trest.GetGenericArguments(), result );
 			}
 		}
 
 		public static bool IsTuple( Type type )
 		{
-			var assembly = type.GetAssembly();
 			return
-				( assembly.Equals( typeof( object ).GetAssembly() ) ||
-				assembly.Equals( typeof( Enumerable ).GetAssembly() ) )
-				&& type.GetIsPublic() &&
-				type.Name.StartsWith( "Tuple`", StringComparison.Ordinal );
+				type.GetIsPublic()
+				&& ( ( type.FullName.StartsWith( "System.ValueTuple`", StringComparison.Ordinal ) && type.GetIsValueType() )
+					|| ( type.FullName.StartsWith( "System.Tuple`", StringComparison.Ordinal ) && !type.GetIsValueType() )
+					|| ( type.FullName == "System.ValueTuple" && type.GetIsValueType() )
+				);
 		}
 	}
 }

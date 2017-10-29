@@ -1129,13 +1129,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestTuple1()
 		{
-			TestTupleCore( new Tuple<int>( 1 ) );
+			TestTupleCore( new Tuple<int>( 1 ), 1 );
 		}
 
 		[Test]
 		public void TestTuple7()
 		{
-			TestTupleCore( new Tuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ) );
+			TestTupleCore( new Tuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ), 7 );
 		}
 
 		[Test]
@@ -1143,11 +1143,12 @@ namespace MsgPack.Serialization
 		{
 			TestTupleCore(
 				new Tuple<
-				int, string, int, string, int, string, int,
+					int, string, int, string, int, string, int,
 				Tuple<string>>(
 					1, "2", 3, "4", 5, "6", 7,
 					new Tuple<string>( "8" )
-				)
+				),
+				8
 			);
 		}
 
@@ -1156,16 +1157,17 @@ namespace MsgPack.Serialization
 		{
 			TestTupleCore(
 				new Tuple<
-				int, string, int, string, int, string, int,
-				Tuple<
-				string, int, string, int, string, int, string
-				>
+					int, string, int, string, int, string, int,
+					Tuple<
+						string, int, string, int, string, int, string
+					>
 				>(
 					1, "2", 3, "4", 5, "6", 7,
 					new Tuple<string, int, string, int, string, int, string>(
 						"8", 9, "10", 11, "12", 13, "14"
 					)
-				)
+				),
+				14
 			);
 		}
 
@@ -1174,28 +1176,144 @@ namespace MsgPack.Serialization
 		{
 			TestTupleCore(
 				new Tuple<
-				int, string, int, string, int, string, int,
-				Tuple<
-				string, int, string, int, string, int, string,
-				Tuple<int>
-				>
+					int, string, int, string, int, string, int,
+					Tuple<
+						string, int, string, int, string, int, string,
+						Tuple<int>
+					>
 				>(
 					1, "2", 3, "4", 5, "6", 7,
 					new Tuple<string, int, string, int, string, int, string, Tuple<int>>(
 						"8", 9, "10", 11, "12", 13, "14",
 						new Tuple<int>( 15 )
 					)
-				)
+				),
+				15
 			);
 		}
 
-		private void TestTupleCore<T>( T expected )
+#if !SILVERLIGHT
+
+		[Test]
+		public void TestValueTuple0()
+		{
+			TestTupleCore( new ValueTuple(), 0 );
+		}
+
+		[Test]
+		public void TestValueTuple1()
+		{
+			TestTupleCore( new ValueTuple<int>( 1 ), 1 );
+		}
+
+		[Test]
+		public void TestValueTuple7()
+		{
+			TestTupleCore( new ValueTuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ), 7 );
+		}
+
+		[Test]
+		public void TestValueTuple7Plus0()
+		{
+			TestTupleCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+				ValueTuple>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple()
+				),
+				7
+			);
+		}
+
+		[Test]
+		public void TestValueTuple8()
+		{
+			TestTupleCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+				ValueTuple<string>>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string>( "8" )
+				),
+				8
+			);
+		}
+
+		[Test]
+		public void TestValueTuple14()
+		{
+			TestTupleCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+					ValueTuple<
+						string, int, string, int, string, int, string
+					>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string, int, string, int, string, int, string>(
+						"8", 9, "10", 11, "12", 13, "14"
+					)
+				),
+				14
+			);
+		}
+
+		[Test]
+		public void TestValueTuple14Plus0()
+		{
+			TestTupleCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+					ValueTuple<
+						string, int, string, int, string, int, string,
+						ValueTuple
+					>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string, int, string, int, string, int, string, ValueTuple>(
+						"8", 9, "10", 11, "12", 13, "14",
+						new ValueTuple()
+					)
+				),
+				14
+			);
+		}
+
+		[Test]
+		public void TestValueTuple15()
+		{
+			TestTupleCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+					ValueTuple<
+						string, int, string, int, string, int, string,
+						ValueTuple<int>
+					>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string, int, string, int, string, int, string, ValueTuple<int>>(
+						"8", 9, "10", 11, "12", 13, "14",
+						new ValueTuple<int>( 15 )
+					)
+				),
+				15
+			);
+		}
+
+#endif // !SILVERLIGHT
+
+		private void TestTupleCore<T>( T expected, int arity )
 			where T : IStructuralEquatable
 		{
 			var serializer = this.CreateTarget<T>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, expected );
+				stream.Position = 0;
+				var mpo = MessagePackSerializer.UnpackMessagePackObject( stream );
+				Assert.That( mpo.IsList, Is.True );
+				Assert.That( mpo.AsList().Count, Is.EqualTo( arity ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( expected ) );
 			}
@@ -1205,13 +1323,13 @@ namespace MsgPack.Serialization
 		[Test]
 		public async Task TestTuple1Async()
 		{
-			await TestTupleAsyncCore( new Tuple<int>( 1 ) );
+			await TestTupleAsyncCore( new Tuple<int>( 1 ), 1 );
 		}
 
 		[Test]
 		public async Task TestTuple7Async()
 		{
-			await TestTupleAsyncCore( new Tuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ) );
+			await TestTupleAsyncCore( new Tuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ), 7 );
 		}
 
 		[Test]
@@ -1223,7 +1341,8 @@ namespace MsgPack.Serialization
 				Tuple<string>>(
 					1, "2", 3, "4", 5, "6", 7,
 					new Tuple<string>( "8" )
-				)
+				),
+				8
 			);
 		}
 
@@ -1241,7 +1360,8 @@ namespace MsgPack.Serialization
 					new Tuple<string, int, string, int, string, int, string>(
 						"8", 9, "10", 11, "12", 13, "14"
 					)
-				)
+				),
+				14
 			);
 		}
 
@@ -1261,17 +1381,129 @@ namespace MsgPack.Serialization
 						"8", 9, "10", 11, "12", 13, "14",
 						new Tuple<int>( 15 )
 					)
-				)
+				),
+				15
 			);
 		}
 
-		private async Task TestTupleAsyncCore<T>( T expected )
+		[Test]
+		public async Task TestValueTuple0Async()
+		{
+			await TestTupleAsyncCore( new ValueTuple(), 0 );
+		}
+
+		[Test]
+		public async Task TestValueTuple1Async()
+		{
+			await TestTupleAsyncCore( new ValueTuple<int>( 1 ), 1 );
+		}
+
+		[Test]
+		public async Task TestValueTuple7Async()
+		{
+			await TestTupleAsyncCore( new ValueTuple<int, string, int, string, int, string, int>( 1, "2", 3, "4", 5, "6", 7 ), 7 );
+		}
+
+		[Test]
+		public async Task TestValueTuple7Plus0Async()
+		{
+			await TestTupleAsyncCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+				ValueTuple>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple()
+				),
+				7
+			);
+		}
+
+		[Test]
+		public async Task TestValueTuple8Async()
+		{
+			await TestTupleAsyncCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+				ValueTuple<string>>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string>( "8" )
+				),
+				8
+			);
+		}
+
+		[Test]
+		public async Task TestValueTuple14Async()
+		{
+			await TestTupleAsyncCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+					ValueTuple<
+						string, int, string, int, string, int, string
+					>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string, int, string, int, string, int, string>(
+						"8", 9, "10", 11, "12", 13, "14"
+					)
+				),
+				14
+			);
+		}
+
+		[Test]
+		public async Task TestValueTuple14Plus0Async()
+		{
+			await TestTupleAsyncCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+					ValueTuple<
+						string, int, string, int, string, int, string,
+						ValueTuple
+					>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string, int, string, int, string, int, string, ValueTuple>(
+						"8", 9, "10", 11, "12", 13, "14",
+						new ValueTuple()
+					)
+				),
+				14
+			);
+		}
+
+		[Test]
+		public async Task TestValueTuple15Async()
+		{
+			await TestTupleAsyncCore(
+				new ValueTuple<
+					int, string, int, string, int, string, int,
+					ValueTuple<
+						string, int, string, int, string, int, string,
+						ValueTuple<int>
+					>
+				>(
+					1, "2", 3, "4", 5, "6", 7,
+					new ValueTuple<string, int, string, int, string, int, string, ValueTuple<int>>(
+						"8", 9, "10", 11, "12", 13, "14",
+						new ValueTuple<int>( 15 )
+					)
+				),
+				15
+			);
+		}
+
+		private async Task TestTupleAsyncCore<T>( T expected, int arity )
 			where T : IStructuralEquatable
 		{
 			var serializer = this.CreateTarget<T>( GetSerializationContext() );
 			using ( var stream = new MemoryStream() )
 			{
 				await serializer.PackAsync( stream, expected );
+				stream.Position = 0;
+				var mpo = MessagePackSerializer.UnpackMessagePackObject( stream );
+				Assert.That( mpo.IsList, Is.True );
+				Assert.That( mpo.AsList().Count, Is.EqualTo( arity ) );
 				stream.Position = 0;
 				Assert.That( await serializer.UnpackAsync( stream ), Is.EqualTo( expected ) );
 			}

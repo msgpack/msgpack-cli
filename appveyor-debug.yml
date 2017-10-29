@@ -13,8 +13,6 @@ environment:
 install:
 - cmd: >-
     cd .\build
-
-    UpdateAndroidSdk.cmd
 - ps: >-
     ./SetBuildEnv.ps1
 

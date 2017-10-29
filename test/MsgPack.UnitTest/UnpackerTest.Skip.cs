@@ -1,5 +1,5 @@
- 
- 
+
+
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -948,61 +948,5 @@ namespace MsgPack
 
 #endif // FEATURE_TAP
 
-	}
-
-	// TODO: NLiblet
-	internal static class StreamExtensions
-	{
-		public static void Write( this Stream source, byte[] buffer )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			if ( buffer == null )
-			{
-				throw new ArgumentNullException( "buffer" );
-			}
-
-			source.Write( buffer, 0, buffer.Length );
-		}
-
-		public static void Feed( this Stream source, byte[] buffer )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			if ( buffer == null )
-			{
-				throw new ArgumentNullException( "buffer" );
-			}
-
-			if ( !source.CanSeek )
-			{
-				throw new NotSupportedException();
-			}
-
-			source.Write( buffer, 0, buffer.Length );
-			source.Position -= buffer.Length;
-		}
-
-		public static void Feed( this Stream source, byte value )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentNullException( "source" );
-			}
-
-			if ( !source.CanSeek )
-			{
-				throw new NotSupportedException();
-			}
-
-			source.WriteByte( value );
-			source.Position--;
-		}
 	}
 }

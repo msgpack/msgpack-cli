@@ -4,7 +4,7 @@
     <ProjectGuid>{23F8ABB1-F41A-4150-B5D5-9A7AA60E05D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>MsgPack.UnitTest.CodeDom</AssemblyName>
-    <TargetFrameworks>net46;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net47;netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
@@ -18,15 +18,19 @@
     <PackageReference Include="NUnit" Version="3.8.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.4.0" />
+    <!-- To avoid PDB Reader error -->
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
     <PackageReference Include="Microsoft.NETCore.App" Version="2.0.0" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net47'">
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Serialization\ArrayCodeDomBasedEnumSerializationTest.cs">
@@ -57,7 +61,40 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj" />
-    <ProjectReference Include="..\MsgPack.UnitTest\MsgPack.UnitTest.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\Image.cs" />
+    <Compile Include="..\MsgPack.UnitTest\StreamExtensions.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs" Link="Serialization\AddOnlyCollection`1.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AppendableReadOnlyCollections.cs" Link="Serialization\AppendableReadOnlyCollections.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs" Link="Serialization\ArraySegmentEqualityComparer`1.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.Types.cs" Link="Serialization\AutoMessagePackSerializerTest.Types.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\BaseCollections.cs" Link="Serialization\BaseCollections.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexType.cs" Link="Serialization\ComplexType.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContract.cs" Link="Serialization\ComplexTypeWithDataContract.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContractWithOrder.cs" Link="Serialization\ComplexTypeWithDataContractWithOrder.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithNonSerialized.cs" Link="Serialization\ComplexTypeWithNonSerialized.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithOneBaseOrder.cs" Link="Serialization\ComplexTypeWithOneBaseOrder.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithoutAnyAttribute.cs" Link="Serialization\ComplexTypeWithoutAnyAttribute.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithTwoMember.cs" Link="Serialization\ComplexTypeWithTwoMember.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs" Link="Serialization\DataContractAndNonSerializedMixedTarget.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" Link="Serialization\DataMemberAttributeNamedPropertyTestTarget.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs" Link="Serialization\EnumSerializationTest.EnumDefinitions.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs" Link="Serialization\IVerifiable.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs" Link="Serialization\IVerifiable`1.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs" Link="Serialization\NilImplicationTestTarget.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\RoslynCodeGeneration.cs" Link="Serialization\RoslynCodeGeneration.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargets.cs" Link="Serialization\SerializationTargets.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs" Link="Serialization\SimpleCollection`1.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs" Link="Serialization\StringKeyedCollection.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TempFileDependentAssemblyManager.cs" Link="Serialization\TempFileDependentAssemblyManager.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs" Link="Serialization\TestValueType.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" Link="Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs" Link="Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs" />
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs" Link="Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <Compile Include="..\MsgPack.NUnitPortable\TimeoutAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\MsgPack.snk">
