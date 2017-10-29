@@ -36,7 +36,15 @@
     <None Include="..\..\src\MsgPack.snk">
       <Link>MsgPack.snk</Link>
     </None>
-  </ItemGroup>
+    <None Include="..\MsgPack.UnitTest\cases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\MsgPack.UnitTest\cases.mpac">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\MsgPack.UnitTest\cases_compact.mpac">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
