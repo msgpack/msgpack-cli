@@ -233,7 +233,6 @@ namespace MsgPack
 				);
 		}
 
-#if DEBUG
 		public static PropertyInfo GetRuntimeProperty( this Type source, string name )
 		{
 			return
@@ -243,6 +242,7 @@ namespace MsgPack
 				);
 		}
 
+#if DEBUG
 		public static FieldInfo GetRuntimeField( this Type source, string name )
 		{
 			return

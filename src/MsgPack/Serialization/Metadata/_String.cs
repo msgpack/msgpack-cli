@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2012 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,9 +27,7 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _String
 	{
 		public static readonly MethodInfo Format_P =
-			FromExpression.ToMethod(
-				( IFormatProvider provider, string format, object[] args ) => String.Format( provider, format, args )
-			);
+			typeof( string ).GetMethod( nameof( String.Format ), new[] { typeof( IFormatProvider ), typeof( string ), typeof( object[] ) } );
 	}
 // ReSharper restore InconsistentNaming
 }

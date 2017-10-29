@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-#if CORE_CLR || NETSTANDARD1_1
+#if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // CORE_CLR || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
@@ -34,57 +34,81 @@ namespace MsgPack.Serialization.Metadata
 
 	partial class _UnpackHelpers
 	{
-		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods( false );
+		private static readonly Dictionary<Type, MethodInfo> _directUnpackMethods = GetDirectUnpackMethods();
 		private static readonly Dictionary<Type, MethodInfo> _asyncDirectUnpackMethods =
 #if FEATURE_TAP
-		 GetDirectUnpackMethods( true );
+		 GetAsyncDirectUnpackMethods();
 #else
 		_directUnpackMethods;
 #endif // FEATURE_TAP
 
-		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods( bool forAsync )
+
+		private static Dictionary<Type, MethodInfo> GetDirectUnpackMethods()
 		{
-			var suffix = forAsync ? "ValueAsync" : "Value";
 			return
 				new Dictionary<Type, MethodInfo>( 14 )
 				{
-			
-					{ typeof( SByte ), typeof( UnpackHelpers ).GetMethod( "UnpackSByte" + suffix ) },
-					{ typeof( SByte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSByte" + suffix ) },
-			
-					{ typeof( Int16 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt16" + suffix ) },
-					{ typeof( Int16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt16" + suffix ) },
-			
-					{ typeof( Int32 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt32" + suffix ) },
-					{ typeof( Int32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt32" + suffix ) },
-			
-					{ typeof( Int64 ), typeof( UnpackHelpers ).GetMethod( "UnpackInt64" + suffix ) },
-					{ typeof( Int64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableInt64" + suffix ) },
-			
-					{ typeof( Byte ), typeof( UnpackHelpers ).GetMethod( "UnpackByte" + suffix ) },
-					{ typeof( Byte? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableByte" + suffix ) },
-			
-					{ typeof( UInt16 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt16" + suffix ) },
-					{ typeof( UInt16? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt16" + suffix ) },
-			
-					{ typeof( UInt32 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt32" + suffix ) },
-					{ typeof( UInt32? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt32" + suffix ) },
-			
-					{ typeof( UInt64 ), typeof( UnpackHelpers ).GetMethod( "UnpackUInt64" + suffix ) },
-					{ typeof( UInt64? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableUInt64" + suffix ) },
-			
-					{ typeof( Single ), typeof( UnpackHelpers ).GetMethod( "UnpackSingle" + suffix ) },
-					{ typeof( Single? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableSingle" + suffix ) },
-			
-					{ typeof( Double ), typeof( UnpackHelpers ).GetMethod( "UnpackDouble" + suffix ) },
-					{ typeof( Double? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableDouble" + suffix ) },
-			
-					{ typeof( Boolean ), typeof( UnpackHelpers ).GetMethod( "UnpackBoolean" + suffix ) },
-					{ typeof( Boolean? ), typeof( UnpackHelpers ).GetMethod( "UnpackNullableBoolean" + suffix ) },
-					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( "UnpackString" + suffix ) },
-					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( "UnpackBinary" + suffix ) },
+					{ typeof( SByte ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackSByteValue ) ) },
+					{ typeof( SByte? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableSByteValue ) ) },
+					{ typeof( Int16 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackInt16Value ) ) },
+					{ typeof( Int16? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableInt16Value ) ) },
+					{ typeof( Int32 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackInt32Value ) ) },
+					{ typeof( Int32? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableInt32Value ) ) },
+					{ typeof( Int64 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackInt64Value ) ) },
+					{ typeof( Int64? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableInt64Value ) ) },
+					{ typeof( Byte ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackByteValue ) ) },
+					{ typeof( Byte? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableByteValue ) ) },
+					{ typeof( UInt16 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackUInt16Value ) ) },
+					{ typeof( UInt16? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableUInt16Value ) ) },
+					{ typeof( UInt32 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackUInt32Value ) ) },
+					{ typeof( UInt32? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableUInt32Value ) ) },
+					{ typeof( UInt64 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackUInt64Value ) ) },
+					{ typeof( UInt64? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableUInt64Value ) ) },
+					{ typeof( Single ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackSingleValue ) ) },
+					{ typeof( Single? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableSingleValue ) ) },
+					{ typeof( Double ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackDoubleValue ) ) },
+					{ typeof( Double? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableDoubleValue ) ) },
+					{ typeof( Boolean ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackBooleanValue ) ) },
+					{ typeof( Boolean? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableBooleanValue ) ) },
+					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackStringValue ) ) },
+					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackBinaryValue ) ) },
 				};
 		}
+
+#if FEATURE_TAP
+
+		private static Dictionary<Type, MethodInfo> GetAsyncDirectUnpackMethods()
+		{
+			return
+				new Dictionary<Type, MethodInfo>( 14 )
+				{
+					{ typeof( SByte ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackSByteValueAsync ) ) },
+					{ typeof( SByte? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableSByteValueAsync ) ) },
+					{ typeof( Int16 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackInt16ValueAsync ) ) },
+					{ typeof( Int16? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableInt16ValueAsync ) ) },
+					{ typeof( Int32 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackInt32ValueAsync ) ) },
+					{ typeof( Int32? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableInt32ValueAsync ) ) },
+					{ typeof( Int64 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackInt64ValueAsync ) ) },
+					{ typeof( Int64? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableInt64ValueAsync ) ) },
+					{ typeof( Byte ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackByteValueAsync ) ) },
+					{ typeof( Byte? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableByteValueAsync ) ) },
+					{ typeof( UInt16 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackUInt16ValueAsync ) ) },
+					{ typeof( UInt16? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableUInt16ValueAsync ) ) },
+					{ typeof( UInt32 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackUInt32ValueAsync ) ) },
+					{ typeof( UInt32? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableUInt32ValueAsync ) ) },
+					{ typeof( UInt64 ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackUInt64ValueAsync ) ) },
+					{ typeof( UInt64? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableUInt64ValueAsync ) ) },
+					{ typeof( Single ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackSingleValueAsync ) ) },
+					{ typeof( Single? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableSingleValueAsync ) ) },
+					{ typeof( Double ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackDoubleValueAsync ) ) },
+					{ typeof( Double? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableDoubleValueAsync ) ) },
+					{ typeof( Boolean ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackBooleanValueAsync ) ) },
+					{ typeof( Boolean? ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackNullableBooleanValueAsync ) ) },
+					{ typeof( string ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackStringValueAsync ) ) },
+					{ typeof( byte[] ), typeof( UnpackHelpers ).GetMethod( nameof( UnpackHelpers.UnpackBinaryValueAsync ) ) },
+				};
+		}
+#endif // FEATURE_TAP
 
 		public static MethodInfo GetDirectUnpackMethod( Type type, bool forAsync )
 		{

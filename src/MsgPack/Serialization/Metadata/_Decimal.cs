@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015-2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2017 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ namespace MsgPack.Serialization.Metadata
 	{
 		public static readonly ConstructorInfo Constructor =
 			typeof( Decimal ).GetConstructor(
-				new[] { typeof( int ), typeof( int ), typeof( int ), typeof( bool ), typeof( byte ) } );
+				new[] { typeof( int ), typeof( int ), typeof( int ), typeof( bool ), typeof( byte ) }
+			);
 	}
 }

@@ -53,7 +53,7 @@ namespace MsgPack.Serialization
 	public static class SerializationExceptions
 	{
 #if !AOT
-		internal static readonly MethodInfo ThrowValueTypeCannotBeNull3Method = FromExpression.ToMethod( ( string name, Type memberType, Type declaringType ) => ThrowValueTypeCannotBeNull( name, memberType, declaringType ) );
+		internal static readonly MethodInfo ThrowValueTypeCannotBeNull3Method = typeof( SerializationExceptions ).GetMethod( nameof( ThrowValueTypeCannotBeNull ), new[] { typeof( string ), typeof( Type ), typeof( Type ) } );
 #endif // !AOT
 
 		/// <summary>
@@ -445,7 +445,7 @@ namespace MsgPack.Serialization
 
 #if !AOT
 		internal static readonly MethodInfo ThrowIsNotArrayHeaderMethod =
-			FromExpression.ToMethod( ( Unpacker unpacker ) => ThrowIsNotArrayHeader( unpacker ) );
+			typeof( SerializationExceptions ).GetMethod( nameof( ThrowIsNotArrayHeader ), new[] { typeof( Unpacker ) } );
 #endif // !AOT
 
 		/// <summary>
@@ -501,7 +501,7 @@ namespace MsgPack.Serialization
 
 #if !AOT
 		internal static readonly MethodInfo ThrowIsNotMapHeaderMethod =
-			FromExpression.ToMethod( ( Unpacker unpacker ) => ThrowIsNotMapHeader( unpacker ) );
+			typeof( SerializationExceptions ).GetMethod( nameof( ThrowIsNotMapHeader ), new[] { typeof( Unpacker ) } );
 #endif // !AOT
 
 		/// <summary>
@@ -582,10 +582,7 @@ namespace MsgPack.Serialization
 		///		<see cref="ThrowTupleCardinarityIsNotMatch(int,long,Unpacker)"/>
 		/// </summary>
 		internal static readonly MethodInfo ThrowTupleCardinarityIsNotMatchMethod =
-			FromExpression.ToMethod(
-				( int expectedTupleCardinality, long actualArrayLength, Unpacker unpacker ) =>
-					ThrowTupleCardinarityIsNotMatch( expectedTupleCardinality, actualArrayLength, unpacker )
-			);
+			typeof( SerializationExceptions ).GetMethod( nameof( ThrowTupleCardinarityIsNotMatch ), new[] { typeof( int ), typeof( long ), typeof( Unpacker ) } );
 #endif // !AOT
 
 		/// <summary>
@@ -713,7 +710,7 @@ namespace MsgPack.Serialization
 		}
 
 #if !AOT
-		internal static readonly MethodInfo ThrowNullIsProhibitedMethod = FromExpression.ToMethod( ( string memberName ) => ThrowNullIsProhibited( memberName ) );
+		internal static readonly MethodInfo ThrowNullIsProhibitedMethod = typeof( SerializationExceptions ).GetMethod( nameof( ThrowNullIsProhibited ), new[] { typeof( string ) } );
 #endif // !AOT
 
 		/// <summary>
@@ -829,7 +826,7 @@ namespace MsgPack.Serialization
 		///		<see cref="NewUnpackFromIsNotSupported(Type)"/>
 		/// </summary>
 		internal static readonly MethodInfo NewUnpackFromIsNotSupportedMethod =
-			FromExpression.ToMethod( ( Type targetType ) => NewUnpackFromIsNotSupported( targetType ) );
+			typeof( SerializationExceptions ).GetMethod( nameof( NewUnpackFromIsNotSupported ), new[] { typeof( Type ) } );
 #endif // !AOT
 
 		/// <summary>
@@ -850,7 +847,7 @@ namespace MsgPack.Serialization
 		///		<see cref="NewCreateInstanceIsNotSupported(Type)"/>
 		/// </summary>
 		internal static readonly MethodInfo NewCreateInstanceIsNotSupportedMethod =
-			FromExpression.ToMethod( ( Type targetType ) => NewCreateInstanceIsNotSupported( targetType ) );
+			typeof( SerializationExceptions ).GetMethod( nameof( NewCreateInstanceIsNotSupported ), new[] { typeof( Type ) } );
 #endif // !AOT
 
 		/// <summary>

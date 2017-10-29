@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,14 +28,14 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static partial class _Unpacker
 	{
-		public static readonly MethodInfo Read = FromExpression.ToMethod( ( Unpacker unpacker ) => unpacker.Read() );
+		public static readonly MethodInfo Read = typeof( Unpacker ).GetMethod( nameof( Unpacker.Read ), ReflectionAbstractions.EmptyTypes );
 #if !NET35
-		public static readonly PropertyInfo ItemsCount = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.ItemsCount );
+		public static readonly PropertyInfo ItemsCount = typeof( Unpacker ).GetProperty( nameof( Unpacker.ItemsCount ) );
 #endif // !NET35
-		public static readonly PropertyInfo IsArrayHeader = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsArrayHeader );
-		public static readonly PropertyInfo IsMapHeader = FromExpression.ToProperty( ( Unpacker unpacker ) => unpacker.IsMapHeader );
+		public static readonly PropertyInfo IsArrayHeader = typeof( Unpacker ).GetProperty( nameof( Unpacker.IsArrayHeader ) );
+		public static readonly PropertyInfo IsMapHeader = typeof( Unpacker ).GetProperty( nameof( Unpacker.IsMapHeader ) );
 #if FEATURE_TAP
-		public static readonly MethodInfo ReadAsync = FromExpression.ToMethod( ( Unpacker unpacker, CancellationToken cancellationToken ) => unpacker.ReadAsync( cancellationToken ) );
+		public static readonly MethodInfo ReadAsync = typeof( Unpacker ).GetMethod( nameof( Unpacker.ReadAsync ), new[] { typeof( CancellationToken ) } );
 #endif // FEATURE_TAP
 	}
 }

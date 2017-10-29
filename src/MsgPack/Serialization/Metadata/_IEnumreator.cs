@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2017 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -34,16 +34,15 @@ namespace MsgPack.Serialization.Metadata
 {
 	internal static class _IEnumerator
 	{
-		private static readonly Type[] EmptyTypes = new Type[ 0 ];
-		public static readonly MethodInfo MoveNext = FromExpression.ToMethod( ( IEnumerator enumerator ) => enumerator.MoveNext() );
-		public static readonly PropertyInfo Current = FromExpression.ToProperty( ( IEnumerator enumerator ) => enumerator.Current );
+		public static readonly MethodInfo MoveNext = typeof( IEnumerator ).GetMethod( nameof( IEnumerator.MoveNext ), ReflectionAbstractions.EmptyTypes );
+		public static readonly PropertyInfo Current = typeof( IEnumerator ).GetProperty( nameof( IEnumerator.Current ) );
 
 		public static PropertyInfo FindEnumeratorCurrentProperty( Type enumeratorType, CollectionTraits traits )
 		{
 #if DEBUG
 			Contract.Assert( traits.GetEnumeratorMethod != null );
 #endif // DEBUG
-			PropertyInfo currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( "Current" );
+			var currentProperty = traits.GetEnumeratorMethod.ReturnType.GetProperty( nameof( IEnumerator<object>.Current ) );
 
 			if ( currentProperty == null )
 			{
@@ -55,7 +54,7 @@ namespace MsgPack.Serialization.Metadata
 				{
 					if ( enumeratorType.GetIsGenericType() && enumeratorType.GetGenericTypeDefinition() == typeof( IEnumerator<> ) )
 					{
-						currentProperty = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetProperty( "Current" );
+						currentProperty = typeof( IEnumerator<> ).MakeGenericType( traits.ElementType ).GetProperty( nameof( IEnumerator<object>.Current ) );
 					}
 					else
 					{
@@ -68,7 +67,7 @@ namespace MsgPack.Serialization.Metadata
 
 		public static MethodInfo FindEnumeratorMoveNextMethod( Type enumeratorType )
 		{
-			MethodInfo moveNextMethod = enumeratorType.GetMethod( "MoveNext", EmptyTypes );
+			var moveNextMethod = enumeratorType.GetMethod( nameof( IEnumerator<object>.MoveNext ), ReflectionAbstractions.EmptyTypes );
 
 			if ( moveNextMethod == null )
 			{
