@@ -245,7 +245,7 @@ namespace MsgPack
 		/// </summary>
 		protected TestDriver()
 		{
-			this.TestClasses = new List<TestClass>( 44 );
+			this.TestClasses = new List<TestClass>( 47 );
 			InitializeTestClasses( this.TestClasses );
 		}
 
@@ -282,7 +282,7 @@ testClass.FixtureSetup = new Action( AotTest.SetupFixture );
 					new TestClass( 
 						"ArrayGenerationBasedReflectionMessagePackSerializerTest", 
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						420,
+						422,
 						ArrayGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -305,7 +305,7 @@ testClass.FixtureSetup = new Action( ArrayGenerationBasedReflectionMessagePackSe
 					new TestClass( 
 						"ArrayReflectionBasedReflectionMessagePackSerializerTest", 
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						600,
+						602,
 						ArrayReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -405,7 +405,7 @@ testClass.FixtureSetup = new Action( ArrayReflectionBasedReflectionMessagePackSe
 					new TestClass( 
 						"MapGenerationBasedReflectionMessagePackSerializerTest", 
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						420,
+						422,
 						MapGenerationBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -428,7 +428,7 @@ testClass.FixtureSetup = new Action( MapGenerationBasedReflectionMessagePackSeri
 					new TestClass( 
 						"MapReflectionBasedReflectionMessagePackSerializerTest", 
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.CreateInstance, 
-						605,
+						607,
 						MapReflectionBasedReflectionMessagePackSerializerTestInitializer.InitializeInstance
 					 );
 testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSerializerTest.SetUpFixture );
@@ -583,7 +583,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 					new TestClass( 
 						"MessagePackStringTest", 
 						MessagePackStringTestInitializer.CreateInstance, 
-						10,
+						11,
 						MessagePackStringTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -638,7 +638,7 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 					new TestClass( 
 						"RegressionTests", 
 						RegressionTestsInitializer.CreateInstance, 
-						13,
+						14,
 						RegressionTestsInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
@@ -651,6 +651,17 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 						SerializationContextTestInitializer.CreateInstance, 
 						30,
 						SerializationContextTestInitializer.InitializeInstance
+					 );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
+						"SerializationTargetTest", 
+						SerializationTargetTestInitializer.CreateInstance, 
+						8,
+						SerializationTargetTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
 			}
@@ -673,6 +684,28 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 						StructWithDataContractTestInitializer.CreateInstance, 
 						2,
 						StructWithDataContractTestInitializer.InitializeInstance
+					 );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
+						"TimestampSerializationTest", 
+						TimestampSerializationTestInitializer.CreateInstance, 
+						8,
+						TimestampSerializationTestInitializer.InitializeInstance
+					 );
+				testClasses.Add( testClass );
+			}
+
+			{
+				var testClass = 
+					new TestClass( 
+						"TimestampTest", 
+						TimestampTestInitializer.CreateInstance, 
+						564,
+						TimestampTestInitializer.InitializeInstance
 					 );
 				testClasses.Add( testClass );
 			}
@@ -955,11 +988,13 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_NativeContext_Utc", new Action( instance.TestDateTimeMemberAttributes_NativeContext_Utc ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Local", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Local ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Utc", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Utc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNative", new Action( instance.TestDateTimeNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNullableChangeOnDemand", new Action( instance.TestDateTimeNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffset", new Action( instance.TestDateTimeOffset ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetClassic", new Action( instance.TestDateTimeOffsetClassic ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetField", new Action( instance.TestDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetFieldArray", new Action( instance.TestDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNative", new Action( instance.TestDateTimeOffsetNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNullableChangeOnDemand", new Action( instance.TestDateTimeOffsetNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalField", new Action( instance.TestDecimalField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalFieldArray", new Action( instance.TestDecimalFieldArray ) ) );
@@ -1507,11 +1542,13 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_NativeContext_Utc", new Action( instance.TestDateTimeMemberAttributes_NativeContext_Utc ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Local", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Local ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Utc", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Utc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNative", new Action( instance.TestDateTimeNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNullableChangeOnDemand", new Action( instance.TestDateTimeNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffset", new Action( instance.TestDateTimeOffset ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetClassic", new Action( instance.TestDateTimeOffsetClassic ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetField", new Action( instance.TestDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetFieldArray", new Action( instance.TestDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNative", new Action( instance.TestDateTimeOffsetNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNullableChangeOnDemand", new Action( instance.TestDateTimeOffsetNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalField", new Action( instance.TestDecimalField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalFieldArray", new Action( instance.TestDecimalFieldArray ) ) );
@@ -2516,11 +2553,13 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_NativeContext_Utc", new Action( instance.TestDateTimeMemberAttributes_NativeContext_Utc ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Local", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Local ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Utc", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Utc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNative", new Action( instance.TestDateTimeNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNullableChangeOnDemand", new Action( instance.TestDateTimeNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffset", new Action( instance.TestDateTimeOffset ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetClassic", new Action( instance.TestDateTimeOffsetClassic ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetField", new Action( instance.TestDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetFieldArray", new Action( instance.TestDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNative", new Action( instance.TestDateTimeOffsetNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNullableChangeOnDemand", new Action( instance.TestDateTimeOffsetNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalField", new Action( instance.TestDecimalField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalFieldArray", new Action( instance.TestDecimalFieldArray ) ) );
@@ -3068,11 +3107,13 @@ testClass.FixtureSetup = new Action( MapReflectionBasedReflectionMessagePackSeri
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_NativeContext_Utc", new Action( instance.TestDateTimeMemberAttributes_NativeContext_Utc ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Local", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Local ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeMemberAttributes_UnixEpocContext_Utc", new Action( instance.TestDateTimeMemberAttributes_UnixEpocContext_Utc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNative", new Action( instance.TestDateTimeNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeNullableChangeOnDemand", new Action( instance.TestDateTimeNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffset", new Action( instance.TestDateTimeOffset ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetClassic", new Action( instance.TestDateTimeOffsetClassic ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetField", new Action( instance.TestDateTimeOffsetField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetFieldArray", new Action( instance.TestDateTimeOffsetFieldArray ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNative", new Action( instance.TestDateTimeOffsetNative ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDateTimeOffsetNullableChangeOnDemand", new Action( instance.TestDateTimeOffsetNullableChangeOnDemand ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalField", new Action( instance.TestDecimalField ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestDecimalFieldArray", new Action( instance.TestDecimalFieldArray ) ) );
@@ -5442,6 +5483,7 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
 		{
 			var instance = ( ( MessagePackStringTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualsFullTrust", new Action( instance.TestEqualsFullTrust ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGetHashCode_Binary", new Action( instance.TestGetHashCode_Binary ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGetHashCode_EmptyBinary", new Action( instance.TestGetHashCode_EmptyBinary ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestGetHashCode_EmptyString", new Action( instance.TestGetHashCode_EmptyString ) ) );
@@ -5597,6 +5639,7 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue211_ListOfT", new Action( instance.TestIssue211_ListOfT ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue211_QueueOfT", new Action( instance.TestIssue211_QueueOfT ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue211_StackOfT", new Action( instance.TestIssue211_StackOfT ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue252", new Action( instance.TestIssue252 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue70", new Action( instance.TestIssue70 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue73", new Action( instance.TestIssue73 ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "TestIssue92_EmptyAsCollection", new Action( instance.TestIssue92_EmptyAsCollection ) ) );
@@ -5649,6 +5692,27 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 		}
 	} 
 
+	internal static class SerializationTargetTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new SerializationTargetTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( SerializationTargetTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAliasInDataMember", new Action( instance.TestAliasInDataMember ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAliasInMessagePackMember", new Action( instance.TestAliasInMessagePackMember ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAnnotated", new Action( instance.TestAnnotated ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDataMember", new Action( instance.TestDataMember ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDuplicatedKey", new Action( instance.TestDuplicatedKey ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIgnoreKinds", new Action( instance.TestIgnoreKinds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIndexerOverload", new Action( instance.TestIndexerOverload ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestPlain", new Action( instance.TestPlain ) ) );
+		}
+	} 
+
 	internal static class StreamPackerTestInitializer
 	{
 		public static object CreateInstance()
@@ -5677,6 +5741,604 @@ testClassInstance.TestCleanup = new Action( instance.TearDown );
 			var instance = ( ( StructWithDataContractTest )testFixtureInstance );
 			testClassInstance.TestMethods.Add( new TestMethod( "ShouldDeserializeStructsWithDataContracts", new Action( instance.ShouldDeserializeStructsWithDataContracts ) ) );
 			testClassInstance.TestMethods.Add( new TestMethod( "ShouldSerializeStructsWithDataContracts", new Action( instance.ShouldSerializeStructsWithDataContracts ) ) );
+		}
+	} 
+
+	internal static class TimestampSerializationTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new TimestampSerializationTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( TimestampSerializationTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDeserialization_FromNative", new Action( instance.TestDeserialization_FromNative ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDeserialization_FromTimestamp", new Action( instance.TestDeserialization_FromTimestamp ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDeserialization_FromUnixEpoc", new Action( instance.TestDeserialization_FromUnixEpoc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSerialization_ClassicUnixEpoc", new Action( instance.TestSerialization_ClassicUnixEpoc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSerialization_DefaultTimestamp", new Action( instance.TestSerialization_DefaultTimestamp ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSerialization_Native", new Action( instance.TestSerialization_Native ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSerialization_Timestamp", new Action( instance.TestSerialization_Timestamp ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSerialization_UnixEpoc", new Action( instance.TestSerialization_UnixEpoc ) ) );
+		}
+	} 
+
+	internal static class TimestampTestInitializer
+	{
+		public static object CreateInstance()
+		{
+			return new TimestampTest();
+		}
+
+		public static void InitializeInstance( TestClassInstance testClassInstance, object testFixtureInstance )
+		{
+			var instance = ( ( TimestampTest )testFixtureInstance );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_1Sec", new Action( instance.TestAdd_TimeSpan_1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_1Tick", new Action( instance.TestAdd_TimeSpan_1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_MaxPlus1Sec_Overflow", new Action( instance.TestAdd_TimeSpan_MaxPlus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_MaxPlus1Tick_Overflow", new Action( instance.TestAdd_TimeSpan_MaxPlus1Tick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_MinMinus1ick_Overflow", new Action( instance.TestAdd_TimeSpan_MinMinus1ick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_MinMinus1Sec_Overflow", new Action( instance.TestAdd_TimeSpan_MinMinus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_Minus1Sec", new Action( instance.TestAdd_TimeSpan_Minus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_Minus1Tick", new Action( instance.TestAdd_TimeSpan_Minus1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_MoveDown", new Action( instance.TestAdd_TimeSpan_MoveDown ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_MoveUp", new Action( instance.TestAdd_TimeSpan_MoveUp ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdd_TimeSpan_Same", new Action( instance.TestAdd_TimeSpan_Same ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_1Sec", new Action( instance.TestAdditionOperator_TimeSpan_1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_1Tick", new Action( instance.TestAdditionOperator_TimeSpan_1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_MaxPlus1Sec_Overflow", new Action( instance.TestAdditionOperator_TimeSpan_MaxPlus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_MaxPlus1Tick_Overflow", new Action( instance.TestAdditionOperator_TimeSpan_MaxPlus1Tick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_MinMinus1ick_Overflow", new Action( instance.TestAdditionOperator_TimeSpan_MinMinus1ick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_MinMinus1Sec_Overflow", new Action( instance.TestAdditionOperator_TimeSpan_MinMinus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_Minus1Sec", new Action( instance.TestAdditionOperator_TimeSpan_Minus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_Minus1Tick", new Action( instance.TestAdditionOperator_TimeSpan_Minus1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_MoveDown", new Action( instance.TestAdditionOperator_TimeSpan_MoveDown ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_MoveUp", new Action( instance.TestAdditionOperator_TimeSpan_MoveUp ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestAdditionOperator_TimeSpan_Same", new Action( instance.TestAdditionOperator_TimeSpan_Same ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompare_Identical_0", new Action( instance.TestCompare_Identical_0 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompare_LargeByNanosecond_1", new Action( instance.TestCompare_LargeByNanosecond_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompare_LargeBySecond_1", new Action( instance.TestCompare_LargeBySecond_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompare_LargeBySecondEvenIfNanosecondIsSmall_1", new Action( instance.TestCompare_LargeBySecondEvenIfNanosecondIsSmall_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompare_SmallByNanosecond_Minus1", new Action( instance.TestCompare_SmallByNanosecond_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompare_SmallBySecond_Minus1", new Action( instance.TestCompare_SmallBySecond_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompare_SmallBySecondEvenIfNanosecondIsLarge_Minus1", new Action( instance.TestCompare_SmallBySecondEvenIfNanosecondIsLarge_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompareTo_Identical_0", new Action( instance.TestCompareTo_Identical_0 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompareTo_LargeByNanosecond_1", new Action( instance.TestCompareTo_LargeByNanosecond_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompareTo_LargeBySecond_1", new Action( instance.TestCompareTo_LargeBySecond_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompareTo_LargeBySecondEvenIfNanosecondIsSmall_1", new Action( instance.TestCompareTo_LargeBySecondEvenIfNanosecondIsSmall_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompareTo_SmallByNanosecond_Minus1", new Action( instance.TestCompareTo_SmallByNanosecond_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompareTo_SmallBySecond_Minus1", new Action( instance.TestCompareTo_SmallBySecond_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestCompareTo_SmallBySecondEvenIfNanosecondIsLarge_Minus1", new Action( instance.TestCompareTo_SmallBySecondEvenIfNanosecondIsLarge_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestConstractor_AsIs", new Action( instance.TestConstractor_AsIs ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestConstractor_Max_Ok", new Action( instance.TestConstractor_Max_Ok ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestConstractor_Min_Ok", new Action( instance.TestConstractor_Min_Ok ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestConstractor_TooLargeNanoseconds_Exception", new Action( instance.TestConstractor_TooLargeNanoseconds_Exception ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestConstractor_TooSmallNanoseconds_Exception", new Action( instance.TestConstractor_TooSmallNanoseconds_Exception ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidLength_0", new Action( instance.TestDecode_InvalidLength_0 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidLength_11", new Action( instance.TestDecode_InvalidLength_11 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidLength_13", new Action( instance.TestDecode_InvalidLength_13 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidLength_3", new Action( instance.TestDecode_InvalidLength_3 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidLength_5", new Action( instance.TestDecode_InvalidLength_5 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidLength_7", new Action( instance.TestDecode_InvalidLength_7 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidLength_9", new Action( instance.TestDecode_InvalidLength_9 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_InvalidTypeCode", new Action( instance.TestDecode_InvalidTypeCode ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Max32", new Action( instance.TestDecode_Max32 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Max64", new Action( instance.TestDecode_Max64 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Max96", new Action( instance.TestDecode_Max96 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Min32", new Action( instance.TestDecode_Min32 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Min64", new Action( instance.TestDecode_Min64 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Min64_AllZero", new Action( instance.TestDecode_Min64_AllZero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Min64_MinSeconds", new Action( instance.TestDecode_Min64_MinSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestDecode_Min96", new Action( instance.TestDecode_Min96 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEncode_Max32", new Action( instance.TestEncode_Max32 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEncode_Max64", new Action( instance.TestEncode_Max64 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEncode_Max96", new Action( instance.TestEncode_Max96 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEncode_Min32", new Action( instance.TestEncode_Min32 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEncode_Min64", new Action( instance.TestEncode_Min64 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEncode_Min96", new Action( instance.TestEncode_Min96 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualityOperator_Identical_True", new Action( instance.TestEqualityOperator_Identical_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualityOperator_LargeByNanosecond_False", new Action( instance.TestEqualityOperator_LargeByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualityOperator_LargeBySecond_False", new Action( instance.TestEqualityOperator_LargeBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualityOperator_LargeBySecondEvenIfNanosecondIsSmall_False", new Action( instance.TestEqualityOperator_LargeBySecondEvenIfNanosecondIsSmall_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualityOperator_SmallByNanosecond_False", new Action( instance.TestEqualityOperator_SmallByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualityOperator_SmallBySecond_False", new Action( instance.TestEqualityOperator_SmallBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEqualityOperator_SmallBySecondEvenIfNanosecondIsLarge_False", new Action( instance.TestEqualityOperator_SmallBySecondEvenIfNanosecondIsLarge_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_Identical_True", new Action( instance.TestEquals_Identical_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_LargeByNanosecond_False", new Action( instance.TestEquals_LargeByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_LargeBySecond_False", new Action( instance.TestEquals_LargeBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_LargeBySecondEvenIfNanosecondIsSmall_False", new Action( instance.TestEquals_LargeBySecondEvenIfNanosecondIsSmall_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_null_False", new Action( instance.TestEquals_null_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_SmallByNanosecond_False", new Action( instance.TestEquals_SmallByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_SmallBySecond_False", new Action( instance.TestEquals_SmallBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestEquals_SmallBySecondEvenIfNanosecondIsLarge_False", new Action( instance.TestEquals_SmallBySecondEvenIfNanosecondIsLarge_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTime_OverflowNanoseconds", new Action( instance.TestExplicitDateTime_OverflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTime_OverflowSeconds", new Action( instance.TestExplicitDateTime_OverflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTime_UnderflowNanoseconds", new Action( instance.TestExplicitDateTime_UnderflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTime_UnderflowSeconds", new Action( instance.TestExplicitDateTime_UnderflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTime_UtcNow_OK", new Action( instance.TestExplicitDateTime_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTimeOffset_OverflowNanoseconds", new Action( instance.TestExplicitDateTimeOffset_OverflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTimeOffset_OverflowSeconds", new Action( instance.TestExplicitDateTimeOffset_OverflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTimeOffset_UnderflowNanoseconds", new Action( instance.TestExplicitDateTimeOffset_UnderflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTimeOffset_UnderflowSeconds", new Action( instance.TestExplicitDateTimeOffset_UnderflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestExplicitDateTimeOffset_UtcNow_OK", new Action( instance.TestExplicitDateTimeOffset_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTime_MaxValue_OK", new Action( instance.TestFromDateTime_MaxValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTime_MinValue_OK", new Action( instance.TestFromDateTime_MinValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTime_Now_AsUtc", new Action( instance.TestFromDateTime_Now_AsUtc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTime_UtcNow_OK", new Action( instance.TestFromDateTime_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTimeOffset_MaxValue_OK", new Action( instance.TestFromDateTimeOffset_MaxValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTimeOffset_MinValue_OK", new Action( instance.TestFromDateTimeOffset_MinValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTimeOffset_Now_AsUtc", new Action( instance.TestFromDateTimeOffset_Now_AsUtc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestFromDateTimeOffset_UtcNow_OK", new Action( instance.TestFromDateTimeOffset_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGetHashCode_MaxValue", new Action( instance.TestGetHashCode_MaxValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGetHashCode_MinValue", new Action( instance.TestGetHashCode_MinValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGetHashCode_Zero", new Action( instance.TestGetHashCode_Zero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOperator_Identical_False", new Action( instance.TestGreaterThanOperator_Identical_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOperator_LargeByNanosecond_True", new Action( instance.TestGreaterThanOperator_LargeByNanosecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOperator_LargeBySecond_True", new Action( instance.TestGreaterThanOperator_LargeBySecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOperator_LargeBySecondEvenIfNanosecondIsSmall_True", new Action( instance.TestGreaterThanOperator_LargeBySecondEvenIfNanosecondIsSmall_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOperator_SmallByNanosecond_False", new Action( instance.TestGreaterThanOperator_SmallByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOperator_SmallBySecond_False", new Action( instance.TestGreaterThanOperator_SmallBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOperator_SmallBySecondEvenIfNanosecondIsLarge_False", new Action( instance.TestGreaterThanOperator_SmallBySecondEvenIfNanosecondIsLarge_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOrEqualOperator_Identical_True", new Action( instance.TestGreaterThanOrEqualOperator_Identical_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOrEqualOperator_LargeByNanosecond_True", new Action( instance.TestGreaterThanOrEqualOperator_LargeByNanosecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOrEqualOperator_LargeBySecond_True", new Action( instance.TestGreaterThanOrEqualOperator_LargeBySecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOrEqualOperator_LargeBySecondEvenIfNanosecondIsSmall_True", new Action( instance.TestGreaterThanOrEqualOperator_LargeBySecondEvenIfNanosecondIsSmall_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOrEqualOperator_SmallByNanosecond_False", new Action( instance.TestGreaterThanOrEqualOperator_SmallByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOrEqualOperator_SmallBySecond_False", new Action( instance.TestGreaterThanOrEqualOperator_SmallBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestGreaterThanOrEqualOperator_SmallBySecondEvenIfNanosecondIsLarge_False", new Action( instance.TestGreaterThanOrEqualOperator_SmallBySecondEvenIfNanosecondIsLarge_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_Identical_0", new Action( instance.TestIComparableCompareTo_Identical_0 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_LargeByNanosecond_1", new Action( instance.TestIComparableCompareTo_LargeByNanosecond_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_LargeBySecond_1", new Action( instance.TestIComparableCompareTo_LargeBySecond_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_LargeBySecondEvenIfNanosecondIsSmall_1", new Action( instance.TestIComparableCompareTo_LargeBySecondEvenIfNanosecondIsSmall_1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_null_AlwaysLarge", new Action( instance.TestIComparableCompareTo_null_AlwaysLarge ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_SmallByNanosecond_Minus1", new Action( instance.TestIComparableCompareTo_SmallByNanosecond_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_SmallBySecond_Minus1", new Action( instance.TestIComparableCompareTo_SmallBySecond_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIComparableCompareTo_SmallBySecondEvenIfNanosecondIsLarge_Minus1", new Action( instance.TestIComparableCompareTo_SmallBySecondEvenIfNanosecondIsLarge_Minus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIEquatableEquals_Identical_True", new Action( instance.TestIEquatableEquals_Identical_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIEquatableEquals_LargeByNanosecond_False", new Action( instance.TestIEquatableEquals_LargeByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIEquatableEquals_LargeBySecond_False", new Action( instance.TestIEquatableEquals_LargeBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIEquatableEquals_LargeBySecondEvenIfNanosecondIsSmall_False", new Action( instance.TestIEquatableEquals_LargeBySecondEvenIfNanosecondIsSmall_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIEquatableEquals_SmallByNanosecond_False", new Action( instance.TestIEquatableEquals_SmallByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIEquatableEquals_SmallBySecond_False", new Action( instance.TestIEquatableEquals_SmallBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestIEquatableEquals_SmallBySecondEvenIfNanosecondIsLarge_False", new Action( instance.TestIEquatableEquals_SmallBySecondEvenIfNanosecondIsLarge_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTime_MaxValue_OK", new Action( instance.TestImplicitDateTime_MaxValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTime_MinValue_OK", new Action( instance.TestImplicitDateTime_MinValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTime_Now_AsUtc", new Action( instance.TestImplicitDateTime_Now_AsUtc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTime_UtcNow_OK", new Action( instance.TestImplicitDateTime_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTimeOffset_MaxValue_OK", new Action( instance.TestImplicitDateTimeOffset_MaxValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTimeOffset_MinValue_OK", new Action( instance.TestImplicitDateTimeOffset_MinValue_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTimeOffset_Now_AsUtc", new Action( instance.TestImplicitDateTimeOffset_Now_AsUtc ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestImplicitDateTimeOffset_UtcNow_OK", new Action( instance.TestImplicitDateTimeOffset_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestInequalityOperator_Identical_False", new Action( instance.TestInequalityOperator_Identical_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestInequalityOperator_LargeByNanosecond_True", new Action( instance.TestInequalityOperator_LargeByNanosecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestInequalityOperator_LargeBySecond_True", new Action( instance.TestInequalityOperator_LargeBySecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestInequalityOperator_LargeBySecondEvenIfNanosecondIsSmall_True", new Action( instance.TestInequalityOperator_LargeBySecondEvenIfNanosecondIsSmall_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestInequalityOperator_SmallByNanosecond_True", new Action( instance.TestInequalityOperator_SmallByNanosecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestInequalityOperator_SmallBySecond_True", new Action( instance.TestInequalityOperator_SmallBySecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestInequalityOperator_SmallBySecondEvenIfNanosecondIsLarge_True", new Action( instance.TestInequalityOperator_SmallBySecondEvenIfNanosecondIsLarge_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOperator_Identical_False", new Action( instance.TestLessThanOperator_Identical_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOperator_LargeByNanosecond_False", new Action( instance.TestLessThanOperator_LargeByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOperator_LargeBySecond_False", new Action( instance.TestLessThanOperator_LargeBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOperator_LargeBySecondEvenIfNanosecondIsSmall_False", new Action( instance.TestLessThanOperator_LargeBySecondEvenIfNanosecondIsSmall_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOperator_SmallByNanosecond_True", new Action( instance.TestLessThanOperator_SmallByNanosecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOperator_SmallBySecond_True", new Action( instance.TestLessThanOperator_SmallBySecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOperator_SmallBySecondEvenIfNanosecondIsLarge_True", new Action( instance.TestLessThanOperator_SmallBySecondEvenIfNanosecondIsLarge_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOrEqualOperator_Identical_True", new Action( instance.TestLessThanOrEqualOperator_Identical_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOrEqualOperator_LargeByNanosecond_False", new Action( instance.TestLessThanOrEqualOperator_LargeByNanosecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOrEqualOperator_LargeBySecond_False", new Action( instance.TestLessThanOrEqualOperator_LargeBySecond_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOrEqualOperator_LargeBySecondEvenIfNanosecondIsSmall_False", new Action( instance.TestLessThanOrEqualOperator_LargeBySecondEvenIfNanosecondIsSmall_False ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOrEqualOperator_SmallByNanosecond_True", new Action( instance.TestLessThanOrEqualOperator_SmallByNanosecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOrEqualOperator_SmallBySecond_True", new Action( instance.TestLessThanOrEqualOperator_SmallBySecond_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestLessThanOrEqualOperator_SmallBySecondEvenIfNanosecondIsLarge_True", new Action( instance.TestLessThanOrEqualOperator_SmallBySecondEvenIfNanosecondIsLarge_True ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestMaxValue_AllMax", new Action( instance.TestMaxValue_AllMax ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestMinValue_AllMin", new Action( instance.TestMinValue_AllMin ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_DatesAD", new Action( instance.TestParseExact_DatesAD ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_DatesBC", new Action( instance.TestParseExact_DatesBC ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_Distinguishable_o_CustomCulture_UsedForNegativeSign", new Action( instance.TestParseExact_Distinguishable_o_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_Distinguishable_o_null_CurrentCultureIsUsed", new Action( instance.TestParseExact_Distinguishable_o_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_Distinguishable_s_CustomCulture_UsedForNegativeSign", new Action( instance.TestParseExact_Distinguishable_s_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_Distinguishable_s_null_CurrentCultureIsUsed", new Action( instance.TestParseExact_Distinguishable_s_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_IFormatProvider_YearMinus1_o_InvariantCulture", new Action( instance.TestParseExact_IFormatProvider_YearMinus1_o_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_IFormatProvider_YearMinus1_s_InvariantCulture", new Action( instance.TestParseExact_IFormatProvider_YearMinus1_s_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_IFormatProvider_Zero_o_InvariantCulture", new Action( instance.TestParseExact_IFormatProvider_Zero_o_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_IFormatProvider_Zero_s_InvariantCulture", new Action( instance.TestParseExact_IFormatProvider_Zero_s_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_EmptyValue_o", new Action( instance.TestParseExact_ParseError_EmptyValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_EmptyValue_s", new Action( instance.TestParseExact_ParseError_EmptyValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidDayHourDelimiter_o", new Action( instance.TestParseExact_ParseError_InvalidDayHourDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidDayHourDelimiter_s", new Action( instance.TestParseExact_ParseError_InvalidDayHourDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidDayValue_o", new Action( instance.TestParseExact_ParseError_InvalidDayValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidDayValue_s", new Action( instance.TestParseExact_ParseError_InvalidDayValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidHourMinuteDelimiter_o", new Action( instance.TestParseExact_ParseError_InvalidHourMinuteDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidHourMinuteDelimiter_s", new Action( instance.TestParseExact_ParseError_InvalidHourMinuteDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidHourValue_o", new Action( instance.TestParseExact_ParseError_InvalidHourValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidHourValue_s", new Action( instance.TestParseExact_ParseError_InvalidHourValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMinuteSecondDelimiter_o", new Action( instance.TestParseExact_ParseError_InvalidMinuteSecondDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMinuteSecondDelimiter_s", new Action( instance.TestParseExact_ParseError_InvalidMinuteSecondDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMinuteValue_o", new Action( instance.TestParseExact_ParseError_InvalidMinuteValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMinuteValue_s", new Action( instance.TestParseExact_ParseError_InvalidMinuteValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMonthDayDelimiter_o", new Action( instance.TestParseExact_ParseError_InvalidMonthDayDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMonthDayDelimiter_s", new Action( instance.TestParseExact_ParseError_InvalidMonthDayDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMonthValue_o", new Action( instance.TestParseExact_ParseError_InvalidMonthValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidMonthValue_s", new Action( instance.TestParseExact_ParseError_InvalidMonthValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidNanosecondDelimiter_o", new Action( instance.TestParseExact_ParseError_InvalidNanosecondDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidNanosecondValue_o", new Action( instance.TestParseExact_ParseError_InvalidNanosecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidSecondValue_o", new Action( instance.TestParseExact_ParseError_InvalidSecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidSecondValue_s", new Action( instance.TestParseExact_ParseError_InvalidSecondValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidYearMonthDelimiter_o", new Action( instance.TestParseExact_ParseError_InvalidYearMonthDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidYearMonthDelimiter_s", new Action( instance.TestParseExact_ParseError_InvalidYearMonthDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidYearValue_o", new Action( instance.TestParseExact_ParseError_InvalidYearValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_InvalidYearValue_s", new Action( instance.TestParseExact_ParseError_InvalidYearValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_MissingUtcSign_o", new Action( instance.TestParseExact_ParseError_MissingUtcSign_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_MissingUtcSign_s", new Action( instance.TestParseExact_ParseError_MissingUtcSign_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeDayValue_o", new Action( instance.TestParseExact_ParseError_TooLargeDayValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeDayValue_s", new Action( instance.TestParseExact_ParseError_TooLargeDayValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeHourValue_o", new Action( instance.TestParseExact_ParseError_TooLargeHourValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeHourValue_s", new Action( instance.TestParseExact_ParseError_TooLargeHourValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeMinuteValue_o", new Action( instance.TestParseExact_ParseError_TooLargeMinuteValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeMinuteValue_s", new Action( instance.TestParseExact_ParseError_TooLargeMinuteValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeMonthValue_o", new Action( instance.TestParseExact_ParseError_TooLargeMonthValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeMonthValue_s", new Action( instance.TestParseExact_ParseError_TooLargeMonthValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeNanosecondValue_o", new Action( instance.TestParseExact_ParseError_TooLargeNanosecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeSecondValue_o", new Action( instance.TestParseExact_ParseError_TooLargeSecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeSecondValue_s", new Action( instance.TestParseExact_ParseError_TooLargeSecondValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeYearValue_o", new Action( instance.TestParseExact_ParseError_TooLargeYearValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooLargeYearValue_s", new Action( instance.TestParseExact_ParseError_TooLargeYearValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortDayDigit_o", new Action( instance.TestParseExact_ParseError_TooShortDayDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortDayDigit_s", new Action( instance.TestParseExact_ParseError_TooShortDayDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortHourDigit_o", new Action( instance.TestParseExact_ParseError_TooShortHourDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortHourDigit_s", new Action( instance.TestParseExact_ParseError_TooShortHourDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortMinuteDigit_o", new Action( instance.TestParseExact_ParseError_TooShortMinuteDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortMinuteDigit_s", new Action( instance.TestParseExact_ParseError_TooShortMinuteDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortMonthDigit_o", new Action( instance.TestParseExact_ParseError_TooShortMonthDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortMonthDigit_s", new Action( instance.TestParseExact_ParseError_TooShortMonthDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortNanosecondDigit_o", new Action( instance.TestParseExact_ParseError_TooShortNanosecondDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortSecondDigit_o", new Action( instance.TestParseExact_ParseError_TooShortSecondDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortSecondDigit_s", new Action( instance.TestParseExact_ParseError_TooShortSecondDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortYearDigit_o", new Action( instance.TestParseExact_ParseError_TooShortYearDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooShortYearDigit_s", new Action( instance.TestParseExact_ParseError_TooShortYearDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallDayValue_o", new Action( instance.TestParseExact_ParseError_TooSmallDayValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallDayValue_s", new Action( instance.TestParseExact_ParseError_TooSmallDayValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallHourValue_o", new Action( instance.TestParseExact_ParseError_TooSmallHourValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallHourValue_s", new Action( instance.TestParseExact_ParseError_TooSmallHourValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallMinuteValue_o", new Action( instance.TestParseExact_ParseError_TooSmallMinuteValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallMinuteValue_s", new Action( instance.TestParseExact_ParseError_TooSmallMinuteValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallMonthValue_o", new Action( instance.TestParseExact_ParseError_TooSmallMonthValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallMonthValue_s", new Action( instance.TestParseExact_ParseError_TooSmallMonthValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallNanosecondValue_o", new Action( instance.TestParseExact_ParseError_TooSmallNanosecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallSecondValue_o", new Action( instance.TestParseExact_ParseError_TooSmallSecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallSecondValue_s", new Action( instance.TestParseExact_ParseError_TooSmallSecondValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallYearValue_o", new Action( instance.TestParseExact_ParseError_TooSmallYearValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_ParseError_TooSmallYearValue_s", new Action( instance.TestParseExact_ParseError_TooSmallYearValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_LeadingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_TrailingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_LeadingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_TrailingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_LeadingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_TrailingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_BothWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_BothWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_LeadingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_BothWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_BothWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_LeadingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_BothWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_BothWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_LeadingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_LeadingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_LeadingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_LeadingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_FullDigits_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_FullDigits_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_FullDigits_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_FullDigits_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_FullDigits_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_FullDigits_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_InvalidStyles", new Action( instance.TestParseExact_WithDateTimeStyles_InvalidStyles ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatLowerO_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatLowerO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatLowerO_LeadingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatLowerO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatLowerO_TrailingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatLowerO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatLowerS_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatLowerS_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatLowerS_LeadingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatLowerS_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatLowerS_TrailingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatLowerS_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatUpperO_BothWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatUpperO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatUpperO_LeadingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatUpperO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_None_FormatUpperO_TrailingWhiteIsNotAllowed", new Action( instance.TestParseExact_WithDateTimeStyles_None_FormatUpperO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_NullFormat", new Action( instance.TestParseExact_WithDateTimeStyles_NullFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_NullValue", new Action( instance.TestParseExact_WithDateTimeStyles_NullValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_TimestampMax_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_TimestampMax_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_TimestampMax_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_TimestampMax_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_TimestampMax_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_TimestampMax_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_TimestampMin_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_TimestampMin_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_TimestampMin_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_TimestampMin_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_TimestampMin_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_TimestampMin_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_UnsupportedFormat", new Action( instance.TestParseExact_WithDateTimeStyles_UnsupportedFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_Year10000_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_Year10000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_Year10000_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_Year10000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_Year10000_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_Year10000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus1_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus1_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus1_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus1_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus1_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus1_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus1000_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus1000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus1000_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus1000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus1000_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus1000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus10000_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus10000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus10000_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus10000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_YearMinus10000_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_YearMinus10000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_Zero_LowerO", new Action( instance.TestParseExact_WithDateTimeStyles_Zero_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_Zero_LowerS", new Action( instance.TestParseExact_WithDateTimeStyles_Zero_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithDateTimeStyles_Zero_UpperO", new Action( instance.TestParseExact_WithDateTimeStyles_Zero_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithoutDateTimeStyles_AsNone", new Action( instance.TestParseExact_WithoutDateTimeStyles_AsNone ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithoutDateTimeStyles_NullFormat", new Action( instance.TestParseExact_WithoutDateTimeStyles_NullFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithoutDateTimeStyles_NullValue", new Action( instance.TestParseExact_WithoutDateTimeStyles_NullValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_WithoutDateTimeStyles_UnsupportedFormat", new Action( instance.TestParseExact_WithoutDateTimeStyles_UnsupportedFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_YearMinus1_o_CustomCulture_UsedForNegativeSign", new Action( instance.TestParseExact_YearMinus1_o_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_YearMinus1_o_null_CurrentCultureIsUsed", new Action( instance.TestParseExact_YearMinus1_o_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_YearMinus1_s_CustomCulture_UsedForNegativeSign", new Action( instance.TestParseExact_YearMinus1_s_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestParseExact_YearMinus1_s_null_CurrentCultureIsUsed", new Action( instance.TestParseExact_YearMinus1_s_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DatesAD", new Action( instance.TestProperties_DatesAD ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DatesBC", new Action( instance.TestProperties_DatesBC ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMax", new Action( instance.TestProperties_DateTimeMax ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMaxPlus1Day", new Action( instance.TestProperties_DateTimeMaxPlus1Day ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMaxPlus1Nsec", new Action( instance.TestProperties_DateTimeMaxPlus1Nsec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMaxPlus1Sec", new Action( instance.TestProperties_DateTimeMaxPlus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMin", new Action( instance.TestProperties_DateTimeMin ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMinMinus1Day", new Action( instance.TestProperties_DateTimeMinMinus1Day ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMinMinus1Nsec", new Action( instance.TestProperties_DateTimeMinMinus1Nsec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_DateTimeMinMinus1Sec", new Action( instance.TestProperties_DateTimeMinMinus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Distinguishable", new Action( instance.TestProperties_Distinguishable ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Minus1Nsec", new Action( instance.TestProperties_Minus1Nsec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Minus1Sec", new Action( instance.TestProperties_Minus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Plus1Nsec", new Action( instance.TestProperties_Plus1Nsec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Plus1Sec", new Action( instance.TestProperties_Plus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_TimestampMax", new Action( instance.TestProperties_TimestampMax ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_TimestampMin", new Action( instance.TestProperties_TimestampMin ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year0", new Action( instance.TestProperties_Year0 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year1", new Action( instance.TestProperties_Year1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year100", new Action( instance.TestProperties_Year100 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year10000", new Action( instance.TestProperties_Year10000 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year10001", new Action( instance.TestProperties_Year10001 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year10100", new Action( instance.TestProperties_Year10100 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year10400", new Action( instance.TestProperties_Year10400 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year4", new Action( instance.TestProperties_Year4 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Year400", new Action( instance.TestProperties_Year400 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_YearMinus1", new Action( instance.TestProperties_YearMinus1 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_YearMinus100", new Action( instance.TestProperties_YearMinus100 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_YearMinus3", new Action( instance.TestProperties_YearMinus3 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_YearMinus399", new Action( instance.TestProperties_YearMinus399 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_YearMinus4", new Action( instance.TestProperties_YearMinus4 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_YearMinus400", new Action( instance.TestProperties_YearMinus400 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_YearMinus99", new Action( instance.TestProperties_YearMinus99 ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestProperties_Zero", new Action( instance.TestProperties_Zero ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_1Sec", new Action( instance.TestSubtract_TimeSpan_1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_1Tick", new Action( instance.TestSubtract_TimeSpan_1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_MaxPlus1Sec_Overflow", new Action( instance.TestSubtract_TimeSpan_MaxPlus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_MaxPlus1Tick_Overflow", new Action( instance.TestSubtract_TimeSpan_MaxPlus1Tick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_MinMinus1Sec_Overflow", new Action( instance.TestSubtract_TimeSpan_MinMinus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_MinMinus1Tick_Overflow", new Action( instance.TestSubtract_TimeSpan_MinMinus1Tick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_Minus1Sec", new Action( instance.TestSubtract_TimeSpan_Minus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_Minus1Tick", new Action( instance.TestSubtract_TimeSpan_Minus1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_MoveDown", new Action( instance.TestSubtract_TimeSpan_MoveDown ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_MoveUp", new Action( instance.TestSubtract_TimeSpan_MoveUp ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtract_TimeSpan_Same", new Action( instance.TestSubtract_TimeSpan_Same ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_1Sec", new Action( instance.TestSubtractionOperator_TimeSpan_1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_1Tick", new Action( instance.TestSubtractionOperator_TimeSpan_1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_MaxPlus1Sec_Overflow", new Action( instance.TestSubtractionOperator_TimeSpan_MaxPlus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_MaxPlus1Tick_Overflow", new Action( instance.TestSubtractionOperator_TimeSpan_MaxPlus1Tick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_MinMinus1Sec_Overflow", new Action( instance.TestSubtractionOperator_TimeSpan_MinMinus1Sec_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_MinMinus1Tick_Overflow", new Action( instance.TestSubtractionOperator_TimeSpan_MinMinus1Tick_Overflow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_Minus1Sec", new Action( instance.TestSubtractionOperator_TimeSpan_Minus1Sec ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_Minus1Tick", new Action( instance.TestSubtractionOperator_TimeSpan_Minus1Tick ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_MoveDown", new Action( instance.TestSubtractionOperator_TimeSpan_MoveDown ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_MoveUp", new Action( instance.TestSubtractionOperator_TimeSpan_MoveUp ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestSubtractionOperator_TimeSpan_Same", new Action( instance.TestSubtractionOperator_TimeSpan_Same ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTime_OverflowNanoseconds", new Action( instance.TestToDateTime_OverflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTime_OverflowSeconds", new Action( instance.TestToDateTime_OverflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTime_UnderflowNanoseconds", new Action( instance.TestToDateTime_UnderflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTime_UnderflowSeconds", new Action( instance.TestToDateTime_UnderflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTime_UtcNow_OK", new Action( instance.TestToDateTime_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTimeOffset_OverflowNanoseconds", new Action( instance.TestToDateTimeOffset_OverflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTimeOffset_OverflowSeconds", new Action( instance.TestToDateTimeOffset_OverflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTimeOffset_UnderflowNanoseconds", new Action( instance.TestToDateTimeOffset_UnderflowNanoseconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTimeOffset_UnderflowSeconds", new Action( instance.TestToDateTimeOffset_UnderflowSeconds ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToDateTimeOffset_UtcNow_OK", new Action( instance.TestToDateTimeOffset_UtcNow_OK ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToday", new Action( instance.TestToday ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_AsOFormatAndNullIFormatProvider", new Action( instance.TestToString_AsOFormatAndNullIFormatProvider ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_IFormatProvider_AsOFormat", new Action( instance.TestToString_IFormatProvider_AsOFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_AsNullIFormatProvider", new Action( instance.TestToString_String_AsNullIFormatProvider ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_DefaultIsOk", new Action( instance.TestToString_String_IFormatProvider_DefaultIsOk ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_Distinguishable_null_InvariantCulture_FormatIsO", new Action( instance.TestToString_String_IFormatProvider_Distinguishable_null_InvariantCulture_FormatIsO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_Distinguishable_o_CustomCulture_UsedForNegativeSign", new Action( instance.TestToString_String_IFormatProvider_Distinguishable_o_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_Distinguishable_o_InvariantCulture", new Action( instance.TestToString_String_IFormatProvider_Distinguishable_o_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_Distinguishable_o_null_CurrentCultureIsUsed", new Action( instance.TestToString_String_IFormatProvider_Distinguishable_o_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_Distinguishable_s_CustomCulture_UsedForNegativeSign", new Action( instance.TestToString_String_IFormatProvider_Distinguishable_s_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_Distinguishable_s_InvariantCulture", new Action( instance.TestToString_String_IFormatProvider_Distinguishable_s_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_Distinguishable_s_null_CurrentCultureIsUsed", new Action( instance.TestToString_String_IFormatProvider_Distinguishable_s_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_EmptyFormat", new Action( instance.TestToString_String_IFormatProvider_EmptyFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_UnsupportedFormat", new Action( instance.TestToString_String_IFormatProvider_UnsupportedFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_YearMinus1_null_InvariantCulture_FormatIsO", new Action( instance.TestToString_String_IFormatProvider_YearMinus1_null_InvariantCulture_FormatIsO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_YearMinus1_o_CustomCulture_UsedForNegativeSign", new Action( instance.TestToString_String_IFormatProvider_YearMinus1_o_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_YearMinus1_o_InvariantCulture", new Action( instance.TestToString_String_IFormatProvider_YearMinus1_o_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_YearMinus1_o_null_CurrentCultureIsUsed", new Action( instance.TestToString_String_IFormatProvider_YearMinus1_o_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_YearMinus1_s_CustomCulture_UsedForNegativeSign", new Action( instance.TestToString_String_IFormatProvider_YearMinus1_s_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_YearMinus1_s_InvariantCulture", new Action( instance.TestToString_String_IFormatProvider_YearMinus1_s_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToString_String_IFormatProvider_YearMinus1_s_null_CurrentCultureIsUsed", new Action( instance.TestToString_String_IFormatProvider_YearMinus1_s_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_FullDigits_LowerO", new Action( instance.TestToStringCore_FullDigits_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_FullDigits_LowerS", new Action( instance.TestToStringCore_FullDigits_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_FullDigits_UpperO", new Action( instance.TestToStringCore_FullDigits_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_TimestampMax_LowerO", new Action( instance.TestToStringCore_TimestampMax_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_TimestampMax_LowerS", new Action( instance.TestToStringCore_TimestampMax_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_TimestampMax_UpperO", new Action( instance.TestToStringCore_TimestampMax_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_TimestampMin_LowerO", new Action( instance.TestToStringCore_TimestampMin_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_TimestampMin_LowerS", new Action( instance.TestToStringCore_TimestampMin_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_TimestampMin_UpperO", new Action( instance.TestToStringCore_TimestampMin_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_Year10000_LowerO", new Action( instance.TestToStringCore_Year10000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_Year10000_LowerS", new Action( instance.TestToStringCore_Year10000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_Year10000_UpperO", new Action( instance.TestToStringCore_Year10000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus1_LowerO", new Action( instance.TestToStringCore_YearMinus1_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus1_LowerS", new Action( instance.TestToStringCore_YearMinus1_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus1_UpperO", new Action( instance.TestToStringCore_YearMinus1_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus1000_LowerO", new Action( instance.TestToStringCore_YearMinus1000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus1000_LowerS", new Action( instance.TestToStringCore_YearMinus1000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus1000_UpperO", new Action( instance.TestToStringCore_YearMinus1000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus10000_LowerO", new Action( instance.TestToStringCore_YearMinus10000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus10000_LowerS", new Action( instance.TestToStringCore_YearMinus10000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_YearMinus10000_UpperO", new Action( instance.TestToStringCore_YearMinus10000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_Zero_LowerO", new Action( instance.TestToStringCore_Zero_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_Zero_LowerS", new Action( instance.TestToStringCore_Zero_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestToStringCore_Zero_UpperO", new Action( instance.TestToStringCore_Zero_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Distinguishable_o_CustomCulture_UsedForNegativeSign", new Action( instance.TestTryParseExact_Distinguishable_o_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Distinguishable_o_null_CurrentCultureIsUsed", new Action( instance.TestTryParseExact_Distinguishable_o_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Distinguishable_s_CustomCulture_UsedForNegativeSign", new Action( instance.TestTryParseExact_Distinguishable_s_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Distinguishable_s_null_CurrentCultureIsUsed", new Action( instance.TestTryParseExact_Distinguishable_s_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_FullDigits_LowerO", new Action( instance.TestTryParseExact_FullDigits_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_FullDigits_LowerS", new Action( instance.TestTryParseExact_FullDigits_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_FullDigits_UpperO", new Action( instance.TestTryParseExact_FullDigits_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_IFormatProvider_YearMinus1_o_InvariantCulture", new Action( instance.TestTryParseExact_IFormatProvider_YearMinus1_o_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_IFormatProvider_YearMinus1_s_InvariantCulture", new Action( instance.TestTryParseExact_IFormatProvider_YearMinus1_s_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_IFormatProvider_Zero_o_InvariantCulture", new Action( instance.TestTryParseExact_IFormatProvider_Zero_o_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_IFormatProvider_Zero_s_InvariantCulture", new Action( instance.TestTryParseExact_IFormatProvider_Zero_s_InvariantCulture ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_InvalidStyles", new Action( instance.TestTryParseExact_InvalidStyles ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_NullFormat", new Action( instance.TestTryParseExact_NullFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_NullValue", new Action( instance.TestTryParseExact_NullValue ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_EmptyValue_o", new Action( instance.TestTryParseExact_ParseError_EmptyValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_EmptyValue_s", new Action( instance.TestTryParseExact_ParseError_EmptyValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidDayHourDelimiter_o", new Action( instance.TestTryParseExact_ParseError_InvalidDayHourDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidDayHourDelimiter_s", new Action( instance.TestTryParseExact_ParseError_InvalidDayHourDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidDayValue_o", new Action( instance.TestTryParseExact_ParseError_InvalidDayValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidDayValue_s", new Action( instance.TestTryParseExact_ParseError_InvalidDayValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidHourMinuteDelimiter_o", new Action( instance.TestTryParseExact_ParseError_InvalidHourMinuteDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidHourMinuteDelimiter_s", new Action( instance.TestTryParseExact_ParseError_InvalidHourMinuteDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidHourValue_o", new Action( instance.TestTryParseExact_ParseError_InvalidHourValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidHourValue_s", new Action( instance.TestTryParseExact_ParseError_InvalidHourValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMinuteSecondDelimiter_o", new Action( instance.TestTryParseExact_ParseError_InvalidMinuteSecondDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMinuteSecondDelimiter_s", new Action( instance.TestTryParseExact_ParseError_InvalidMinuteSecondDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMinuteValue_o", new Action( instance.TestTryParseExact_ParseError_InvalidMinuteValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMinuteValue_s", new Action( instance.TestTryParseExact_ParseError_InvalidMinuteValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMonthDayDelimiter_o", new Action( instance.TestTryParseExact_ParseError_InvalidMonthDayDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMonthDayDelimiter_s", new Action( instance.TestTryParseExact_ParseError_InvalidMonthDayDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMonthValue_o", new Action( instance.TestTryParseExact_ParseError_InvalidMonthValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidMonthValue_s", new Action( instance.TestTryParseExact_ParseError_InvalidMonthValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidNanosecondDelimiter_o", new Action( instance.TestTryParseExact_ParseError_InvalidNanosecondDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidNanosecondValue_o", new Action( instance.TestTryParseExact_ParseError_InvalidNanosecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidSecondValue_o", new Action( instance.TestTryParseExact_ParseError_InvalidSecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidSecondValue_s", new Action( instance.TestTryParseExact_ParseError_InvalidSecondValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidYearMonthDelimiter_o", new Action( instance.TestTryParseExact_ParseError_InvalidYearMonthDelimiter_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidYearMonthDelimiter_s", new Action( instance.TestTryParseExact_ParseError_InvalidYearMonthDelimiter_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidYearValue_o", new Action( instance.TestTryParseExact_ParseError_InvalidYearValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_InvalidYearValue_s", new Action( instance.TestTryParseExact_ParseError_InvalidYearValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_MissingUtcSign_o", new Action( instance.TestTryParseExact_ParseError_MissingUtcSign_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_MissingUtcSign_s", new Action( instance.TestTryParseExact_ParseError_MissingUtcSign_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeDayValue_o", new Action( instance.TestTryParseExact_ParseError_TooLargeDayValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeDayValue_s", new Action( instance.TestTryParseExact_ParseError_TooLargeDayValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeHourValue_o", new Action( instance.TestTryParseExact_ParseError_TooLargeHourValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeHourValue_s", new Action( instance.TestTryParseExact_ParseError_TooLargeHourValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeMinuteValue_o", new Action( instance.TestTryParseExact_ParseError_TooLargeMinuteValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeMinuteValue_s", new Action( instance.TestTryParseExact_ParseError_TooLargeMinuteValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeMonthValue_o", new Action( instance.TestTryParseExact_ParseError_TooLargeMonthValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeMonthValue_s", new Action( instance.TestTryParseExact_ParseError_TooLargeMonthValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeNanosecondValue_o", new Action( instance.TestTryParseExact_ParseError_TooLargeNanosecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeSecondValue_o", new Action( instance.TestTryParseExact_ParseError_TooLargeSecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeSecondValue_s", new Action( instance.TestTryParseExact_ParseError_TooLargeSecondValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeYearValue_o", new Action( instance.TestTryParseExact_ParseError_TooLargeYearValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooLargeYearValue_s", new Action( instance.TestTryParseExact_ParseError_TooLargeYearValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortDayDigit_o", new Action( instance.TestTryParseExact_ParseError_TooShortDayDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortDayDigit_s", new Action( instance.TestTryParseExact_ParseError_TooShortDayDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortHourDigit_o", new Action( instance.TestTryParseExact_ParseError_TooShortHourDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortHourDigit_s", new Action( instance.TestTryParseExact_ParseError_TooShortHourDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortMinuteDigit_o", new Action( instance.TestTryParseExact_ParseError_TooShortMinuteDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortMinuteDigit_s", new Action( instance.TestTryParseExact_ParseError_TooShortMinuteDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortMonthDigit_o", new Action( instance.TestTryParseExact_ParseError_TooShortMonthDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortMonthDigit_s", new Action( instance.TestTryParseExact_ParseError_TooShortMonthDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortNanosecondDigit_o", new Action( instance.TestTryParseExact_ParseError_TooShortNanosecondDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortSecondDigit_o", new Action( instance.TestTryParseExact_ParseError_TooShortSecondDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortSecondDigit_s", new Action( instance.TestTryParseExact_ParseError_TooShortSecondDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortYearDigit_o", new Action( instance.TestTryParseExact_ParseError_TooShortYearDigit_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooShortYearDigit_s", new Action( instance.TestTryParseExact_ParseError_TooShortYearDigit_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallDayValue_o", new Action( instance.TestTryParseExact_ParseError_TooSmallDayValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallDayValue_s", new Action( instance.TestTryParseExact_ParseError_TooSmallDayValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallHourValue_o", new Action( instance.TestTryParseExact_ParseError_TooSmallHourValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallHourValue_s", new Action( instance.TestTryParseExact_ParseError_TooSmallHourValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallMinuteValue_o", new Action( instance.TestTryParseExact_ParseError_TooSmallMinuteValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallMinuteValue_s", new Action( instance.TestTryParseExact_ParseError_TooSmallMinuteValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallMonthValue_o", new Action( instance.TestTryParseExact_ParseError_TooSmallMonthValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallMonthValue_s", new Action( instance.TestTryParseExact_ParseError_TooSmallMonthValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallNanosecondValue_o", new Action( instance.TestTryParseExact_ParseError_TooSmallNanosecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallSecondValue_o", new Action( instance.TestTryParseExact_ParseError_TooSmallSecondValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallSecondValue_s", new Action( instance.TestTryParseExact_ParseError_TooSmallSecondValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallYearValue_o", new Action( instance.TestTryParseExact_ParseError_TooSmallYearValue_o ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_ParseError_TooSmallYearValue_s", new Action( instance.TestTryParseExact_ParseError_TooSmallYearValue_s ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_TimestampMax_LowerO", new Action( instance.TestTryParseExact_TimestampMax_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_TimestampMax_LowerS", new Action( instance.TestTryParseExact_TimestampMax_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_TimestampMax_UpperO", new Action( instance.TestTryParseExact_TimestampMax_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_TimestampMin_LowerO", new Action( instance.TestTryParseExact_TimestampMin_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_TimestampMin_LowerS", new Action( instance.TestTryParseExact_TimestampMin_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_TimestampMin_UpperO", new Action( instance.TestTryParseExact_TimestampMin_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_UnsupportedFormat", new Action( instance.TestTryParseExact_UnsupportedFormat ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_LeadingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_TrailingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_LeadingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_TrailingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatLowerS_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_LeadingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_TrailingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhite_FormatUpperO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_BothWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_BothWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_LeadingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_BothWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_BothWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_LeadingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_BothWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_BothWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_LeadingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_LeadingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowLeadingWhiteOrAllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_LeadingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_LeadingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatLowerS_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_LeadingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_AllowTrailingWhite_FormatUpperO_TrailingWhiteIsAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatLowerO_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatLowerO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatLowerO_LeadingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatLowerO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatLowerO_TrailingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatLowerO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatLowerS_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatLowerS_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatLowerS_LeadingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatLowerS_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatLowerS_TrailingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatLowerS_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatUpperO_BothWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatUpperO_BothWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatUpperO_LeadingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatUpperO_LeadingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_WithDateTimeStyles_None_FormatUpperO_TrailingWhiteIsNotAllowed", new Action( instance.TestTryParseExact_WithDateTimeStyles_None_FormatUpperO_TrailingWhiteIsNotAllowed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Year10000_LowerO", new Action( instance.TestTryParseExact_Year10000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Year10000_LowerS", new Action( instance.TestTryParseExact_Year10000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Year10000_UpperO", new Action( instance.TestTryParseExact_Year10000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1_LowerO", new Action( instance.TestTryParseExact_YearMinus1_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1_LowerS", new Action( instance.TestTryParseExact_YearMinus1_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1_o_CustomCulture_UsedForNegativeSign", new Action( instance.TestTryParseExact_YearMinus1_o_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1_o_null_CurrentCultureIsUsed", new Action( instance.TestTryParseExact_YearMinus1_o_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1_s_CustomCulture_UsedForNegativeSign", new Action( instance.TestTryParseExact_YearMinus1_s_CustomCulture_UsedForNegativeSign ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1_s_null_CurrentCultureIsUsed", new Action( instance.TestTryParseExact_YearMinus1_s_null_CurrentCultureIsUsed ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1_UpperO", new Action( instance.TestTryParseExact_YearMinus1_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1000_LowerO", new Action( instance.TestTryParseExact_YearMinus1000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1000_LowerS", new Action( instance.TestTryParseExact_YearMinus1000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus1000_UpperO", new Action( instance.TestTryParseExact_YearMinus1000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus10000_LowerO", new Action( instance.TestTryParseExact_YearMinus10000_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus10000_LowerS", new Action( instance.TestTryParseExact_YearMinus10000_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_YearMinus10000_UpperO", new Action( instance.TestTryParseExact_YearMinus10000_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Zero_LowerO", new Action( instance.TestTryParseExact_Zero_LowerO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Zero_LowerS", new Action( instance.TestTryParseExact_Zero_LowerS ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestTryParseExact_Zero_UpperO", new Action( instance.TestTryParseExact_Zero_UpperO ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestUtcNow", new Action( instance.TestUtcNow ) ) );
+			testClassInstance.TestMethods.Add( new TestMethod( "TestZero_AllZero", new Action( instance.TestZero_AllZero ) ) );
 		}
 	} 
 
