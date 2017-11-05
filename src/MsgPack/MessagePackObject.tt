@@ -408,7 +408,7 @@ private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterN
 	else if ( t == typeof( byte[] ) )
 	{
 #>
-			VerifyUnderlyingType<MessagePackString>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #>  );
+			VerifyUnderlyingRawType<byte[]>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #>  );
 
 			if( <#= val #>._handleOrTypeCode == null )
 			{
@@ -424,7 +424,7 @@ private void GenerateAsT( string val, Object typeOrTypeName, bool passParameterN
 	else if ( t == typeof( string ) )
 	{
 #>
-			VerifyUnderlyingType<MessagePackString>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #> );
+			VerifyUnderlyingRawType<string>( <#= val #>, <#= passParameterName ? "\"" + val + "\"" : "null" #> );
 
 			if( <#= val #>._handleOrTypeCode == null )
 			{
