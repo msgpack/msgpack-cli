@@ -1037,6 +1037,14 @@ namespace MsgPack
 					{
 						return asMps.GetUnderlyingType();
 					}
+					else if ( this._handleOrTypeCode is byte[] )
+					{
+						// It should be MPETO
+#if DEBUG
+						Contract.Assert( ( this._value & 0xFFFFFFFFFFFFFF00 ) == 0, "( " + this._value.ToString( "X16" ) + " & 0xFFFFFFFFFFFFFF00 ) != 0" );
+#endif // DEBUG
+						return typeof( MessagePackExtendedTypeObject );
+					}
 					else
 					{
 						return this._handleOrTypeCode.GetType();
