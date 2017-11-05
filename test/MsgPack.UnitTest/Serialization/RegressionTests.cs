@@ -531,5 +531,15 @@ namespace MsgPack.Serialization
 		}
 
 #endif // FEATURE_TAP
+
+		[Test]
+		public void TestIssue269()
+		{
+			var input = new MessagePackObject( Timestamp.UtcNow.Encode() );
+			var target = MessagePackSerializer.UnpackMessagePackObject( MessagePackSerializer.Get<MessagePackObject>().PackSingleObject( input ) );
+			Assert.That( target.UnderlyingType, Is.EqualTo( typeof( MessagePackExtendedTypeObject ) ) );
+			Assert.That( target.IsTypeOf<byte[]>(), Is.False );
+			Assert.That( target.IsTypeOf<MessagePackExtendedTypeObject>(), Is.True );
+		}
 	}
 }
