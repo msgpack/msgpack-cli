@@ -742,3 +742,6 @@ Release 1.0.0-rc1 T.B.D.
   BUG FIXES
   * Fix NRE in .NET Standard 1.1/1.3 build (this issue got mixed in beta2).
   * Fix built-in Guid/BigInteger always output raw type even if PackerCompatibilityOptions.PackBinaryAsRaw is not specified. #270
+  * Fix MessagePackObject.UnderlyingType reports wrong type for ext types. Part of #269.
+    This bug also caused misleading error message for incompatible type conversion.
+  * Fix exceptions thrown by MessagePackObject.AsBinary()/AsString() reports internal type name. Part of #269.
