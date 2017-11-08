@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -54,7 +54,7 @@ namespace Samples
 					Comment = "This is test object to be serialize/deserialize using MsgPack."
 				};
 			// Note that the packer automatically increse buffer.
-			using ( var bytePacker = Packer.Create( buffer ) )
+			using ( var bytePacker = Packer.Create( buffer, true, PackerCompatibilityOptions.None ) )
 			{
 				serializer.PackTo( bytePacker, obj );
 				// Note: You can get actual bytes with GetResultBytes(), but it causes array copy.
