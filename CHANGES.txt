@@ -736,3 +736,9 @@ Relase 1.0.0-beta2 2017-10-29
   * System.Tuple<T> detection now ignores their declaring assemblies.
   * Improve exception message in AOT error of Unity.
   * .NET Standard 1.1/1.3 projects now do not depend on System.Linq.Expressions package.
+
+Release 1.0.0-rc1 T.B.D.
+
+  BUG FIXES
+  * Fix NRE in .NET Standard 1.1/1.3 build (this issue got mixed in beta2).
+  * Fix built-in Guid/BigInteger always output raw type even if PackerCompatibilityOptions.PackBinaryAsRaw is not specified. #270
