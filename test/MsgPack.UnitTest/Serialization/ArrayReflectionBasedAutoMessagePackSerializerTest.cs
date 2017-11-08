@@ -9186,7 +9186,7 @@ namespace MsgPack.Serialization
 			Assert.That(
 				serializedItem,
 				Is.EqualTo(
-					new byte[] { 0x92, 0xB0 }.Concat( item.Id.ToByteArray() )
+					new byte[] { 0x92, MessagePackCode.Bin8, 0x10 }.Concat( item.Id.ToByteArray() )
 					.Concat( new byte[] { 0x92, 5, 11 } ).ToArray()
 				)
 			);
@@ -9205,7 +9205,7 @@ namespace MsgPack.Serialization
 			Assert.That(
 				serializedItem,
 				Is.EqualTo(
-					new byte[] { 0x92, 0xB0 }.Concat( item.Id.ToByteArray() )
+					new byte[] { 0x92, MessagePackCode.Bin8, 0x10 }.Concat( item.Id.ToByteArray() )
 					.Concat( new byte[] { 0x92, 5, 11 } ).ToArray()
 				)
 			);
