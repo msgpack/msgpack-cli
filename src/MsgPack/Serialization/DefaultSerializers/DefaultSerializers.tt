@@ -166,8 +166,8 @@ var workArounds =
 	{
 		{ typeof( char ), new WorkAround(){ PackCode = "packer.Pack( ( System.UInt16 )value );", UnpackCode = "return ( System.Char ) unpacker.LastReadData.AsUInt16(); " } },
 		{ typeof( decimal ), new WorkAround(){ PackCode = "packer.PackString( value.ToString( \"G\", CultureInfo.InvariantCulture ) );", UnpackCode = "return System.Decimal.Parse( unpacker.LastReadData.AsString(), CultureInfo.InvariantCulture ); " } },
-		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.LastReadData.AsBinary() ); " } },
-		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.PackRaw( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); " } },
+		{ typeof( Guid ), new WorkAround(){ PackCode = "packer.PackBinary( value.ToByteArray() );", UnpackCode = "return new System.Guid( unpacker.LastReadData.AsBinary() ); " } },
+		{ typeof( BigInteger ), new WorkAround(){ PackCode = "packer.PackBinary( value.ToByteArray() );", UnpackCode = "return new System.Numerics.BigInteger( unpacker.LastReadData.AsBinary() ); " } },
 	};
 
 var asyncWorkArounds =
@@ -175,8 +175,8 @@ var asyncWorkArounds =
 	{
 		{ typeof( char ), "packer.PackAsync( ( System.UInt16 )value, cancellationToken ).ConfigureAwait( false );" },
 		{ typeof( decimal ), "packer.PackStringAsync( value.ToString( \"G\", CultureInfo.InvariantCulture ), cancellationToken ).ConfigureAwait( false );" },
-		{ typeof( Guid ), "packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
-		{ typeof( BigInteger ), "packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
+		{ typeof( Guid ), "packer.PackBinaryAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
+		{ typeof( BigInteger ), "packer.PackBinaryAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );" },
 	};
 
 var notInSLs =
