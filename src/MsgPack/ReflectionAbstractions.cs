@@ -212,7 +212,7 @@ namespace MsgPack
 					);
 		}
 
-#else
+#else // NETSTANDARD1_1 || NETSTANDARD1_3
 		public static MethodInfo GetRuntimeMethod( this Type source, string name, Type[] parameters )
 		{
 			return
@@ -241,6 +241,13 @@ namespace MsgPack
 					BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic
 				);
 		}
+
+#if NET35 || SILVERLIGHT
+		public static IEnumerable<PropertyInfo> GetRuntimeProperties( this Type source )
+		{
+			return source.GetProperties( BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic );
+		}
+#endif // NET35 || SILVERLIGHT
 
 #if DEBUG
 		public static FieldInfo GetRuntimeField( this Type source, string name )
