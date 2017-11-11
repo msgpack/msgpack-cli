@@ -774,7 +774,7 @@ namespace MsgPack
 		/// <returns><see cref="String" /> instance corresponds to this instance.</returns>
 		public String AsString()
 		{
-			VerifyUnderlyingType<MessagePackString>( this, null );
+			VerifyUnderlyingRawType<string>( this, null );
 
 			if( this._handleOrTypeCode == null )
 			{
@@ -793,7 +793,7 @@ namespace MsgPack
 		/// <returns><see cref="Byte" />[] instance corresponds to this instance.</returns>
 		public Byte[] AsBinary()
 		{
-			VerifyUnderlyingType<MessagePackString>( this, null  );
+			VerifyUnderlyingRawType<byte[]>( this, null  );
 
 			if( this._handleOrTypeCode == null )
 			{
@@ -1603,7 +1603,7 @@ namespace MsgPack
 		/// <returns><see cref="String" /> instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator String( MessagePackObject value )
 		{
-			VerifyUnderlyingType<MessagePackString>( value, "value" );
+			VerifyUnderlyingRawType<string>( value, "value" );
 
 			if( value._handleOrTypeCode == null )
 			{
@@ -1623,7 +1623,7 @@ namespace MsgPack
 		/// <returns><see cref="Byte" />[] instance corresponds to <paramref name="value"/>.</returns>
 		public static explicit operator Byte[]( MessagePackObject value )
 		{
-			VerifyUnderlyingType<MessagePackString>( value, "value"  );
+			VerifyUnderlyingRawType<byte[]>( value, "value"  );
 
 			if( value._handleOrTypeCode == null )
 			{

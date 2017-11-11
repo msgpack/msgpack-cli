@@ -531,5 +531,21 @@ namespace MsgPack.Serialization
 		}
 
 #endif // FEATURE_TAP
+
+		[Test]
+		public void TestIssue269()
+		{
+			var input = new MessagePackObject( Timestamp.UtcNow.Encode() );
+			var target = MessagePackSerializer.UnpackMessagePackObject( MessagePackSerializer.Get<MessagePackObject>().PackSingleObject( input ) );
+			Assert.That( target.UnderlyingType, Is.EqualTo( typeof( MessagePackExtendedTypeObject ) ) );
+			Assert.That( target.IsTypeOf<byte[]>(), Is.False );
+			Assert.That( target.IsTypeOf<MessagePackExtendedTypeObject>(), Is.True );
+
+			var forBinary = Assert.Throws<InvalidOperationException>( () => target.AsBinary() );
+			Assert.That( forBinary.Message, Is.EqualTo( "Do not convert MsgPack.MessagePackExtendedTypeObject MessagePackObject to System.Byte[]." ) );
+
+			var forString = Assert.Throws<InvalidOperationException>( () => target.AsString() );
+			Assert.That( forString.Message, Is.EqualTo( "Do not convert MsgPack.MessagePackExtendedTypeObject MessagePackObject to System.String." ) );
+		}
 	}
 }

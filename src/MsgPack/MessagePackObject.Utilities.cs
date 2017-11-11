@@ -1037,6 +1037,14 @@ namespace MsgPack
 					{
 						return asMps.GetUnderlyingType();
 					}
+					else if ( this._handleOrTypeCode is byte[] )
+					{
+						// It should be MPETO
+#if DEBUG
+						Contract.Assert( ( this._value & 0xFFFFFFFFFFFFFF00 ) == 0, "( " + this._value.ToString( "X16" ) + " & 0xFFFFFFFFFFFFFF00 ) != 0" );
+#endif // DEBUG
+						return typeof( MessagePackExtendedTypeObject );
+					}
 					else
 					{
 						return this._handleOrTypeCode.GetType();
@@ -1355,7 +1363,7 @@ namespace MsgPack
 				return null;
 			}
 
-			VerifyUnderlyingType<MessagePackString>( this, null );
+			VerifyUnderlyingRawType<string>( this, null );
 
 			try
 			{
@@ -1395,7 +1403,7 @@ namespace MsgPack
 		/// </remarks>
 		public string AsStringUtf16()
 		{
-			VerifyUnderlyingType<byte[]>( this, null );
+			VerifyUnderlyingRawType<string>( this, null );
 			Contract.EndContractBlock();
 
 			if ( this.IsNil )
@@ -1509,6 +1517,10 @@ namespace MsgPack
 
 		private static void VerifyUnderlyingType<T>( MessagePackObject instance, string parameterName )
 		{
+#if DEBUG
+			Contract.Assert( typeof( T ) != typeof( MessagePackString ), "Should use VerifyUnderlyingRawType()" );
+#endif // DEBUG
+
 			if ( instance.IsNil )
 			{
 				if ( !typeof( T ).GetIsValueType() || Nullable.GetUnderlyingType( typeof( T ) ) != null )
@@ -1537,6 +1549,24 @@ namespace MsgPack
 				{
 					ThrowInvalidTypeAs<T>( instance );
 				}
+			}
+		}
+
+		private static void VerifyUnderlyingRawType<T>( MessagePackObject instance, string parameterName )
+		{
+			if ( instance._handleOrTypeCode == null || instance._handleOrTypeCode is MessagePackString )
+			{
+				// nil or MPS (eventually string or byte[])
+				return;
+			}
+
+			if ( parameterName != null )
+			{
+				throw new ArgumentException( String.Format( CultureInfo.CurrentCulture, "Do not convert {0} MessagePackObject to {1}.", instance.UnderlyingType, typeof( T ) ), parameterName );
+			}
+			else
+			{
+				ThrowInvalidTypeAs<T>( instance );
 			}
 		}
 
@@ -1845,7 +1875,7 @@ namespace MsgPack
 			return new MessagePackObject( value, false );
 		}
 
-		#endregion -- Conversion Operator Overloads --
+#endregion -- Conversion Operator Overloads --
 
 #if DEBUG
 		internal string DebugDump()
