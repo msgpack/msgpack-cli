@@ -19,6 +19,7 @@
 #endregion -- License Terms --
 
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace MsgPack.Serialization.Metadata
@@ -27,8 +28,12 @@ namespace MsgPack.Serialization.Metadata
 	internal static class _MessagePackSerializer
 	{
 		// ReSharper disable InconsistentNaming
-		public static readonly MethodInfo Create1_Method = typeof( MessagePackSerializer ).GetRuntimeMethod( nameof( MessagePackSerializer.Create ), new[] { typeof( SerializationContext ) } );
+		public static readonly MethodInfo Create1_Method = typeof( MessagePackSerializer ).GetMethod( nameof( MessagePackSerializer.Create ), new[] { typeof( SerializationContext ) } );
 		// ReSharper restore InconsistentNaming
-		public static readonly PropertyInfo OwnerContext = typeof( MessagePackSerializer ).GetRuntimeProperty( nameof( MessagePackSerializer.OwnerContext ) );
+		public static readonly PropertyInfo OwnerContext =
+			typeof( MessagePackSerializer )
+			// Use LINQ to get non public property in netstandard 1.x
+			.GetRuntimeProperties()
+			.Single( p => p.Name == nameof( MessagePackSerializer.OwnerContext ) );
 	}
 }

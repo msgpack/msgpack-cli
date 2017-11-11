@@ -320,7 +320,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Guid value )
 		{
-			packer.PackRaw( value.ToByteArray() );
+			packer.PackBinary( value.ToByteArray() );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -345,7 +345,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override async Task PackToAsyncCore( Packer packer, System.Guid value, CancellationToken cancellationToken )
 		{
-			await packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );
+			await packer.PackBinaryAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -922,7 +922,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, System.Numerics.BigInteger value )
 		{
-			packer.PackRaw( value.ToByteArray() );
+			packer.PackBinary( value.ToByteArray() );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
@@ -947,7 +947,7 @@ namespace MsgPack.Serialization.DefaultSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override async Task PackToAsyncCore( Packer packer, System.Numerics.BigInteger value, CancellationToken cancellationToken )
 		{
-			await packer.PackRawAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );
+			await packer.PackBinaryAsync( value.ToByteArray(), cancellationToken ).ConfigureAwait( false );
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]

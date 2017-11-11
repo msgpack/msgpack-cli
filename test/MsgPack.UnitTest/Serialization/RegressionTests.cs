@@ -27,7 +27,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+#if !WINDOWS_PHONE
+#if !NET35 && !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+using System.Numerics;
+#endif // !UNITY || MSGPACK_UNITY_FULL
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
 using System.Runtime.Serialization;
+#if FEATURE_TAP
+using System.Threading;
+using System.Threading.Tasks;
+#endif // FEATURE_TAP
 #if !MSTEST
 using NUnit.Framework;
 #else
@@ -462,5 +473,63 @@ namespace MsgPack.Serialization
 			public byte[] ByteArray = new byte[ MessagePackSerializer.BufferSize - sizeof( int ) - sizeof( byte ) - 1 - 1 ];
 			public int Int32 = Int32.MaxValue;
 		}
+
+		[Test]
+		public void TestIssue270_Default()
+		{
+			var context = new SerializationContext();
+			var guidBytes = context.GetSerializer<Guid>().PackSingleObject( Guid.NewGuid() );
+			Assert.That( guidBytes[ 0 ], Is.EqualTo( MessagePackCode.Bin8 ) );
+#if !WINDOWS_PHONE
+#if !NET35 && !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+			var bigIntBytes = context.GetSerializer<BigInteger>().PackSingleObject( new BigInteger( 123 ) );
+			Assert.That( bigIntBytes[ 0 ], Is.EqualTo( MessagePackCode.Bin8 ) );
+#endif // !UNITY || MSGPACK_UNITY_FULL
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+		}
+
+		[Test]
+		public void TestIssue270_AsRaw()
+		{
+			var context = new SerializationContext();
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.PackBinaryAsRaw;
+			var guidBytes = context.GetSerializer<Guid>().PackSingleObject( Guid.NewGuid() );
+			Assert.That( guidBytes[ 0 ], Is.EqualTo( 0xB0 ) );
+#if !WINDOWS_PHONE
+#if !NET35 && !UNITY
+#if !UNITY || MSGPACK_UNITY_FULL
+			var bigIntBytes = context.GetSerializer<BigInteger>().PackSingleObject( new BigInteger( 123 ) );
+			Assert.That( bigIntBytes[ 0 ], Is.EqualTo( 0xA1 ) );
+#endif // !UNITY || MSGPACK_UNITY_FULL
+#endif // !NET35 && !UNITY
+#endif // !WINDOWS_PHONE
+		}
+
+#if FEATURE_TAP
+
+		[Test]
+		public async Task TestIssue270Async_Default()
+		{
+			var context = new SerializationContext();
+			var guidBytes = await context.GetSerializer<Guid>().PackSingleObjectAsync( Guid.NewGuid() );
+			Assert.That( guidBytes[ 0 ], Is.EqualTo( MessagePackCode.Bin8 ) );
+			var bigIntBytes = await context.GetSerializer<BigInteger>().PackSingleObjectAsync( new BigInteger( 123 ) );
+			Assert.That( bigIntBytes[ 0 ], Is.EqualTo( MessagePackCode.Bin8 ) );
+		}
+
+		[Test]
+		public async Task TestIssue270Async_AsRaw()
+		{
+			var context = new SerializationContext();
+			context.CompatibilityOptions.PackerCompatibilityOptions = PackerCompatibilityOptions.PackBinaryAsRaw;
+			var guidBytes = await context.GetSerializer<Guid>().PackSingleObjectAsync( Guid.NewGuid() );
+			Assert.That( guidBytes[ 0 ], Is.EqualTo( 0xB0 ) );
+			var bigIntBytes = await context.GetSerializer<BigInteger>().PackSingleObjectAsync( new BigInteger( 123 ) );
+			Assert.That( bigIntBytes[ 0 ], Is.EqualTo( 0xA1 ) );
+		}
+
+#endif // FEATURE_TAP
 	}
 }
