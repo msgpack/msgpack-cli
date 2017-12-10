@@ -3,5 +3,8 @@
   <OutOfBrowserSettings.WindowSettings>
     <WindowSettings Title="MsgPack.UnitTest.Silverlight.5.FullTrust アプリケーション" />
   </OutOfBrowserSettings.WindowSettings>
+  <OutOfBrowserSettings.SecuritySettings>
+    <SecuritySettings ElevatedPermissions="Required" />
+  </OutOfBrowserSettings.SecuritySettings>
   <OutOfBrowserSettings.Icons />
 </OutOfBrowserSettings>
