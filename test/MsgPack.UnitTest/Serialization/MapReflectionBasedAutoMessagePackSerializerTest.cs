@@ -2561,13 +2561,13 @@ namespace MsgPack.Serialization
 				stream.Write( new byte[]{ 0x80 } );
 				stream.Position = 0;
 				var result = serializer.Unpack( stream );
-#if !SILVERLIGHT && !SILVERLIGHT_PREVILEGED
+#if !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 				// Default constructor was called and was nothing to be set.
 				Assert.That( result.Member, Is.EqualTo( "ABC" ) );
 #else
 				// Set null via deserialization constructor.
 				Assert.That( result.Member, Is.Null );
-#endif // !SILVERLIGHT && !SILVERLIGHT_PREVILEGED
+#endif // !SILVERLIGHT || SILVERLIGHT_PRIVILEGED
 			}
 		}
 
