@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -317,19 +317,21 @@ namespace MsgPack
 		[Test]
 		public void TestFromDateTimeOffset_UtcNow_AsUnixEpoc()
 		{
+			var utcNow = DateTimeOffset.UtcNow;
 			Assert.AreEqual(
-				checked( DateTime.UtcNow.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
-				MessagePackConvert.FromDateTimeOffset( DateTimeOffset.UtcNow )
+				checked( utcNow.DateTime.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
+				MessagePackConvert.FromDateTimeOffset( utcNow )
 			);
 		}
 
 		[Test]
 		public void TestFromDateTimeOffset_Now_AsUtcUnixEpoc()
 		{
+			var utcNow = DateTimeOffset.UtcNow;
 			// LocalTime will be converted to UtcTime
 			Assert.AreEqual(
-				checked( DateTime.UtcNow.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
-				MessagePackConvert.FromDateTimeOffset( DateTimeOffset.Now )
+				checked( utcNow.DateTime.Subtract( UtcEpoc ).Ticks / TicksToMilliseconds ),
+				MessagePackConvert.FromDateTimeOffset( utcNow.ToLocalTime() )
 			);
 		}
 
