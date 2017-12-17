@@ -4,10 +4,6 @@ dotnet test %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.BclExtensions/MsgPack.
 if not %errorlevel% == 0 exit /b 1
 dotnet test %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.CodeDom/MsgPack.UnitTest.CodeDom.csproj
 if not %errorlevel% == 0 exit /b 1
-nunit3-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.Net35/bin/Debug/net35/MsgPack.UnitTest.Net35.dll --framework:net-3.5 --result=test-result-net35.xml;format=AppVeyor
-if not %errorlevel% == 0 exit /b 1
-nunit3-console %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.CodeDom.Net35/bin/Debug/net35/MsgPack.UnitTest.CodeDom.Net35.dll --framework:net-3.5 --result=test-result-net35-codedom.xml;format=AppVeyor
-if not %errorlevel% == 0 exit /b 1
 @rem WinRT related tests require developer license...
 @rem vstest.console /logger:Appveyor /InIsolation %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.WinRT/AppPackages/MsgPack.UnitTest.WinRT_1.1.0.0_AnyCPU_Debug_Test/MsgPack.UnitTest.WinRT_1.1.0.0_AnyCPU_Debug.appx 
 @rem vstest.console /logger:Appveyor /InIsolation %APPVEYOR_BUILD_FOLDER%/test/MsgPack.UnitTest.BclExtensions.WinRT/AppPackages/MsgPack.UnitTest.BclExtensions.WinRT_1.1.0.0_AnyCPU_Debug_Test/MsgPack.UnitTest.BclExtensions.WinRT_1.1.0.0_AnyCPU_Debug.appx

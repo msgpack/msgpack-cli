@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -34,7 +34,7 @@ using Is = NUnit.Framework.Is;
 namespace MsgPack
 {
 	[TestFixture]
-	[Timeout( 500 )]
+	[Timeout( 1000 )]
 	public partial class ByteArrayPackerTest : PackerTest
 	{
 		protected override Packer CreatePacker( MemoryStream stream )

@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -36,7 +36,7 @@ using System.IO;
 namespace MsgPack
 {
 	[TestFixture]
-	[Timeout( 500 )]
+	[Timeout( 1000 )]
 	public partial class StreamPackerTest : PackerTest
 	{
 		protected override Packer CreatePacker( MemoryStream stream )
