@@ -24,7 +24,6 @@
 
 using System;
 #if !UNITY || MSGPACK_UNITY_FULL
-using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if FEATURE_CONCURRENT
 using System.Collections.Concurrent;
@@ -46,6 +45,7 @@ using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Polymorphic;
+using System.Collections.Generic;
 
 namespace MsgPack.Serialization
 {
@@ -116,6 +116,22 @@ namespace MsgPack.Serialization
 #endif // !FEATURE_CONCURRENT
 
 		private readonly object _generationLock;
+
+		/// <summary>
+		/// The type member ignore list
+		/// </summary>
+		private readonly IDictionary<Type, IEnumerable<string>> _typesMemberIgnoreList = new Dictionary<Type, IEnumerable<string>>();
+
+		/// <summary>
+		///		Gets the mapping of type specific members which required to be ignored in serialization.
+		/// </summary>
+		/// <value>
+		///		The mapping of type specific members which required to be ignored in serialization
+		/// </value>
+		public IDictionary<Type, IEnumerable<string>> TypesMemberIgnoreList
+		{
+			get { return this._typesMemberIgnoreList; }
+		}
 
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
@@ -221,13 +237,13 @@ namespace MsgPack.Serialization
 				{
 					case SerializationMethod.Array:
 					case SerializationMethod.Map:
-					{
-						break;
-					}
+						{
+							break;
+						}
 					default:
-					{
-						throw new ArgumentOutOfRangeException( "value" );
-					}
+						{
+							throw new ArgumentOutOfRangeException( "value" );
+						}
 				}
 
 				Contract.EndContractBlock();
@@ -336,13 +352,13 @@ namespace MsgPack.Serialization
 					case DateTimeConversionMethod.Native:
 					case DateTimeConversionMethod.UnixEpoc:
 					case DateTimeConversionMethod.Timestamp:
-					{
-						break;
-					}
+						{
+							break;
+						}
 					default:
-					{
-						throw new ArgumentOutOfRangeException( "value" );
-					}
+						{
+							throw new ArgumentOutOfRangeException( "value" );
+						}
 				}
 
 				Contract.EndContractBlock();
@@ -882,7 +898,7 @@ namespace MsgPack.Serialization
 			try
 			{
 #endif // UNITY
-				return SerializerGetter.Instance.Get( this, targetType, providerParameter );
+			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #if UNITY
 			}
 			catch ( Exception ex )
