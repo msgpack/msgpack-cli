@@ -45,7 +45,6 @@ using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Polymorphic;
-using System.Collections.Generic;
 
 namespace MsgPack.Serialization
 {
@@ -117,20 +116,25 @@ namespace MsgPack.Serialization
 
 		private readonly object _generationLock;
 
-		/// <summary>
-		/// The type member ignore list
-		/// </summary>
-		private readonly IDictionary<Type, IEnumerable<string>> _typesMemberIgnoreList = new Dictionary<Type, IEnumerable<string>>();
+		private readonly BindingOptions _bindingOptions;
 
 		/// <summary>
-		///		Gets the mapping of type specific members which required to be ignored in serialization.
+		///		Gets the option settings for binding of type with serializer for field/property.
 		/// </summary>
 		/// <value>
-		///		The mapping of type specific members which required to be ignored in serialization
+		///		The option settings for binding of type's property/field in serializer generation.
+		///		This value will not be <c>null</c>.
 		/// </value>
-		public IDictionary<Type, IEnumerable<string>> TypesMemberIgnoreList
+		public BindingOptions BindingOptions
 		{
-			get { return this._typesMemberIgnoreList; }
+			get
+			{
+#if DEBUG
+				Contract.Ensures( Contract.Result<BindingOptions>() != null );
+#endif // DEBUG
+
+				return this._bindingOptions;
+			}
 		}
 
 		/// <summary>
@@ -559,6 +563,7 @@ namespace MsgPack.Serialization
 			this._serializerGeneratorOptions = new SerializerOptions();
 			this._dictionarySerializationOptions = new DictionarySerlaizationOptions();
 			this._enumSerializationOptions = new EnumSerializationOptions();
+			this._bindingOptions = new BindingOptions();
 		}
 
 		internal bool ContainsSerializer( Type rootType )

@@ -16,6 +16,9 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 //
+// Contributors:
+//    Shrenik Jhaveri (ShrenikOne)
+//
 #endregion -- License Terms --
 
 using System;
@@ -32,7 +35,7 @@ namespace MsgPack
 	public class MessagePackMemberSkipTest
 	{
 		[Test]
-		public void SerializeThenDeserialize()
+		public void SerializeThenDeserialize_Array()
 		{
 			// They are object for just description. 
 			var targetObject = new PhotoEntry
@@ -50,9 +53,10 @@ namespace MsgPack
 
 			// 1. Create serializer instance.
 			SerializationContext context = new SerializationContext();
+			context.SerializationMethod = SerializationMethod.Array;
 			context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
-			context.TypesMemberIgnoreList.Add( typeof( PhotoEntry ), new[] { nameof( PhotoEntry.Image ) } );
-			context.TypesMemberIgnoreList.Add( typeof( PhotoTag ), new[] { nameof( PhotoTag.Name ) } );
+			context.BindingOptions.SetIgnoringMembers( typeof( PhotoEntry ), new[] { nameof( PhotoEntry.Image ) } );
+			context.BindingOptions.SetIgnoringMembers( typeof( PhotoTag ), new[] { nameof( PhotoTag.Name ) } );
 			var serializer = MessagePackSerializer.Get<PhotoEntry>( context );
 
 			// 2. Serialize object to the specified stream.
@@ -63,6 +67,103 @@ namespace MsgPack
 
 			// 3. Deserialize object from the specified stream.
 			var deserializedObject = serializer.Unpack( stream );
+
+			Assert.AreEqual( targetObject.Comment, deserializedObject.Comment );
+			Assert.AreEqual( targetObject.Id, deserializedObject.Id );
+			Assert.AreEqual( targetObject.Date, deserializedObject.Date );
+			Assert.AreEqual( targetObject.Title, deserializedObject.Title );
+			Assert.Null( deserializedObject.Image );
+			Assert.AreEqual( targetObject.Tags.Count, deserializedObject.Tags.Count );
+			for ( int i = 0; i < deserializedObject.Tags.Count; i++ )
+			{
+				Assert.AreEqual( targetObject.Tags[ i ].Id, deserializedObject.Tags[ i ].Id );
+				Assert.Null( deserializedObject.Tags[ i ].Name );
+			}
+
+			//// TODO: @yfakariya, Need help, how i can achieve below....
+			//// How i can inject Nil or Null for Skipped/Ignored member, to support interoperability...
+
+
+			//// SerializationContext newContext = new SerializationContext();
+			//// newContext.SerializationMethod = SerializationMethod.Array;
+			//// newContext.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
+			//// serializer = MessagePackSerializer.Get<PhotoEntry>( newContext );
+
+			//// // Set position to head of the stream to demonstrate deserialization.
+			//// stream.Position = 0;
+
+			//// // 3. Deserialize object from the specified stream.
+			//// deserializedObject = serializer.Unpack( stream );
+
+			//// Assert.AreEqual( targetObject.Comment, deserializedObject.Comment );
+			//// Assert.AreEqual( targetObject.Id, deserializedObject.Id );
+			//// Assert.AreEqual( targetObject.Date, deserializedObject.Date );
+			//// Assert.AreEqual( targetObject.Title, deserializedObject.Title );
+			//// Assert.Null( deserializedObject.Image );
+			//// Assert.AreEqual( targetObject.Tags.Count, deserializedObject.Tags.Count );
+			//// for ( int i = 0; i < deserializedObject.Tags.Count; i++ )
+			//// {
+			//// 	Assert.AreEqual( targetObject.Tags[ i ].Id, deserializedObject.Tags[ i ].Id );
+			//// 	Assert.Null( deserializedObject.Tags[ i ].Name );
+			//// }
+		}
+
+		[Test]
+		public void SerializeThenDeserialize_Map()
+		{
+			// They are object for just description. 
+			var targetObject = new PhotoEntry
+			{
+				Id = 123,
+				Title = "My photo",
+				Date = DateTime.Now,
+				Image = new byte[] { 1, 2, 3, 4 },
+				Comment = "This is test object to be serialize/deserialize using MsgPack."
+			};
+
+			targetObject.Tags.Add( new PhotoTag { Name = "Sample", Id = 123 } );
+			targetObject.Tags.Add( new PhotoTag { Name = "Excellent", Id = 456 } );
+			var stream = new MemoryStream();
+
+			// 1. Create serializer instance.
+			SerializationContext context = new SerializationContext();
+			context.SerializationMethod = SerializationMethod.Map;
+			context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
+			context.BindingOptions.SetIgnoringMembers( typeof( PhotoEntry ), new[] { nameof( PhotoEntry.Image ) } );
+			context.BindingOptions.SetIgnoringMembers( typeof( PhotoTag ), new[] { nameof( PhotoTag.Name ) } );
+			var serializer = MessagePackSerializer.Get<PhotoEntry>( context );
+
+			// 2. Serialize object to the specified stream.
+			serializer.Pack( stream, targetObject );
+
+			// Set position to head of the stream to demonstrate deserialization.
+			stream.Position = 0;
+
+			// 3. Deserialize object from the specified stream.
+			var deserializedObject = serializer.Unpack( stream );
+
+			Assert.AreEqual( targetObject.Comment, deserializedObject.Comment );
+			Assert.AreEqual( targetObject.Id, deserializedObject.Id );
+			Assert.AreEqual( targetObject.Date, deserializedObject.Date );
+			Assert.AreEqual( targetObject.Title, deserializedObject.Title );
+			Assert.Null( deserializedObject.Image );
+			Assert.AreEqual( targetObject.Tags.Count, deserializedObject.Tags.Count );
+			for ( int i = 0; i < deserializedObject.Tags.Count; i++ )
+			{
+				Assert.AreEqual( targetObject.Tags[ i ].Id, deserializedObject.Tags[ i ].Id );
+				Assert.Null( deserializedObject.Tags[ i ].Name );
+			}
+
+			SerializationContext newContext = new SerializationContext();
+			newContext.SerializationMethod = SerializationMethod.Map;
+			newContext.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native;
+			serializer = MessagePackSerializer.Get<PhotoEntry>( context );
+
+			// Set position to head of the stream to demonstrate deserialization.
+			stream.Position = 0;
+
+			// 3. Deserialize object from the specified stream.
+			deserializedObject = serializer.Unpack( stream );
 
 			Assert.AreEqual( targetObject.Comment, deserializedObject.Comment );
 			Assert.AreEqual( targetObject.Id, deserializedObject.Id );

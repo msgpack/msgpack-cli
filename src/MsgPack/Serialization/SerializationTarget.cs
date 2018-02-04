@@ -169,14 +169,9 @@ namespace MsgPack.Serialization
 		{
 			VerifyCanSerializeTargetType( context, targetType );
 
-			IEnumerable<string> memberIgnoreList;
-			if ( !context.TypesMemberIgnoreList.TryGetValue( targetType, out memberIgnoreList ) )
-			{
-				memberIgnoreList = Enumerable.Empty<string>();
-			}
-
+			IEnumerable<string> memberIgnoreList = context.BindingOptions.GetIgnoringMembers( targetType );
 			var getters = GetTargetMembers( targetType )
-						  .Where( entry => !memberIgnoreList.Contains( entry.MemberName, StringComparer.Ordinal ) )
+						  .Where( getter => !memberIgnoreList.Contains( getter.MemberName, StringComparer.Ordinal ) )
 						  .OrderBy( entry => entry.Contract.Id )
 						  .ToArray();
 
