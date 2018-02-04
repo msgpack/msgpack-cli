@@ -25,10 +25,6 @@
 #define UNITY
 #endif
 
-#if !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_PHONE && !WINDOWS_UWP
-#define FEATURE_EMIT
-#endif // !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_PHONE && !WINDOWS_UWP
-
 using System;
 using System.IO;
 using System.Globalization;
@@ -215,7 +211,7 @@ namespace MsgPack.Serialization
 			Contract.Ensures( Contract.Result<MessagePackSerializer<T>>() != null );
 #endif // DEBUG
 
-#if DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
+#if DEBUG && FEATURE_EMIT
 			SerializerDebugging.TraceEmitEvent(
 				"SerializationContext::CreateInternal<{0}>(@{1}, {2})",
 				typeof( T ),
@@ -223,7 +219,7 @@ namespace MsgPack.Serialization
 				schema == null ? "null" : schema.DebugString
 			);
 
-#endif // DEBUG && !UNITY && !SILVERLIGHT && !NETSTANDARD1_1 && !WINDOWS_UWP
+#endif // DEBUG && FEATURE_EMIT
 			Type concreteType = null;
 			CollectionTraits collectionTraits =
 #if UNITY

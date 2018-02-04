@@ -139,6 +139,10 @@ var excludes =
 		typeof( System.Security.Cryptography.ECCurve ),
 		typeof( System.Security.Cryptography.ECParameters ),
 		typeof( System.Security.Cryptography.ECPoint ),
+		// .NET 4.7.1 Types -- comment out when you face T4Template problems
+		typeof( System.Net.Sockets.SocketReceiveFromResult ),
+		typeof( System.Net.Sockets.SocketReceiveMessageFromResult ),
+		typeof( System.Runtime.InteropServices.OSPlatform ),
 		// ValueTuples -- should be supported via tuple support
 		typeof( System.ValueTuple ),
 		typeof( System.ValueTuple<> ),
@@ -235,6 +239,11 @@ var notInNetStandard1_1 =
 		typeof( System.Collections.Specialized.BitVector32 ),
 		typeof( System.Collections.Specialized.NameValueCollection ),
 		typeof( System.Security.Cryptography.HashAlgorithmName ),
+	};
+var onlyInNetStandard2_0 =
+	new HashSet<Type>()
+	{
+		typeof( System.Runtime.InteropServices.OSPlatform ),
 	};
 #>
 #region -- License Terms --
@@ -351,7 +360,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 <#
 	}
 
@@ -369,6 +378,13 @@ foreach( Type type in structTypes )
 <#
 	}
 
+	if ( onlyInNetStandard2_0.Contains( type ) )
+	{
+#>
+#if NETSTANDARD2_0
+<#
+	}
+
 	if ( type.Assembly.FullName != typeof( object ).Assembly.FullName )
 	{
 #>
@@ -383,6 +399,13 @@ foreach( Type type in structTypes )
 	{
 #>
 #endif // !UNITY || MSGPACK_UNITY_FULL
+<#
+	}
+	
+	if ( onlyInNetStandard2_0.Contains( type ) )
+	{
+#>
+#endif // NETSTANDARD2_0
 <#
 	}
 
@@ -403,7 +426,7 @@ foreach( Type type in structTypes )
 	if( notInNetStandard1_3.Contains( type ) )
 	{
 #>
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3 && !XAMARIN
 <#
 	}
 

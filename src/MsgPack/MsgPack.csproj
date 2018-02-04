@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{5BCEC32E-990E-4DE5-945F-BD27326A7418}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>MsgPack</AssemblyName>
-    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>net46;net35;net45;netstandard1.1;netstandard1.3;netstandard2.0;MonoAndroid10;Xamarin.iOS10;</TargetFrameworks>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NuspecFile>$(SolutionDir)/msgpack.nuspec</NuspecFile>
@@ -61,6 +61,10 @@
     <PackageReference Include="System.Numerics.Vectors" Version="4.3.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
     <PackageReference Include="System.Reflection.Emit.LightWeight" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(IsXamarin)' == 'true'">
+    <PackageReference Include="NETStandard.Library" Version="2.0.0" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -417,31 +421,18 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <Compile Remove="Serialization\DefaultSerializers\SimdTypeSerializers.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3'">
     <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0'">
-    <Compile Remove="Serialization\CodeDomSerializers\*.*" />
-    <Compile Remove="Serialization\CodeGenerationSink.cs" />
-    <Compile Remove="Serialization\DependentAssemblyManager.cs" />
-    <Compile Remove="Serialization\IndividualFileCodeGenerationSink.cs" />
-    <Compile Remove="Serialization\ISerializerGeneratorConfiguration.cs" />
-    <Compile Remove="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
-    <Compile Remove="Serialization\SerializerCodeGenerationConfiguration.cs" />
-    <Compile Remove="Serialization\SerializerCodeInformation.cs" />
-    <Compile Remove="Serialization\SerializerCodeGenerationContext.cs" />
-    <Compile Remove="Serialization\SerializerCodeGenerationResult.cs" />
-    <Compile Remove="Serialization\SerializerGenerator.cs" />
-    <Compile Remove="Serialization\SingleTextWriterCodeGenerationSink.cs" />
-    <Compile Remove="Serialization\TeeTextWriter.cs" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+    <Compile Remove="UnsafeNativeMethods.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'uap10.0'">
     <Compile Include="BufferedStream.cs" />
     <Compile Include="NetStandardCompatibility.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
-    <Compile Remove="UnsafeNativeMethods.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'uap10.0'">
+  <ItemGroup Condition="'$(FeatureEmit)' != 'true'">
     <Compile Remove="Serialization\AbstractSerializers\**\*.*" />
     <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
     <Compile Remove="Serialization\EmittingSerializers\**\*.*" />
@@ -466,13 +457,27 @@
     <Compile Remove="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
     <Compile Remove="Serialization\NullTextWriter.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+  <ItemGroup Condition="'$(FeatureCodeGen)' != 'true'">
     <Compile Remove="Serialization\AbstractSerializers\ISerializerCodeGenerator.cs" />
     <Compile Remove="Serialization\AbstractSerializers\ISerializerCodeGenerationContext.cs" />
-    <Compile Remove="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
-    <Compile Remove="Serialization\DefaultSerializers\System_Security_Cryptography_HashAlgorithmNameMessagePackSerializer.cs" />
+    <Compile Remove="Serialization\CodeDomSerializers\*.*" />
+    <Compile Remove="Serialization\CodeGenerationSink.cs" />
+    <Compile Remove="Serialization\DependentAssemblyManager.cs" />
+    <Compile Remove="Serialization\IndividualFileCodeGenerationSink.cs" />
+    <Compile Remove="Serialization\ISerializerGeneratorConfiguration.cs" />
+    <Compile Remove="Serialization\SerializerAssemblyGenerationConfiguration.cs" />
+    <Compile Remove="Serialization\SerializerCodeGenerationConfiguration.cs" />
+    <Compile Remove="Serialization\SerializerCodeInformation.cs" />
+    <Compile Remove="Serialization\SerializerCodeGenerationContext.cs" />
+    <Compile Remove="Serialization\SerializerCodeGenerationResult.cs" />
+    <Compile Remove="Serialization\SerializerGenerator.cs" />
+    <Compile Remove="Serialization\SingleTextWriterCodeGenerationSink.cs" />
+    <Compile Remove="Serialization\TeeTextWriter.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3' or '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'uap10.0'">
+  <ItemGroup Condition="'$(FeatureAsmGen)' != 'true'">
+    <Compile Remove="Serialization\EmittingSerializers\AssemblyBuilderCodeGenerationContext.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(FeatureTap)' == 'true'">
     <Compile Include="AsyncReadResult.cs" />
     <Compile Include="AsyncReadResult`1.cs" />
     <Compile Include="TaskAugument.cs" />

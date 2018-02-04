@@ -815,12 +815,12 @@ namespace MsgPack.Serialization
 		}
 #endif // !NET35
 
-#if !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_CODEGEN
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{
 			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.ContainsFor( type );
 		}
-#endif // !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_CODEGEN
 
 		private sealed class MemberConstructorParameterEqualityComparer : EqualityComparer<KeyValuePair<string, Type>>
 		{
