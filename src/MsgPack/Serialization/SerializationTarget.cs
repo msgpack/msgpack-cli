@@ -117,18 +117,18 @@ namespace MsgPack.Serialization
 			switch ( membersArray.Length )
 			{
 				case 0:
-				{
-					return null;
-				}
+					{
+						return null;
+					}
 				case 1:
-				{
-					return membersArray[ 0 ].MemberName;
-				}
+					{
+						return membersArray[ 0 ].MemberName;
+					}
 				default:
-				{
-					ThrowAmbigiousMatchException( parameterInfo, membersArray );
-					return null;
-				}
+					{
+						ThrowAmbigiousMatchException( parameterInfo, membersArray );
+						return null;
+					}
 			}
 		}
 
@@ -169,7 +169,11 @@ namespace MsgPack.Serialization
 		{
 			VerifyCanSerializeTargetType( context, targetType );
 
-			var getters = GetTargetMembers( targetType ).OrderBy( entry => entry.Contract.Id ).ToArray();
+			IEnumerable<string> memberIgnoreList = context.BindingOptions.GetIgnoringMembers( targetType );
+			var getters = GetTargetMembers( targetType )
+						  .Where( getter => !memberIgnoreList.Contains( getter.MemberName, StringComparer.Ordinal ) )
+						  .OrderBy( entry => entry.Contract.Id )
+						  .ToArray();
 
 			if ( getters.Length == 0
 				&& !typeof( IPackable ).IsAssignableFrom( targetType )
@@ -294,26 +298,26 @@ namespace MsgPack.Serialization
 			switch ( kind )
 			{
 				case ConstructorKind.Marked:
-				{
-					Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> true: Marked", targetType, kind );
-					return true;
-				}
+					{
+						Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> true: Marked", targetType, kind );
+						return true;
+					}
 				case ConstructorKind.Parameterful:
-				{
-					var result = HasAnyCorrespondingMembers( correspondingMemberNames );
-					Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> {2}: HasAnyCorrespondingMembers", targetType, kind, result );
-					return result;
-				}
+					{
+						var result = HasAnyCorrespondingMembers( correspondingMemberNames );
+						Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> {2}: HasAnyCorrespondingMembers", targetType, kind, result );
+						return result;
+					}
 				case ConstructorKind.Default:
-				{
-					Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> {2}: Default", targetType, kind, allowDefault );
-					return allowDefault;
-				}
+					{
+						Trace( "SerializationTarget::DetermineCanDeserialize({0}, {1}) -> {2}: Default", targetType, kind, allowDefault );
+						return allowDefault;
+					}
 				default:
-				{
-					Contract.Assert( kind == ConstructorKind.None || kind == ConstructorKind.Ambiguous, "kind == ConstructorKind.None || kind == ConstructorKind.Ambiguous : " + kind );
-					return false;
-				}
+					{
+						Contract.Assert( kind == ConstructorKind.None || kind == ConstructorKind.Ambiguous, "kind == ConstructorKind.None || kind == ConstructorKind.Ambiguous : " + kind );
+						return false;
+					}
 			}
 		}
 
@@ -489,25 +493,25 @@ namespace MsgPack.Serialization
 			switch ( markedConstructors.Count )
 			{
 				case 0:
-				{
-					break;
-				}
+					{
+						break;
+					}
 				case 1:
-				{
-					// OK use it for deserialization.
-					constructorKind = ConstructorKind.Marked;
-					return markedConstructors[ 0 ];
-				}
+					{
+						// OK use it for deserialization.
+						constructorKind = ConstructorKind.Marked;
+						return markedConstructors[ 0 ];
+					}
 				default:
-				{
-					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"There are multiple constructors marked with MessagePackDeserializationConstrutorAttribute in type '{0}'.",
-							targetType
-						)
-					);
-				}
+					{
+						throw new SerializationException(
+							String.Format(
+								CultureInfo.CurrentCulture,
+								"There are multiple constructors marked with MessagePackDeserializationConstrutorAttribute in type '{0}'.",
+								targetType
+							)
+						);
+					}
 			}
 
 			// A constructor which has most parameters will be used.
@@ -519,43 +523,43 @@ namespace MsgPack.Serialization
 			switch ( mostRichConstructors.Length )
 			{
 				case 1:
-				{
-					if ( mostRichConstructors[ 0 ].GetParameters().Length == 0 )
+					{
+						if ( mostRichConstructors[ 0 ].GetParameters().Length == 0 )
+						{
+							if ( context.CompatibilityOptions.AllowAsymmetricSerializer )
+							{
+								constructorKind = ConstructorKind.Default;
+								return mostRichConstructors[ 0 ];
+							}
+							else
+							{
+								throw NewTypeCannotBeSerializedException( targetType );
+							}
+						}
+
+						// OK try use it but it may not handle deserialization correctly.
+						constructorKind = ConstructorKind.Parameterful;
+						return mostRichConstructors[ 0 ];
+					}
+				default:
 					{
 						if ( context.CompatibilityOptions.AllowAsymmetricSerializer )
 						{
-							constructorKind = ConstructorKind.Default;
-							return mostRichConstructors[ 0 ];
+							constructorKind = ConstructorKind.Ambiguous;
+							return null;
 						}
 						else
 						{
-							throw NewTypeCannotBeSerializedException( targetType );
+							throw new SerializationException(
+								String.Format(
+									CultureInfo.CurrentCulture,
+									"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and serializer generator failed to determine constructor to deserialize among({1}).",
+									targetType,
+									String.Join( ", ", mostRichConstructors.Select( ctor => ctor.ToString() ).ToArray() )
+								)
+							);
 						}
 					}
-
-					// OK try use it but it may not handle deserialization correctly.
-					constructorKind = ConstructorKind.Parameterful;
-					return mostRichConstructors[ 0 ];
-				}
-				default:
-				{
-					if ( context.CompatibilityOptions.AllowAsymmetricSerializer )
-					{
-						constructorKind = ConstructorKind.Ambiguous;
-						return null;
-					}
-					else
-					{
-						throw new SerializationException(
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot serialize type '{0}' because it does not have any serializable fields nor properties, and serializer generator failed to determine constructor to deserialize among({1}).",
-								targetType,
-								String.Join( ", ", mostRichConstructors.Select( ctor => ctor.ToString() ).ToArray() )
-							)
-						);
-					}
-				}
 			}
 		}
 
@@ -635,13 +639,13 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				case CollectionKind.Map:
-				{
-					return traits.AddMethod != null;
-				}
+					{
+						return traits.AddMethod != null;
+					}
 				default:
-				{
-					return false;
-				}
+					{
+						return false;
+					}
 			}
 		}
 

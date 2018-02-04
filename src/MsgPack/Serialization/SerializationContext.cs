@@ -24,7 +24,6 @@
 
 using System;
 #if !UNITY || MSGPACK_UNITY_FULL
-using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if FEATURE_CONCURRENT
 using System.Collections.Concurrent;
@@ -116,6 +115,27 @@ namespace MsgPack.Serialization
 #endif // !FEATURE_CONCURRENT
 
 		private readonly object _generationLock;
+
+		private readonly BindingOptions _bindingOptions;
+
+		/// <summary>
+		///		Gets the option settings for binding of type with serializer for field/property.
+		/// </summary>
+		/// <value>
+		///		The option settings for binding of type's property/field in serializer generation.
+		///		This value will not be <c>null</c>.
+		/// </value>
+		public BindingOptions BindingOptions
+		{
+			get
+			{
+#if DEBUG
+				Contract.Ensures( Contract.Result<BindingOptions>() != null );
+#endif // DEBUG
+
+				return this._bindingOptions;
+			}
+		}
 
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
@@ -221,13 +241,13 @@ namespace MsgPack.Serialization
 				{
 					case SerializationMethod.Array:
 					case SerializationMethod.Map:
-					{
-						break;
-					}
+						{
+							break;
+						}
 					default:
-					{
-						throw new ArgumentOutOfRangeException( "value" );
-					}
+						{
+							throw new ArgumentOutOfRangeException( "value" );
+						}
 				}
 
 				Contract.EndContractBlock();
@@ -336,13 +356,13 @@ namespace MsgPack.Serialization
 					case DateTimeConversionMethod.Native:
 					case DateTimeConversionMethod.UnixEpoc:
 					case DateTimeConversionMethod.Timestamp:
-					{
-						break;
-					}
+						{
+							break;
+						}
 					default:
-					{
-						throw new ArgumentOutOfRangeException( "value" );
-					}
+						{
+							throw new ArgumentOutOfRangeException( "value" );
+						}
 				}
 
 				Contract.EndContractBlock();
@@ -543,6 +563,7 @@ namespace MsgPack.Serialization
 			this._serializerGeneratorOptions = new SerializerOptions();
 			this._dictionarySerializationOptions = new DictionarySerlaizationOptions();
 			this._enumSerializationOptions = new EnumSerializationOptions();
+			this._bindingOptions = new BindingOptions();
 		}
 
 		internal bool ContainsSerializer( Type rootType )
@@ -882,7 +903,7 @@ namespace MsgPack.Serialization
 			try
 			{
 #endif // UNITY
-				return SerializerGetter.Instance.Get( this, targetType, providerParameter );
+			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #if UNITY
 			}
 			catch ( Exception ex )
