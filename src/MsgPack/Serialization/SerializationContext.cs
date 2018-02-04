@@ -24,7 +24,6 @@
 
 using System;
 #if !UNITY || MSGPACK_UNITY_FULL
-using System.ComponentModel;
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if FEATURE_CONCURRENT
 using System.Collections.Concurrent;
@@ -37,10 +36,12 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // FEATURE_MPCONTRACT
 #if UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
+using System.Linq;
 #endif // UNITY || NETSTANDARD1_1 || NETSTANDARD1_3
 #if UNITY || WINDOWS_PHONE || WINDOWS_UWP
 using System.Reflection;
 #endif // UNITY || WINDOWS_PHONE || WINDOWS_UWP 
+using System.Threading;
 
 using MsgPack.Serialization.DefaultSerializers;
 using MsgPack.Serialization.Polymorphic;
@@ -82,7 +83,7 @@ namespace MsgPack.Serialization
 #if !UNITY
 				return Interlocked.CompareExchange( ref _default, null, null );
 #else
-				lock ( DefaultContextSyncRoot )
+				lock( DefaultContextSyncRoot )
 				{
 					return _default;
 				}
@@ -98,7 +99,7 @@ namespace MsgPack.Serialization
 #if !UNITY
 				Interlocked.Exchange( ref _default, value );
 #else
-				lock ( DefaultContextSyncRoot )
+				lock( DefaultContextSyncRoot )
 				{
 					_default = value;
 				}
@@ -114,6 +115,27 @@ namespace MsgPack.Serialization
 #endif // !FEATURE_CONCURRENT
 
 		private readonly object _generationLock;
+
+		private readonly BindingOptions _bindingOptions;
+
+		/// <summary>
+		///		Gets the option settings for binding of type with serializer for field/property.
+		/// </summary>
+		/// <value>
+		///		The option settings for binding of type's property/field in serializer generation.
+		///		This value will not be <c>null</c>.
+		/// </value>
+		public BindingOptions BindingOptions
+		{
+			get
+			{
+#if DEBUG
+				Contract.Ensures( Contract.Result<BindingOptions>() != null );
+#endif // DEBUG
+
+				return this._bindingOptions;
+			}
+		}
 
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
@@ -133,20 +155,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-        private readonly BindingOptions _bindingOptions;
-
-        public BindingOptions BindingOptions
-        {
-            get
-            {
-#if DEBUG
-		Contract.Ensures( Contract.Result<BindingOptions>() != null );
-#endif // DEBUG
-                return this._bindingOptions;
-            }
-        }
-
-        private readonly SerializerOptions _serializerGeneratorOptions;
+		private readonly SerializerOptions _serializerGeneratorOptions;
 
 		/// <summary>
 		///		Gets the option settings for serializer generation.
@@ -406,7 +415,7 @@ namespace MsgPack.Serialization
 			add
 			{
 #if UNITY
-				lock ( this._resolveSerializerSyncRoot )
+				lock( this._resolveSerializerSyncRoot )
 				{
 					this._resolveSerializer += value;
 				}
@@ -426,7 +435,7 @@ namespace MsgPack.Serialization
 			remove
 			{
 #if UNITY
-				lock ( this._resolveSerializerSyncRoot )
+				lock( this._resolveSerializerSyncRoot )
 				{
 					// ReSharper disable once DelegateSubtraction
 					this._resolveSerializer -= value;
@@ -448,21 +457,21 @@ namespace MsgPack.Serialization
 		private MessagePackSerializer<T> OnResolveSerializer<T>( PolymorphismSchema schema )
 		{
 #if UNITY
-			lock ( this._resolveSerializerSyncRoot )
+			lock( this._resolveSerializerSyncRoot )
 			{
-				var handler = this._resolveSerializer;
+			var handler = this._resolveSerializer;
 #else
 			var handler = Interlocked.CompareExchange( ref this._resolveSerializer, null, null );
 #endif
-				if ( handler == null )
-				{
-					return null;
-				}
+			if ( handler == null )
+			{
+				return null;
+			}
 
-				// Lazily allocate event args memory.
-				var e = new ResolveSerializerEventArgs( this, typeof( T ), schema );
-				handler( this, e );
-				return e.GetFoundSerializer<T>();
+			// Lazily allocate event args memory.
+			var e = new ResolveSerializerEventArgs( this, typeof( T ), schema );
+			handler( this, e );
+			return e.GetFoundSerializer<T>();
 #if UNITY
 			}
 #endif
@@ -554,7 +563,7 @@ namespace MsgPack.Serialization
 			this._serializerGeneratorOptions = new SerializerOptions();
 			this._dictionarySerializationOptions = new DictionarySerlaizationOptions();
 			this._enumSerializationOptions = new EnumSerializationOptions();
-            this._bindingOptions = new BindingOptions();
+			this._bindingOptions = new BindingOptions();
 		}
 
 		internal bool ContainsSerializer( Type rootType )
@@ -670,11 +679,11 @@ namespace MsgPack.Serialization
 							if ( !this._serializerGeneratorOptions.CanRuntimeCodeGeneration )
 							{
 #endif // !UNITY
-							// On debugging, or AOT only envs, use reflection based aproach.
-							serializer =
-								this.GetSerializerWithoutGeneration<T>( schema )
-								?? this.OnResolveSerializer<T>( schema )
-								?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
+								// On debugging, or AOT only envs, use reflection based aproach.
+								serializer =
+									this.GetSerializerWithoutGeneration<T>( schema )
+									?? this.OnResolveSerializer<T>( schema )
+									?? MessagePackSerializer.CreateReflectionInternal<T>( this, this.EnsureConcreteTypeRegistered( typeof( T ) ), schema );
 #if !UNITY
 							}
 							else
@@ -755,10 +764,10 @@ namespace MsgPack.Serialization
 					if ( lockTaken )
 					{
 #if !FEATURE_CONCURRENT
-						lock ( this._typeLock )
-						{
-							this._typeLock.Remove( typeof( T ) );
-						}
+					lock ( this._typeLock )
+					{
+						this._typeLock.Remove( typeof( T ) );
+					}
 #else
 						object dummy;
 						this._typeLock.TryRemove( typeof( T ), out dummy );
@@ -894,7 +903,7 @@ namespace MsgPack.Serialization
 			try
 			{
 #endif // UNITY
-				return SerializerGetter.Instance.Get( this, targetType, providerParameter );
+			return SerializerGetter.Instance.Get( this, targetType, providerParameter );
 #if UNITY
 			}
 			catch ( Exception ex )

@@ -680,6 +680,9 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityOptions.cs">
       <Link>Serialization\SerializationCompatibilityOptions.cs</Link>
+    </Compile>	
+    <Compile Include="..\MsgPack\Serialization\BindingOptions.cs">
+      <Link>Serialization\BindingOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
