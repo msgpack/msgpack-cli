@@ -42,7 +42,7 @@
     <DefineConstants>$(DefineConstants);__MOBILE__;AOT;XAMARIN</DefineConstants>
     <TargetFrameworkRootPath Condition="'$(VsInstallRoot)' != ''">$(VsInstallRoot)\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\</TargetFrameworkRootPath>
     <ImplicitlyExpandDesignTimeFacades>true</ImplicitlyExpandDesignTimeFacades>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <IsXamarin>true</IsXamarin>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net3')) or $(TargetFramework.StartsWith('net4'))">

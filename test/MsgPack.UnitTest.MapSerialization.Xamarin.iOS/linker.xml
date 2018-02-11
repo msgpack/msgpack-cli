@@ -10,5 +10,5 @@
     <type fullname="System.Tuple`7" />
     <type fullname="System.Tuple`8" />
   </assembly>
-  <assembly fullname="MsgPackUnitTestXamariniOS" />
+  <assembly fullname="MsgPackUnitTestMapSerializationXamariniOS" />
 </linker>

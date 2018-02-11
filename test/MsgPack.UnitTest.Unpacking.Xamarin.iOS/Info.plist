@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>MsgPack.UnitTest.Xamios</string>
+	<string>MsgPack.UnitTest.Unpacking.Xamios</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.msgpack.msgpack-cli-xamarin-ios-test</string>
+	<string>org.msgpack.msgpack-cli-xamarin-ios-test-unpacking</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
