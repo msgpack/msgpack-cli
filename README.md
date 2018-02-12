@@ -31,6 +31,8 @@ serializer.Pack(stream, obj)
 Dim unpackedObject = serializer.Unpack(stream)
 ```
 
+**For production environment, you should instantiate own `SerializationCOntext` and manage its lifetime. It is good idea to treat it as singleton because `SerializationContext` is thread-safe.**
+
 ## Features
 
 * Fast and interoperable binary format serialization with simple API.
