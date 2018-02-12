@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <returns>The count of the <paramref name="collection"/>.</returns>
 		protected override int GetCount( TCollection collection )
 		{
-#if ( !UNITY ) || AOT_CHECK
+#if ( !UNITY && !AOT ) || AOT_CHECK
 			return collection.Count;
 #else
 			// .constraind call for TCollection.get_Count/TCollection.GetEnumerator() causes AOT error.
@@ -94,7 +94,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected override void AddItem( TCollection collection, TItem item )
 		{
-#if ( !UNITY ) || AOT_CHECK
+#if ( !UNITY && !AOT ) || AOT_CHECK
 			collection.Add( item );
 #else
 			// .constraind call for TCollection.Add causes AOT error.

@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected internal override void PackToCore( Packer packer, TCollection objectTree )
 		{
 			packer.PackArrayHeader( this.GetCount( objectTree ) );
-#if ( !UNITY ) || AOT_CHECK
+#if ( !UNITY && !AOT ) || AOT_CHECK
 			var itemSerializer = this.ItemSerializer;
 			foreach ( var item in objectTree )
 			{
@@ -121,7 +121,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		protected internal override async Task PackToAsyncCore( Packer packer, TCollection objectTree, CancellationToken cancellationToken )
 		{
 			await packer.PackArrayHeaderAsync( this.GetCount( objectTree ), cancellationToken ).ConfigureAwait( false );
-#if ( !UNITY ) || AOT_CHECK
+#if ( !UNITY && !AOT ) || AOT_CHECK
 			var itemSerializer = this.ItemSerializer;
 			foreach ( var item in objectTree )
 			{
