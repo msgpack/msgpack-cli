@@ -90,9 +90,9 @@ Or open one of above solution files in your IDE and run build command in it.
 
 ### Own Unity 3D Build
 
-First of all, there are binary drops on github release page, you should use it to save your time. 
-Because we will not guarantee source code organization compatibilities, we might add/remove non-public types or members, which should break source code build.
-If you want to import sources, you must include just only described on MsgPack.Unity3D.csproj.
+First of all, there are binary drops on github release page, you should use it to save your time.   
+Because we will not guarantee source code organization compatibilities, we might add/remove non-public types or members, which should break source code build.  
+If you want to import sources, you must include just only described on MsgPack.Unity3D.csproj.  
 If you want to use ".NET 2.0 Subset" settings, you must use just only described on MsgPack.Unity3D.CorLibOnly.csproj file, and define `CORLIB_ONLY` compiler constants.
 
 ## See also
