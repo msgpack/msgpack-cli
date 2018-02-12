@@ -39,6 +39,9 @@ Dim unpackedObject = serializer.Unpack(stream)
 * Generating pre-compiled assembly for rapid start up.
 * Flexible MessagePackObject which represents MessagePack type system naturally.
 
+**Note: AOT support is limited yet. Use [serializer pre-generation](https://github.com/msgpack/msgpack-cli/wiki/Xamarin-and-Unity) with `mpu -s` utility or API.**  
+If you do not pre-generated serializers, MsgPack for CLI uses reflection in AOT environments, it is slower and it sometimes causes AOT related error (`ExecutionEngineException` for runtime JIT compilation).
+
 ## Documentation
 
 See [wiki](https://github.com/msgpack/msgpack-cli/wiki)
@@ -94,6 +97,31 @@ First of all, there are binary drops on github release page, you should use it t
 Because we will not guarantee source code organization compatibilities, we might add/remove non-public types or members, which should break source code build.  
 If you want to import sources, you must include just only described on MsgPack.Unity3D.csproj.  
 If you want to use ".NET 2.0 Subset" settings, you must use just only described on MsgPack.Unity3D.CorLibOnly.csproj file, and define `CORLIB_ONLY` compiler constants.
+
+### Xamarin iOS testing
+
+You must create provisoning profiles in your MacOS devices.  
+See [Xamarin documents about provisining](https://developer.xamarin.com/guides/ios/getting_started/installation/device_provisioning/free-provisioning/) for details.
+
+There are bundle IDs of current iOS tests:
+* `org.msgpack.msgpack-cli-xamarin-ios-test`
+* `org.msgpack.msgpack-cli-xamarin-ios-test-packer`
+* `org.msgpack.msgpack-cli-xamarin-ios-test-unpacker`
+* `org.msgpack.msgpack-cli-xamarin-ios-test-unpacking`
+* `org.msgpack.msgpack-cli-xamarin-ios-test-timestamp`
+* `org.msgpack.msgpack-cli-xamarin-ios-test-arrayserialization`
+* `org.msgpack.msgpack-cli-xamarin-ios-test-mapserialization`
+
+*Note that some reflection based serializer tests failed with AOT related limitation.*
+
+#### Trouble shooting tips
+
+See [Xamarin's official trouble shooting docs first.](https://developer.xamarin.com/guides/ios/getting_started/installation/windows/connecting-to-mac/troubleshooting/)
+
+* An error occurred while running unit test project.
+    * Rebuild the project and rerun it. Or, login your Mac again, ant retry it.
+* It is hard to read English.
+    * You can read localized Xamarin docs with putting `{region}-{lang}` as the first component of URL path such as `https://developer.xamarin.com/ja-jp/guides/...`.
 
 ## See also
 
