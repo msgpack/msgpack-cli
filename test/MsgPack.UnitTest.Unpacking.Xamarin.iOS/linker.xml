@@ -10,5 +10,6 @@
     <type fullname="System.Tuple`7" />
     <type fullname="System.Tuple`8" />
   </assembly>
+  <assembly fullname="MonoTouch.NUnitLite" />
   <assembly fullname="MsgPackUnitTestUnpackingXamariniOS" />
 </linker>
