@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //  MessagePack for CLI
 // 
 //  Copyright (C) 2015 FUJIWARA, Yusuke
@@ -135,10 +135,19 @@ namespace MsgPack.Tools.Build
 			}
 
 			var projectDirectory = Path.GetDirectoryName( this._inMemory.FullPath );
+			var added = new HashSet<string>();
 			foreach ( var include in this._inMemory.GetItems( Compile.LocalName ).OrderBy( x => x.EvaluatedInclude ) )
 			{
+
 				// For old msbuild systems, replace '/' with '\'.
 				var pathToItem = include.EvaluatedInclude.Replace( '/', '\\' );
+
+				if ( !added.Add( pathToItem ) )
+				{
+					// Skip duplicated.
+					continue;
+				}
+
 				if ( include.EvaluatedInclude.StartsWith( ".." ) )
 				{
 					itemGroup.Add(
