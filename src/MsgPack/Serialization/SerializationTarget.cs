@@ -639,13 +639,14 @@ namespace MsgPack.Serialization
 			{
 				case CollectionKind.Array:
 				case CollectionKind.Map:
-					{
-						return traits.AddMethod != null;
-					}
+				{
+					return traits.AddMethod != null;
+				}
+
 				default:
-					{
-						return false;
-					}
+				{
+					return false;
+				}
 			}
 		}
 
