@@ -82,19 +82,12 @@ namespace MsgPack.Serialization
 		/// Gets all registered types specific ignoring members.
 		/// </summary>
 		/// <returns>Returns all registered types specific ignoring members.</returns>
-		public IReadOnlyDictionary<Type, IEnumerable<string>> GetAllIgnoringMembers()
+		public IDictionary<Type, IEnumerable<string>> GetAllIgnoringMembers()
 		{
-			Dictionary<Type, IEnumerable<string>> map = new Dictionary<Type, IEnumerable<string>>();
 			lock ( this.typeIgnoringMembersMap )
 			{
-				foreach ( var item in this.typeIgnoringMembersMap )
-				{
-					//// These to make sure that Property list doesn't used as reference type.
-					map.Add( item.Key, item.Value.ToArray() );
-				}
+				return this.typeIgnoringMembersMap.ToDictionary( item => item.Key, item => ( IEnumerable<string> )item.Value.ToArray() );
 			}
-
-			return map;
 		}
 	}
 }

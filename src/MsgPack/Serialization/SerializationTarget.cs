@@ -642,7 +642,6 @@ namespace MsgPack.Serialization
 				{
 					return traits.AddMethod != null;
 				}
-
 				default:
 				{
 					return false;
