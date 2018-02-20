@@ -66,7 +66,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					.Select( ( contract, index ) => new KeyValuePair<string, int>( contract.Name, index ) )
 					.Where( kv => kv.Key != null )
 					// Set key as transformed.
-					.ToDictionary( kv => context.DictionarySerlaizationOptions.SafeKeyTransformer( kv.Key ), kv => kv.Value );
+					.ToDictionary( kv => context.DictionarySerializationOptions.SafeKeyTransformer( kv.Key ), kv => kv.Value );
 			this._constructorParameters =
 				( !typeof( IUnpackable ).IsAssignableFrom( typeof( T ) ) && target.IsConstructorDeserialization )
 					? target.DeserializationConstructor.GetParameters()
@@ -112,7 +112,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry
+				if ( this.OwnerContext.DictionarySerializationOptions.OmitNullEntry
 #if DEBUG
 					&& !SerializerDebugging.UseLegacyNullMapEntryHandling
 #endif // DEBUG
@@ -138,7 +138,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						}
 
 						// Set key as transformed.
-						packer.PackString( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
+						packer.PackString( this.OwnerContext.DictionarySerializationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
 						this.PackMemberValue( packer, objectTree, i );
 					}
 				}
@@ -148,7 +148,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					for ( int i = 0; i < this._serializers.Length; i++ )
 					{
 						// Set key as transformed.
-						packer.PackString( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
+						packer.PackString( this.OwnerContext.DictionarySerializationOptions.SafeKeyTransformer( this._contracts[ i ].Name ) );
 						this.PackMemberValue( packer, objectTree, i );
 					}
 				}
@@ -214,7 +214,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			}
 			else
 			{
-				if ( this.OwnerContext.DictionarySerlaizationOptions.OmitNullEntry
+				if ( this.OwnerContext.DictionarySerializationOptions.OmitNullEntry
 #if DEBUG
 					&& !SerializerDebugging.UseLegacyNullMapEntryHandling
 #endif // DEBUG
@@ -240,7 +240,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						}
 
 						// Set key as transformed.
-						await packer.PackStringAsync( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
+						await packer.PackStringAsync( this.OwnerContext.DictionarySerializationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
 						await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
 					}
 				}
@@ -250,7 +250,7 @@ namespace MsgPack.Serialization.ReflectionSerializers
 					for ( int i = 0; i < this._serializers.Length; i++ )
 					{
 						// Set key as transformed.
-						await packer.PackStringAsync( this.OwnerContext.DictionarySerlaizationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
+						await packer.PackStringAsync( this.OwnerContext.DictionarySerializationOptions.SafeKeyTransformer( this._contracts[ i ].Name ), cancellationToken ).ConfigureAwait( false );
 						await this.PackMemberValueAsync( packer, objectTree, i, cancellationToken ).ConfigureAwait( false );
 					}
 				}
