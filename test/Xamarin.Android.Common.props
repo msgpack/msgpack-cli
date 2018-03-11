@@ -18,39 +18,37 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <Import Project="..\MsgPack.Common.props" />
   <PropertyGroup>
     <DocumentationFile></DocumentationFile>
     <DefineConstants>$(DefineConstants);TRACE;AOT;XAMARIN;NUNITLITE;NETSTANDARD2_0;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
-    <DebugSymbols>True</DebugSymbols>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <JavaMaximumHeapSize>1024M</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>512M</JavaMaximumHeapSize>
     <ConsolePause>false</ConsolePause>
     <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <AndroidLinkMode>Full</AndroidLinkMode>
-    <AndroidLinkSkip>$(AssemblyName)</AndroidLinkSkip>
+    <AndroidLinkSkip>$(AssemblyName);Xamarin.Android.NUnitLite</AndroidLinkSkip>
     <AotAssemblies>true</AotAssemblies>
-    <EnableLLVM>true</EnableLLVM>
-    <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <EnableProguard>false</EnableProguard>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -85,11 +83,6 @@
     <None Include="..\MsgPack.UnitTest.Xamarin.Android\Assets\AboutAssets.txt">
       <Link>Assets\AboutAssets.txt</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\drawable\Icon.png">
-      <Link>Resources\drawable\Icon.png</Link>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

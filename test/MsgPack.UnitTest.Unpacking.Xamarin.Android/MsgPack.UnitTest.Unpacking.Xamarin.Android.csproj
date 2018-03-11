@@ -81,5 +81,14 @@
     </Compile>
     <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\drawable\Icon.png">
+      <Link>Resources\drawable\Icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\values\Strings.xml">
+      <Link>Resources\values\Strings.xml</Link>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
