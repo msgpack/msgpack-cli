@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -36,6 +36,7 @@ namespace MsgPack.Serialization
 		[TestFixtureSetUp]
 		public static void SetupFixture()
 		{
+			MessagePackSerializer.PrepareType<Timestamp>();
 			MessagePackSerializer.PrepareCollectionType<byte>();
 			MessagePackSerializer.PrepareCollectionType<char>();
 			MessagePackSerializer.PrepareCollectionType<int>();
