@@ -98,6 +98,24 @@ Because we will not guarantee source code organization compatibilities, we might
 If you want to import sources, you must include just only described on MsgPack.Unity3D.csproj.  
 If you want to use ".NET 2.0 Subset" settings, you must use just only described on MsgPack.Unity3D.CorLibOnly.csproj file, and define `CORLIB_ONLY` compiler constants.
 
+### Xamarin Android testing
+
+If you run on Windows, it is recommended to use HXM instead of Hyper-V based emulator.  
+You can disable Hyper-V from priviledged (administrator) powershell as follows:
+```powershell
+Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor
+```
+
+If you want to use Hyper-V again (such as for Docker for Windows etc.), you can do it by following in priviledged (administrator) powershell:
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor
+```
+
+#### Xamarin Android Trouble shooting tips
+
+* Javac shows compilation error.
+    * Rebuild the test project and try it run again.
+
 ### Xamarin iOS testing
 
 You must create provisoning profiles in your MacOS devices.  
@@ -114,7 +132,7 @@ There are bundle IDs of current iOS tests:
 
 *Note that some reflection based serializer tests failed with AOT related limitation.*
 
-#### Trouble shooting tips
+#### Xamarin iOS Trouble shooting tips
 
 See [Xamarin's official trouble shooting docs first.](https://developer.xamarin.com/guides/ios/getting_started/installation/windows/connecting-to-mac/troubleshooting/)
 
