@@ -1,4 +1,4 @@
-﻿<#@ template debug="true" hostSpecific="true" language="C#" #>
+<#@ template debug="true" hostSpecific="true" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ include file="..\Core.ttinclude" #>
 <#@ Assembly Name="System.Core.dll" #>
@@ -12,7 +12,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2017 FUJIWARA, Yusuke
+// Copyright (C) 2017-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,6 +27,10 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
 
 using System;
 using System.IO;
@@ -62,7 +66,12 @@ foreach ( var spec in
 {
 #>
 
-	internal sealed class Fast<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class Fast<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
 	{
 <#
 	foreach ( var parameters in spec.ParametersList )
@@ -88,7 +97,12 @@ foreach ( var spec in
 		}
 	}
 
-	internal sealed class CollectionValidating<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class CollectionValidating<#= spec.Kind #>Unpacker : MessagePack<#= spec.Kind #>Unpacker
 	{
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;

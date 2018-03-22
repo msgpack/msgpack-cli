@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2017 FUJIWARA, Yusuke
+// Copyright (C) 2017-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,14 +36,24 @@ namespace MsgPack
 	/// <summary>
 	///		Implementation for stream based MessagePack packer.
 	/// </summary>
-	internal sealed partial class MessagePackStreamPacker : Packer
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed partial class MessagePackStreamPacker : Packer
 	{
 		private readonly Stream _destination;
 		private readonly byte[] _scalarBuffer;
 		private readonly bool _ownsStream;
 
 #if DEBUG
-		internal Stream Destination { get { return this._destination; } }
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		Stream Destination { get { return this._destination; } }
 #endif // DEBUG
 
 		public MessagePackStreamPacker( Stream stream, PackerUnpackerStreamOptions streamOptions, PackerCompatibilityOptions compatibilityOptions )

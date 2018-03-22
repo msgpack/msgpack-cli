@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2017 FUJIWARA, Yusuke
+// Copyright (C) 2017-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Globalization;
 using System.Text;
@@ -31,7 +35,12 @@ namespace MsgPack
 	/// <summary>
 	///		Implements common features for byte array based MessagePack unpacker.
 	/// </summary>
-	internal abstract partial class MessagePackByteArrayUnpacker : ByteArrayUnpacker, IRootUnpacker
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	abstract partial class MessagePackByteArrayUnpacker : ByteArrayUnpacker, IRootUnpacker
 	{
 		private byte[] _source;
 		private int _offset;
@@ -99,17 +108,27 @@ namespace MsgPack
 
 #if DEBUG
 
-		internal byte[] DebugSource
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		byte[] DebugSource
 		{
 			get { return this._source; }
 		}
 
-		internal long DebugOffset
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		long DebugOffset
 		{
 			get { return this._offset; }
 		}
 
-		internal sealed override long? UnderlyingStreamPosition
+		internal override long? UnderlyingStreamPosition
 		{
 			get { return this._offset; }
 		}

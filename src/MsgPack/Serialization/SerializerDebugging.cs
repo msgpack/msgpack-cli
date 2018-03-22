@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2017 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -50,7 +50,12 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Holds debugging support information.
 	/// </summary>
-	internal static class SerializerDebugging
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static class SerializerDebugging
 	{
 #if !UNITY
 #if DEBUG
@@ -380,7 +385,7 @@ namespace MsgPack.Serialization
 		private static bool _useLegacyNullMapEntryHandling;
 #endif // NET35 || UNITY || SILVERLIGHT
 
-		internal static bool UseLegacyNullMapEntryHandling
+		public static bool UseLegacyNullMapEntryHandling
 		{
 			get
 			{

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014 FUJIWARA, Yusuke
+// Copyright (C) 2014-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -26,7 +26,12 @@ using System;
 
 namespace MsgPack.Serialization
 {
-	internal enum CollectionDetailedKind
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	enum CollectionDetailedKind
 	{
 		NotCollection = 0,
 		Array,

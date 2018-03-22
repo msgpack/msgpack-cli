@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2014 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -255,7 +255,12 @@ namespace MsgPack.Serialization
 		}
 #endif // !UNITY
 
-		internal bool Register( Type targetType, MessagePackSerializerProvider serializerProvider, Type nullableType, MessagePackSerializerProvider nullableSerializerProvider, SerializerRegistrationOptions options )
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		bool Register( Type targetType, MessagePackSerializerProvider serializerProvider, Type nullableType, MessagePackSerializerProvider nullableSerializerProvider, SerializerRegistrationOptions options )
 		{
 			return this._repository.Register( targetType, serializerProvider, nullableType, nullableSerializerProvider, options );
 		}

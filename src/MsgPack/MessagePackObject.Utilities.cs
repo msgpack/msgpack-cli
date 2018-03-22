@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -196,7 +196,12 @@ namespace MsgPack
 		///		Initializes a new instance wraps <see cref="MessagePackString"/>.
 		/// </summary>
 		/// <param name="messagePackString"><see cref="MessagePackString"/> which represents byte array or UTF-8 encoded string.</param>
-		internal MessagePackObject( MessagePackString messagePackString )
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		MessagePackObject( MessagePackString messagePackString )
 		{
 			// trick: Avoid long boilerplate initialization. See "CLR via C#".
 			this = new MessagePackObject();
@@ -1875,10 +1880,15 @@ namespace MsgPack
 			return new MessagePackObject( value, false );
 		}
 
-#endregion -- Conversion Operator Overloads --
+		#endregion -- Conversion Operator Overloads --
 
 #if DEBUG
-		internal string DebugDump()
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		string DebugDump()
 		{
 			var typeCode = this._handleOrTypeCode as ValueTypeCode;
 			if ( typeCode != null )
@@ -1897,7 +1907,7 @@ namespace MsgPack
 #endif // DEBUG
 
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
-		[Serializable]
+		[ Serializable ]
 #endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		private enum MessagePackValueTypeCode
 		{

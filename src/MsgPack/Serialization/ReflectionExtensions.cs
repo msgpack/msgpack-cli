@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -36,7 +36,12 @@ using System.Reflection;
 
 namespace MsgPack.Serialization
 {
-	internal static partial class ReflectionExtensions
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static partial class ReflectionExtensions
 	{
 		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof( string ), typeof( Exception ) };
 		private static readonly Type[] ObjectAddParameterTypes = { typeof( object ) };

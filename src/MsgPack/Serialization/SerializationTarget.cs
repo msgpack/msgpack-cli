@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2014-2018 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -48,7 +48,12 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Implements serialization target member extraction logics.
 	/// </summary>
-	internal class SerializationTarget
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	class SerializationTarget
 	{
 		// Type names to avoid user who doesn't embed "message pack assembly's attributes" in their code directly.
 		private static readonly string MessagePackMemberAttributeTypeName = typeof( MessagePackMemberAttribute ).FullName;

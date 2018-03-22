@@ -1,7 +1,7 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //  MessagePack for CLI
 // 
-//  Copyright (C) 2015-2016 FUJIWARA, Yusuke and contributors
+//  Copyright (C) 2015-2018 FUJIWARA, Yusuke and contributors
 // 
 //     Licensed under the Apache License, Version 2.0 (the "License");
 //     you may not use this file except in compliance with the License.
@@ -48,7 +48,12 @@ namespace MsgPack.Serialization
 		/// <summary>
 		///		Default instance (null object).
 		/// </summary>
-		internal static readonly PolymorphismSchema Default = new PolymorphismSchema();
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static readonly PolymorphismSchema Default = new PolymorphismSchema();
 
 		/// <summary>
 		///		ForPolymorphicObject( Type targetType )

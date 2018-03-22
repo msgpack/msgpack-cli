@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -36,7 +36,12 @@ namespace MsgPack.Serialization.Polymorphic
 	/// <summary>
 	/// 	Implements type info encoding for type embedding.
 	/// </summary>
-	internal static class TypeInfoEncoder
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static class TypeInfoEncoder
 	{
 		private const string Elipsis = ".";
 

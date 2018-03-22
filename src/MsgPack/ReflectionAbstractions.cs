@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,7 +35,12 @@ using System.Reflection;
 
 namespace MsgPack
 {
-	internal static class ReflectionAbstractions
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static class ReflectionAbstractions
 	{
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1802:UseLiteralsWhereAppropriate", Justification = "Same as FCL" )]
 		public static readonly char TypeDelimiter = '.';

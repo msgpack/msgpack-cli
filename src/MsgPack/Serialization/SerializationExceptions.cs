@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -934,7 +934,12 @@ namespace MsgPack.Serialization
 			throw new SerializationException( message, innerException );
 		}
 
-		internal static void ThrowInvalidArrayItemsCount( Unpacker unpacker, Type targetType, int requiredCount )
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static void ThrowInvalidArrayItemsCount( Unpacker unpacker, Type targetType, int requiredCount )
 		{
 			throw
 				unpacker.IsCollectionHeader

@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,7 +30,12 @@ namespace MsgPack.Serialization.Polymorphic
 	///		Provides polymorphism for serializers.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	internal sealed class PolymorphicSerializerProvider<T> : MessagePackSerializerProvider
+#if UNITY && DEBUG
+	public
+#else
+	internal 
+#endif
+	sealed class PolymorphicSerializerProvider<T> : MessagePackSerializerProvider
 	{
 		// This may be null for abstract typed collection which does not have corresponding concrete type.
 		private readonly MessagePackSerializer<T> _defaultSerializer;

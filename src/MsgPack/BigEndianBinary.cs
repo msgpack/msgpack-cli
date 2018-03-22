@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -32,9 +32,14 @@ using System.Diagnostics.Contracts;
 namespace MsgPack
 {
 	/// <summary>
-	///		Define bit operations which enforce big endian.
+	///		Defines bit operations which enforce big endian.
 	/// </summary>
-	internal static class BigEndianBinary
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static class BigEndianBinary
 	{
 		public static sbyte ToSByte( byte[] buffer, int offset )
 		{

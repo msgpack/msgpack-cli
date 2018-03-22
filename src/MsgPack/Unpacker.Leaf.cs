@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2017 FUJIWARA, Yusuke
+// Copyright (C) 2017-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.IO;
 
@@ -26,7 +30,12 @@ namespace MsgPack
 	// This file was generated from Unpacker.Leaf.tt and Core.ttinclude T4Template.
 	// Do not modify this file. Edit Unpacker.Leaf.tt and Core.ttinclude instead.
 
-	internal sealed class FastStreamUnpacker : MessagePackStreamUnpacker
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class FastStreamUnpacker : MessagePackStreamUnpacker
 	{
 		public FastStreamUnpacker( Stream stream, PackerUnpackerStreamOptions streamOptions )
 			: base( stream, streamOptions ) { }
@@ -38,7 +47,12 @@ namespace MsgPack
 		}
 	}
 
-	internal sealed class CollectionValidatingStreamUnpacker : MessagePackStreamUnpacker
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class CollectionValidatingStreamUnpacker : MessagePackStreamUnpacker
 	{
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;
@@ -92,7 +106,12 @@ namespace MsgPack
 		}
 	}
 
-	internal sealed class FastByteArrayUnpacker : MessagePackByteArrayUnpacker
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class FastByteArrayUnpacker : MessagePackByteArrayUnpacker
 	{
 		public FastByteArrayUnpacker( byte[] source, int startOffset )
 			: base( source, startOffset ) { }
@@ -103,7 +122,12 @@ namespace MsgPack
 		}
 	}
 
-	internal sealed class CollectionValidatingByteArrayUnpacker : MessagePackByteArrayUnpacker
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class CollectionValidatingByteArrayUnpacker : MessagePackByteArrayUnpacker
 	{
 		// ReSharper disable once RedundantDefaultFieldInitializer
 		private bool _isSubtreeReading = false;

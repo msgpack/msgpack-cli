@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,7 +32,12 @@ using MsgPack.Serialization.Reflection;
 
 namespace MsgPack.Serialization
 {
-	internal static partial class AotHelper
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static partial class AotHelper
 	{
 		public static void HandleAotError( Type mayBeGenericArgument, Exception mayBeAotError )
 		{
@@ -95,12 +104,12 @@ namespace MsgPack.Serialization
 			return constructor.InvokePreservingExceptionType( initialCapacity, GetEqualityComparer( keyType ) );
 		}
 
-		internal static IEqualityComparer<T> GetEqualityComparer<T>()
+		public static IEqualityComparer<T> GetEqualityComparer<T>()
 		{
 			return ( IEqualityComparer<T> ) GetEqualityComparer( typeof( T ) );
 		}
 
-		internal static object GetEqualityComparer( Type type )
+		public static object GetEqualityComparer( Type type )
 		{
 			lock ( EqualityComparerTable )
 			{
@@ -118,7 +127,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		internal static void PrepareEqualityComparer<T>()
+		public static void PrepareEqualityComparer<T>()
 		{
 			lock ( EqualityComparerTable )
 			{

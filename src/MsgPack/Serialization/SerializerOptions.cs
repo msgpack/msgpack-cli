@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2012-2016 FUJIWARA, Yusuke
+// Copyright (C) 2012-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -60,7 +60,12 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		For testing purposes.
 		/// </remarks>
-		internal EmitterFlavor EmitterFlavor
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		EmitterFlavor EmitterFlavor
 		{
 			get { return ( EmitterFlavor )Volatile.Read( ref this._emitterFlavor ); }
 			set { Volatile.Write( ref this._emitterFlavor, ( int )value ); }
