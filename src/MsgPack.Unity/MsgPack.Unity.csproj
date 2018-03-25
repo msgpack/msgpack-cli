@@ -17,6 +17,9 @@
     <DefineConstants>$(DefineConstants);FEATURE_MPCONTRACT;UNITY_IPHONE;AOT</DefineConstants>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug'">
+    <NoWarn>$(NoWarn),1591</NoWarn>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release'">
     <OutputPath>$(SolutionDir)\build\MsgPack-CLI\unity\</OutputPath>
     <DocumentationFile>$(SolutionDir)\build\MsgPack-CLI\unity\MsgPack.XML</DocumentationFile>
