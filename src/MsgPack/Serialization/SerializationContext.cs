@@ -176,20 +176,20 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private readonly DictionarySerlaizationOptions _dictionarySerializationOptions;
+		private readonly DictionarySerializationOptions _dictionarySerializationOptions;
 
 		/// <summary>
 		///		Gets the dictionary(map) based serialization options.
 		/// </summary>
 		/// <value>
-		///		The <see cref="DictionarySerlaizationOptions"/> which stores dictionary(map) based serialization options. This value will not be <c>null</c>.
+		///		The <see cref="DictionarySerializationOptions"/> which stores dictionary(map) based serialization options. This value will not be <c>null</c>.
 		/// </value>
-		public DictionarySerlaizationOptions DictionarySerlaizationOptions
+		public DictionarySerializationOptions DictionarySerializationOptions
 		{
 			get
 			{
 #if DEBUG
-				Contract.Ensures( Contract.Result<DictionarySerlaizationOptions>() != null );
+				Contract.Ensures( Contract.Result<DictionarySerializationOptions>() != null );
 #endif // DEBUG
 
 				return this._dictionarySerializationOptions;
@@ -541,7 +541,7 @@ namespace MsgPack.Serialization
 			this._generationLock = new object();
 			this._defaultCollectionTypes = new DefaultConcreteTypeRepository();
 			this._serializerGeneratorOptions = new SerializerOptions();
-			this._dictionarySerializationOptions = new DictionarySerlaizationOptions();
+			this._dictionarySerializationOptions = new DictionarySerializationOptions();
 			this._enumSerializationOptions = new EnumSerializationOptions();
 		}
 
