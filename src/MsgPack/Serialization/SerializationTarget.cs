@@ -466,10 +466,21 @@ namespace MsgPack.Serialization
 						.Select( data => data.GetAttributeType().FullName )
 						.Any( attr =>
 							attr == "MsgPack.Serialization.MessagePackIgnoreAttribute"
-							|| attr == "System.NonSerializedAttribute"
 							|| attr == "System.Runtime.Serialization.IgnoreDataMemberAttribute"
 						)
+					&& !IsNonSerializedField( member )
 				).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
+		}
+
+		private static bool IsNonSerializedField( MemberInfo member )
+		{
+			var asField = member as FieldInfo;
+			if( asField == null )
+			{
+				return false;
+			}
+
+			return ( asField.Attributes & FieldAttributes.NotSerialized ) != 0;
 		}
 
 		private static ConstructorInfo FindDeserializationConstructor( SerializationContext context, Type targetType, out ConstructorKind constructorKind )
