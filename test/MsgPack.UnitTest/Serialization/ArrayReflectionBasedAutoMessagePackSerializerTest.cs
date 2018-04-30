@@ -21053,7 +21053,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( default( Version[] ), GetSerializationContext() );
 		}	
 		
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !UNITY
 		[Test]
 		public void TestFILETIMEField()
 		{
@@ -21066,7 +21066,7 @@ namespace MsgPack.Serialization
 			this.TestCoreWithAutoVerify( Enumerable.Repeat( ToFileTime( DateTime.UtcNow ), 2 ).ToArray(), GetSerializationContext() );
 		}
 		
-#endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !UNITY
 		[Test]
 		public void TestTimeSpanField()
 		{
@@ -22470,7 +22470,7 @@ namespace MsgPack.Serialization
 			}
 		}	
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !UNITY
 
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
@@ -22478,6 +22478,6 @@ namespace MsgPack.Serialization
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
 		}
 
-#endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !UNITY
 	}
 }

@@ -43,9 +43,17 @@ foreach($c in $csproj.Project.ItemGroup.Compile)
         {
             $appender = [IO.File]::AppendText($destination)
 
-            foreach($line in $code)
+            foreach ($line in $code)
             {
-                $appender.WriteLine($line.Replace("protected internal", "protected"))
+                if ($destination.Contains("gen35"))
+                {
+                    # Change FILETIME to DateTime because FILETIME in Unity is not supported.
+                    $appender.WriteLine($line.Replace("protected internal", "protected").Replace("System.Runtime.InteropServices.ComTypes.FILETIME", "System.DateTime"))
+                }
+                else
+                {
+                    $appender.WriteLine($line.Replace("protected internal", "protected"))
+                }
             }
 
             $appender.Flush()

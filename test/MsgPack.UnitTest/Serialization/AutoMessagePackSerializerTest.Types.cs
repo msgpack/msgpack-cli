@@ -1,4 +1,4 @@
-﻿
+
 #region -- License Terms --
 //
 // MessagePack for CLI
@@ -39,7 +39,11 @@ using System.Numerics;
 #endif
 using System.Reflection;
 #if !SILVERLIGHT
+#if !UNITY || MP_UNITY_DESKTOP
 using System.Runtime.InteropServices.ComTypes;
+#else
+using FILETIME = System.DateTime; // For gen35 serializers which requires FILETIME properties and Unity compatibility which does not have FILETIME support in msgpack for cli.
+#endif // !UNITY
 #endif // !SILVERLIGHT
 using System.Text;
 using System.Text.RegularExpressions;
@@ -742,8 +746,12 @@ namespace MsgPack.Serialization
 
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
+#if UNITY && !MP_UNITY_DESKTOP
+			return dateTime;
+#else
 			var fileTime = dateTime.ToFileTimeUtc();
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
+#endif // UNITY
 		}
 
 #endif // !SILVERLIGHT
@@ -1174,7 +1182,7 @@ namespace MsgPack.Serialization
 			}
 #endif
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !UNITY
 			if ( expected is FILETIME )
 			{
 				var expectedFileTime = ( FILETIME )( object )expected;
@@ -1185,7 +1193,7 @@ namespace MsgPack.Serialization
 				);
 				return;
 			}
-#endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !UNITY
 
 			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 			{
