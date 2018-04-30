@@ -193,7 +193,7 @@ namespace MsgPack.Serialization
 
 			var memberCandidates = getters.Where( entry => CheckTargetEligibility( context, entry.Member ) ).ToArray();
 
-			if ( memberCandidates.Length == 0 )
+			if ( memberCandidates.Length == 0 && !context.CompatibilityOptions.AllowAsymmetricSerializer )
 			{
 				ConstructorKind constructorKind;
 				var deserializationConstructor = FindDeserializationConstructor( context, targetType, out constructorKind );
@@ -226,6 +226,15 @@ namespace MsgPack.Serialization
 					constructor = deserializationConstructor;
 					canDeserialize = null;
 				}
+				else if ( memberCandidates.Length == 0 )
+				{
+#if DEBUG
+					Contract.Assert( context.CompatibilityOptions.AllowAsymmetricSerializer );
+#endif // DEBUG
+					// Absolutely cannot deserialize in this case.
+					canDeserialize = false;
+					constructorKind = ConstructorKind.Ambiguous;
+				}
 				else
 				{
 					constructorKind = ConstructorKind.Default;
@@ -243,7 +252,7 @@ namespace MsgPack.Serialization
 					canDeserialize = true;
 				}
 
-				if ( constructor != null && constructor.GetParameters().Any() )
+				if ( constructor != null && constructor.GetParameters().Any() || context.CompatibilityOptions.AllowAsymmetricSerializer )
 				{
 					// Recalculate members because getter-only/readonly members should be included for constructor deserialization.
 					memberCandidates = getters;
