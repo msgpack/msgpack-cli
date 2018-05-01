@@ -17,11 +17,11 @@ foreach($c in $csproj.Project.ItemGroup.Compile)
 
     if ($c.Link -ne $null)
     {
-        $destination = "Assets/UnitTests/$($c.Link)"
+        $destination = "Assets/UnitTests/$($c.Link)".Replace("\", "/")
     }
     else
     {
-        $destination = "Assets/UnitTests/$($c.Include)"
+        $destination = "Assets/UnitTests/$($c.Include)".Replace("\", "/")
     }
 
     $destinationDirectory = [IO.Path]::GetDirectoryName($destination);

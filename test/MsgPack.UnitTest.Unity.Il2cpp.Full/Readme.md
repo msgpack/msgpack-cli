@@ -9,7 +9,15 @@ How to build
 ---
 
 1. Go to `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop` directory.
-2. Run `MakeAssets.ps1` PowerShell script (it may work on PowerShell Core)
+2. Run `MakeAssets.ps1` PowerShell script.
+```
+@rem In Windows
+powershell -ExecutionPolicy Unrestricted ./MakeAssets.ps1
+```
+```
+# In *nix
+pwsh ./MakeAssets.ps1
+```
 3. Ensure `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets` directory and its subtree have been generated.
 4. Open this folder with Unity.
 5. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/Dll` directory into `Assets` of Unity project with Unity Editor.
