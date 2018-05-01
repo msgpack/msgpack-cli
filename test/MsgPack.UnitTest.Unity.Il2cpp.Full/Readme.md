@@ -3,25 +3,32 @@ MessagePack for CLI Unit Test for Unity IL2CPP
 
 Overview
 ---
+
 This directory contains unit test framework for Unity IL2CPP backend.
 
 How to build
 ---
 
 1. Go to `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop` directory.
-2. Run `MakeAssets.ps1` PowerShell script.
-```
+2. Run `msbuild` to build the project.
+    * Note that Mono must be installed for your *nix environment.
+    * Note that you must have path to .NET SDKs for your Windows environment (using Visual Studio Developer Command Prompt is easy way if you have it).
+3. Run `MakeAssets.ps1` PowerShell script.
+
+```bat
 @rem In Windows
 powershell -ExecutionPolicy Unrestricted ./MakeAssets.ps1
 ```
-```
+
+```shell
 # In *nix
 pwsh ./MakeAssets.ps1
 ```
-3. Ensure `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets` directory and its subtree have been generated.
-4. Open this folder with Unity.
-5. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/Dll` directory into `Assets` of Unity project with Unity Editor.
-6. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/UnitTests` directory into `Assets` of Unity project with Unity Editor.
+
+4. Ensure `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets` directory and its subtree have been generated.
+5. Open this folder with Unity.
+6. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/Dll` directory into `Assets` of Unity project with Unity Editor.
+7. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/UnitTests` directory into `Assets` of Unity project with Unity Editor.
 
 How to run
 ---
