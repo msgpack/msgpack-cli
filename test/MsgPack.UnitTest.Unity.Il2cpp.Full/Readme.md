@@ -29,6 +29,7 @@ pwsh ./MakeAssets.ps1
 5. Open this folder with Unity.
 6. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/Dll` directory into `Assets` of Unity project with Unity Editor.
 7. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/UnitTests` directory into `Assets` of Unity project with Unity Editor.
+8. Import `../MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop/Assets/link.xml` file into `Assets` of Unity project with Unity Editor.
 
 How to run
 ---

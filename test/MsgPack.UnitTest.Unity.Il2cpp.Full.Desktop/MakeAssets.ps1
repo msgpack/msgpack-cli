@@ -68,3 +68,4 @@ foreach($c in $csproj.Project.ItemGroup.Compile)
 
 New-Item ./Assets/Dll -ItemType Directory | Out-Null
 Copy-Item ./bin/Debug/MsgPack.dll ./Assets/Dll/MsgPack.dll -Force
+Copy-Item ./link.xml ./Assets/link.xml -Force
