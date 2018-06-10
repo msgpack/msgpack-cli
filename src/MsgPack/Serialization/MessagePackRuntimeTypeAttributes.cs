@@ -309,9 +309,7 @@ namespace MsgPack.Serialization
 			get;
 			set;
 		}
-
 	}
-
 
 	partial class MessagePackRuntimeTupleItemTypeAttribute : IPolymorphicTupleItemTypeAttribute
 	{

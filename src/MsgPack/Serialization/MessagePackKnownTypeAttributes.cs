@@ -210,9 +210,7 @@ namespace MsgPack.Serialization
 		///		The binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </value>
 		public Type BindingType { get; private set; }
-
 	}
-
 
 	partial class MessagePackKnownTupleItemTypeAttribute : IPolymorphicTupleItemTypeAttribute
 	{

@@ -150,11 +150,11 @@ foreach( var item in
 		///		The binding <see cref="Type"/> for <see cref="TypeCode"/>.
 		/// </value>
 		public Type BindingType { get; private set; }
-
 <#
 	if ( !item.OmitConstructor )
 	{
 #>
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="<#= typeName #>"/> class.
 		/// </summary>
@@ -173,7 +173,6 @@ foreach( var item in
 <#
 }
 #>
-
 	partial class MessagePackKnownTupleItemTypeAttribute : IPolymorphicTupleItemTypeAttribute
 	{
 		/// <summary>
