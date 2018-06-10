@@ -204,6 +204,9 @@ namespace MsgPack.Serialization
 			return context.GetSerializer<T>( providerParameter );
 		}
 
+#if UNITY
+		[Preserve( AllMembers = true )]
+#endif
 #if UNITY && DEBUG
 		public
 #else
