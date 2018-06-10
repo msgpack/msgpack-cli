@@ -131,7 +131,7 @@ namespace MsgPack
 		[Test]
 		public void TestToString_AllPossibleTypes_Success()
 		{
-#if MONO || ENABLE_MONO || ( XAMARIN && !AOT )
+#if MONO || ENABLE_MONO || ( XAMARIN && !AOT ) || UNITY
 			Assert.Inconclusive( "Mono Regex causes StackOverflow... ");
 #endif
 			TestToStringCore(
