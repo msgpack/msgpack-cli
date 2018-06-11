@@ -122,6 +122,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestTypeMetadataExtraction()
 		{
+			VerifyType( typeof( WithMessagePackMember ), new[] { "B", "A" }, new string[ 0 ] );
 			VerifyType( typeof( ComplexTypeWithDataContractWithOrder ), new[] { "Source", "Data", "TimeStamp", "History" }, new[] { "History" } );
 			VerifyType( typeof( ComplexTypeWithOneBaseOrder ), new[] { null, "One", "Two" }, new string[ 0 ] );
 			VerifyType( typeof( DataMemberAttributeNamedPropertyTestTarget ), new[] { "Alias" }, new string[ 0 ] );
@@ -192,6 +193,15 @@ namespace MsgPack.Serialization
 					Assert.That( serializers[ i ], Is.Not.Null, "serializers[{0}]", i );
 				}
 			}
+		}
+
+		public class WithMessagePackMember
+		{
+			[MessagePackMember( 0 )]
+			public string B { get; set; }
+
+			[MessagePackMember( 1 )]
+			public string A { get; set; }
 		}
 	}
 }
