@@ -6,7 +6,7 @@ if (!(Test-Path ./bin/Debug/MsgPack.dll))
     exit 1
 }
 
-[string[]]$additionalDefines = ("#define AOT", "#define NET35")
+[string[]]$additionalDefines = ("#define AOT", "#define NET35", "#define UNITY_WORKAROUND")
 [xml]$csproj = Get-Content ./MsgPack.UnitTest.Unity.Il2cpp.Full.Desktop.csproj
 foreach($c in $csproj.Project.ItemGroup.Compile)
 {
