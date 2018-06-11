@@ -40,6 +40,12 @@ namespace MsgPack.Serialization
 			MessagePackSerializer.PrepareCollectionType<byte>();
 			MessagePackSerializer.PrepareCollectionType<char>();
 			MessagePackSerializer.PrepareCollectionType<int>();
+			MessagePackSerializer.PrepareCollectionType<float>();
+			MessagePackSerializer.PrepareCollectionType<double>();
+			MessagePackSerializer.PrepareCollectionType<short>();
+			MessagePackSerializer.PrepareCollectionType<uint>();
+			MessagePackSerializer.PrepareCollectionType<ulong>();
+			MessagePackSerializer.PrepareCollectionType<sbyte>();
 			MessagePackSerializer.PrepareDictionaryType<string, int>();
 			new ArraySegmentEqualityComparer<byte>().Equals( default( ArraySegment<byte> ), default( ArraySegment<byte> ) );
 			new ArraySegmentEqualityComparer<char>().Equals( default( ArraySegment<char> ), default( ArraySegment<char> ) );
