@@ -435,6 +435,11 @@ namespace MsgPack
 
 		public static string GetMemberName( this CustomAttributeNamedArgument source )
 		{
+			if ( source.MemberInfo == null )
+			{
+				return null;
+			}
+
 			return source.MemberInfo.Name;
 		}
 
@@ -489,6 +494,11 @@ namespace MsgPack
 					.Select( m => new NamedArgument( attribute, m ) );
 		}
 #else
+		public static IList<CustomAttributeTypedArgument> GetConstructorArguments( this CustomAttributeData source )
+		{
+			return source.ConstructorArguments;
+		}
+
 		public static IEnumerable<CustomAttributeNamedArgument> GetNamedArguments( this CustomAttributeData source )
 		{
 			return source.NamedArguments;
