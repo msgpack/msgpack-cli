@@ -751,3 +751,4 @@ Release 1.0.0
   BUG FIXES
   * [NonSerialized] attribute does not effect in Mono based platform including Unity.
   * Fix map keys order emitted by asymmetric (serialization only) serializer are inconsistent across platform.
+  * Fix Unity build does not honor serialization related attributes correctly.
