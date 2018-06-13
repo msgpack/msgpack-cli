@@ -1,0 +1,39 @@
+version: '{branch}-{build}'
+image: Visual Studio 2017
+skip_tags: true
+configuration: Debug
+assembly_info:
+  patch: true
+  file: '**\*AssemblyInfo.cs'
+  assembly_version: $(AssemblyBaseVersion).0
+  assembly_file_version: $(AssemblyBaseVersion).{build}
+  assembly_informational_version: $(PackageVersion)
+environment:
+  XamarinMSBuildExtensionsPath: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild
+install:
+- cmd: >-
+    cd .\build
+- ps: >-
+    ./SetBuildEnv.ps1
+
+    cd ..
+build_script:
+- ps: >-
+    Write-Host "Configuration=${env:CONFIGURATION}"
+
+    cd ./build
+
+    ./Build.ps1
+
+    if ( $LastExitCode -ne 0 )
+    {
+        Write-Error "Failed to build."
+        exit 1
+    }
+
+    cd ..
+test_script:
+- cmd: >-
+    cd ./build
+
+    ./RunUnitTests35-codedom.cmd
