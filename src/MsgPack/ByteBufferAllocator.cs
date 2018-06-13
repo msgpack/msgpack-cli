@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2017 FUJIWARA, Yusuke
+// Copyright (C) 2017-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 
 namespace MsgPack
@@ -25,7 +29,12 @@ namespace MsgPack
 	/// <summary>
 	///		Defines common interface for byte buffer allocators.
 	/// </summary>
-	internal abstract class ByteBufferAllocator
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	abstract class ByteBufferAllocator
 	{
 		// This type should be public when the design is fixed for Span<byte>
 

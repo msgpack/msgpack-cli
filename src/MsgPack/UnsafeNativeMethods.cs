@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -40,11 +40,13 @@ namespace MsgPack
 		private const int _libCAvailability_LibC = 2;
 		private const int _libCAvailability_None = -1;
 
+#if !XAMARIN
 #if NET35
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Security", "CA5122:PInvokesShouldNotBeSafeCriticalFxCopRule", Justification = "OK, this is SecurityCritical" )]
 #endif // NET35
 		[DllImport( "msvcrt", CallingConvention = CallingConvention.Cdecl, EntryPoint = "memcmp", ExactSpelling = true, SetLastError = false )]
 		private static extern int memcmpVC( byte[] s1, byte[] s2, /*SIZE_T*/UIntPtr size );
+#endif // !XAMARIN
 
 #if !NETFX_CORE
 		// libc is for non Windows environment.
@@ -64,6 +66,7 @@ namespace MsgPack
 				return false;
 			}
 
+#if !XAMARIN
 			if ( _libCAvailability <= _libCAvailability_MSVCRT )
 			{
 				try
@@ -80,6 +83,7 @@ namespace MsgPack
 #endif // !NETFX_CORE
 				}
 			}
+#endif // !XAMARIN
 
 #if !NETFX_CORE
 			if ( _libCAvailability <= _libCAvailability_LibC )

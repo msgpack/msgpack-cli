@@ -954,7 +954,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if !UNITY && !UNITY
+#if !UNITY
 		[Preserve( AllMembers = true )]
 		private static class SerializerGetter<T>
 		{

@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -35,7 +35,12 @@ using System.Reflection;
 
 namespace MsgPack
 {
-	internal static class ReflectionAbstractions
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static class ReflectionAbstractions
 	{
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1802:UseLiteralsWhereAppropriate", Justification = "Same as FCL" )]
 		public static readonly char TypeDelimiter = '.';
@@ -406,6 +411,15 @@ namespace MsgPack
 
 		public static string GetMemberName( this CustomAttributeNamedArgument source )
 		{
+			// This is hack to check null because .NET Standard 1.1 does not expose CustomAttributeNamedArgument.MemberInfo
+			// but it still throws NullReferenceException when its private MemberInfo type field is null.
+			// This is caused by default instance of CustomAttributeNamedArgument, so it also should have default CustomAttributeTypedArgument
+			// which has null ArgumentType.
+			if ( source.TypedValue.ArgumentType == null )
+			{
+				return null;
+			}
+
 			return source.MemberName;
 		}
 #else
@@ -430,6 +444,11 @@ namespace MsgPack
 
 		public static string GetMemberName( this CustomAttributeNamedArgument source )
 		{
+			if ( source.MemberInfo == null )
+			{
+				return null;
+			}
+
 			return source.MemberInfo.Name;
 		}
 
@@ -484,6 +503,11 @@ namespace MsgPack
 					.Select( m => new NamedArgument( attribute, m ) );
 		}
 #else
+		public static IList<CustomAttributeTypedArgument> GetConstructorArguments( this CustomAttributeData source )
+		{
+			return source.ConstructorArguments;
+		}
+
 		public static IEnumerable<CustomAttributeNamedArgument> GetNamedArguments( this CustomAttributeData source )
 		{
 			return source.NamedArguments;

@@ -1144,7 +1144,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 				);
 		}
 
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_ASMGEN
 
 		protected override void BuildSerializerCodeCore( ISerializerCodeGenerationContext context, Type concreteType, PolymorphismSchema itemSchema )
 		{
@@ -1179,7 +1179,7 @@ namespace MsgPack.Serialization.EmittingSerializers
 			}
 		}
 
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_ASMGEN
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated internally" )]
 		protected override ILConstruct EmitNewPrivateMethodDelegateExpression( AssemblyBuilderEmittingContext context, MethodDefinition method )

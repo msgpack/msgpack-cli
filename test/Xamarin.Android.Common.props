@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MsgPack</RootNamespace>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <Import Project="..\MsgPack.Common.props" />
+  <PropertyGroup>
+    <DocumentationFile></DocumentationFile>
+    <DefineConstants>$(DefineConstants);TRACE;AOT;XAMARIN;NUNITLITE;NETSTANDARD2_0;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <JavaMaximumHeapSize>512M</JavaMaximumHeapSize>
+    <ConsolePause>false</ConsolePause>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
+    <AndroidLinkMode>Full</AndroidLinkMode>
+    <AndroidLinkSkip>$(AssemblyName);Xamarin.Android.NUnitLite</AndroidLinkSkip>
+    <AotAssemblies>true</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <EnableProguard>false</EnableProguard>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>PdbOnly</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Xamarin.Android.NUnitLite" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest.Xamarin.Android\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Xamarin.Android\MainActivity.cs">
+      <Link>MainActivity.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="..\MsgPack.UnitTest\cases.mpac">
+      <Link>cases.mpac</Link>
+    </None>
+    <None Include="..\MsgPack.UnitTest\cases_compact.mpac">
+      <Link>cases_compact.mpac</Link>
+    </None>
+    <None Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\AboutResources.txt">
+      <Link>Resources\AboutResources.txt</Link>
+    </None>
+    <None Include="..\MsgPack.UnitTest.Xamarin.Android\Assets\AboutAssets.txt">
+      <Link>Assets\AboutAssets.txt</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
+      <Project>{5bcec32e-990e-4de5-945f-bd27326a7418}</Project>
+      <Name>MsgPack</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

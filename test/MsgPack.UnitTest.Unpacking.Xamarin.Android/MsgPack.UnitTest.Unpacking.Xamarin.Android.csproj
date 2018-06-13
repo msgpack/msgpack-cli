@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{436eda6d-0ff9-40e9-bb74-08d0dcdf94aa}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AssemblyName>MsgPack.UnitTest.Unpacking.Xamarin.Android</AssemblyName>
+  </PropertyGroup>
+  <Import Project="..\Xamarin.Android.Common.props" />
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
+      <Link>AssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
+      <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
+      <Link>SplittingStream.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamExtensions.cs">
+      <Link>StreamExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
+      <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Array.cs">
+      <Link>UnpackingTest.Combinations.Array.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Boolean.cs">
+      <Link>UnpackingTest.Combinations.Boolean.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Byte.cs">
+      <Link>UnpackingTest.Combinations.Byte.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Double.cs">
+      <Link>UnpackingTest.Combinations.Double.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Int16.cs">
+      <Link>UnpackingTest.Combinations.Int16.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Int32.cs">
+      <Link>UnpackingTest.Combinations.Int32.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Int64.cs">
+      <Link>UnpackingTest.Combinations.Int64.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Map.cs">
+      <Link>UnpackingTest.Combinations.Map.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Nil.cs">
+      <Link>UnpackingTest.Combinations.Nil.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Raw.cs">
+      <Link>UnpackingTest.Combinations.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.SByte.cs">
+      <Link>UnpackingTest.Combinations.SByte.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.Single.cs">
+      <Link>UnpackingTest.Combinations.Single.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.UInt16.cs">
+      <Link>UnpackingTest.Combinations.UInt16.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.UInt32.cs">
+      <Link>UnpackingTest.Combinations.UInt32.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Combinations.UInt64.cs">
+      <Link>UnpackingTest.Combinations.UInt64.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.cs">
+      <Link>UnpackingTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Ext.cs">
+      <Link>UnpackingTest.Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Raw.cs">
+      <Link>UnpackingTest.Raw.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\UnpackingTest.Scalar.cs">
+      <Link>UnpackingTest.Scalar.cs</Link>
+    </Compile>
+    <Compile Include="Resources\Resource.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\drawable\Icon.png">
+      <Link>Resources\drawable\Icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\values\Strings.xml">
+      <Link>Resources\values\Strings.xml</Link>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+</Project>

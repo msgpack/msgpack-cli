@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -27,7 +27,12 @@ using System.Reflection;
 
 namespace MsgPack.Serialization
 {
-	internal struct CollectionTraits
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	struct CollectionTraits
 	{
 		public static readonly CollectionTraits NotCollection = new CollectionTraits( CollectionDetailedKind.NotCollection, null, null, null, null );
 		public static readonly CollectionTraits Unserializable = new CollectionTraits( CollectionDetailedKind.Unserializable, null, null, null, null );

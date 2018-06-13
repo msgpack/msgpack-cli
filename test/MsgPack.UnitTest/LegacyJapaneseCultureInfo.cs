@@ -27,6 +27,9 @@ namespace MsgPack
 	/// <summary>
 	///     Custom <see cref="CultureInfo" /> which uses full width hiphen for negative sign.!--
 	/// </summary>
+#if UNITY // Enabled by copy script for Unity
+	[Serializable]
+#endif // UNITY
 	internal sealed class LegacyJapaneseCultureInfo : CultureInfo
 	{
 		public LegacyJapaneseCultureInfo()

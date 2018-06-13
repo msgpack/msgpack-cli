@@ -1,8 +1,8 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2015 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
 
 using System;
 using System.Collections.Generic;
@@ -41,7 +45,12 @@ namespace MsgPack
 #if DEBUG
 		private static bool _alwaysWrap = false;
 
-		internal static bool AlwaysWrap
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static bool AlwaysWrap
 		{
 			get { return _alwaysWrap; }
 			set { _alwaysWrap = value; }
@@ -60,13 +69,28 @@ namespace MsgPack
 				;
 		}
 
-		internal static readonly PackerUnpackerStreamOptions SingletonOwnsStream =
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static readonly PackerUnpackerStreamOptions SingletonOwnsStream =
 			new PackerUnpackerStreamOptions { OwnsStream = true };
 
-		internal static readonly PackerUnpackerStreamOptions SingletonForAsync =
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static readonly PackerUnpackerStreamOptions SingletonForAsync =
 			new PackerUnpackerStreamOptions { OwnsStream = true, WithBuffering = true };
 
-		internal static readonly PackerUnpackerStreamOptions None = new PackerUnpackerStreamOptions();
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static readonly PackerUnpackerStreamOptions None = new PackerUnpackerStreamOptions();
 
 		/// <summary>
 		///		Gets or sets a value indicating whether stream should be wrapped with buffering stream.

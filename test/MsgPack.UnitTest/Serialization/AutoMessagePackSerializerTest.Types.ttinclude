@@ -1,4 +1,4 @@
-﻿<#@ import namespace="System" #>
+<#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Collections.ObjectModel" #>
@@ -109,13 +109,13 @@ private void GenerateTypesCore( bool forIos )
 			typeof( Hashtable )
 		};
 
-	var __notInSL =
+	var __notInSLUnity =
 		new HashSet<Type>()
 		{
 			typeof( FILETIME )
 		};
 
-	var __notInSLWP =
+	var __notInSlwpNet35 =
 		new HashSet<String>()
 		{
 			ToTypeName( typeof( KeyValuePair<string, Complex> ) ),
@@ -172,7 +172,7 @@ private void GenerateTypesCore( bool forIos )
 		}
 		else if( __notInNet35.Contains( __typeName ) )
 		{
-			if(__notInSLWP.Contains( __typeName ) )
+			if(__notInSlwpNet35.Contains( __typeName ) )
 			{
 #>
 #if !NET35 && !WINDOWS_PHONE
@@ -185,10 +185,10 @@ private void GenerateTypesCore( bool forIos )
 <#+
 			}
 		}
-		else if ( __notInSL.Contains( __asType ) )
+		else if ( __notInSLUnity.Contains( __asType ) )
 		{
 #>
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !UNITY
 <#+
 		}
 #>
@@ -231,7 +231,7 @@ private void GenerateTypesCore( bool forIos )
 		}
 		else if( __notInNet35.Contains( __typeName ) )
 		{
-			if(__notInSLWP.Contains( __typeName ) )
+			if(__notInSlwpNet35.Contains( __typeName ) )
 			{
 #>
 #endif // !NET35 && !WINDOWS_PHONE
@@ -244,10 +244,10 @@ private void GenerateTypesCore( bool forIos )
 <#+
 			}
 		}
-		else if ( __notInSL.Contains( __asType ) )
+		else if ( __notInSLUnity.Contains( __asType ) )
 		{
 #>
-#endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !UNITY
 <#+
 		}
 	}
@@ -442,7 +442,7 @@ private void GenerateTypesCore( bool forIos )
 			}
 		}	
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !UNITY
 
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
@@ -450,7 +450,7 @@ private void GenerateTypesCore( bool forIos )
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
 		}
 
-#endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !UNITY
 	}
 }
 <#+

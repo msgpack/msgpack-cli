@@ -1,82 +1,263 @@
 [
-	{
-    "name": "MsgPack.UnitTest.Mono",
+  {
+    "name": "MsgPack.UnitTest.Xamarin.iOS",
     "base": "MsgPack.UnitTest",
     "globs": [
+      {"type": "include", "path": "Serialization/AotTest.cs"},
       {"type": "include", "path": "../MsgPack.UnitTest/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Properties/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/obj/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/gen35/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
-      {"type": "include", "path": "**/*.cs"},
-      {"type": "remove", "path": "obj/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Augments.cs"}
-    ]
-  },
-	{
-    "name": "MsgPack.UnitTest.BclExtensions.Mono",
-    "base": "MsgPack.UnitTest.BclExtensions",
-    "globs": [
-      {"type": "include", "path": "../MsgPack.UnitTest.BclExtensions/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.BclExtensions/Properties/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.BclExtensions/obj/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
-      {"type": "include", "path": "**/*.cs"},
-      {"type": "remove", "path": "obj/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/RoslynCodeGeneration.cs"},
-      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TempFileDependentAssemblyManager.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Augments.cs"}
-    ]
-  },
-	{
-    "name": "MsgPack.UnitTest.Silverlight.5",
-    "base": "MsgPack.UnitTest",
-    "globs": [
-      {"type": "include", "path": "../MsgPack.UnitTest/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Properties/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/obj/**/*.cs"},
-      {"type": "include", "path": "**/*.cs"},
-      {"type": "remove", "path": "obj/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/gen35/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/PreGenerated*"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/_SetUpFixture.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/AppendableReadOnlyCollections.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/ArrayGenerationBasedAutoMessagePackSerializerTest.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/ArrayGenerationBasedEnumSerializationTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CompositeTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/FromExpressionTest.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/GenerationBasedNilImplicationTest.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/MapGenerationBasedAutoMessagePackSerializerTest.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/MapGenerationBasedEnumSerializationTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/MessagePackMemberAndDataMemberMixedTarget.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/MessagePackMemberAttributeTest.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/SerializerGeneratorTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/PreGeneratedSerializerGenerator.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/RoslynCodeGeneration.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/TempFileDependentAssemblyManager.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*FieldBased*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/_SetUpFixture.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/AssertEx.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"}
-    ]
-  },
-	{
-    "name": "MsgPack.UnitTest.Silverlight.5.FullTrust",
-    "base": "MsgPack.UnitTest.Silverlight.5",
-    "globs": [
-      {"type": "include", "path": "../MsgPack.UnitTest.Silverlight.5/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Silverlight.5/Properties/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Silverlight.5/obj/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Silverlight.5/App.xaml.cs"}
+      {"type": "remove", "path": "../MsgPack.UnitTest/Augments.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/Array*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/Map*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/PreGenerated*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/*Packer*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/*Unpacker*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Unpacking*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/TimeStamp*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/TimeStamp*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/ArraySegmentEqualityComparer`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/PreGeneratedSerializerActivator*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/gen/MsgPack_Serialization_ComplexTypeWithTwoMemberSerializer.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/gen/MsgPack_Serialization_InnerSerializer.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/gen/MsgPack_Serialization_OuterSerializer.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/gen/MsgPack_Serialization_TestValueTypeSerializer.cs"}
     ]
   },
   {
-    "name": "MsgPack.UnitTest.Xamarin.iOS",
+    "name": "MsgPack.UnitTest.Packer.Xamarin.iOS",
+    "base": "MsgPack.UnitTest",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest/*Packer*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/*Unpacker*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/AssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/CollectionAssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/SplittingStream.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/StreamExtensions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/TestRandom.cs"},
+      {"type": "include", "path": "**/*.cs"},
+      {"type": "remove", "path": "obj/**/*.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Unpacker.Xamarin.iOS",
+    "base": "MsgPack.UnitTest",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest/*Unpacker*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/AssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/CollectionAssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/SplittingStream.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/StreamExtensions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/TestRandom.cs"},
+      {"type": "include", "path": "**/*.cs"},
+      {"type": "remove", "path": "obj/**/*.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Unpacking.Xamarin.iOS",
+    "base": "MsgPack.UnitTest",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest/Unpacking*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/AssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/CollectionAssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/SplittingStream.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/StreamExtensions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/TestRandom.cs"},
+      {"type": "include", "path": "**/*.cs"},
+      {"type": "remove", "path": "obj/**/*.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Timestamp.Xamarin.iOS",
+    "base": "MsgPack.UnitTest",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest/TimeStamp*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TimeStamp*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/LegacyJapaneseCultureInfo.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/AssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/CollectionAssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/SplittingStream.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/StreamExtensions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/TestRandom.cs"},
+      {"type": "include", "path": "**/*.cs"},
+      {"type": "remove", "path": "obj/**/*.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.ArraySerialization.Xamarin.iOS",
+    "base": "MsgPack.UnitTest",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/Array*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/Complex*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*Field*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/AssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/CollectionAssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Image.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/AddOnlyCollection`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/AppendableReadOnlyCollections.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/ArraySegmentEqualityComparer`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/AutoMessagePackSerializerTest.Types.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/BaseCollections.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/ComplexType*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/Data*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/EchoKeyedCollection_2MessagePackSerializer`2.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/EnumSerializationTest.EnumDefinitions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/IVerifiable.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/IVerifiable`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/MillisecondsDateTimeComparer.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/MillisecondsDateTimeOffsetComparer.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/NilImplicationTestTarget.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/PreGeneratedSerializerActivator*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/SerializationTargets.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/SimpleCollection`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/StringKeyedCollection.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TestValueType.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TypeWith*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/SplittingStream.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/StreamExtensions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/TestRandom.cs"},
+      {"type": "include", "path": "**/*.cs"},
+      {"type": "remove", "path": "obj/**/*.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.MapSerialization.Xamarin.iOS",
+    "base": "MsgPack.UnitTest",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/Complex*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/Map*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*Field*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/AssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/CollectionAssertEx.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Image.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/AddOnlyCollection`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/AppendableReadOnlyCollections.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/ArraySegmentEqualityComparer`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/AutoMessagePackSerializerTest.Types.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/BaseCollections.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/ComplexType*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/Data*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/EchoKeyedCollection_2MessagePackSerializer`2.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/EnumSerializationTest.EnumDefinitions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/IVerifiable.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/IVerifiable`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/MillisecondsDateTimeComparer.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/MillisecondsDateTimeOffsetComparer.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/NilImplicationTestTarget.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/PreGeneratedSerializerActivator*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/SerializationTargets.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/SimpleCollection`1.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/StringKeyedCollection.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TestValueType.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/Serialization/TypeWith*.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/SplittingStream.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/StreamExtensions.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest/TestRandom.cs"},
+      {"type": "include", "path": "**/*.cs"},
+      {"type": "remove", "path": "obj/**/*.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Xamarin.Android",
+    "base": "MsgPack.UnitTest.Xamarin.iOS",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.Xamarin.iOS/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/AppDelegate.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/Main.cs"},
+      {"type": "remove", "path": "Resources/Resource.Designer.cs"},
+      {"type": "remove", "path": "Serialization/AotTest.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest.Xamarin.iOS/Serialization/AotTest.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Packer.Xamarin.Android",
+    "base": "MsgPack.UnitTest.Packer.Xamarin.iOS",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.Packer.Xamarin.iOS/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Packer.Xamarin.iOS/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Packer.Xamarin.iOS/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Packer.Xamarin.iOS/AppDelegate.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Packer.Xamarin.iOS/Main.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Unpacker.Xamarin.Android",
+    "base": "MsgPack.UnitTest.Unpacker.Xamarin.iOS",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.Unpacker.Xamarin.iOS/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacker.Xamarin.iOS/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacker.Xamarin.iOS/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacker.Xamarin.iOS/AppDelegate.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacker.Xamarin.iOS/Main.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Unpacking.Xamarin.Android",
+    "base": "MsgPack.UnitTest.Unpacking.Xamarin.iOS",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.Unpacking.Xamarin.iOS/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacking.Xamarin.iOS/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacking.Xamarin.iOS/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacking.Xamarin.iOS/AppDelegate.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Unpacking.Xamarin.iOS/Main.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Timestamp.Xamarin.Android",
+    "base": "MsgPack.UnitTest.Timestamp.Xamarin.iOS",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.Timestamp.Xamarin.iOS/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Timestamp.Xamarin.iOS/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Timestamp.Xamarin.iOS/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Timestamp.Xamarin.iOS/AppDelegate.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Timestamp.Xamarin.iOS/Main.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.ArraySerialization.Xamarin.Android",
+    "base": "MsgPack.UnitTest.ArraySerialization.Xamarin.iOS",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.ArraySerialization.Xamarin.iOS/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.ArraySerialization.Xamarin.iOS/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.ArraySerialization.Xamarin.iOS/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.ArraySerialization.Xamarin.iOS/AppDelegate.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.ArraySerialization.Xamarin.iOS/Main.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.MapSerialization.Xamarin.Android",
+    "base": "MsgPack.UnitTest.MapSerialization.Xamarin.iOS",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.MapSerialization.Xamarin.iOS/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.MapSerialization.Xamarin.iOS/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.MapSerialization.Xamarin.iOS/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.MapSerialization.Xamarin.iOS/AppDelegate.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.MapSerialization.Xamarin.iOS/Main.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Uwp",
     "base": "MsgPack.UnitTest",
     "globs": [
       {"type": "include", "path": "../MsgPack.UnitTest/**/*.cs"},
@@ -100,24 +281,8 @@
       {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*FieldBased*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/_SetUpFixture.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/Augments.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"}
-    ]
-  },
-  {
-    "name": "MsgPack.UnitTest.Xamarin.Android",
-    "base": "MsgPack.UnitTest.Xamarin.iOS",
-    "globs": [
-      {"type": "include", "path": "../MsgPack.UnitTest.Xamarin.iOS/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/Properties/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/obj/**/*.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/AppDelegate.cs"},
-      {"type": "remove", "path": "../MsgPack.UnitTest.Xamarin.iOS/Main.cs"}
-    ]
-  },
-  {
-    "name": "MsgPack.UnitTest.Uwp",
-    "base": "MsgPack.UnitTest.Xamarin.Android",
-    "globs": [
+      {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"},
+      {"type": "include", "path": "../MsgPack.UnitTest.Xamarin.iOS/Serialization/AotTest.cs"},
       {"type": "include", "path": "../MsgPack.NUnitPortable/TimeoutAttribute.cs"}
     ]
   },
@@ -206,6 +371,49 @@
     "name": "MsgPack.UnitTest.WinRT.WindowsPhone",
     "base": "MsgPack.UnitTest.WinRT",
     "globs": [
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Silverlight.5",
+    "base": "MsgPack.UnitTest",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/obj/**/*.cs"},
+      {"type": "include", "path": "**/*.cs"},
+      {"type": "remove", "path": "obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen35/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Dummies/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Mono/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/PreGenerated*"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/_SetUpFixture.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/AppendableReadOnlyCollections.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/ArrayGenerationBasedAutoMessagePackSerializerTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/ArrayGenerationBasedEnumSerializationTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CodeDomCodeGeneration.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/CompositeTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/FromExpressionTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/GenerationBasedNilImplicationTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/MapGenerationBasedAutoMessagePackSerializerTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/MapGenerationBasedEnumSerializationTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/SerializerGeneratorTest.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/RoslynCodeGeneration.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/TempFileDependentAssemblyManager.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/Serialization/*FieldBased*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/_SetUpFixture.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/AssertEx.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest/TestSuite.cs"}
+    ]
+  },
+  {
+    "name": "MsgPack.UnitTest.Silverlight.5.FullTrust",
+    "base": "MsgPack.UnitTest.Silverlight.5",
+    "globs": [
+      {"type": "include", "path": "../MsgPack.UnitTest.Silverlight.5/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Silverlight.5/Properties/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Silverlight.5/obj/**/*.cs"},
+      {"type": "remove", "path": "../MsgPack.UnitTest.Silverlight.5/App.xaml.cs"}
     ]
   }
 ]

@@ -1,4 +1,4 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ output extension=".cs" #>
 <#@ include file="AutoMessagePackSerializerTest.Polymorphism.ttinclude" #>
 <#@ assembly name="System.Core.dll" #>
@@ -132,7 +132,7 @@ var notInSL =
 		typeof( FILETIME )
 	};
 
-var notInSLWP =
+var notInSlwpNet35 =
 	new HashSet<String>()
 	{
 		ToTypeName( typeof( KeyValuePair<string, Complex> ) ),
@@ -196,7 +196,11 @@ using System.Numerics;
 #endif
 using System.Reflection;
 #if !SILVERLIGHT
+#if !UNITY || MP_UNITY_DESKTOP
 using System.Runtime.InteropServices.ComTypes;
+#else
+using FILETIME = System.DateTime; // For gen35 serializers which requires FILETIME properties and Unity compatibility which does not have FILETIME support in msgpack for cli.
+#endif // !UNITY
 #endif // !SILVERLIGHT
 using System.Text;
 using System.Text.RegularExpressions;
@@ -261,7 +265,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	}
 	else if( notInNet35.Contains( typeName ) )
 	{
-		if(notInSLWP.Contains( typeName ) )
+		if(notInSlwpNet35.Contains( typeName ) )
 		{
 #>
 #if !NET35 && !WINDOWS_PHONE
@@ -304,7 +308,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	}
 	else if( notInNet35.Contains( typeName ) )
 	{
-		if(notInSLWP.Contains( typeName ) )
+		if(notInSlwpNet35.Contains( typeName ) )
 		{
 #>
 #endif // !NET35 && !WINDOWS_PHONE
@@ -349,7 +353,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	}
 	else if( notInNet35.Contains( typeName ) )
 	{
-		if(notInSLWP.Contains( typeName ) )
+		if(notInSlwpNet35.Contains( typeName ) )
 		{
 #>
 #if !NET35 && !WINDOWS_PHONE
@@ -379,7 +383,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	}
 	else if( notInNet35.Contains( typeName ) )
 	{
-		if(notInSLWP.Contains( typeName ) )
+		if(notInSlwpNet35.Contains( typeName ) )
 		{
 #>
 #endif // !NET35 && !WINDOWS_PHONE
@@ -407,8 +411,12 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 
 		private static FILETIME ToFileTime( DateTime dateTime )
 		{
+#if UNITY && !MP_UNITY_DESKTOP
+			return dateTime;
+#else
 			var fileTime = dateTime.ToFileTimeUtc();
 			return new FILETIME(){ dwHighDateTime = unchecked( ( int )( fileTime >> 32 ) ), dwLowDateTime = unchecked( ( int )( fileTime & 0xffffffff ) ) };
+#endif // UNITY
 		}
 
 #endif // !SILVERLIGHT
@@ -436,7 +444,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	}
 	else if( notInNet35.Contains( typeName ) )
 	{
-		if(notInSLWP.Contains( typeName ) )
+		if(notInSlwpNet35.Contains( typeName ) )
 		{
 #>
 #if !NET35 && !WINDOWS_PHONE
@@ -466,7 +474,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 	}
 	else if( notInNet35.Contains( typeName ) )
 	{
-		if(notInSLWP.Contains( typeName ) )
+		if(notInSlwpNet35.Contains( typeName ) )
 		{
 #>
 #endif // !NET35 && !WINDOWS_PHONE
@@ -805,7 +813,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 			}
 #endif
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !UNITY
 			if ( expected is FILETIME )
 			{
 				var expectedFileTime = ( FILETIME )( object )expected;
@@ -816,7 +824,7 @@ foreach( Tuple<Object, string, string, bool> item in fields )
 				);
 				return;
 			}
-#endif // !SILVERLIGHT
+#endif // !SILVERLIGHT && !UNITY
 
 			if ( expected.GetType().GetIsGenericType() && expected.GetType().GetGenericTypeDefinition() == typeof( KeyValuePair<,> ) )
 			{

@@ -66,7 +66,9 @@ csharp_space_around_binary_operators = true
 csharp_indent_braces = false
 csharp_indent_block_contents = true
 csharp_indent_switch_labels = true
-csharp_indent_case_contents = false
+csharp_indent_case_contents = true
+# See https://github.com/dotnet/roslyn/blob/d4dab355b96955aca5b4b0ebf6282575fad78ba8/src/Workspaces/CSharp/Portable/Formatting/CSharpFormattingOptions.cs
+csharp_indent_case_contents_when_block = false
 csharp_indent_labels = false
 csharp_preserve_single_line_blocks =  true
 csharp_preserve_single_line_statements = true

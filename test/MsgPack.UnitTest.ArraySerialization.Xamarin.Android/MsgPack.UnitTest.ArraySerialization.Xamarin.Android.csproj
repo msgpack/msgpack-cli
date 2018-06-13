@@ -1,0 +1,1543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{ae931c31-c472-4f0c-b988-6edca66e0c2e}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AssemblyName>MsgPack.UnitTest.ArraySerialization.Xamarin.Android</AssemblyName>
+  </PropertyGroup>
+  <Import Project="..\Xamarin.Android.Common.props" />
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
+      <Link>AssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
+      <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_ImageSerializer.cs">
+      <Link>gen\MsgPack_ImageSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassCollectionKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassCollectionNoAttributeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassCollectionNoAttributeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassCollectionRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassCollectionRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassDictKeyKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassDictKeyKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassDictKeyRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassDictKeyRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassListItemKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassListItemKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassListItemRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassListItemRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassMemberKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassMemberKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AbstractClassMemberRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AbstractClassMemberRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObject_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTime_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTime_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_Int32Array_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_AddOnlyCollection_1_System_ObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_AnnotatedClassSerializer.cs">
+      <Link>gen\MsgPack_Serialization_AnnotatedClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeGeneratedEnclosureSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeGeneratedEnclosureSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeGeneratedSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeGeneratedSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeWithDataContractSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeWithDataContractSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeWithDataContractWithOrderSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeWithDataContractWithOrderSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeWithNonSerializedSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeWithNonSerializedSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeWithOneBaseOrderSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeWithOneBaseOrderSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeWithoutAnyAttributeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeWithoutAnyAttributeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ComplexTypeWithTwoMemberSerializer.cs">
+      <Link>gen\MsgPack_Serialization_ComplexTypeWithTwoMemberSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_DataMamberClassSerializer.cs">
+      <Link>gen\MsgPack_Serialization_DataMamberClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.cs">
+      <Link>gen\MsgPack_Serialization_DataMemberAttributeNamedPropertyTestTargetSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_DictionaryValueType_2_System_Int32_System_Int32_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_DictionaryValueType_2_System_Int32_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumByNameSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumByNameSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumByteFlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumByteFlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumByteSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumByUnderlyingValueSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumDefaultSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumDefaultSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumInt16FlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumInt16FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumInt16Serializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumInt32FlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumInt32FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumInt32Serializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumInt64FlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumInt64FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumInt64Serializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumMemberObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumMemberObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumSByteFlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumSByteFlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumSByteSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumSByteSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumUInt16FlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumUInt16FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumUInt16Serializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumUInt16Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumUInt32FlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumUInt32FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumUInt32Serializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumUInt32Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumUInt64FlagsSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_EnumUInt64Serializer.cs">
+      <Link>gen\MsgPack_Serialization_EnumUInt64Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_GenericNonCollectionTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_GenericNonCollectionTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_HasEnumerableSerializer.cs">
+      <Link>gen\MsgPack_Serialization_HasEnumerableSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InnerSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InnerSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceCollectionKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceCollectionKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceCollectionNoAttributeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceCollectionNoAttributeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceCollectionRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceCollectionRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceDictKeyKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceDictKeyKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceDictKeyRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceDictKeyRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceListItemKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceListItemKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceListItemRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceListItemRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceMemberKnownTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceMemberKnownTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_InterfaceMemberRuntimeTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_InterfaceMemberRuntimeTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_ListValueType_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_NonGenericNonCollectionTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_NonGenericNonCollectionTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_OuterSerializer.cs">
+      <Link>gen\MsgPack_Serialization_OuterSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PlainClassSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PlainClassSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictObjectKeyAndStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictPolymorphicKeyAndStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndObjectItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndPolymorphicItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Dict_DictStaticKeyAndStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListObjectItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListPolymorphicItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_List_ListStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitivePrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_PrimitiveReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferencePrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ReferenceReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_StringReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Normal_ValueReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicPrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PolymorphicReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitivePrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_PrimitiveReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferencePrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ReferenceReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_StringReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1ObjectItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1PolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple1StaticReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7AllStaticReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7FirstPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7LastPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple7MidPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8AllStaticReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_Tuple_Tuple8LastPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValuePrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeKnownType_ValueReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeMixedSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeMixedSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictObjectKeyAndStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictPolymorphicKeyAndStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndObjectItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndPolymorphicItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Dict_DictStaticKeyAndStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListObjectItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListPolymorphicItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemGetOnlyCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionPropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemPrivateSetterCollectionPropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadOnlyCollectionFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_List_ListStaticItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitivePrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_PrimitiveReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferencePrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ReferenceReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_StringReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValuePrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Normal_ValueReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicPrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PolymorphicReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitivePrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_PrimitiveReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferencePrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ReferenceReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringPrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_StringReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItemReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1ObjectItselfReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1PolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple1StaticReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7AllStaticReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7FirstPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7LastPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple7MidPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8AllStaticReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicGetOnlyPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicPrivateSetterPropertyAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadOnlyFieldAndConstructorSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteFieldSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWriteFieldSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWritePropertySerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_Tuple_Tuple8LastPolymorphicReadWritePropertySerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueGetOnlyPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValuePrivateSetterPropertyAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadOnlyFieldAndConstructorAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWriteFieldAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObjectSerializer.cs">
+      <Link>gen\MsgPack_Serialization_PolymorphicMemberTypeRuntimeType_ValueReadWritePropertyAsObjectSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObject_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_DateTime_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_DateTime_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_Int32_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_Int32Array_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_Object_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_SimpleCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_SimpleCollection_1_System_ObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObject_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTime_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTime_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_Int32Array_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_Object_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_StringKeyedCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\MsgPack_Serialization_StringKeyedCollection_1_System_ObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_TestValueTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_TestValueTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_TupleAbstractTypeSerializer.cs">
+      <Link>gen\MsgPack_Serialization_TupleAbstractTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_VersioningTestTargetSerializer.cs">
+      <Link>gen\MsgPack_Serialization_VersioningTestTargetSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_WithAbstractInt32CollectionSerializer.cs">
+      <Link>gen\MsgPack_Serialization_WithAbstractInt32CollectionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_WithAbstractNonCollectionSerializer.cs">
+      <Link>gen\MsgPack_Serialization_WithAbstractNonCollectionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs">
+      <Link>gen\MsgPack_Serialization_WithAbstractStringCollectionSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObject_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObject_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_DateTime_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_DateTime_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_DateTimeArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_Int32_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_Int32Array_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_Int32Array_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_Object_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_Generic_HashSet_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_Generic_HashSet_1_System_ObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_DateTime_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_DateTimeArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_Int32_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_Int32Array_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_Object_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_Collection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_Collection_1_System_ObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObject_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObject_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_MsgPack_MessagePackObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTime_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTime_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTimeArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_DateTimeArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_Int32Array_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_Object_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs">
+      <Link>gen\System_Collections_ObjectModel_ObservableCollection_1_System_ObjectArray_Serializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\gen\System_DayOfWeekSerializer.cs">
+      <Link>gen\System_DayOfWeekSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Image.cs">
+      <Link>Image.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AddOnlyCollection`1.cs">
+      <Link>Serialization\AddOnlyCollection`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AppendableReadOnlyCollections.cs">
+      <Link>Serialization\AppendableReadOnlyCollections.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayGenerationBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayGenerationBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayGenerationBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs">
+      <Link>Serialization\ArrayReflectionBasedAutoMessagePackSerializerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArrayReflectionBasedEnumSerializationTest.cs">
+      <Link>Serialization\ArrayReflectionBasedEnumSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ArraySegmentEqualityComparer`1.cs">
+      <Link>Serialization\ArraySegmentEqualityComparer`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\AutoMessagePackSerializerTest.Types.cs">
+      <Link>Serialization\AutoMessagePackSerializerTest.Types.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\BaseCollections.cs">
+      <Link>Serialization\BaseCollections.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexType.cs">
+      <Link>Serialization\ComplexType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContract.cs">
+      <Link>Serialization\ComplexTypeWithDataContract.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithDataContractWithOrder.cs">
+      <Link>Serialization\ComplexTypeWithDataContractWithOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithNonSerialized.cs">
+      <Link>Serialization\ComplexTypeWithNonSerialized.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithOneBaseOrder.cs">
+      <Link>Serialization\ComplexTypeWithOneBaseOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithoutAnyAttribute.cs">
+      <Link>Serialization\ComplexTypeWithoutAnyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\ComplexTypeWithTwoMember.cs">
+      <Link>Serialization\ComplexTypeWithTwoMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DataContractAndNonSerializedMixedTarget.cs">
+      <Link>Serialization\DataContractAndNonSerializedMixedTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\DataMemberAttributeNamedPropertyTestTarget.cs">
+      <Link>Serialization\DataMemberAttributeNamedPropertyTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs">
+      <Link>Serialization\EchoKeyedCollection_2MessagePackSerializer`2.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\EnumSerializationTest.EnumDefinitions.cs">
+      <Link>Serialization\EnumSerializationTest.EnumDefinitions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable.cs">
+      <Link>Serialization\IVerifiable.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\IVerifiable`1.cs">
+      <Link>Serialization\IVerifiable`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeComparer.cs">
+      <Link>Serialization\MillisecondsDateTimeComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\MillisecondsDateTimeOffsetComparer.cs">
+      <Link>Serialization\MillisecondsDateTimeOffsetComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\NilImplicationTestTarget.cs">
+      <Link>Serialization\NilImplicationTestTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\PreGeneratedSerializerActivator.cs">
+      <Link>Serialization\PreGeneratedSerializerActivator.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\PreGeneratedSerializerActivator.Types.cs">
+      <Link>Serialization\PreGeneratedSerializerActivator.Types.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SerializationTargets.cs">
+      <Link>Serialization\SerializationTargets.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\SimpleCollection`1.cs">
+      <Link>Serialization\SimpleCollection`1.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\StringKeyedCollection.cs">
+      <Link>Serialization\StringKeyedCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TestValueType.cs">
+      <Link>Serialization\TestValueType.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithDuplicatedMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithInvalidMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs">
+      <Link>Serialization\TypeWithMissingMessagePackMemberAttributeMember.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
+      <Link>SplittingStream.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamExtensions.cs">
+      <Link>StreamExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
+      <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="Resources\Resource.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\drawable\Icon.png">
+      <Link>Resources\drawable\Icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\MsgPack.UnitTest.Xamarin.Android\Resources\values\Strings.xml">
+      <Link>Resources\values\Strings.xml</Link>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+</Project>

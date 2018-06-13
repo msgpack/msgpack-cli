@@ -181,11 +181,11 @@ foreach( var item in
 			get;
 			set;
 		}
-
 <#
 	if ( !item.OmitConstructor )
 	{
 #>
+
 		/// <summary>
 		///		Initializes a new instance of the <see cref="<#= typeName #>"/> class.
 		/// </summary>
@@ -200,7 +200,6 @@ foreach( var item in
 <#
 }
 #>
-
 	partial class MessagePackRuntimeTupleItemTypeAttribute : IPolymorphicTupleItemTypeAttribute
 	{
 		/// <summary>

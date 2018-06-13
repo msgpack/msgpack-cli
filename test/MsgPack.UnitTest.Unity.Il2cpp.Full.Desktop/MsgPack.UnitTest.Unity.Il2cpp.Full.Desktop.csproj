@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;AOT;NET35;UNITY_WORKAROUND;UNITY</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;AOT;NET35;UNITY_WORKAROUND;UNITY;MP_UNITY_DESKTOP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -25,7 +25,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;AOT;NET35;UNITY_WORKAROUND;UNITY2</DefineConstants>
+    <DefineConstants>TRACE;AOT;NET35;UNITY_WORKAROUND;UNITY;MP_UNITY_DESKTOP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -791,12 +791,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent Condition="'$(OS)' == 'Windows_NT'">RoboCopy $(ProjectDir)$(OutDir) $(ProjectDir)\..\MsgPack.UnitTest.Unity.Il2cpp.Full\Assets\Plugins\Dlls\ *.dll /MIR
-if %25ERRORLEVEL%25 geq 8 exit 1
-exit 0</PostBuildEvent>
-    <PostBuildEvent Condition="'$(OS)' != 'Windows_NT'">rsync -a -r --delete $(ProjectDir)$(OutDir)/*.dll $(ProjectDir)/../MsgPack.UnitTest.Unity.Il2cpp.Full/Assets/Plugins/Dlls/</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

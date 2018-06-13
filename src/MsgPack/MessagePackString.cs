@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -51,7 +51,12 @@ namespace MsgPack
 #endif // !NET35 && !UNITY
 	[DebuggerDisplay( "{DebuggerDisplayString}" )]
 	[DebuggerTypeProxy( typeof( MessagePackStringDebuggerProxy ) )]
-	internal sealed class MessagePackString
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class MessagePackString
 	{
 		// TODO: CLOB support?
 		// marker to indicate this is definitively binary.

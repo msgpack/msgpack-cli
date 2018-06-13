@@ -1,0 +1,7 @@
+<linker>
+  <assembly fullname="System.Runtime.Serialization">
+    <type fullname="System.Runtime.Serialization.DataContractAttribute" preserve="all" />
+    <type fullname="System.Runtime.Serialization.DataMemberAttribute" preserve="all" />
+  </assembly>
+</linker>
+

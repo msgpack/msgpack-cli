@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
+// Copyright (C) 2017-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@
 //    limitations under the License.
 //
 #endregion -- License Terms --
+
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
 
 using System;
 
@@ -187,7 +191,12 @@ namespace MsgPack
 
 #endif // NETSTANDARD1_1 || NETSTANDARD1_3 || SILVERLIGHT
 
-		internal struct Value
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		struct Value
 		{
 			public long Year;
 			public int Month;

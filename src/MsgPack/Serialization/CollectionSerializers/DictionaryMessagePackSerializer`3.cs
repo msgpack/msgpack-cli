@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -83,35 +83,14 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <returns>The count of the <paramref name="dictionary"/>.</returns>
 		protected override int GetCount( TDictionary dictionary )
 		{
-#if !NETSTANDARD2_0
+#if !AOT
 			return dictionary.Count;
-#else // NETSTANDARD2_0
-			if ( SerializerOptions.CanEmit )
-			{
-				return this.GetCountCore( dictionary );
-			}
-			else
-			{
-				return this.GetCountCoreAotSafe( dictionary );
-			}
-#endif // !NETSTANDARD2_0
-		}
-
-#if NETSTANDARD2_0
-
-		private int GetCountCore( TDictionary dictionary )
-		{
-			return dictionary.Count;
-		}
-
-		private int GetCountCoreAotSafe( TDictionary dictionary )
-		{
+#else // !AOT
 			// .constraind call for TDictionary.get_Count/TDictionary.GetEnumerator() causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			return ( dictionary as IDictionary<TKey, TValue> ).Count;
+#endif // !AOT
 		}
-
-#endif // NETSTANDARD2_0
 
 		/// <summary>
 		///		Adds the deserialized item to the collection on <typeparamref name="TDictionary"/> specific manner
@@ -125,36 +104,14 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// </exception>
 		protected override void AddItem( TDictionary dictionary, TKey key, TValue value )
 		{
-#if !NETSTANDARD2_0
+#if !AOT
 			dictionary.Add( key, value );
-#else // !NETSTANDARD2_0
-			if ( SerializerOptions.CanEmit)
-			{
-				this.AddItemCore( dictionary, key, value );
-			}
-			else
-			{
-				this.AddItemCoreAotSafe( dictionary, key, value );
-			}
-#endif // !NETSTANDARD2_0
-		}
-
-#if NETSTANDARD2_0
-
-		private void AddItemCore( TDictionary dictionary, TKey key, TValue value )
-		{
-			dictionary.Add( key, value );
-		}
-
-		private void AddItemCoreAotSafe( TDictionary dictionary, TKey key, TValue value )
-		{
+#else // !AOT
 			// .constraind call for TDictionary.Add causes AOT error.
 			// So use cast and invoke as normal call (it might cause boxing, but most collection should be reference type).
 			( dictionary as IDictionary<TKey, TValue> ).Add( key, value );
+#endif // !AOT
 		}
-
-#endif // NETSTANDARD2_0
-
 	}
 
 #if UNITY

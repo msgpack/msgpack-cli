@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@
 //
 #endregion -- License Terms --
 
+#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
+#define UNITY
+#endif
+
 using System;
 using System.Collections.Generic;
 
@@ -29,11 +33,21 @@ namespace MsgPack
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	[Serializable]
 #endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
-	public sealed class MessagePackObjectEqualityComparer : IEqualityComparer<MessagePackObject>
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	sealed class MessagePackObjectEqualityComparer : IEqualityComparer<MessagePackObject>
 	{
 		private static readonly MessagePackObjectEqualityComparer _instance = new MessagePackObjectEqualityComparer();
 
-		internal static MessagePackObjectEqualityComparer Instance
+#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static MessagePackObjectEqualityComparer Instance
 		{
 			get { return _instance; }
 		}

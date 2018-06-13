@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -36,9 +36,16 @@ namespace MsgPack.Serialization
 		[TestFixtureSetUp]
 		public static void SetupFixture()
 		{
+			MessagePackSerializer.PrepareType<Timestamp>();
 			MessagePackSerializer.PrepareCollectionType<byte>();
 			MessagePackSerializer.PrepareCollectionType<char>();
 			MessagePackSerializer.PrepareCollectionType<int>();
+			MessagePackSerializer.PrepareCollectionType<float>();
+			MessagePackSerializer.PrepareCollectionType<double>();
+			MessagePackSerializer.PrepareCollectionType<short>();
+			MessagePackSerializer.PrepareCollectionType<uint>();
+			MessagePackSerializer.PrepareCollectionType<ulong>();
+			MessagePackSerializer.PrepareCollectionType<sbyte>();
 			MessagePackSerializer.PrepareDictionaryType<string, int>();
 			new ArraySegmentEqualityComparer<byte>().Equals( default( ArraySegment<byte> ), default( ArraySegment<byte> ) );
 			new ArraySegmentEqualityComparer<char>().Equals( default( ArraySegment<char> ), default( ArraySegment<char> ) );
@@ -121,6 +128,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestTypeMetadataExtraction()
 		{
+			VerifyType( typeof( WithMessagePackMember ), new[] { "B", "A" }, new string[ 0 ] );
 			VerifyType( typeof( ComplexTypeWithDataContractWithOrder ), new[] { "Source", "Data", "TimeStamp", "History" }, new[] { "History" } );
 			VerifyType( typeof( ComplexTypeWithOneBaseOrder ), new[] { null, "One", "Two" }, new string[ 0 ] );
 			VerifyType( typeof( DataMemberAttributeNamedPropertyTestTarget ), new[] { "Alias" }, new string[ 0 ] );
@@ -191,6 +199,15 @@ namespace MsgPack.Serialization
 					Assert.That( serializers[ i ], Is.Not.Null, "serializers[{0}]", i );
 				}
 			}
+		}
+
+		public class WithMessagePackMember
+		{
+			[MessagePackMember( 0 )]
+			public string B { get; set; }
+
+			[MessagePackMember( 1 )]
+			public string A { get; set; }
 		}
 	}
 }

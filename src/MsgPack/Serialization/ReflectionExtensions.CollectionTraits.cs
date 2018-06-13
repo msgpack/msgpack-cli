@@ -42,7 +42,7 @@ namespace MsgPack.Serialization
 {
 	partial class ReflectionExtensions
 	{
-		public static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options, bool allowNonCollectionEnumerableTypes )
+		internal static CollectionTraits GetCollectionTraits( this Type source, CollectionTraitOptions options, bool allowNonCollectionEnumerableTypes )
 		{
 #if DEBUG
 			Contract.Assert( !source.GetContainsGenericParameters(), "!source.GetContainsGenericParameters()" );

@@ -289,13 +289,4 @@ namespace MsgPack.Serialization
 			// doesn't know about Items
 		}
 	}
-
-	public class VersioningTestTarget {
-		[MessagePackMember(0)]
-		public Int32 Field1 { get; set; }
-		[MessagePackMember(1)]
-		public Int32 Field2 { get; set; }
-		[MessagePackMember(2)]
-		public String Field3 { get; set; }
-	}
 }

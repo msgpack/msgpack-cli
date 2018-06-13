@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2014-2018 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -48,7 +48,12 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Implements serialization target member extraction logics.
 	/// </summary>
-	internal class SerializationTarget
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	class SerializationTarget
 	{
 		// Type names to avoid user who doesn't embed "message pack assembly's attributes" in their code directly.
 		private static readonly string MessagePackMemberAttributeTypeName = typeof( MessagePackMemberAttribute ).FullName;
@@ -188,7 +193,7 @@ namespace MsgPack.Serialization
 
 			var memberCandidates = getters.Where( entry => CheckTargetEligibility( context, entry.Member ) ).ToArray();
 
-			if ( memberCandidates.Length == 0 )
+			if ( memberCandidates.Length == 0 && !context.CompatibilityOptions.AllowAsymmetricSerializer )
 			{
 				ConstructorKind constructorKind;
 				var deserializationConstructor = FindDeserializationConstructor( context, targetType, out constructorKind );
@@ -221,6 +226,15 @@ namespace MsgPack.Serialization
 					constructor = deserializationConstructor;
 					canDeserialize = null;
 				}
+				else if ( memberCandidates.Length == 0 )
+				{
+#if DEBUG
+					Contract.Assert( context.CompatibilityOptions.AllowAsymmetricSerializer );
+#endif // DEBUG
+					// Absolutely cannot deserialize in this case.
+					canDeserialize = false;
+					constructorKind = ConstructorKind.Ambiguous;
+				}
 				else
 				{
 					constructorKind = ConstructorKind.Default;
@@ -238,7 +252,7 @@ namespace MsgPack.Serialization
 					canDeserialize = true;
 				}
 
-				if ( constructor != null && constructor.GetParameters().Any() )
+				if ( constructor != null && constructor.GetParameters().Any() || context.CompatibilityOptions.AllowAsymmetricSerializer )
 				{
 					// Recalculate members because getter-only/readonly members should be included for constructor deserialization.
 					memberCandidates = getters;
@@ -354,15 +368,28 @@ namespace MsgPack.Serialization
 			Contract.Assert( type != null, "type != null" );
 
 			var members = GetDistinctMembers( type );
-			var filtered = members.Where( item => item.GetCustomAttributesData().Any( a => a.GetAttributeType().FullName == MessagePackMemberAttributeTypeName ) ).ToArray();
+			var filtered = members.Where( item =>
+#if !UNITY
+				item.GetCustomAttributesData().Any( a => a.GetAttributeType().FullName == MessagePackMemberAttributeTypeName )
+#else
+				item.GetCustomAttributes( typeof( MessagePackMemberAttribute ), true ).Any()
+#endif // !UNITY
+			).ToArray();
 
 			if ( filtered.Length > 0 )
 			{
 				return GetAnnotatedMembersWithDuplicationDetection( type, filtered );
 			}
 
-			if ( type.GetCustomAttributesData().Any( attr =>
-				attr.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) )
+			if (
+#if !UNITY
+				type.GetCustomAttributesData().Any( attr =>
+					attr.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute" )
+#else
+				type.GetCustomAttributes( true ).Any( attr =>
+					attr.GetType().FullName == "System.Runtime.Serialization.DataContractAttribute" ) 
+#endif // !UNITY
+			)
 			{
 				return GetSystemRuntimeSerializationCompatibleMembers( members );
 			}
@@ -374,7 +401,11 @@ namespace MsgPack.Serialization
 		{
 			var duplicated =
 				filtered.FirstOrDefault(
+#if !UNITY
 					member => member.GetCustomAttributesData().Any( a => a.GetAttributeType().FullName == MessagePackIgnoreAttributeTypeName )
+#else
+					member => member.GetCustomAttributes( typeof( MessagePackIgnoreAttribute ), true ).Any()
+#endif // !UNITY
 				);
 
 			if ( duplicated != null )
@@ -392,12 +423,72 @@ namespace MsgPack.Serialization
 			return
 				filtered.Select(
 					member =>
-						new SerializingMember(
-							member,
-							new DataMemberContract( member, member.GetCustomAttribute<MessagePackMemberAttribute>() )
-						)
-					);
+					{
+#if !UNITY
+						var attribute = member.GetCustomAttributesData().Single( a => a.GetAttributeType().FullName == MessagePackMemberAttributeTypeName );
+						return
+							new SerializingMember(
+								member,
+								new DataMemberContract(
+									member,
+									( string )GetAttributeProperty( MessagePackMemberAttributeTypeName, attribute, "Name" ),
+#if !SILVERLIGHT
+									( NilImplication )( ( int? )GetAttributeProperty( MessagePackMemberAttributeTypeName, attribute, "NilImplication" ) ).GetValueOrDefault(),
+									( int? )GetAttributeArgument( MessagePackMemberAttributeTypeName, attribute, 0 )
+#else
+									( NilImplication )GetAttributeProperty( MessagePackMemberAttributeTypeName, attribute, "NilImplication" ),
+									( int? )GetAttributeProperty( MessagePackMemberAttributeTypeName, attribute, "Id" )
+#endif // !SILVERLIGHT
+								)
+							);
+#else
+						var attribute = member.GetCustomAttributes( typeof( MessagePackMemberAttribute ), true ).Single() as MessagePackMemberAttribute;
+						return 
+							new SerializingMember(
+								member,
+								new DataMemberContract(
+									member,
+									attribute.Name,
+									attribute.NilImplication,
+									attribute.Id
+								)
+							);
+#endif // !UNITY
+					}
+				);
 		}
+
+#if !UNITY
+#if !SILVERLIGHT
+		private static object GetAttributeArgument( string attributeName, CustomAttributeData attribute, int index )
+		{
+			var arguments = attribute.GetConstructorArguments();
+			if ( arguments.Count < index )
+			{
+				// Use default.
+				return null;
+			}
+
+			return arguments[ index ].Value;
+		}
+#endif // !SILVERLIGHT
+
+#if !SILVERLIGHT
+		private static object GetAttributeProperty( string attributeName, CustomAttributeData attribute, string propertyName )
+#else
+		private static object GetAttributeProperty( string attributeName, Attribute attribute, string propertyName )
+#endif // !SILVERLIGHT
+		{
+			var property = attribute.GetNamedArguments().SingleOrDefault( a => a.GetMemberName() == propertyName );
+			if ( property.GetMemberName() == null )
+			{
+				// Use default.
+				return null;
+			}
+
+			return property.GetTypedValue().Value;
+		}
+#endif // !UNITY
 
 		private static IEnumerable<SerializingMember> GetSystemRuntimeSerializationCompatibleMembers( MemberInfo[] members )
 		{
@@ -408,15 +499,23 @@ namespace MsgPack.Serialization
 						{
 							member = item,
 							data =
+#if !UNITY
 								item.GetCustomAttributesData()
 								.FirstOrDefault(
 									data => data.GetAttributeType().FullName == "System.Runtime.Serialization.DataMemberAttribute"
 								)
+#else
+								item.GetCustomAttributes( true )
+								.FirstOrDefault(
+									data => data.GetType().FullName == "System.Runtime.Serialization.DataMemberAttribute"
+								)
+#endif // !UNITY
 						}
 					).Where( item => item.data != null )
 					.Select(
 						item =>
 						{
+#if !UNITY
 							var name =
 								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Name" )
@@ -425,29 +524,57 @@ namespace MsgPack.Serialization
 							var id =
 								item.data.GetNamedArguments()
 								.Where( arg => arg.GetMemberName() == "Order" )
-#if !UNITY
 								.Select( arg => ( int? )arg.GetTypedValue().Value )
-#else
-								.Select( arg => arg.GetTypedValue().Value )
-#endif
 								.FirstOrDefault();
-#if SILVERLIGHT
 							if ( id == -1 )
 							{
-								// Shim for Silverlight returns -1 because GetNamedArguments() extension method cannot recognize whether the argument was actually specified or not.
 								id = null;
 							}
-#endif // SILVERLIGHT
 
 							return
 								new SerializingMember(
 									item.member,
-#if !UNITY
 									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
-#else
-									new DataMemberContract( item.member, name, NilImplication.MemberDefault, ( int? )id )
-#endif // !UNITY
 								);
+#else
+							var nameProperty = item.data.GetType().GetProperty( "Name" );
+							var orderProperty = item.data.GetType().GetProperty( "Order" );
+							
+							if ( nameProperty == null || !nameProperty.CanRead || nameProperty.GetGetMethod().GetParameters().Length > 0 )
+							{
+								throw new SerializationException(
+									String.Format(
+										CultureInfo.CurrentCulture,
+										"Failed to get Name property from {0} type.",
+										item.data.GetType().AssemblyQualifiedName
+									)
+								);
+							} 
+
+							if( orderProperty == null || !orderProperty.CanRead || orderProperty.GetGetMethod().GetParameters().Length > 0 )
+							{
+								throw new SerializationException(
+									String.Format(
+										CultureInfo.CurrentCulture,
+										"Failed to get Order property from {0} type.",
+										item.data.GetType().AssemblyQualifiedName
+									)
+								);
+							}
+
+							var name = ( string )nameProperty.GetValue( item.data, null );
+							var id = ( int? )orderProperty.GetValue( item.data, null );
+							if ( id == -1 )
+							{
+								id = null;
+							}
+
+							return
+								new SerializingMember(
+									item.member,
+									new DataMemberContract( item.member, name, NilImplication.MemberDefault, id )
+								);							
+#endif // !UNITY
 						}
 					);
 		}
@@ -457,14 +584,31 @@ namespace MsgPack.Serialization
 			return members.Where(
 				member =>
 					member.GetIsPublic()
-					&& !member.GetCustomAttributesData()
+					&& !member
+#if !UNITY
+						.GetCustomAttributesData()
 						.Select( data => data.GetAttributeType().FullName )
+#else
+						.GetCustomAttributes( true )
+						.Select( data => data.GetType().FullName )
+#endif // !UNITY
 						.Any( attr =>
 							attr == "MsgPack.Serialization.MessagePackIgnoreAttribute"
-							|| attr == "System.NonSerializedAttribute"
 							|| attr == "System.Runtime.Serialization.IgnoreDataMemberAttribute"
 						)
+					&& !IsNonSerializedField( member )
 				).Select( member => new SerializingMember( member, new DataMemberContract( member ) ) );
+		}
+
+		private static bool IsNonSerializedField( MemberInfo member )
+		{
+			var asField = member as FieldInfo;
+			if ( asField == null )
+			{
+				return false;
+			}
+
+			return ( asField.Attributes & FieldAttributes.NotSerialized ) != 0;
 		}
 
 		private static ConstructorInfo FindDeserializationConstructor( SerializationContext context, Type targetType, out ConstructorKind constructorKind )
@@ -561,7 +705,19 @@ namespace MsgPack.Serialization
 
 		private static IList<ConstructorInfo> FindExplicitDeserializationConstructors( IEnumerable<ConstructorInfo> construtors )
 		{
-			return construtors.Where( ctor => ctor.GetCustomAttributesData().Any( a => a.GetAttributeType().FullName == MessagePackDeserializationConstructorAttributeTypeName ) ).ToArray();
+			return
+				construtors
+				.Where( ctor =>
+#if !UNITY
+					ctor.GetCustomAttributesData().Any( a =>
+						a.GetAttributeType().FullName
+#else
+					ctor.GetCustomAttributes( true ).Any( a =>
+						a.GetType().FullName
+#endif // !UNITY
+						== MessagePackDeserializationConstructorAttributeTypeName
+					)
+				).ToArray();
 		}
 
 		private static SerializationException NewTypeCannotBeSerializedException( Type targetType )
@@ -815,12 +971,12 @@ namespace MsgPack.Serialization
 		}
 #endif // !NET35
 
-#if !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_CODEGEN
 		public static bool BuiltInSerializerExists( ISerializerGeneratorConfiguration configuration, Type type, CollectionTraits traits )
 		{
 			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.ContainsFor( type );
 		}
-#endif // !SILVERLIGHT && !UNITY && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_CODEGEN
 
 		private sealed class MemberConstructorParameterEqualityComparer : EqualityComparer<KeyValuePair<string, Type>>
 		{

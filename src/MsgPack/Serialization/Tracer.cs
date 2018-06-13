@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -30,7 +30,12 @@ using System.Globalization;
 
 namespace MsgPack.Serialization
 {
-	internal static class Tracer
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static class Tracer
 	{
 		public static readonly TraceSource Emit = new TraceSource( "MsgPack.Serialization.Emit" );
 		public static readonly TraceSource Binding = new TraceSource( "MsgPack.Serialization.Binding" );
@@ -62,7 +67,12 @@ namespace MsgPack.Serialization
 	}
 
 #if NETSTANDARD1_1 || NETSTANDARD1_3 || ( UNITY && !MSGPACK_UNITY_FULL )
-	internal enum TraceEventType
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	enum TraceEventType
 	{
 		Critical = 1,
 		Error = 2,
@@ -71,7 +81,12 @@ namespace MsgPack.Serialization
 		Warning = 4,
 	}
 
-	internal class TraceSource
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	class TraceSource
 	{
 		private readonly string _name;
 

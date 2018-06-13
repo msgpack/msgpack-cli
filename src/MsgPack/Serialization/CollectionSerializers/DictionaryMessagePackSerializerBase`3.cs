@@ -2,7 +2,7 @@
 // 
 // MessagePack for CLI
 // 
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
+// Copyright (C) 2015-2018 FUJIWARA, Yusuke
 // 
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "1", Justification = "Validated by caller in base class" )]
 		protected internal override void PackToCore( Packer packer, TDictionary objectTree )
 		{
-#if ( !UNITY ) || AOT_CHECK
+#if ( !UNITY && !AOT ) || AOT_CHECK
 			packer.PackMapHeader( this.GetCount( objectTree ) );
 			foreach ( var item in objectTree )
 			{
@@ -141,7 +141,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		/// <seealso cref="P:Capabilities"/>
 		protected internal override async Task PackToAsyncCore( Packer packer, TDictionary objectTree, CancellationToken cancellationToken )
 		{
-#if ( !UNITY ) || AOT_CHECK
+#if ( !UNITY && !AOT ) || AOT_CHECK
 			await packer.PackMapHeaderAsync( this.GetCount( objectTree ), cancellationToken ).ConfigureAwait( false );
 			foreach ( var item in objectTree )
 			{
@@ -187,7 +187,7 @@ namespace MsgPack.Serialization.CollectionSerializers
 		///		<typeparamref name="TDictionary"/> is abstract type.
 		/// </exception>
 		/// <remarks>
-		///		This method invokes <see cref="CreateInstance(int)"/>, and then fill deserialized items to resultong collection.
+		///		This method invokes <see cref="CreateInstance(Int32)"/>, and then fill deserialized items to resultong collection.
 		/// </remarks>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods", MessageId = "0", Justification = "Validated by caller in base class" )]
 		protected internal override TDictionary UnpackFromCore( Unpacker unpacker )

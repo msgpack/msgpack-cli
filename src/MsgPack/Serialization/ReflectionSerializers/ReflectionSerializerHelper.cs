@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2014-2016 FUJIWARA, Yusuke and contributors
+// Copyright (C) 2014-2018 FUJIWARA, Yusuke and contributors
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -46,7 +46,12 @@ namespace MsgPack.Serialization.ReflectionSerializers
 	/// <summary>
 	///		Helper static methods for reflection serializers.
 	/// </summary>
-	internal static class ReflectionSerializerHelper
+#if UNITY && DEBUG
+	public
+#else
+	internal
+#endif
+	static class ReflectionSerializerHelper
 	{
 		internal static readonly PropertyInfo DictionaryEntryKeyProperty = typeof( DictionaryEntry ).GetProperty( "Key" );
 		internal static readonly PropertyInfo DictionaryEntryValueProperty = typeof( DictionaryEntry ).GetProperty( "Value" );

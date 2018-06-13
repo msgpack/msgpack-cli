@@ -636,8 +636,38 @@ namespace MsgPack.Serialization
 		}
 	}
 
-// ReSharper restore MemberHidesStaticFromOuterClass
-// ReSharper restore NotAccessedField.Local
-// ReSharper restore UnusedMember.Local
+	public class Outer
+	{
+		public string A = "A";
+		public Inner Inner = new Inner();
+		public string O = "O";
+	}
+
+	public class Inner
+	{
+		public string A = null;
+		public byte[] Bytes = null;
+		public string C = "C";
+	}
+
+	public class WithReadOnlyProperty
+	{
+		public int Number { get; set; }
+		public string AsString { get { return this.Number.ToString(); } }
+	}
+
+	public class VersioningTestTarget
+	{
+		[MessagePackMember( 0 )]
+		public Int32 Field1 { get; set; }
+		[MessagePackMember( 1 )]
+		public Int32 Field2 { get; set; }
+		[MessagePackMember( 2 )]
+		public String Field3 { get; set; }
+	}
+
+	// ReSharper restore MemberHidesStaticFromOuterClass
+	// ReSharper restore NotAccessedField.Local
+	// ReSharper restore UnusedMember.Local
 #pragma warning restore 0414
 }

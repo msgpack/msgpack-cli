@@ -745,3 +745,10 @@ Release 1.0.0-rc1 2017-12-17
   * Fix MessagePackObject.UnderlyingType reports wrong type for ext types. Part of #269.
     This bug also caused misleading error message for incompatible type conversion.
   * Fix exceptions thrown by MessagePackObject.AsBinary()/AsString() reports internal type name. Part of #269.
+
+Release 1.0.0
+
+  BUG FIXES
+  * [NonSerialized] attribute does not effect in Mono based platform including Unity.
+  * Fix map keys order emitted by asymmetric (serialization only) serializer are inconsistent across platform.
+  * Fix Unity build does not honor serialization related attributes correctly.

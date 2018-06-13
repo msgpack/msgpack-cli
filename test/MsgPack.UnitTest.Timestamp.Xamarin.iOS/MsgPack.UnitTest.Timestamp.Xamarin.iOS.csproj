@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\Xamarin.iOS.Common.props" />
+  <PropertyGroup>
+    <ProjectGuid>{afd483ba-392d-437b-8d0c-d053bd15e2ea}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AssemblyName>MsgPackUnitTestTimestampXamariniOS</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest\AssertEx.cs">
+      <Link>AssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\CollectionAssertEx.cs">
+      <Link>CollectionAssertEx.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\LegacyJapaneseCultureInfo.cs">
+      <Link>LegacyJapaneseCultureInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\Serialization\TimestampSerializationTest.cs">
+      <Link>Serialization\TimestampSerializationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\SplittingStream.cs">
+      <Link>SplittingStream.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\StreamExtensions.cs">
+      <Link>StreamExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
+      <Link>TestRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Calculation.cs">
+      <Link>TimestampTest.Calculation.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Comparison.cs">
+      <Link>TimestampTest.Comparison.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Conversion.cs">
+      <Link>TimestampTest.Conversion.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.cs">
+      <Link>TimestampTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.EncodeDecode.cs">
+      <Link>TimestampTest.EncodeDecode.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Parse.cs">
+      <Link>TimestampTest.Parse.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.Properties.cs">
+      <Link>TimestampTest.Properties.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\TimestampTest.ToString.cs">
+      <Link>TimestampTest.ToString.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>

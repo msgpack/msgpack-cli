@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <OutputType>Exe</OutputType>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\src\MsgPack.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="..\MsgPack.Common.props" />
+  <PropertyGroup>
+    <DocumentationFile></DocumentationFile>
+    <DefineConstants>$(DefineConstants);AOT;XAMARIN;NUNITLITE;NETSTANDARD2_0;FEATURE_TAP;FEATURE_CONCURRENT;FEATURE_POINTER_CONVERSION;FEATURE_MEMCOPY</DefineConstants>
+    <IpaPackageName></IpaPackageName>
+    <MtouchArch></MtouchArch>
+    <MtouchSdkVersion>9.3</MtouchSdkVersion>
+    <MtouchDebug>false</MtouchDebug>
+    <MtouchProfiling>False</MtouchProfiling>
+    <MtouchFastDev>False</MtouchFastDev>
+    <MtouchEnableGenericValueTypeSharing>True</MtouchEnableGenericValueTypeSharing>
+    <MtouchUseLlvm>False</MtouchUseLlvm>
+    <MtouchUseThumb>False</MtouchUseThumb>
+    <MtouchUseSGen>False</MtouchUseSGen>
+    <MtouchUseRefCounting>False</MtouchUseRefCounting>
+    <MtouchOptimizePNGs>True</MtouchOptimizePNGs>
+    <MtouchExtraArgs>--xml=${ProjectDir}/linker.xml</MtouchExtraArgs>
+    <MtouchEnableBitcode>False</MtouchEnableBitcode>
+    <OptimizePNGs>false</OptimizePNGs>
+    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchFloat32>False</MtouchFloat32>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'iPhoneSimulator' ">
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n></MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'iPhone' ">
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>Full</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <BuildIpa>true</BuildIpa>
+    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="MonoTouch.NUnitLite" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\MsgPack.snk">
+      <Link>MsgPack.snk</Link>
+    </None>
+    <None Include="..\MsgPack.UnitTest\cases.mpac">
+      <Link>cases.mpac</Link>
+    </None>
+    <None Include="..\MsgPack.UnitTest\cases_compact.mpac">
+      <Link>cases_compact.mpac</Link>
+    </None>
+    <None Include="Entitlements.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MsgPack.UnitTest.Xamarin.iOS\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Xamarin.iOS\AppDelegate.cs">
+      <Link>AppDelegate.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest.Xamarin.iOS\Main.cs">
+      <Link>Main.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="..\MsgPack.UnitTest\cases.json">
+      <Link>cases.json</Link>
+    </BundleResource>
+    <BundleResource Include="..\MsgPack.UnitTest.Xamarin.iOS\Resources\Default-568h%402x.png">
+      <Link>Resources\Default-568h%402x.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\MsgPack.UnitTest.Xamarin.iOS\Resources\Default.png">
+      <Link>Resources\Default.png</Link>
+    </BundleResource>
+    <BundleResource Include="..\MsgPack.UnitTest.Xamarin.iOS\Resources\Default%402x.png">
+      <Link>Resources\Default%402x.png</Link>
+    </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="linker.xml">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MsgPack\MsgPack.csproj">
+      <Project>{5bcec32e-990e-4de5-945f-bd27326a7418}</Project>
+      <Name>MsgPack</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

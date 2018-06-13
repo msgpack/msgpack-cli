@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -35,9 +35,9 @@ namespace MsgPack.Serialization.AbstractSerializers
 	/// <typeparam name="TContext">The type of the context which holds global information for generating serializer.</typeparam>
 	/// <typeparam name="TConstruct">The type of the construct which abstracts code constructs.</typeparam>
 	internal abstract partial class SerializerBuilder<TContext, TConstruct> :
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_CODEGEN
 		ISerializerCodeGenerator,
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_CODEGEN
 		ISerializerBuilder
 		where TContext : SerializerGenerationContext<TConstruct>
 		where TConstruct : class, ICodeConstruct
@@ -319,7 +319,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 		);
 
 
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_CODEGEN
 		/// <summary>
 		///		Builds the serializer code using specified code generation context.
 		/// </summary>
@@ -361,7 +361,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 			throw new NotSupportedException();
 		}
 
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_CODEGEN
 
 		internal class SerializerBuilderNilImplicationHandler :
 			NilImplicationHandler<TConstruct, TConstruct, SerializerBuilderOnPackingParameter, SerializerBuilderOnUnpacedParameter>

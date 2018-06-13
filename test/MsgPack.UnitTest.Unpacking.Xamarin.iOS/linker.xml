@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+  <assembly fullname="mscorlib">
+    <type fullname="System.Tuple`1" />
+    <type fullname="System.Tuple`2" />
+    <type fullname="System.Tuple`3" />
+    <type fullname="System.Tuple`4" />
+    <type fullname="System.Tuple`5" />
+    <type fullname="System.Tuple`6" />
+    <type fullname="System.Tuple`7" />
+    <type fullname="System.Tuple`8" />
+  </assembly>
+  <assembly fullname="MonoTouch.NUnitLite" />
+  <assembly fullname="MsgPackUnitTestUnpackingXamariniOS" />
+</linker>
