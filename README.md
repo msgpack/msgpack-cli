@@ -1,5 +1,10 @@
 # MessagePack for CLI
 
+[![Build status release](https://ci.appveyor.com/api/projects/status/5ln7u7efwjepj6o8?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-x2p85)
+[![Build status debug](https://ci.appveyor.com/api/projects/status/dlc0v4rrolwj0t2t?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli)
+[![Build status debug net35](https://ci.appveyor.com/api/projects/status/cjp8phlnbwj7gkj9?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-3jme9)
+[![Build status debug net35 CodeDOM](https://ci.appveyor.com/api/projects/status/1mw78wkxx50jvab1?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-rhnh0)
+
 ## What is it?
 
 This is MessagePack serialization/deserialization for CLI (Common Language Infrastructure) implementations such as .NET Framework, Silverlight, Mono (including Moonlight.)
