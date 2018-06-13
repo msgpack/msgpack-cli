@@ -411,6 +411,15 @@ namespace MsgPack
 
 		public static string GetMemberName( this CustomAttributeNamedArgument source )
 		{
+			// This is hack to check null because .NET Standard 1.1 does not expose CustomAttributeNamedArgument.MemberInfo
+			// but it still throws NullReferenceException when its private MemberInfo type field is null.
+			// This is caused by default instance of CustomAttributeNamedArgument, so it also should have default CustomAttributeTypedArgument
+			// which has null ArgumentType.
+			if ( source.TypedValue.ArgumentType == null )
+			{
+				return null;
+			}
+
 			return source.MemberName;
 		}
 #else
