@@ -126,9 +126,38 @@ foreach ( var type in new [] { "DateTime", "DateTimeOffset" } )
 			Assert.That( target.Microsecond, Is.EqualTo( ticks / 10 ), "Microsecond" );
 			Assert.That( target.Nanosecond, Is.EqualTo( ( ticks % 10 ) * 100 ), "Nanosecond" );
 		}
+
 <#
 }
 #>
+#if !NET35 && !SILVERLIGHT && !NETSTANDARD1_1
+
+<#
+	WriteConversionTest( "FromDateTime_UnixEpoc_OK",					"DateTimeOffset.FromUnixTimeMilliseconds( 0 ).DateTime",	"Timestamp.FromDateTime( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTime_UnixEpocMinus1Millisecond_OK",	"DateTimeOffset.FromUnixTimeMilliseconds( -1 ).DateTime",	"Timestamp.FromDateTime( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTime_UnixEpocPlus1Millisecond_OK",	"DateTimeOffset.FromUnixTimeMilliseconds( 1 ).DateTime",	"Timestamp.FromDateTime( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTime_UnixEpocMinusSecond_OK",			"DateTimeOffset.FromUnixTimeSeconds( -1 ).DateTime",	"Timestamp.FromDateTime( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTime_UnixEpocPlus1Second_OK",			"DateTimeOffset.FromUnixTimeSeconds( 1 ).DateTime",	"Timestamp.FromDateTime( {0} )",	null,	null );
+
+	WriteConversionTest( "ToDateTime_UnixEpoc_OK",						"default( Timestamp )",											"{0}.ToDateTime()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTime_UnixEpocMinus1Millisecond_OK",		"default( Timestamp ).Add( TimeSpan.FromMilliseconds( -1 ) )",	"{0}.ToDateTime()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTime_UnixEpocPlus1Millisecond_OK",		"default( Timestamp ).Add( TimeSpan.FromMilliseconds( 1 ) )",	"{0}.ToDateTime()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTime_UnixEpocMinus1Second_OK",			"default( Timestamp ).Add( TimeSpan.FromSeconds( -1 ) )",	"{0}.ToDateTime()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTime_UnixEpocPlus1Second_OK",			"default( Timestamp ).Add( TimeSpan.FromSeconds( 1 ) )",	"{0}.ToDateTime()",	null,	"AssertUtc( {0} )" );
+
+	WriteConversionTest( "FromDateTimeOffset_UnixEpoc_OK",					"DateTimeOffset.FromUnixTimeMilliseconds( 0 )",		"Timestamp.FromDateTimeOffset( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTimeOffset_UnixEpocMinus1Millisecond_OK",	"DateTimeOffset.FromUnixTimeMilliseconds( -1 )",	"Timestamp.FromDateTimeOffset( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTimeOffset_UnixEpocPlus1Millisecond_OK",	"DateTimeOffset.FromUnixTimeMilliseconds( 1 )",		"Timestamp.FromDateTimeOffset( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTimeOffset_UnixEpocMinus1Second_OK",		"DateTimeOffset.FromUnixTimeSeconds( -1 )",	"Timestamp.FromDateTimeOffset( {0} )",	null,	null );
+	WriteConversionTest( "FromDateTimeOffset_UnixEpocPlus1Second_OK",		"DateTimeOffset.FromUnixTimeSeconds( 1 )",		"Timestamp.FromDateTimeOffset( {0} )",	null,	null );
+
+	WriteConversionTest( "ToDateTimeOffset_UnixEpoc_OK",						"default( Timestamp )",											"{0}.ToDateTimeOffset()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTimeOffset_UnixEpocMinus1Millisecond_OK",		"default( Timestamp ).Add( TimeSpan.FromMilliseconds( -1 ) )",	"{0}.ToDateTimeOffset()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTimeOffset_UnixEpocPlus1Millisecond_OK",		"default( Timestamp ).Add( TimeSpan.FromMilliseconds( 1 ) )",	"{0}.ToDateTimeOffset()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTimeOffset_UnixEpocMinus1Second_OK",			"default( Timestamp ).Add( TimeSpan.FromSeconds( -1 ) )",	"{0}.ToDateTimeOffset()",	null,	"AssertUtc( {0} )" );
+	WriteConversionTest( "ToDateTimeOffset_UnixEpocPlus1Second_OK",				"default( Timestamp ).Add( TimeSpan.FromSeconds( 1 ) )",	"{0}.ToDateTimeOffset()",	null,	"AssertUtc( {0} )" );
+#>
+#endif // NET35 && !SILVERLIGHT && !NETSTANDARD1_1
 	}
 }
 <#+
