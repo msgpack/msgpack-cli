@@ -133,6 +133,14 @@ namespace MsgPack
 			long remaining;
 			unixEpocSeconds = DivRem( ticks, SecondsToTicks, out remaining );
 			nanoSeconds = unchecked( ( int )remaining ) * 100;
+			if ( nanoSeconds < 0 )
+			{
+				// In this case, we must adjust these values
+				// from "negative nanosec from nearest larger negative integer"
+				// to "positive nanosec from nearest smaller nagative integer".
+				unixEpocSeconds -= 1;
+				nanoSeconds = ( MaxNanoSeconds + 1 ) + nanoSeconds;
+			}
 		}
 
 		/// <summary>
