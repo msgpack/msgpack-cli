@@ -753,3 +753,8 @@ Release 1.0.0 2018-6-14
   * Fix map keys order emitted by asymmetric (serialization only) serializer are inconsistent across platform.
   * Fix Unity build does not honor serialization related attributes correctly.
   * Fix internal inconsitency between serialization related attributes detection and their parameter retrieval.
+
+Release 1.0.1 2018-09-09
+
+  BUG FIXES
+  * Fix conversion from DateTime[Offset] to Timestamp failure for before Unix epoc. #296
