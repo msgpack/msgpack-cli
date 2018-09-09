@@ -478,14 +478,26 @@ namespace MsgPack.Serialization
 		}
 
 		/// <summary>
-		///		Configures <see cref="Default"/> as new classic <see cref="SerializationContext"/> instance.
+		///		Configures <see cref="Default"/> as new classic <see cref="SerializationContext"/> instance as compatible for ver 0.5.
 		/// </summary>
 		/// <returns>The previously set context as <see cref="Default"/>.</returns>
 		/// <seealso cref="CreateClassicContext()"/>
+		[Obsolete( "Use ConfigureClassic(SerializationCompatibilityLevel) instead." )]
 		public static SerializationContext ConfigureClassic()
 		{
+			return ConfigureClassic( SerializationCompatibilityLevel.Version0_5 );
+		}
+
+		/// <summary>
+		///		Configures <see cref="Default"/> as new classic <see cref="SerializationContext"/> instance as compatible for sepcified version.
+		/// </summary>
+		/// <param name="compatibilityLevel">A <see cref="SerializationCompatibilityLevel"/> to specify compatibility level.</param>
+		/// <returns>The previously set context as <see cref="Default"/>.</returns>
+		/// <seealso cref="CreateClassicContext(SerializationCompatibilityLevel)"/>
+		public static SerializationContext ConfigureClassic(SerializationCompatibilityLevel compatibilityLevel)
+		{
 #if !UNITY
-			return Interlocked.Exchange( ref _default, CreateClassicContext() );
+			return Interlocked.Exchange( ref _default, CreateClassicContext( compatibilityLevel) );
 #else
 			lock ( DefaultContextSyncRoot )
 			{
@@ -502,34 +514,93 @@ namespace MsgPack.Serialization
 		/// <returns>
 		///		A new <see cref="SerializationContext"/> which is configured as same as 0.5.
 		/// </returns>
+		[Obsolete( "Use CreateClassicContext(SerializationCompatibilityLevel) instead." )]
+		public static SerializationContext CreateClassicContext()
+		{
+			return CreateClassicContext( SerializationCompatibilityLevel.Version0_5 );
+		}
+
+		/// <summary>
+		///		Creates a new <see cref="SerializationContext"/> which is configured as compatible for the specified version.
+		/// </summary>
+		/// <param name="compatibilityLevel">A <see cref="SerializationCompatibilityLevel"/> to specify compatibility level.</param>
+		/// <returns>
+		///		A new <see cref="SerializationContext"/> which is configured as compatible for the specified version.
+		/// </returns>
 		/// <remarks>
-		///		There are breaking changes of <see cref="SerializationContext"/> properties to improve API usability and to prevent accidental failure.
-		///		This method returns a <see cref="SerializationContext"/> which configured as classic style settings as follows:
+		///		<para>
+		///			There are breaking changes of <see cref="SerializationContext"/> properties to improve API usability and to prevent accidental failure.
+		///			This method returns a <see cref="SerializationContext"/> which configured as classic style settings as follows:
+		///		</para>
 		///		<list type="table">
 		///			<listheader>
 		///				<term></term>
-		///				<description>Default (as of 0.6)</description>
-		///				<description>Classic (before 0.6)</description>
+		///				<description>Latest (as of 0.6)</description>
+		///				<description>Version0_9 (as of 0.6)</description>
+		///				<description>Version0_5 (formally, "classic", before 0.6)</description>
 		///			</listheader>
 		///			<item>
-		///				<term>Packed object members order (if members are not marked with <see cref="MessagePackMemberAttribute"/>  nor <c>System.Runtime.Serialization.DataMemberAttribute</c> and serializer uses <see cref="F:SerializationMethod.Array"/>)</term>
-		///				<description>As declared (metadata table order)</description>
-		///				<description>As lexicographical</description>
-		///			</item>
-		///			<item>
-		///				<term><see cref="DateTime"/> value</term>
+		///				<term><see cref="DateTime"/> and <see cref="DateTimeOffset"/> value</term>
+		///				<description><see cref="Timestamp"/> value.</description>
 		///				<description>Native representation (100-nano ticks, preserving <see cref="DateTimeKind"/>.)</description>
 		///				<description>UTC, milliseconds Unix epoc.</description>
 		///			</item>
+		///			<item>
+		///				<term>Usage of <c>ext</c> types</term>
+		///				<description>Allowed</description>
+		///				<description>Allowed</description>
+		///				<description>Prohibited</description>
+		///			</item>
+		///			<item>
+		///				<term>Binary (such as <c>Byte[]</c>) representation</term>
+		///				<description>Bin types</description>
+		///				<description>Bin types</description>
+		///				<description>Raw types</description>
+		///			</item>
+		///			<item>
+		///				<term>Strings which lengthes are between 17 to 255</term>
+		///				<description>Str8 type</description>
+		///				<description>Str8 types</description>
+		///				<description>Raw16 type</description>
+		///			</item>
 		///		</list>
+		///		<para>
+		///			In short, <see cref="SerializationCompatibilityLevel.Version0_5"/> prohibits deserialization error in legacy implementation
+		///			which do not recognize ext types, str8 type, and/or bin types.
+		///			<see cref="SerializationCompatibilityLevel.Version0_9"/> prohibits only <see cref="Timestamp"/> serialization for datetime
+		///			to keep compatibility for 0.9.x instead of maximize datetime serialization for modern implementations which uses msgpack timestamp type,
+		///			which is composite ext type, nano-second precision Unix epoc time.
+		///		</para>
 		/// </remarks>
-		public static SerializationContext CreateClassicContext()
+		public static SerializationContext CreateClassicContext( SerializationCompatibilityLevel compatibilityLevel )
 		{
-			return
-				new SerializationContext( PackerCompatibilityOptions.Classic )
+			switch ( compatibilityLevel )
+			{
+				case SerializationCompatibilityLevel.Version0_5:
 				{
-					DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc
-				};
+					return
+						new SerializationContext( PackerCompatibilityOptions.Classic )
+						{
+							DefaultDateTimeConversionMethod = DateTimeConversionMethod.UnixEpoc
+						};
+				}
+				case SerializationCompatibilityLevel.Version0_9:
+				{
+					return
+						new SerializationContext( PackerCompatibilityOptions.None )
+						{
+							DefaultDateTimeConversionMethod = DateTimeConversionMethod.Native
+						};
+				}
+				case SerializationCompatibilityLevel.Latest:
+				{
+					return new SerializationContext( PackerCompatibilityOptions.None );
+				}
+				default:
+				{
+					throw new ArgumentOutOfRangeException( "Unknown SerializationCompatibilityLevel value." );
+				}
+			}
 		}
 
 		/// <summary>

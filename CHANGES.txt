@@ -761,5 +761,9 @@ Release 1.0.1 2018-09-09
 
 Release 1.1
 
+  BUG FIXES
+  * Fix conversion from DateTime[Offset] to Timestamp failure for before Unix epoc. #296 (port from 1.0.x branch)
+
   NEW FEATURE
   * Allow programatically ignoring arbitary members via BindingOptions. Thank you @ShrenikOne #282
+  * To prevent accidental Timestamp serialization in existing code, SerializationContext.ConfigureClassic(SerializationCompatibilityLevel) and SerializationContext.CreateClassicContext(SerializationCompatibilityLevel) are added. #296
