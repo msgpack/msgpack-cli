@@ -681,6 +681,9 @@
     <Compile Include="..\MsgPack\Serialization\ResolveSerializerEventArgs.cs">
       <Link>Serialization\ResolveSerializerEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityLevel.cs">
+      <Link>Serialization\SerializationCompatibilityLevel.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityOptions.cs">
       <Link>Serialization\SerializationCompatibilityOptions.cs</Link>
     </Compile>
