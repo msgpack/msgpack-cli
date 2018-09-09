@@ -136,6 +136,9 @@
     <Compile Include="..\MsgPack.UnitTest\MessagePackExtendedTypeObjectTest.cs">
       <Link>MessagePackExtendedTypeObjectTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackMemberSkipTest.cs">
+      <Link>MessagePackMemberSkipTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectDictionaryTest.cs">
       <Link>MessagePackObjectDictionaryTest.cs</Link>
     </Compile>

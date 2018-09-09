@@ -58,6 +58,9 @@
     <Compile Include="..\MsgPack.UnitTest\MessagePackExtendedTypeObjectTest.cs">
       <Link>MessagePackExtendedTypeObjectTest.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackMemberSkipTest.cs">
+      <Link>MessagePackMemberSkipTest.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectDictionaryTest.cs">
       <Link>MessagePackObjectDictionaryTest.cs</Link>
     </Compile>
@@ -263,7 +266,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Icon.png" />
-    <AndroidResource Include="Resources\values\Strings.xml" >
+    <AndroidResource Include="Resources\values\Strings.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
