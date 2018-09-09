@@ -158,7 +158,7 @@ if ( $buildConfig -eq 'Release' )
 {
 	Write-Host "Build NuGet packages..."
 
-	& $msbuild ../src/MsgPack/MsgPack.csproj /t:pack /v:minimal /p:Configuration=$buildConfig /p:IncludeSource=true /p:NuspecProperties=version=$env:PackageVersion
+	& $msbuild ../src/MsgPack/MsgPack.csproj /t:pack /v:minimal /p:Configuration=$buildConfig /p:IncludeSource=true /p:IncludeSymbols=true /p:NuspecProperties=version=$env:PackageVersion
 
 	Move-Item ../bin/*.nupkg ../dist/
 	Copy-Item ../bin/* ./MsgPack-CLI/ -Recurse -Exclude @("*.vshost.*")
