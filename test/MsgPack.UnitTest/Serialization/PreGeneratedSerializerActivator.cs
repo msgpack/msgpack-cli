@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -99,6 +99,28 @@ namespace MsgPack.Serialization
 		public static SerializationContext CreateContext( SerializationMethod method, PackerCompatibilityOptions compatibilityOptions )
 		{
 			var context = new SerializationContext( compatibilityOptions ) { SerializationMethod = method };
+
+			foreach ( var entry in _serializers )
+			{
+				context.Serializers.Register( entry.Key, entry.Value, null, null, SerializerRegistrationOptions.None );
+			}
+
+#if !AOT
+			context.SerializerOptions.DisableRuntimeCodeGeneration = true;
+#endif // !AOT
+			return context;
+		}
+
+		/// <summary>
+		///		Creates new <see cref="SerializationContext"/> for generation based testing.
+		/// </summary>
+		/// <param name="method"><see cref="SerializationMethod"/>.</param>
+		/// <param name="compatibilityLevel"><see cref="SerializationCompatibilityLevel"/> for built-in serializers.</param>
+		/// <returns>A new <see cref="SerializationContext"/> for generation based testing.</returns>
+		public static SerializationContext CreateContext( SerializationMethod method, SerializationCompatibilityLevel compatibilityLevel )
+		{
+			var context = SerializationContext.CreateClassicContext( compatibilityLevel );
+			context.SerializationMethod = method;
 
 			foreach ( var entry in _serializers )
 			{

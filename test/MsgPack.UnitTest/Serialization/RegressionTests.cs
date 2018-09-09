@@ -83,7 +83,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestIssue73()
 		{
-			var original = SerializationContext.ConfigureClassic();
+			var original = SerializationContext.ConfigureClassic( SerializationCompatibilityLevel.Version0_5 );
 			try
 			{
 				var value =

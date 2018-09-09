@@ -2,7 +2,7 @@
 //
 // MessagePack for CLI
 //
-// Copyright (C) 2010-2017 FUJIWARA, Yusuke
+// Copyright (C) 2010-2018 FUJIWARA, Yusuke
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -213,11 +213,12 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestCreateClassicContext_Version0_5_Compatible()
+		public void TestCreateClassicContext_Version0_5_Version0_5_Compatible()
 		{
-			var context = SerializationContext.CreateClassicContext();
+			var context = SerializationContext.CreateClassicContext( SerializationCompatibilityLevel.Version0_5 );
 			Assert.That( context, Is.Not.Null );
 			Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
+			Assert.That( context.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.Classic ) );
 			Assert.That( context.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
 			Assert.That( context.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
@@ -226,27 +227,29 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestConfigureClassic_DefaultIsReplaced()
+		public void TestConfigureClassic_Version0_5_DefaultIsReplaced()
 		{
 			var previous = SerializationContext.Default;
 			try
 			{
-				var result = SerializationContext.ConfigureClassic();
+				var result = SerializationContext.ConfigureClassic( SerializationCompatibilityLevel.Version0_5 );
 
 				// result is old.
 				Assert.That( result, Is.SameAs( previous ) );
 				// result is default settings.
 				Assert.That( result, Is.Not.Null );
 				Assert.That( result.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
+				Assert.That( result.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.None ) );
 				Assert.That( result.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
 				Assert.That( result.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
 #endif // !AOT && !UNITY && !SILVERLIGHT
 				Assert.That( result.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
 
-				// default is now classic
+				// default is now classic 0.5
 				Assert.That( SerializationContext.Default, Is.Not.Null );
 				Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.UnixEpoc ) );
+				Assert.That( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.Classic ) );
 				Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
 				Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
@@ -260,6 +263,66 @@ namespace MsgPack.Serialization
 
 			// Verify restore
 			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
+			Assert.That( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.None ) );
+			Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !AOT && !UNITY && !SILVERLIGHT
+			Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !AOT && !UNITY && !SILVERLIGHT
+			Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+		}
+
+		[Test]
+		public void TestCreateClassicContext_Version0_9_Version0_9_Compatible()
+		{
+			var context = SerializationContext.CreateClassicContext( SerializationCompatibilityLevel.Version0_9 );
+			Assert.That( context, Is.Not.Null );
+			Assert.That( context.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+			Assert.That( context.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.None ) );
+			Assert.That( context.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !AOT && !UNITY && !SILVERLIGHT
+			Assert.That( context.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !AOT && !UNITY && !SILVERLIGHT
+			Assert.That( context.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+		}
+
+		[Test]
+		public void TestConfigureClassic_Version0_9_DefaultIsReplaced()
+		{
+			var previous = SerializationContext.Default;
+			try
+			{
+				var result = SerializationContext.ConfigureClassic( SerializationCompatibilityLevel.Version0_9 );
+
+				// result is old.
+				Assert.That( result, Is.SameAs( previous ) );
+				// result is default settings.
+				Assert.That( result, Is.Not.Null );
+				Assert.That( result.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
+				Assert.That( result.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.None ) );
+				Assert.That( result.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !AOT && !UNITY && !SILVERLIGHT
+				Assert.That( result.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !AOT && !UNITY && !SILVERLIGHT
+				Assert.That( result.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+
+				// default is now classic 0.9
+				Assert.That( SerializationContext.Default, Is.Not.Null );
+				Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Native ) );
+				Assert.That( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.None ) );
+				Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
+#if !AOT && !UNITY && !SILVERLIGHT
+				Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
+#endif // !AOT && !UNITY && !SILVERLIGHT
+				Assert.That( SerializationContext.Default.SerializationMethod, Is.EqualTo( SerializationMethod.Array ) );
+			}
+			finally
+			{
+				SerializationContext.Default = previous;
+			}
+
+			// Verify restore
+			Assert.That( SerializationContext.Default.DefaultDateTimeConversionMethod, Is.EqualTo( DateTimeConversionMethod.Timestamp ) );
+			Assert.That( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions, Is.EqualTo( PackerCompatibilityOptions.None ) );
 			Assert.That( SerializationContext.Default.EnumSerializationOptions.SerializationMethod, Is.EqualTo( EnumSerializationMethod.ByName ) );
 #if !AOT && !UNITY && !SILVERLIGHT
 			Assert.That( SerializationContext.Default.SerializerOptions.GeneratorOption, Is.EqualTo( SerializationMethodGeneratorOption.Fast ) );
@@ -289,7 +352,7 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext();
 			using ( var buffer = new MemoryStream() )
 			{
-				var serializer = context.GetSerializer<IDictionary<String, String>>();
+				var serializer = context.GetSerializer<IDictionary<string, string>>();
 				var dic = new Dictionary<string, string> { { "A", "A" } };
 				serializer.Pack( buffer, dic );
 				buffer.Position = 0;
@@ -307,7 +370,7 @@ namespace MsgPack.Serialization
 			var context = new SerializationContext();
 			using ( var buffer = new MemoryStream() )
 			{
-				var serializer = context.GetSerializer<IList<String>>();
+				var serializer = context.GetSerializer<IList<string>>();
 				var list = new List<string> { "A" };
 				serializer.Pack( buffer, list );
 				buffer.Position = 0;
@@ -619,7 +682,7 @@ namespace MsgPack.Serialization
 		{
 		}
 
-		private sealed class StringKeyDictionary<T> : Dictionary<String, T>
+		private sealed class StringKeyDictionary<T> : Dictionary<string, T>
 		{
 		}
 
