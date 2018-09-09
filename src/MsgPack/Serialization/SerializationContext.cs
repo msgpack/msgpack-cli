@@ -241,13 +241,13 @@ namespace MsgPack.Serialization
 				{
 					case SerializationMethod.Array:
 					case SerializationMethod.Map:
-						{
-							break;
-						}
+					{
+						break;
+					}
 					default:
-						{
-							throw new ArgumentOutOfRangeException( "value" );
-						}
+					{
+						throw new ArgumentOutOfRangeException( "value" );
+					}
 				}
 
 				Contract.EndContractBlock();
@@ -356,13 +356,13 @@ namespace MsgPack.Serialization
 					case DateTimeConversionMethod.Native:
 					case DateTimeConversionMethod.UnixEpoc:
 					case DateTimeConversionMethod.Timestamp:
-						{
-							break;
-						}
+					{
+						break;
+					}
 					default:
-						{
-							throw new ArgumentOutOfRangeException( "value" );
-						}
+					{
+						throw new ArgumentOutOfRangeException( "value" );
+					}
 				}
 
 				Contract.EndContractBlock();

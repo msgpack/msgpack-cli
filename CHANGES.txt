@@ -758,3 +758,8 @@ Release 1.0.1 2018-09-09
 
   BUG FIXES
   * Fix conversion from DateTime[Offset] to Timestamp failure for before Unix epoc. #296
+
+Release 1.1
+
+  NEW FEATURE
+  * Allow programatically ignoring arbitary members via BindingOptions. Thank you @ShrenikOne #282

@@ -21,7 +21,6 @@
 //
 #endregion -- License Terms --
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,9 +33,9 @@ namespace MsgPack.Serialization
 	public class BindingOptions
 	{
 		/// <summary>
-		/// Private mapping of types & their member skip list, which needs to ignore as part of serialization.
+		/// Private mapping of types &amp; their member skip list, which needs to ignore as part of serialization.
 		/// </summary>
-		private readonly IDictionary<Type, IEnumerable<string>> typeIgnoringMembersMap = new Dictionary<Type, IEnumerable<string>>();
+		private readonly IDictionary<Type, IEnumerable<string>> _typeIgnoringMembersMap = new Dictionary<Type, IEnumerable<string>>();
 
 		/// <summary>
 		/// Sets the member skip list for a specific target type.
@@ -45,15 +44,15 @@ namespace MsgPack.Serialization
 		/// <param name="memberSkipList">The member skip list.</param>
 		public void SetIgnoringMembers( Type targetType, IEnumerable<string> memberSkipList )
 		{
-			lock ( this.typeIgnoringMembersMap )
+			lock ( this._typeIgnoringMembersMap )
 			{
-				if ( this.typeIgnoringMembersMap.ContainsKey( targetType ) )
+				if ( this._typeIgnoringMembersMap.ContainsKey( targetType ) )
 				{
-					this.typeIgnoringMembersMap[ targetType ] = memberSkipList;
+					this._typeIgnoringMembersMap[ targetType ] = memberSkipList;
 				}
 				else
 				{
-					this.typeIgnoringMembersMap.Add( targetType, memberSkipList );
+					this._typeIgnoringMembersMap.Add( targetType, memberSkipList );
 				}
 			}
 		}
@@ -65,11 +64,11 @@ namespace MsgPack.Serialization
 		/// <returns>Returns member skip list for a specific target type.</returns>
 		public IEnumerable<string> GetIgnoringMembers( Type targetType )
 		{
-			lock ( this.typeIgnoringMembersMap )
+			lock ( this._typeIgnoringMembersMap )
 			{
-				if ( this.typeIgnoringMembersMap.ContainsKey( targetType ) )
+				if ( this._typeIgnoringMembersMap.ContainsKey( targetType ) )
 				{
-					return this.typeIgnoringMembersMap[ targetType ];
+					return this._typeIgnoringMembersMap[ targetType ];
 				}
 				else
 				{
@@ -84,9 +83,9 @@ namespace MsgPack.Serialization
 		/// <returns>Returns all registered types specific ignoring members.</returns>
 		public IDictionary<Type, IEnumerable<string>> GetAllIgnoringMembers()
 		{
-			lock ( this.typeIgnoringMembersMap )
+			lock ( this._typeIgnoringMembersMap )
 			{
-				return this.typeIgnoringMembersMap.ToDictionary( item => item.Key, item => ( IEnumerable<string> )item.Value.ToArray() );
+				return this._typeIgnoringMembersMap.ToDictionary( item => item.Key, item => ( IEnumerable<string> )item.Value.ToArray() );
 			}
 		}
 	}
