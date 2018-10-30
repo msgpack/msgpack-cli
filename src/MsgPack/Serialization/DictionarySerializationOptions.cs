@@ -35,7 +35,7 @@ namespace MsgPack.Serialization
 	///		and <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
 	///		The option only affect dictionary (map) based serialization which can be enabled via <see cref="SerializationContext.SerializationMethod"/>.
 	/// </remarks>
-	public sealed class DictionarySerlaizationOptions
+	public sealed class DictionarySerializationOptions
 	{
 #if !FEATURE_CONCURRENT
 		private volatile bool _omitNullEntry;
@@ -121,8 +121,8 @@ namespace MsgPack.Serialization
 		} 
 
 		/// <summary>
-		///		Initializes a new instance of the <see cref="DictionarySerlaizationOptions"/> class.
+		///		Initializes a new instance of the <see cref="DictionarySerializationOptions"/> class.
 		/// </summary>
-		public DictionarySerlaizationOptions() { }
+		public DictionarySerializationOptions() { }
 	}
 }

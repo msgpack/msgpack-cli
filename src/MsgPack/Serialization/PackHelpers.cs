@@ -339,7 +339,7 @@ namespace MsgPack.Serialization
 #endif // ASSERT
 
 			if ( parameter.NullCheckers != null 
-				&& parameter.SerializationContext != null && parameter.SerializationContext.DictionarySerlaizationOptions.OmitNullEntry )
+				&& parameter.SerializationContext != null && parameter.SerializationContext.DictionarySerializationOptions.OmitNullEntry )
 			{
 #if ASSERT
 				Contract.Assert( !SerializerDebugging.UseLegacyNullMapEntryHandling );
@@ -487,7 +487,7 @@ namespace MsgPack.Serialization
 #endif // ASSERT
 
 			if ( nullCheckers != null
-				&& serializationContext != null && serializationContext.DictionarySerlaizationOptions.OmitNullEntry )
+				&& serializationContext != null && serializationContext.DictionarySerializationOptions.OmitNullEntry )
 			{
 #if ASSERT
 				Contract.Assert( !SerializerDebugging.UseLegacyNullMapEntryHandling );
