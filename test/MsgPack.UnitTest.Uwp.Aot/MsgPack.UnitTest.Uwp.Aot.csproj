@@ -14,7 +14,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>MsgPack.UnitTest.Uwp.Aot_TemporaryKey.pfx</PackageCertificateKeyFile>
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">14.0</UnitTestPlatformVersion>
-    <PackageCertificateThumbprint>C125CA52683091C62F7746FF9A159E44B2A18673</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>880646284800F8F3356B8C7E3E734562D8BB304F</PackageCertificateThumbprint>
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
@@ -1550,6 +1550,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackExtendedTypeObjectTest.cs">
       <Link>MessagePackExtendedTypeObjectTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackMemberSkipTest.cs">
+      <Link>MessagePackMemberSkipTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectDictionaryTest.cs">
       <Link>MessagePackObjectDictionaryTest.cs</Link>

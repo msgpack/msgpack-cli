@@ -11,7 +11,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>MsgPack.UnitTest.WinRT_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>A411E1A11B99FF48CFDEDA3098F7F4D0FB6D746D</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>DEBDFCC31BC8F851996AD84C394EA999CA3ED9D1</PackageCertificateThumbprint>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <TargetFrameworkVersion />
@@ -19,7 +19,8 @@
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DefineConstants>$(DefineConstants);NETFX_CORE;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
     <NoWarn>;2008</NoWarn>
   </PropertyGroup>
@@ -126,6 +127,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackExtendedTypeObjectTest.cs">
       <Link>MessagePackExtendedTypeObjectTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackMemberSkipTest.cs">
+      <Link>MessagePackMemberSkipTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectDictionaryTest.cs">
       <Link>MessagePackObjectDictionaryTest.cs</Link>

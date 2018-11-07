@@ -151,15 +151,21 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestSerialization_DefaultTimestamp()
+		public void TestSerialization_Default_Timestamp()
 		{
 			TestSerializationCore( new SerializationContext(), DateTimeConversionMethod.Timestamp );
 		}
 
 		[Test]
-		public void TestSerialization_ClassicUnixEpoc()
+		public void TestSerialization_Classic0_5_UnixEpoc()
 		{
-			TestSerializationCore( SerializationContext.CreateClassicContext(), DateTimeConversionMethod.UnixEpoc );
+			TestSerializationCore( SerializationContext.CreateClassicContext( SerializationCompatibilityLevel.Version0_5 ), DateTimeConversionMethod.UnixEpoc );
+		}
+
+		[Test]
+		public void TestSerialization_Classic0_9_Native()
+		{
+			TestSerializationCore( SerializationContext.CreateClassicContext( SerializationCompatibilityLevel.Version0_9 ), DateTimeConversionMethod.Native );
 		}
 
 		[Test]

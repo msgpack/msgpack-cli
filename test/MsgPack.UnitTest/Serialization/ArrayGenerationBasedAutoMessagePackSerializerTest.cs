@@ -92,12 +92,12 @@ namespace MsgPack.Serialization
 
 		private static SerializationContext NewSerializationContext()
 		{
-			return NewSerializationContext( PackerCompatibilityOptions.None, DateTimeConversionMethod.Timestamp );
+			return NewSerializationContext( SerializationCompatibilityLevel.Latest );
 		}
 
-		private static SerializationContext NewSerializationContext( PackerCompatibilityOptions compatibilityOptions, DateTimeConversionMethod dateTimeConversionMethod )
+		private static SerializationContext NewSerializationContext( SerializationCompatibilityLevel compatibilityLevel )
 		{
-			var context =  PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, compatibilityOptions );
+			var context =  PreGeneratedSerializerActivator.CreateContext( SerializationMethod.Array, compatibilityLevel );
 			// Register serializers for abstract class testing
 			context.Serializers.Register( 
 				new EchoKeyedCollection_2MessagePackSerializer<string, string>( context, null ) 
@@ -204,10 +204,38 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestDateTimeNative()
+		public void TestDateTimeLatest()
 		{
 			TestCore(
-				DateTime.Now,
+				DateTime.UtcNow,
+				stream => Timestamp.Decode( Unpacking.UnpackExtendedTypeObject( stream ) ).ToDateTime(),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Timestamp;
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeOffsetLatest()
+		{
+			TestCore(
+				DateTimeOffset.UtcNow,
+				stream => Timestamp.Decode( Unpacking.UnpackExtendedTypeObject( stream ) ).ToDateTimeOffset(),
+				( x, y ) => x.Equals( y ),
+				context =>
+				{
+					context.DefaultDateTimeConversionMethod = DateTimeConversionMethod.Timestamp;
+				}
+			);
+		}
+
+		[Test]
+		public void TestDateTimeClassic0_9()
+		{
+			TestCore(
+				DateTime.Now, // Use now because Native mode should serialize its kind
 				stream => DateTime.FromBinary( Unpacking.UnpackInt64( stream ) ),
 				( x, y ) => x.Equals( y ),
 				context =>
@@ -218,10 +246,10 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestDateTimeOffsetNative()
+		public void TestDateTimeOffsetClassic0_9()
 		{
 			TestCore(
-				DateTimeOffset.Now,
+				DateTimeOffset.Now, // Use now because Native mode should serialize its kind
 				stream => 
 					{
 						var array = Unpacking.UnpackArray( stream );
@@ -236,7 +264,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestDateTimeClassic()
+		public void TestDateTimeClassic0_5()
 		{
 			TestCore(
 				DateTime.UtcNow,
@@ -250,7 +278,7 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestDateTimeOffsetClassic()
+		public void TestDateTimeOffsetClassic0_5()
 		{
 			TestCore(
 				DateTimeOffset.UtcNow,
@@ -573,7 +601,8 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestEmptyBytes()
 		{
-			var serializer = this.CreateTarget<byte[]>( GetSerializationContext() );
+			var context = NewSerializationContext( SerializationCompatibilityLevel.Latest );
+			var serializer = this.CreateTarget<byte[]>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[ 0 ] );
@@ -584,14 +613,28 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestEmptyBytes_Classic()
+		public void TestEmptyBytes_Classic0_5()
 		{
-			var context = NewSerializationContext( PackerCompatibilityOptions.Classic, DateTimeConversionMethod.Native );
+			var context = NewSerializationContext( SerializationCompatibilityLevel.Version0_5 );
 			var serializer = this.CreateTarget<byte[]>( context );
 			using ( var stream = new MemoryStream() )
 			{
 				serializer.Pack( stream, new byte[ 0 ] );
 				Assert.That( stream.Length, Is.EqualTo( 1 ), BitConverter.ToString( stream.ToArray() ) );
+				stream.Position = 0;
+				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
+			}
+		}
+
+		[Test]
+		public void TestEmptyBytes_Classic0_9()
+		{
+			var context = NewSerializationContext( SerializationCompatibilityLevel.Version0_9 );
+			var serializer = this.CreateTarget<byte[]>( context );
+			using ( var stream = new MemoryStream() )
+			{
+				serializer.Pack( stream, new byte[ 0 ] );
+				Assert.That( stream.Length, Is.EqualTo( 2 ), BitConverter.ToString( stream.ToArray() ) );
 				stream.Position = 0;
 				Assert.That( serializer.Unpack( stream ), Is.EqualTo( new byte[ 0 ] ) );
 			}
@@ -1021,10 +1064,27 @@ namespace MsgPack.Serialization
 		}
 
 		[Test]
-		public void TestExt_ClassicContext()
+		public void TestExt_ClassicContext0_5()
 		{
-			var context = NewSerializationContext( SerializationContext.CreateClassicContext().CompatibilityOptions.PackerCompatibilityOptions, SerializationContext.CreateClassicContext().DefaultDateTimeConversionMethod );
+			var context = NewSerializationContext( SerializationCompatibilityLevel.Version0_5 );
 			context.Serializers.RegisterOverride( new CustomDateTimeSerealizer() );
+			var serializer = CreateTarget<DateTime>( context );
+
+			using ( var stream = new MemoryStream() )
+			{
+				var date = DateTime.UtcNow;
+				serializer.Pack( stream, date );
+				stream.Position = 0;
+				var unpacked = serializer.Unpack( stream );
+				Assert.That( unpacked.ToString( "yyyyMMddHHmmssfff" ), Is.EqualTo( date.ToString( "yyyyMMddHHmmssfff" ) ) );
+			}
+		}
+
+		[Test]
+		public void TestExt_ClassicContext0_9()
+		{
+			var context = NewSerializationContext( SerializationCompatibilityLevel.Version0_9 );
+			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			var serializer = CreateTarget<DateTime>( context );
 
 			using ( var stream = new MemoryStream() )
@@ -1040,7 +1100,7 @@ namespace MsgPack.Serialization
 		[Test]
 		public void TestExt_DefaultContext()
 		{
-			var context = NewSerializationContext( SerializationContext.Default.CompatibilityOptions.PackerCompatibilityOptions, SerializationContext.Default.DefaultDateTimeConversionMethod );
+			var context = NewSerializationContext( SerializationCompatibilityLevel.Latest );
 			context.Serializers.Register( new CustomDateTimeSerealizer() );
 			var serializer = CreateTarget<DateTime>( context );
 

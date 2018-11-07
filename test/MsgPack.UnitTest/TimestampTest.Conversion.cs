@@ -285,6 +285,7 @@ namespace MsgPack
 			Assert.That( target.Microsecond, Is.EqualTo( ticks / 10 ), "Microsecond" );
 			Assert.That( target.Nanosecond, Is.EqualTo( ( ticks % 10 ) * 100 ), "Nanosecond" );
 		}
+
 		[Test]
 		public void TestFromDateTimeOffset_UtcNow_OK()
 		{
@@ -536,5 +537,379 @@ namespace MsgPack
 			Assert.That( target.Microsecond, Is.EqualTo( ticks / 10 ), "Microsecond" );
 			Assert.That( target.Nanosecond, Is.EqualTo( ( ticks % 10 ) * 100 ), "Nanosecond" );
 		}
+
+#if !NET35 && !SILVERLIGHT && !NETSTANDARD1_1
+
+		[Test]
+		public void TestFromDateTime_UnixEpoc_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeMilliseconds( 0 ).DateTime;
+			var target = Timestamp.FromDateTime( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTime_UnixEpocMinus1Millisecond_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeMilliseconds( -1 ).DateTime;
+			var target = Timestamp.FromDateTime( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTime_UnixEpocPlus1Millisecond_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeMilliseconds( 1 ).DateTime;
+			var target = Timestamp.FromDateTime( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTime_UnixEpocMinusSecond_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeSeconds( -1 ).DateTime;
+			var target = Timestamp.FromDateTime( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTime_UnixEpocPlus1Second_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeSeconds( 1 ).DateTime;
+			var target = Timestamp.FromDateTime( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestToDateTime_UnixEpoc_OK()
+		{
+			var source = default( Timestamp );
+			var target = source.ToDateTime();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTime_UnixEpocMinus1Millisecond_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromMilliseconds( -1 ) );
+			var target = source.ToDateTime();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTime_UnixEpocPlus1Millisecond_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromMilliseconds( 1 ) );
+			var target = source.ToDateTime();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTime_UnixEpocMinus1Second_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromSeconds( -1 ) );
+			var target = source.ToDateTime();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTime_UnixEpocPlus1Second_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromSeconds( 1 ) );
+			var target = source.ToDateTime();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestFromDateTimeOffset_UnixEpoc_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeMilliseconds( 0 );
+			var target = Timestamp.FromDateTimeOffset( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTimeOffset_UnixEpocMinus1Millisecond_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeMilliseconds( -1 );
+			var target = Timestamp.FromDateTimeOffset( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTimeOffset_UnixEpocPlus1Millisecond_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeMilliseconds( 1 );
+			var target = Timestamp.FromDateTimeOffset( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTimeOffset_UnixEpocMinus1Second_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeSeconds( -1 );
+			var target = Timestamp.FromDateTimeOffset( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestFromDateTimeOffset_UnixEpocPlus1Second_OK()
+		{
+			var source = DateTimeOffset.FromUnixTimeSeconds( 1 );
+			var target = Timestamp.FromDateTimeOffset( source );
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+		}
+
+		[Test]
+		public void TestToDateTimeOffset_UnixEpoc_OK()
+		{
+			var source = default( Timestamp );
+			var target = source.ToDateTimeOffset();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTimeOffset_UnixEpocMinus1Millisecond_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromMilliseconds( -1 ) );
+			var target = source.ToDateTimeOffset();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTimeOffset_UnixEpocPlus1Millisecond_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromMilliseconds( 1 ) );
+			var target = source.ToDateTimeOffset();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTimeOffset_UnixEpocMinus1Second_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromSeconds( -1 ) );
+			var target = source.ToDateTimeOffset();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+		[Test]
+		public void TestToDateTimeOffset_UnixEpocPlus1Second_OK()
+		{
+			var source = default( Timestamp ).Add( TimeSpan.FromSeconds( 1 ) );
+			var target = source.ToDateTimeOffset();
+			var expected = source;
+			Assert.That( target.Year, Is.EqualTo( expected.Year ), "Year" );
+			Assert.That( target.Month, Is.EqualTo( expected.Month ), "Month" );
+			Assert.That( target.Day, Is.EqualTo( expected.Day ), "Day" );
+			Assert.That( target.DayOfYear, Is.EqualTo( expected.DayOfYear ), "DayOfYear" );
+			Assert.That( target.DayOfWeek, Is.EqualTo( expected.DayOfWeek ), "DayOfWeek" );
+			Assert.That( target.Hour, Is.EqualTo( expected.Hour ), "Hour" );
+			Assert.That( target.Minute, Is.EqualTo( expected.Minute ), "Minute" );
+			Assert.That( target.Second, Is.EqualTo( expected.Second ), "Second" );
+			Assert.That( target.Millisecond, Is.EqualTo( expected.Millisecond ), "Millisecond" );
+			AssertSubseconds( target, expected );
+			AssertUtc( target );
+		}
+
+#endif // NET35 && !SILVERLIGHT && !NETSTANDARD1_1
 	}
 }

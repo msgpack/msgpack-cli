@@ -220,6 +220,9 @@
     <Compile Include="..\MsgPack\Serialization\Tracer.cs">
       <Link>Serialization\Tracer.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\BindingOptions.cs">
+      <Link>Serialization\BindingOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -649,11 +652,11 @@
     <Compile Include="..\MsgPack\Serialization\ResolveSerializerEventArgs.cs">
       <Link>Serialization\ResolveSerializerEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityLevel.cs">
+      <Link>Serialization\SerializationCompatibilityLevel.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityOptions.cs">
       <Link>Serialization\SerializationCompatibilityOptions.cs</Link>
-    </Compile>	
-    <Compile Include="..\MsgPack\Serialization\BindingOptions.cs">
-      <Link>Serialization\BindingOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>

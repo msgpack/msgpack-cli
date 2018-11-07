@@ -297,6 +297,7 @@
     "base": "MsgPack.UnitTest.Uwp",
     "globs": [
       {"type": "include", "path": "../../src/MsgPack/Tuple`n.cs"},
+      {"type": "remove", "path": "./Assets/**/*.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/AssertEx.cs"},
       {"type": "remove", "path": "../MsgPack.UnitTest/gen/**/*.cs"},
       {"type": "include", "path": "../MsgPack.UnitTest/gen35/**/*.cs"}, 
