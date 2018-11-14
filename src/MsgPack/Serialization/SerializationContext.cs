@@ -23,7 +23,6 @@
 #endif
 
 using System;
-using System.ComponentModel;
 #if !UNITY || MSGPACK_UNITY_FULL
 #endif // !UNITY || MSGPACK_UNITY_FULL
 #if FEATURE_CONCURRENT
@@ -224,8 +223,8 @@ namespace MsgPack.Serialization
 		///		The <see cref="DictionarySerializationOptions"/> which stores dictionary(map) based serialization options. This value will not be <c>null</c>.
 		/// </value>
 		[Obsolete("Use DictionarySerializationOption instead.")]
-#if XAMARIN && ( __ANDROID__ || __IOS__ )
-		[EditorBrowsable(EditorBrowsableState.Never)]
+#if !UNITY && !( XAMARIN && ( __ANDROID__ || __IOS__ ) )
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 #endif
 		public DictionarySerializationOptions DictionarySerlaizationOptions
 		{
