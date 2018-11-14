@@ -22,8 +22,7 @@
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_PHONE_APP;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
     <NoWarn>;2008</NoWarn>
   </PropertyGroup>
@@ -121,6 +120,9 @@
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackExtendedTypeObjectTest.cs">
       <Link>MessagePackExtendedTypeObjectTest.cs</Link>
+    </Compile>
+    <Compile Include="..\MsgPack.UnitTest\MessagePackMemberSkipTest.cs">
+      <Link>MessagePackMemberSkipTest.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack.UnitTest\MessagePackObjectDictionaryTest.cs">
       <Link>MessagePackObjectDictionaryTest.cs</Link>

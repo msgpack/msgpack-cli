@@ -216,6 +216,9 @@
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs">
       <Link>ReflectionAbstractions.cs</Link>
     </Compile>
+    <Compile Include="..\MsgPack\Serialization\BindingOptions.cs">
+      <Link>Serialization\BindingOptions.cs</Link>
+    </Compile>
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs">
       <Link>Serialization\CollectionDetailedKind.cs</Link>
     </Compile>
@@ -462,8 +465,8 @@
     <Compile Include="..\MsgPack\Serialization\DictionaryKeyTransformers.cs">
       <Link>Serialization\DictionaryKeyTransformers.cs</Link>
     </Compile>
-    <Compile Include="..\MsgPack\Serialization\DictionarySerlaizationOptions.cs">
-      <Link>Serialization\DictionarySerlaizationOptions.cs</Link>
+    <Compile Include="..\MsgPack\Serialization\DictionarySerializationOptions.cs">
+      <Link>Serialization\DictionarySerializationOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\EmitterFlavor.cs">
       <Link>Serialization\EmitterFlavor.cs</Link>
@@ -680,9 +683,6 @@
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationCompatibilityOptions.cs">
       <Link>Serialization\SerializationCompatibilityOptions.cs</Link>
-    </Compile>	
-    <Compile Include="..\MsgPack\Serialization\BindingOptions.cs">
-      <Link>Serialization\BindingOptions.cs</Link>
     </Compile>
     <Compile Include="..\MsgPack\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
