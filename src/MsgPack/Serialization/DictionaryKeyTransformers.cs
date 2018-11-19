@@ -23,7 +23,7 @@ using System;
 namespace MsgPack.Serialization
 {
 	/// <summary>
-	///		Defines built-in, out-of-box handlers for <see cref="DictionarySerlaizationOptions.KeyTransformer"/>.
+	///		Defines built-in, out-of-box handlers for <see cref="DictionarySerializationOptions.KeyTransformer"/>.
 	/// </summary>
 	public static class DictionaryKeyTransformers
 	{

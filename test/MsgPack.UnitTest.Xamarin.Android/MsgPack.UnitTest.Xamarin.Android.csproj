@@ -262,7 +262,6 @@
     <Compile Include="..\MsgPack.UnitTest\TestRandom.cs">
       <Link>TestRandom.cs</Link>
     </Compile>
-    <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Icon.png" />

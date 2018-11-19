@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -57,9 +57,9 @@ namespace Samples
 
 			// 2-2-1. You can customize map key handling when you use SerializationMethod.Map to improve interoperability.
 			//        You can use preconfigured transformation in DictionaryKeyTransformers class.
-			context.DictionarySerlaizationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
+			context.DictionarySerializationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
 			// 2-2-2. You can omit entry when map value is null.
-			context.DictionarySerlaizationOptions.OmitNullEntry = true;
+			context.DictionarySerializationOptions.OmitNullEntry = true;
 
 			// 2-3. EnumSerializationMethod: it changes enum serialization as their name or underlying value.
 			//          ByName(default): More version torrelant and interoperable, and backward compatible prior to 0.5 of MsgPack for CLI.

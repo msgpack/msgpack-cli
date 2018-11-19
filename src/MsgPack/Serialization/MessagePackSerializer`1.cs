@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -61,7 +61,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		This method supports backword compatibility with 0.3.
 		/// </remarks>
-		[Obsolete( "Use MessagePackSerializer (SerlaizationContext) instead." )]
+		[Obsolete( "Use MessagePackSerializer (SerializationContext) instead." )]
 		protected MessagePackSerializer() : this( PackerCompatibilityOptions.Classic ) { }
 
 		/// <summary>
@@ -71,7 +71,7 @@ namespace MsgPack.Serialization
 		/// <remarks>
 		///		This method supports backword compatibility with 0.4.
 		/// </remarks>
-		[Obsolete( "Use MessagePackSerializer (SerlaizationContext, PackerCompatibilityOptions) instead." )]
+		[Obsolete( "Use MessagePackSerializer (SerializationContext, PackerCompatibilityOptions) instead." )]
 		protected MessagePackSerializer( PackerCompatibilityOptions packerCompatibilityOptions )
 			: this( null, packerCompatibilityOptions ) { }
 

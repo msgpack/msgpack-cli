@@ -22,8 +22,7 @@
   </PropertyGroup>
   <Import Project="..\..\MsgPack.Common.props" />
   <PropertyGroup>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <DefineConstants>$(DefineConstants);NETFX_CORE;WINDOWS_PHONE_APP;NETSTANDARD1_1;FEATURE_TAP;MSTEST</DefineConstants>
     <NoWarn>;2008</NoWarn>
   </PropertyGroup>

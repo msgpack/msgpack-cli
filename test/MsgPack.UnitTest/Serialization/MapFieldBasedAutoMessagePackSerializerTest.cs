@@ -9163,9 +9163,9 @@ namespace MsgPack.Serialization
 		public void TestOmitNullEntryInDictionary()
 		{
 			var context = GetSerializationContext();
-			Assert.That( context.DictionarySerlaizationOptions.OmitNullEntry, Is.False, "default value" );
+			Assert.That( context.DictionarySerializationOptions.OmitNullEntry, Is.False, "default value" );
 			TestOmitNullEntryInDictionaryCore( context, true, false );
-			context.DictionarySerlaizationOptions.OmitNullEntry = true;
+			context.DictionarySerializationOptions.OmitNullEntry = true;
 			TestOmitNullEntryInDictionaryCore( context, false, false );
 		}
 
@@ -9175,9 +9175,9 @@ namespace MsgPack.Serialization
 		public void TestOmitNullEntryInDictionary_Async()
 		{
 			var context = GetSerializationContext();
-			Assert.That( context.DictionarySerlaizationOptions.OmitNullEntry, Is.False, "default value" );
+			Assert.That( context.DictionarySerializationOptions.OmitNullEntry, Is.False, "default value" );
 			TestOmitNullEntryInDictionaryCore( context, true, true );
-			context.DictionarySerlaizationOptions.OmitNullEntry = true;
+			context.DictionarySerializationOptions.OmitNullEntry = true;
 			TestOmitNullEntryInDictionaryCore( context, false, true );
 		}
 
@@ -9190,7 +9190,7 @@ namespace MsgPack.Serialization
 			try
 			{
 				var context = GetSerializationContext();
-				context.DictionarySerlaizationOptions.OmitNullEntry = true;
+				context.DictionarySerializationOptions.OmitNullEntry = true;
 				TestOmitNullEntryInDictionaryCore( context, true, false );
 			}
 			finally
@@ -9208,7 +9208,7 @@ namespace MsgPack.Serialization
 			try
 			{
 				var context = GetSerializationContext();
-				context.DictionarySerlaizationOptions.OmitNullEntry = true;
+				context.DictionarySerializationOptions.OmitNullEntry = true;
 				TestOmitNullEntryInDictionaryCore( context, true, true );
 			}
 			finally
@@ -9282,7 +9282,7 @@ namespace MsgPack.Serialization
 		public void TestDictionaryKeyTransformer_Default_AsIs()
 		{
 			var context = GetSerializationContext();
-			Assert.That( context.DictionarySerlaizationOptions.KeyTransformer, Is.Null, "default value" );
+			Assert.That( context.DictionarySerializationOptions.KeyTransformer, Is.Null, "default value" );
 			TestDictionaryKeyCore( context, "FirstProperty", "SecondProperty", "ThirdProperty", "FourthProperty", asIs: true, isAsync: false );
 		}
 
@@ -9292,7 +9292,7 @@ namespace MsgPack.Serialization
 		public void TestDictionaryKeyTransformer_Default_AsIs_Async()
 		{
 			var context = GetSerializationContext();
-			Assert.That( context.DictionarySerlaizationOptions.KeyTransformer, Is.Null, "default value" );
+			Assert.That( context.DictionarySerializationOptions.KeyTransformer, Is.Null, "default value" );
 			TestDictionaryKeyCore( context, "FirstProperty", "SecondProperty", "ThirdProperty", "FourthProperty", asIs: true, isAsync: true );
 		}
 
@@ -9302,7 +9302,7 @@ namespace MsgPack.Serialization
 		public void TestDictionaryKeyTransformer_LowerCamel()
 		{
 			var context = GetSerializationContext();
-			context.DictionarySerlaizationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
+			context.DictionarySerializationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
 			TestDictionaryKeyCore( context, "firstProperty", "secondProperty", "thirdProperty", "fourthProperty", asIs: false, isAsync: false );
 		}
 
@@ -9312,7 +9312,7 @@ namespace MsgPack.Serialization
 		public void TestDictionaryKeyTransformer_LowerCamel_Async()
 		{
 			var context = GetSerializationContext();
-			context.DictionarySerlaizationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
+			context.DictionarySerializationOptions.KeyTransformer = DictionaryKeyTransformers.LowerCamel;
 			TestDictionaryKeyCore( context, "firstProperty", "secondProperty", "thirdProperty", "fourthProperty", asIs: false, isAsync: true );
 		}
 
@@ -9322,7 +9322,7 @@ namespace MsgPack.Serialization
 		public void TestDictionaryKeyTransformer_Custom()
 		{
 			var context = GetSerializationContext();
-			context.DictionarySerlaizationOptions.KeyTransformer = 
+			context.DictionarySerializationOptions.KeyTransformer = 
 				key => Regex.Replace( key, "[A-Z]", match => match.Index == 0 ? match.Value.ToLower() : "-" + match.Value.ToLower() );
 			TestDictionaryKeyCore( context, "first-property", "second-property", "third-property", "fourth-property", asIs: false, isAsync: false );
 		}
@@ -9333,7 +9333,7 @@ namespace MsgPack.Serialization
 		public void TestDictionaryKeyTransformer_Custom_Async()
 		{
 			var context = GetSerializationContext();
-			context.DictionarySerlaizationOptions.KeyTransformer = 
+			context.DictionarySerializationOptions.KeyTransformer = 
 				key => Regex.Replace( key, "[A-Z]", match => match.Index == 0 ? match.Value.ToLower() : "-" + match.Value.ToLower() );
 			TestDictionaryKeyCore( context, "first-property", "second-property", "third-property", "fourth-property", asIs: false, isAsync: true );
 		}

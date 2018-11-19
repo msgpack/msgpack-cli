@@ -572,7 +572,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							actionCollection.ContextType,
 							"Item",
 							// Set key as transformed.
-							this.MakeStringLiteral( context, context.SerializationContext.DictionarySerlaizationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
+							this.MakeStringLiteral( context, context.SerializationContext.DictionarySerializationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
 							packItemBody
 						);
 				}
@@ -633,7 +633,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 						actionCollection.ContextType,
 						"Item",
 						// Set key as transformed.
-						this.MakeStringLiteral( context, context.SerializationContext.DictionarySerlaizationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
+						this.MakeStringLiteral( context, context.SerializationContext.DictionarySerializationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
 						this.EmitNewPrivateMethodDelegateExpression(
 							context,
 							knownActions[ i ].Value
@@ -1351,7 +1351,7 @@ namespace MsgPack.Serialization.AbstractSerializers
 							actionCollection.ContextType,
 							"Item",
 							// Set key as transformed.
-							this.MakeStringLiteral( context, context.SerializationContext.DictionarySerlaizationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
+							this.MakeStringLiteral( context, context.SerializationContext.DictionarySerializationOptions.SafeKeyTransformer( knownActions[ i ].Key ) ),
 							unpackItemBody
 						);
 				}
