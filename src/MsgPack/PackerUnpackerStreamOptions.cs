@@ -82,8 +82,18 @@ namespace MsgPack
 #else
 		internal
 #endif
-		static readonly PackerUnpackerStreamOptions SingletonForAsync =
+		static readonly PackerUnpackerStreamOptions SingletonForAsyncPacking =
+			// It is OK for serialize to do buffering because we explicitly call FlushAsync for it.
 			new PackerUnpackerStreamOptions { OwnsStream = true, WithBuffering = true };
+
+		#if UNITY && DEBUG
+		public
+#else
+		internal
+#endif
+		static readonly PackerUnpackerStreamOptions SingletonForAsyncUnpacking =
+			// Buffering causes data loss in deserialization because buffered bytes will be gone in a tail of Deserialize(Stream) call.
+			new PackerUnpackerStreamOptions { OwnsStream = true, WithBuffering = false };
 
 #if UNITY && DEBUG
 		public

@@ -547,5 +547,31 @@ namespace MsgPack.Serialization
 			var forString = Assert.Throws<InvalidOperationException>( () => target.AsString() );
 			Assert.That( forString.Message, Is.EqualTo( "Do not convert MsgPack.MessagePackExtendedTypeObject MessagePackObject to System.String." ) );
 		}
+
+#if FEATURE_TAP
+		[Test]
+		public async Task TestIssue321_AsyncBuffering()
+		{
+			var context = new SerializationContext();
+			var serializer = context.GetSerializer<string>();
+			using ( var stream = new MyMemoryStream() ) // could also be a NetworkStream or PipeStream
+			{
+				await serializer.PackAsync( stream, "hello" );
+				TestContext.WriteLine( $"1. Stream now in {stream.Position}" );
+				await serializer.PackAsync( stream, "world" );
+				TestContext.WriteLine( $"2. Stream now in {stream.Position}" );
+				TestContext.WriteLine( Binary.ToHexString( stream.ToArray() ) );
+				stream.Position = 0;
+				var result1 = await serializer.UnpackAsync( stream );
+				TestContext.WriteLine( $"3. Stream now in {stream.Position} -> {result1}" );
+				var result2 = await serializer.UnpackAsync( stream ); // throws MsgPack.InvalidMessagePackStreamException
+				TestContext.WriteLine( $"4. Stream now in {stream.Position} -> {result2}" );
+			}
+		}
+#endif // FEATURE_TAP
+
+		public class MyMemoryStream : MemoryStream
+		{
+		}
 	}
 }
