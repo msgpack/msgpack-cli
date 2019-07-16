@@ -554,18 +554,14 @@ namespace MsgPack.Serialization
 		{
 			var context = new SerializationContext();
 			var serializer = context.GetSerializer<string>();
-			using ( var stream = new MyMemoryStream() ) // could also be a NetworkStream or PipeStream
+			using ( var stream = new MyMemoryStream() )
 			{
 				await serializer.PackAsync( stream, "hello" );
-				TestContext.WriteLine( $"1. Stream now in {stream.Position}" );
 				await serializer.PackAsync( stream, "world" );
-				TestContext.WriteLine( $"2. Stream now in {stream.Position}" );
-				TestContext.WriteLine( Binary.ToHexString( stream.ToArray() ) );
 				stream.Position = 0;
 				var result1 = await serializer.UnpackAsync( stream );
-				TestContext.WriteLine( $"3. Stream now in {stream.Position} -> {result1}" );
-				var result2 = await serializer.UnpackAsync( stream ); // throws MsgPack.InvalidMessagePackStreamException
-				TestContext.WriteLine( $"4. Stream now in {stream.Position} -> {result2}" );
+				// Ensure no exceptions are thrown.
+				var result2 = await serializer.UnpackAsync( stream );
 			}
 		}
 #endif // FEATURE_TAP
