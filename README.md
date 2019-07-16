@@ -36,7 +36,7 @@ serializer.Pack(stream, obj)
 Dim unpackedObject = serializer.Unpack(stream)
 ```
 
-**For production environment, you should instantiate own `SerializationCOntext` and manage its lifetime. It is good idea to treat it as singleton because `SerializationContext` is thread-safe.**
+**For production environment, you should instantiate own `SerializationContext` and manage its lifetime. It is good idea to treat it as singleton because `SerializationContext` is thread-safe.**
 
 ## Features
 
