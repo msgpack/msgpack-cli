@@ -1,9 +1,13 @@
 # MessagePack for CLI
 
 [![Build status release](https://ci.appveyor.com/api/projects/status/5ln7u7efwjepj6o8?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-x2p85)
-[![Build status debug](https://ci.appveyor.com/api/projects/status/dlc0v4rrolwj0t2t?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli)
-[![Build status debug net35](https://ci.appveyor.com/api/projects/status/cjp8phlnbwj7gkj9?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-3jme9)
-[![Build status debug net35 CodeDOM](https://ci.appveyor.com/api/projects/status/1mw78wkxx50jvab1?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-rhnh0)
+[![Build status debug (.NET Core 2.0)](https://ci.appveyor.com/api/projects/status/dlc0v4rrolwj0t2t?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli)
+[![Build status debug (.NET Core 1.0)](https://ci.appveyor.com/api/projects/status/avurf519all92v5u?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-g3guk)
+[![Build status debug (.NET Framework 4.x)](https://ci.appveyor.com/api/projects/status/np6723q2uiqofr1a?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-nuf62)
+[![Build status debug (Code DOM)](https://ci.appveyor.com/api/projects/status/1mw78wkxx50jvab1?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-rhnh0)
+[![Build status debug (miscs)](https://ci.appveyor.com/api/projects/status/avufc51yu2cm6idw?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-bo856)
+[![Build status debug (.NET Framework 3.5)](https://ci.appveyor.com/api/projects/status/cjp8phlnbwj7gkj9?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-3jme9)
+[![Build status debug (.NET Framework 3.5 Code DOM)](https://ci.appveyor.com/api/projects/status/1mw78wkxx50jvab1?svg=true)](https://ci.appveyor.com/project/yfakariya/msgpack-cli-rhnh0)
 
 ## What is it?
 
