@@ -17,10 +17,11 @@ This library can be used from ALL CLS compliant languages such as C#, F#, Visual
 ## Usage
 
 You can serialize/deserialize objects as following:
+
 1. Create serializer via `MessagePackSerializer.Get` generic method. This method creates dependent types serializers as well.
-1. Invoke serializer as following:
-** `Pack` method with destination `Stream` and target object for serialization.
-** `Unpack` method with source `Stream`.
+2. Invoke serializer as following:
+  * `Pack` method with destination `Stream` and target object for serialization.
+  * `Unpack` method with source `Stream`.
 
 ```c#
 // Creates serializer.
@@ -49,7 +50,7 @@ Dim unpackedObject = serializer.Unpack(stream)
 * Flexible MessagePackObject which represents MessagePack type system naturally.
 
 **Note: AOT support is limited yet. Use [serializer pre-generation](https://github.com/msgpack/msgpack-cli/wiki/Xamarin-and-Unity) with `mpu -s` utility or API.**  
-If you do not pre-generated serializers, MsgPack for CLI uses reflection in AOT environments, it is slower and it sometimes causes AOT related error (`ExecutionEngineException` for runtime JIT compilation).
+If you do not pre-generated serializers, MsgPack for CLI uses reflection in AOT environments, it is slower and it sometimes causes AOT related error (`ExecutionEngineException` for runtime JIT compilation). **You also have to call `MessagePackSerializer.PrepareType<T>` and companions in advance to avoid AOT related error.** See [wiki](https://github.com/msgpack/msgpack-cli/wiki/Xamarin-and-Unity) for details.
 
 ## Documentation
 
@@ -111,19 +112,21 @@ If you want to use ".NET 2.0 Subset" settings, you must use just only described 
 
 If you run on Windows, it is recommended to use HXM instead of Hyper-V based emulator.  
 You can disable Hyper-V from priviledged (administrator) powershell as follows:
+
 ```powershell
 Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor
 ```
 
 If you want to use Hyper-V again (such as for Docker for Windows etc.), you can do it by following in priviledged (administrator) powershell:
+
 ```powershell
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor
 ```
 
 #### Xamarin Android Trouble shooting tips
 
-* Javac shows compilation error.
-    * Rebuild the test project and try it run again.
+* **Q:** Javac shows compilation error.
+  * **A:** Rebuild the test project and try it run again.
 
 ### Xamarin iOS testing
 
@@ -131,6 +134,7 @@ You must create provisoning profiles in your MacOS devices.
 See [Xamarin documents about provisining](https://developer.xamarin.com/guides/ios/getting_started/installation/device_provisioning/free-provisioning/) for details.
 
 There are bundle IDs of current iOS tests:
+
 * `org.msgpack.msgpack-cli-xamarin-ios-test`
 * `org.msgpack.msgpack-cli-xamarin-ios-test-packer`
 * `org.msgpack.msgpack-cli-xamarin-ios-test-unpacker`
@@ -145,16 +149,16 @@ There are bundle IDs of current iOS tests:
 
 See [Xamarin's official trouble shooting docs first.](https://developer.xamarin.com/guides/ios/getting_started/installation/windows/connecting-to-mac/troubleshooting/)
 
-* An error occurred while running unit test project.
-    * Rebuild the project and rerun it. Or, login your Mac again, ant retry it.
-* It is hard to read English.
-    * You can read localized Xamarin docs with putting `{region}-{lang}` as the first component of URL path such as `https://developer.xamarin.com/ja-jp/guides/...`.
+* **Q:** An error occurred while running unit test project.
+  * **A:** Rebuild the project and rerun it. Or, login your Mac again, ant retry it.
+* **Q:** It is hard to read English.
+  * **A:** You can read localized Xamarin docs with putting `{region}-{lang}` as the first component of URL path such as `https://developer.xamarin.com/ja-jp/guides/...`.
 
 ## See also
 
-*  GitHub Page           : http://cli.msgpack.org/
-*  Wiki (documentation)  : https://github.com/msgpack/msgpack-cli/wiki
-*  API Reference         : http://cli.msgpack.org/doc/top.html
-*  Issue tracker         : https://github.com/msgpack/msgpack-cli/issues
-*  MSBuild reference     : http://msdn.microsoft.com/en-us/library/0k6kkbsd.aspx
-*  Mono xbuild reference : http://www.mono-project.com/Microsoft.Build
+* GitHub Page           : http://cli.msgpack.org/
+* Wiki (documentation)  : https://github.com/msgpack/msgpack-cli/wiki
+* API Reference         : http://cli.msgpack.org/doc/top.html
+* Issue tracker         : https://github.com/msgpack/msgpack-cli/issues
+* MSBuild reference     : http://msdn.microsoft.com/en-us/library/0k6kkbsd.aspx
+* Mono xbuild reference : http://www.mono-project.com/Microsoft.Build
