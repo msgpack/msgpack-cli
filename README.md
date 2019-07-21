@@ -122,8 +122,8 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor
 
 #### Xamarin Android Trouble shooting tips
 
-* Javac shows compilation error.
-    * Rebuild the test project and try it run again.
+* **Q:** Javac shows compilation error.
+    * **A:** Rebuild the test project and try it run again.
 
 ### Xamarin iOS testing
 
@@ -145,10 +145,10 @@ There are bundle IDs of current iOS tests:
 
 See [Xamarin's official trouble shooting docs first.](https://developer.xamarin.com/guides/ios/getting_started/installation/windows/connecting-to-mac/troubleshooting/)
 
-* An error occurred while running unit test project.
-    * Rebuild the project and rerun it. Or, login your Mac again, ant retry it.
-* It is hard to read English.
-    * You can read localized Xamarin docs with putting `{region}-{lang}` as the first component of URL path such as `https://developer.xamarin.com/ja-jp/guides/...`.
+* **Q:** An error occurred while running unit test project.
+    * **A:** Rebuild the project and rerun it. Or, login your Mac again, ant retry it.
+* **Q:** It is hard to read English.
+    * **A:** You can read localized Xamarin docs with putting `{region}-{lang}` as the first component of URL path such as `https://developer.xamarin.com/ja-jp/guides/...`.
 
 ## See also
 
