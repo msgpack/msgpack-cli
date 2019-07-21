@@ -49,7 +49,7 @@ Dim unpackedObject = serializer.Unpack(stream)
 * Flexible MessagePackObject which represents MessagePack type system naturally.
 
 **Note: AOT support is limited yet. Use [serializer pre-generation](https://github.com/msgpack/msgpack-cli/wiki/Xamarin-and-Unity) with `mpu -s` utility or API.**  
-If you do not pre-generated serializers, MsgPack for CLI uses reflection in AOT environments, it is slower and it sometimes causes AOT related error (`ExecutionEngineException` for runtime JIT compilation).
+If you do not pre-generated serializers, MsgPack for CLI uses reflection in AOT environments, it is slower and it sometimes causes AOT related error (`ExecutionEngineException` for runtime JIT compilation). **You also have to call `MessagePackSerializer.PrepareType<T>` and companions in advance to avoid AOT related error.** See [wiki](https://github.com/msgpack/msgpack-cli/wiki/Xamarin-and-Unity) for details.
 
 ## Documentation
 
