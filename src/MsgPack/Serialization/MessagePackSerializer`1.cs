@@ -219,7 +219,7 @@ namespace MsgPack.Serialization
 		/// <seealso cref="P:Capabilities"/>
 		public async Task PackAsync( Stream stream, T objectTree, CancellationToken cancellationToken )
 		{
-			var packer = Packer.Create( stream, this.PackerCompatibilityOptions, PackerUnpackerStreamOptions.SingletonForAsync );
+			var packer = Packer.Create( stream, this.PackerCompatibilityOptions, PackerUnpackerStreamOptions.SingletonForAsyncPacking );
 			try
 			{
 				await this.PackToAsync( packer, objectTree, cancellationToken ).ConfigureAwait( false );
@@ -324,7 +324,7 @@ namespace MsgPack.Serialization
 		public async Task<T> UnpackAsync( Stream stream, CancellationToken cancellationToken )
 		{
 			// Unpacker does not have finalizer, so just avoiding unpacker disposing prevents stream closing.
-			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.SingletonForAsync, DefaultUnpackerOptions );
+			var unpacker = Unpacker.Create( stream, PackerUnpackerStreamOptions.SingletonForAsyncUnpacking, DefaultUnpackerOptions );
 			if ( !( await unpacker.ReadAsync( cancellationToken ).ConfigureAwait( false ) ) )
 			{
 				SerializationExceptions.ThrowUnexpectedEndOfStream( unpacker );
