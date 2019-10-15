@@ -158,6 +158,15 @@ See [Xamarin's official trouble shooting docs first.](https://developer.xamarin.
 * **Q:** It is hard to read English.
   * **A:** You can read localized Xamarin docs with putting `{region}-{lang}` as the first component of URL path such as `https://developer.xamarin.com/ja-jp/guides/...`.
 
+## Maintenance
+
+### MsgPack.Windows.sln
+
+This solution contains Silverlight5 and (old) UWP project for backward compability. They are required Visual Studio 2015 to build and test.  
+You can download Visual Studio 2015 community edition from [here](https://visualstudio.microsoft.com/vs/older-downloads/).
+
+**You do not have to install Visual Studio 2015 as long as you don't edit/test/build Silverlight and/or old UWP project.**
+
 ## See also
 
 * GitHub Page           : http://cli.msgpack.org/
