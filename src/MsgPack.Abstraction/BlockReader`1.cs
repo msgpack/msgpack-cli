@@ -1,5 +1,11 @@
-﻿// Copyright (c) All contributors. All rights reserved.
+﻿// This file is originated from MessagePack C# and .NET Core Libraries
+
+// License term of MessagePack C#:
+
+// Copyright (c) All contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+// License term of .NET Core Libraries:
 
 /* Licensed to the .NET Foundation under one or more agreements.
  * The .NET Foundation licenses this file to you under the MIT license.
