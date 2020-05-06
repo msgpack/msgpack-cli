@@ -1,3 +1,4 @@
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
 // This file is licensed under MIT license.
 // See the LICENSE.DotNetFoundation in the project root for more information.
 
@@ -10,10 +11,13 @@
 using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using MsgPack.Internal;
 
 namespace System.Text
 {
-	public static class EncodingExtensions
+	internal static class EncodingExtensions
 	{
 		/// <summary>
 		/// The maximum number of input elements after which we'll begin to chunk the input.
@@ -142,7 +146,7 @@ namespace System.Text
 
 				do
 				{
-					remainingChars.GetFirstSpan(out ReadOnlySpan<char> firstSpan, out SequencePosition next);
+					GetFirstSpan(remainingChars, out ReadOnlySpan<char> firstSpan, out SequencePosition next);
 					isFinalSegment = remainingChars.IsSingleSegment;
 
 					int bytesWrittenJustNow = encoder.GetBytes(firstSpan, bytes, flush: isFinalSegment);
@@ -155,11 +159,11 @@ namespace System.Text
 		}
 
 		/// <summary>
-		/// Encodes the specified <see cref="ReadOnlySequence{Char}"/> into a <see cref="byte"/> array using the specified <see cref="Encoding"/>.
+		/// Encodes the specified <see cref="ReadOnlySequence{Char}"/> into a <see cref="Byte"/> array using the specified <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="encoding">The <see cref="Encoding"/> which represents how the data in <paramref name="chars"/> should be encoded.</param>
 		/// <param name="chars">The <see cref="ReadOnlySequence{Char}"/> to encode to <see langword="byte"/>s.</param>
-		/// <returns>A <see cref="byte"/> array which represents the encoded contents of <paramref name="chars"/>.</returns>
+		/// <returns>A <see cref="Byte"/> array which represents the encoded contents of <paramref name="chars"/>.</returns>
 		/// <exception cref="EncoderFallbackException">Thrown if <paramref name="chars"/> contains data that cannot be encoded and <paramref name="encoding"/> is configured
 		/// to throw an exception when such data is seen.</exception>
 		public static byte[] GetBytes(this Encoding encoding, in ReadOnlySequence<char> chars)
@@ -197,7 +201,7 @@ namespace System.Text
 
 				do
 				{
-					remainingChars.GetFirstSpan(out ReadOnlySpan<char> firstSpan, out SequencePosition next);
+					GetFirstSpan(remainingChars, out ReadOnlySpan<char> firstSpan, out SequencePosition next);
 					isFinalSegment = remainingChars.IsSingleSegment;
 
 					int byteCountThisIteration = encoder.GetByteCount(firstSpan, flush: isFinalSegment);
@@ -212,7 +216,7 @@ namespace System.Text
 						// This will end up throwing the expected OutOfMemoryException
 						// since arrays are limited to under int.MaxValue elements in length.
 
-						totalByteCount = int.MaxValue;
+						totalByteCount = Int32.MaxValue;
 						break;
 					}
 
@@ -353,7 +357,7 @@ namespace System.Text
 
 				do
 				{
-					remainingBytes.GetFirstSpan(out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
+					GetFirstSpan(remainingBytes, out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
 					isFinalSegment = remainingBytes.IsSingleSegment;
 
 					int charsWrittenJustNow = decoder.GetChars(firstSpan, chars, flush: isFinalSegment);
@@ -366,11 +370,11 @@ namespace System.Text
 		}
 
 		/// <summary>
-		/// Decodes the specified <see cref="ReadOnlySequence{Byte}"/> into a <see cref="string"/> using the specified <see cref="Encoding"/>.
+		/// Decodes the specified <see cref="ReadOnlySequence{Byte}"/> into a <see cref="String"/> using the specified <see cref="Encoding"/>.
 		/// </summary>
 		/// <param name="encoding">The <see cref="Encoding"/> which represents how the data in <paramref name="bytes"/> is encoded.</param>
 		/// <param name="bytes">The <see cref="ReadOnlySequence{Byte}"/> to decode into characters.</param>
-		/// <returns>A <see cref="string"/> which represents the decoded contents of <paramref name="bytes"/>.</returns>
+		/// <returns>A <see cref="String"/> which represents the decoded contents of <paramref name="bytes"/>.</returns>
 		/// <exception cref="DecoderFallbackException">Thrown if <paramref name="bytes"/> contains data that cannot be decoded and <paramref name="encoding"/> is configured
 		/// to throw an exception when such data is seen.</exception>
 		public static string GetString(this Encoding encoding, in ReadOnlySequence<byte> bytes)
@@ -404,7 +408,7 @@ namespace System.Text
 
 				do
 				{
-					remainingBytes.GetFirstSpan(out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
+					GetFirstSpan(remainingBytes, out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
 					isFinalSegment = remainingBytes.IsSingleSegment;
 
 					int charCountThisIteration = decoder.GetCharCount(firstSpan, flush: isFinalSegment); // could throw ArgumentException if overflow would occur
@@ -419,7 +423,7 @@ namespace System.Text
 						// This will end up throwing the expected OutOfMemoryException
 						// since strings are limited to under int.MaxValue elements in length.
 
-						totalCharCount = int.MaxValue;
+						totalCharCount = Int32.MaxValue;
 						break;
 					}
 
@@ -429,7 +433,7 @@ namespace System.Text
 				// Now build up the string to return, then release all of our scratch buffers
 				// back to the shared pool.
 
-				return string.Create(totalCharCount, listOfSegments, (span, listOfSegments) =>
+				return String.Create(totalCharCount, listOfSegments, (span, listOfSegments) =>
 				{
 					foreach ((char[] array, int length) in listOfSegments)
 					{
@@ -524,7 +528,7 @@ namespace System.Text
 				// Process each segment individually. We need to run at least one iteration of the loop in case
 				// the Encoder has internal state.
 
-				remainingChars..GetFirstSpan(out ReadOnlySpan<char> firstSpan, out SequencePosition next);
+				GetFirstSpan(remainingChars, out ReadOnlySpan<char> firstSpan, out SequencePosition next);
 				isFinalSegment = remainingChars.IsSingleSegment;
 
 				Convert(encoder, firstSpan, writer, flush && isFinalSegment, out long bytesWrittenThisIteration, out completed);
@@ -618,7 +622,7 @@ namespace System.Text
 				// Process each segment individually. We need to run at least one iteration of the loop in case
 				// the Decoder has internal state.
 
-				remainingBytes.GetFirstSpan(out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
+				GetFirstSpan(remainingBytes, out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
 				isFinalSegment = remainingBytes.IsSingleSegment;
 
 				Convert(decoder, firstSpan, writer, flush && isFinalSegment, out long charsWrittenThisIteration, out completed);
@@ -628,6 +632,38 @@ namespace System.Text
 			} while (!isFinalSegment);
 
 			charsUsed = totalCharsWritten;
+		}
+
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		private static void GetFirstSpan<T>(ReadOnlySequence<T> sequence, out ReadOnlySpan<T> first, out SequencePosition next)
+		{
+			//	Port from https://github.com/dotnet/runtime/blob/a4c050ebf45a9745e2941863a8d7ae9c70ee88b2/src/libraries/System.Memory/src/System/Buffers/ReadOnlySequence.Helpers.cs#L635
+			next = default;
+
+			if (SequenceMarshal.TryGetArray(sequence, out var arraySegment))
+			{
+				first = arraySegment;
+			}
+			else if(SequenceMarshal.TryGetReadOnlySequenceSegment(sequence, out var segment, out var startIndex, out _, out var endIndex))
+			{
+				// In this pass, startIndex and endIndex should be same as internal _startInteger and _endInteger.
+				first = segment.Memory.Span;
+				if (!sequence.IsSingleSegment)
+				{
+					first = first.Slice(startIndex);
+					next = new SequencePosition(segment.Next, 0);
+				}
+				else
+				{
+					first = first.Slice(startIndex, endIndex - startIndex);
+				}
+			}
+			else
+			{
+				// This should fallback to "Slow-Pass" and default value handling.
+				// And they must be single segment, so next will be default.
+				first = sequence.FirstSpan;	
+			}
 		}
 	}
 }
