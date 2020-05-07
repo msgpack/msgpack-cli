@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../MsgPack.Abstraction/MsgPack.Abstraction.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../MsgPack.Core/Internal/MemoryExtensions.cs" Link="Internal/MemoryExtensions.cs" />
+    <Compile Include="../MsgPack.Core/System.Text/EncodingExtensions.cs" Link="System.Text/EncodingExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="System.Text/" />
+  </ItemGroup>
+
+</Project>

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 using MsgPack.Internal;
 
 namespace System.Text
@@ -141,7 +142,7 @@ namespace System.Text
 
 				ReadOnlySequence<char> remainingChars = chars;
 				int originalBytesLength = bytes.Length;
-				Encoder encoder = encoding.GetEncoder();
+				var encoder = encoding.GetEncoder();
 				bool isFinalSegment;
 
 				do
@@ -188,7 +189,7 @@ namespace System.Text
 				// If the incoming sequence is multi-segment, create a stateful Encoder
 				// and use it as the workhorse. On the final iteration we'll pass flush=true.
 
-				Encoder encoder = encoding.GetEncoder();
+				var encoder = encoding.GetEncoder();
 
 				// Maintain a list of all the segments we'll need to concat together.
 				// These will be released back to the pool at the end of the method.
@@ -352,7 +353,7 @@ namespace System.Text
 
 				ReadOnlySequence<byte> remainingBytes = bytes;
 				int originalCharsLength = chars.Length;
-				Decoder decoder = encoding.GetDecoder();
+				var decoder = encoding.GetDecoder();
 				bool isFinalSegment;
 
 				do
@@ -392,59 +393,68 @@ namespace System.Text
 			}
 			else
 			{
-				// If the incoming sequence is multi-segment, create a stateful Decoder
-				// and use it as the workhorse. On the final iteration we'll pass flush=true.
-
-				Decoder decoder = encoding.GetDecoder();
-
-				// Maintain a list of all the segments we'll need to concat together.
-				// These will be released back to the pool at the end of the method.
-
-				List<(char[], int)> listOfSegments = new List<(char[], int)>();
-				int totalCharCount = 0;
-
-				ReadOnlySequence<byte> remainingBytes = bytes;
-				bool isFinalSegment;
-
-				do
-				{
-					GetFirstSpan(remainingBytes, out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
-					isFinalSegment = remainingBytes.IsSingleSegment;
-
-					int charCountThisIteration = decoder.GetCharCount(firstSpan, flush: isFinalSegment); // could throw ArgumentException if overflow would occur
-					char[] rentedArray = ArrayPool<char>.Shared.Rent(charCountThisIteration);
-					int actualCharsWrittenThisIteration = decoder.GetChars(firstSpan, rentedArray, flush: isFinalSegment);
-					listOfSegments.Add((rentedArray, actualCharsWrittenThisIteration));
-
-					totalCharCount += actualCharsWrittenThisIteration;
-					if (totalCharCount < 0)
-					{
-						// If we overflowed, call string.Create, passing int.MaxValue.
-						// This will end up throwing the expected OutOfMemoryException
-						// since strings are limited to under int.MaxValue elements in length.
-
-						totalCharCount = Int32.MaxValue;
-						break;
-					}
-
-					remainingBytes = remainingBytes.Slice(next);
-				} while (!isFinalSegment);
-
-				// Now build up the string to return, then release all of our scratch buffers
-				// back to the shared pool.
-
-				return String.Create(totalCharCount, listOfSegments, (span, listOfSegments) =>
-				{
-					foreach ((char[] array, int length) in listOfSegments)
-					{
-						array.AsSpan(0, length).CopyTo(span);
-						ArrayPool<char>.Shared.Return(array);
-						span = span.Slice(length);
-					}
-
-					Debug.Assert(span.IsEmpty, "Over-allocated the string instance?");
-				});
+				return encoding.GetStringMultiSegment(bytes, ArrayPool<char>.Shared);
 			}
+		}
+
+		internal static string GetStringMultiSegment(this Encoding encoding, in ReadOnlySequence<byte> bytes, ArrayPool<char> arrayPool, CancellationToken cancellationToken = default)
+		{
+			// If the incoming sequence is multi-segment, create a stateful Decoder
+			// and use it as the workhorse. On the final iteration we'll pass flush=true.
+
+			var decoder = encoding.GetDecoder();
+
+			// Maintain a list of all the segments we'll need to concat together.
+			// These will be released back to the pool at the end of the method.
+
+			List<(char[], int)> listOfSegments = new List<(char[], int)>();
+			int totalCharCount = 0;
+
+			ReadOnlySequence<byte> remainingBytes = bytes;
+			bool isFinalSegment;
+
+			do
+			{
+				GetFirstSpan(remainingBytes, out ReadOnlySpan<byte> firstSpan, out SequencePosition next);
+				isFinalSegment = remainingBytes.IsSingleSegment;
+
+				int charCountThisIteration = decoder.GetCharCount(firstSpan, flush: isFinalSegment); // could throw ArgumentException if overflow would occur
+				char[] rentedArray = arrayPool.Rent(charCountThisIteration);
+				int actualCharsWrittenThisIteration = decoder.GetChars(firstSpan, rentedArray, flush: isFinalSegment);
+				listOfSegments.Add((rentedArray, actualCharsWrittenThisIteration));
+
+				totalCharCount += actualCharsWrittenThisIteration;
+				if (totalCharCount < 0)
+				{
+					foreach(var segment in listOfSegments)
+					{
+						arrayPool.Return(segment.Item1);
+					}
+
+					// overflow
+					Throw.TooLargeByteLengthForString(encoding.EncodingName);
+					// never reaches.
+					return null!;
+				}
+
+				remainingBytes = remainingBytes.Slice(next);
+				cancellationToken.ThrowIfCancellationRequested();
+			} while (!isFinalSegment);
+
+			// Now build up the string to return, then release all of our scratch buffers
+			// back to the shared pool.
+
+			return String.Create(totalCharCount, listOfSegments, (span, listOfSegments) =>
+			{
+				foreach ((char[] array, int length) in listOfSegments)
+				{
+					array.AsSpan(0, length).CopyTo(span);
+					arrayPool.Return(array);
+					span = span.Slice(length);
+				}
+
+				Debug.Assert(span.IsEmpty, "Over-allocated the string instance?");
+			});
 		}
 
 		/// <summary>

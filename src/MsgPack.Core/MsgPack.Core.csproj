@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../MsgPack.Abstraction/MsgPack.Abstraction.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../MsgPack/MessagePackCode.cs" Link="MessagePackCode.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Internal\MessagePackDecoder.Integers.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackDecoder.Integers.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internal\MessagePackDecoder.Nullables.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackDecoder.Nullables.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internal\MessagePackDecoder.Reals.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackDecoder.Reals.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internal\MessagePackEncoder.Integers.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackEncoder.Integers.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Internal\MessagePackEncoder.Strings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MessagePackEncoder.Strings.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Internal/MessagePackDecoder.Nullables.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackDecoder.Nullables.cs</LastGenOutput>
+    </None>
+    <None Update="Internal/MessagePackDecoder.Reals.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackDecoder.Reals.cs</LastGenOutput>
+    </None>
+    <None Update="Internal/MessagePackEncoder.Integers.tt">
+      <LastGenOutput>MessagePackEncoder.Integers.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Internal/MessagePackDecoder.Integers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MessagePackDecoder.Integers.cs</LastGenOutput>
+    </None>
+    <None Update="Internal/MessagePackEncoder.Strings.tt">
+      <LastGenOutput>MessagePackEncoder.Strings.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>
