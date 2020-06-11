@@ -18,4 +18,32 @@
     <Folder Include="System.Text/" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Json\JsonDecoder.Nullables.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JsonDecoder.Nullables.cs</LastGenOutput>
+    </None>
+    <None Update="Json\JsonDecoder.Numbers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JsonDecoder.Numbers.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Json\JsonDecoder.Nullables.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JsonDecoder.Nullables.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Json\JsonDecoder.Numbers.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JsonDecoder.Numbers.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

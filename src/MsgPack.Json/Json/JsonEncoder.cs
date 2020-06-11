@@ -1,137 +1,49 @@
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
+
 using System;
 using System.Buffers;
 using System.Buffers.Text;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using MsgPack.Internal;
 
 namespace MsgPack.Json
 {
-	internal static class JsonTokens
+	/// <summary>
+	///		An encoder for JSON format.
+	/// </summary>
+	public sealed class JsonEncoder : Encoder<NullExtensionType>
 	{
-		public static readonly ReadOnlyMemory<byte> Null = new[] { (byte)'n', (byte)'u', (byte)'l', (byte)'l' };
-		public static readonly ReadOnlyMemory<byte> True = new[] { (byte)'t', (byte)'r', (byte)'u', (byte)'e' };
-		public static readonly ReadOnlyMemory<byte> False = new[] { (byte)'f', (byte)'a', (byte)'l', (byte)'s', (byte)'e' };
-		public static readonly ReadOnlyMemory<byte> ArrayStart = new[] { (byte)'[' };
-		public static readonly ReadOnlyMemory<byte> ArrayEnd = new[] { (byte)']' };
-		public static readonly ReadOnlyMemory<byte> MapStart = new[] { (byte)'{' };
-		public static readonly ReadOnlyMemory<byte> MapEnd = new[] { (byte)'}' };
-		public static readonly ReadOnlyMemory<byte> Whitespace = new[] { (byte)' ' };
-		public static readonly ReadOnlyMemory<byte> Comma = new[] { (byte)',' };
-		public static readonly ReadOnlyMemory<byte> Colon = new[] { (byte)':' };
-		public static readonly ReadOnlyMemory<byte> Quatation = new[] { (byte)'"' };
-	}
+		private readonly Action<float, IBufferWriter<byte>, JsonEncoderOptions> _singleInfinityFormatter;
+		private readonly Action<float, IBufferWriter<byte>, JsonEncoderOptions> _singleNanFormatter;
+		private readonly Action<double, IBufferWriter<byte>, JsonEncoderOptions> _doubleInfinityFormatter;
+		private readonly Action<double, IBufferWriter<byte>, JsonEncoderOptions> _doubleNanFormatter;
+		private readonly ReadOnlyMemory<byte> _indentChars;
+		private readonly ReadOnlyMemory<byte> _newLineChars;
+		private readonly ReadOnlyMemory<byte> _escapeTargetChars1Byte;
+		private readonly ReadOnlyMemory<ushort> _escapeTargetChars2Byte;
+		private readonly ReadOnlyMemory<int> _escapeTargetChars4Byte;
+		private readonly bool _isPrettyPrint;
+		private readonly JsonEncoderOptions _options;
 
-	internal static class JsonCharactor
-	{
-		public static readonly ReadOnlyMemory<byte> MustBeEscaped = new int[] { '\\', '"' }.Concat(Enumerable.Range(0, 0x1F)).Select(i => unchecked((byte)i)).ToArray();
-		public static readonly ReadOnlyMemory<byte> ShouldBeEscaped = new[] { (byte)'/', (byte)'\'', (byte)'<', (byte)'>', (byte)'&' };
-		public static readonly ReadOnlyMemory<byte> CarriageReturn = new[] { (byte)'\r' };
-		public static readonly ReadOnlyMemory<byte> LineFeed = new[] { (byte)'\n' };
-	}
-
-	internal static class JsonEscapeSequence
-	{
-		public static readonly ReadOnlyMemory<byte> Unicode = new[] { (byte)'\\', (byte)'u' };
-
-		public static readonly ReadOnlyMemory<byte> ReverseSolidous = new[] { (byte)'\\', (byte)'\\' };
-		public static readonly ReadOnlyMemory<byte> Quatation = new[] { (byte)'\\', (byte)'"' };
-		public static readonly ReadOnlyMemory<byte> Tab = new[] { (byte)'\\', (byte)'t' };
-		public static readonly ReadOnlyMemory<byte> CarriageReturn = new[] { (byte)'\\', (byte)'r' };
-		public static readonly ReadOnlyMemory<byte> LineFeed = new[] { (byte)'\\', (byte)'n' };
-		public static readonly ReadOnlyMemory<byte> BackSpace = new[] { (byte)'\\', (byte)'b' };
-		public static readonly ReadOnlyMemory<byte> FormFeed = new[] { (byte)'\\', (byte)'f' };
-
-		public static readonly StandardFormat UnicodeFormat = new StandardFormat('X', 4);
-	}
-
-	public enum NaNHandling
-	{
-		Default = 0,
-		Null = 1,
-		Error = 2,
-		Custom = 3
-	}
-
-	public enum InfinityHandling
-	{
-		Default = 0,
-		MinMax = 1,
-		Error = 2,
-		Custom = 3
-	}
-
-	[Flags]
-	public enum JsonParseOptions
-	{
-		None = 0,
-		AllowHashSingleLineComment = 0x1,
-		AllowDoubleSolidousSingleLineComment = 0x2,
-		AllowUnicodeWhitespace = 0x10,
-		AllowAllTrivias = 0xFF,
-		AllowNaN = 0x100,
-		AllowInfinity = 0x200,
-		AllowUndefined = 0x1000,
-		AllowIrregalValues = 0xFF00,
-		AllowEqualSignSeparator = 0x10000,
-		AllowSemicolonDelimiter = 0x20000,
-		AllowExtraComma = 0x40000,
-		AllowSingleQuatationString = 0x100000,
-		AllowUnescapedNewLineInString = 0x200000,
-		AllowUnescapedTabInString = 0x400000,
-		AllowWellknownSyntaxErrors = 0xFF0000,
-		AllowAllErrors = unchecked((int)0xFFFFFFFF)
-	}
-
-	public class JsonEncoderOptionsBase
-	{
-#warning TODO: Options
-	}
-
-	public class JsonEncoderBase : Internal.Encoder
-	{
-#warning TODO: Abstract
-#warning TODO: tuning
-		private static readonly Func<float, Memory<byte>, int> s_singleFormatter =
-			(v, m) => Utf8Formatter.TryFormat(v, m.Span, out var used) ? used : -1;
-		private static readonly Func<float, Memory<byte>, int> s_defaultSingleNanFormatter =
-			(_, m) => WriteNull(m.Span);
-		private static readonly Func<float, Memory<byte>, int> s_defaultSingleInfinityFormatter =
-			(v, m) => Utf8Formatter.TryFormat(v < 0 ? Single.MinValue : Single.MaxValue, m.Span, out var used) ? used : -1;
-
-		private static readonly Func<double, Memory<byte>, int> s_doubleFormatter =
-			(v, m) => Utf8Formatter.TryFormat(v, m.Span, out var used) ? used : -1;
-		private static readonly Func<double, Memory<byte>, int> s_defaultDoubleNanFormatter =
-			(_, m) => WriteNull(m.Span);
-		private static readonly Func<double, Memory<byte>, int> s_defaultDoubleInfinityFormatter =
-			(v, m) => Utf8Formatter.TryFormat(v < 0 ? Single.MinValue : Single.MaxValue, m.Span, out var used) ? used : -1;
-
-		private readonly Func<float, Memory<byte>, int> _singleInfinityFormatter;
-		private readonly Func<float, Memory<byte>, int> _singleNanFormatter;
-		private readonly Func<double, Memory<byte>, int> _doubleInfinityFormatter;
-		private readonly Func<double, Memory<byte>, int> _doubleNanFormatter;
-		private readonly bool _doIndent;
-		private readonly byte[] _indentString;
-		private readonly byte[] _newLine;
-		private readonly ReadOnlyMemory<byte> _toBeEscaped;
-
-		private int _indentLevel;
-
-#warning TODO: Options
-		protected JsonEncoderBase()
+		public JsonEncoder(JsonEncoderOptions options)
+			: base(options)
 		{
-			this._singleInfinityFormatter = s_defaultSingleInfinityFormatter;
-			this._singleNanFormatter = s_defaultSingleNanFormatter;
-			this._doubleInfinityFormatter = s_defaultDoubleInfinityFormatter;
-			this._doubleNanFormatter = s_defaultDoubleNanFormatter;
-			this._doIndent = false;
-			this._indentString = new[] { (byte)' ', (byte)' ' };
-			this._newLine = new[] { (byte)'\n' };
-			this._toBeEscaped = JsonCharactor.MustBeEscaped;
+			this._options = options;
+			this._singleInfinityFormatter = options.SingleInfinityFormatter;
+			this._singleNanFormatter = options.SingleNaNFormatter;
+			this._doubleInfinityFormatter = options.DoubleInfinityFormatter;
+			this._doubleNanFormatter = options.DoubleNaNFormatter;
+			this._indentChars = options.IndentChars;
+			this._newLineChars = options.NewLineChars;
+			this._isPrettyPrint = options.IsPrettyPrint;
+			this._escapeTargetChars1Byte = options.EscapeTargetChars1Byte;
+			this._escapeTargetChars2Byte = options.EscapeTargetChars2Byte;
+			this._escapeTargetChars4Byte = options.EscapeTargetChars4Byte;
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
@@ -142,13 +54,15 @@ namespace MsgPack.Json
 				return -1;
 			}
 
-			JsonTokens.Null.Span.CopyTo(span);
+			JsonTokens.Null.CopyTo(span);
 			return 4;
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void Encode(int value, IBufferWriter<byte> buffer)
+		public override void EncodeInt32(int value, IBufferWriter<byte> buffer)
 		{
+			buffer = EnsureNotNull(buffer);
+
 			var span = buffer.GetSpan();
 			while (true)
 			{
@@ -165,8 +79,10 @@ namespace MsgPack.Json
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void Encode(long value, IBufferWriter<byte> buffer)
+		public override void EncodeUInt32(uint value, IBufferWriter<byte> buffer)
 		{
+			buffer = EnsureNotNull(buffer);
+
 			var span = buffer.GetSpan();
 			while (true)
 			{
@@ -183,158 +99,192 @@ namespace MsgPack.Json
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void Encode(float value, IBufferWriter<byte> buffer)
+		public override void EncodeInt64(long value, IBufferWriter<byte> buffer)
 		{
+			buffer = EnsureNotNull(buffer);
+
+			var span = buffer.GetSpan();
+			while (true)
+			{
+				if (!Utf8Formatter.TryFormat(value, span, out var used))
+				{
+					span = buffer.GetSpan(span.Length * 2);
+				}
+				else
+				{
+					buffer.Advance(used);
+					break;
+				}
+			}
+		}
+
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public override void EncodeUInt64(ulong value, IBufferWriter<byte> buffer)
+		{
+			buffer = EnsureNotNull(buffer);
+
+			var span = buffer.GetSpan();
+			while (true)
+			{
+				if (!Utf8Formatter.TryFormat(value, span, out var used))
+				{
+					span = buffer.GetSpan(span.Length * 2);
+				}
+				else
+				{
+					buffer.Advance(used);
+					break;
+				}
+			}
+		}
+
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public override void EncodeSingle(float value, IBufferWriter<byte> buffer)
+		{
+			buffer = EnsureNotNull(buffer);
+
 			var formatter =
 				Single.IsNaN(value) ?
 				this._singleNanFormatter :
 				Single.IsInfinity(value) ?
 				this._singleInfinityFormatter :
-				s_singleFormatter;
-
-			var memory = buffer.GetMemory();
-			while (true)
-			{
-				var used = formatter(value, memory);
-				if (used < 0)
-				{
-					memory = buffer.GetMemory(memory.Length * 2);
-				}
-				else
-				{
-					buffer.Advance(used);
-					break;
-				}
-			}
+				JsonFormatter.Format;
+			formatter(value, buffer, this._options);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void Encode(double value, IBufferWriter<byte> buffer)
+		public override void EncodeDouble(double value, IBufferWriter<byte> buffer)
 		{
+			buffer = EnsureNotNull(buffer);
+
 			var formatter =
 				Double.IsNaN(value) ?
 				this._doubleNanFormatter :
 				Double.IsInfinity(value) ?
 				this._doubleInfinityFormatter :
-				s_doubleFormatter;
-
-			var memory = buffer.GetMemory();
-			while (true)
-			{
-				var used = formatter(value, memory);
-				if (used < 0)
-				{
-					memory = buffer.GetMemory(memory.Length * 2);
-				}
-				else
-				{
-					buffer.Advance(used);
-					break;
-				}
-			}
+				JsonFormatter.Format;
+			formatter(value, buffer, this._options);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void Encode(bool value, IBufferWriter<byte> buffer)
+		public override void EncodeBoolean(bool value, IBufferWriter<byte> buffer)
 		{
+			buffer = EnsureNotNull(buffer);
+
 			if (value)
 			{
-				buffer.Write(JsonTokens.True.Span);
+				buffer.Write(JsonTokens.True);
 			}
 			else
 			{
-				buffer.Write(JsonTokens.False.Span);
+				buffer.Write(JsonTokens.False);
 			}
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public override void EncodeNull(IBufferWriter<byte> buffer)
-			=> buffer.Write(JsonTokens.Null.Span);
+			=> buffer.Write(JsonTokens.Null);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		protected void WriteIndent(IBufferWriter<byte> buffer)
+		private void WriteIndent(IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			if (this._doIndent)
+			buffer = EnsureNotNull(buffer);
+
+			if (this._isPrettyPrint)
 			{
-				buffer.Write(this._newLine);
-				for (var i = 0; i < this._indentLevel; i++)
+				buffer.Write(this._newLineChars.Span);
+				for (var i = 0; i < collectionContext.CurrentDepth; i++)
 				{
-					buffer.Write(this._indentString);
+					buffer.Write(this._indentChars.Span);
 				}
 			}
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeArrayStart(uint length, IBufferWriter<byte> buffer)
+		public override void EncodeArrayStart(int length, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			buffer.Write(JsonTokens.ArrayStart.Span);
-			this._indentLevel++;
+			buffer = EnsureNotNull(buffer);
+
+			buffer.Write(JsonTokens.ArrayStart);
+			collectionContext.IncrementDepth();
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeArrayEnd(uint length, IBufferWriter<byte> buffer)
+		public override void EncodeArrayEnd(int length, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			this._indentLevel--;
-			this.WriteIndent(buffer);
-			buffer.Write(JsonTokens.ArrayEnd.Span);
+			buffer = EnsureNotNull(buffer);
+
+			collectionContext.DecrementDepth();
+			this.WriteIndent(buffer, collectionContext);
+			buffer.Write(JsonTokens.ArrayEnd);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeArrayItemStart(uint index, IBufferWriter<byte> buffer)
+		public override void EncodeArrayItemStart(int index, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			this.WriteIndent(buffer);
+			buffer = EnsureNotNull(buffer);
+
+			this.WriteIndent(buffer, collectionContext);
 			if (index > 0)
 			{
-				buffer.Write(JsonTokens.Comma.Span);
+				buffer.Write(JsonTokens.Comma);
 			}
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeArrayItemEnd(uint index, IBufferWriter<byte> buffer) { }
+		public override void EncodeArrayItemEnd(int index, IBufferWriter<byte> buffer, in CollectionContext collectionContext) { }
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeMapStart(uint length, IBufferWriter<byte> buffer)
+		public override void EncodeMapStart(int length, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			buffer.Write(JsonTokens.MapStart.Span);
-			this._indentLevel++;
+			buffer = EnsureNotNull(buffer);
+
+			buffer.Write(JsonTokens.MapStart);
+			collectionContext.IncrementDepth();
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeMapEnd(uint length, IBufferWriter<byte> buffer)
+		public override void EncodeMapEnd(int length, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			this._indentLevel--;
-			this.WriteIndent(buffer);
-			buffer.Write(JsonTokens.MapEnd.Span);
+			buffer = EnsureNotNull(buffer);
+
+			collectionContext.DecrementDepth();
+			this.WriteIndent(buffer, collectionContext);
+			buffer.Write(JsonTokens.MapEnd);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeMapKeyStart(uint index, IBufferWriter<byte> buffer)
+		public override void EncodeMapKeyStart(int index, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			this.WriteIndent(buffer);
+			buffer = EnsureNotNull(buffer);
+
+			this.WriteIndent(buffer, collectionContext);
 			if (index > 0)
 			{
-				buffer.Write(JsonTokens.Comma.Span);
+				buffer.Write(JsonTokens.Comma);
 			}
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeMapKeyEnd(uint index, IBufferWriter<byte> buffer) { }
+		public override void EncodeMapKeyEnd(int index, IBufferWriter<byte> buffer, in CollectionContext collectionContext) { }
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeMapValueStart(uint index, IBufferWriter<byte> buffer)
+		public override void EncodeMapValueStart(int index, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			buffer.Write(JsonTokens.Colon.Span);
-			if (this._doIndent)
+			buffer = EnsureNotNull(buffer);
+
+			buffer.Write(JsonTokens.Colon);
+			if (this._isPrettyPrint)
 			{
-				buffer.Write(JsonTokens.Whitespace.Span);
+				buffer.Write(JsonTokens.Whitespace);
 			}
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeMapValueEnd(uint index, IBufferWriter<byte> buffer) { }
+		public override void EncodeMapValueEnd(int index, IBufferWriter<byte> buffer, in CollectionContext collectionContext) { }
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private static ReadOnlyMemory<byte> GetEscapeSequence(byte c, bool newLineAllowed)
+		private static ReadOnlySpan<byte> GetEscapeSequence(byte c, bool newLineAllowed)
 		{
 			switch (c)
 			{
@@ -381,137 +331,224 @@ namespace MsgPack.Json
 			}
 
 			// Use \uXXXX
-			return ReadOnlyMemory<byte>.Empty;
+			return ReadOnlySpan<byte>.Empty;
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override void EncodeString(ReadOnlySpan<byte> encodedValue, int charLength, IBufferWriter<byte> buffer)
+		public override void EncodeString(ReadOnlySpan<byte> encodedValue, int charLength, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default)
 		{
-			buffer.Write(JsonTokens.Quatation.Span);
+			buffer = EnsureNotNull(buffer);
 
-			this.EncodeStringBody(encodedValue, buffer);
+			buffer.Write(JsonTokens.Quatation);
+
+			this.EncodeStringBody(encodedValue, 0, buffer);
 
 			// End quot
-			buffer.Write(JsonTokens.Quatation.Span);
+			buffer.Write(JsonTokens.Quatation);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private void EncodeStringBody(ReadOnlySpan<byte> encodedValue, IBufferWriter<byte> buffer)
+		private void EncodeStringBody(ReadOnlySpan<byte> encodedValue, long position, IBufferWriter<byte> buffer)
 		{
 			var source = encodedValue;
-			var sink = buffer.GetSpan(encodedValue.Length);
 			while (!source.IsEmpty)
 			{
-				var moreBytes = this.EscapeStringContent(source, sink, out var sourceUsed, out var sinkUsed);
-				buffer.Advance(sinkUsed);
-				source = source.Slice(sourceUsed);
-				sink = buffer.GetSpan(moreBytes);
+				this.EscapeUtf8(ref source, ref position, buffer);
 			}
 		}
 
-		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private int EscapeStringContent(ReadOnlyMemory<byte> source, Memory<byte> sink, out int sourceUsed, out int sinkUsed)
-			=> this.EscapeStringContent(source.Span, sink.Span, out sourceUsed, out sinkUsed);
-
-		private int EscapeStringContent(ReadOnlySpan<byte> source, Span<byte> sink, out int sourceUsed, out int sinkUsed)
+		private void EscapeUtf8(ref ReadOnlySpan<byte> utf8, ref long position, IBufferWriter<byte> buffer)
 		{
-			sourceUsed = 0;
-			sinkUsed = 0;
-
-			while (!sink.IsEmpty)
+			if (utf8.IsEmpty)
 			{
-				var toBeEscaped = source.IndexOfAny(this._toBeEscaped.Span);
-				if (toBeEscaped < 0)
+				return;
+			}
+
+			if ((utf8[0] & 0b_1000_0000) == 0)
+			{
+				// 1 byte, 7bits
+				byte codePoint = (byte)(utf8[0] & 0b_0111_1111);
+
+				if (this._escapeTargetChars1Byte.Span.Contains(codePoint)
+					|| codePoint < 0x09 // Control chars must be escaped except horizontal tab
+					|| (this._options.EscapesHorizontalTab && codePoint == 0x09)
+					|| (codePoint > 0x09 && codePoint < 0x20) // Control chars must be escaped except horizontal tab
+					|| codePoint >= 0x7F  // Control chars must be escaped (DEL)
+					)
 				{
-					// Copy entire source to sink, and then advance buffer.
-					source.CopyTo(sink);
-					sourceUsed += source.Length;
-					sinkUsed += source.Length;
-					continue;
+					var escapeSequence = GetEscapeSequence(codePoint, newLineAllowed: false);
+					if (escapeSequence.IsEmpty)
+					{
+						EscapeCodePoint(codePoint, buffer);
+					}
+					else
+					{
+						buffer.Write(escapeSequence);
+					}
+				}
+				else
+				{
+					buffer.Write(utf8.Slice(0, 1));
 				}
 
-				if (toBeEscaped > 0)
+				utf8 = utf8.Slice(1);
+				position += 1;
+			}
+			else if ((utf8[0] & 0b_1110_0000) == 0b_1100_0000)
+			{
+				if (utf8.Length < 2)
 				{
-					// Copy source data which have not to be escaped to sink, and then advance buffer.
-					source.Slice(0, toBeEscaped).CopyTo(sink);
-					sink = sink.Slice(toBeEscaped);
-					sourceUsed += toBeEscaped;
-					sinkUsed += toBeEscaped;
-					source = source.Slice(toBeEscaped);
+					JsonThrow.TooShortUtf8();
 				}
 
-#warning TODO: OPTIONS
-				var escapeSequence = GetEscapeSequence(source[0], newLineAllowed: false);
-				switch (escapeSequence.Length)
+				// 2 bytes, 5 + 6 bits
+				var bits1 = utf8[0] & 0b_0001_1111;
+				var bits2 = utf8[1] & 0b_0011_1111;
+
+				if ((bits1 & 0b_1_1110) == 0
+					|| (utf8[1] & 0b_1100_0000) != 0b_1000_0000)
 				{
-					case 1:
-					{
-						// Does not escape because of the option.
-						sink[0] = source[0];
-						sink = sink.Slice(1);
-						sinkUsed++;
-						break;
-					}
-					case 0:
-					{
-						// \uXXXX escape
-						if (sink.Length < 6)
-						{
-							// Return to expecte realloc.
-							return source.Length + 6;
-						}
+					JsonThrow.MalformedUtf8(utf8, position);
+				}
 
-						JsonEscapeSequence.Unicode.Span.CopyTo(sink);
-						sink = sink.Slice(2); // \u
-						Utf8Formatter.TryFormat(source[0], sink, out _, JsonEscapeSequence.UnicodeFormat);
-						sink = sink.Slice(4); // xxxx
-						sinkUsed += 6;
-						break;
-					}
-					default:
-					{
-						// Use returned escape sequence
+				ushort codePoint = (ushort)((bits1 << 6) | (bits2 << 6));
 
-						if (sink.Length < escapeSequence.Length)
-						{
-							// Return to expecte realloc.
-							return source.Length + escapeSequence.Length;
-						}
+				if (codePoint < 0xA0 // Control chars must be escaped
+					|| this._escapeTargetChars2Byte.Span.Contains(codePoint))
+				{
+					EscapeCodePoint(codePoint, buffer);
+				}
+				else
+				{
+					buffer.Write(utf8.Slice(0, 1));
+				}
 
-						escapeSequence.Span.CopyTo(sink);
-						sink = sink.Slice(escapeSequence.Length);
-						sinkUsed += escapeSequence.Length;
-						break;
-					}
-				} // switch
+				utf8 = utf8.Slice(2);
+				position += 2;
+			}
+			else if ((utf8[0] & 0b_1111_0000) == 0b_1110_0000)
+			{
+				if (utf8.Length < 3)
+				{
+					JsonThrow.TooShortUtf8();
+				}
 
-				sourceUsed++;
-				source = source.Slice(1);
-			} // while (!source.IsEmpty)
+				if ((utf8[1] & 0b_1100_0000) != 0b_1000_0000
+					|| (utf8[2] & 0b_1100_0000) != 0b_1000_0000)
+				{
+					JsonThrow.MalformedUtf8(utf8, position);
+				}
 
-			return 0;
+				// 3 bytes, 4 + 6 + 6 bits
+				var bits1 = utf8[0] & 0b_0000_1111;
+				var bits2 = utf8[1] & 0b_0011_1111;
+				var bits3 = utf8[2] & 0b_0011_1111;
+
+				ushort codePoint = (ushort)((bits1 << 12) | (bits2 << 6) | bits3);
+
+				if ((codePoint & 0b_1111_100000_000000) == 0)
+				{
+					JsonThrow.MalformedUtf8(utf8, position);
+				}
+
+				if (!Rune.IsValid(codePoint))
+				{
+					JsonThrow.SurrogateCharInUtf8(position, codePoint);
+				}
+
+				if (codePoint >= 0xFFFE // U+FFFE and U+FFFF are Reserved
+					|| (this._options.EscapesPrivateUseCharactors && codePoint >= 0xE000 && codePoint <= 0xF8FF) // Privte Use
+					|| this._escapeTargetChars2Byte.Span.Contains(codePoint))
+				{
+					EscapeCodePoint(codePoint, buffer);
+				}
+				else
+				{
+					buffer.Write(utf8.Slice(0, 1));
+				}
+
+				utf8 = utf8.Slice(3);
+				position += 3;
+			}
+			else if ((utf8[0] & 0b_1111_1000) == 0b_1111_0000)
+			{
+				if (utf8.Length < 4)
+				{
+					JsonThrow.TooShortUtf8();
+				}
+
+				if ((utf8[1] & 0b_1100_0000) != 0b_1000_0000
+					|| (utf8[2] & 0b_1100_0000) != 0b_1000_0000
+					|| (utf8[3] & 0b_1100_0000) != 0b_1000_0000)
+				{
+					JsonThrow.MalformedUtf8(utf8, position);
+				}
+
+				// 4 bytes, 3 + 6 + 6 + 6 bits
+				var bits1 = (utf8[0] & 0b_0000_0111) << 18;
+				var bits2 = (utf8[1] & 0b_0011_1111) << 12;
+				var bits3 = (utf8[2] & 0b_0011_1111) << 6;
+				var bits4 = (utf8[3] & 0b_0011_1111);
+
+				int codePoint = ((bits1 << 18) | (bits2 << 12) | (bits1 << 6) | bits4);
+
+				if ((codePoint & 0b_111_110000_000000_000000) == 0)
+				{
+					JsonThrow.MalformedUtf8(utf8, position);
+				}
+
+				if ((this._options.EscapesPrivateUseCharactors && codePoint >= 0xF0000) // Private use
+					|| this._escapeTargetChars4Byte.Span.Contains(codePoint))
+				{
+					EscapeCodePoint(codePoint, buffer);
+				}
+				else
+				{
+					buffer.Write(utf8.Slice(0, 1));
+				}
+
+				utf8 = utf8.Slice(4);
+				position += 4;
+			}
+			else
+			{
+				JsonThrow.MalformedUtf8(utf8, position);
+			}
 		}
 
-		public override void EncodeString(in ReadOnlySequence<byte> encodedValue, int charLength, IBufferWriter<byte> buffer)
+		private static void EscapeCodePoint(int codePoint, IBufferWriter<byte> buffer)
 		{
+			buffer.Write(JsonEscapeSequence.Unicode);
+			Span<byte> numbers = stackalloc byte[4];
+			Utf8Formatter.TryFormat(codePoint, numbers, out _, JsonEscapeSequence.UnicodeFormat);
+			buffer.Write(numbers);
+		}
+
+		public override void EncodeString(in ReadOnlySequence<byte> encodedValue, int charLength, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default)
+		{
+			buffer = EnsureNotNull(buffer);
+
 			// Start quot
-			buffer.Write(JsonTokens.Quatation.Span);
+			buffer.Write(JsonTokens.Quatation);
 
 			var source = new SequenceReader<byte>(encodedValue);
 
 			while (!source.UnreadSpan.IsEmpty)
 			{
 				var length = source.UnreadSpan.Length;
-				this.EncodeStringBody(source.UnreadSpan, buffer);
+				this.EncodeStringBody(source.UnreadSpan, source.Consumed, buffer);
 				source.Advance(length);
 			}
 
 			// End quot
-			buffer.Write(JsonTokens.Quatation.Span);
+			buffer.Write(JsonTokens.Quatation);
 		}
 
-		public override void EncodeString(ReadOnlySpan<char> value, IBufferWriter<byte> buffer, Encoding encoding)
+		public override void EncodeString(ReadOnlySpan<char> value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
+			buffer = EnsureNotNull(buffer);
+			encoding = encoding ?? Utf8EncodingNonBom.Instance;
+
 			if (value.Length < 256)
 			{
 				// Fast-path with stackalloc
@@ -525,12 +562,12 @@ namespace MsgPack.Json
 				// Slow-path
 
 				// Start quot
-				buffer.Write(JsonTokens.Quatation.Span);
+				buffer.Write(JsonTokens.Quatation);
 
 				var encoder = encoding.GetEncoder();
 				var source = value;
 
-				var encodingBuffer = this.ByteArrayPool.Rent(Math.Min(2 * 1024 * 1024, encoding.GetMaxByteCount(unchecked((int)(value.Length & 0x1FFFFFFF)))));
+				var encodingBuffer = base.Options.ByteBufferPool.Rent(Math.Min(2 * 1024 * 1024, encoding.GetMaxByteCount(unchecked((int)(value.Length & 0x1FFFFFFF)))));
 				try
 				{
 					Span<byte> encodingSpan = encodingBuffer;
@@ -539,22 +576,25 @@ namespace MsgPack.Json
 						var length = source.Length;
 						encoder.Convert(source, encodingSpan, flush: source.Length <= encodingSpan.Length, out var charsUsed, out var bytesUsed, out _);
 
-						this.EncodeStringBody(encodingSpan.Slice(0, bytesUsed), buffer);
+						this.EncodeStringBody(encodingSpan.Slice(0, bytesUsed), position: 0 /* should not be used because ALWAYS valid UTF-8 */, buffer);
 						source = source.Slice(charsUsed);
 					}
 				}
 				finally
 				{
-					this.ByteArrayPool.Return(encodingBuffer, this.ClearsBufferPool);
+					base.Options.ByteBufferPool.Return(encodingBuffer, base.Options.ClearsBuffer);
 				}
 
 				// End quot
-				buffer.Write(JsonTokens.Quatation.Span);
+				buffer.Write(JsonTokens.Quatation);
 			}
 		}
 
-		public override void EncodeString(in ReadOnlySequence<char> value, IBufferWriter<byte> buffer, Encoding encoding)
+		public override void EncodeString(in ReadOnlySequence<char> value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
+			buffer = EnsureNotNull(buffer);
+			encoding = encoding ?? Utf8EncodingNonBom.Instance;
+
 			if (value.IsSingleSegment)
 			{
 				this.EncodeString(value.FirstSpan, buffer, encoding);
@@ -574,211 +614,102 @@ namespace MsgPack.Json
 				// Slow-path
 
 				// Start quot
-				buffer.Write(JsonTokens.Quatation.Span);
+				buffer.Write(JsonTokens.Quatation);
 
 				var encoder = encoding.GetEncoder();
 				var source = new SequenceReader<char>(value);
 
-				var encodingBuffer = this.ByteArrayPool.Rent(Math.Min(2 * 1024 * 1024, encoding.GetMaxByteCount(unchecked((int)(value.Length & 0x1FFFFFFF)))));
+				var encodingBuffer = base.Options.ByteBufferPool.Rent(Math.Min(2 * 1024 * 1024, encoding.GetMaxByteCount(unchecked((int)(value.Length & 0x1FFFFFFF)))));
 				try
 				{
 					Span<byte> encodingSpan = encodingBuffer;
 					while (!source.UnreadSpan.IsEmpty)
 					{
+						cancellationToken.ThrowIfCancellationRequested();
+
 						var length = source.UnreadSpan.Length;
 						encoder.Convert(source.UnreadSpan, encodingSpan, flush: source.Remaining <= encodingSpan.Length, out var charsUsed, out var bytesUsed, out _);
 
-						this.EncodeStringBody(encodingSpan.Slice(0, bytesUsed), buffer);
+						this.EncodeStringBody(encodingSpan.Slice(0, bytesUsed), position: 0 /* should not be used because ALWAYS valid UTF-8 */, buffer);
 						source.Advance(charsUsed);
 					}
 				}
 				finally
 				{
-					this.ByteArrayPool.Return(encodingBuffer, this.ClearsBufferPool);
+					base.Options.ByteBufferPool.Return(encodingBuffer, base.Options.ClearsBuffer);
 				}
 
 				// End quot
-				buffer.Write(JsonTokens.Quatation.Span);
+				buffer.Write(JsonTokens.Quatation);
 			}
 		}
 
-		protected override async ValueTask<long> EncodeLargeStringCoreAsync(TextReader source, Stream sink, Encoding encoding, Func<Stream> bufferStreamProvider, CancellationToken cancellationToken)
+		public override void EncodeBinary(ReadOnlySpan<byte> value, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default)
 		{
 			// Start quot
-			await sink.WriteAsync(JsonTokens.Quatation, cancellationToken).ConfigureAwait(false);
-			long written = JsonTokens.Quatation.Length;
+			buffer.Write(JsonTokens.Quatation);
 
-			var maxBytesPerChar = encoding.GetMaxByteCount(1);
-			var encoder = encoding.GetEncoder();
-			var charBufferLength = ByteBufferLength / maxBytesPerChar;
-
-			var encodingBufferArray = this.ByteArrayPool.Rent(ByteBufferLength);
-			try
+			if (value.Length < this.Options.CancellationSupportThreshold)
 			{
-				var sourceBufferArray = this.CharArrayPool.Rent(charBufferLength);
-				try
-				{
-					var escapingBufferArray = this.ByteArrayPool.Rent(ByteBufferLength);
-					try
-					{
-						Memory<char> sourceBuffer = sourceBufferArray;
-						Memory<byte> encodingBuffer = encodingBufferArray;
-						Memory<byte> escapingBuffer = escapingBufferArray;
-
-						bool completed = false;
-
-						do
-						{
-							var readLength = await source.ReadAsync(sourceBuffer, cancellationToken).ConfigureAwait(false);
-							var shouldFlush = readLength <= sourceBuffer.Length && source.Peek() < 0;
-							var chars = sourceBuffer.Slice(0, readLength);
-							while (!chars.IsEmpty)
-							{
-								encoder.Convert(chars, encodingBuffer, shouldFlush, out var charsUsed, out var bytesUsed, out completed);
-								encodingBuffer = encodingBuffer.Slice(0, bytesUsed);
-
-								while (!encodingBuffer.IsEmpty)
-								{
-									var moreEscapingBufferSize = this.EscapeStringContent(encodingBuffer, escapingBuffer, out var encodingBufferUsed, out var escapingBufferUsed);
-
-									await sink.WriteAsync(escapingBuffer.Slice(0, escapingBufferUsed), cancellationToken).ConfigureAwait(false);
-									written += escapingBufferUsed;
-
-									encodingBuffer = encodingBuffer.Slice(encodingBufferUsed);
-									escapingBuffer = escapingBuffer.Compact(escapingBufferArray, escapingBufferUsed);
-								}
-
-								chars = chars.Slice(charsUsed);
-							}
-						} while (!completed);
-					}
-					finally
-					{
-						this.ByteArrayPool.Return(escapingBufferArray, this.ClearsBufferPool);
-					}
-				}
-				finally
-				{
-					this.CharArrayPool.Return(sourceBufferArray, this.ClearsBufferPool);
-				}
+				// Enough space -- over 138% 
+				var span = buffer.GetSpan((int)(value.Length * 1.38));
+				Base64.EncodeToUtf8(value, span, out var bytesConsumed, out var bytesWritten, isFinalBlock: true);
+				buffer.Advance(bytesWritten);
 			}
-			finally
+			else
 			{
-				this.ByteArrayPool.Return(encodingBufferArray, this.ClearsBufferPool);
+				EncodeBinarySlow(value, buffer, this.Options.CancellationSupportThreshold, cancellationToken);
 			}
 
 			// End quot
-			await sink.WriteAsync(JsonTokens.Quatation, cancellationToken).ConfigureAwait(false);
-			written += JsonTokens.Quatation.Length;
-
-			return written;
+			buffer.Write(JsonTokens.Quatation);
 		}
 
-		public override void EncodeBinary(ReadOnlySpan<byte> value, IBufferWriter<byte> buffer)
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void EncodeBinarySlow(ReadOnlySpan<byte> value, IBufferWriter<byte> buffer, int bufferSize, CancellationToken cancellationToken)
 		{
+			while (true)
+			{
+				var span = buffer.GetSpan(bufferSize);
+				if (Base64.EncodeToUtf8(value, span, out var bytesConsumed, out var bytesWritten, isFinalBlock: value.IsEmpty) == OperationStatus.Done)
+				{
+					break;
+				}
+
+				buffer.Advance(bytesWritten);
+				value = value.Slice(bytesConsumed);
+				cancellationToken.ThrowIfCancellationRequested();
+			}
+		}
+
+		public override void EncodeBinary(in ReadOnlySequence<byte> value, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default)
+		{
+			if (value.IsSingleSegment)
+			{
+				// Fast-path
+				this.EncodeBinary(value.FirstSpan, buffer, cancellationToken);
+				return;
+			}
+
 			// Start quot
-			buffer.Write(JsonTokens.Quatation.Span);
+			buffer.Write(JsonTokens.Quatation);
 
-			// Enough space -- over 138% 
-			var span = buffer.GetSpan((int)(value.Length * 1.38));
-			Base64.EncodeToUtf8(value, span, out var bytesConsumed, out var bytesWritten, isFinalBlock: true);
-			buffer.Advance(bytesWritten);
-
-			// End quot
-			buffer.Write(JsonTokens.Quatation.Span);
-		}
-
-		public override void EncodeBinary(in ReadOnlySequence<byte> value, IBufferWriter<byte> buffer)
-		{
-			// Start quot
-			buffer.Write(JsonTokens.Quatation.Span);
-
-			var array = this.ByteArrayPool.Rent(ByteBufferLength);
-			try
+			var reader = new SequenceReader<byte>(value);
+			while (true)
 			{
-				var reader = new SequenceReader<byte>(value);
-				Span<byte> sourceBuffer = array;
-
-				while (true)
+				var span = buffer.GetSpan(this.Options.CancellationSupportThreshold);
+				if (Base64.EncodeToUtf8(reader.UnreadSpan, span, out var bytesConsumed, out var bytesWritten, isFinalBlock: reader.End) == OperationStatus.Done)
 				{
-					if (!reader.TryCopyTo(sourceBuffer))
-					{
-						while (!reader.End)
-						{
-							reader.UnreadSpan.CopyTo(sourceBuffer);
-							sourceBuffer = sourceBuffer.Slice(0, reader.UnreadSpan.Length);
-							reader.Advance(reader.UnreadSpan.Length);
-						}
-					}
-
-					var span = buffer.GetSpan(sourceBuffer.Length * 2);
-					var status = Base64.EncodeToUtf8(sourceBuffer, span, out var bytesConsumed, out var bytesWritten, reader.End);
-					buffer.Advance(bytesWritten);
-					reader.Advance(bytesConsumed);
-					sourceBuffer = array;
-
-					if (status == OperationStatus.Done && reader.End)
-					{
-						break;
-					}
+					break;
 				}
 
-				// End quot
-				buffer.Write(JsonTokens.Quatation.Span);
-			}
-			finally
-			{
-				this.ByteArrayPool.Return(array, this.ClearsBufferPool);
+				buffer.Advance(bytesWritten);
+				reader.Advance(bytesConsumed);
+				cancellationToken.ThrowIfCancellationRequested();
 			}
 
 			// End quot
-			buffer.Write(JsonTokens.Quatation.Span);
-		}
-
-		protected override async ValueTask<long> EncodeLargeBinaryCoreAsync(Stream source, Stream sink, Func<Stream> bufferStreamProvider, CancellationToken cancellationToken)
-		{
-			static OperationStatus EncodeBase64ToUtf8(ReadOnlyMemory<byte> sourceMemory, Memory<byte> sinkMemory, out int bytesConsumed, out int bytesWritten, bool isFinalBlock)
-				=> Base64.EncodeToUtf8(sourceMemory.Span, sinkMemory.Span, out bytesConsumed, out bytesWritten, isFinalBlock);
-
-			// End quot
-			await sink.WriteAsync(JsonTokens.Quatation, cancellationToken).ConfigureAwait(false);
-			long written = JsonTokens.Quatation.Length;
-
-			var sourceBufferArray = this.ByteArrayPool.Rent(ByteBufferLength / 2);
-			try
-			{
-				var sinkBufferArray = this.ByteArrayPool.Rent(ByteBufferLength);
-				try
-				{
-					Memory<byte> sourceBuffer = sourceBufferArray;
-					Memory<byte> sinkBuffer = sinkBufferArray;
-
-					while (true)
-					{
-						await source.ReadAsync(sourceBuffer, cancellationToken).ConfigureAwait(false);
-
-						var status = EncodeBase64ToUtf8(sourceBuffer, sinkBuffer, out var sourceConsumed, out var sinkWritten, source.Position == source.Length);
-
-						if (status == OperationStatus.Done && source.Position == source.Length)
-						{
-							break;
-						}
-					}
-				}
-				finally
-				{
-					this.ByteArrayPool.Return(sinkBufferArray, this.ClearsBufferPool);
-				}
-			}
-			finally
-			{
-				this.ByteArrayPool.Return(sourceBufferArray, this.ClearsBufferPool);
-			}
-
-			// End quot
-			await sink.WriteAsync(JsonTokens.Quatation, cancellationToken).ConfigureAwait(false);
-			written += JsonTokens.Quatation.Length;
-			return written;
+			buffer.Write(JsonTokens.Quatation);
 		}
 	}
 }
