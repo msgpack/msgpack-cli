@@ -27,7 +27,7 @@ using System;
 namespace MsgPack
 {
 #if UNITY && DEBUG
-		public
+	public
 #else
 	internal
 #endif

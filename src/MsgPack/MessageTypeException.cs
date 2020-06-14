@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -36,13 +36,13 @@ namespace MsgPack
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with the default error message.
 		/// </summary>
-		public MessageTypeException() : this( null ) { }
+		public MessageTypeException() : this(null) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message.
 		/// </summary>
 		/// <param name="message">The message that describes the error. </param>
-		public MessageTypeException( string message ) : this( message, null ) { }
+		public MessageTypeException(string? message) : this(message, null) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception. 
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// <param name="inner">
 		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
 		/// </param>
-		public MessageTypeException( string message, Exception inner ) : base( message ?? "Invalid message type.", inner ) { }
+		public MessageTypeException(string? message, Exception? inner) : base(message ?? "Invalid message type.", inner) { }
 
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
@@ -68,7 +68,7 @@ namespace MsgPack
 		/// <exception cref="SerializationException">
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
-		protected MessageTypeException( SerializationInfo info, StreamingContext context ) : base( info, context ) { }
+		protected MessageTypeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 #endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }

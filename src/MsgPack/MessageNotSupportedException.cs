@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -36,13 +36,13 @@ namespace MsgPack
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with the default error message.
 		/// </summary>
-		public MessageNotSupportedException() : this( null ) { }
+		public MessageNotSupportedException() : this(null) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with a specified error message.
 		/// </summary>
 		/// <param name="message">The message that describes the error. </param>
-		public MessageNotSupportedException( string message ) : this( message, null ) { }
+		public MessageNotSupportedException(string? message) : this(message, null) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception. 
@@ -51,7 +51,7 @@ namespace MsgPack
 		/// <param name="inner">
 		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
 		/// </param>
-		public MessageNotSupportedException( string message, Exception inner ) : base( message ?? "Specified object is not supported.", inner ) { }
+		public MessageNotSupportedException(string? message, Exception? inner) : base(message ?? "Specified object is not supported.", inner) { }
 
 #if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
@@ -68,8 +68,8 @@ namespace MsgPack
 		/// <exception cref="SerializationException">
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
-		private MessageNotSupportedException( SerializationInfo info, StreamingContext context )
-			: base( info, context ) { }
+		private MessageNotSupportedException(SerializationInfo info, StreamingContext context)
+			: base(info, context) { }
 #endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 	}
 }
