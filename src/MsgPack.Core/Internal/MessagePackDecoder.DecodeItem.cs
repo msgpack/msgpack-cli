@@ -12,14 +12,13 @@ namespace MsgPack.Internal
 {
 	public partial class MessagePackDecoder
 	{
-		public sealed override ElementType DecodeItem(in SequenceReader<byte> source, out ReadOnlySequence<byte> valueOrLength, out int requestHint, CancellationToken cancellationToken = default)
+		public sealed override bool DecodeItem(in SequenceReader<byte> source, out DecodeItemResult<MessagePackExtensionType> result, CancellationToken cancellationToken = default)
 		{
-			var elementType = this.ReadHeader(source, out var consumed, out var valueOrLengthScalar, out var requestHint32);
-			if (requestHint32 != 0)
+			var elementType = this.ReadHeader(source, out var consumed, out var valueOrLength, out var requestHint);
+			if (requestHint != 0)
 			{
-				requestHint = requestHint32;
-				valueOrLength = default;
-				return ElementType.Null;
+				result = DecodeItemResult<MessagePackExtensionType>.InsufficientInput(requestHint);
+				return false;
 			}
 
 			requestHint = 0;
@@ -27,10 +26,18 @@ namespace MsgPack.Internal
 			switch (elementType)
 			{
 				case ElementType.True:
+				{
+					result = DecodeItemResult<MessagePackExtensionType>.True();
+					break;
+				}
 				case ElementType.False:
+				{
+					result = DecodeItemResult<MessagePackExtensionType>.False();
+					break;
+				}
 				case ElementType.Null:
 				{
-					valueOrLength = default;
+					result = DecodeItemResult<MessagePackExtensionType>.Null();
 					break;
 				}
 				case ElementType.Int32:
@@ -38,55 +45,68 @@ namespace MsgPack.Internal
 				{
 					var buffer = new byte[sizeof(int)];
 					var span = MemoryMarshal.Cast<byte, int>(buffer);
-					span[0] = (int)valueOrLengthScalar;
-					valueOrLength = new ReadOnlySequence<byte>(buffer);
+					span[0] = (int)valueOrLength;
+					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, buffer);
 					break;
 				}
 				case ElementType.Array:
 				case ElementType.Map:
+				{
+					this.DecodeArrayOrMap(source, out var iterator);
+					result = DecodeItemResult<MessagePackExtensionType>.CollectionHeader(elementType, this.CreateIterator((uint)valueOrLength), valueOrLength);
+					break;
+				}
 				case ElementType.Int64:
 				case ElementType.UInt64:
 				case ElementType.Double:
 				{
 					var buffer = new byte[sizeof(long)];
 					var span = MemoryMarshal.Cast<byte, long>(buffer);
-					span[0] = valueOrLengthScalar;
-					valueOrLength = new ReadOnlySequence<byte>(buffer);
+					span[0] = valueOrLength;
+					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, buffer);
 					break;
 				}
 				case ElementType.String:
 				case ElementType.Binary:
 				{
-					if (source.Remaining < valueOrLengthScalar + consumed)
+					if (source.Remaining < valueOrLength + consumed)
 					{
-						requestHint = (int)((valueOrLengthScalar + consumed - source.Remaining) & Int32.MaxValue);
-						valueOrLength = default;
-						return default;
+						result =
+							DecodeItemResult < MessagePackExtensionType >.InsufficientInput(
+								(int)((valueOrLength + consumed - source.Remaining) & Int32.MaxValue)
+							);
+						return false;
 					}
 
-					valueOrLength = source.Sequence.Slice(source.Consumed + consumed, valueOrLengthScalar);
-					consumed += valueOrLengthScalar;
+					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, source.Sequence.Slice(source.Consumed + consumed, valueOrLength));
+					consumed += valueOrLength;
 					break;
 				}
 				default:
 				{
 					Debug.Assert(elementType == ElementType.Extension, $"elementType({elementType}, 0x{elementType:X8}) == ElementType.Extension");
 
-					if(source.Remaining < valueOrLengthScalar + consumed)
+					if(source.Remaining < valueOrLength + consumed)
 					{
-						requestHint = (int)((valueOrLengthScalar + consumed - source.Remaining) & Int32.MaxValue);
-						valueOrLength = default;
-						return default;
+						result =
+							DecodeItemResult<MessagePackExtensionType>.InsufficientInput(
+								(int)((valueOrLength + consumed - source.Remaining) & Int32.MaxValue)
+							);
+						return false;
 					}
 
-					valueOrLength = source.Sequence.Slice(source.Consumed + consumed, valueOrLengthScalar + 1 /* typeCode */);
-					consumed += valueOrLengthScalar;
+					var extensionSlice = source.Sequence.Slice(source.Consumed + consumed - 1);
+					var typeCode = new MessagePackExtensionType(extensionSlice.FirstSpan[0]);
+					var body = extensionSlice.Slice(1, valueOrLength);
+
+					result = DecodeItemResult<MessagePackExtensionType>.ExtensionTypeObject(typeCode, body);
+					consumed += valueOrLength;
 					break;
 				}
 			}
 
 			source.Advance(consumed);
-			return elementType;
+			return true;
 		}
 
 		private ElementType ReadHeader(in SequenceReader<byte> source, out long consumed, out long valueOrLength, out int requestHint)

@@ -44,7 +44,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public bool TryPeek(in SequenceReader<byte> source, out byte value) => source.TryRead(out value);
 
-		public abstract ElementType DecodeItem(in SequenceReader<byte> source, out ReadOnlySequence<byte> valueOrLength, out int requestHint, CancellationToken cancellationToken = default);
+		public abstract bool DecodeItem(in SequenceReader<byte> source, out DecodeItemResult<TExtensionType> result, CancellationToken cancellationToken = default);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void GetRawString(in SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, CancellationToken cancellationToken = default)
