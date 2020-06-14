@@ -10,17 +10,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Internal/Decoder.Strings.tt">
+    <None Update="Internal\Decoder`1.Strings.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Decoder.Strings.cs</LastGenOutput>
+      <LastGenOutput>Decoder`1.Strings.cs</LastGenOutput>
     </None>
-    <None Update="Internal/Encoder.Primitives.tt">
-      <LastGenOutput>Encoder.Primitives.cs</LastGenOutput>
+    <None Update="Internal\Encoder`1.Primitives.tt">
+      <LastGenOutput>Encoder`1.Primitives.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Internal/Decoder.Primitives.tt">
+    <None Update="Internal\Decoder`1.Primitives.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Decoder.Primitives.cs</LastGenOutput>
+      <LastGenOutput>Decoder`1.Primitives.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -29,20 +29,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Internal\Decoder.Primitives.cs">
+    <Compile Update="Internal\Decoder`1.Primitives.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Decoder.Primitives.tt</DependentUpon>
+      <DependentUpon>Decoder`1.Primitives.tt</DependentUpon>
     </Compile>
-    <Compile Update="Internal\Decoder.Strings.cs">
+    <Compile Update="Internal\Decoder`1.Strings.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Decoder.Strings.tt</DependentUpon>
+      <DependentUpon>Decoder`1.Strings.tt</DependentUpon>
     </Compile>
-    <Compile Update="Internal\Encoder.Primitives.cs">
+    <Compile Update="Internal\Encoder`1.Primitives.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Encoder.Primitives.tt</DependentUpon>
+      <DependentUpon>Encoder`1.Primitives.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   

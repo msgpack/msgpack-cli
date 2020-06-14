@@ -69,20 +69,20 @@ namespace MsgPack.Internal
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override void EncodeExtension(sbyte typeCode, ReadOnlySpan<byte> serializedValue, IBufferWriter<byte> buffer)
+		public sealed override void EncodeExtension(MessagePackExtensionType typeCode, ReadOnlySpan<byte> serializedValue, IBufferWriter<byte> buffer)
 		{
 			EncodeExtensionHeader(typeCode, unchecked((uint)serializedValue.Length), buffer);
 			buffer.Write(serializedValue);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override void EncodeExtension(sbyte typeCode, in ReadOnlySequence<byte> serializedValue, IBufferWriter<byte> buffer)
+		public sealed override void EncodeExtension(MessagePackExtensionType typeCode, in ReadOnlySequence<byte> serializedValue, IBufferWriter<byte> buffer)
 		{
 			EncodeExtensionHeader(typeCode, unchecked((uint)serializedValue.Length), buffer);
 			this.WriteRaw(serializedValue, buffer);
 		}
 
-		private static void EncodeExtensionHeader(sbyte typeCode, uint serializedValueLength, IBufferWriter<byte> buffer)
+		private static void EncodeExtensionHeader(MessagePackExtensionType typeCode, uint serializedValueLength, IBufferWriter<byte> buffer)
 		{
 			switch (serializedValueLength)
 			{
@@ -154,7 +154,7 @@ namespace MsgPack.Internal
 			// type code
 			{
 				var span = buffer.GetSpan(1);
-				span[0] = unchecked((byte)typeCode);
+				span[0] = unchecked(typeCode.TypeCode);
 				buffer.Advance(1);
 			}
 		}

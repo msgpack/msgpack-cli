@@ -12,18 +12,18 @@ using MsgPack.Serialization.Internal;
 
 namespace MsgPack.Serialization
 {
-	public abstract class Serializer<T>
+	public abstract class Serializer<T, TExtentionType>
 	{
-		private readonly Func<Encoder> _encoderFactory;
-		private readonly Func<Decoder> _decoderFactory;
-		private readonly IObjectSerializer<T> _underlying;
+		private readonly Func<Encoder<TExtentionType>> _encoderFactory;
+		private readonly Func<Decoder<TExtentionType>> _decoderFactory;
+		private readonly IObjectSerializer<T, TExtentionType> _underlying;
 		private readonly SerializationOptions _serializationOptions;
 		private readonly DeserializationOptions _deserializationOptions;
 
 		protected Serializer(
-			Func<Encoder> encoderFactory,
-			Func<Decoder> decoderFactory,
-			IObjectSerializer<T> underlying,
+			Func<Encoder<TExtentionType>> encoderFactory,
+			Func<Decoder<TExtentionType>> decoderFactory,
+			IObjectSerializer<T, TExtentionType> underlying,
 			SerializationOptions serializationOptions,
 			DeserializationOptions deserializationOptions
 		)
@@ -35,11 +35,11 @@ namespace MsgPack.Serialization
 			this._deserializationOptions = Ensure.NotNull(deserializationOptions);
 		}
 
-		private void InitializeSerializationOperationContext(CancellationToken cancellationToken, out SerializationOperationContext context)
-			=> context = new SerializationOperationContext(this._encoderFactory(), this._serializationOptions, cancellationToken);
+		private void InitializeSerializationOperationContext(CancellationToken cancellationToken, out SerializationOperationContext<TExtentionType> context)
+			=> context = new SerializationOperationContext<TExtentionType>(this._encoderFactory(), this._serializationOptions, cancellationToken);
 
-		private void InitializeDeserializationOperationContext(CancellationToken cancellationToken, out DeserializationOperationContext context)
-			=> context = new DeserializationOperationContext(this._decoderFactory(), this._deserializationOptions, cancellationToken);
+		private void InitializeDeserializationOperationContext(CancellationToken cancellationToken, out DeserializationOperationContext<TExtentionType> context)
+			=> context = new DeserializationOperationContext<TExtentionType>(this._decoderFactory(), this._deserializationOptions, cancellationToken);
 
 		public void Serialize(T obj, IBufferWriter<byte> sink, CancellationToken cancellationToken = default)
 		{

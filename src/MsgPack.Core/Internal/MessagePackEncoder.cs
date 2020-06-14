@@ -14,7 +14,7 @@ namespace MsgPack.Internal
 	/// <summary>
 	///		Common encoder implementation between legacy and current MessagePack format enconders.
 	/// </summary>
-	public abstract partial class MessagePackEncoder : Encoder
+	public abstract partial class MessagePackEncoder : Encoder<MessagePackExtensionType>
 	{
 #warning TODO: Can devirt?
 		public static MessagePackEncoder CreateLegacy(MessagePackEncoderOptions options) => new LegacyMessagePackEncoder(options);

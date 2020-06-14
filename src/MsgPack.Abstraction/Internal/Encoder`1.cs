@@ -13,10 +13,11 @@ namespace MsgPack.Internal
 	/// <summary>
 	///		Defines an interface and basic functionarity of stateless <see cref="Encoder"/>.
 	/// </summary>
+	/// <typeparam name="TExtensionType">A type of extension type.</typeparam>
 	/// <remarks>
 	///		The <see cref="Encoder"/> is stateless, so caller (serializer, reader, etc.) can cache the instance for performance.
 	/// </remarks>
-	public abstract partial class Encoder
+	public abstract partial class Encoder<TExtensionType>
 	{
 		public EncoderOptions Options { get; }
 
@@ -81,10 +82,10 @@ namespace MsgPack.Internal
 
 		public abstract void EncodeMapValueEnd(int index, IBufferWriter<byte> buffer, in CollectionContext collectionContext);
 
-		public virtual void EncodeExtension(sbyte typeCode, ReadOnlySpan<byte> serializedValue, IBufferWriter<byte> buffer)
+		public virtual void EncodeExtension(TExtensionType typeCode, ReadOnlySpan<byte> serializedValue, IBufferWriter<byte> buffer)
 			=> Throw.ExtensionsIsNotSupported();
 
-		public virtual void EncodeExtension(sbyte typeCode, in ReadOnlySequence<byte> serializedValue, IBufferWriter<byte> buffer)
+		public virtual void EncodeExtension(TExtensionType typeCode, in ReadOnlySequence<byte> serializedValue, IBufferWriter<byte> buffer)
 			=> Throw.ExtensionsIsNotSupported();
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]

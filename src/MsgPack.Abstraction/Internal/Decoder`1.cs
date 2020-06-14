@@ -9,9 +9,16 @@ using System.Threading;
 
 namespace MsgPack.Internal
 {
-	public abstract partial class Decoder
 #warning TODO: Use 'Try' prefix for published APIs which can return 'requestHint'.
 
+	/// <summary>
+	///		Defines an interface and basic functionarity of stateless <see cref="Decoder"/>.
+	/// </summary>
+	/// <typeparam name="TExtensionType">A type of extension type.</typeparam>
+	/// <remarks>
+	///		The <see cref="Decoder"/> is stateless, so caller (serializer, writer, etc.) can cache the instance for performance.
+	/// </remarks>
+	public abstract partial class Decoder<TExtensionType>
 	{
 		public FormatFeatures FormatFeatures { get; }
 
@@ -164,13 +171,13 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not a map.</exception>
 		public abstract long DecodeMapHeader(in SequenceReader<byte> source, out int requestHint);
 
-		public virtual void DecodeExtension(in SequenceReader<byte> source, out byte typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
+		public virtual void DecodeExtension(in SequenceReader<byte> source, out TExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			Throw.ExtensionsIsNotSupported();
 			// never
 			body = default;
 			requestHint = -1;
-			typeCode = default;
+			typeCode = default!;
 		}
 
 		public CollectionType DecodeArrayOrMap(in SequenceReader<byte> source, out CollectionItemIterator iterator)

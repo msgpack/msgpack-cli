@@ -104,7 +104,7 @@ namespace MsgPack.Internal
 			return length;
 		}
 
-		public override void DecodeExtension(in SequenceReader<byte> source, out byte typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
+		public override void DecodeExtension(in SequenceReader<byte> source, out MessagePackExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			var bodyLength = this.ReadExtensionHeader(source, out var consumed, out requestHint);
 			if (requestHint != 0)
@@ -114,14 +114,16 @@ namespace MsgPack.Internal
 				return;
 			}
 
-			if (!this.TryPeek(source, out typeCode))
+			if (!this.TryPeek(source, out byte typeCodeByte))
 			{
 				requestHint = 1;
+				typeCode = default;
 				body = default;
 				return;
 			}
 
 			consumed++;
+			typeCode = new MessagePackExtensionType(typeCodeByte);
 
 			if (source.Remaining < consumed + bodyLength)
 			{

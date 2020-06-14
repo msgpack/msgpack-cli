@@ -15,7 +15,7 @@ namespace MsgPack.Internal
 	internal sealed class SampleObject
 	{
 		public int Age { get; set; }
-		public string Name { get; set; }
+		public string Name { get; set; } = null!;
 		public bool IsActive { get; set; }
 		public IDictionary<string, string> Attributes { get; } = new Dictionary<string, string>();
 		public IList<string> Roles { get; } = new List<string>();
@@ -41,11 +41,11 @@ namespace MsgPack.Internal
 	/// <summary>
 	///		Sample hand made serializer.
 	/// </summary>
-	internal sealed class SampleSerializer : IObjectSerializer<SampleObject>
+	internal sealed class SampleSerializer<TExtensionType> : IObjectSerializer<SampleObject, TExtensionType>
 	{
 		private bool UseArray { get; set; }
 
-		public void Serialize(in SerializationOperationContext context, SampleObject obj, IBufferWriter<byte> writer)
+		public void Serialize(in SerializationOperationContext<TExtensionType> context, SampleObject obj, IBufferWriter<byte> writer)
 		{
 			var encoder = context.Encoder;
 			if (obj == null)
@@ -152,7 +152,7 @@ namespace MsgPack.Internal
 			}
 		}
 
-		public async ValueTask SerializeAsync(SerializationOperationContext context, SampleObject obj, Stream streamSink)
+		public async ValueTask SerializeAsync(SerializationOperationContext<TExtensionType> context, SampleObject obj, Stream streamSink)
 		{
 			await using (var writer = new StreamBufferWriter(streamSink, ownsStream: false, ArrayPool<byte>.Shared, cleansBuffer: true))
 			{
@@ -177,7 +177,7 @@ namespace MsgPack.Internal
 			return trie;
 		}
 
-		public SampleObject Deserialize(in DeserializationOperationContext context, in SequenceReader<byte> reader)
+		public SampleObject Deserialize(in DeserializationOperationContext<TExtensionType> context, in SequenceReader<byte> reader)
 		{
 			// T が参照型でデフォルトコンストラクターがある -> DeserializeTo
 			var obj = new SampleObject();
@@ -199,7 +199,7 @@ namespace MsgPack.Internal
 			// return obj;
 		}
 
-		public async ValueTask<SampleObject> DeserializeAsync(DeserializationOperationContext context, Stream streamSource)
+		public async ValueTask<SampleObject> DeserializeAsync(DeserializationOperationContext<TExtensionType> context, Stream streamSource)
 		{
 			// T が参照型でデフォルトコンストラクターがある -> DeserializeToAsync
 			var obj = new SampleObject();
@@ -221,7 +221,7 @@ namespace MsgPack.Internal
 			// return obj;
 		}
 
-		public void DeserializeTo(in DeserializationOperationContext context, in SequenceReader<byte> reader, in SampleObject obj)
+		public void DeserializeTo(in DeserializationOperationContext<TExtensionType> context, in SequenceReader<byte> reader, in SampleObject obj)
 		{
 			string name = default!;
 			int age = default;
@@ -477,15 +477,24 @@ namespace MsgPack.Internal
 			arrayOrMap = context.Decoder.DecodeArrayOrMapHeader(reader, out itemsCount, out requestHint);
 			if (arrayOrMap.IsNone)
 			{
+				propertyIterator = default;
 				return false;
 			}
 
 			if (context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
 			{
+				arrayOrMap = context.Decoder.DecodeArrayOrMapHeader(reader, out itemsCount);
 				if (itemsCount < 5)
 				{
 					throw new MessageTypeException(); // Use Throws
 				}
+
+				propertyIterator = default;
+			}
+			else
+			{
+				arrayOrMap = context.Decoder.DecodeArrayOrMap(reader, out propertyIterator);
+				itemsCount = -1;
 			}
 
 			memory = memory.Slice(unchecked((int)reader.Consumed));
@@ -493,7 +502,7 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		private static bool TryDecodeArrayHeader(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out int arrayLength, out int requestHint)
+		private static bool TryDecodeArrayHeader(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out long arrayLength, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -505,7 +514,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeMapHeader(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out int mapCount, out int requestHint)
+		private static bool TryDecodeMapHeader(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out long mapCount, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -517,7 +526,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfName(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out string name, out int requestHint)
+		private static bool TryDecodeValueOfName(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string name, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -529,7 +538,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfAge(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out int age, out int requestHint)
+		private static bool TryDecodeValueOfAge(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out int age, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -541,7 +550,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfIsActive(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out bool isActive, out int requestHint)
+		private static bool TryDecodeValueOfIsActive(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out bool isActive, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -553,7 +562,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeItemOfRoles(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out string item, out int requestHint)
+		private static bool TryDecodeItemOfRoles(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string item, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -565,7 +574,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeKeyOfAttributes(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out string key, out int requestHint)
+		private static bool TryDecodeKeyOfAttributes(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string key, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -577,11 +586,11 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfAttributes(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out string value, out int requestHint)
+		private static bool TryDecodeValueOfAttributes(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string value, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
-			value = context.Decoder.DecodeString(reader, out requestHint, context.StringEncoding, context.CancellationToken); // <>NameEncoding ?? context.StringEncoding
+			value = context.Decoder.DecodeString(reader, out requestHint, context.StringEncoding, context.CancellationToken)!; // <>NameEncoding ?? context.StringEncoding
 			if (requestHint == 0)
 			{
 				memory = memory.Slice(unchecked((int)reader.Consumed));
@@ -589,7 +598,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeArray(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out CollectionItemIterator iterator, out int requestHint)
+		private static bool TryDecodeArray(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out CollectionItemIterator iterator, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -601,7 +610,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeMap(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, out CollectionItemIterator iterator, out int requestHint)
+		private static bool TryDecodeMap(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out CollectionItemIterator iterator, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -613,7 +622,7 @@ namespace MsgPack.Internal
 			return requestHint == 0;
 		}
 
-		private static bool TryGetRawString(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, [NotNullWhen(true)]out byte[] key, out int requestHint)
+		private static bool TryGetRawString(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, [NotNullWhen(true)]out byte[] key, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 
@@ -629,7 +638,7 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		private static bool TryDrain(in DeserializationOperationContext context, ref ReadOnlyMemory<byte> memory, int remaining, out int requestHint)
+		private static bool TryDrain(in DeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, long remaining, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
 			context.Decoder.Drain(reader, context.CollectionContext, remaining, out requestHint);

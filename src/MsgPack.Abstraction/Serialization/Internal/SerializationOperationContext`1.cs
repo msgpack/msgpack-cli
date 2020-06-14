@@ -3,21 +3,22 @@
 // See the LICENSE in the project root for more information.
 
 using System;
+using System.Text;
 using System.Threading;
 using MsgPack.Internal;
 
 namespace MsgPack.Serialization.Internal
 {
-	public struct SerializationOperationContext
+	public struct SerializationOperationContext<TExtensionType>
 	{
-		public Encoder Encoder { get; }
+		public Encoder<TExtensionType> Encoder { get; }
 		public SerializationOptions Options { get; }
 		private int _currentDepth;
 		public int CurrentDepth => this._currentDepth;
 		public CancellationToken CancellationToken { get; }
-		public System.Text.Encoding? StringEncoding => this.Options.StringEncoding;
+		public Encoding? StringEncoding => this.Options.StringEncoding;
 
-		public SerializationOperationContext(Encoder encoder, SerializationOptions? options, CancellationToken cancellationToken)
+		public SerializationOperationContext(Encoder<TExtensionType> encoder, SerializationOptions? options, CancellationToken cancellationToken)
 		{
 			this.Encoder = Ensure.NotNull(encoder);
 			this.Options = options ?? SerializationOptions.Default;

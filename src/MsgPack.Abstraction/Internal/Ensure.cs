@@ -41,5 +41,16 @@ namespace MsgPack.Internal
 
 			return value;
 		}
+
+		public static T IsNotGreaterThan<T>(T value, T maxInclusive, [CallerArgumentExpression("value")] string paramName = null!)
+			where T : struct, IComparable<T>
+		{
+			if (value.CompareTo(maxInclusive) > 0)
+			{
+				throw new ArgumentOutOfRangeException(paramName, $"Value cannot be greater than {maxInclusive}.");
+			}
+
+			return value;
+		}
 	}
 }

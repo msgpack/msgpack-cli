@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 
 namespace MsgPack.Internal
 {
-	partial class Encoder
+	partial class Encoder<TExtensionType>
 	{
 		/// <summary>
 		///		Encodes <see cref="Int32" /> value to specified buffer.

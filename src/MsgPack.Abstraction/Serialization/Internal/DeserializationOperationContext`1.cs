@@ -2,23 +2,23 @@
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
-using System;
 using System.Buffers;
+using System.Text;
 using System.Threading;
 using MsgPack.Internal;
 
 namespace MsgPack.Serialization.Internal
 {
-	public struct DeserializationOperationContext
+	public struct DeserializationOperationContext<TExtensionType>
 	{
-		public Decoder Decoder { get; }
+		public Decoder<TExtensionType> Decoder { get; }
 		public DeserializationOptions Options { get; }
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 		public ArrayPool<byte> ArrayPool => this.Options.ArrayPool;
-		public System.Text.Encoding? StringEncoding => this.Options.StringEncoding;
+		public Encoding? StringEncoding => this.Options.StringEncoding;
 
-		public DeserializationOperationContext(Decoder decoder, DeserializationOptions? options, CancellationToken cancellationToken)
+		public DeserializationOperationContext(Decoder<TExtensionType> decoder, DeserializationOptions? options, CancellationToken cancellationToken)
 		{
 			this.Decoder = Ensure.NotNull(decoder);
 			this.Options = options ?? DeserializationOptions.Default;
