@@ -8,11 +8,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
+using MsgPack.Internal;
 using MsgPack.Serialization.Internal;
 
-namespace MsgPack.Internal
+namespace MsgPack.Samples
 {
-	internal sealed class SampleObject
+	public class SampleObject
 	{
 		public int Age { get; set; }
 		public string Name { get; set; } = null!;
@@ -41,7 +42,7 @@ namespace MsgPack.Internal
 	/// <summary>
 	///		Sample hand made serializer.
 	/// </summary>
-	internal sealed class SampleSerializer<TExtensionType> : IObjectSerializer<SampleObject, TExtensionType>
+	public sealed class SampleSerializer<TExtensionType> : IObjectSerializer<SampleObject, TExtensionType>
 	{
 		private bool UseArray { get; set; }
 
@@ -1089,6 +1090,106 @@ namespace MsgPack.Internal
 			{
 				context.ArrayPool.Return(buffer, clearArray: true);
 			}
+		}
+	}
+
+	public sealed class SampleInt32ArraySerializer<TExtensionType> : IObjectSerializer<int[], TExtensionType>
+	{
+		public void Serialize(in SerializationOperationContext<TExtensionType> context, int[] obj, IBufferWriter<byte> sink)
+		{
+			if (obj is null)
+			{
+				context.Encoder.EncodeNull(sink);
+				return;
+			}
+
+			context.Encoder.EncodeArrayStart(obj.Length, sink, context.CollectionContext);
+			for(var i=0; i <obj.Length;i++)
+			{
+				context.Encoder.EncodeArrayItemStart(i, sink, context.CollectionContext);
+				context.Encoder.EncodeInt32(obj[i], sink);
+				context.Encoder.EncodeArrayItemEnd(i, sink, context.CollectionContext);
+			}
+			context.Encoder.EncodeArrayEnd(obj.Length, sink, context.CollectionContext);
+		}
+
+		public ValueTask SerializeAsync(SerializationOperationContext<TExtensionType> context, int[] obj, Stream streamSink)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int[] Deserialize(in DeserializationOperationContext<TExtensionType> context, in SequenceReader<byte> source)
+		{
+			if (context.Decoder.FormatFeatures.CanCountCollectionItems)
+			{
+				var length = context.Decoder.DecodeArrayHeader(source);
+				var result = new int[length];
+				for (var i = 0; i < result.Length; i++)
+				{
+					result[i] = context.Decoder.DecodeInt32(source);
+				}
+				context.Decoder.Drain(source, context.CollectionContext, 0);
+				return result;
+			}
+			else
+			{
+				var result = new List<int>();
+				var iterator = context.Decoder.DecodeArray(source);
+				while (!iterator.CollectionEnds(source))
+				{
+					result.Add(context.Decoder.DecodeInt32(source));
+				}
+				iterator.Drain(source);
+				return result.ToArray();
+			}
+		}
+
+		public ValueTask<int[]> DeserializeAsync(DeserializationOperationContext<TExtensionType> context, Stream streamSource)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void DeserializeTo(in DeserializationOperationContext<TExtensionType> context, in SequenceReader<byte> source, in int[] obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ValueTask DeserializeToAsync(DeserializationOperationContext<TExtensionType> context, Stream streamSource, int[] obj)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public sealed class SampleInt32Serializer<TExtensionType> : IObjectSerializer<int, TExtensionType>
+	{
+		public void Serialize(in SerializationOperationContext<TExtensionType> context, int obj, IBufferWriter<byte> sink)
+		{
+			context.Encoder.EncodeInt32(obj, sink);
+		}
+
+		public ValueTask SerializeAsync(SerializationOperationContext<TExtensionType> context, int obj, Stream streamSink)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int Deserialize(in DeserializationOperationContext<TExtensionType> context, in SequenceReader<byte> source)
+		{
+			return context.Decoder.DecodeInt32(source);
+		}
+
+		public ValueTask<int> DeserializeAsync(DeserializationOperationContext<TExtensionType> context, Stream streamSource)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void DeserializeTo(in DeserializationOperationContext<TExtensionType> context, in SequenceReader<byte> source, in int obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		public ValueTask DeserializeToAsync(DeserializationOperationContext<TExtensionType> context, Stream streamSource, int obj)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
