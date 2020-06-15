@@ -6,6 +6,8 @@ namespace MsgPack.Internal
 {
 	public sealed class MessagePackDecoderOptions : DecoderOptions
 	{
+		public static MessagePackDecoderOptions Default { get; } = new MessagePackDecoderOptionsBuilder().Build();
+
 		internal MessagePackDecoderOptions(MessagePackDecoderOptionsBuilder builder)
 			: base(builder) { }
 	}
