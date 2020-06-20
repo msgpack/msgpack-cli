@@ -8,13 +8,32 @@ using Benchmark.Serializers;
 
 public class MsgPackCli : SerializerBase
 {
-    public override T Deserialize<T>(object input)
-    {
-        return MsgPack.Serialization.MessagePackSerializer.Get<T>().UnpackSingleObject((byte[])input);
-    }
+	public override T Deserialize<T>(object input)
+	{
+		return MsgPackCliSerializerRepository<T>.V1.UnpackSingleObject((byte[])input);
+	}
 
-    public override object Serialize<T>(T input)
-    {
-        return MsgPack.Serialization.MessagePackSerializer.Get<T>().PackSingleObject(input);
-    }
+	public override object Serialize<T>(T input)
+	{
+		return MsgPackCliSerializerRepository<T>.V1.PackSingleObject(input);
+	}
+}
+public class MsgPackCli_with_Get : SerializerBase
+{
+	public override T Deserialize<T>(object input)
+	{
+		return MsgPack.Serialization.MessagePackSerializer.Get<T>().UnpackSingleObject((byte[])input);
+	}
+
+	public override object Serialize<T>(T input)
+	{
+		return MsgPack.Serialization.MessagePackSerializer.Get<T>().PackSingleObject(input);
+	}
+}
+
+internal static class MsgPackCliSerializerRepository<T>
+{
+	public static readonly MsgPack.Serialization.MessagePackSerializer<T> V1 = SampleSerializer.SerializationContext.GetSerializer<T>();
+
+}
 }
