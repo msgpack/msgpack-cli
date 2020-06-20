@@ -9,27 +9,32 @@
 #nullable enable
 
 using System;
+using System.Buffers;
 using System.Text;
 using System.Threading;
 using MsgPack.Internal;
 
 namespace MsgPack.Serialization.Internal
 {
-	public struct SerializationOperationContext<TExtensionType>
+	public sealed class AsyncDeserializationOperationContext<TExtensionType>
 	{
-		public Encoder<TExtensionType> Encoder { get; }
-		public SerializationOptions Options { get; }
+		public Decoder<TExtensionType> Decoder { get; }
+		public DeserializationOptions Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
+		public ArrayPool<byte> ByteBufferPool => this.Options.ByteBufferPool;
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public SerializationOperationContext(Encoder<TExtensionType> encoder, SerializationOptions? options, CancellationToken cancellationToken)
+		public AsyncDeserializationOperationContext(Decoder<TExtensionType> decoder, DeserializationOptions? options, CancellationToken cancellationToken)
 		{
-			this.Encoder = Ensure.NotNull(encoder);
-			this.Options = options ?? SerializationOptions.Default;
+			this.Decoder = Ensure.NotNull(decoder);
+			this.Options = options ?? DeserializationOptions.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
 		}
+
+		public DeserializationOperationContext<TExtensionType> AsDeserializationOperationContext()
+			=> new DeserializationOperationContext<TExtensionType>(this.Decoder, this.Options, this.CancellationToken);
 
 		public CollectionContext CollectionContext => new CollectionContext(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue, this.CurrentDepth);
 
@@ -51,6 +56,14 @@ namespace MsgPack.Serialization.Internal
 			}
 
 			return this.CurrentDepth--;
+		}
+
+		public void ValidatePropertyKeyLength(long position, int length)
+		{
+			if(length > this.Options.MaxPropertyKeyLength)
+			{
+				Throw.TooLargePropertyKey(position, length, this.Options.MaxPropertyKeyLength);
+			}
 		}
 	}
 }

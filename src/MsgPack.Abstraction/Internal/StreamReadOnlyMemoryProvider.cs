@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MsgPack.Internal
 {
 #warning TODO: PubTernal or CodeGen
-	internal sealed class StreamReadOnlyMemoryProvider
+	public sealed class StreamReadOnlyMemoryProvider
 	{
 		private readonly Stream _stream;
 		private readonly byte[] _buffer;

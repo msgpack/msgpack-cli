@@ -11,20 +11,23 @@ namespace MsgPack.Internal
 {
 	public partial class MessagePackDecoder
 	{
-		public sealed override void Skip(in SequenceReader<byte> source, in CollectionContext collectionContext, out int requestHint, CancellationToken cancellationToken = default)
-			=> this.Drain(source, collectionContext, itemsCount: 1, out requestHint, cancellationToken);
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override void Skip(ref SequenceReader<byte> source, in CollectionContext collectionContext, out int requestHint, CancellationToken cancellationToken = default)
+			=> this.Drain(ref source, collectionContext, itemsCount: 1, out requestHint, cancellationToken);
 
-		public override void Drain(in SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, out int requestHint, CancellationToken cancellationToken = default)
+#warning TODO: Remove ref consumed
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override void Drain(ref SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			var consumed = 0L;
-			if (!this.SkipItems(source, collectionContext, itemsCount, ref consumed, out requestHint, cancellationToken))
+			if (!this.SkipItems(ref source, collectionContext, itemsCount, ref consumed, out requestHint, cancellationToken))
 			{
 				source.Rewind(consumed);
 			}
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private static bool SkipLength(in SequenceReader<byte> source, long length, ref long consumed, out int requestHint)
+		private static bool SkipLength(ref SequenceReader<byte> source, long length, ref long consumed, out int requestHint)
 		{
 			if (source.Remaining < length)
 			{
@@ -38,12 +41,12 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		private bool SkipArray(in SequenceReader<byte> source, in CollectionContext collectionContext, ref long consumed, out int requestHint, CancellationToken cancellationToken = default)
+		private bool SkipArray(ref SequenceReader<byte> source, in CollectionContext collectionContext, ref long consumed, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			collectionContext.IncrementDepth();
 
 			var initialConsumed = consumed;
-			var type = this.DecodeArrayOrMapHeaderCore(source, ref consumed, out var header, out var arrayLength, out requestHint);
+			var type = this.DecodeArrayOrMapHeaderCore(ref source, out var header, out var arrayLength, out requestHint);
 			if (requestHint != 0)
 			{
 				return false;
@@ -51,10 +54,12 @@ namespace MsgPack.Internal
 
 			if (!type.IsArray)
 			{
-				MessagePackThrow.TypeIsNotArray(header, source.Consumed - consumed + initialConsumed);
+				MessagePackThrow.TypeIsNotArray(header, initialConsumed);
 			}
 
-			if (!this.SkipItems(source, collectionContext, arrayLength, ref consumed, out requestHint, cancellationToken))
+			consumed = source.Consumed - initialConsumed;
+
+			if (!this.SkipItems(ref source, collectionContext, arrayLength, ref consumed, out requestHint, cancellationToken))
 			{
 				return false;
 			}
@@ -63,12 +68,12 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		private bool SkipMap(in SequenceReader<byte> source, in CollectionContext collectionContext, ref long consumed, out int requestHint, CancellationToken cancellationToken = default)
+		private bool SkipMap(ref SequenceReader<byte> source, in CollectionContext collectionContext, ref long consumed, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			collectionContext.IncrementDepth();
 
 			var initialConsumed = consumed;
-			var type = this.DecodeArrayOrMapHeaderCore(source, ref consumed, out var header, out var mapCount, out requestHint);
+			var type = this.DecodeArrayOrMapHeaderCore(ref source, out var header, out var mapCount, out requestHint);
 			if (requestHint != 0)
 			{
 				return false;
@@ -76,10 +81,12 @@ namespace MsgPack.Internal
 
 			if (!type.IsMap)
 			{
-				MessagePackThrow.TypeIsNotMap(header, source.Consumed - consumed + initialConsumed);
+				MessagePackThrow.TypeIsNotMap(header, initialConsumed);
 			}
 
-			if (!this.SkipItems(source, collectionContext, mapCount * 2, ref consumed, out requestHint, cancellationToken))
+			consumed = source.Consumed - initialConsumed;
+
+			if (!this.SkipItems(ref source, collectionContext, mapCount * 2, ref consumed, out requestHint, cancellationToken))
 			{
 				return false;
 			}
@@ -88,11 +95,11 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		private bool SkipItems(in SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, ref long consumed, out int requestHint, CancellationToken cancellationToken = default)
+		private bool SkipItems(ref SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, ref long consumed, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			while (itemsCount > 0)
 			{
-				if (!this.TryPeek(source, out var header))
+				if (!source.TryPeek(out var header))
 				{
 					requestHint = 1;
 					return false;
@@ -104,14 +111,14 @@ namespace MsgPack.Internal
 
 				if (header >= MessagePackCode.MinimumFixedArray && header <= MessagePackCode.MaximumFixedArray)
 				{
-					if (!this.SkipArray(source, collectionContext, ref consumed, out requestHint, cancellationToken))
+					if (!this.SkipArray(ref source, collectionContext, ref consumed, out requestHint, cancellationToken))
 					{
 						return false;
 					}
 				}
 				else if (header >= MessagePackCode.MinimumFixedMap && header <= MessagePackCode.MaximumFixedMap)
 				{
-					if (!this.SkipMap(source, collectionContext, ref consumed, out requestHint, cancellationToken))
+					if (!this.SkipMap(ref source, collectionContext, ref consumed, out requestHint, cancellationToken))
 					{
 						return false;
 					}
@@ -161,7 +168,7 @@ namespace MsgPack.Internal
 						case MessagePackCode.Bin16:
 						case MessagePackCode.Raw16:
 						{
-							length = ReadValue<ushort>(source, offset: 0, out requestHint);
+							length = ReadValue<ushort>(ref source, offset: 0, out requestHint);
 							if (requestHint != 0)
 							{
 								source.Rewind(consumed);
@@ -174,7 +181,7 @@ namespace MsgPack.Internal
 						case MessagePackCode.Bin32:
 						case MessagePackCode.Raw32:
 						{
-							length = ReadValue<uint>(source, offset: 0, out requestHint);
+							length = ReadValue<uint>(ref source, offset: 0, out requestHint);
 							if (requestHint != 0)
 							{
 								source.Rewind(consumed);
@@ -223,7 +230,7 @@ namespace MsgPack.Internal
 						}
 						case MessagePackCode.Ext16:
 						{
-							length = ReadValue<ushort>(source, offset: 0, out requestHint);
+							length = ReadValue<ushort>(ref source, offset: 0, out requestHint);
 							if (requestHint != 0)
 							{
 								source.Rewind(consumed);
@@ -235,7 +242,7 @@ namespace MsgPack.Internal
 						}
 						case MessagePackCode.Ext32:
 						{
-							length = ReadValue<int>(source, offset: 0, out requestHint);
+							length = ReadValue<int>(ref source, offset: 0, out requestHint);
 							if (requestHint != 0)
 							{
 								source.Rewind(consumed);
@@ -248,7 +255,7 @@ namespace MsgPack.Internal
 						case MessagePackCode.Array16:
 						case MessagePackCode.Array32:
 						{
-							if (!this.SkipArray(source, collectionContext, ref consumed, out requestHint, cancellationToken))
+							if (!this.SkipArray(ref source, collectionContext, ref consumed, out requestHint, cancellationToken))
 							{
 								return false;
 							}
@@ -257,7 +264,7 @@ namespace MsgPack.Internal
 						case MessagePackCode.Map16:
 						case MessagePackCode.Map32:
 						{
-							if (!this.SkipMap(source, collectionContext, ref consumed, out requestHint, cancellationToken))
+							if (!this.SkipMap(ref source, collectionContext, ref consumed, out requestHint, cancellationToken))
 							{
 								return false;
 							}
@@ -266,7 +273,7 @@ namespace MsgPack.Internal
 					}
 				}
 
-				if (length > 0 && !SkipLength(source, length, ref consumed, out requestHint))
+				if (length > 0 && !SkipLength(ref source, length, ref consumed, out requestHint))
 				{
 					return false;
 				}

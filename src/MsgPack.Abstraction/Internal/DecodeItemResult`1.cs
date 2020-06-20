@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 namespace MsgPack.Internal
 {
 	/// <summary>
-	///		Represetns a result of <see cref="Decoder.DecodeItem"/>.
+	///		Represents a result of <see cref="Decoder.DecodeItem"/>.
 	/// </summary>
 	public readonly struct DecodeItemResult<TExtensionType>
 	{

@@ -13,21 +13,28 @@ namespace MsgPack.Internal
 	public readonly struct CollectionType : IEquatable<CollectionType>
 	{
 		public static readonly CollectionType None = default;
-		public static readonly CollectionType Array = new CollectionType(1);
-		public static readonly CollectionType Map = new CollectionType(2);
+		public static readonly CollectionType Null = new CollectionType(1);
+		public static readonly CollectionType Array = new CollectionType(2);
+		public static readonly CollectionType Map = new CollectionType(3);
 
 		private readonly int _type;
 
-		public bool IsArray
+		public bool IsNull
 		{
 			[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 			get => this._type == 1;
 		}
 
-		public bool IsMap
+		public bool IsArray
 		{
 			[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 			get => this._type == 2;
+		}
+
+		public bool IsMap
+		{
+			[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+			get => this._type == 3;
 		}
 
 		public bool IsNone

@@ -16,7 +16,7 @@ namespace MsgPack.Serialization
 		public int MaxPropertyKeyLength { get; }
 		public int MaxDepth { get; }
 		public Encoding? StringEncoding { get; }
-		public ArrayPool<byte> ArrayPool { get; }
+		public ArrayPool<byte> ByteBufferPool { get; }
 
 		internal DeserializationOptions(
 			int maxArrayLength,
@@ -32,7 +32,7 @@ namespace MsgPack.Serialization
 			this.MaxPropertyKeyLength = maxPropertyKeyLength;
 			this.MaxDepth = maxDepth;
 			this.StringEncoding = stringEncoding;
-			this.ArrayPool = arrayPool;
+			this.ByteBufferPool = arrayPool;
 		}
 	}
 }

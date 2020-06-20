@@ -8,15 +8,9 @@ using MsgPack.Internal;
 
 namespace MsgPack.Serialization
 {
-#warning TODO: tuning default as backward compatible
 	public sealed class DeserializationOptionsBuilder
 	{
-		internal const int DefaultMaxArrayLength = 1024 * 1024;
-		internal const int DefaultMaxMapCount = 1024 * 1024;
-		internal const int DefaultMaxPropertyKeyLength = 256;
-		internal const int DefaultMaxDepth = 100;
-
-		private int _maxArrayLength = DefaultMaxArrayLength;
+		private int _maxArrayLength = OptionsDefaults.MaxArrayLength;
 
 		public int MaxArrayLength
 		{
@@ -24,7 +18,7 @@ namespace MsgPack.Serialization
 			set => this._maxArrayLength = Ensure.IsNotLessThan(value, 0);
 		}
 
-		private int _maxMapCount = DefaultMaxMapCount;
+		private int _maxMapCount = OptionsDefaults.MaxMapCount;
 
 		public int MaxMapCount
 		{
@@ -32,7 +26,7 @@ namespace MsgPack.Serialization
 			set => this._maxMapCount = Ensure.IsNotLessThan(value, 0);
 		}
 
-		private int _maxPropertyKeyLength = DefaultMaxPropertyKeyLength;
+		private int _maxPropertyKeyLength = OptionsDefaults.MaxPropertyKeyLength;
 
 		public int MaxPropertyKeyLength
 		{
@@ -40,7 +34,7 @@ namespace MsgPack.Serialization
 			set => this._maxPropertyKeyLength = Ensure.IsNotLessThan(value, 1);
 		}
 
-		private int _maxDepth = DefaultMaxDepth;
+		private int _maxDepth = OptionsDefaults.MaxDepth;
 
 		public int MaxDepth
 		{

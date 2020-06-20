@@ -11,9 +11,9 @@ namespace MsgPack.Internal
 {
 	public partial class MessagePackDecoder
 	{
-		private uint ReadExtensionHeader(in SequenceReader<byte> source, out int consumed, out int requestHint)
+		private uint ReadExtensionHeader(ref SequenceReader<byte> source, out int consumed, out int requestHint)
 		{
-			if(!this.TryPeek(source, out var header))
+			if(!source.TryPeek(out var header))
 			{
 				consumed = 0;
 				requestHint = 1;
@@ -79,18 +79,18 @@ namespace MsgPack.Internal
 			{
 				case 1:
 				{
-					length = ReadByte(source, offset: 1, out requestHint);
+					length = ReadByte(ref source, offset: 1, out requestHint);
 					break;
 				}
 				case 2:
 				{
-					length = ReadValue<ushort>(source, offset: 1, out requestHint);
+					length = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 					break;
 				}
 				default:
 				{
 					Debug.Assert(lengthOflength == 4, $"length({lengthOflength}) == 4");
-					length = ReadValue<uint>(source, offset: 1, out requestHint);
+					length = ReadValue<uint>(ref source, offset: 1, out requestHint);
 					break;
 				}
 			}
@@ -104,9 +104,9 @@ namespace MsgPack.Internal
 			return length;
 		}
 
-		public override void DecodeExtension(in SequenceReader<byte> source, out MessagePackExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
+		public override void DecodeExtension(ref SequenceReader<byte> source, out MessagePackExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
 		{
-			var bodyLength = this.ReadExtensionHeader(source, out var consumed, out requestHint);
+			var bodyLength = this.ReadExtensionHeader(ref source, out var consumed, out requestHint);
 			if (requestHint != 0)
 			{
 				typeCode = default;
@@ -114,7 +114,7 @@ namespace MsgPack.Internal
 				return;
 			}
 
-			if (!this.TryPeek(source, out byte typeCodeByte))
+			if (!source.TryPeek(out byte typeCodeByte))
 			{
 				requestHint = 1;
 				typeCode = default;

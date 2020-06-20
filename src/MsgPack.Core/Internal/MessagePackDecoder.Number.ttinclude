@@ -6,23 +6,23 @@ void WriteDecodeInteger(string variable, bool isSigned)
 					{
 						case 1:
 						{
-							<#= variable #> = Read<#= isSigned ? "SByte" : "Byte" #>(source, offset: 1, out requestHint);
+							<#= variable #> = Read<#= isSigned ? "SByte" : "Byte" #>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 2:
 						{
-							<#= variable #> = ReadValue<<#= isSigned ? "short" : "ushort" #>>(source, offset: 1, out requestHint);
+							<#= variable #> = ReadValue<<#= isSigned ? "short" : "ushort" #>>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 4:
 						{
-							<#= variable #> = ReadValue<<#= isSigned ? "int" : "uint" #>>(source, offset: 1, out requestHint);
+							<#= variable #> = ReadValue<<#= isSigned ? "int" : "uint" #>>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						default: 
 						{
 							Debug.Assert(length == 8, $"length({length}) != 8");
-							<#= variable #> = ReadValue<<#= isSigned ? "long" : "ulong" #>>(source, offset: 1, out requestHint);
+							<#= variable #> = ReadValue<<#= isSigned ? "long" : "ulong" #>>(ref source, offset: 1, out requestHint);
 							break;
 						}
 					}

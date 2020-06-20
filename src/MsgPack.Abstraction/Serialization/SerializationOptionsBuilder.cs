@@ -8,7 +8,7 @@ namespace MsgPack.Serialization
 {
 	public sealed class SerializationOptionsBuilder
 	{
-		private int _maxDepth;
+		private int _maxDepth = OptionsDefaults.MaxDepth;
 
 		public int MaxDepth
 		{

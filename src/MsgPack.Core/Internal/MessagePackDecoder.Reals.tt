@@ -24,9 +24,9 @@ foreach (var type in new [] { "Single", "Double" })
 #>
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override <#= type #> Decode<#= type #>(in SequenceReader<byte> source, out int requestHint)
+		public sealed override <#= type #> Decode<#= type #>(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (!this.TryPeek(source, out var header))
+			if (!source.TryPeek(out var header))
 			{
 				requestHint = 1;
 				return default;
@@ -40,7 +40,7 @@ foreach (var type in new [] { "Single", "Double" })
 				return header;
 			}
 
-			ParseNumberHeader(header, source, typeof(<#= type #>), out var length, out var kind);
+			ParseNumberHeader(header, ref source, typeof(<#= type #>), out var length, out var kind);
 
 			<#= type #> value;
 			switch (kind)
@@ -61,7 +61,7 @@ foreach (var type in new [] { "Single", "Double" })
 				}
 				case NumberKind.Single:
 				{
-					value = ReadValue<float>(source, offset: 1, out requestHint);
+					value = ReadValue<float>(ref source, offset: 1, out requestHint);
 					break;
 				}
 				default:
@@ -71,13 +71,13 @@ foreach (var type in new [] { "Single", "Double" })
 	if (type != "Double")
 	{
 #>
-					value = (<#= type #>)ReadValue<double>(source, offset: 1, out requestHint);
+					value = (<#= type #>)ReadValue<double>(ref source, offset: 1, out requestHint);
 <#
 	}
 	else
 	{
 #>
-					value = ReadValue<double>(source, offset: 1, out requestHint);
+					value = ReadValue<double>(ref source, offset: 1, out requestHint);
 <#
 	}
 #>

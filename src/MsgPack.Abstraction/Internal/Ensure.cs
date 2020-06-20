@@ -3,6 +3,7 @@
 // See the LICENSE in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -15,7 +16,8 @@ namespace MsgPack.Internal
 		{
 			if (value == null)
 			{
-				throw new ArgumentNullException(paramName);
+				Throw.ArgumentNull(paramName);
+				Debug.Assert(value != null);
 			}
 
 			return value;
@@ -25,7 +27,7 @@ namespace MsgPack.Internal
 		{
 			if (value < 0)
 			{
-				throw new ArgumentOutOfRangeException(paramName, "Value cannot be negative number.");
+				Throw.ArgumentOutOfRange(paramName, "Value cannot be negative number.");
 			}
 
 			return value;
@@ -36,7 +38,7 @@ namespace MsgPack.Internal
 		{
 			if (value.CompareTo(minInclusive) < 0)
 			{
-				throw new ArgumentOutOfRangeException(paramName, $"Value cannot be less than {minInclusive}.");
+				Throw.ArgumentOutOfRange(paramName, $"Value cannot be less than {minInclusive}.");
 			}
 
 			return value;
@@ -47,7 +49,7 @@ namespace MsgPack.Internal
 		{
 			if (value.CompareTo(maxInclusive) > 0)
 			{
-				throw new ArgumentOutOfRangeException(paramName, $"Value cannot be greater than {maxInclusive}.");
+				Throw.ArgumentOutOfRange(paramName, $"Value cannot be greater than {maxInclusive}.");
 			}
 
 			return value;

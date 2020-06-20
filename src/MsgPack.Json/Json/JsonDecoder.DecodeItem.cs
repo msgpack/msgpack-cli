@@ -15,26 +15,35 @@ namespace MsgPack.Json
 {
 	public partial class JsonDecoder
 	{
-		public override bool DecodeItem(in SequenceReader<byte> source, out DecodeItemResult result, CancellationToken cancellationToken = default)
+		public sealed override bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult result, CancellationToken cancellationToken = default)
 		{
-			this.ReadTrivia(source, out var trivia);
-			if (!trivia.IsEmpty)
+			var startPosition = source.Position;
+			var triviaLength = this.ReadTrivia(ref source);
+			if (triviaLength != 0)
 			{
-				result = DecodeItemResult.ScalarOrSequence(ElementType.OtherTrivia, trivia);
+				result = DecodeItemResult.ScalarOrSequence(ElementType.OtherTrivia, source.Sequence.Slice(startPosition, source.Position));
 				return true;
 			}
 
-			if (!this.TryPeek(source, out var token))
+			if (!source.TryPeek(out var token))
 			{
 				result = DecodeItemResult.InsufficientInput(1);
 				return false;
 			}
 
+#warning HANDLE :/= and ,
 			switch (token)
 			{
 				case (byte)'t':
 				{
-					if (source.IsNext(JsonTokens.True, advancePast: true))
+					ReadOnlySpan<byte> @true;
+					unsafe
+					{
+						byte* pTrue = stackalloc byte[] { (byte)'t', (byte)'r', (byte)'u', (byte)'e' };
+						@true = new ReadOnlySpan<byte>(pTrue, 4);
+					}
+
+					if (source.IsNext(@true, advancePast: true))
 					{
 						result = DecodeItemResult.True();
 						return true;
@@ -44,7 +53,14 @@ namespace MsgPack.Json
 				}
 				case (byte)'f':
 				{
-					if (source.IsNext(JsonTokens.False, advancePast: true))
+					ReadOnlySpan<byte> @false;
+					unsafe
+					{
+						byte* pFalse = stackalloc byte[] { (byte)'f', (byte)'a', (byte)'l', (byte)'s', (byte)'e' };
+						@false = new ReadOnlySpan<byte>(pFalse, 5);
+					}
+
+					if (source.IsNext(@false, advancePast: true))
 					{
 						result = DecodeItemResult.False();
 						return true;
@@ -54,7 +70,14 @@ namespace MsgPack.Json
 				}
 				case (byte)'n':
 				{
-					if (source.IsNext(JsonTokens.Null, advancePast: true))
+					ReadOnlySpan<byte> @null;
+					unsafe
+					{
+						byte* pNull = stackalloc byte[] { (byte)'n', (byte)'u', (byte)'l', (byte)'l' };
+						@null = new ReadOnlySpan<byte>(pNull, 4);
+					}
+
+					if (source.IsNext(@null, advancePast: true))
 					{
 						result = DecodeItemResult.Null();
 						return true;
@@ -75,7 +98,7 @@ namespace MsgPack.Json
 				case (byte)'-':
 				case (byte)'+':
 				{
-					var number = this.DecodeNumber(source, out var requestHint);
+					var number = this.DecodeNumber(ref source, out var requestHint);
 					if(requestHint != 0)
 					{
 						result = DecodeItemResult.InsufficientInput(requestHint);
@@ -108,7 +131,7 @@ namespace MsgPack.Json
 				}
 				case (byte)'"':
 				{
-					if (this.GetRawStringCore(source, out var rawString, out var requestHint))
+					if (this.GetRawStringCore(ref source, out var rawString, out var requestHint))
 					{
 						result = DecodeItemResult.InsufficientInput(requestHint);
 						return false;

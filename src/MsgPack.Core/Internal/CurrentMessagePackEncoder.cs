@@ -14,8 +14,17 @@ namespace MsgPack.Internal
 	/// </summary>
 	internal sealed class CurrentMessagePackEncoder : MessagePackEncoder
 	{
+		private static readonly CurrentMessagePackEncoder DefaultInstance = new CurrentMessagePackEncoder(MessagePackEncoderOptions.Default);
+
 		public CurrentMessagePackEncoder(MessagePackEncoderOptions options)
 			: base(options) { }
+
+		internal static byte[] InternalEncodeString(string value)
+		{
+			var arrayBuffer = new ArrayBufferWriter<byte>();
+			DefaultInstance.EncodeString(value, arrayBuffer);
+			return arrayBuffer.WrittenMemory.ToArray();
+		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		protected sealed override int EncodeStringHeader(uint length, Span<byte> buffer)
@@ -27,20 +36,20 @@ namespace MsgPack.Internal
 			}
 			else if (length <= Byte.MaxValue)
 			{
-				buffer[1] = unchecked((byte)length);
 				buffer[0] = MessagePackCode.Str8;
+				buffer[1] = unchecked((byte)length);
 				return 2;
 			}
 			else if (length <= UInt16.MaxValue)
 			{
 				buffer[0] = MessagePackCode.Str16;
-				BinaryPrimitives.WriteUInt16BigEndian(buffer, unchecked((ushort)length));
+				BinaryPrimitives.WriteUInt16BigEndian(buffer.Slice(1), unchecked((ushort)length));
 				return sizeof(ushort) + 1;
 			}
 			else
 			{
 				buffer[0] = MessagePackCode.Str32;
-				BinaryPrimitives.WriteUInt32BigEndian(buffer, length);
+				BinaryPrimitives.WriteUInt32BigEndian(buffer.Slice(1), length);
 				return sizeof(uint) + 1;
 			}
 		}
@@ -50,20 +59,20 @@ namespace MsgPack.Internal
 		{
 			if (length <= Byte.MaxValue)
 			{
-				buffer[1] = unchecked((byte)length);
 				buffer[0] = MessagePackCode.Bin8;
+				buffer[1] = unchecked((byte)length);
 				return 2;
 			}
 			else if (length <= UInt16.MaxValue)
 			{
 				buffer[0] = MessagePackCode.Bin16;
-				BinaryPrimitives.WriteUInt16BigEndian(buffer, unchecked((ushort)length));
+				BinaryPrimitives.WriteUInt16BigEndian(buffer.Slice(1), unchecked((ushort)length));
 				return sizeof(ushort) + 1;
 			}
 			else
 			{
 				buffer[0] = MessagePackCode.Bin32;
-				BinaryPrimitives.WriteUInt32BigEndian(buffer, length);
+				BinaryPrimitives.WriteUInt32BigEndian(buffer.Slice(1), length);
 				return sizeof(uint) + 1;
 			}
 		}

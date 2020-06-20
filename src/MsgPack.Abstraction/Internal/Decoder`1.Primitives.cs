@@ -29,9 +29,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Byte DecodeByte(in SequenceReader<byte> source)
+		public Byte DecodeByte(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeByte(source, out var requestHint);
+			var result = this.DecodeByte(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Byte), requestHint);
@@ -57,7 +57,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Byte" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Byte DecodeByte(in SequenceReader<byte> source, out int requestHint);
+		public abstract Byte DecodeByte(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="Byte" /> value or <c>null</c> from specified sequence.
@@ -74,9 +74,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Byte? DecodeNullableByte(in SequenceReader<byte> source)
+		public Byte? DecodeNullableByte(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableByte(source, out var requestHint);
+			var result = this.DecodeNullableByte(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Byte), requestHint);
@@ -103,7 +103,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Byte" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Byte? DecodeNullableByte(in SequenceReader<byte> source, out int requestHint);
+		public abstract Byte? DecodeNullableByte(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="Int16" /> value from specified sequence.
@@ -120,9 +120,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Int16 DecodeInt16(in SequenceReader<byte> source)
+		public Int16 DecodeInt16(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeInt16(source, out var requestHint);
+			var result = this.DecodeInt16(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Int16), requestHint);
@@ -148,7 +148,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int16" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Int16 DecodeInt16(in SequenceReader<byte> source, out int requestHint);
+		public abstract Int16 DecodeInt16(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="Int16" /> value or <c>null</c> from specified sequence.
@@ -165,9 +165,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Int16? DecodeNullableInt16(in SequenceReader<byte> source)
+		public Int16? DecodeNullableInt16(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableInt16(source, out var requestHint);
+			var result = this.DecodeNullableInt16(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Int16), requestHint);
@@ -194,7 +194,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int16" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Int16? DecodeNullableInt16(in SequenceReader<byte> source, out int requestHint);
+		public abstract Int16? DecodeNullableInt16(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="Int32" /> value from specified sequence.
@@ -211,9 +211,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Int32 DecodeInt32(in SequenceReader<byte> source)
+		public Int32 DecodeInt32(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeInt32(source, out var requestHint);
+			var result = this.DecodeInt32(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Int32), requestHint);
@@ -239,7 +239,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int32" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Int32 DecodeInt32(in SequenceReader<byte> source, out int requestHint);
+		public abstract Int32 DecodeInt32(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="Int32" /> value or <c>null</c> from specified sequence.
@@ -256,9 +256,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Int32? DecodeNullableInt32(in SequenceReader<byte> source)
+		public Int32? DecodeNullableInt32(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableInt32(source, out var requestHint);
+			var result = this.DecodeNullableInt32(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Int32), requestHint);
@@ -285,7 +285,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int32" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Int32? DecodeNullableInt32(in SequenceReader<byte> source, out int requestHint);
+		public abstract Int32? DecodeNullableInt32(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="Int64" /> value from specified sequence.
@@ -302,9 +302,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Int64 DecodeInt64(in SequenceReader<byte> source)
+		public Int64 DecodeInt64(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeInt64(source, out var requestHint);
+			var result = this.DecodeInt64(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Int64), requestHint);
@@ -330,7 +330,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int64" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Int64 DecodeInt64(in SequenceReader<byte> source, out int requestHint);
+		public abstract Int64 DecodeInt64(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="Int64" /> value or <c>null</c> from specified sequence.
@@ -347,9 +347,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Int64? DecodeNullableInt64(in SequenceReader<byte> source)
+		public Int64? DecodeNullableInt64(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableInt64(source, out var requestHint);
+			var result = this.DecodeNullableInt64(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Int64), requestHint);
@@ -376,7 +376,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int64" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Int64? DecodeNullableInt64(in SequenceReader<byte> source, out int requestHint);
+		public abstract Int64? DecodeNullableInt64(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="SByte" /> value from specified sequence.
@@ -393,9 +393,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public SByte DecodeSByte(in SequenceReader<byte> source)
+		public SByte DecodeSByte(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeSByte(source, out var requestHint);
+			var result = this.DecodeSByte(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(SByte), requestHint);
@@ -421,7 +421,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="SByte" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract SByte DecodeSByte(in SequenceReader<byte> source, out int requestHint);
+		public abstract SByte DecodeSByte(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="SByte" /> value or <c>null</c> from specified sequence.
@@ -438,9 +438,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public SByte? DecodeNullableSByte(in SequenceReader<byte> source)
+		public SByte? DecodeNullableSByte(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableSByte(source, out var requestHint);
+			var result = this.DecodeNullableSByte(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(SByte), requestHint);
@@ -467,7 +467,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="SByte" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract SByte? DecodeNullableSByte(in SequenceReader<byte> source, out int requestHint);
+		public abstract SByte? DecodeNullableSByte(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="UInt16" /> value from specified sequence.
@@ -484,9 +484,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public UInt16 DecodeUInt16(in SequenceReader<byte> source)
+		public UInt16 DecodeUInt16(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeUInt16(source, out var requestHint);
+			var result = this.DecodeUInt16(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(UInt16), requestHint);
@@ -512,7 +512,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt16" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract UInt16 DecodeUInt16(in SequenceReader<byte> source, out int requestHint);
+		public abstract UInt16 DecodeUInt16(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="UInt16" /> value or <c>null</c> from specified sequence.
@@ -529,9 +529,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public UInt16? DecodeNullableUInt16(in SequenceReader<byte> source)
+		public UInt16? DecodeNullableUInt16(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableUInt16(source, out var requestHint);
+			var result = this.DecodeNullableUInt16(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(UInt16), requestHint);
@@ -558,7 +558,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt16" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract UInt16? DecodeNullableUInt16(in SequenceReader<byte> source, out int requestHint);
+		public abstract UInt16? DecodeNullableUInt16(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="UInt32" /> value from specified sequence.
@@ -575,9 +575,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public UInt32 DecodeUInt32(in SequenceReader<byte> source)
+		public UInt32 DecodeUInt32(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeUInt32(source, out var requestHint);
+			var result = this.DecodeUInt32(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(UInt32), requestHint);
@@ -603,7 +603,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt32" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract UInt32 DecodeUInt32(in SequenceReader<byte> source, out int requestHint);
+		public abstract UInt32 DecodeUInt32(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="UInt32" /> value or <c>null</c> from specified sequence.
@@ -620,9 +620,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public UInt32? DecodeNullableUInt32(in SequenceReader<byte> source)
+		public UInt32? DecodeNullableUInt32(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableUInt32(source, out var requestHint);
+			var result = this.DecodeNullableUInt32(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(UInt32), requestHint);
@@ -649,7 +649,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt32" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract UInt32? DecodeNullableUInt32(in SequenceReader<byte> source, out int requestHint);
+		public abstract UInt32? DecodeNullableUInt32(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="UInt64" /> value from specified sequence.
@@ -666,9 +666,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public UInt64 DecodeUInt64(in SequenceReader<byte> source)
+		public UInt64 DecodeUInt64(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeUInt64(source, out var requestHint);
+			var result = this.DecodeUInt64(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(UInt64), requestHint);
@@ -694,7 +694,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt64" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract UInt64 DecodeUInt64(in SequenceReader<byte> source, out int requestHint);
+		public abstract UInt64 DecodeUInt64(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="UInt64" /> value or <c>null</c> from specified sequence.
@@ -711,9 +711,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public UInt64? DecodeNullableUInt64(in SequenceReader<byte> source)
+		public UInt64? DecodeNullableUInt64(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableUInt64(source, out var requestHint);
+			var result = this.DecodeNullableUInt64(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(UInt64), requestHint);
@@ -740,7 +740,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt64" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract UInt64? DecodeNullableUInt64(in SequenceReader<byte> source, out int requestHint);
+		public abstract UInt64? DecodeNullableUInt64(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="Single" /> value from specified sequence.
@@ -757,9 +757,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Single DecodeSingle(in SequenceReader<byte> source)
+		public Single DecodeSingle(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeSingle(source, out var requestHint);
+			var result = this.DecodeSingle(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Single), requestHint);
@@ -785,7 +785,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Single" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Single DecodeSingle(in SequenceReader<byte> source, out int requestHint);
+		public abstract Single DecodeSingle(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="Single" /> value or <c>null</c> from specified sequence.
@@ -802,9 +802,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Single? DecodeNullableSingle(in SequenceReader<byte> source)
+		public Single? DecodeNullableSingle(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableSingle(source, out var requestHint);
+			var result = this.DecodeNullableSingle(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Single), requestHint);
@@ -831,7 +831,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Single" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Single? DecodeNullableSingle(in SequenceReader<byte> source, out int requestHint);
+		public abstract Single? DecodeNullableSingle(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="Double" /> value from specified sequence.
@@ -848,9 +848,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Double DecodeDouble(in SequenceReader<byte> source)
+		public Double DecodeDouble(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeDouble(source, out var requestHint);
+			var result = this.DecodeDouble(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Double), requestHint);
@@ -876,7 +876,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Double" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Double DecodeDouble(in SequenceReader<byte> source, out int requestHint);
+		public abstract Double DecodeDouble(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="Double" /> value or <c>null</c> from specified sequence.
@@ -893,9 +893,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Double? DecodeNullableDouble(in SequenceReader<byte> source)
+		public Double? DecodeNullableDouble(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableDouble(source, out var requestHint);
+			var result = this.DecodeNullableDouble(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Double), requestHint);
@@ -922,7 +922,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Double" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Double? DecodeNullableDouble(in SequenceReader<byte> source, out int requestHint);
+		public abstract Double? DecodeNullableDouble(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes <see cref="Boolean" /> value from specified sequence.
@@ -939,9 +939,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Boolean DecodeBoolean(in SequenceReader<byte> source)
+		public Boolean DecodeBoolean(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeBoolean(source, out var requestHint);
+			var result = this.DecodeBoolean(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Boolean), requestHint);
@@ -967,7 +967,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Boolean" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Boolean DecodeBoolean(in SequenceReader<byte> source, out int requestHint);
+		public abstract Boolean DecodeBoolean(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="Boolean" /> value or <c>null</c> from specified sequence.
@@ -984,9 +984,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Boolean? DecodeNullableBoolean(in SequenceReader<byte> source)
+		public Boolean? DecodeNullableBoolean(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullableBoolean(source, out var requestHint);
+			var result = this.DecodeNullableBoolean(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(Boolean), requestHint);
@@ -1013,7 +1013,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Boolean" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Boolean? DecodeNullableBoolean(in SequenceReader<byte> source, out int requestHint);
+		public abstract Boolean? DecodeNullableBoolean(ref SequenceReader<byte> source, out int requestHint);
 
 	}
 }

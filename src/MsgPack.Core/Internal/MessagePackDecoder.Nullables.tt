@@ -37,15 +37,15 @@ foreach (var type in
 #>
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override <#= type #>? DecodeNullable<#= type #>(in SequenceReader<byte> source, out int requestHint)
+		public sealed override <#= type #>? DecodeNullable<#= type #>(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.Decode<#= type #>(source, out requestHint);
+			return this.Decode<#= type #>(ref source, out requestHint);
 		}
 
 <#

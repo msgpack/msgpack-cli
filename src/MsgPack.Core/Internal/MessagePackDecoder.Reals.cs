@@ -17,9 +17,9 @@ namespace MsgPack.Internal
 	{
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Single DecodeSingle(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Single DecodeSingle(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (!this.TryPeek(source, out var header))
+			if (!source.TryPeek(out var header))
 			{
 				requestHint = 1;
 				return default;
@@ -33,7 +33,7 @@ namespace MsgPack.Internal
 				return header;
 			}
 
-			ParseNumberHeader(header, source, typeof(Single), out var length, out var kind);
+			ParseNumberHeader(header, ref source, typeof(Single), out var length, out var kind);
 
 			Single value;
 			switch (kind)
@@ -44,23 +44,23 @@ namespace MsgPack.Internal
 					{
 						case 1:
 						{
-							value = ReadSByte(source, offset: 1, out requestHint);
+							value = ReadSByte(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 2:
 						{
-							value = ReadValue<short>(source, offset: 1, out requestHint);
+							value = ReadValue<short>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 4:
 						{
-							value = ReadValue<int>(source, offset: 1, out requestHint);
+							value = ReadValue<int>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						default: 
 						{
 							Debug.Assert(length == 8, $"length({length}) != 8");
-							value = ReadValue<long>(source, offset: 1, out requestHint);
+							value = ReadValue<long>(ref source, offset: 1, out requestHint);
 							break;
 						}
 					}
@@ -73,23 +73,23 @@ namespace MsgPack.Internal
 					{
 						case 1:
 						{
-							value = ReadByte(source, offset: 1, out requestHint);
+							value = ReadByte(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 2:
 						{
-							value = ReadValue<ushort>(source, offset: 1, out requestHint);
+							value = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 4:
 						{
-							value = ReadValue<uint>(source, offset: 1, out requestHint);
+							value = ReadValue<uint>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						default: 
 						{
 							Debug.Assert(length == 8, $"length({length}) != 8");
-							value = ReadValue<ulong>(source, offset: 1, out requestHint);
+							value = ReadValue<ulong>(ref source, offset: 1, out requestHint);
 							break;
 						}
 					}
@@ -98,13 +98,13 @@ namespace MsgPack.Internal
 				}
 				case NumberKind.Single:
 				{
-					value = ReadValue<float>(source, offset: 1, out requestHint);
+					value = ReadValue<float>(ref source, offset: 1, out requestHint);
 					break;
 				}
 				default:
 				{
 					// Double
-					value = (Single)ReadValue<double>(source, offset: 1, out requestHint);
+					value = (Single)ReadValue<double>(ref source, offset: 1, out requestHint);
 					break;
 				}
 			}
@@ -119,9 +119,9 @@ namespace MsgPack.Internal
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Double DecodeDouble(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Double DecodeDouble(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (!this.TryPeek(source, out var header))
+			if (!source.TryPeek(out var header))
 			{
 				requestHint = 1;
 				return default;
@@ -135,7 +135,7 @@ namespace MsgPack.Internal
 				return header;
 			}
 
-			ParseNumberHeader(header, source, typeof(Double), out var length, out var kind);
+			ParseNumberHeader(header, ref source, typeof(Double), out var length, out var kind);
 
 			Double value;
 			switch (kind)
@@ -146,23 +146,23 @@ namespace MsgPack.Internal
 					{
 						case 1:
 						{
-							value = ReadSByte(source, offset: 1, out requestHint);
+							value = ReadSByte(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 2:
 						{
-							value = ReadValue<short>(source, offset: 1, out requestHint);
+							value = ReadValue<short>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 4:
 						{
-							value = ReadValue<int>(source, offset: 1, out requestHint);
+							value = ReadValue<int>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						default: 
 						{
 							Debug.Assert(length == 8, $"length({length}) != 8");
-							value = ReadValue<long>(source, offset: 1, out requestHint);
+							value = ReadValue<long>(ref source, offset: 1, out requestHint);
 							break;
 						}
 					}
@@ -175,23 +175,23 @@ namespace MsgPack.Internal
 					{
 						case 1:
 						{
-							value = ReadByte(source, offset: 1, out requestHint);
+							value = ReadByte(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 2:
 						{
-							value = ReadValue<ushort>(source, offset: 1, out requestHint);
+							value = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						case 4:
 						{
-							value = ReadValue<uint>(source, offset: 1, out requestHint);
+							value = ReadValue<uint>(ref source, offset: 1, out requestHint);
 							break;
 						}
 						default: 
 						{
 							Debug.Assert(length == 8, $"length({length}) != 8");
-							value = ReadValue<ulong>(source, offset: 1, out requestHint);
+							value = ReadValue<ulong>(ref source, offset: 1, out requestHint);
 							break;
 						}
 					}
@@ -200,13 +200,13 @@ namespace MsgPack.Internal
 				}
 				case NumberKind.Single:
 				{
-					value = ReadValue<float>(source, offset: 1, out requestHint);
+					value = ReadValue<float>(ref source, offset: 1, out requestHint);
 					break;
 				}
 				default:
 				{
 					// Double
-					value = ReadValue<double>(source, offset: 1, out requestHint);
+					value = ReadValue<double>(ref source, offset: 1, out requestHint);
 					break;
 				}
 			}

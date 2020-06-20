@@ -2,8 +2,6 @@
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
-using System;
-
 namespace MsgPack.Json
 {
 	/// <summary>
@@ -11,13 +9,6 @@ namespace MsgPack.Json
 	/// </summary>
 	internal static class JsonTriviaTokens
 	{
-		public static ReadOnlySpan<byte> StandardWhitespaces => new[] { (byte)' ', (byte)'\t', (byte)'\r', (byte)'\n' };
-		public static ReadOnlySpan<byte> NewLine => new[] { (byte)'\r', (byte)'\n' };
-		public static ReadOnlySpan<byte> SingleByteUnicodeWhitespaces =>
-			new[] {
-				(byte)' ', (byte)'\t', (byte)'\r', (byte)'\n',
-				(byte)'\u000B',(byte)'\u000C'
-			};
 		public static readonly byte[][] MultiByteUnicodeWhitespaces =
 			new[]
 			{
@@ -41,8 +32,5 @@ namespace MsgPack.Json
 				new byte[] { 0xE2, 0x81, 0x9F }, // U+205F MEDIUM MATHEMATICAL SPACE
 				new byte[] { 0xEe, 0x80, 0x80 }, // U+3000 IDEOGRAPHIC SPACE
 			};
-		public static ReadOnlySpan<byte> SingleLineCommentStart2 => new byte[] { (byte)'/', (byte)'/' };
-		public static ReadOnlySpan<byte> MultiLineCommentStart => new byte[] { (byte)'/', (byte)'*' };
-		public static ReadOnlySpan<byte> MultiLineCommentEnd => new byte[] { (byte)'*', (byte)'/' };
 	}
 }

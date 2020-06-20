@@ -57,10 +57,10 @@ foreach (var isSigned in new [] { true, false })
 	var methodName = $"TryDecode{(isSigned ? "Signed" : "Unsigned")}Integer";
 	var outType = isSigned ? "Int64": "UInt64";
 #>
-
-		private bool <#= methodName #>(in SequenceReader<byte> source, Type type, out byte header, out <#= outType #> value, out int requestHint)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		private bool <#= methodName #>(ref SequenceReader<byte> source, Type type, out byte header, out <#= outType #> value, out int requestHint)
 		{
-			if (!this.TryPeek(source, out header))
+			if (!source.TryPeek(out header))
 			{
 				requestHint = 1;
 				value = default;
@@ -72,6 +72,7 @@ foreach (var isSigned in new [] { true, false })
 			if (header < 128)
 			{
 				value = header;
+				source.Advance(1);
 				return true;
 			}
 
@@ -82,13 +83,20 @@ foreach (var isSigned in new [] { true, false })
 			if (header >= 0xE0)
 			{
 				value = unchecked((sbyte)header);
+				source.Advance(1);
 				return true;
 			}
 
 <#
 	} // if (isSigned)
 #>
-			ParseNumberHeader(header, source, type, out var length, out var kind);
+			return this.<#= methodName #>Slow(ref source, type, header, out value, out requestHint);
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private bool <#= methodName #>Slow(ref SequenceReader<byte> source, Type type, byte header, out <#= outType #> value, out int requestHint)
+		{
+			ParseNumberHeader(header, ref source, type, out var length, out var kind);
 
 			if ((kind & NumberKind.RealBitMask) != 0 && !this.Options.CanTreatRealAsInteger)
 			{
@@ -175,7 +183,7 @@ foreach (var isSigned in new [] { true, false })
 				}
 				case NumberKind.Single:
 				{
-					var real = ReadValue<float>(source, offset: 1, out requestHint);
+					var real = ReadValue<float>(ref source, offset: 1, out requestHint);
 					if (requestHint != 0)
 					{
 						value = default;
@@ -198,7 +206,7 @@ foreach (var isSigned in new [] { true, false })
 				default:
 				{
 					Debug.Assert(kind == NumberKind.Double, $"kind({kind}) == NumberType.Double");
-					var real = ReadValue<double>(source, offset: 1, out requestHint);
+					var real = ReadValue<double>(ref source, offset: 1, out requestHint);
 					if (requestHint != 0)
 					{
 						value = default;
@@ -236,9 +244,9 @@ void WriteMethod(string type, bool isSigned, bool is64Bit)
 #>
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override <#= type #> Decode<#= type #>(in SequenceReader<byte> source, out int requestHint)
+		public sealed override <#= type #> Decode<#= type #>(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (!this.<#= coreMethod #>(source, typeof(<#= type #>), out var header, out var result, out requestHint))
+			if (!this.<#= coreMethod #>(ref source, typeof(<#= type #>), out var header, out var result, out requestHint))
 			{
 				return default;
 			}

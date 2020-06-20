@@ -10,7 +10,7 @@ namespace MsgPack.Internal
 {
 	public struct CollectionItemIterator
 	{
-		public delegate bool CollectionEndDetection(in SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint);
+		public delegate bool CollectionEndDetection(ref SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint);
 
 		private readonly long _itemsCount;
 		private long _nextItemIndex;
@@ -27,9 +27,9 @@ namespace MsgPack.Internal
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public bool CollectionEnds(in SequenceReader<byte> source)
+		public bool CollectionEnds(ref SequenceReader<byte> source)
 		{
-			var result = this._collectionEnds(source, ref this._nextItemIndex, this._itemsCount, out var requestHint);
+			var result = this._collectionEnds(ref source, ref this._nextItemIndex, this._itemsCount, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDetectCollectionEnds(source.Consumed, requestHint);
@@ -39,29 +39,29 @@ namespace MsgPack.Internal
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public bool CollectionEnds(in SequenceReader<byte> source, out int requestHint)
-			=> this._collectionEnds(source, ref this._nextItemIndex, this._itemsCount, out requestHint);
+		public bool CollectionEnds(ref SequenceReader<byte> source, out int requestHint)
+			=> this._collectionEnds(ref source, ref this._nextItemIndex, this._itemsCount, out requestHint);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public bool CollectionEnds(ReadOnlyMemory<byte> source, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(source));
-			return this.CollectionEnds(reader, out requestHint);
+			return this.CollectionEnds(ref reader, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public void Drain(in SequenceReader<byte> source)
+		public void Drain(ref SequenceReader<byte> source)
 		{
-			if (!this.Drain(source, out var requestHint))
+			if (!this.Drain(ref source, out var requestHint))
 			{
 				Throw.InsufficientInputForDrainCollectionItems(source.Consumed, requestHint);
 			}
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public bool Drain(in SequenceReader<byte> source, out int requestHint)
+		public bool Drain(ref SequenceReader<byte> source, out int requestHint)
 		{
-			while (!this.CollectionEnds(source, out requestHint))
+			while (!this.CollectionEnds(ref source, out requestHint))
 			{
 				if (requestHint != 0)
 				{
@@ -76,7 +76,7 @@ namespace MsgPack.Internal
 		public bool Drain(ref ReadOnlyMemory<byte> source, out int requestHint)
 		{
 			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(source));
-			var ends = this.Drain(reader, out requestHint);
+			var ends = this.Drain(ref reader, out requestHint);
 			source = source.Slice((int)reader.Consumed);
 			return ends;
 		}

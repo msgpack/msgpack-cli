@@ -1,3 +1,12 @@
+<#+
+void WriteContext(bool isSerialization, bool isAsync)
+{
+	var typeClass = isAsync ? "sealed class" : "struct";
+	var typePrefix = isSerialization ? "Serialization" : "Deserialization";
+	var typeName = $"{(isAsync ? "Async" : String.Empty)}{typePrefix}OperationContext";
+	var optionTypeName = $"{typePrefix}Options";
+	var primitive = isSerialization ? "Encoder" : "Decoder";
+#>
 // Copyright (c) FUJIWARA, Yusuke and all contributors.
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
@@ -9,30 +18,55 @@
 #nullable enable
 
 using System;
+<#+
+if (!isSerialization)
+{
+#>
 using System.Buffers;
+<#+
+}
+#>
 using System.Text;
 using System.Threading;
 using MsgPack.Internal;
 
 namespace MsgPack.Serialization.Internal
 {
-	public struct DeserializationOperationContext<TExtensionType>
+	public <#= typeClass #> <#= typeName #><TExtensionType>
 	{
-		public Decoder<TExtensionType> Decoder { get; }
-		public DeserializationOptions Options { get; }
+		public <#= primitive #><TExtensionType> <#= primitive #> { get; }
+		public <#= optionTypeName #> Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
+<#+
+	if (!isSerialization)
+	{
+#>
 		public ArrayPool<byte> ByteBufferPool => this.Options.ByteBufferPool;
+<#+
+	}
+#>
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public DeserializationOperationContext(Decoder<TExtensionType> decoder, DeserializationOptions? options, CancellationToken cancellationToken)
+		public <#= typeName #>(<#= primitive #><TExtensionType> <#= primitive.ToLowerInvariant() #>, <#= optionTypeName #>? options, CancellationToken cancellationToken)
 		{
-			this.Decoder = Ensure.NotNull(decoder);
-			this.Options = options ?? DeserializationOptions.Default;
+			this.<#= primitive #> = Ensure.NotNull(<#= primitive.ToLowerInvariant() #>);
+			this.Options = options ?? <#= optionTypeName #>.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
 		}
 
+<#+
+	if (isAsync)
+	{
+		var syncTypeName = typeName.Substring("Async".Length);
+#>
+		public <#= syncTypeName #><TExtensionType> As<#= syncTypeName #>()
+			=> new <#= syncTypeName #><TExtensionType>(this.<#= primitive #>, this.Options, this.CancellationToken);
+
+<#+
+	}
+#>
 		public CollectionContext CollectionContext => new CollectionContext(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue, this.CurrentDepth);
 
 		public int IncrementDepth()
@@ -54,13 +88,24 @@ namespace MsgPack.Serialization.Internal
 
 			return this.CurrentDepth--;
 		}
+<#+
+	if (!isSerialization)
+	{
+		var qualifier = isAsync ? String.Empty : "readonly ";
+#>
 
-		public readonly void ValidatePropertyKeyLength(long position, int length)
+		public <#= qualifier #>void ValidatePropertyKeyLength(long position, int length)
 		{
 			if(length > this.Options.MaxPropertyKeyLength)
 			{
 				Throw.TooLargePropertyKey(position, length, this.Options.MaxPropertyKeyLength);
 			}
 		}
+<#+
+	}
+#>
 	}
 }
+<#+
+}
+#>

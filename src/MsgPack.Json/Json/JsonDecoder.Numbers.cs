@@ -17,123 +17,123 @@ namespace MsgPack.Json
 	{
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Byte DecodeByte(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Byte DecodeByte(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeByteCore(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeByteCore(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private Byte DecodeByteCore(in SequenceReader<byte> source, out int requestHint)
-			=> (Byte)this.DecodeNumber(source, out requestHint);
+		private Byte DecodeByteCore(ref SequenceReader<byte> source, out int requestHint)
+			=> (Byte)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override SByte DecodeSByte(in SequenceReader<byte> source, out int requestHint)
+		public sealed override SByte DecodeSByte(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeSByteCore(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeSByteCore(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private SByte DecodeSByteCore(in SequenceReader<byte> source, out int requestHint)
-			=> (SByte)this.DecodeNumber(source, out requestHint);
+		private SByte DecodeSByteCore(ref SequenceReader<byte> source, out int requestHint)
+			=> (SByte)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Int16 DecodeInt16(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Int16 DecodeInt16(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeInt16Core(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeInt16Core(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private Int16 DecodeInt16Core(in SequenceReader<byte> source, out int requestHint)
-			=> (Int16)this.DecodeNumber(source, out requestHint);
+		private Int16 DecodeInt16Core(ref SequenceReader<byte> source, out int requestHint)
+			=> (Int16)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override UInt16 DecodeUInt16(in SequenceReader<byte> source, out int requestHint)
+		public sealed override UInt16 DecodeUInt16(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeUInt16Core(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeUInt16Core(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private UInt16 DecodeUInt16Core(in SequenceReader<byte> source, out int requestHint)
-			=> (UInt16)this.DecodeNumber(source, out requestHint);
+		private UInt16 DecodeUInt16Core(ref SequenceReader<byte> source, out int requestHint)
+			=> (UInt16)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Int32 DecodeInt32(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Int32 DecodeInt32(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeInt32Core(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeInt32Core(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private Int32 DecodeInt32Core(in SequenceReader<byte> source, out int requestHint)
-			=> (Int32)this.DecodeNumber(source, out requestHint);
+		private Int32 DecodeInt32Core(ref SequenceReader<byte> source, out int requestHint)
+			=> (Int32)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override UInt32 DecodeUInt32(in SequenceReader<byte> source, out int requestHint)
+		public sealed override UInt32 DecodeUInt32(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeUInt32Core(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeUInt32Core(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private UInt32 DecodeUInt32Core(in SequenceReader<byte> source, out int requestHint)
-			=> (UInt32)this.DecodeNumber(source, out requestHint);
+		private UInt32 DecodeUInt32Core(ref SequenceReader<byte> source, out int requestHint)
+			=> (UInt32)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Int64 DecodeInt64(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Int64 DecodeInt64(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeInt64Core(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeInt64Core(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private Int64 DecodeInt64Core(in SequenceReader<byte> source, out int requestHint)
-			=> (Int64)this.DecodeNumber(source, out requestHint);
+		private Int64 DecodeInt64Core(ref SequenceReader<byte> source, out int requestHint)
+			=> (Int64)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override UInt64 DecodeUInt64(in SequenceReader<byte> source, out int requestHint)
+		public sealed override UInt64 DecodeUInt64(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeUInt64Core(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeUInt64Core(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private UInt64 DecodeUInt64Core(in SequenceReader<byte> source, out int requestHint)
-			=> (UInt64)this.DecodeNumber(source, out requestHint);
+		private UInt64 DecodeUInt64Core(ref SequenceReader<byte> source, out int requestHint)
+			=> (UInt64)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Single DecodeSingle(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Single DecodeSingle(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeSingleCore(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeSingleCore(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private Single DecodeSingleCore(in SequenceReader<byte> source, out int requestHint)
-			=> (Single)this.DecodeNumber(source, out requestHint);
+		private Single DecodeSingleCore(ref SequenceReader<byte> source, out int requestHint)
+			=> (Single)this.DecodeNumber(ref source, out requestHint);
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Double DecodeDouble(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Double DecodeDouble(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeDoubleCore(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.DecodeDoubleCore(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private Double DecodeDoubleCore(in SequenceReader<byte> source, out int requestHint)
-			=> (Double)this.DecodeNumber(source, out requestHint);
+		private Double DecodeDoubleCore(ref SequenceReader<byte> source, out int requestHint)
+			=> (Double)this.DecodeNumber(ref source, out requestHint);
 
 	}
 }

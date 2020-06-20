@@ -43,7 +43,7 @@ namespace MsgPack.Json
 			}
 		}
 
-		private protected static Utf8UnitStatus TryGetUtf8Unit(in SequenceReader<byte> source, out ReadOnlySequence<byte> unit)
+		private protected static Utf8UnitStatus TryGetUtf8Unit(ref SequenceReader<byte> source, out ReadOnlySequence<byte> unit)
 		{
 			if (source.UnreadSpan.IsEmpty)
 			{
@@ -55,7 +55,7 @@ namespace MsgPack.Json
 			if ((utf80 & 0b_1000_0000) == 0)
 			{
 				// 1byte
-				unit = source.Sequence.Slice(source.Consumed, 1);
+				unit = source.Sequence.Slice(source.Position, 1);
 				return Utf8UnitStatus.Valid;
 			}
 			else if ((utf80 & 0b_1110_0000) == 0b_1100_0000)
@@ -63,11 +63,11 @@ namespace MsgPack.Json
 				Span<byte> utf8 = stackalloc byte[2];
 				if (!source.TryCopyTo(utf8))
 				{
-					unit = source.Sequence.Slice(source.Consumed, source.Remaining);
+					unit = source.Sequence.Slice(source.Position);
 					return Utf8UnitStatus.TooShort;
 				}
 
-				unit = source.Sequence.Slice(source.Consumed, 2);
+				unit = source.Sequence.Slice(source.Position, 2);
 
 				// 2 bytes, 5 + 6 bits
 				var bits1 = utf8[0] & 0b_0001_1111;
@@ -86,11 +86,11 @@ namespace MsgPack.Json
 				Span<byte> utf8 = stackalloc byte[3];
 				if (!source.TryCopyTo(utf8))
 				{
-					unit = source.Sequence.Slice(source.Consumed, source.Remaining);
+					unit = source.Sequence.Slice(source.Position);
 					return Utf8UnitStatus.TooShort;
 				}
 
-				unit = source.Sequence.Slice(source.Consumed, 3);
+				unit = source.Sequence.Slice(source.Position, 3);
 
 				if ((utf8[1] & 0b_1100_0000) != 0b_1000_0000
 					|| (utf8[2] & 0b_1100_0000) != 0b_1000_0000)
@@ -117,11 +117,11 @@ namespace MsgPack.Json
 				Span<byte> utf8 = stackalloc byte[4];
 				if (!source.TryCopyTo(utf8))
 				{
-					unit = source.Sequence.Slice(source.Consumed, source.Remaining);
+					unit = source.Sequence.Slice(source.Position);
 					return Utf8UnitStatus.TooShort;
 				}
 
-				unit = source.Sequence.Slice(source.Consumed, 4);
+				unit = source.Sequence.Slice(source.Position, 4);
 
 				if ((utf8[1] & 0b_1100_0000) != 0b_1000_0000
 					|| (utf8[2] & 0b_1100_0000) != 0b_1000_0000
@@ -147,14 +147,12 @@ namespace MsgPack.Json
 			}
 			else
 			{
-				unit = source.Sequence.Slice(source.Consumed, 1);
+				unit = source.Sequence.Slice(source.Position, 1);
 				return Utf8UnitStatus.Invalid;
 			}
 		}
 
-		protected abstract void ReadTrivia(in SequenceReader<byte> source, out ReadOnlySequence<byte> trivia);
-
-		protected abstract bool TryReadNull(in SequenceReader<byte> source);
+		protected abstract long ReadTrivia(ref SequenceReader<byte> source);
 
 		protected enum Utf8UnitStatus
 		{

@@ -26,9 +26,9 @@ namespace MsgPack.Internal
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override bool DecodeBoolean(in SequenceReader<byte> source, out int requestHint)
+		public override bool DecodeBoolean(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (!this.TryPeek(source, out var header))
+			if (!source.TryPeek(out var header))
 			{
 				requestHint = 1;
 				return false;
@@ -56,9 +56,18 @@ namespace MsgPack.Internal
 			}
 		}
 
-		private bool TryReadNull(in SequenceReader<byte> source)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override  bool TryDecodeNull(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryPeek(source, out var b) && b == MessagePackCode.NilValue)
+			if(!source.TryPeek(out var b))
+			{
+				requestHint = 1;
+				return default;
+			}
+
+			requestHint = 0;
+
+			if (b == MessagePackCode.NilValue)
 			{
 				source.Advance(1);
 				return true;
@@ -67,7 +76,7 @@ namespace MsgPack.Internal
 			return false;
 		}
 
-		private static void ParseNumberHeader(byte header, in SequenceReader<byte> source, Type type, out int length, out NumberKind kind)
+		private static void ParseNumberHeader(byte header, ref SequenceReader<byte> source, Type type, out int length, out NumberKind kind)
 		{
 			// 0xD0-D3 -- SignedIntN
 			// 1101-0000 -> 1101-0011
@@ -79,16 +88,16 @@ namespace MsgPack.Internal
 			if ((header & 0xD3) == header)
 			{
 				// SignedIntN
-				length = (int)Math.Pow(2, (header & 0x3)) + 1;
+				length = (int)Math.Pow(2, (header & 0x3));
 				kind = NumberKind.Signed;
 			}
 			else if ((header & 0xCC) == header)
 			{
 				// UnsignedIntN
-				length = (int)Math.Pow(2, (header & 0x3)) + 1;
+				length = (int)Math.Pow(2, (header & 0x3));
 				kind = NumberKind.Unsigned;
 			}
-			if (header == MessagePackCode.Real64)
+			else if (header == MessagePackCode.Real64)
 			{
 				length = 9;
 				kind = NumberKind.Double;
@@ -107,7 +116,7 @@ namespace MsgPack.Internal
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private static byte ReadByte(in SequenceReader<byte> source, int offset, out int requestHint)
+		private static byte ReadByte(ref SequenceReader<byte> source, int offset, out int requestHint)
 		{
 			if (source.UnreadSpan.Length > offset + 1)
 			{
@@ -117,10 +126,10 @@ namespace MsgPack.Internal
 				return result;
 			}
 
-			return ReadByteMultiSegment(source, offset, out requestHint);
+			return ReadByteMultiSegment(ref source, offset, out requestHint);
 		}
 
-		private static byte ReadByteMultiSegment(in SequenceReader<byte> source, int offset, out int requestHint)
+		private static byte ReadByteMultiSegment(ref SequenceReader<byte> source, int offset, out int requestHint)
 		{
 			if (source.Remaining < offset + 1)
 			{
@@ -136,11 +145,11 @@ namespace MsgPack.Internal
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private static sbyte ReadSByte(in SequenceReader<byte> source, int offset, out int requestHint)
-			=> unchecked((sbyte)ReadByte(source, offset, out requestHint));
+		private static sbyte ReadSByte(ref SequenceReader<byte> source, int offset, out int requestHint)
+			=> unchecked((sbyte)ReadByte(ref source, offset, out requestHint));
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private static unsafe T ReadValue<T>(in SequenceReader<byte> source, int offset, out int requestHint)
+		private static unsafe T ReadValue<T>(ref SequenceReader<byte> source, int offset, out int requestHint)
 			where T : unmanaged
 		{
 			if (source.UnreadSpan.Length > offset + sizeof(T))
@@ -151,10 +160,10 @@ namespace MsgPack.Internal
 				return result;
 			}
 
-			return ReadMultiSegment<T>(source, offset, out requestHint);
+			return ReadMultiSegment<T>(ref source, offset, out requestHint);
 		}
 
-		private static unsafe T ReadMultiSegment<T>(in SequenceReader<byte> source, int offset, out int requestHint)
+		private static unsafe T ReadMultiSegment<T>(ref SequenceReader<byte> source, int offset, out int requestHint)
 				where T : unmanaged
 		{
 			if (source.Remaining < offset + sizeof(T))

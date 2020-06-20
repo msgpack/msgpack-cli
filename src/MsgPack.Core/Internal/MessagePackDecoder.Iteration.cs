@@ -12,7 +12,7 @@ namespace MsgPack.Internal
 
 		// This is instance method now because CLR/CoreCLR delegates are optmized for instance method invocation.
 		// This method might be changed static if C# supports function pointer.
-		private bool DetectCollectionEnds(in SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint)
+		private bool DetectCollectionEnds(ref SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint)
 		{
 			requestHint = 0;
 
@@ -25,10 +25,9 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		public override CollectionType DecodeArrayOrMap(in SequenceReader<byte> source, out CollectionItemIterator iterator, out int requestHint)
+		public override CollectionType DecodeArrayOrMap(ref SequenceReader<byte> source, out CollectionItemIterator iterator, out int requestHint)
 		{
-			var consumed = 0L;
-			var type = this.PrivateDecodeArrayOrMapHeader(source, ref consumed, out _, out var itemsCount, out requestHint);
+			var type = this.PrivateDecodeArrayOrMapHeader(ref source, out _, out var itemsCount, out requestHint);
 			if (requestHint != 0)
 			{
 				iterator = default;
@@ -42,9 +41,9 @@ namespace MsgPack.Internal
 		private CollectionItemIterator CreateIterator(long itemsCount)
 			=> new CollectionItemIterator(this._detectCollectionEnds, itemsCount);
 
-		public override CollectionItemIterator DecodeArray(in SequenceReader<byte> source, out int requestHint)
+		public override CollectionItemIterator DecodeArray(ref SequenceReader<byte> source, out int requestHint)
 		{
-			var itemsCount = this.DecodeArrayHeader(source, out requestHint);
+			var itemsCount = this.DecodeArrayHeader(ref source, out requestHint);
 			if (requestHint != 0)
 			{
 				return default;
@@ -53,9 +52,9 @@ namespace MsgPack.Internal
 			return new CollectionItemIterator(this._detectCollectionEnds, itemsCount);
 		}
 
-		public override CollectionItemIterator DecodeMap(in SequenceReader<byte> source, out int requestHint)
+		public override CollectionItemIterator DecodeMap(ref SequenceReader<byte> source, out int requestHint)
 		{
-			var itemsCount = this.DecodeMapHeader(source, out requestHint);
+			var itemsCount = this.DecodeMapHeader(ref source, out requestHint);
 			if (requestHint != 0)
 			{
 				return default;

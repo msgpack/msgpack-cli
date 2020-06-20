@@ -35,9 +35,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public String DecodeString(in SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public String DecodeString(ref SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			var result = this.DecodeString(source, out var requestHint, encoding, cancellationToken);
+			var result = this.DecodeString(ref source, out var requestHint, encoding, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForString(source.Consumed, typeof(String), encoding, requestHint);
@@ -65,7 +65,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="String" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract String? DecodeString(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
+		public abstract String? DecodeString(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		///		Decodes <see cref="String" /> value or <c>null</c> from specified sequence.
@@ -83,9 +83,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public String? DecodeNullableString(in SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public String? DecodeNullableString(ref SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			var result = this.DecodeNullableString(source, out var requestHint, encoding, cancellationToken);
+			var result = this.DecodeNullableString(ref source, out var requestHint, encoding, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForString(source.Consumed, typeof(String), encoding, requestHint);
@@ -113,7 +113,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="String" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract String? DecodeNullableString(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
+		public abstract String? DecodeNullableString(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
 
 
 #if FEATURE_UTF8STRING
@@ -135,9 +135,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Utf8String DecodeUtf8String(in SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public Utf8String DecodeUtf8String(ref SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			var result = this.DecodeUtf8String(source, out var requestHint, encoding, cancellationToken);
+			var result = this.DecodeUtf8String(ref source, out var requestHint, encoding, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForUtf8String(source.Consumed, typeof(Utf8String), encoding, requestHint);
@@ -165,7 +165,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Utf8String" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract Utf8String? DecodeUtf8String(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
+		public abstract Utf8String? DecodeUtf8String(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		///		Decodes <see cref="Utf8String" /> value or <c>null</c> from specified sequence.
@@ -183,9 +183,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public Utf8String? DecodeNullableUtf8String(in SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public Utf8String? DecodeNullableUtf8String(ref SequenceReader<byte> source, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			var result = this.DecodeNullableUtf8String(source, out var requestHint, encoding, cancellationToken);
+			var result = this.DecodeNullableUtf8String(ref source, out var requestHint, encoding, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForUtf8String(source.Consumed, typeof(Utf8String), encoding, requestHint);
@@ -213,7 +213,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Utf8String" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract Utf8String? DecodeNullableUtf8String(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
+		public abstract Utf8String? DecodeNullableUtf8String(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default);
 
 
 #endif // FEATURE_UTF8STRING
@@ -234,9 +234,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public byte[] DecodeBinary(in SequenceReader<byte> source, CancellationToken cancellationToken = default)
+		public byte[] DecodeBinary(ref SequenceReader<byte> source, CancellationToken cancellationToken = default)
 		{
-			var result = this.DecodeBinary(source, out var requestHint, cancellationToken);
+			var result = this.DecodeBinary(ref source, out var requestHint, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(byte[]), requestHint);
@@ -263,7 +263,7 @@ namespace MsgPack.Internal
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="byte[]" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract byte[]? DecodeBinary(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default);
+		public abstract byte[]? DecodeBinary(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		///		Decodes <see cref="byte[]" /> value or <c>null</c> from specified sequence.
@@ -280,9 +280,9 @@ namespace MsgPack.Internal
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public byte[]? DecodeNullableBinary(in SequenceReader<byte> source, CancellationToken cancellationToken = default)
+		public byte[]? DecodeNullableBinary(ref SequenceReader<byte> source, CancellationToken cancellationToken = default)
 		{
-			var result = this.DecodeNullableBinary(source, out var requestHint, cancellationToken);
+			var result = this.DecodeNullableBinary(ref source, out var requestHint, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(byte[]), requestHint);
@@ -309,7 +309,7 @@ namespace MsgPack.Internal
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="byte[]" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract byte[]? DecodeNullableBinary(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default);
+		public abstract byte[]? DecodeNullableBinary(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default);
 
 	}
 }

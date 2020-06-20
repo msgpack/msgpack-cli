@@ -1,0 +1,6 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ include file="./OperationContext.ttinclude" #>
+<#@ output extension=".cs" #>
+<#
+WriteContext(isSerialization: false, isAsync: false);
+#>

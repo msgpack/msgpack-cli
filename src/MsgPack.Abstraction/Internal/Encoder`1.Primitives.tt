@@ -47,7 +47,7 @@ foreach (var inputType in new [] {
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void Encode<#= inputType #>(<#= inputType #>? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{

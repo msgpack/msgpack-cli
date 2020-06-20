@@ -47,9 +47,9 @@ foreach (var outputType in new [] {
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public <#= outputType #> Decode<#= outputType #>(in SequenceReader<byte> source)
+		public <#= outputType #> Decode<#= outputType #>(ref SequenceReader<byte> source)
 		{
-			var result = this.Decode<#= outputType #>(source, out var requestHint);
+			var result = this.Decode<#= outputType #>(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(<#= outputType #>), requestHint);
@@ -75,7 +75,7 @@ foreach (var outputType in new [] {
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= outputType #>" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract <#= outputType #> Decode<#= outputType #>(in SequenceReader<byte> source, out int requestHint);
+		public abstract <#= outputType #> Decode<#= outputType #>(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Encodes <see cref="<#= outputType #>" /> value or <c>null</c> from specified sequence.
@@ -92,9 +92,9 @@ foreach (var outputType in new [] {
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public <#= outputType #>? DecodeNullable<#= outputType #>(in SequenceReader<byte> source)
+		public <#= outputType #>? DecodeNullable<#= outputType #>(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeNullable<#= outputType #>(source, out var requestHint);
+			var result = this.DecodeNullable<#= outputType #>(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput(source.Consumed, typeof(<#= outputType #>), requestHint);
@@ -121,7 +121,7 @@ foreach (var outputType in new [] {
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= outputType #>" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract <#= outputType #>? DecodeNullable<#= outputType #>(in SequenceReader<byte> source, out int requestHint);
+		public abstract <#= outputType #>? DecodeNullable<#= outputType #>(ref SequenceReader<byte> source, out int requestHint);
 
 <#
 }

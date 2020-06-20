@@ -9,6 +9,12 @@ namespace MsgPack.Internal
 {
 	internal static class Throw
 	{
+		public static void ArgumentNull(string paramName)
+			=> throw new ArgumentNullException(paramName);
+
+		public static void ArgumentOutOfRange(string paramName, string message)
+			=> throw new ArgumentOutOfRangeException(paramName, message);
+
 		public static void ExtensionsIsNotSupported()
 			=> throw new NotSupportedException($"Extension type is not supported in this encoder.");
 
@@ -50,6 +56,19 @@ namespace MsgPack.Internal
 				throw new InsufficientInputException($"It is required more {requestHint:#,0} bytes in input ReadOnlySequence to decode {targetType} value at {position:#,0}.");
 			}
 		}
+
+		public static void InsufficientInputForNull(long position, int requestHint)
+		{
+			if (requestHint < 0)
+			{
+				throw new InsufficientInputException($"It is required more bytes in input ReadOnlySequence to decode null at {position:#,0}.");
+			}
+			else
+			{
+				throw new InsufficientInputException($"It is required more {requestHint:#,0} bytes in input ReadOnlySequence to decode null at {position:#,0}.");
+			}
+		}
+
 
 		public static void InsufficientInputForDecodeArrayOrMapHeader(long position, int requestHint)
 		{

@@ -22,6 +22,22 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Decoder`1.Primitives.cs</LastGenOutput>
     </None>
+    <None Update="Serialization\Internal\AsyncSerializationOperationContext`1.tt">
+      <LastGenOutput>AsyncSerializationOperationContext`1.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Serialization\Internal\AsyncDeserializationOperationContext`1.tt">
+      <LastGenOutput>AsyncDeserializationOperationContext`1.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Serialization\Internal\DeserializationOperationContext`1.tt">
+      <LastGenOutput>DeserializationOperationContext`1.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Serialization\Internal\SerializationOperationContext`1.tt">
+      <LastGenOutput>SerializationOperationContext`1.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +59,26 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Encoder`1.Primitives.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\Internal\AsyncDeserializationOperationContext`1.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AsyncDeserializationOperationContext`1.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\Internal\AsyncSerializationOperationContext`1.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AsyncSerializationOperationContext`1.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\Internal\DeserializationOperationContext`1.cs">
+      <DependentUpon>DeserializationOperationContext`1.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Serialization\Internal\SerializationOperationContext`1.cs">
+      <DependentUpon>SerializationOperationContext`1.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
   

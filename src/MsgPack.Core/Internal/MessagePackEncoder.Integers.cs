@@ -19,7 +19,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeInt32(Int32 value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var leastByte = value & 0x000000FF;
 			if (leastByte == value || (value ^ 0xFFFFFF00) == leastByte)
@@ -38,7 +38,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeUInt32(UInt32 value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var leastByte = value & 0x000000FF;
 			if (leastByte == value || (value ^ 0xFFFFFF00) == leastByte)
@@ -57,7 +57,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeInt64(Int64 value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var leastByte = value & 0x000000FF;
 			if (leastByte == value || (value ^ 0xFFFFFF00) == leastByte)
@@ -76,7 +76,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeUInt64(UInt64 value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var leastByte = value & 0x000000FF;
 			if (leastByte == value || (value ^ 0xFFFFFF00) == leastByte)

@@ -3,6 +3,7 @@
 // See the LICENSE in the project root for more information.
 
 using System;
+using System.Buffers;
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 
@@ -13,8 +14,17 @@ namespace MsgPack.Internal
 	/// </summary>
 	internal sealed class LegacyMessagePackEncoder : MessagePackEncoder
 	{
+		private static readonly LegacyMessagePackEncoder DefaultInstance = new LegacyMessagePackEncoder(MessagePackEncoderOptions.Default);
+
 		public LegacyMessagePackEncoder(MessagePackEncoderOptions options)
 			: base(options) { }
+
+		internal static byte[] InternalEncodeString(string value)
+		{
+			var arrayBuffer = new ArrayBufferWriter<byte>();
+			DefaultInstance.EncodeString(value, arrayBuffer);
+			return arrayBuffer.WrittenMemory.ToArray();
+		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		protected sealed override int EncodeStringHeader(uint length, Span<byte> buffer)

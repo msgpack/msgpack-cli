@@ -33,7 +33,8 @@ namespace MsgPack.Json
 			this._stringBuilder = stringBuilder;
 			this._bufferPool = options.CharBufferPool;
 			this._clearsArray = options.ClearsBuffer;
-			this._buffer = this._bufferPool.Rent(options.MaxCharBufferLength);
+#warning TODO: OPTION
+			this._buffer = this._bufferPool.Rent(64/*options.MaxCharBufferLength*/);
 		}
 
 		public void Dispose()

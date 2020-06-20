@@ -30,32 +30,49 @@ namespace MsgPack.Internal
 			this.FormatFeatures = Ensure.NotNull(formatFeatures);
 		}
 
-		public void Skip(in SequenceReader<byte> source, in CollectionContext collectionContext, CancellationToken cancellationToken = default)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public void Skip(ref SequenceReader<byte> source, in CollectionContext collectionContext, CancellationToken cancellationToken = default)
 		{
-			this.Skip(source, collectionContext, out var requestHint, cancellationToken);
+			this.Skip(ref source, collectionContext, out var requestHint, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForSkip(source.Consumed, requestHint);
 			}
 		}
 
-		public abstract void Skip(in SequenceReader<byte> source, in CollectionContext collectionContext, out int requestHint, CancellationToken cancellationToken = default);
+		public abstract void Skip(ref SequenceReader<byte> source, in CollectionContext collectionContext, out int requestHint, CancellationToken cancellationToken = default);
+
+		public abstract bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult<TExtensionType> result, CancellationToken cancellationToken = default);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public bool TryPeek(in SequenceReader<byte> source, out byte value) => source.TryRead(out value);
-
-		public abstract bool DecodeItem(in SequenceReader<byte> source, out DecodeItemResult<TExtensionType> result, CancellationToken cancellationToken = default);
-
-		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public void GetRawString(in SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, CancellationToken cancellationToken = default)
+		public void GetRawString(ref SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, CancellationToken cancellationToken = default)
 		{
-			if (!this.GetRawString(source, out rawString, out var requestHint, cancellationToken))
+			if (!this.GetRawString(ref source, out rawString, out var requestHint, cancellationToken))
 			{
 				Throw.InsufficientInputForRawString(source.Consumed, requestHint);
 			}
 		}
 
-		public abstract bool GetRawString(in SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, CancellationToken cancellationToken = default);
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public bool TryDecodeNull(ref SequenceReader<byte> source)
+		{
+			if (this.TryDecodeNull(ref source, out var requestHint))
+			{
+				return true;
+			}
+
+			if (requestHint != 0)
+			{
+				Throw.InsufficientInputForNull(source.Consumed, requestHint);
+			}
+
+			return false;
+		}
+
+		public abstract bool TryDecodeNull(ref SequenceReader<byte> source, out int requestHint);
+
+
+		public abstract bool GetRawString(ref SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		///		Decodes current data as array or map header, and returns the items count if known.
@@ -69,9 +86,9 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not an array nor a map.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public CollectionType DecodeArrayOrMapHeader(in SequenceReader<byte> source, out long itemsCount)
+		public CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out long itemsCount)
 		{
-			var result = this.DecodeArrayOrMapHeader(source, out itemsCount, out var requestHint);
+			var result = this.DecodeArrayOrMapHeader(ref source, out itemsCount, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDecodeArrayOrMapHeader(source.Consumed, requestHint);
@@ -94,7 +111,7 @@ namespace MsgPack.Internal
 		///		This method does not return anything else, but may throw an exception.
 		///	</returns>
 		///	<exception cref="MessageTypeException">The decoded value is not an array nor a map.</exception>
-		public abstract CollectionType DecodeArrayOrMapHeader(in SequenceReader<byte> source, out long itemsCount, out int requestHint);
+		public abstract CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out long itemsCount, out int requestHint);
 
 		/// <summary>
 		///		Decodes current data as array header, and returns the items count if known.
@@ -107,9 +124,9 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not an array.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public long DecodeArrayHeader(in SequenceReader<byte> source)
+		public long DecodeArrayHeader(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeArrayHeader(source, out var requestHint);
+			var result = this.DecodeArrayHeader(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDecodeArrayHeader(source.Consumed, requestHint);
@@ -132,7 +149,7 @@ namespace MsgPack.Internal
 		///	</returns>
 		///	<exception cref="MessageTypeException">The decoded value is not an array.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract long DecodeArrayHeader(in SequenceReader<byte> source, out int requestHint);
+		public abstract long DecodeArrayHeader(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes current data as map header, and returns the items count if known.
@@ -145,9 +162,9 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not a map.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public long DecodeMapHeader(in SequenceReader<byte> source)
+		public long DecodeMapHeader(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeMapHeader(source, out var requestHint);
+			var result = this.DecodeMapHeader(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDecodeMapHeader(source.Consumed, requestHint);
@@ -169,9 +186,9 @@ namespace MsgPack.Internal
 		///		Note that <c>0</c> is valid value when the map is empty.
 		///	</returns>
 		///	<exception cref="MessageTypeException">The decoded value is not a map.</exception>
-		public abstract long DecodeMapHeader(in SequenceReader<byte> source, out int requestHint);
+		public abstract long DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint);
 
-		public virtual void DecodeExtension(in SequenceReader<byte> source, out TExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
+		public virtual void DecodeExtension(ref SequenceReader<byte> source, out TExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			Throw.ExtensionsIsNotSupported();
 			// never
@@ -180,9 +197,9 @@ namespace MsgPack.Internal
 			typeCode = default!;
 		}
 
-		public CollectionType DecodeArrayOrMap(in SequenceReader<byte> source, out CollectionItemIterator iterator)
+		public CollectionType DecodeArrayOrMap(ref SequenceReader<byte> source, out CollectionItemIterator iterator)
 		{
-			var result = this.DecodeArrayOrMap(source, out iterator, out var requestHint);
+			var result = this.DecodeArrayOrMap(ref source, out iterator, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDecodeArrayOrMapHeader(source.Consumed, requestHint);
@@ -191,11 +208,11 @@ namespace MsgPack.Internal
 			return result;
 		}
 
-		public abstract CollectionType DecodeArrayOrMap(in SequenceReader<byte> source, out CollectionItemIterator iterator, out int requestHint);
+		public abstract CollectionType DecodeArrayOrMap(ref SequenceReader<byte> source, out CollectionItemIterator iterator, out int requestHint);
 
-		public CollectionItemIterator DecodeArray(in SequenceReader<byte> source)
+		public CollectionItemIterator DecodeArray(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeArray(source, out var requestHint);
+			var result = this.DecodeArray(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDecodeArrayHeader(source.Consumed, requestHint);
@@ -204,11 +221,11 @@ namespace MsgPack.Internal
 			return result;
 		}
 
-		public abstract CollectionItemIterator DecodeArray(in SequenceReader<byte> source, out int requestHint);
+		public abstract CollectionItemIterator DecodeArray(ref SequenceReader<byte> source, out int requestHint);
 
-		public CollectionItemIterator DecodeMap(in SequenceReader<byte> source)
+		public CollectionItemIterator DecodeMap(ref SequenceReader<byte> source)
 		{
-			var result = this.DecodeMap(source, out var requestHint);
+			var result = this.DecodeMap(ref source, out var requestHint);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDecodeMapHeader(source.Consumed, requestHint);
@@ -217,17 +234,23 @@ namespace MsgPack.Internal
 			return result;
 		}
 
-		public abstract CollectionItemIterator DecodeMap(in SequenceReader<byte> source, out int requestHint);
+		public abstract CollectionItemIterator DecodeMap(ref SequenceReader<byte> source, out int requestHint);
 
-		public void Drain(in SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, CancellationToken cancellationToken = default)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public void Drain(ref SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, CancellationToken cancellationToken = default)
 		{
-			this.Drain(source, collectionContext, itemsCount, out var requestHint, cancellationToken);
+			if (itemsCount <= 0)
+			{
+				return;
+			}
+
+			this.Drain(ref source, collectionContext, itemsCount, out var requestHint, cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInputForDecodeMapHeader(source.Consumed, requestHint);
 			}
 		}
 
-		public abstract void Drain(in SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, out int requestHint, CancellationToken cancellationToken = default);
+		public abstract void Drain(ref SequenceReader<byte> source, in CollectionContext collectionContext, long itemsCount, out int requestHint, CancellationToken cancellationToken = default);
 	}
 }

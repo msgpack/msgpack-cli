@@ -4,6 +4,8 @@
 
 using System.Buffers;
 using System.Buffers.Text;
+using System.Runtime.CompilerServices;
+using MsgPack.Internal;
 
 namespace MsgPack.Json
 {
@@ -12,10 +14,19 @@ namespace MsgPack.Json
 	/// </summary>
 	internal static class JsonFormatter
 	{
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public static void WriteNull(IBufferWriter<byte> buffer)
-			=> buffer.Write(JsonTokens.Null);
+		{
+			var span = buffer.GetSpan(4);
+			span[0] = (byte)'n';
+			span[1] = (byte)'u';
+			span[2] = (byte)'l';
+			span[3] = (byte)'l';
+			buffer.Advance(4);
+		}
 
-		public static void Format(float value, IBufferWriter<byte> buffer, JsonEncoderOptions options)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public static void Format(float value, IBufferWriter<byte> buffer)
 		{
 			var span = buffer.GetSpan(0);
 			while (!Utf8Formatter.TryFormat(value, span, out _))
@@ -24,7 +35,8 @@ namespace MsgPack.Json
 			}
 		}
 
-		public static void Format(double value, IBufferWriter<byte> buffer, JsonEncoderOptions options)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public static void Format(double value, IBufferWriter<byte> buffer)
 		{
 			var span = buffer.GetSpan(0);
 			while (!Utf8Formatter.TryFormat(value, span, out _))

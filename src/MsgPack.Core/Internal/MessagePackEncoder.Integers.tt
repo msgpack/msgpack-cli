@@ -25,7 +25,7 @@ foreach (var inputType in new []{ "Int32", "UInt32", "Int64", "UInt64" })
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void Encode<#= inputType #>(<#= inputType #> value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var leastByte = value & 0x000000FF;
 			if (leastByte == value || (value ^ 0xFFFFFF00) == leastByte)

@@ -103,7 +103,8 @@ namespace MsgPack.Json
 		public ReadOnlyMemory<Rune> AdditionalEscapeTargetChars { get; set; }
 
 		public bool EscapesHorizontalTab { get; set; } = true;
-		public bool EscapesPrivateUseCharactors { get; set; } = true;
+		public bool EscapesPrivateUseCharactors { get; set; } = false;
+		public bool EscapesHtmlChars { get; set; } = false;
 
 		internal Action<float, IBufferWriter<byte>, JsonEncoderOptions>? SingleInfinityFormatter;
 		internal Action<double, IBufferWriter<byte>, JsonEncoderOptions>? DoubleInfinityFormatter;
@@ -136,7 +137,7 @@ namespace MsgPack.Json
 
 		public JsonEncoderOptionsBuilder WithHtmlCharactorEscaping()
 		{
-			this.AdditionalEscapeTargetChars = JsonCharactor.ShouldBeEscaped;
+			this.EscapesHtmlChars = true;
 			return this;
 		}
 

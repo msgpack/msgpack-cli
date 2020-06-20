@@ -10,11 +10,11 @@ namespace MsgPack.Serialization.Internal
 {
 	public interface IObjectSerializer<T, TExtentionType>
 	{
-		void Serialize(in SerializationOperationContext<TExtentionType> context, T obj, IBufferWriter<byte> sink);
-		ValueTask SerializeAsync(SerializationOperationContext<TExtentionType> context, T obj, Stream streamSink);
-		T Deserialize(in DeserializationOperationContext<TExtentionType> context, in SequenceReader<byte> source);
-		ValueTask<T> DeserializeAsync(DeserializationOperationContext<TExtentionType> context, Stream streamSource);
-		void DeserializeTo(in DeserializationOperationContext<TExtentionType> context, in SequenceReader<byte> source, in T obj);
-		ValueTask DeserializeToAsync(DeserializationOperationContext<TExtentionType> context, Stream streamSource, T obj);
+		void Serialize(ref SerializationOperationContext<TExtentionType> context, T obj, IBufferWriter<byte> sink);
+		ValueTask SerializeAsync(AsyncSerializationOperationContext<TExtentionType> context, T obj, Stream streamSink);
+		T Deserialize(ref DeserializationOperationContext<TExtentionType> context, ref SequenceReader<byte> source);
+		ValueTask<T> DeserializeAsync(AsyncDeserializationOperationContext<TExtentionType> context, Stream streamSource);
+		bool DeserializeTo(ref DeserializationOperationContext<TExtentionType> context, ref SequenceReader<byte> source, in T obj);
+		ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext<TExtentionType> context, Stream streamSource, T obj);
 	}
 }

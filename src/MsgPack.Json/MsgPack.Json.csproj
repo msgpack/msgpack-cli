@@ -12,10 +12,15 @@
   <ItemGroup>
     <Compile Include="../MsgPack.Core/Internal/MemoryExtensions.cs" Link="Internal/MemoryExtensions.cs" />
     <Compile Include="../MsgPack.Core/System.Text/EncodingExtensions.cs" Link="System.Text/EncodingExtensions.cs" />
+    <Compile Include="..\MsgPack.Core\System.Text\Throw.cs" Link="System.Text\Throw.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="System.Text/" />
+    <None Include="Json\JsonEscapeSequence.EscapeTables.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JsonEscapeSequence.EscapeTables.tt</DependentUpon>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +31,10 @@
     <None Update="Json\JsonDecoder.Numbers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>JsonDecoder.Numbers.cs</LastGenOutput>
+    </None>
+    <None Update="Json\JsonEscapeSequence.EscapeTables.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JsonEscapeSequence.EscapeTables.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -44,6 +53,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>JsonDecoder.Numbers.tt</DependentUpon>
     </Compile>
+    <Compile Update="Json\JsonEscapeSequence.EscapeTables.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JsonEscapeSequence.EscapeTables.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="System.Text\" />
   </ItemGroup>
 
 </Project>

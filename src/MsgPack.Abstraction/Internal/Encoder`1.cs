@@ -58,6 +58,8 @@ namespace MsgPack.Internal
 
 		public abstract void EncodeString(in ReadOnlySequence<byte> encodedValue, int charLength, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default);
 
+		public abstract void EncodeRawString(ReadOnlySpan<byte> rawString, int charLength, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default);
+
 		public abstract void EncodeBinary(ReadOnlySpan<byte> value, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default);
 
 		public abstract void EncodeBinary(in ReadOnlySequence<byte> value, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default);
@@ -135,7 +137,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void WriteRaw(in ReadOnlySequence<byte> value, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value.Length <= this.Options.MaxByteBufferLength)
 			{
@@ -169,8 +171,5 @@ namespace MsgPack.Internal
 				reader.Advance(source.Length);
 			}
 		}
-
-		private protected static IBufferWriter<byte> EnsureNotNull(IBufferWriter<byte> buffer)
-			=> buffer ?? throw new ArgumentNullException(nameof(buffer));
 	}
 }

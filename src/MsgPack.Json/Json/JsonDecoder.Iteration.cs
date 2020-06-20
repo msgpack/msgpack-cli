@@ -4,6 +4,7 @@
 
 using System.Buffers;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using MsgPack.Internal;
 
 namespace MsgPack.Json
@@ -25,7 +26,7 @@ namespace MsgPack.Json
 				this._state = State.Head;
 			}
 
-			public bool DetectArrayEnds(in SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint)
+			public bool DetectArrayEnds(ref SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint)
 			{
 				if (this._state == State.Tail)
 				{
@@ -33,7 +34,7 @@ namespace MsgPack.Json
 					return true; // End
 				}
 
-				this._decoder.ReadTrivia(source, out _);
+				this._decoder.ReadTrivia(ref source);
 
 				switch (this._state)
 				{
@@ -92,7 +93,7 @@ namespace MsgPack.Json
 				} // swtich (this._state)
 
 				// Handle 'maybe item' state
-				this._decoder.ReadTrivia(source, out _);
+				this._decoder.ReadTrivia(ref source);
 				if (!source.TryPeek(out var mayBeArrayEnd))
 				{
 					requestHint = 1;
@@ -141,7 +142,7 @@ namespace MsgPack.Json
 				this._isEqualSignAllowed = (decoder.Options.ParseOptions & JsonParseOptions.AllowEqualSignSeparator) != 0;
 			}
 
-			public bool DetectObjectEnds(in SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint)
+			public bool DetectObjectEnds(ref SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint)
 			{
 				if (this._state == State.Tail)
 				{
@@ -149,7 +150,7 @@ namespace MsgPack.Json
 					return true; // End
 				}
 
-				this._decoder.ReadTrivia(source, out _);
+				this._decoder.ReadTrivia(ref source);
 
 				switch (this._state)
 				{
@@ -246,7 +247,7 @@ namespace MsgPack.Json
 				} // swtich (this._state)
 
 				// Handle 'maybe key' state
-				this._decoder.ReadTrivia(source, out _);
+				this._decoder.ReadTrivia(ref source);
 				if (!source.TryPeek(out var mayBeArrayEnd))
 				{
 					requestHint = 1;
@@ -277,11 +278,12 @@ namespace MsgPack.Json
 			}
 		}
 
-		public override CollectionType DecodeArrayOrMap(in SequenceReader<byte> source, out CollectionItemIterator iterator, out int requestHint)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override CollectionType DecodeArrayOrMap(ref SequenceReader<byte> source, out CollectionItemIterator iterator, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
+			this.ReadTrivia(ref source);
 
-			if (!this.TryPeek(source, out var token))
+			if (!source.TryPeek(out var token))
 			{
 				requestHint = 1;
 				iterator = default;
@@ -301,10 +303,26 @@ namespace MsgPack.Json
 					iterator = this.CreateObjectPropertyIterator();
 					return CollectionType.Map;
 				}
+				case (byte)'n':
+				{
+					iterator = default;
+
+					if (this.TryDecodeNull(ref source, out requestHint))
+					{
+						return CollectionType.Null;
+					}
+
+					if (requestHint != 0)
+					{
+						return CollectionType.None;
+					}
+
+					goto default;
+				}
 				default:
 				{
 					var offset = source.Consumed;
-					var kind = TryGetUtf8Unit(source, out var sequence);
+					var kind = TryGetUtf8Unit(ref source, out var sequence);
 					if (kind == Utf8UnitStatus.Valid)
 					{
 						JsonThrow.IsNotArrayNorObject(sequence, offset);
@@ -327,9 +345,10 @@ namespace MsgPack.Json
 		private CollectionItemIterator CreateObjectPropertyIterator()
 			=> new CollectionItemIterator(new ObjectPropertyIterator(this).DetectObjectEnds, -1);
 
-		public override CollectionItemIterator DecodeArray(in SequenceReader<byte> source, out int requestHint)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override CollectionItemIterator DecodeArray(ref SequenceReader<byte> source, out int requestHint)
 		{
-			var type = this.DecodeArrayOrMap(source, out var iterator, out requestHint);
+			var type = this.DecodeArrayOrMap(ref source, out var iterator, out requestHint);
 			if (requestHint != 0)
 			{
 				return default;
@@ -343,9 +362,10 @@ namespace MsgPack.Json
 			return iterator;
 		}
 
-		public override CollectionItemIterator DecodeMap(in SequenceReader<byte> source, out int requestHint)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override CollectionItemIterator DecodeMap(ref SequenceReader<byte> source, out int requestHint)
 		{
-			var type = this.DecodeArrayOrMap(source, out var iterator, out requestHint);
+			var type = this.DecodeArrayOrMap(ref source, out var iterator, out requestHint);
 			if (requestHint != 0)
 			{
 				return default;

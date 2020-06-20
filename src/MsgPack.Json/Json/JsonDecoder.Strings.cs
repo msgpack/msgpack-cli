@@ -16,9 +16,10 @@ namespace MsgPack.Json
 	public partial class JsonDecoder
 	{
 		/// <inheritdoc />
-		public override bool GetRawString(in SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, CancellationToken cancellationToken = default)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override bool GetRawString(ref SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, CancellationToken cancellationToken = default)
 		{
-			if (!this.GetRawStringCore(source, out var rawStringSequence, out requestHint, cancellationToken))
+			if (!this.GetRawStringCore(ref source, out var rawStringSequence, out requestHint, cancellationToken))
 			{
 				rawString = default;
 				return false;
@@ -39,105 +40,127 @@ namespace MsgPack.Json
 			return true;
 		}
 
-		private bool GetRawStringCore(in SequenceReader<byte> source, out ReadOnlySequence<byte> rawString, out int requestHint, CancellationToken cancellationToken = default)
+		private bool GetRawStringCore(ref SequenceReader<byte> source, out ReadOnlySequence<byte> rawString, out int requestHint, CancellationToken cancellationToken = default)
 		{ 
-			this.ReadTrivia(source, out _);
+			this.ReadTrivia(ref source);
 			var startOffset = source.Consumed;
 
-			var quotation = this.ReadStringStart(source, out var delimiters, out requestHint);
+			var quotation = this.ReadStringStart(ref source, out requestHint);
 			if (requestHint != 0)
 			{
 				rawString = default;
 				return false;
 			}
 
-			var length = 0L;
-			var rawStringStart = source.Position;
-			// We accept unescaped charactors except quotation even if the value is '\0' because we can handle them correctly.
-			while (true)
+			if (!source.TryReadTo(out ReadOnlySequence<byte> sequence, quotation, (byte)'\\', advancePastDelimiter: false))
 			{
-				cancellationToken.ThrowIfCancellationRequested();
-
-				if (!source.TryReadToAny(out ReadOnlySequence<byte> sequence, delimiters, advancePastDelimiter: false))
-				{
-					// EoF
-					requestHint = 1;
-					break;
-				}
-
-				if (sequence.Length + length > this.Options.MaxStringLengthInBytes)
-				{
-					Throw.StringLengthExceeded(source.Consumed - sequence.Length, sequence.Length + length, this.Options.MaxBinaryLengthInBytes);
-				}
-
-				length += (int)sequence.Length;
-
-				// Handle delimiter
-				source.TryRead(out var delimiter);
-				if (delimiter == quotation)
-				{
-					// End
-					requestHint = 0;
-					rawString = source.Sequence.Slice(rawStringStart, length);
-					return true;
-				}
-
-				// Decode escape sequence
-				if (source.End)
-				{
-					// EoF
-					requestHint = 2;
-					break;
-				}
+				// EoF
+				requestHint = 1;
+				rawString = default;
+				source.Rewind(source.Consumed - startOffset);
+				return false;
 			}
 
-			// No closing quotation.
-			rawString = default;
-			source.Rewind(source.Consumed - startOffset);
-			return false;
+			rawString = sequence;
+			source.Advance(1); // skip end quote
+			return true;
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override string? DecodeNullableString(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public sealed override string? DecodeNullableString(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			this.ReadTrivia(source, out _);
-			if (this.TryReadNull(source))
+			this.ReadTrivia(ref source);
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeStringCore(source, out requestHint, cancellationToken);
+			return this.DecodeStringCore(ref source, out requestHint, cancellationToken);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override string? DecodeString(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public sealed override string? DecodeString(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeStringCore(source, out requestHint, cancellationToken);
+			this.ReadTrivia(ref source);
+			return this.DecodeStringCore(ref source, out requestHint, cancellationToken);
 		}
 
-		private string? DecodeStringCore(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		private string? DecodeStringCore(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			var startOffset = source.Consumed;
 
-			var quotation = this.ReadStringStart(source, out var delimiters, out requestHint);
+			var quotation = this.ReadStringStart(ref source, out requestHint);
 			if (requestHint != 0)
 			{
 				return default;
 			}
 
-			var length = 0L;
+			// fast-path
+			if (!source.TryReadTo(out ReadOnlySequence<byte> sequence, quotation, (byte)'\\', advancePastDelimiter: false) || !source.TryRead(out var delimiter))
+			{
+				// EoF
+				requestHint = 1;
+				source.Rewind(source.Consumed - startOffset);
+				return default;
+			}
+
+			if (sequence.Length > this.Options.MaxStringLengthInBytes)
+			{
+				Throw.StringLengthExceeded(source.Consumed - sequence.Length, sequence.Length, this.Options.MaxBinaryLengthInBytes);
+			}
+
+			if (delimiter == quotation)
+			{
+				return Encoding.UTF8.GetString(sequence);
+			}
+
+			return this.DecodeStringCoreSlow(ref source, out requestHint, startOffset, quotation, ref sequence, delimiter, cancellationToken);
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private string? DecodeStringCoreSlow(ref SequenceReader<byte> source, out int requestHint, long startOffset, byte quotation, ref ReadOnlySequence<byte> sequence, byte delimiter, CancellationToken cancellationToken)
+		{
+			var length = sequence.Length;
 			using (var result = new StringBuilderBufferWriter(new StringBuilder(), this.Options))
 			{
+				Encoding.UTF8.GetChars(sequence, result);
+				length += (int)sequence.Length;
+
 				// We accept unescaped charactors except quotation even if the value is '\0' because we can handle them correctly.
 				while (true)
 				{
+					// Decode escape sequence
+					if (source.End)
+					{
+						// EoF
+						requestHint = 2;
+						break;
+					}
+
+					if (!source.IsNext((byte)'u', advancePast: true))
+					{
+						DecodeSpetialEscapeSequence(ref source, result);
+						length += 2;
+					}
+					else
+					{
+						DecodeUnicodeEscapceSequence(source, result, out requestHint);
+						if (requestHint != 0)
+						{
+							source.Rewind(source.Consumed - startOffset);
+							return default;
+						}
+
+						length += 6;
+					}
+
 					cancellationToken.ThrowIfCancellationRequested();
 
-					if (!source.TryReadToAny(out ReadOnlySequence<byte> sequence, delimiters, advancePastDelimiter: false))
+					if (!source.TryReadTo(out sequence, quotation, (byte)'\\', advancePastDelimiter: false))
 					{
 						// EoF
 						requestHint = 1;
@@ -155,37 +178,12 @@ namespace MsgPack.Json
 					length += (int)sequence.Length;
 
 					// Handle delimiter
-					source.TryRead(out var delimiter);
+					source.TryRead(out delimiter);
 					if (delimiter == quotation)
 					{
 						// End
 						requestHint = 0;
 						return result.ToString();
-					}
-
-					// Decode escape sequence
-					if (source.End)
-					{
-						// EoF
-						requestHint = 2;
-						break;
-					}
-
-					if (!source.IsNext((byte)'u', advancePast: true))
-					{
-						DecodeSpetialEscapeSequence(source, result);
-						length += 2;
-					}
-					else
-					{
-						DecodeUnicodeEscapceSequence(source, result, out requestHint);
-						if (requestHint != 0)
-						{
-							source.Rewind(source.Consumed - startOffset);
-							return default;
-						}
-
-						length += 6;
 					}
 				}
 			}
@@ -194,18 +192,20 @@ namespace MsgPack.Json
 			return default;
 		}
 
-		private byte ReadStringStart(in SequenceReader<byte> source, out ReadOnlySpan<byte> delimiters, out int requestHint)
+		private byte ReadStringStart(ref SequenceReader<byte> source, out int requestHint)
 		{
 			if (source.End)
 			{
 				requestHint = 2;
-				delimiters = default;
 				return default;
 			}
 
+			requestHint = 0;
+
 			if (source.IsNext((byte)'"', advancePast: false))
 			{
-				delimiters = JsonStringTokens.DoubleQuotationDelimiters;
+				source.Advance(1);
+				return (byte)'"';
 			}
 			else
 			{
@@ -214,42 +214,78 @@ namespace MsgPack.Json
 					// ['"]
 					if (source.IsNext((byte)'\'', advancePast: false))
 					{
-						delimiters = JsonStringTokens.SingleQuotationDelimiters;
+						source.Advance(1);
+						return (byte)'\'';
 					}
 					else
 					{
 						JsonThrow.IsNotStringStart(source.Consumed, JsonStringTokens.AnyQuotations);
 						// never
-						delimiters = default;
+						return default;
 					}
 				}
 				else
 				{
 					JsonThrow.IsNotStringStart(source.Consumed, JsonStringTokens.DoubleQuotation);
 					// never
-					delimiters = default;
+					return default;
 				}
 			}
-
-			source.TryRead(out var quotation);
-			requestHint = 0;
-			return quotation;
 		}
 
-		private static void DecodeSpetialEscapeSequence(in SequenceReader<byte> source, StringBuilderBufferWriter result)
+		private static void DecodeSpetialEscapeSequence(ref SequenceReader<byte> source, StringBuilderBufferWriter result)
 		{
 			source.TryPeek(out var escaped);
-			// Handle known escape sequence
-			var index = escaped - JsonStringTokens.UnescapedCharactorsOffset;
-			var unescaped = Byte.MaxValue;
-			if (index >= 0 && index < JsonStringTokens.UnescapedCharactors.Length)
+			char unescaped;
+			switch(escaped)
 			{
-				unescaped = JsonStringTokens.UnescapedCharactors[index];
-			}
-
-			if (unescaped >= 0x80)
-			{
-				JsonThrow.InvalidEscapeSequence(source.Consumed, escaped);
+				case (byte)'b':
+				{
+					unescaped = '\b';
+					break;
+				}
+				case (byte)'t':
+				{
+					unescaped = '\t';
+					break;
+				}
+				case (byte)'f':
+				{
+					unescaped = '\f';
+					break;
+				}
+				case (byte)'r':
+				{
+					unescaped = '\r';
+					break;
+				}
+				case (byte)'n':
+				{
+					unescaped = '\n';
+					break;
+				}
+				case (byte)'"':
+				{
+					unescaped = '"';
+					break;
+				}
+				case (byte)'\\':
+				{
+					unescaped = '\\';
+					break;
+				}
+				case (byte)'/':
+				{
+					unescaped = '/';
+					break;
+				}
+				default:
+				{
+					JsonThrow.InvalidEscapeSequence(source.Consumed - 1, escaped);
+					// never
+					unescaped = default;
+					break;
+				}
 			}
 
 			result.AppendUtf16CodePoint(unescaped);
@@ -303,7 +339,14 @@ namespace MsgPack.Json
 					JsonThrow.OrphanSurrogate(positionOf1stSurrogate, codePointOrHighSurrogate);
 				}
 
-				source.Sequence.Slice(source.Consumed, 4).CopyTo(buffer);
+				if(!source.TryCopyTo(buffer))
+				{
+					requestHint = buffer.Length - (int)source.Remaining;
+					return;
+				}
+
+				source.Advance(4);
+
 				if (!Utf8Parser.TryParse(buffer, out int shouldBeLowSurrogate, out consumed, standardFormat: 'X'))
 				{
 					JsonThrow.InvalidUnicodeEscapeSequence(source.Consumed, buffer);
@@ -326,31 +369,31 @@ namespace MsgPack.Json
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override byte[]? DecodeNullableBinary(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
+		public sealed override byte[]? DecodeNullableBinary(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
 		{
-			this.ReadTrivia(source, out _);
-			if (this.TryReadNull(source))
+			this.ReadTrivia(ref source);
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeBinaryCore(source, out requestHint, cancellationToken);
+			return this.DecodeBinaryCore(ref source, out requestHint, cancellationToken);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override byte[]? DecodeBinary(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
+		public sealed override byte[]? DecodeBinary(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
 		{
-			this.ReadTrivia(source, out _);
-			return this.DecodeBinaryCore(source, out requestHint, cancellationToken);
+			this.ReadTrivia(ref source);
+			return this.DecodeBinaryCore(ref source, out requestHint, cancellationToken);
 		}
 
-		private byte[]? DecodeBinaryCore(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
+		private byte[]? DecodeBinaryCore(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			var startOffset = source.Consumed;
 
-			var quotation = this.ReadStringStart(source, out _, out requestHint);
+			var quotation = this.ReadStringStart(ref source, out requestHint);
 			if (requestHint != 0)
 			{
 				return default;

@@ -38,74 +38,92 @@ namespace MsgPack.Serialization
 		private void InitializeSerializationOperationContext(CancellationToken cancellationToken, out SerializationOperationContext<TExtentionType> context)
 			=> context = new SerializationOperationContext<TExtentionType>(this._encoderFactory(), this._serializationOptions, cancellationToken);
 
+		private void InitializeAsyncSerializationOperationContext(CancellationToken cancellationToken, out AsyncSerializationOperationContext<TExtentionType> context)
+			=> context = new AsyncSerializationOperationContext<TExtentionType>(this._encoderFactory(), this._serializationOptions, cancellationToken);
+
 		private void InitializeDeserializationOperationContext(CancellationToken cancellationToken, out DeserializationOperationContext<TExtentionType> context)
 			=> context = new DeserializationOperationContext<TExtentionType>(this._decoderFactory(), this._deserializationOptions, cancellationToken);
+
+		private void InitializeAsyncDeserializationOperationContext(CancellationToken cancellationToken, out AsyncDeserializationOperationContext<TExtentionType> context)
+			=> context = new AsyncDeserializationOperationContext<TExtentionType>(this._decoderFactory(), this._deserializationOptions, cancellationToken);
 
 		public void Serialize(T obj, IBufferWriter<byte> sink, CancellationToken cancellationToken = default)
 		{
 			this.InitializeSerializationOperationContext(cancellationToken, out var context);
-			this._underlying.Serialize(context, obj, sink);
+			this._underlying.Serialize(ref context, obj, sink);
 		}
 
 		public ReadOnlyMemory<byte> Serialize(T obj, CancellationToken cancellationToken = default)
 		{
 			this.InitializeSerializationOperationContext(cancellationToken, out var context);
 			var writer = new ArrayBufferWriter<byte>();
-			this._underlying.Serialize(context, obj, writer);
+			this._underlying.Serialize(ref context, obj, writer);
 			return writer.WrittenMemory;
 		}
 
 		public ValueTask SerializeAsync(T obj, Stream streamSink, CancellationToken cancellationToken = default)
 		{
-			this.InitializeSerializationOperationContext(cancellationToken, out var context);
+			this.InitializeAsyncSerializationOperationContext(cancellationToken, out var context);
 			return this._underlying.SerializeAsync(context, obj, streamSink);
 		}
 
-		public T Deserialize(in SequenceReader<byte> reader, CancellationToken cancellationToken = default)
+		public T Deserialize(ref SequenceReader<byte> reader, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
-			return this._underlying.Deserialize(context, reader);
+			return this._underlying.Deserialize(ref context, ref reader);
 		}
 
-		public T Deserialize(in ReadOnlySequence<byte> source, CancellationToken cancellationToken = default)
+		public T Deserialize(ref ReadOnlySequence<byte> source, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
-			return this._underlying.Deserialize(context, new SequenceReader<byte>(source));
+			var reader = new SequenceReader<byte>(source);
+			var result = this._underlying.Deserialize(ref context, ref reader);
+			source = source.Slice(source.Start, reader.Position);
+			return result;
 		}
 
-		public T Deserialize(ReadOnlyMemory<byte> memorySource, CancellationToken cancellationToken = default)
+		public T Deserialize(ref ReadOnlyMemory<byte> memorySource, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
-			return this._underlying.Deserialize(context, new SequenceReader<byte>(new ReadOnlySequence<byte>(memorySource)));
+			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memorySource));
+			var result = this._underlying.Deserialize(ref context, ref reader);
+			memorySource = memorySource.Slice((int)reader.Consumed);
+			return result;
 		}
 
 		public ValueTask<T> DeserializeAsync(Stream streamSource, CancellationToken cancellationToken = default)
 		{
-			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
+			this.InitializeAsyncDeserializationOperationContext(cancellationToken, out var context);
 			return this._underlying.DeserializeAsync(context, streamSource);
 		}
 
-		public void DeserializeTo(in SequenceReader<byte> reader, T obj, CancellationToken cancellationToken = default)
+		public bool DeserializeTo(ref SequenceReader<byte> reader, T obj, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
-			this._underlying.DeserializeTo(context, reader, obj);
+			return this._underlying.DeserializeTo(ref context, ref reader, obj);
 		}
 
-		public void DeserializeTo(in ReadOnlySequence<byte> source, T obj, CancellationToken cancellationToken = default)
+		public bool DeserializeTo(ref ReadOnlySequence<byte> source, T obj, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
-			this._underlying.DeserializeTo(context, new SequenceReader<byte>(source), obj);
+			var reader = new SequenceReader<byte>(source);
+			var result = this._underlying.DeserializeTo(ref context, ref reader, obj);
+			source = source.Slice(source.Start, reader.Position);
+			return result;
 		}
 
-		public void DeserializeTo(ReadOnlyMemory<byte> memorySource, T obj, CancellationToken cancellationToken = default)
+		public bool DeserializeTo(ref ReadOnlyMemory<byte> memorySource, T obj, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
-			this._underlying.DeserializeTo(context, new SequenceReader<byte>(new ReadOnlySequence<byte>(memorySource)), obj);
+			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memorySource));
+			var result = this._underlying.DeserializeTo(ref context, ref reader, obj);
+			memorySource = memorySource.Slice((int)reader.Consumed);
+			return result;
 		}
 
-		public ValueTask DeserializeToAsync(Stream streamSource, T obj, CancellationToken cancellationToken = default)
+		public ValueTask<bool> DeserializeToAsync(Stream streamSource, T obj, CancellationToken cancellationToken = default)
 		{
-			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
+			this.InitializeAsyncDeserializationOperationContext(cancellationToken, out var context);
 			return this._underlying.DeserializeToAsync(context, streamSource, obj);
 		}
 	}

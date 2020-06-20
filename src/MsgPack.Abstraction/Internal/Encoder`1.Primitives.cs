@@ -33,7 +33,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void EncodeInt32(Int32? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{
@@ -63,7 +63,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void EncodeInt64(Int64? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{
@@ -93,7 +93,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void EncodeUInt32(UInt32? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{
@@ -123,7 +123,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void EncodeUInt64(UInt64? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{
@@ -153,7 +153,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void EncodeSingle(Single? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{
@@ -183,7 +183,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void EncodeDouble(Double? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{
@@ -213,7 +213,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void EncodeBoolean(Boolean? value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (value == null)
 			{

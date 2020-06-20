@@ -11,6 +11,8 @@ namespace MsgPack.Json
 	/// </summary>
 	public class JsonDecoderOptions : DecoderOptions
 	{
+		public static JsonDecoderOptions Default { get; } = new JsonDecoderOptionsBuilder().Build();
+
 		public JsonParseOptions ParseOptions { get; }
 
 		public JsonDecoderOptions(JsonDecoderOptionsBuilder builder)

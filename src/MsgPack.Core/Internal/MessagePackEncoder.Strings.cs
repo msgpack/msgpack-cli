@@ -24,14 +24,15 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeString(ReadOnlySpan<char> value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			buffer = EnsureNotNull(buffer);
-			encoding = encoding ?? Utf8EncodingNonBom.Instance;
+			buffer = Ensure.NotNull(buffer);
 			if (value.Length == 0)
 			{
 				buffer.GetSpan(1)[0] = MessagePackCode.MinimumFixedRaw;
 				buffer.Advance(1);
 				return;
 			}
+
+			encoding = encoding ?? Utf8EncodingNonBom.Instance;
 
 			if (value.Length < 256)
 			{
@@ -41,12 +42,10 @@ namespace MsgPack.Internal
 				if (maxByteLength < 32)
 				{
 					// stack alloc is fastest
-					Span<byte> encodingBuffer = stackalloc byte[maxByteLength];
-					var actualLength = encoding.GetBytes(value, encodingBuffer);
-					var sink = buffer.GetSpan(actualLength + 1);
+					var sink = buffer.GetSpan(maxByteLength + 1);
+					var actualLength = encoding.GetBytes(value, sink.Slice(1));
 					sink[0] = unchecked((byte)(MessagePackCode.MinimumFixedRaw | actualLength));
-					encodingBuffer.Slice(actualLength).CopyTo(sink.Slice(1));
-					buffer.Advance(sink.Length);
+					buffer.Advance(actualLength + 1);
 					return;
 				}
 				else if (maxByteLength < 256)
@@ -96,7 +95,7 @@ namespace MsgPack.Internal
 					try
 					{
 						var totalLength = this.EncodeLargeString1Path(value, buffer, encoding, estimatedLength, encodingBuffer);
-						buffer.Write(encodingBuffer.AsMemory(0, totalLength).Span);
+						buffer.Write(encodingBuffer.AsSpan(0, totalLength));
 					}
 					finally
 					{
@@ -145,8 +144,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeString(in ReadOnlySequence<char> value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			buffer = EnsureNotNull(buffer);
-			encoding = encoding ?? Utf8EncodingNonBom.Instance;
+			buffer = Ensure.NotNull(buffer);
 			if (value.Length > UInt32.MaxValue)
 			{
 				Throw.TooLargeCharLength(value.Length);
@@ -160,6 +158,8 @@ namespace MsgPack.Internal
 				return;
 			}
 
+			encoding = encoding ?? Utf8EncodingNonBom.Instance;
+
 			if (value.Length < 256)
 			{
 				var valueLength = unchecked((int)value.Length);
@@ -168,12 +168,10 @@ namespace MsgPack.Internal
 				if (maxByteLength < 32)
 				{
 					// stack alloc is fastest
-					Span<byte> encodingBuffer = stackalloc byte[maxByteLength];
-					var actualLength = encoding.GetBytes(value, encodingBuffer);
-					var sink = buffer.GetSpan(actualLength + 1);
+					var sink = buffer.GetSpan(maxByteLength + 1);
+					var actualLength = encoding.GetBytes(value, sink.Slice(1));
 					sink[0] = unchecked((byte)(MessagePackCode.MinimumFixedRaw | actualLength));
-					encodingBuffer.Slice(actualLength).CopyTo(sink.Slice(1));
-					buffer.Advance(sink.Length);
+					buffer.Advance(actualLength + 1);
 					return;
 				}
 				else if (maxByteLength < 256)
@@ -223,7 +221,7 @@ namespace MsgPack.Internal
 					try
 					{
 						var totalLength = this.EncodeLargeString1Path(value, buffer, encoding, estimatedLength, encodingBuffer);
-						buffer.Write(encodingBuffer.AsMemory(0, totalLength).Span);
+						buffer.Write(encodingBuffer.AsSpan(0, totalLength));
 					}
 					finally
 					{
@@ -234,7 +232,6 @@ namespace MsgPack.Internal
 
 			this.EncodeHugeString2Path(value, buffer, encoding);
 		}
-
 		
 		private unsafe int EncodeLargeString1Path(in ReadOnlySequence<char> value, IBufferWriter<byte> buffer, Encoding encoding, uint estimatedLength, ArraySegment<byte> sinkBufferSegment)
 		{

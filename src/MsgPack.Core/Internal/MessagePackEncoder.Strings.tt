@@ -36,8 +36,7 @@ foreach (var inputType in
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeString(<#= inputType.Signature #><char> value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			buffer = EnsureNotNull(buffer);
-			encoding = encoding ?? Utf8EncodingNonBom.Instance;
+			buffer = Ensure.NotNull(buffer);
 <#
 	if (inputType.MayBe64BitLength)
 	{
@@ -58,6 +57,8 @@ foreach (var inputType in
 				return;
 			}
 
+			encoding = encoding ?? Utf8EncodingNonBom.Instance;
+
 			if (value.Length < 256)
 			{
 				var valueLength = unchecked((int)value.Length);
@@ -66,12 +67,10 @@ foreach (var inputType in
 				if (maxByteLength < 32)
 				{
 					// stack alloc is fastest
-					Span<byte> encodingBuffer = stackalloc byte[maxByteLength];
-					var actualLength = encoding.GetBytes(value, encodingBuffer);
-					var sink = buffer.GetSpan(actualLength + 1);
+					var sink = buffer.GetSpan(maxByteLength + 1);
+					var actualLength = encoding.GetBytes(value, sink.Slice(1));
 					sink[0] = unchecked((byte)(MessagePackCode.MinimumFixedRaw | actualLength));
-					encodingBuffer.Slice(actualLength).CopyTo(sink.Slice(1));
-					buffer.Advance(sink.Length);
+					buffer.Advance(actualLength + 1);
 					return;
 				}
 				else if (maxByteLength < 256)

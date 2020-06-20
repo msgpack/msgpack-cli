@@ -2,17 +2,15 @@
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
-using MsgPack.Serialization;
-
 namespace MsgPack.Internal
 {
 	public partial struct CollectionContext
 	{
 		public static CollectionContext Default =>
 			new CollectionContext(
-				DeserializationOptionsBuilder.DefaultMaxArrayLength,
-				DeserializationOptionsBuilder.DefaultMaxMapCount,
-				DeserializationOptionsBuilder.DefaultMaxDepth,
+				OptionsDefaults.MaxArrayLength,
+				OptionsDefaults.MaxMapCount,
+				OptionsDefaults.MaxDepth,
 				currentDepth: 0
 			);
 

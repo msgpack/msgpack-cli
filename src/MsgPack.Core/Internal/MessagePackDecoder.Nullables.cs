@@ -16,145 +16,145 @@ namespace MsgPack.Internal
 	{
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Byte? DecodeNullableByte(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Byte? DecodeNullableByte(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeByte(source, out requestHint);
+			return this.DecodeByte(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override SByte? DecodeNullableSByte(in SequenceReader<byte> source, out int requestHint)
+		public sealed override SByte? DecodeNullableSByte(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeSByte(source, out requestHint);
+			return this.DecodeSByte(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Int16? DecodeNullableInt16(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Int16? DecodeNullableInt16(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeInt16(source, out requestHint);
+			return this.DecodeInt16(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override UInt16? DecodeNullableUInt16(in SequenceReader<byte> source, out int requestHint)
+		public sealed override UInt16? DecodeNullableUInt16(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeUInt16(source, out requestHint);
+			return this.DecodeUInt16(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Int32? DecodeNullableInt32(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Int32? DecodeNullableInt32(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeInt32(source, out requestHint);
+			return this.DecodeInt32(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override UInt32? DecodeNullableUInt32(in SequenceReader<byte> source, out int requestHint)
+		public sealed override UInt32? DecodeNullableUInt32(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeUInt32(source, out requestHint);
+			return this.DecodeUInt32(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Int64? DecodeNullableInt64(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Int64? DecodeNullableInt64(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeInt64(source, out requestHint);
+			return this.DecodeInt64(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override UInt64? DecodeNullableUInt64(in SequenceReader<byte> source, out int requestHint)
+		public sealed override UInt64? DecodeNullableUInt64(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeUInt64(source, out requestHint);
+			return this.DecodeUInt64(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Single? DecodeNullableSingle(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Single? DecodeNullableSingle(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeSingle(source, out requestHint);
+			return this.DecodeSingle(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Double? DecodeNullableDouble(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Double? DecodeNullableDouble(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeDouble(source, out requestHint);
+			return this.DecodeDouble(ref source, out requestHint);
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override Boolean? DecodeNullableBoolean(in SequenceReader<byte> source, out int requestHint)
+		public sealed override Boolean? DecodeNullableBoolean(ref SequenceReader<byte> source, out int requestHint)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeBoolean(source, out requestHint);
+			return this.DecodeBoolean(ref source, out requestHint);
 		}
 
 	}

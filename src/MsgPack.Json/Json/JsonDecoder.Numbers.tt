@@ -37,15 +37,15 @@ foreach (var type in
 #>
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override <#= type #> Decode<#= type #>(in SequenceReader<byte> source, out int requestHint)
+		public sealed override <#= type #> Decode<#= type #>(ref SequenceReader<byte> source, out int requestHint)
 		{
-			this.ReadTrivia(source, out _);
-			return this.Decode<#= type #>Core(source, out requestHint);
+			this.ReadTrivia(ref source);
+			return this.Decode<#= type #>Core(ref source, out requestHint);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		private <#= type #> Decode<#= type #>Core(in SequenceReader<byte> source, out int requestHint)
-			=> (<#= type #>)this.DecodeNumber(source, out requestHint);
+		private <#= type #> Decode<#= type #>Core(ref SequenceReader<byte> source, out int requestHint)
+			=> (<#= type #>)this.DecodeNumber(ref source, out requestHint);
 
 <#
 } // foreach (var type)

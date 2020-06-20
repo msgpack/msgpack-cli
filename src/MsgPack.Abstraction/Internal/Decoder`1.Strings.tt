@@ -78,9 +78,9 @@ foreach (var spec in new [] {
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public <#= spec.Type #> Decode<#= spec.Name #>(in SequenceReader<byte> source, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default)
+		public <#= spec.Type #> Decode<#= spec.Name #>(ref SequenceReader<byte> source, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default)
 		{
-			var result = this.Decode<#= spec.Name #>(source, out var requestHint, <#= spec.ExtraArguments #>cancellationToken);
+			var result = this.Decode<#= spec.Name #>(ref source, out var requestHint, <#= spec.ExtraArguments #>cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput<#= spec.ThrowSuffix #>(source.Consumed, typeof(<#= spec.Type #>), <#= spec.ExtraArguments #>requestHint);
@@ -115,7 +115,7 @@ foreach (var spec in new [] {
 		/// </remarks>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= spec.Type #>" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
-		public abstract <#= spec.Type #>? Decode<#= spec.Name #>(in SequenceReader<byte> source, out int requestHint, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default);
+		public abstract <#= spec.Type #>? Decode<#= spec.Name #>(ref SequenceReader<byte> source, out int requestHint, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default);
 
 		/// <summary>
 		///		Decodes <see cref="<#= spec.Type #>" /> value or <c>null</c> from specified sequence.
@@ -140,9 +140,9 @@ foreach (var spec in new [] {
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public <#= spec.Type #>? DecodeNullable<#= spec.Name #>(in SequenceReader<byte> source, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default)
+		public <#= spec.Type #>? DecodeNullable<#= spec.Name #>(ref SequenceReader<byte> source, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default)
 		{
-			var result = this.DecodeNullable<#= spec.Name #>(source, out var requestHint, <#= spec.ExtraArguments #>cancellationToken);
+			var result = this.DecodeNullable<#= spec.Name #>(ref source, out var requestHint, <#= spec.ExtraArguments #>cancellationToken);
 			if (requestHint != 0)
 			{
 				Throw.InsufficientInput<#= spec.ThrowSuffix #>(source.Consumed, typeof(<#= spec.Type #>), <#= spec.ExtraArguments #>requestHint);
@@ -177,7 +177,7 @@ foreach (var spec in new [] {
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= spec.Type #>" /> type.</exception>
 		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract <#= spec.Type #>? DecodeNullable<#= spec.Name #>(in SequenceReader<byte> source, out int requestHint, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default);
+		public abstract <#= spec.Type #>? DecodeNullable<#= spec.Name #>(ref SequenceReader<byte> source, out int requestHint, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default);
 
 <#
 	if (!String.IsNullOrEmpty(spec.IfDef))

@@ -14,9 +14,11 @@ namespace MsgPack.Internal
 	public partial class MessagePackDecoder
 	{
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public override bool GetRawString(in SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, CancellationToken cancellationToken = default)
+		public sealed override bool GetRawString(ref SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, CancellationToken cancellationToken = default)
 		{
-			var length = this.PeekRawStringLength(source, out requestHint, cancellationToken);
+			var subReader = source;
+
+			var length = this.GetRawStringLength(ref subReader, out var headerLength, out requestHint, cancellationToken);
 			if (length < 0)
 			{
 				rawString = default;
@@ -25,17 +27,17 @@ namespace MsgPack.Internal
 
 			if (source.UnreadSpan.Length < length)
 			{
-				rawString = source.UnreadSpan.Slice(0, length);
+				rawString = source.UnreadSpan.Slice(0, length + headerLength);
 				source.Advance(length);
 				requestHint = 0;
 				return true;
 			}
 
-			return this.GetRawStringMultiSegment(source, out rawString, out requestHint, length, cancellationToken);
+			return this.GetRawStringMultiSegment(ref source, out rawString, out requestHint, length + headerLength, cancellationToken);
 		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		private bool GetRawStringMultiSegment(in SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, int length, CancellationToken cancellationToken)
+		private bool GetRawStringMultiSegment(ref SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, out int requestHint, int length, CancellationToken cancellationToken)
 		{
 			if (source.Remaining < length)
 			{
@@ -45,6 +47,7 @@ namespace MsgPack.Internal
 			}
 
 			var result = new byte[length];
+
 			var bufferSpan = result.AsSpan();
 
 			var copyLength = Math.Min(this.Options.CancellationSupportThreshold, length);
@@ -65,9 +68,10 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		private int PeekRawStringLength(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken)
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		private int GetRawStringLength(ref SequenceReader<byte> source, out int consumed, out int requestHint, CancellationToken cancellationToken)
 		{
-			var length = this.DecodeStringHeader(source, out var header, out requestHint, out _);
+			var length = this.DecodeStringHeader(ref source, out var header, out requestHint, out consumed);
 			if (requestHint != 0)
 			{
 				return default;
@@ -75,15 +79,15 @@ namespace MsgPack.Internal
 
 			if (length > Int32.MaxValue)
 			{
-				MessagePackThrow.TooLargeByteLength(header, source.Consumed, length);
+				MessagePackThrow.TooLargeByteLength(header, source.Consumed - consumed, length);
 			}
 
 			return (int)length;
 		}
 
-		private long DecodeStringHeader(in SequenceReader<byte> source, out byte header, out int requestHint, out int consumed)
+		private long DecodeStringHeader(ref SequenceReader<byte> source, out byte header, out int requestHint, out int consumed)
 		{
-			if (!this.TryPeek(source, out header))
+			if (!source.TryPeek(out header))
 			{
 				requestHint = 1;
 				consumed = 0;
@@ -94,6 +98,7 @@ namespace MsgPack.Internal
 			{
 				requestHint = 0;
 				consumed = 1;
+				source.Advance(1);
 				return header - MessagePackCode.MinimumFixedRaw;
 			}
 
@@ -102,19 +107,19 @@ namespace MsgPack.Internal
 			{
 				case MessagePackCode.Str8:
 				{
-					length = ReadByte(source, offset: 1, out requestHint);
+					length = ReadByte(ref source, offset: 1, out requestHint);
 					consumed = 2;
 					break;
 				}
 				case MessagePackCode.Str16:
 				{
-					length = ReadValue<ushort>(source, offset: 1, out requestHint);
+					length = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 					consumed = 3;
 					break;
 				}
 				case MessagePackCode.Str32:
 				{
-					length = ReadValue<uint>(source, offset: 1, out requestHint);
+					length = ReadValue<uint>(ref source, offset: 1, out requestHint);
 					consumed = 5;
 					break;
 				}
@@ -128,34 +133,35 @@ namespace MsgPack.Internal
 				}
 			}
 
+			source.Advance(consumed);
 			return requestHint == 0 ? length : 0;
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override string? DecodeNullableString(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public sealed override string? DecodeNullableString(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeString(source, out requestHint, encoding, cancellationToken);
+			return this.DecodeString(ref source, out requestHint, encoding, cancellationToken);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override string? DecodeString(in SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		public sealed override string? DecodeString(ref SequenceReader<byte> source, out int requestHint, Encoding? encoding = null, CancellationToken cancellationToken = default)
 		{
-			var length = this.DecodeStringHeader(source, out _, out requestHint, out var consumed);
+			var length = this.DecodeStringHeader(ref source, out _, out requestHint, out var consumed);
 			if (requestHint != 0)
 			{
 				return default;
 			}
 
-			if (source.Remaining < length + consumed)
+			if (source.Remaining < length)
 			{
-				requestHint = (int)((length + consumed - source.Remaining) & Int32.MaxValue);
+				requestHint = (int)((length - source.Remaining) & Int32.MaxValue);
 				return default;
 			}
 
@@ -167,34 +173,34 @@ namespace MsgPack.Internal
 			if (encoding == null && length <= this.Options.CancellationSupportThreshold)
 			{
 				// fast-path
-				var value = Utf8EncodingNonBom.Instance.GetString(source.UnreadSpan.Slice(consumed, (int)length));
-				source.Advance(length + consumed);
+				var value = Utf8EncodingNonBom.Instance.GetString(source.UnreadSpan.Slice(0, (int)length));
+				source.Advance(length);
 				requestHint = 0;
 				return value;
 			}
 
-			var result = (encoding ?? Utf8EncodingNonBom.Instance).GetStringMultiSegment(source.Sequence.Slice(consumed), this.Options.CharBufferPool, cancellationToken);
-			source.Advance(length + consumed);
+			var result = (encoding ?? Utf8EncodingNonBom.Instance).GetStringMultiSegment(source.Sequence.Slice(source.Position), this.Options.CharBufferPool, cancellationToken);
+			source.Advance(length);
 			requestHint = 0;
 			return result;
 		}
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override byte[]? DecodeNullableBinary(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
+		public sealed override byte[]? DecodeNullableBinary(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
 		{
-			if (this.TryReadNull(source))
+			if (this.TryDecodeNull(ref source))
 			{
 				requestHint = 0;
 				return null;
 			}
 
-			return this.DecodeBinary(source, out requestHint, cancellationToken);
+			return this.DecodeBinary(ref source, out requestHint, cancellationToken);
 		}
 
-		private int DecodeBinaryHeader(in SequenceReader<byte> source, out int requestHint, out int consumed)
+		private int DecodeBinaryHeader(ref SequenceReader<byte> source, out int requestHint, out int consumed)
 		{
-			if (!this.TryPeek(source, out var header))
+			if (!source.TryPeek(out var header))
 			{
 				requestHint = 1;
 				consumed = 0;
@@ -214,21 +220,21 @@ namespace MsgPack.Internal
 				case MessagePackCode.Str8:
 				case MessagePackCode.Bin8:
 				{
-					length = ReadByte(source, offset: 1, out requestHint);
+					length = ReadByte(ref source, offset: 1, out requestHint);
 					consumed = 2;
 					break;
 				}
 				case MessagePackCode.Str16:
 				case MessagePackCode.Bin16:
 				{
-					length = ReadValue<ushort>(source, offset: 1, out requestHint);
+					length = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 					consumed = 3;
 					break;
 				}
 				case MessagePackCode.Str32:
 				case MessagePackCode.Bin32:
 				{
-					length = ReadValue<int>(source, offset: 1, out requestHint);
+					length = ReadValue<int>(ref source, offset: 1, out requestHint);
 					if (length < 0)
 					{
 						MessagePackThrow.TooLargeByteLength(header, source.Consumed - 5, unchecked((uint)length));
@@ -252,9 +258,9 @@ namespace MsgPack.Internal
 
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public sealed override byte[]? DecodeBinary(in SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
+		public sealed override byte[]? DecodeBinary(ref SequenceReader<byte> source, out int requestHint, CancellationToken cancellationToken = default)
 		{
-			var length = this.DecodeBinaryHeader(source, out requestHint, out var consumed);
+			var length = this.DecodeBinaryHeader(ref source, out requestHint, out var consumed);
 			if(requestHint != 0)
 			{
 				return default;
@@ -265,9 +271,9 @@ namespace MsgPack.Internal
 				Throw.BinaryLengthExceeded(source.Consumed - consumed, length, this.Options.MaxBinaryLengthInBytes);
 			}
 
-			if(source.Remaining < length + consumed)
+			if(source.Remaining < length)
 			{
-				requestHint = length + consumed - (int)source.Remaining;
+				requestHint = length - (int)source.Remaining;
 				return default;
 			}
 

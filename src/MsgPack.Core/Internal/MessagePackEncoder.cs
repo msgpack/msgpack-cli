@@ -26,9 +26,13 @@ namespace MsgPack.Internal
 			: base(options) { }
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public sealed override void EncodeRawString(ReadOnlySpan<byte> rawString, int charLength, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default)
+			=> Ensure.NotNull(buffer).Write(rawString);
+
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeSingle(float value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var span = buffer.GetSpan(sizeof(float) + 1);
 
@@ -41,7 +45,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeDouble(double value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var span = buffer.GetSpan(sizeof(double) + 1);
 
@@ -54,7 +58,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeBoolean(bool value, IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var span = buffer.GetSpan(1);
 			span[0] = unchecked((byte)(value ? MessagePackCode.TrueValue : MessagePackCode.FalseValue));
@@ -64,7 +68,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeArrayStart(int length, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 			collectionContext.IncrementDepth();
 
 			if (length < 16)
@@ -103,7 +107,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeMapStart(int length, IBufferWriter<byte> buffer, in CollectionContext collectionContext)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			if (length < 16)
 			{
@@ -147,7 +151,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeNull(IBufferWriter<byte> buffer)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 
 			var span = buffer.GetSpan(1);
 			span[0] = MessagePackCode.NilValue;
@@ -199,7 +203,7 @@ namespace MsgPack.Internal
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public sealed override void EncodeString(ReadOnlySpan<byte> encodedValue, int charLength, IBufferWriter<byte> buffer, CancellationToken cancellationToken = default)
 		{
-			buffer = EnsureNotNull(buffer);
+			buffer = Ensure.NotNull(buffer);
 			
 			var span = buffer.GetSpan(5);
 			var used = this.EncodeStringHeader(unchecked((uint)encodedValue.Length), span);

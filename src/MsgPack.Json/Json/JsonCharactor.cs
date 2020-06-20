@@ -18,5 +18,6 @@ namespace MsgPack.Json
 		public static readonly ReadOnlyMemory<Rune> ShouldBeEscaped = new[] { (byte)'/', (byte)'\'', (byte)'<', (byte)'>', (byte)'&' }.Select(b => new Rune(b)).ToArray(); // For HTML embedding
 		public static ReadOnlySpan<byte> CarriageReturn => new[] { (byte)'\r' };
 		public static ReadOnlySpan<byte> LineFeed => new[] { (byte)'\n' };
+		public static ReadOnlySpan<byte> Tab => new[] { (byte)'\t' };
 	}
 }

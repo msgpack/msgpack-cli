@@ -10,7 +10,7 @@ namespace MsgPack.Json
 	/// <summary>
 	///		Defines known escape sequence int UTF-8 and related structures.
 	/// </summary>
-	internal static class JsonEscapeSequence
+	internal static partial class JsonEscapeSequence
 	{
 		public static ReadOnlySpan<byte> Unicode => new[] { (byte)'\\', (byte)'u' };
 		public static ReadOnlySpan<byte> ReverseSolidous => new[] { (byte)'\\', (byte)'\\' };

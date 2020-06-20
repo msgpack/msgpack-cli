@@ -12,9 +12,9 @@ namespace MsgPack.Internal
 {
 	public partial class MessagePackDecoder
 	{
-		public sealed override bool DecodeItem(in SequenceReader<byte> source, out DecodeItemResult<MessagePackExtensionType> result, CancellationToken cancellationToken = default)
+		public sealed override bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult<MessagePackExtensionType> result, CancellationToken cancellationToken = default)
 		{
-			var elementType = this.ReadHeader(source, out var consumed, out var valueOrLength, out var requestHint);
+			var elementType = this.ReadHeader(ref source, out var consumed, out var valueOrLength, out var requestHint);
 			if (requestHint != 0)
 			{
 				result = DecodeItemResult<MessagePackExtensionType>.InsufficientInput(requestHint);
@@ -52,7 +52,7 @@ namespace MsgPack.Internal
 				case ElementType.Array:
 				case ElementType.Map:
 				{
-					this.DecodeArrayOrMap(source, out var iterator);
+					this.DecodeArrayOrMap(ref source, out var iterator);
 					result = DecodeItemResult<MessagePackExtensionType>.CollectionHeader(elementType, this.CreateIterator((uint)valueOrLength), valueOrLength);
 					break;
 				}
@@ -78,7 +78,7 @@ namespace MsgPack.Internal
 						return false;
 					}
 
-					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, source.Sequence.Slice(source.Consumed + consumed, valueOrLength));
+					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, source.Sequence.Slice(source.Position).Slice(consumed, valueOrLength));
 					consumed += valueOrLength;
 					break;
 				}
@@ -95,7 +95,7 @@ namespace MsgPack.Internal
 						return false;
 					}
 
-					var extensionSlice = source.Sequence.Slice(source.Consumed + consumed - 1);
+					var extensionSlice = source.Sequence.Slice(source.Position).Slice(consumed - 1);
 					var typeCode = new MessagePackExtensionType(extensionSlice.FirstSpan[0]);
 					var body = extensionSlice.Slice(1, valueOrLength);
 
@@ -109,9 +109,9 @@ namespace MsgPack.Internal
 			return true;
 		}
 
-		private ElementType ReadHeader(in SequenceReader<byte> source, out long consumed, out long valueOrLength, out int requestHint)
+		private ElementType ReadHeader(ref SequenceReader<byte> source, out long consumed, out long valueOrLength, out int requestHint)
 		{
-			if (!this.TryPeek(source, out var header))
+			if (!source.TryPeek(out var header))
 			{
 				requestHint = 1;
 				valueOrLength = default;
@@ -154,70 +154,70 @@ namespace MsgPack.Internal
 				{
 					case MessagePackCode.SignedInt8:
 					{
-						valueOrLength = ReadSByte(source, offset: 1, out requestHint);
+						valueOrLength = ReadSByte(ref source, offset: 1, out requestHint);
 						consumed += sizeof(sbyte);
 						result = ElementType.Int32;
 						break;
 					}
 					case MessagePackCode.SignedInt16:
 					{
-						valueOrLength = ReadValue<short>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<short>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(short);
 						result = ElementType.Int32;
 						break;
 					}
 					case MessagePackCode.SignedInt32:
 					{
-						valueOrLength = ReadValue<int>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<int>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(int);
 						result = ElementType.Int32;
 						break;
 					}
 					case MessagePackCode.SignedInt64:
 					{
-						valueOrLength = ReadValue<long>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<long>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(long);
 						result = ElementType.Int64;
 						break;
 					}
 					case MessagePackCode.UnsignedInt8:
 					{
-						valueOrLength = ReadByte(source, offset: 1, out requestHint);
+						valueOrLength = ReadByte(ref source, offset: 1, out requestHint);
 						consumed += sizeof(byte);
 						result = ElementType.Int32;
 						break;
 					}
 					case MessagePackCode.UnsignedInt16:
 					{
-						valueOrLength = ReadValue<ushort>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(ushort);
 						result = ElementType.Int32;
 						break;
 					}
 					case MessagePackCode.UnsignedInt32:
 					{
-						valueOrLength = ReadValue<uint>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<uint>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(uint);
 						result = ElementType.Int64;
 						break;
 					}
 					case MessagePackCode.UnsignedInt64:
 					{
-						valueOrLength = unchecked((long)ReadValue<ulong>(source, offset: 1, out requestHint));
+						valueOrLength = unchecked((long)ReadValue<ulong>(ref source, offset: 1, out requestHint));
 						consumed += sizeof(ulong);
 						result = ElementType.UInt64;
 						break;
 					}
 					case MessagePackCode.Real32:
 					{
-						valueOrLength = ReadValue<int>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<int>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(int);
 						result = ElementType.Single;
 						break;
 					}
 					case MessagePackCode.Real64:
 					{
-						valueOrLength = ReadValue<long>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<long>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(long);
 						result = ElementType.Double;
 						break;
@@ -242,28 +242,28 @@ namespace MsgPack.Internal
 					}
 					case MessagePackCode.Array16:
 					{
-						valueOrLength = ReadValue<ushort>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(ushort);
 						result = ElementType.Array;
 						break;
 					}
 					case MessagePackCode.Array32:
 					{
-						valueOrLength = ReadValue<uint>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<uint>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(uint);
 						result = ElementType.Array;
 						break;
 					}
 					case MessagePackCode.Map16:
 					{
-						valueOrLength = ReadValue<ushort>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<ushort>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(ushort);
 						result = ElementType.Map;
 						break;
 					}
 					case MessagePackCode.Map32:
 					{
-						valueOrLength = ReadValue<uint>(source, offset: 1, out requestHint);
+						valueOrLength = ReadValue<uint>(ref source, offset: 1, out requestHint);
 						consumed += sizeof(uint);
 						result = ElementType.Map;
 						break;
@@ -277,7 +277,7 @@ namespace MsgPack.Internal
 					case MessagePackCode.Ext16:
 					case MessagePackCode.Ext32:
 					{
-						result = ReadExtentionItem(header, source, offset: 1, ref consumed, out valueOrLength, out requestHint);
+						result = ReadExtentionItem(header, ref source, offset: 1, ref consumed, out valueOrLength, out requestHint);
 						break;
 					}
 					default:
@@ -293,7 +293,7 @@ namespace MsgPack.Internal
 			return result;
 		}
 
-		private static ElementType ReadExtentionItem(byte header, SequenceReader<byte> source, int offset, ref long consumed, out long valueOrLength, out int requestHint)
+		private static ElementType ReadExtentionItem(byte header, ref SequenceReader<byte> source, int offset, ref long consumed, out long valueOrLength, out int requestHint)
 		{
 			consumed++;
 			requestHint = 0;
@@ -327,7 +327,7 @@ namespace MsgPack.Internal
 				}
 				default:
 				{
-					_ = ReadByte(source, offset, out requestHint);
+					_ = ReadByte(ref source, offset, out requestHint);
 					if (requestHint != 0)
 					{
 						valueOrLength = default;
@@ -341,20 +341,20 @@ namespace MsgPack.Internal
 					{
 						case MessagePackCode.Ext8:
 						{
-							valueOrLength = ReadByte(source, offset, out requestHint);
+							valueOrLength = ReadByte(ref source, offset, out requestHint);
 							consumed++;
 							break;
 						}
 						case MessagePackCode.Ext16:
 						{
-							valueOrLength = ReadValue<ushort>(source, offset, out requestHint);
+							valueOrLength = ReadValue<ushort>(ref source, offset, out requestHint);
 							consumed += sizeof(ushort);
 							break;
 						}
 						default:
 						{
 							Debug.Assert(header == MessagePackCode.Ext32, $"header(0x{header:X2}) == MessagePackCode.Ext32(0x{MessagePackCode.Ext32:X2})");
-							valueOrLength = ReadValue<uint>(source, offset + 1, out requestHint);
+							valueOrLength = ReadValue<uint>(ref source, offset + 1, out requestHint);
 							consumed += sizeof(uint);
 							break;
 						}

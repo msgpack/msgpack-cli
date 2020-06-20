@@ -35,7 +35,7 @@ namespace MsgPack.Json
 			=> throw new FormatException($"Input UTF-8 has surrogate charactor U+{codePoint:X4} at position {position:#,0}.");
 
 		public static void IsNotArrayNorObject(in ReadOnlySequence<byte> sequence, long position)
-			=> throw new FormatException($"Char '{Stringify(sequence)}' at position {position:#,0} is not start of array nor object.");
+			=> throw new FormatException($"Char {Stringify(sequence)} at position {position:#,0} is not start of array nor object.");
 
 		public static void IsNotArray(long position)
 			=> throw new FormatException($"Char '{{' at position {position:#,0} is not start of array.");
@@ -44,7 +44,7 @@ namespace MsgPack.Json
 			=> throw new FormatException($"Char '[' at position {position:#,0} is not start of object.");
 
 		public static void IsNotType(Type type, in ReadOnlySequence<byte> unit, long position)
-			=> throw new FormatException($"Char '{Stringify(unit)}' at position {position:#,0} is not valid for {type} value.");
+			=> throw new FormatException($"Char {Stringify(unit)} at position {position:#,0} is not valid for {type} value.");
 
 		public static void TooLongNumber(long numberLength, long maxLength, long position)
 			=> throw new FormatException($"The number at position {position:#,0} has {numberLength:#,0} charactors, but maximum allowed length is {maxLength:#,0}.");
