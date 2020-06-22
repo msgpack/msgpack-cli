@@ -9,6 +9,9 @@ namespace MsgPack.Internal
 #warning TODO: tuning default as backward compatible
 	internal static class OptionsDefaults
 	{
+		public const int MaxSingleByteCollectionLength = 0x7FFFFFC7;
+		public const int MaxMultiByteCollectionLength = 0X7FEFFFFF;
+
 		public static readonly int CancellationSupportThreshold = 128 * 1024 * 1024; // About 0.1 sec in desktop, more for IoT
 		public static readonly int MaxNumberLengthInBytes = 32;
 		public static readonly int MaxStringLengthInBytes = 256 * 1024 * 1024;

@@ -4,8 +4,9 @@
 
 using System;
 using System.Text;
+using MsgPack.Internal;
 
-namespace MsgPack.Internal
+namespace MsgPack
 {
 	internal static class Throw
 	{
@@ -18,8 +19,17 @@ namespace MsgPack.Internal
 		public static void ExtensionsIsNotSupported()
 			=> throw new NotSupportedException($"Extension type is not supported in this encoder.");
 
-		public static void TooLargeCharLength(long size)
-			=> throw new InvalidOperationException($"Input ReadOnlySequence is too large. It is {size:#,0} chars, but it must be lessor than {Int32.MaxValue:#,0} chars. Use EncodeLargeString instead.");
+		public static void StreamMustBeAbleToRead(string paramName)
+			=> throw new ArgumentException($"The stream must be able to read.", paramName);
+
+		public static void TooSmallBuffer(string paramName, int minimumInclusive)
+			=> throw new ArgumentException($"The size of buffer must be greater than or equal to {minimumInclusive:#,0}.", paramName);
+
+		public static void TooLargeLength(int length, int requestHint)
+			=> throw new ArgumentException($"Requested buffer size {((long)length + requestHint):#,0} is too large. It must be less than or equal to {OptionsDefaults.MaxSingleByteCollectionLength:#,0} bytes.");
+
+		public static void EmptyObject(Type type)
+			=> throw new InvalidOperationException($"Cannot use empty '{type}' object.");
 
 		public static void DepthExeeded(long position, int maxDepth)
 			=> throw new LimitExceededException($"The depth of collection exceeds max depth {maxDepth:#,0} at {position:#,0}.");
@@ -34,15 +44,12 @@ namespace MsgPack.Internal
 			=> throw new InvalidOperationException("CurrentDepth is 0.");
 
 		public static void TooLargeByteLength(long size, string encodingName)
-			=> throw new InvalidOperationException($"Input ReadOnlySequence is too large. It will be encoded to {size:#,0} bytes with '{encodingName}' encoding, but it must be less than or equal to {UInt32.MaxValue:#,0} bytes. Use EncodeLargeString instead.");
+			=> throw new InvalidOperationException($"Input ReadOnlySequence is too large. It will be encoded to {size:#,0} bytes with '{encodingName}' encoding, but it must be less than or equal to {UInt32.MaxValue:#,0} bytes.");
 
 		public static void TooLargeByteLength(Exception innerException, string encodingName)
-			=> throw new InvalidOperationException($"Input ReadOnlySequence is too large. It will be encoded to larger than {Int32.MaxValue:#,0} bytes with '{encodingName}' encoding, but it must be less than or equal to {UInt32.MaxValue:#,0} bytes. Use EncodeLargeString instead.", innerException);
+			=> throw new InvalidOperationException($"Input ReadOnlySequence is too large. It will be encoded to larger than {Int32.MaxValue:#,0} bytes with '{encodingName}' encoding, but it must be less than or equal to {UInt32.MaxValue:#,0} bytes.", innerException);
 
-		public static void TooLargeByteLengthForString(string encodingName)
-			=> throw new InvalidOperationException($"Input ReadOnlySequence is too large. It will be decoded to larger than maximum System.String length with '{encodingName}' encoding.");
-
-		internal static void TooLargePropertyKey(long position, int length, int maxPropertyKeyLength)
+		public static void TooLargePropertyKey(long position, int length, int maxPropertyKeyLength)
 			=> throw new InvalidOperationException($"Property key is too large. The size {length:#,0} is larger than configured limit {maxPropertyKeyLength:#,0} at {position:#,0}.");
 
 		public static void InsufficientInput(long position, Type targetType, int requestHint)

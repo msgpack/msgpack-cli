@@ -15,7 +15,7 @@ namespace MsgPack.Serialization
 		public int MaxArrayLength
 		{
 			get => this._maxArrayLength;
-			set => this._maxArrayLength = Ensure.IsNotLessThan(value, 0);
+			set => this._maxArrayLength = Ensure.IsBetween(value, 0, OptionsDefaults.MaxMultiByteCollectionLength);
 		}
 
 		private int _maxMapCount = OptionsDefaults.MaxMapCount;
@@ -23,7 +23,7 @@ namespace MsgPack.Serialization
 		public int MaxMapCount
 		{
 			get => this._maxMapCount;
-			set => this._maxMapCount = Ensure.IsNotLessThan(value, 0);
+			set => this._maxMapCount = Ensure.IsBetween(value, 0, OptionsDefaults.MaxMultiByteCollectionLength);
 		}
 
 		private int _maxPropertyKeyLength = OptionsDefaults.MaxPropertyKeyLength;
@@ -31,7 +31,7 @@ namespace MsgPack.Serialization
 		public int MaxPropertyKeyLength
 		{
 			get => this._maxPropertyKeyLength;
-			set => this._maxPropertyKeyLength = Ensure.IsNotLessThan(value, 1);
+			set => this._maxPropertyKeyLength = Ensure.IsBetween(value, 1, OptionsDefaults.MaxMultiByteCollectionLength);
 		}
 
 		private int _maxDepth = OptionsDefaults.MaxDepth;
@@ -39,7 +39,7 @@ namespace MsgPack.Serialization
 		public int MaxDepth
 		{
 			get => this._maxDepth;
-			set => this._maxDepth = Ensure.IsNotLessThan(value, 1);
+			set => this._maxDepth = Ensure.IsBetween(value, 1, OptionsDefaults.MaxMultiByteCollectionLength);
 		}
 
 		public Encoding? StringEncoding { get; set; }

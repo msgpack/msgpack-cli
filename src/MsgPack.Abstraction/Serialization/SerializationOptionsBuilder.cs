@@ -13,7 +13,7 @@ namespace MsgPack.Serialization
 		public int MaxDepth
 		{
 			get => this._maxDepth;
-			set => this._maxDepth = Ensure.IsNotLessThan(value, 1);
+			set => this._maxDepth = Ensure.IsBetween(value, 1, OptionsDefaults.MaxMultiByteCollectionLength);
 		}
 
 		public System.Text.Encoding? StringEncoding { get; set; }

@@ -23,7 +23,7 @@ namespace MsgPack.Internal
 		public int MaxNumberLengthInBytes
 		{
 			get => this._maxNumberLengthInBytes;
-			set => this._maxNumberLengthInBytes = Ensure.IsNotLessThan(value, 1);
+			set => this._maxNumberLengthInBytes = Ensure.IsBetween(value, 1, OptionsDefaults.MaxSingleByteCollectionLength);
 		}
 
 		private int _maxStringLengthInBytes = OptionsDefaults.MaxStringLengthInBytes;
@@ -31,7 +31,7 @@ namespace MsgPack.Internal
 		public int MaxStringLengthInBytes
 	{
 			get => this._maxStringLengthInBytes;
-			set => this._maxStringLengthInBytes = Ensure.IsNotLessThan(value, 1);
+			set => this._maxStringLengthInBytes = Ensure.IsBetween(value, 1, OptionsDefaults.MaxMultiByteCollectionLength);
 		}
 
 		private int _naxBinaryLengthInBytes = OptionsDefaults.MaxBinaryLengthInBytes;
@@ -39,7 +39,7 @@ namespace MsgPack.Internal
 		public int MaxBinaryLengthInBytes
 		{
 			get => this._naxBinaryLengthInBytes;
-			set => this._naxBinaryLengthInBytes = Ensure.IsNotLessThan(value, 1);
+			set => this._naxBinaryLengthInBytes = Ensure.IsBetween(value, 1, OptionsDefaults.MaxSingleByteCollectionLength);
 		}
 
 		private int _maxByteBufferLength = OptionsDefaults.MaxByteBufferLength;

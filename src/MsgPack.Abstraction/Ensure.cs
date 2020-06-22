@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace MsgPack.Internal
+namespace MsgPack
 {
 	internal static class Ensure
 	{
@@ -47,6 +47,22 @@ namespace MsgPack.Internal
 		public static T IsNotGreaterThan<T>(T value, T maxInclusive, [CallerArgumentExpression("value")] string paramName = null!)
 			where T : struct, IComparable<T>
 		{
+			if (value.CompareTo(maxInclusive) > 0)
+			{
+				Throw.ArgumentOutOfRange(paramName, $"Value cannot be greater than {maxInclusive}.");
+			}
+
+			return value;
+		}
+
+		public static T IsBetween<T>(T value, T minInclusive, T maxInclusive, [CallerArgumentExpression("value")] string paramName = null!)
+			where T : struct, IComparable<T>
+		{
+			if (value.CompareTo(minInclusive) < 0)
+			{
+				Throw.ArgumentOutOfRange(paramName, $"Value cannot be less than {minInclusive}.");
+			}
+
 			if (value.CompareTo(maxInclusive) > 0)
 			{
 				Throw.ArgumentOutOfRange(paramName, $"Value cannot be greater than {maxInclusive}.");
