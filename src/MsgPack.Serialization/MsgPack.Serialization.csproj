@@ -5,11 +5,74 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\MsgPack.Abstraction\Ensure.cs" Link="Ensure.cs" />
+    <Compile Include="..\MsgPack.Abstraction\Internal\MethodImplOptionsShim.cs" Link="Internal\MethodImplOptionsShim.cs" />
+    <Compile Include="..\MsgPack\ReflectionAbstractions.cs" Link="ReflectionAbstractions.cs" />
+    <Compile Include="..\MsgPack\Serialization\BindingOptions.cs" Link="Serialization\BindingOptions.cs" />
+    <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs" Link="Serialization\CollectionDetailedKind.cs" />
+    <Compile Include="..\MsgPack\Serialization\CollectionKind.cs" Link="Serialization\CollectionKind.cs" />
+    <Compile Include="..\MsgPack\Serialization\CollectionTraitOptions.cs" Link="Serialization\CollectionTraitOptions.cs" />
+    <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs" Link="Serialization\CollectionTraits.cs" />
+    <Compile Include="..\MsgPack\Serialization\DataMemberContract.cs" Link="Serialization\DataMemberContract.cs" />
+    <Compile Include="..\MsgPack\Serialization\DateTimeConversionMethod.cs" Link="Serialization\DateTimeConversionMethod.cs" />
+    <Compile Include="..\MsgPack\Serialization\DateTimeMemberConversionMethod.cs" Link="Serialization\DateTimeMemberConversionMethod.cs" />
+    <Compile Include="..\MsgPack\Serialization\EnumMemberSerializationMethod.cs" Link="Serialization\EnumMemberSerializationMethod.cs" />
+    <Compile Include="..\MsgPack\Serialization\EnumSerializationMethod.cs" Link="Serialization\EnumSerializationMethod.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackDateTimeMemberAttribute.cs" Link="Serialization\MessagePackDateTimeMemberAttribute.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackDeserializationConstructorAttribute.cs" Link="Serialization\MessagePackDeserializationConstructorAttribute.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackEnumAttribute.cs" Link="Serialization\MessagePackEnumAttribute.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackEnumMemberAttribute.cs" Link="Serialization\MessagePackEnumMemberAttribute.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackIgnoreAttribute.cs" Link="Serialization\MessagePackIgnoreAttribute.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackKnownTypeAttributes.cs" Link="Serialization\MessagePackKnownTypeAttributes.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackMemberAttribute.cs" Link="Serialization\MessagePackMemberAttribute.cs" />
+    <Compile Include="..\MsgPack\Serialization\MessagePackRuntimeTypeAttributes.cs" Link="Serialization\MessagePackRuntimeTypeAttributes.cs" />
+    <Compile Include="..\MsgPack\Serialization\NilImplication.cs" Link="Serialization\NilImplication.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphicTypeVerificationContext.cs" Link="Serialization\PolymorphicTypeVerificationContext.cs" />
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" Link="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\RuntimeTypeVerifier.cs" Link="Serialization\Polymorphic\RuntimeTypeVerifier.cs" />
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoding.cs" Link="Serialization\Polymorphic\TypeInfoEncoding.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Constructors.cs" Link="Serialization\PolymorphismSchema.Constructors.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.cs" Link="Serialization\PolymorphismSchema.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Internals.cs" Link="Serialization\PolymorphismSchema.Internals.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchemaChildrenType.cs" Link="Serialization\PolymorphismSchemaChildrenType.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismTarget.cs" Link="Serialization\PolymorphismTarget.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismType.cs" Link="Serialization\PolymorphismType.cs" />
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.CollectionTraits.cs" Link="Serialization\ReflectionExtensions.CollectionTraits.cs" />
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs" Link="Serialization\ReflectionExtensions.cs" />
+    <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs" Link="Serialization\Reflection\GenericTypeExtensions.cs" />
+    <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs" Link="Serialization\Reflection\ReflectionExtensions.cs" />
+    <Compile Include="..\MsgPack\Serialization\SerializationTarget.cs" Link="Serialization\SerializationTarget.cs" />
+    <Compile Include="..\MsgPack\Serialization\SerializingMember.cs" Link="Serialization\SerializingMember.cs" />
+    <Compile Include="..\MsgPack\StringEscape.cs" Link="StringEscape.cs" />
+    <Compile Include="..\MsgPack\TupleItems.cs" Link="TupleItems.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MsgPack.Abstraction\MsgPack.Abstraction.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Internal\" />
+    <Folder Include="Serialization\Polymorphic\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Serialization\Throw.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Throw.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Serialization\Throw.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Throw.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

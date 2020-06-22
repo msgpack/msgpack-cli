@@ -9,8 +9,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using MsgPack.Internal;
 
-using DecodeItemResult = MsgPack.Internal.DecodeItemResult<MsgPack.Internal.NullExtensionType>;
-
 namespace MsgPack.Json
 {
 	public partial class JsonDecoder

@@ -1,29 +1,6 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2018 FUJIWARA, Yusuke and contributors
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-// Contributors:
-//    Samuel Cragg
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 #if FEATURE_MPCONTRACT
@@ -32,6 +9,7 @@ using Contract = MsgPack.MPContract;
 using System.Diagnostics.Contracts;
 #endif // FEATURE_MPCONTRACT
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace MsgPack.Serialization
@@ -43,31 +21,82 @@ namespace MsgPack.Serialization
 #endif
 	static partial class ReflectionExtensions
 	{
-		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof( string ), typeof( Exception ) };
-		private static readonly Type[] ObjectAddParameterTypes = { typeof( object ) };
+		private const string NullableAttributeTypeName = "System.CompilerServices.NullableAttribute";
+		private const string NullableContextAttributeTypeName = "System.CompilerServices.NullableContextAttribute";
 
-		public static Type[] GetParameterTypes( this MethodBase source )
+		private static readonly Type[] ExceptionConstructorWithInnerParameterTypes = { typeof(string), typeof(Exception) };
+		private static readonly Type[] ObjectAddParameterTypes = { typeof(object) };
+
+		public static bool IsNullableType(this Type type)
+			=> !type.GetIsValueType() || Nullable.GetUnderlyingType(type) != null;
+
+		public static bool IsNullable(this MemberInfo member)
+		{
+			// see https://github.com/dotnet/roslyn/blob/master/docs/features/nullable-metadata.md
+			var nullabileArguments = member.GetCustomAttributesData().SingleOrDefault(a => a.AttributeType.FullName == NullableAttributeTypeName)?.GetConstructorArguments();
+			if (nullabileArguments?[0].ArgumentType == typeof(byte))
+			{
+				var nullability = (byte)nullabileArguments[0].Value!;
+				if (nullability!=0)
+				{
+					return nullability == 2;
+				}
+			}
+			else if (nullabileArguments?[0].ArgumentType == typeof(byte[]))
+			{
+				var nullability = ((byte[])nullabileArguments[0].Value!)[0];
+				if (nullability != 0)
+				{
+					return nullability == 2;
+				}
+			}
+
+			// Note: oblivious (0) will be treated as nullable in this context.
+			return 
+				(byte)member.DeclaringType!
+					.GetCustomAttributesData()
+					.SingleOrDefault(a => a.AttributeType.FullName == NullableContextAttributeTypeName)?
+					.GetConstructorArguments()[0].Value!
+				!= 1;
+		}
+
+		public static bool IsCodecPrimitive(this Type type)
+			=> type.GetIsPrimitive()
+				&& (Type.GetTypeCode(type) switch
+				{
+					TypeCode.Char | TypeCode.Object => false,
+					_ => true
+				});
+
+		public static bool IsAssignableTo(this Type type, Type t)
+			=> t.IsAssignableFrom(type);
+
+		public static TDelegate CreateDelegate<TDelegate>(this MethodInfo method)
+			where TDelegate : Delegate
+			=> (TDelegate)method.CreateDelegate(typeof(TDelegate));
+
+		public static Type[] GetParameterTypes(this MethodBase source)
 		{
 			var parameters = source.GetParameters();
-			Type[] parameterTypes = new Type[ parameters.Length ];
-			for ( var i = 0; i < parameters.Length; i++ )
+			Type[] parameterTypes = new Type[parameters.Length];
+			for (var i = 0; i < parameters.Length; i++)
 			{
-				parameterTypes[ i ] = parameters[ i ].ParameterType;
+				parameterTypes[i] = parameters[i].ParameterType;
 			}
 
 			return parameterTypes;
 		}
 
-		public static Type GetMemberValueType( this MemberInfo source )
+		public static Type GetMemberValueType(this MemberInfo source)
 		{
-			if ( source == null )
+			if (source == null)
 			{
-				throw new ArgumentNullException( "source" );
+				throw new ArgumentNullException("source");
 			}
 
 #if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 			var asType = source as Type;
-			if ( asType != null )
+			if (asType != null)
 			{
 				// Nested type.
 				return asType;
@@ -88,9 +117,9 @@ namespace MsgPack.Serialization
 			var asProperty = source as PropertyInfo;
 			var asField = source as FieldInfo;
 
-			if ( asProperty == null && asField == null )
+			if (asProperty == null && asField == null)
 			{
-				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "'{0}'({1}) is not field nor property.", source, source.GetType() ) );
+				throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "'{0}'({1}) is not field nor property.", source, source.GetType()));
 			}
 
 			return asProperty != null ? asProperty.PropertyType : asField.FieldType;

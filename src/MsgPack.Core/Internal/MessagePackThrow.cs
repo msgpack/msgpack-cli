@@ -41,5 +41,8 @@ namespace MsgPack.Internal
 
 		public static void IsNotExtension(byte header, long position)
 			=> throw new MessageTypeException($"The type is {MessagePackCode.ToString(header)}(0x{header:X2}) but it is not extension at {position:#,0}.");
+
+		public static void InvalidTypeCode(ulong typeCode)
+			=> throw new ArgumentOutOfRangeException("typeCode", $"Extension type code for MessagePack must be 1 byte, but 0x{typeCode:X} is specified.");
 	}
 }

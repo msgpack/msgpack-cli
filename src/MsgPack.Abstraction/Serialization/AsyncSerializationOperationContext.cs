@@ -15,21 +15,24 @@ using MsgPack.Internal;
 
 namespace MsgPack.Serialization
 {
-	public struct SerializationOperationContext<TExtensionType>
+	public sealed class AsyncSerializationOperationContext
 	{
-		public Encoder<TExtensionType> Encoder { get; }
+		public FormatEncoder Encoder { get; }
 		public SerializationOptions Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public SerializationOperationContext(Encoder<TExtensionType> encoder, SerializationOptions? options, CancellationToken cancellationToken)
+		public AsyncSerializationOperationContext(FormatEncoder encoder, SerializationOptions? options, CancellationToken cancellationToken)
 		{
 			this.Encoder = Ensure.NotNull(encoder);
 			this.Options = options ?? SerializationOptions.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
 		}
+
+		public SerializationOperationContext AsSerializationOperationContext()
+			=> new SerializationOperationContext(this.Encoder, this.Options, this.CancellationToken);
 
 		public CollectionContext CollectionContext => new CollectionContext(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue, this.CurrentDepth);
 

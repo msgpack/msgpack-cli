@@ -7,7 +7,7 @@ using System.Buffers;
 namespace MsgPack.Internal
 {
 #warning Remove unused buffer max pr rename to initial buffer length if appropriate.
-	public abstract class DecoderOptionsBuilder
+	public abstract class FormatDecoderOptionsBuilder
 	{
 		public bool CanTreatRealAsInteger { get; set; } = OptionsDefaults.CanTreatRealAsInteger;
 
@@ -77,15 +77,15 @@ namespace MsgPack.Internal
 
 		public bool ClearsBuffer { get; set; } = OptionsDefaults.ClearsBuffer;
 
-		protected DecoderOptionsBuilder() { }
+		protected FormatDecoderOptionsBuilder() { }
 
-		public DecoderOptionsBuilder WithoutBufferClear()
+		public FormatDecoderOptionsBuilder WithoutBufferClear()
 		{
 			this.ClearsBuffer = false;
 			return this;
 		}
 
-		public DecoderOptionsBuilder ProhibitTreatRealAsInteger()
+		public FormatDecoderOptionsBuilder ProhibitTreatRealAsInteger()
 		{
 			this.CanTreatRealAsInteger = false;
 			return this;

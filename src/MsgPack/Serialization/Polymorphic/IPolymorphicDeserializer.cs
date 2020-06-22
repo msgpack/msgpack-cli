@@ -19,9 +19,12 @@
 #endregion -- License Terms --
 
 using System;
+using System.Buffers;
+using System.Runtime.CompilerServices;
 #if FEATURE_TAP
 using System.Threading;
 using System.Threading.Tasks;
+using MsgPack.Internal;
 #endif // FEATURE_TAP
 
 namespace MsgPack.Serialization.Polymorphic
@@ -31,10 +34,20 @@ namespace MsgPack.Serialization.Polymorphic
 	/// </summary>
 	internal interface IPolymorphicDeserializer
 	{
-		object PolymorphicUnpackFrom( Unpacker unpacker );
+		object? DeserializePolymorphic(ref DeserializationOperationContext context, ref SequenceReader<byte> reader);
 
 #if FEATURE_TAP
-		Task<object> PolymorphicUnpackFromAsync( Unpacker unpacker, CancellationToken cancellationToken );
+		ValueTask<object?> DeserializePolymorphicAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence sequence, CancellationToken cancellationToken );
 #endif // FEATURE_TAP
 	}
+
+#warning TODO: Compat
+	//internal static class PolymorphicDeserializerCompatibilityExtensions
+	//{
+	//	public static object PolymorphicUnpackFrom(this IPolymorphicDeserializer deserializer, Unpacker unpacker)
+	//		=> deserializer.DeserializePolymorphic(unpacker.Sequence);
+
+	//	public static ValueTask<object> PolymorphicUnpackFromAsync(this IPolymorphicDeserializer deserializer, Unpacker unpacker)
+	//		=> deserializer.PolymorphicDeserializeAsync(unpacker.Stream);
+	//}
 }

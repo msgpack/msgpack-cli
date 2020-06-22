@@ -10,9 +10,9 @@ using MsgPack.Internal;
 namespace MsgPack.Json
 {
 	/// <summary>
-	///		A builder object to construct immutable <see cref="EncoderOptions"/> object.
+	///		A builder object to construct immutable <see cref="FormatEncoderOptions"/> object.
 	/// </summary>
-	public class JsonEncoderOptionsBuilder : EncoderOptionsBuilder
+	public class JsonEncoderOptionsBuilder : FormatEncoderOptionsBuilder
 	{
 		private static readonly ReadOnlyMemory<byte> DefaultIndentChars =
 			new byte[] { (byte)' ', (byte)' ' };

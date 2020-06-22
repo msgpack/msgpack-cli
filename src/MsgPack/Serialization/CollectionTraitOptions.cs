@@ -1,30 +1,12 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2016 FUJIWARA, Yusuke and contributors
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-// Contributors:
-//    Samuel Cragg
-//
-#endregion -- License Terms --
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 
 namespace MsgPack.Serialization
 {
+#warning TODO: NonPublic
 	[Flags]
 	internal enum CollectionTraitOptions
 	{
@@ -32,7 +14,8 @@ namespace MsgPack.Serialization
 		WithAddMethod = 0x1,
 		WithCountPropertyGetter = 0x2,
 		WithGetEnumeratorMethod = 0x4,
+		WithConstructor = 0x8,
 		AllowNonCollectionEnumerableTypes = 0x800,
-		Full = WithAddMethod | WithCountPropertyGetter | WithGetEnumeratorMethod
+		Full = WithAddMethod | WithCountPropertyGetter | WithGetEnumeratorMethod | WithConstructor
 	}
 }

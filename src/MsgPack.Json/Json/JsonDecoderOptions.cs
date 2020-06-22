@@ -9,7 +9,7 @@ namespace MsgPack.Json
 	/// <summary>
 	///		Defines decoder options for <see cref="JsonDecoder"/>.
 	/// </summary>
-	public class JsonDecoderOptions : DecoderOptions
+	public class JsonDecoderOptions : FormatDecoderOptions
 	{
 		public static JsonDecoderOptions Default { get; } = new JsonDecoderOptionsBuilder().Build();
 

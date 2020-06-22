@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.ConstructorDelegate.cs" Link="Serialization\ReflectionExtensions.ConstructorDelegate.cs" />
+    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.conveniences.cs" Link="Serialization\Reflection\TracingILGenerator.conveniences.cs" />
+    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.cs" Link="Serialization\Reflection\TracingILGenerator.cs" />
+    <Compile Include="..\MsgPack\Serialization\Reflection\TracingILGenerator.emits.cs" Link="Serialization\Reflection\TracingILGenerator.emits.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Serialization\Reflection\" />
+  </ItemGroup>
+
+</Project>

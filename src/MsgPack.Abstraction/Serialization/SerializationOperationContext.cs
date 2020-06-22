@@ -9,26 +9,24 @@
 #nullable enable
 
 using System;
-using System.Buffers;
 using System.Text;
 using System.Threading;
 using MsgPack.Internal;
 
 namespace MsgPack.Serialization
 {
-	public struct DeserializationOperationContext<TExtensionType>
+	public struct SerializationOperationContext
 	{
-		public Decoder<TExtensionType> Decoder { get; }
-		public DeserializationOptions Options { get; }
+		public FormatEncoder Encoder { get; }
+		public SerializationOptions Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
-		public ArrayPool<byte> ByteBufferPool => this.Options.ByteBufferPool;
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public DeserializationOperationContext(Decoder<TExtensionType> decoder, DeserializationOptions? options, CancellationToken cancellationToken)
+		public SerializationOperationContext(FormatEncoder encoder, SerializationOptions? options, CancellationToken cancellationToken)
 		{
-			this.Decoder = Ensure.NotNull(decoder);
-			this.Options = options ?? DeserializationOptions.Default;
+			this.Encoder = Ensure.NotNull(encoder);
+			this.Options = options ?? SerializationOptions.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
 		}
@@ -53,14 +51,6 @@ namespace MsgPack.Serialization
 			}
 
 			return this.CurrentDepth--;
-		}
-
-		public readonly void ValidatePropertyKeyLength(long position, int length)
-		{
-			if(length > this.Options.MaxPropertyKeyLength)
-			{
-				Throw.TooLargePropertyKey(position, length, this.Options.MaxPropertyKeyLength);
-			}
 		}
 	}
 }

@@ -40,41 +40,41 @@ internal static class MsgPackCliSerializerRepository<T>
 {
 	public static readonly MsgPack.Serialization.MessagePackSerializer<T> V1 = SampleSerializer.SerializationContext.GetSerializer<T>();
 
-	public static readonly newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.MessagePackExtensionType> V2 = InitV2();
+	public static readonly newmpcli::MsgPack.Serialization.ObjectSerializer<T> V2 = InitV2();
 
-	public static readonly newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.NullExtensionType> Json = InitJson();
+	public static readonly newmpcli::MsgPack.Serialization.ObjectSerializer<T> Json = InitJson();
 
-	private static newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.MessagePackExtensionType> InitV2()
+	private static newmpcli::MsgPack.Serialization.ObjectSerializer<T> InitV2()
 	{
 		if (typeof(MsgPack.Samples.SampleObject).IsAssignableFrom(typeof(T)))
 		{
-			return (newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.MessagePackExtensionType>)(object)new MsgPack.Samples.SampleSerializer<newmpcli::MsgPack.Internal.MessagePackExtensionType>();
+			return (newmpcli::MsgPack.Serialization.ObjectSerializer<T>)(object)new MsgPack.Samples.SampleSerializer(new newmpcli::MsgPack.Serialization.ObjectSerializationContext());
 		}
 		else if (typeof(T) == typeof(int[]))
 		{
-			return (newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.MessagePackExtensionType>)(object)new MsgPack.Samples.SampleInt32ArraySerializer<newmpcli::MsgPack.Internal.MessagePackExtensionType>();
+			return (newmpcli::MsgPack.Serialization.ObjectSerializer<T>)(object)new MsgPack.Samples.SampleInt32ArraySerializer(new newmpcli::MsgPack.Serialization.ObjectSerializationContext());
 		}
 		else if (typeof(T) == typeof(int))
 		{
-			return (newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.MessagePackExtensionType>)(object)new MsgPack.Samples.SampleInt32Serializer<newmpcli::MsgPack.Internal.MessagePackExtensionType>();
+			return (newmpcli::MsgPack.Serialization.ObjectSerializer<T>)(object)new MsgPack.Samples.SampleInt32Serializer(new newmpcli::MsgPack.Serialization.ObjectSerializationContext());
 		}
 
 		throw new NotSupportedException($"No {typeof(T)} serializer.");
 	}
 
-	private static newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.NullExtensionType> InitJson()
+	private static newmpcli::MsgPack.Serialization.ObjectSerializer<T> InitJson()
 	{
 		if (typeof(MsgPack.Samples.SampleObject).IsAssignableFrom(typeof(T)))
 		{
-			return (newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.NullExtensionType>)(object)new MsgPack.Samples.SampleSerializer<newmpcli::MsgPack.Internal.NullExtensionType>();
+			return (newmpcli::MsgPack.Serialization.ObjectSerializer<T>)(object)new MsgPack.Samples.SampleSerializer(new newmpcli::MsgPack.Serialization.ObjectSerializationContext());
 		}
 		else if (typeof(T) == typeof(int[]))
 		{
-			return (newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.NullExtensionType>)(object)new MsgPack.Samples.SampleInt32ArraySerializer<newmpcli::MsgPack.Internal.NullExtensionType>();
+			return (newmpcli::MsgPack.Serialization.ObjectSerializer<T>)(object)new MsgPack.Samples.SampleInt32ArraySerializer(new newmpcli::MsgPack.Serialization.ObjectSerializationContext());
 		}
 		else if (typeof(T) == typeof(int))
 		{
-			return (newmpcli::MsgPack.Serialization.Internal.IObjectSerializer<T, newmpcli::MsgPack.Internal.NullExtensionType>)(object)new MsgPack.Samples.SampleInt32Serializer<newmpcli::MsgPack.Internal.NullExtensionType>();
+			return (newmpcli::MsgPack.Serialization.ObjectSerializer<T>)(object)new MsgPack.Samples.SampleInt32Serializer(new newmpcli::MsgPack.Serialization.ObjectSerializationContext());
 		}
 
 		throw new NotSupportedException($"No {typeof(T)} serializer.");
@@ -91,7 +91,7 @@ public class MsgPackCli_v2 : SerializerBase
 	{
 		var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>((byte[])input));
 		var context =
-			new newmpcli::MsgPack.Serialization.Internal.DeserializationOperationContext<newmpcli::MsgPack.Internal.MessagePackExtensionType>(
+			new newmpcli::MsgPack.Serialization.DeserializationOperationContext(
 				Decoder,
 				null,
 				CancellationToken.None
@@ -115,7 +115,7 @@ public class MsgPackCli_v2 : SerializerBase
 
 		var writer = t_writer;
 		var context =
-			new newmpcli::MsgPack.Serialization.Internal.SerializationOperationContext<newmpcli::MsgPack.Internal.MessagePackExtensionType>(
+			new newmpcli::MsgPack.Serialization.SerializationOperationContext(
 				Encoder,
 				null,
 				CancellationToken.None
@@ -136,7 +136,7 @@ public class MsgPackCliJson : SerializerBase
 	{
 		var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>((byte[])input));
 		var context =
-			new newmpcli::MsgPack.Serialization.Internal.DeserializationOperationContext<newmpcli::MsgPack.Internal.NullExtensionType>(
+			new newmpcli::MsgPack.Serialization.DeserializationOperationContext(
 				Decoder,
 				null,
 				CancellationToken.None
@@ -160,7 +160,7 @@ public class MsgPackCliJson : SerializerBase
 
 		var writer = t_writer;
 		var context =
-			new newmpcli::MsgPack.Serialization.Internal.SerializationOperationContext<newmpcli::MsgPack.Internal.NullExtensionType>(
+			new newmpcli::MsgPack.Serialization.SerializationOperationContext(
 				Encoder,
 				null,
 				CancellationToken.None

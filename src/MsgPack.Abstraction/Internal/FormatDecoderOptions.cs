@@ -6,7 +6,7 @@ using System.Buffers;
 
 namespace MsgPack.Internal
 {
-	public abstract class DecoderOptions
+	public abstract class FormatDecoderOptions
 	{
 		public bool CanTreatRealAsInteger { get; }
 
@@ -28,7 +28,7 @@ namespace MsgPack.Internal
 
 		public bool ClearsBuffer { get; }
 
-		protected DecoderOptions(DecoderOptionsBuilder builder)
+		protected FormatDecoderOptions(FormatDecoderOptionsBuilder builder)
 		{
 			builder = Ensure.NotNull(builder);
 

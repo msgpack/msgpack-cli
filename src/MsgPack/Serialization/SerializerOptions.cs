@@ -1,28 +1,9 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2012-2018 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
+using System.ComponentModel;
 #if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
@@ -34,7 +15,7 @@ using System.Reflection.Emit;
 #endif // NETSTANDARD1_3 || NETSTANDARD2_0
 using System.Runtime.CompilerServices;
 using System.Threading;
-#if ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
+#if (NETSTANDARD1_3 || NETSTANDARD2_0) && !WINDOWS_UWP
 using MsgPack.Serialization.EmittingSerializers;
 #endif // ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
 
@@ -45,32 +26,6 @@ namespace MsgPack.Serialization
 	/// </summary>
 	public sealed class SerializerOptions
 	{
-#if UNITY || SILVERLIGHT
-		private int _emitterFlavor = ( int )EmitterFlavor.ReflectionBased;
-#else
-		private int _emitterFlavor = ( int )EmitterFlavor.FieldBased;
-#endif
-
-		/// <summary>
-		///		Gets or sets the <see cref="EmitterFlavor"/>.
-		/// </summary>
-		/// <value>
-		///		The <see cref="EmitterFlavor"/>
-		/// </value>
-		/// <remarks>
-		///		For testing purposes.
-		/// </remarks>
-#if UNITY && DEBUG
-		public
-#else
-		internal
-#endif
-		EmitterFlavor EmitterFlavor
-		{
-			get { return ( EmitterFlavor )Volatile.Read( ref this._emitterFlavor ); }
-			set { Volatile.Write( ref this._emitterFlavor, ( int )value ); }
-		}
-
 #if !UNITY
 
 		private int _generatorOption;
@@ -86,13 +41,13 @@ namespace MsgPack.Serialization
 		{
 			get
 			{
-				Contract.Ensures( Enum.IsDefined( typeof( SerializationMethod ), Contract.Result<SerializationMethodGeneratorOption>() ) );
+				Contract.Ensures(Enum.IsDefined(typeof(SerializationMethod), Contract.Result<SerializationMethodGeneratorOption>()));
 
-				return ( SerializationMethodGeneratorOption )Volatile.Read( ref this._generatorOption );
+				return (SerializationMethodGeneratorOption)Volatile.Read(ref this._generatorOption);
 			}
 			set
 			{
-				switch ( value )
+				switch (value)
 				{
 					case SerializationMethodGeneratorOption.Fast:
 #if !SILVERLIGHT
@@ -106,13 +61,13 @@ namespace MsgPack.Serialization
 					}
 					default:
 					{
-						throw new ArgumentOutOfRangeException( "value" );
+						throw new ArgumentOutOfRangeException("value");
 					}
 				}
 
 				Contract.EndContractBlock();
 
-				Volatile.Write( ref this._generatorOption, ( int )value );
+				Volatile.Write(ref this._generatorOption, (int)value);
 			}
 		}
 
@@ -150,10 +105,10 @@ namespace MsgPack.Serialization
 
 		internal static readonly bool CanEmit = DetermineCanEmit();
 
-		[MethodImpl( MethodImplOptions.NoInlining )]
+		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static bool DetermineCanEmit()
 		{
-#if ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
+#if (NETSTANDARD1_3 || NETSTANDARD2_0) && !WINDOWS_UWP
 			try
 			{
 				return DetermineCanEmitCore();
@@ -170,7 +125,7 @@ namespace MsgPack.Serialization
 #endif
 		}
 
-#if ( NETSTANDARD1_3 || NETSTANDARD2_0 ) && !WINDOWS_UWP
+#if (NETSTANDARD1_3 || NETSTANDARD2_0) && !WINDOWS_UWP
 
 		[MethodImpl( MethodImplOptions.NoInlining )]
 		private static bool DetermineCanEmitCore()

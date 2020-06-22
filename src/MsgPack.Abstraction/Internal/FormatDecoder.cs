@@ -12,19 +12,18 @@ namespace MsgPack.Internal
 #warning TODO: Use 'Try' prefix for published APIs which can return 'requestHint'.
 
 	/// <summary>
-	///		Defines an interface and basic functionarity of stateless <see cref="Decoder"/>.
+	///		Defines an interface and basic functionarity of stateless <see cref="FormatDecoder"/>.
 	/// </summary>
-	/// <typeparam name="TExtensionType">A type of extension type.</typeparam>
 	/// <remarks>
-	///		The <see cref="Decoder"/> is stateless, so caller (serializer, writer, etc.) can cache the instance for performance.
+	///		The <see cref="FormatDecoder"/> is stateless, so caller (serializer, writer, etc.) can cache the instance for performance.
 	/// </remarks>
-	public abstract partial class Decoder<TExtensionType>
+	public abstract partial class FormatDecoder
 	{
 		public FormatFeatures FormatFeatures { get; }
 
-		public DecoderOptions Options { get; }
+		public FormatDecoderOptions Options { get; }
 
-		protected Decoder(DecoderOptions options, FormatFeatures formatFeatures)
+		protected FormatDecoder(FormatDecoderOptions options, FormatFeatures formatFeatures)
 		{
 			this.Options = Ensure.NotNull(options);
 			this.FormatFeatures = Ensure.NotNull(formatFeatures);
@@ -42,7 +41,7 @@ namespace MsgPack.Internal
 
 		public abstract void Skip(ref SequenceReader<byte> source, in CollectionContext collectionContext, out int requestHint, CancellationToken cancellationToken = default);
 
-		public abstract bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult<TExtensionType> result, CancellationToken cancellationToken = default);
+		public abstract bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult result, CancellationToken cancellationToken = default);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void GetRawString(ref SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, CancellationToken cancellationToken = default)
@@ -188,13 +187,12 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not a map.</exception>
 		public abstract long DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint);
 
-		public virtual void DecodeExtension(ref SequenceReader<byte> source, out TExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
+		public virtual void DecodeExtension(ref SequenceReader<byte> source, out ExtensionTypeObject result, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			Throw.ExtensionsIsNotSupported();
 			// never
-			body = default;
+			result = default;
 			requestHint = -1;
-			typeCode = default!;
 		}
 
 		public CollectionType DecodeArrayOrMap(ref SequenceReader<byte> source, out CollectionItemIterator iterator)

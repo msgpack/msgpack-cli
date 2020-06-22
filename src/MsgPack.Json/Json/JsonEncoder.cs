@@ -17,7 +17,7 @@ namespace MsgPack.Json
 	/// <summary>
 	///		An encoder for JSON format.
 	/// </summary>
-	public sealed class JsonEncoder : Encoder<NullExtensionType>
+	public sealed class JsonEncoder : FormatEncoder
 	{
 		private readonly Action<float, IBufferWriter<byte>, JsonEncoderOptions> _singleInfinityFormatter;
 		private readonly Action<float, IBufferWriter<byte>, JsonEncoderOptions> _singleNanFormatter;

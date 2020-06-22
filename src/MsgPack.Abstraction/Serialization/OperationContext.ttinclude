@@ -5,7 +5,8 @@ void WriteContext(bool isSerialization, bool isAsync)
 	var typePrefix = isSerialization ? "Serialization" : "Deserialization";
 	var typeName = $"{(isAsync ? "Async" : String.Empty)}{typePrefix}OperationContext";
 	var optionTypeName = $"{typePrefix}Options";
-	var primitive = isSerialization ? "Encoder" : "Decoder";
+	var primitiveType = isSerialization ? "FormatEncoder" : "FormatDecoder";
+	var primitiveName = isSerialization ? "Encoder" : "Decoder";
 #>
 // Copyright (c) FUJIWARA, Yusuke and all contributors.
 // This file is licensed under Apache2 license.
@@ -32,9 +33,9 @@ using MsgPack.Internal;
 
 namespace MsgPack.Serialization
 {
-	public <#= typeClass #> <#= typeName #><TExtensionType>
+	public <#= typeClass #> <#= typeName #>
 	{
-		public <#= primitive #><TExtensionType> <#= primitive #> { get; }
+		public <#= primitiveType #> <#= primitiveName #> { get; }
 		public <#= optionTypeName #> Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
 <#+
@@ -48,9 +49,9 @@ namespace MsgPack.Serialization
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public <#= typeName #>(<#= primitive #><TExtensionType> <#= primitive.ToLowerInvariant() #>, <#= optionTypeName #>? options, CancellationToken cancellationToken)
+		public <#= typeName #>(<#= primitiveType #> <#= primitiveName.ToLowerInvariant() #>, <#= optionTypeName #>? options, CancellationToken cancellationToken)
 		{
-			this.<#= primitive #> = Ensure.NotNull(<#= primitive.ToLowerInvariant() #>);
+			this.<#= primitiveName #> = Ensure.NotNull(<#= primitiveName.ToLowerInvariant() #>);
 			this.Options = options ?? <#= optionTypeName #>.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
@@ -61,8 +62,8 @@ namespace MsgPack.Serialization
 	{
 		var syncTypeName = typeName.Substring("Async".Length);
 #>
-		public <#= syncTypeName #><TExtensionType> As<#= syncTypeName #>()
-			=> new <#= syncTypeName #><TExtensionType>(this.<#= primitive #>, this.Options, this.CancellationToken);
+		public <#= syncTypeName #> As<#= syncTypeName #>()
+			=> new <#= syncTypeName #>(this.<#= primitiveName #>, this.Options, this.CancellationToken);
 
 <#+
 	}

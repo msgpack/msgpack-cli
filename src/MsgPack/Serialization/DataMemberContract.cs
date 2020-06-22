@@ -1,33 +1,13 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2018 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 #if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
 #else
 using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT || NETSTANDARD1_1
+#endif // FEATURE_MPCONTRACT
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -37,28 +17,9 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Represents member's data contract.
 	/// </summary>
-#if !UNITY
-	internal struct DataMemberContract
-#else
-#warning TODO: To struct if possible
-#if UNITY && DEBUG
-	public
-#else
-	internal
-#endif
-	sealed class DataMemberContract
-#endif // !UNITY
+	internal readonly struct DataMemberContract
 	{
-#if UNITY
-		/// <summary>
-		///		Null object.
-		/// </summary>
-		public static readonly DataMemberContract Null = new DataMemberContract();
-#endif
-
 		internal const int UnspecifiedId = -1;
-
-		private readonly string _name;
 
 		/// <summary>
 		///		Gets the name of the member.
@@ -66,19 +27,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The name of the member.
 		/// </value>
-		public string Name
-		{
-			get
-			{
-#if DEBUG
-				Contract.Ensures( !String.IsNullOrEmpty( Contract.Result<string>() ) );
-#endif // DEBUG
-
-				return this._name;
-			}
-		}
-
-		private readonly int _id;
+		public string Name { get; }
 
 		/// <summary>
 		///		Gets the ID of the member.
@@ -86,19 +35,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The ID of the member. Default is <c>-1</c>.
 		/// </value>
-		public int Id
-		{
-			get
-			{
-#if DEBUG
-				Contract.Ensures( Contract.Result<int>() >= -1 );
-#endif // DEBUG
-
-				return this._id;
-			}
-		}
-
-		private readonly NilImplication _nilImplication;
+		public int Id { get; }
 
 		/// <summary>
 		///		Gets the nil implication.
@@ -106,31 +43,19 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The nil implication.
 		/// </value>
-		public NilImplication NilImplication
-		{
-			get { return this._nilImplication; }
-		}
-
-#if UNITY
-		public DataMemberContract()
-		{
-			this._name = null;
-			this._nilImplication = NilImplication.MemberDefault;
-			this._id = UnspecifiedId;
-		}
-#endif // UNITY
+		public NilImplication NilImplication { get; }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="DataMemberContract"/> struct.
 		/// </summary>
 		/// <param name="member">The target member.</param>
-		public DataMemberContract( MemberInfo member )
+		public DataMemberContract(MemberInfo member)
 		{
-			Contract.Assert( member != null );
+			Contract.Assert(member != null);
 
-			this._name = member.Name;
-			this._nilImplication = NilImplication.MemberDefault;
-			this._id = UnspecifiedId;
+			this.Name = member.Name;
+			this.NilImplication = NilImplication.MemberDefault;
+			this.Id = UnspecifiedId;
 		}
 
 		/// <summary>
@@ -140,18 +65,18 @@ namespace MsgPack.Serialization
 		/// <param name="name">The name of member.</param>
 		/// <param name="nilImplication">The implication of the nil value for the member.</param>
 		/// <param name="id">The ID of the member. This value cannot be negative and must be unique in the type.</param>
-		public DataMemberContract( MemberInfo member, string name, NilImplication nilImplication, int? id )
+		public DataMemberContract(MemberInfo member, string? name, NilImplication nilImplication, int? id)
 		{
-			Contract.Assert( member != null );
+			Contract.Assert(member != null);
 
-			if ( id < 0 )
+			if (id < 0)
 			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID cannot be negative. The member is '{0}' in the '{1}' type.", member.Name, member.DeclaringType ) );
+				throw new SerializationException(String.Format(CultureInfo.CurrentCulture, "The member ID cannot be negative. The member is '{0}' in the '{1}' type.", member.Name, member.DeclaringType));
 			}
 
-			this._name = String.IsNullOrEmpty( name ) ? member.Name : name;
-			this._nilImplication = nilImplication;
-			this._id = id ?? UnspecifiedId;
+			this.Name = String.IsNullOrEmpty(name) ? member.Name : name;
+			this.NilImplication = nilImplication;
+			this.Id = id ?? UnspecifiedId;
 		}
 
 		/// <summary>
@@ -159,19 +84,19 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="member">The target member.</param>
 		/// <param name="attribute">The MessagePack member attribute.</param>
-		public DataMemberContract( MemberInfo member, MessagePackMemberAttribute attribute )
+		public DataMemberContract(MemberInfo member, MessagePackMemberAttribute attribute)
 		{
-			Contract.Assert( member != null );
-			Contract.Assert( attribute != null );
+			Contract.Assert(member != null);
+			Contract.Assert(attribute != null);
 
-			if ( attribute.Id < 0 )
+			if (attribute.Id < 0)
 			{
-				throw new SerializationException( String.Format( CultureInfo.CurrentCulture, "The member ID cannot be negative. The member is '{0}' in the '{1}' type.", member.Name, member.DeclaringType ) );
+				throw new SerializationException(String.Format(CultureInfo.CurrentCulture, "The member ID cannot be negative. The member is '{0}' in the '{1}' type.", member.Name, member.DeclaringType));
 			}
 
-			this._name = String.IsNullOrEmpty( attribute.Name ) ? member.Name : attribute.Name;
-			this._nilImplication = attribute.NilImplication;
-			this._id = attribute.Id;
+			this.Name = String.IsNullOrEmpty(attribute.Name) ? member.Name : attribute.Name;
+			this.NilImplication = attribute.NilImplication;
+			this.Id = attribute.Id;
 		}
 	}
 }

@@ -4,26 +4,26 @@
 
 using System;
 using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MsgPack.Internal;
-using MsgPack.Serialization.Internal;
 
 namespace MsgPack.Serialization
 {
-	public abstract class Serializer<T, TExtentionType>
+	public abstract class Serializer<T> : Serializer
 	{
-		private readonly Func<Encoder<TExtentionType>> _encoderFactory;
-		private readonly Func<Decoder<TExtentionType>> _decoderFactory;
-		private readonly IObjectSerializer<T, TExtentionType> _underlying;
+		private readonly Func<FormatEncoder> _encoderFactory;
+		private readonly Func<FormatDecoder> _decoderFactory;
+		private readonly ObjectSerializer<T> _underlying;
 		private readonly SerializationOptions _serializationOptions;
 		private readonly DeserializationOptions _deserializationOptions;
 
 		protected Serializer(
-			Func<Encoder<TExtentionType>> encoderFactory,
-			Func<Decoder<TExtentionType>> decoderFactory,
-			IObjectSerializer<T, TExtentionType> underlying,
+			Func<FormatEncoder> encoderFactory,
+			Func<FormatDecoder> decoderFactory,
+			ObjectSerializer<T> underlying,
 			SerializationOptions serializationOptions,
 			DeserializationOptions deserializationOptions
 		)
@@ -35,17 +35,21 @@ namespace MsgPack.Serialization
 			this._deserializationOptions = Ensure.NotNull(deserializationOptions);
 		}
 
-		private void InitializeSerializationOperationContext(CancellationToken cancellationToken, out SerializationOperationContext<TExtentionType> context)
-			=> context = new SerializationOperationContext<TExtentionType>(this._encoderFactory(), this._serializationOptions, cancellationToken);
+		private void InitializeSerializationOperationContext(CancellationToken cancellationToken, out SerializationOperationContext context)
+			=> context = new SerializationOperationContext(this._encoderFactory(), this._serializationOptions, cancellationToken);
 
-		private void InitializeAsyncSerializationOperationContext(CancellationToken cancellationToken, out AsyncSerializationOperationContext<TExtentionType> context)
-			=> context = new AsyncSerializationOperationContext<TExtentionType>(this._encoderFactory(), this._serializationOptions, cancellationToken);
+		private void InitializeAsyncSerializationOperationContext(CancellationToken cancellationToken, out AsyncSerializationOperationContext context)
+			=> context = new AsyncSerializationOperationContext(this._encoderFactory(), this._serializationOptions, cancellationToken);
 
-		private void InitializeDeserializationOperationContext(CancellationToken cancellationToken, out DeserializationOperationContext<TExtentionType> context)
-			=> context = new DeserializationOperationContext<TExtentionType>(this._decoderFactory(), this._deserializationOptions, cancellationToken);
+		private void InitializeDeserializationOperationContext(CancellationToken cancellationToken, out DeserializationOperationContext context)
+			=> context = new DeserializationOperationContext(this._decoderFactory(), this._deserializationOptions, cancellationToken);
 
-		private void InitializeAsyncDeserializationOperationContext(CancellationToken cancellationToken, out AsyncDeserializationOperationContext<TExtentionType> context)
-			=> context = new AsyncDeserializationOperationContext<TExtentionType>(this._decoderFactory(), this._deserializationOptions, cancellationToken);
+		private void InitializeAsyncDeserializationOperationContext(CancellationToken cancellationToken, out AsyncDeserializationOperationContext context)
+			=> context = new AsyncDeserializationOperationContext(this._decoderFactory(), this._deserializationOptions, cancellationToken);
+
+		/// <inheritdoc />
+		public sealed override void SerializeObject(object? obj, IBufferWriter<byte> sink, CancellationToken cancellationToken = default)
+			=> this.Serialize((T)obj, cancellationToken);
 
 		public void Serialize(T obj, IBufferWriter<byte> sink, CancellationToken cancellationToken = default)
 		{
@@ -53,7 +57,11 @@ namespace MsgPack.Serialization
 			this._underlying.Serialize(ref context, obj, sink);
 		}
 
-		public ReadOnlyMemory<byte> Serialize(T obj, CancellationToken cancellationToken = default)
+		/// <inheritdoc />
+		public sealed override ReadOnlyMemory<byte> SerializeObject(object? obj, CancellationToken cancellationToken = default)
+			=> this.Serialize((T)obj, cancellationToken);
+
+		public ReadOnlyMemory<byte> Serialize([AllowNull]T obj, CancellationToken cancellationToken = default)
 		{
 			this.InitializeSerializationOperationContext(cancellationToken, out var context);
 			var writer = new ArrayBufferWriter<byte>();
@@ -61,18 +69,31 @@ namespace MsgPack.Serialization
 			return writer.WrittenMemory;
 		}
 
-		public ValueTask SerializeAsync(T obj, Stream streamSink, CancellationToken cancellationToken = default)
+		/// <inheritdoc />
+		public sealed override ValueTask SerializeObjectAsync(object? obj, Stream streamSink, CancellationToken cancellationToken = default)
+			=> this.SerializeAsync((T)obj, streamSink, cancellationToken);
+
+		public ValueTask SerializeAsync([AllowNull]T obj, Stream streamSink, CancellationToken cancellationToken = default)
 		{
 			this.InitializeAsyncSerializationOperationContext(cancellationToken, out var context);
 			return this._underlying.SerializeAsync(context, obj, streamSink);
 		}
 
+		/// <inheritdoc />
+		public sealed override object? DeserializeObject(ref SequenceReader<byte> reader, CancellationToken cancellationToken = default)
+			=> this.Deserialize(ref reader, cancellationToken);
+
+		[return:MaybeNull]
 		public T Deserialize(ref SequenceReader<byte> reader, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
 			return this._underlying.Deserialize(ref context, ref reader);
 		}
 
+		public sealed override object? DeserializeObject(ref ReadOnlySequence<byte> source, CancellationToken cancellationToken = default)
+			=> this.Deserialize(ref source, cancellationToken);
+
+		[return:MaybeNull]
 		public T Deserialize(ref ReadOnlySequence<byte> source, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
@@ -82,6 +103,11 @@ namespace MsgPack.Serialization
 			return result;
 		}
 
+		/// <inheritdoc />
+		public sealed override object? DeserializeObject(ref ReadOnlyMemory<byte> memorySource, CancellationToken cancellationToken = default)
+			=> this.Deserialize(ref memorySource, cancellationToken);
+
+		[return:MaybeNull]
 		public T Deserialize(ref ReadOnlyMemory<byte> memorySource, CancellationToken cancellationToken = default)
 		{
 			this.InitializeDeserializationOperationContext(cancellationToken, out var context);
@@ -90,6 +116,10 @@ namespace MsgPack.Serialization
 			memorySource = memorySource.Slice((int)reader.Consumed);
 			return result;
 		}
+
+		/// <inheritdoc />
+		public sealed override async ValueTask<object?> DeserializeObjectAsync(Stream streamSource, CancellationToken cancellationToken = default)
+			=> await this.DeserializeAsync(streamSource, cancellationToken).ConfigureAwait(false);
 
 		public ValueTask<T> DeserializeAsync(Stream streamSource, CancellationToken cancellationToken = default)
 		{

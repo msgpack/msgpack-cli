@@ -104,36 +104,33 @@ namespace MsgPack.Internal
 			return length;
 		}
 
-		public override void DecodeExtension(ref SequenceReader<byte> source, out MessagePackExtensionType typeCode, out ReadOnlySequence<byte> body, out int requestHint, CancellationToken cancellationToken = default)
+		public override void DecodeExtension(ref SequenceReader<byte> source, out ExtensionTypeObject result, out int requestHint, CancellationToken cancellationToken = default)
 		{
 			var bodyLength = this.ReadExtensionHeader(ref source, out var consumed, out requestHint);
 			if (requestHint != 0)
 			{
-				typeCode = default;
-				body = default;
+				result = default;
 				return;
 			}
 
-			if (!source.TryPeek(out byte typeCodeByte))
+			if (!source.TryPeek(out byte typeCode))
 			{
 				requestHint = 1;
-				typeCode = default;
-				body = default;
+				result = default;
 				return;
 			}
 
 			consumed++;
-			typeCode = new MessagePackExtensionType(typeCodeByte);
 
 			if (source.Remaining < consumed + bodyLength)
 			{
 				requestHint = (int)((consumed + bodyLength - (int)source.Remaining) & Int32.MaxValue);
-				body = default;
+				result = default;
 				return;
 			}
 
 			requestHint = 0;
-			body = source.Sequence.Slice(consumed, bodyLength);
+			result = new ExtensionTypeObject(new ExtensionType(typeCode), source.Sequence.Slice(consumed, bodyLength));
 			source.Advance(consumed + bodyLength);
 		}
 	}

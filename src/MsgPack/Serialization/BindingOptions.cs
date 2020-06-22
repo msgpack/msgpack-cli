@@ -1,25 +1,6 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2016 FUJIWARA, Yusuke and contributors
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-// Contributors:
-//    Shrenik Jhaveri (ShrenikOne)
-//
-#endregion -- License Terms --
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -42,17 +23,17 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="targetType">Type of the target.</param>
 		/// <param name="memberSkipList">The member skip list.</param>
-		public void SetIgnoringMembers( Type targetType, IEnumerable<string> memberSkipList )
+		public void SetIgnoringMembers(Type targetType, IEnumerable<string> memberSkipList)
 		{
-			lock ( this._typeIgnoringMembersMap )
+			lock (this._typeIgnoringMembersMap)
 			{
-				if ( this._typeIgnoringMembersMap.ContainsKey( targetType ) )
+				if (this._typeIgnoringMembersMap.ContainsKey(targetType))
 				{
-					this._typeIgnoringMembersMap[ targetType ] = memberSkipList;
+					this._typeIgnoringMembersMap[targetType] = memberSkipList;
 				}
 				else
 				{
-					this._typeIgnoringMembersMap.Add( targetType, memberSkipList );
+					this._typeIgnoringMembersMap.Add(targetType, memberSkipList);
 				}
 			}
 		}
@@ -62,13 +43,13 @@ namespace MsgPack.Serialization
 		/// </summary>
 		/// <param name="targetType">Type of the target.</param>
 		/// <returns>Returns member skip list for a specific target type.</returns>
-		public IEnumerable<string> GetIgnoringMembers( Type targetType )
+		public IEnumerable<string> GetIgnoringMembers(Type targetType)
 		{
-			lock ( this._typeIgnoringMembersMap )
+			lock (this._typeIgnoringMembersMap)
 			{
-				if ( this._typeIgnoringMembersMap.ContainsKey( targetType ) )
+				if (this._typeIgnoringMembersMap.ContainsKey(targetType))
 				{
-					return this._typeIgnoringMembersMap[ targetType ];
+					return this._typeIgnoringMembersMap[targetType];
 				}
 				else
 				{
@@ -83,9 +64,9 @@ namespace MsgPack.Serialization
 		/// <returns>Returns all registered types specific ignoring members.</returns>
 		public IDictionary<Type, IEnumerable<string>> GetAllIgnoringMembers()
 		{
-			lock ( this._typeIgnoringMembersMap )
+			lock (this._typeIgnoringMembersMap)
 			{
-				return this._typeIgnoringMembersMap.ToDictionary( item => item.Key, item => ( IEnumerable<string> )item.Value.ToArray() );
+				return this._typeIgnoringMembersMap.ToDictionary(item => item.Key, item => (IEnumerable<string>)item.Value.ToArray());
 			}
 		}
 	}

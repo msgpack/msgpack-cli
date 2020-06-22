@@ -12,7 +12,7 @@ namespace MsgPack.Json
 	/// <summary>
 	///		A decoder for JSON format.
 	/// </summary>
-	public abstract partial class JsonDecoder : Decoder<NullExtensionType>
+	public abstract partial class JsonDecoder : FormatDecoder
 	{
 		private static readonly FormatFeatures JsonFormatFeatures =
 			new FormatFeaturesBuilder

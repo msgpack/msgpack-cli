@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace MsgPack.Internal
 {
-	partial class Decoder<TExtensionType>
+	partial class FormatDecoder
 	{
 		/// <summary>
 		///		Decodes <see cref="String" /> value from specified sequence.

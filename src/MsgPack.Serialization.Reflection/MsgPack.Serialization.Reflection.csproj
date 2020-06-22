@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MsgPack.Abstraction\MsgPack.Abstraction.csproj" />
+    <ProjectReference Include="..\MsgPack.Serialization\MsgPack.Serialization.csproj" />
+  </ItemGroup>
+
 </Project>

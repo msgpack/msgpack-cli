@@ -21,9 +21,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using newmpcli::MsgPack.Serialization;
 using newmpcli::MsgPack.Internal;
 using newmpcli::MsgPack.Json;
-using newmpcli::MsgPack.Serialization.Internal;
 
 namespace MsgPack.Samples
 {
@@ -179,7 +179,11 @@ namespace MsgPack.Samples
 	// Packer -> Packer.Create(new MemoryStream())
 	// Unpacker -> Unpacker.Create(new MemoryStream())???
 
-	internal static class SampleSerializer
+	// For PoC of MVP and reference for emit.
+	/// <summary>
+	///		Sample hand made serializer.
+	/// </summary>
+	public sealed class SampleSerializer : ObjectSerializer<SampleObject>
 	{
 		public static readonly MsgPack.Serialization.SerializationContext SerializationContext =
 #if USE_ARRAY
@@ -187,14 +191,10 @@ namespace MsgPack.Samples
 #else
 			new Serialization.SerializationContext() { SerializationMethod = Serialization.SerializationMethod.Map };
 #endif
-	}
+		public SampleSerializer(ObjectSerializationContext ownedContext)
+			: base(ownedContext, SerializerCapabilities.Serialize | SerializerCapabilities.Deserialize | SerializerCapabilities.DeserializeTo) { }
 
-	// For PoC of MVP and reference for emit.
-	/// <summary>
-	///		Sample hand made serializer.
-	/// </summary>
-	public sealed class SampleSerializer<TExtensionType> : IObjectSerializer<SampleObject, TExtensionType>
-	{
+
 		private bool UseArray { get; set; }
 #if USE_ARRAY
 			= true;
@@ -215,7 +215,7 @@ namespace MsgPack.Samples
 #endif
 			}.Build();
 
-		public void Serialize(ref SerializationOperationContext<TExtensionType> context, SampleObject obj, IBufferWriter<byte> writer)
+		public sealed override void Serialize(ref SerializationOperationContext context, SampleObject obj, IBufferWriter<byte> writer)
 		{
 #if JSON
 			var encoder = new JsonEncoder(context.Encoder.Options as JsonEncoderOptions);
@@ -509,15 +509,6 @@ namespace MsgPack.Samples
 #endif // !USE_ARRAY
 		}
 
-		public async ValueTask SerializeAsync(AsyncSerializationOperationContext<TExtensionType> context, SampleObject obj, Stream streamSink)
-		{
-			await using (var writer = new StreamBufferWriter(streamSink, ownsStream: false, ArrayPool<byte>.Shared, cleansBuffer: true))
-			{
-				var serializationOperationContext = context.AsSerializationOperationContext();
-				this.Serialize(ref serializationOperationContext, obj, writer);
-			}
-		}
-
 		private static readonly MsgPackStringTrie<uint> DeserializationTrie = InitializeDeserializationTrie();
 		private static MsgPackStringTrie<uint> InitializeDeserializationTrie()
 		{
@@ -575,7 +566,7 @@ namespace MsgPack.Samples
 			return trie;
 		}
 
-		public SampleObject Deserialize(ref DeserializationOperationContext<TExtensionType> context, ref SequenceReader<byte> reader)
+		public sealed override SampleObject Deserialize(ref DeserializationOperationContext context, ref SequenceReader<byte> reader)
 		{
 #warning TODO: Inlining to avoid allocation when null.
 			// WHEN T is reference type and it has a default contractor -> DeserializeToAsync
@@ -605,7 +596,7 @@ namespace MsgPack.Samples
 			// return obj;
 		}
 
-		public async ValueTask<SampleObject> DeserializeAsync(AsyncDeserializationOperationContext<TExtensionType> context, Stream streamSource)
+		public sealed override async ValueTask<SampleObject> DeserializeAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence streamSource)
 		{
 			var obj = new SampleObject();
 			// WHEN T is reference type and it has a default contractor -> DeserializeToAsync
@@ -637,7 +628,7 @@ namespace MsgPack.Samples
 		private static void ThrowNotEnoughItems(long actual, int expected)
 			=> throw new MessageTypeException();
 
-		public bool DeserializeTo(ref DeserializationOperationContext<TExtensionType> context, ref SequenceReader<byte> reader, in SampleObject obj)
+		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> reader, in SampleObject obj)
 		{
 			const int propertyCount =
 					0
@@ -1234,10 +1225,10 @@ namespace MsgPack.Samples
 			}
 		}
 
-		private static bool TryDecodeArrayOrMapHeader(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out long itemsCount, out CollectionType arrayOrMap, out CollectionItemIterator propertyIterator, out int requestHint)
+		private static bool TryDecodeArrayOrMapHeader(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out long itemsCount, out CollectionType arrayOrMap, out CollectionItemIterator propertyIterator, out int requestHint)
 		{
 			context.IncrementDepth();
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			arrayOrMap = context.Decoder.DecodeArrayOrMapHeader(ref reader, out itemsCount, out requestHint);
 			if (arrayOrMap.IsNone)
@@ -1262,161 +1253,163 @@ namespace MsgPack.Samples
 				itemsCount = -1;
 			}
 
-			memory = memory.Slice(unchecked((int)reader.Consumed));
+			sequence = sequence.Slice(reader.Consumed);
 
 			return true;
 		}
 
-		private static bool TryDecodeArrayHeader(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out long arrayLength, out int requestHint)
+		private static bool TryDecodeArrayHeader(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out long arrayLength, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			arrayLength = context.Decoder.DecodeArrayHeader(ref reader, out requestHint);
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeMapHeader(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out long mapCount, out int requestHint)
+		private static bool TryDecodeMapHeader(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out long mapCount, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			mapCount = context.Decoder.DecodeMapHeader(ref reader, out requestHint);
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfName(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string name, out int requestHint)
+		private static bool TryDecodeValueOfName(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out string name, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			name = context.Decoder.DecodeString(ref reader, out requestHint, context.StringEncoding, context.CancellationToken)!; // <>NameEncoding ?? context.StringEncoding
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfAge(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out int age, out int requestHint)
+		private static bool TryDecodeValueOfAge(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out int age, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			age = context.Decoder.DecodeInt32(ref reader, out requestHint);
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfIsActive(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out bool isActive, out int requestHint)
+		private static bool TryDecodeValueOfIsActive(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out bool isActive, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			isActive = context.Decoder.DecodeBoolean(ref reader, out requestHint);
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeItemOfRoles(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string item, out int requestHint)
+		private static bool TryDecodeItemOfRoles(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out string item, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			item = context.Decoder.DecodeString(ref reader, out requestHint, context.StringEncoding, context.CancellationToken)!; // <>NameEncoding ?? context.StringEncoding
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeKeyOfAttributes(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string key, out int requestHint)
+		private static bool TryDecodeKeyOfAttributes(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out string key, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			key = context.Decoder.DecodeString(ref reader, out requestHint, context.StringEncoding, context.CancellationToken)!; // <>NameEncoding ?? context.StringEncoding
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeValueOfAttributes(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out string value, out int requestHint)
+		private static bool TryDecodeValueOfAttributes(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out string value, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			value = context.Decoder.DecodeString(ref reader, out requestHint, context.StringEncoding, context.CancellationToken)!; // <>NameEncoding ?? context.StringEncoding
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeArray(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out CollectionItemIterator iterator, out int requestHint)
+		private static bool TryDecodeArray(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out CollectionItemIterator iterator, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			iterator = context.Decoder.DecodeArray(ref reader, out requestHint);
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryDecodeMap(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, out CollectionItemIterator iterator, out int requestHint)
+		private static bool TryDecodeMap(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out CollectionItemIterator iterator, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			iterator = context.Decoder.DecodeMap(ref reader, out requestHint);
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private static bool TryGetRawString(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, [NotNullWhen(true)] out byte[] key, out int requestHint)
+		private static bool TryGetRawString(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, [NotNullWhen(true)] out byte[] keyArray, out ReadOnlyMemory<byte> key, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 
 			ReadOnlySpan<byte> span;
 			if (!context.Decoder.GetRawString(ref reader, out span, out requestHint, context.CancellationToken))
 			{
-				key = default!;
+				keyArray = default!;
+				key = default;
 				return false;
 			}
 
-			key = context.ByteBufferPool.Rent(span.Length);
-			span.CopyTo(key);
+			keyArray = context.ByteBufferPool.Rent(span.Length);
+			span.CopyTo(keyArray);
+			key = keyArray.AsMemory(0, span.Length);
 			return true;
 		}
 
-		private static bool TryDrain(AsyncDeserializationOperationContext<TExtensionType> context, ref ReadOnlyMemory<byte> memory, long remaining, out int requestHint)
+		private static bool TryDrain(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, long remaining, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(memory));
+			var reader = new SequenceReader<byte>(sequence);
 			context.Decoder.Drain(ref reader, context.CollectionContext, remaining, out requestHint);
 			if (requestHint == 0)
 			{
-				memory = memory.Slice(unchecked((int)reader.Consumed));
+				sequence = sequence.Slice(reader.Consumed);
 			}
 			return requestHint == 0;
 		}
 
-		private bool TryCheckNextItemExists(ref CollectionItemIterator propertyIterator, ReadOnlyMemory<byte> memory, out int requestHint)
+		private bool TryCheckNextItemExists(ref CollectionItemIterator propertyIterator, ReadOnlySequence<byte> sequence, out int requestHint)
 		{
-			if (propertyIterator.CollectionEnds(memory, out requestHint))
+			if (propertyIterator.CollectionEnds(sequence, out requestHint))
 			{
 				throw new MessageTypeException(); // use throws
 			}
@@ -1424,486 +1417,482 @@ namespace MsgPack.Samples
 			return requestHint == 0;
 		}
 
-		public async ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext<TExtensionType> context, Stream streamSource, SampleObject obj)
+		public sealed override async ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence source, SampleObject obj)
 		{
-			// T が値型
+			// T が値�
 			// throw new NotSupportedException();
 
-			var buffer = context.ByteBufferPool.Rent(2 * 1024 * 1024);
-			try
-			{
-				var provider = new StreamReadOnlyMemoryProvider(streamSource, buffer);
-				var memory = await provider.GetNextAsync(default, 0, context.CancellationToken).ConfigureAwait(false);
-				int requestHint;
+			await source.FetchAsync(context.CancellationToken).ConfigureAwait(false);
+			var sequence = source.Sequence;
+			int requestHint;
 
 #if STRING
-				string name = default!;
+			string name = default!;
 #endif
 #if INT32
-				int age = default;
+			int age = default;
 #endif
 #if BOOL
-				bool isActive = default;
+			bool isActive = default;
 #endif
 #if COLLECTION
-				var roles = obj.Roles;
-				var attributes = obj.Attributes;
+			var roles = obj.Roles;
+			var attributes = obj.Attributes;
 #endif
 
-				var decoder = context.Decoder;
+			var decoder = context.Decoder;
+			context.IncrementDepth();
+
+			long itemsCount;
+			CollectionType arrayOrMap;
+			CollectionItemIterator propertyIterator;
+			while (!TryDecodeArrayOrMapHeader(context, ref sequence, out itemsCount, out arrayOrMap, out propertyIterator, out requestHint))
+			{
+				await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+			}
+
+			if (arrayOrMap.IsNull)
+			{
+				return false;
+			}
+
+			// Instantiate when Deserialize
+
+			// If !SerializerGenerationOptions.InfersObjectSerialization && SerializerGenerationOptions.UseArray || typeof(T).IsDefined([SerializeAs(Array)])
+			if (arrayOrMap.IsArray)
+			{
+#if STRING
+				if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+				{
+					while (!this.TryCheckNextItemExists(ref propertyIterator, sequence, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+				}
+
+				while (!TryDecodeValueOfName(context, ref sequence, out name, out requestHint))
+				{
+					await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+				}
+#endif
+
+#if INT32
+				if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+				{
+					while (!this.TryCheckNextItemExists(ref propertyIterator, sequence, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+				}
+
+				while (!TryDecodeValueOfAge(context, ref sequence, out age, out requestHint))
+				{
+					await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+				}
+#endif
+
+#if BOOL
+				if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+				{
+					while (!this.TryCheckNextItemExists(ref propertyIterator, sequence, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+				}
+
+				while (!TryDecodeValueOfIsActive(context, ref sequence, out isActive, out requestHint))
+				{
+					await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+				}
+#endif
+
+#if COLLECTION
+				if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+				{
+					while (!this.TryCheckNextItemExists(ref propertyIterator, sequence, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+				}
+
 				context.IncrementDepth();
 
-				long itemsCount;
-				CollectionType arrayOrMap;
-				CollectionItemIterator propertyIterator;
-				while (!TryDecodeArrayOrMapHeader(context, ref memory, out itemsCount, out arrayOrMap, out propertyIterator, out requestHint))
+				if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
 				{
-					memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-				}
-
-				if (arrayOrMap.IsNull)
-				{
-					return false;
-				}
-
-				// Instantiate when Deserialize
-
-				// If !SerializerGenerationOptions.InfersObjectSerialization && SerializerGenerationOptions.UseArray || typeof(T).IsDefined([SerializeAs(Array)])
-				if (arrayOrMap.IsArray)
-				{
-#if STRING
-					if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+					long arrayLength;
+					while (!TryDecodeArrayHeader(context, ref sequence, out arrayLength, out requestHint))
 					{
-						while (!this.TryCheckNextItemExists(ref propertyIterator, memory, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
 					}
 
-					while (!TryDecodeValueOfName(context, ref memory, out name, out requestHint))
+					// If settable
+					//if (roles == null)
+					//{
+					//	roles = new List<string>(arrayLength); // or 0
+					//}
+
+					for (var i = 0; i < arrayLength; i++)
 					{
-						memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-					}
-#endif
-
-#if INT32
-					if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-					{
-						while (!this.TryCheckNextItemExists(ref propertyIterator, memory, out requestHint))
+						string item;
+						while (!TryDecodeItemOfRoles(context, ref sequence, out item, out requestHint))
 						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
 						}
-					}
-
-					while (!TryDecodeValueOfAge(context, ref memory, out age, out requestHint))
-					{
-						memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-					}
-#endif
-
-#if BOOL
-					if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-					{
-						while (!this.TryCheckNextItemExists(ref propertyIterator, memory, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-					}
-
-					while (!TryDecodeValueOfIsActive(context, ref memory, out isActive, out requestHint))
-					{
-						memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-					}
-#endif
-
-#if COLLECTION
-					if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-					{
-						while (!this.TryCheckNextItemExists(ref propertyIterator, memory, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-					}
-
-					context.IncrementDepth();
-
-					if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-					{
-						long arrayLength;
-						while (!TryDecodeArrayHeader(context, ref memory, out arrayLength, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-
-						// If settable
-						//if (roles == null)
-						//{
-						//	roles = new List<string>(arrayLength); // or 0
-						//}
-
-						for (var i = 0; i < arrayLength; i++)
-						{
-							string item;
-							while (!TryDecodeItemOfRoles(context, ref memory, out item, out requestHint))
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-							roles.Add(item);
-						}
-					}
-					else
-					{
-						CollectionItemIterator iterator;
-						while (!TryDecodeArray(context, ref memory, out iterator, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-
-						while (!iterator.CollectionEnds(memory, out requestHint))
-						{
-							if (requestHint != 0)
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-
-							string item;
-							while (!TryDecodeItemOfRoles(context, ref memory, out item, out requestHint))
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-							roles.Add(item);
-						}
-
-						while (!iterator.Drain(ref memory, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-					}
-					context.DecrementDepth();
-
-					if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-					{
-						while (!this.TryCheckNextItemExists(ref propertyIterator, memory, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-					}
-
-					context.IncrementDepth();
-					if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-					{
-						long mapCount;
-						while (!TryDecodeMapHeader(context, ref memory, out mapCount, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-
-						// If settable
-						//if (attributes == null)
-						//{
-						//	attributes = new Dictionary<string, string>(mapCount); // or 0
-						//}
-						for (var i = 0; i < mapCount; i++)
-						{
-							string key;
-							while (!TryDecodeKeyOfAttributes(context, ref memory, out key, out requestHint))
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-							string value;
-							while (!TryDecodeValueOfAttributes(context, ref memory, out value, out requestHint))
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-							attributes.Add(key, value);
-						}
-					}
-					else
-					{
-						CollectionItemIterator iterator;
-						while (!TryDecodeMap(context, ref memory, out iterator, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-
-						while (!iterator.CollectionEnds(memory, out requestHint))
-						{
-							if (requestHint != 0)
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-
-							string key;
-							while (!TryDecodeKeyOfAttributes(context, ref memory, out key, out requestHint))
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-							string value;
-							while (!TryDecodeValueOfAttributes(context, ref memory, out value, out requestHint))
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-							attributes.Add(key, value);
-						}
-
-						while (!iterator.Drain(ref memory, out requestHint))
-						{
-							memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-						}
-					}
-					context.DecrementDepth();
-#endif
-				}
-				else
-				{
-					// Map
-					// #if !context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-					// while (!propertyIterator.CollectionEnds(memory, out requestHint))
-					// {
-					//  	if (requestHint != 0)
-					//  	{
-					//  		memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-					//			continue;
-					//  	}
-					for (var i = 0; i < itemsCount; i++)
-					{
-						byte[] propertyKey = null!;
-						try
-						{
-							while (!TryGetRawString(context, ref memory, out propertyKey, out requestHint))
-							{
-								memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-							}
-
-							// Use inlined trie, prefixed by the count as MP uint32.
-							// char is UTF-8, big endian.
-							// 1st node: [length(1-5)][chars(7-3)]
-							switch (DeserializationTrie.GetOrDefault(propertyKey))
-							{
-#if STRING
-								case 0:
-								{
-									while (!TryDecodeValueOfName(context, ref memory, out name, out requestHint))
-									{
-										memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-									}
-
-									break;
-								}
-#endif
-#if INT32
-								case 1:
-								{
-									while (!TryDecodeValueOfAge(context, ref memory, out age, out requestHint))
-									{
-										memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-									}
-
-									break;
-								}
-#endif
-#if BOOL
-								case 2:
-								{
-									while (!TryDecodeValueOfIsActive(context, ref memory, out isActive, out requestHint))
-									{
-										memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-									}
-
-									break;
-								}
-#endif
-#if COLLECTION
-								case 3:
-								{
-									context.IncrementDepth();
-									if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-									{
-										long arrayLength;
-										while (!TryDecodeArrayHeader(context, ref memory, out arrayLength, out requestHint))
-										{
-											memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-										}
-
-										// If settable
-										//if (roles == null)
-										//{
-										//	roles = new List<string>(arrayLength); // or 0
-										//}
-										for (var j = 0; j < arrayLength; j++)
-										{
-											string item;
-											while (!TryDecodeItemOfRoles(context, ref memory, out item, out requestHint))
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-
-											roles.Add(item);
-										}
-									}
-									else
-									{
-										CollectionItemIterator iterator;
-										while (!TryDecodeArray(context, ref memory, out iterator, out requestHint))
-										{
-											memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-										}
-
-										while (!iterator.CollectionEnds(memory, out requestHint))
-										{
-											if (requestHint != 0)
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-
-											string item;
-											while (!TryDecodeItemOfRoles(context, ref memory, out item, out requestHint))
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-
-											roles.Add(item);
-										}
-
-										while (!iterator.Drain(ref memory, out requestHint))
-										{
-											memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-										}
-									}
-									context.DecrementDepth();
-									break;
-								}
-								case 4:
-								{
-									context.IncrementDepth();
-									if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-									{
-										long mapCount;
-										while (!TryDecodeMapHeader(context, ref memory, out mapCount, out requestHint))
-										{
-											memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-										}
-
-										// If settable
-										//if (attributes == null)
-										//{
-										//	attributes = new Dictionary<string, string>(mapCount); // or 0
-										//}
-										for (var j = 0; j < mapCount; j++)
-										{
-											string key;
-											while (!TryDecodeKeyOfAttributes(context, ref memory, out key, out requestHint))
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-											string value;
-											while (!TryDecodeValueOfAttributes(context, ref memory, out value, out requestHint))
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-
-											attributes.Add(key, value);
-										}
-									}
-									else
-									{
-										CollectionItemIterator iterator;
-										while (!TryDecodeMap(context, ref memory, out iterator, out requestHint))
-										{
-											memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-										}
-
-										while (!iterator.CollectionEnds(memory, out requestHint))
-										{
-											if (requestHint != 0)
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-
-											string key;
-											while (!TryDecodeKeyOfAttributes(context, ref memory, out key, out requestHint))
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-											string value;
-											while (!TryDecodeValueOfAttributes(context, ref memory, out value, out requestHint))
-											{
-												memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-											}
-
-											attributes.Add(key, value);
-										}
-
-										while (!iterator.Drain(ref memory, out requestHint))
-										{
-											memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
-										}
-									}
-									context.DecrementDepth();
-									break;
-								}
-#endif
-								default:
-								{
-#warning TODO: TrySkip loop
-									break;
-								}
-							}
-						}
-						finally
-						{
-							if (propertyKey != null)
-							{
-								context.ByteBufferPool.Return(propertyKey);
-							}
-						}
-					}
-				}
-
-				if (context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
-				{
-					itemsCount -= 5;
-					while (!TryDrain(context, ref memory, itemsCount, out requestHint))
-					{
-						memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
+						roles.Add(item);
 					}
 				}
 				else
 				{
-					while (!propertyIterator.Drain(ref memory, out requestHint))
+					CollectionItemIterator iterator;
+					while (!TryDecodeArray(context, ref sequence, out iterator, out requestHint))
 					{
-						memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+
+					while (!iterator.CollectionEnds(sequence, out requestHint))
+					{
+						if (requestHint != 0)
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+
+						string item;
+						while (!TryDecodeItemOfRoles(context, ref sequence, out item, out requestHint))
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+						roles.Add(item);
+					}
+
+					while (!iterator.Drain(ref sequence, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
 					}
 				}
-
 				context.DecrementDepth();
 
-				// Verbose for Deserialize...
+				if (!context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+				{
+					while (!this.TryCheckNextItemExists(ref propertyIterator, sequence, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+				}
+
+				context.IncrementDepth();
+				if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+				{
+					long mapCount;
+					while (!TryDecodeMapHeader(context, ref sequence, out mapCount, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+
+					// If settable
+					//if (attributes == null)
+					//{
+					//	attributes = new Dictionary<string, string>(mapCount); // or 0
+					//}
+					for (var i = 0; i < mapCount; i++)
+					{
+						string key;
+						while (!TryDecodeKeyOfAttributes(context, ref sequence, out key, out requestHint))
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+						string value;
+						while (!TryDecodeValueOfAttributes(context, ref sequence, out value, out requestHint))
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+						attributes.Add(key, value);
+					}
+				}
+				else
+				{
+					CollectionItemIterator iterator;
+					while (!TryDecodeMap(context, ref sequence, out iterator, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+
+					while (!iterator.CollectionEnds(sequence, out requestHint))
+					{
+						if (requestHint != 0)
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+
+						string key;
+						while (!TryDecodeKeyOfAttributes(context, ref sequence, out key, out requestHint))
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+						string value;
+						while (!TryDecodeValueOfAttributes(context, ref sequence, out value, out requestHint))
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+						attributes.Add(key, value);
+					}
+
+					while (!iterator.Drain(ref sequence, out requestHint))
+					{
+						await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+					}
+				}
+				context.DecrementDepth();
+#endif
+			}
+			else
+			{
+				// Map
+				// #if !context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+				// while (!propertyIterator.CollectionEnds(memory, out requestHint))
+				// {
+				//  	if (requestHint != 0)
+				//  	{
+				//  		memory = await provider.GetNextAsync(memory, requestHint, context.CancellationToken).ConfigureAwait(false);
+				//			continue;
+				//  	}
+				for (var i = 0; i < itemsCount; i++)
+				{
+					byte[] propertyKeyArray = null!;
+					try
+					{
+						ReadOnlyMemory<byte> propertyKey;
+						while (!TryGetRawString(context, ref sequence, out propertyKeyArray, out propertyKey, out requestHint))
+						{
+							await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+						}
+
+						// Use inlined trie, prefixed by the count as MP uint32.
+						// char is UTF-8, big endian.
+						// 1st node: [length(1-5)][chars(7-3)]
+						switch (DeserializationTrie.GetOrDefault(propertyKey.Span))
+						{
 #if STRING
-				obj.Name = name;
+							case 0:
+							{
+								while (!TryDecodeValueOfName(context, ref sequence, out name, out requestHint))
+								{
+									await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+								}
+
+								break;
+							}
 #endif
 #if INT32
-				obj.Age = age;
+							case 1:
+							{
+								while (!TryDecodeValueOfAge(context, ref sequence, out age, out requestHint))
+								{
+									await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+								}
+
+								break;
+							}
 #endif
 #if BOOL
-				obj.IsActive = isActive;
+							case 2:
+							{
+								while (!TryDecodeValueOfIsActive(context, ref sequence, out isActive, out requestHint))
+								{
+									await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+								}
+
+								break;
+							}
 #endif
-				// If settable
-				// obj.Roles = roles;
-				// If settable
-				// obj.Attributes = attributes;
-				return true;
+#if COLLECTION
+							case 3:
+							{
+								context.IncrementDepth();
+								if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+								{
+									long arrayLength;
+									while (!TryDecodeArrayHeader(context, ref sequence, out arrayLength, out requestHint))
+									{
+										await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+									}
+
+									// If settable
+									//if (roles == null)
+									//{
+									//	roles = new List<string>(arrayLength); // or 0
+									//}
+									for (var j = 0; j < arrayLength; j++)
+									{
+										string item;
+										while (!TryDecodeItemOfRoles(context, ref sequence, out item, out requestHint))
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+
+										roles.Add(item);
+									}
+								}
+								else
+								{
+									CollectionItemIterator iterator;
+									while (!TryDecodeArray(context, ref sequence, out iterator, out requestHint))
+									{
+										await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+									}
+
+									while (!iterator.CollectionEnds(sequence, out requestHint))
+									{
+										if (requestHint != 0)
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+
+										string item;
+										while (!TryDecodeItemOfRoles(context, ref sequence, out item, out requestHint))
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+
+										roles.Add(item);
+									}
+
+									while (!iterator.Drain(ref sequence, out requestHint))
+									{
+										await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+									}
+								}
+								context.DecrementDepth();
+								break;
+							}
+							case 4:
+							{
+								context.IncrementDepth();
+								if (decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
+								{
+									long mapCount;
+									while (!TryDecodeMapHeader(context, ref sequence, out mapCount, out requestHint))
+									{
+										await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+									}
+
+									// If settable
+									//if (attributes == null)
+									//{
+									//	attributes = new Dictionary<string, string>(mapCount); // or 0
+									//}
+									for (var j = 0; j < mapCount; j++)
+									{
+										string key;
+										while (!TryDecodeKeyOfAttributes(context, ref sequence, out key, out requestHint))
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+										string value;
+										while (!TryDecodeValueOfAttributes(context, ref sequence, out value, out requestHint))
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+
+										attributes.Add(key, value);
+									}
+								}
+								else
+								{
+									CollectionItemIterator iterator;
+									while (!TryDecodeMap(context, ref sequence, out iterator, out requestHint))
+									{
+										await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+									}
+
+									while (!iterator.CollectionEnds(sequence, out requestHint))
+									{
+										if (requestHint != 0)
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+
+										string key;
+										while (!TryDecodeKeyOfAttributes(context, ref sequence, out key, out requestHint))
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+										string value;
+										while (!TryDecodeValueOfAttributes(context, ref sequence, out value, out requestHint))
+										{
+											await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+										}
+
+										attributes.Add(key, value);
+									}
+
+									while (!iterator.Drain(ref sequence, out requestHint))
+									{
+										await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+									}
+								}
+								context.DecrementDepth();
+								break;
+							}
+#endif
+							default:
+							{
+#warning TODO: TrySkip loop
+								break;
+							}
+						}
+					}
+					finally
+					{
+						if (propertyKeyArray != null)
+						{
+							context.ByteBufferPool.Return(propertyKeyArray);
+						}
+					}
+				}
 			}
-			finally
+
+			if (context.Decoder.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
 			{
-				context.ByteBufferPool.Return(buffer, clearArray: true);
+				itemsCount -= 5;
+				while (!TryDrain(context, ref sequence, itemsCount, out requestHint))
+				{
+					await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+				}
 			}
+			else
+			{
+				while (!propertyIterator.Drain(ref sequence, out requestHint))
+				{
+					await source.FetchAsync(requestHint, context.CancellationToken).ConfigureAwait(false);
+				}
+			}
+
+			context.DecrementDepth();
+
+			// Verbose for Deserialize...
+#if STRING
+			obj.Name = name;
+#endif
+#if INT32
+			obj.Age = age;
+#endif
+#if BOOL
+			obj.IsActive = isActive;
+#endif
+			// If settable
+			// obj.Roles = roles;
+			// If settable
+			// obj.Attributes = attributes;
+			return true;
 		}
 	}
 
-	public sealed class SampleInt32ArraySerializer<TExtensionType> : IObjectSerializer<int[], TExtensionType>
+	public sealed class SampleInt32ArraySerializer : ObjectSerializer<int[]>
 	{
-		public void Serialize(ref SerializationOperationContext<TExtensionType> context, int[] obj, IBufferWriter<byte> sink)
+		public SampleInt32ArraySerializer(ObjectSerializationContext ownedContext)
+			: base(ownedContext, SerializerCapabilities.Serialize | SerializerCapabilities.Deserialize) { }
+
+		public sealed override void Serialize(ref SerializationOperationContext context, int[] obj, IBufferWriter<byte> sink)
 		{
 			if (obj is null)
 			{
@@ -1921,12 +1910,7 @@ namespace MsgPack.Samples
 			context.Encoder.EncodeArrayEnd(obj.Length, sink, context.CollectionContext);
 		}
 
-		public ValueTask SerializeAsync(AsyncSerializationOperationContext<TExtensionType> context, int[] obj, Stream streamSink)
-		{
-			throw new NotImplementedException();
-		}
-
-		public int[] Deserialize(ref DeserializationOperationContext<TExtensionType> context, ref SequenceReader<byte> source)
+		public sealed override int[] Deserialize(ref DeserializationOperationContext context, ref SequenceReader<byte> source)
 		{
 			if (context.Decoder.FormatFeatures.CanCountCollectionItems)
 			{
@@ -1952,50 +1936,48 @@ namespace MsgPack.Samples
 			}
 		}
 
-		public ValueTask<int[]> DeserializeAsync(AsyncDeserializationOperationContext<TExtensionType> context, Stream streamSource)
+		public sealed override ValueTask<int[]> DeserializeAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence streamSource)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool DeserializeTo(ref DeserializationOperationContext<TExtensionType> context, ref SequenceReader<byte> source, in int[] obj)
+		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> source, in int[] obj)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext<TExtensionType> context, Stream streamSource, int[] obj)
+		public sealed override ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence streamSource, int[] obj)
 		{
 			throw new NotImplementedException();
 		}
 	}
 
-	public sealed class SampleInt32Serializer<TExtensionType> : IObjectSerializer<int, TExtensionType>
+	public sealed class SampleInt32Serializer : ObjectSerializer<int>
 	{
-		public void Serialize(ref SerializationOperationContext<TExtensionType> context, int obj, IBufferWriter<byte> sink)
+		public SampleInt32Serializer(ObjectSerializationContext ownedContext)
+			: base(ownedContext, SerializerCapabilities.Serialize | SerializerCapabilities.Deserialize) { }
+
+		public sealed override void Serialize(ref SerializationOperationContext context, int obj, IBufferWriter<byte> sink)
 		{
 			context.Encoder.EncodeInt32(obj, sink);
 		}
 
-		public ValueTask SerializeAsync(AsyncSerializationOperationContext<TExtensionType> context, int obj, Stream streamSink)
-		{
-			throw new NotImplementedException();
-		}
-
-		public int Deserialize(ref DeserializationOperationContext<TExtensionType> context, ref SequenceReader<byte> source)
+		public sealed override int Deserialize(ref DeserializationOperationContext context, ref SequenceReader<byte> source)
 		{
 			return context.Decoder.DecodeInt32(ref source);
 		}
 
-		public ValueTask<int> DeserializeAsync(AsyncDeserializationOperationContext<TExtensionType> context, Stream streamSource)
+		public sealed override ValueTask<int> DeserializeAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence streamSource)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool DeserializeTo(ref DeserializationOperationContext<TExtensionType> context, ref SequenceReader<byte> source, in int obj)
+		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> source, in int obj)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext<TExtensionType> context, Stream streamSource, int obj)
+		public sealed override ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence streamSource, int obj)
 		{
 			throw new NotImplementedException();
 		}

@@ -18,10 +18,6 @@
 //
 #endregion -- License Terms --
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
 using System;
 #if FEATURE_MPCONTRACT
 using Contract = MsgPack.MPContract;
@@ -63,11 +59,11 @@ namespace MsgPack.Serialization
 				Contract.Ensures( Enum.IsDefined( typeof( EnumSerializationMethod ), Contract.Result<EnumSerializationMethod>() ) );
 #endif // DEBUG
 
-				return ( EnumSerializationMethod )Volatile.Read( ref this._serializationMethod );
+				return (EnumSerializationMethod)Volatile.Read(ref this._serializationMethod);
 			}
 			set
 			{
-				switch ( value )
+				switch (value)
 				{
 					case EnumSerializationMethod.ByName:
 					case EnumSerializationMethod.ByUnderlyingValue:
@@ -76,13 +72,13 @@ namespace MsgPack.Serialization
 					}
 					default:
 					{
-						throw new ArgumentOutOfRangeException( "value" );
+						throw new ArgumentOutOfRangeException("value");
 					}
 				}
 
 				Contract.EndContractBlock();
 
-				Volatile.Write( ref this._serializationMethod, ( int )value );
+				Volatile.Write(ref this._serializationMethod, (int)value);
 			}
 		}
 

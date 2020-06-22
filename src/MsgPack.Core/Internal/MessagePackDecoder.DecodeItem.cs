@@ -12,12 +12,12 @@ namespace MsgPack.Internal
 {
 	public partial class MessagePackDecoder
 	{
-		public sealed override bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult<MessagePackExtensionType> result, CancellationToken cancellationToken = default)
+		public sealed override bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult result, CancellationToken cancellationToken = default)
 		{
 			var elementType = this.ReadHeader(ref source, out var consumed, out var valueOrLength, out var requestHint);
 			if (requestHint != 0)
 			{
-				result = DecodeItemResult<MessagePackExtensionType>.InsufficientInput(requestHint);
+				result = DecodeItemResult.InsufficientInput(requestHint);
 				return false;
 			}
 
@@ -27,17 +27,17 @@ namespace MsgPack.Internal
 			{
 				case ElementType.True:
 				{
-					result = DecodeItemResult<MessagePackExtensionType>.True();
+					result = DecodeItemResult.True();
 					break;
 				}
 				case ElementType.False:
 				{
-					result = DecodeItemResult<MessagePackExtensionType>.False();
+					result = DecodeItemResult.False();
 					break;
 				}
 				case ElementType.Null:
 				{
-					result = DecodeItemResult<MessagePackExtensionType>.Null();
+					result = DecodeItemResult.Null();
 					break;
 				}
 				case ElementType.Int32:
@@ -46,14 +46,14 @@ namespace MsgPack.Internal
 					var buffer = new byte[sizeof(int)];
 					var span = MemoryMarshal.Cast<byte, int>(buffer);
 					span[0] = (int)valueOrLength;
-					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, buffer);
+					result = DecodeItemResult.ScalarOrSequence(elementType, buffer);
 					break;
 				}
 				case ElementType.Array:
 				case ElementType.Map:
 				{
 					this.DecodeArrayOrMap(ref source, out var iterator);
-					result = DecodeItemResult<MessagePackExtensionType>.CollectionHeader(elementType, this.CreateIterator((uint)valueOrLength), valueOrLength);
+					result = DecodeItemResult.CollectionHeader(elementType, this.CreateIterator((uint)valueOrLength), valueOrLength);
 					break;
 				}
 				case ElementType.Int64:
@@ -63,7 +63,7 @@ namespace MsgPack.Internal
 					var buffer = new byte[sizeof(long)];
 					var span = MemoryMarshal.Cast<byte, long>(buffer);
 					span[0] = valueOrLength;
-					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, buffer);
+					result = DecodeItemResult.ScalarOrSequence(elementType, buffer);
 					break;
 				}
 				case ElementType.String:
@@ -72,13 +72,13 @@ namespace MsgPack.Internal
 					if (source.Remaining < valueOrLength + consumed)
 					{
 						result =
-							DecodeItemResult < MessagePackExtensionType >.InsufficientInput(
+							DecodeItemResult.InsufficientInput(
 								(int)((valueOrLength + consumed - source.Remaining) & Int32.MaxValue)
 							);
 						return false;
 					}
 
-					result = DecodeItemResult<MessagePackExtensionType>.ScalarOrSequence(elementType, source.Sequence.Slice(source.Position).Slice(consumed, valueOrLength));
+					result = DecodeItemResult.ScalarOrSequence(elementType, source.Sequence.Slice(source.Position).Slice(consumed, valueOrLength));
 					consumed += valueOrLength;
 					break;
 				}
@@ -89,17 +89,17 @@ namespace MsgPack.Internal
 					if(source.Remaining < valueOrLength + consumed)
 					{
 						result =
-							DecodeItemResult<MessagePackExtensionType>.InsufficientInput(
+							DecodeItemResult.InsufficientInput(
 								(int)((valueOrLength + consumed - source.Remaining) & Int32.MaxValue)
 							);
 						return false;
 					}
 
 					var extensionSlice = source.Sequence.Slice(source.Position).Slice(consumed - 1);
-					var typeCode = new MessagePackExtensionType(extensionSlice.FirstSpan[0]);
+					var typeCode = extensionSlice.FirstSpan[0];
 					var body = extensionSlice.Slice(1, valueOrLength);
 
-					result = DecodeItemResult<MessagePackExtensionType>.ExtensionTypeObject(typeCode, body);
+					result = DecodeItemResult.ExtensionType(new ExtensionTypeObject(new ExtensionType(typeCode), body));
 					consumed += valueOrLength;
 					break;
 				}

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace MsgPack.Internal
 {
-	public sealed partial class MessagePackDecoder : Decoder<MessagePackExtensionType>
+	public sealed partial class MessagePackDecoder : FormatDecoder
 	{
 		private static readonly FormatFeatures MessagePackFormatFeatures =
 			new FormatFeaturesBuilder

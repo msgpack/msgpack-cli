@@ -13,7 +13,7 @@ namespace MsgPack.Json
 	/// <summary>
 	///		Defines encoder options for <see cref="JsonEncoder"/>.
 	/// </summary>
-	public sealed class JsonEncoderOptions : EncoderOptions
+	public sealed class JsonEncoderOptions : FormatEncoderOptions
 	{
 		public static JsonEncoderOptions Default { get; } = new JsonEncoderOptionsBuilder().Build();
 

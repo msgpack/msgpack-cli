@@ -9,7 +9,7 @@ namespace MsgPack.Json
 	/// <summary>
 	///		A builder object for immutable <see cref="JsonDecoderOptions"/>.
 	/// </summary>
-	public class JsonDecoderOptionsBuilder : DecoderOptionsBuilder
+	public class JsonDecoderOptionsBuilder : FormatDecoderOptionsBuilder
 	{
 		public JsonParseOptions ParseOptions { get; set; }
 

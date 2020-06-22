@@ -16,25 +16,22 @@ using MsgPack.Internal;
 
 namespace MsgPack.Serialization
 {
-	public sealed class AsyncDeserializationOperationContext<TExtensionType>
+	public struct DeserializationOperationContext
 	{
-		public Decoder<TExtensionType> Decoder { get; }
+		public FormatDecoder Decoder { get; }
 		public DeserializationOptions Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
 		public ArrayPool<byte> ByteBufferPool => this.Options.ByteBufferPool;
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public AsyncDeserializationOperationContext(Decoder<TExtensionType> decoder, DeserializationOptions? options, CancellationToken cancellationToken)
+		public DeserializationOperationContext(FormatDecoder decoder, DeserializationOptions? options, CancellationToken cancellationToken)
 		{
 			this.Decoder = Ensure.NotNull(decoder);
 			this.Options = options ?? DeserializationOptions.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
 		}
-
-		public DeserializationOperationContext<TExtensionType> AsDeserializationOperationContext()
-			=> new DeserializationOperationContext<TExtensionType>(this.Decoder, this.Options, this.CancellationToken);
 
 		public CollectionContext CollectionContext => new CollectionContext(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue, this.CurrentDepth);
 
@@ -58,7 +55,7 @@ namespace MsgPack.Serialization
 			return this.CurrentDepth--;
 		}
 
-		public void ValidatePropertyKeyLength(long position, int length)
+		public readonly void ValidatePropertyKeyLength(long position, int length)
 		{
 			if(length > this.Options.MaxPropertyKeyLength)
 			{

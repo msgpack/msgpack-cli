@@ -4,7 +4,7 @@
 
 namespace MsgPack.Internal
 {
-	public sealed class MessagePackDecoderOptions : DecoderOptions
+	public sealed class MessagePackDecoderOptions : FormatDecoderOptions
 	{
 		public static MessagePackDecoderOptions Default { get; } = new MessagePackDecoderOptionsBuilder().Build();
 

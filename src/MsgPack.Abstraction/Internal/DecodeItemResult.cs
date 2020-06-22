@@ -9,16 +9,16 @@ using System.Runtime.CompilerServices;
 namespace MsgPack.Internal
 {
 	/// <summary>
-	///		Represents a result of <see cref="Decoder.DecodeItem"/>.
+	///		Represents a result of <see cref="FormatDecoder.DecodeItem"/>.
 	/// </summary>
-	public readonly struct DecodeItemResult<TExtensionType>
+	public readonly struct DecodeItemResult
 	{
 		public bool HasValue => this.ElementType != ElementType.None;
 		public ElementType ElementType { get; }
 		public ReadOnlySequence<byte> Value { get; }
 		public CollectionItemIterator CollectionIterator { get; }
 		public long CollectionLength { get; }
-		public TExtensionType ExtensionType { get; }
+		public ExtensionTypeObject ExtensionTypeObject { get; }
 		public ReadOnlySequence<byte> ExtensionBody => this.Value;
 		public long RequestHint { get; }
 
@@ -27,7 +27,7 @@ namespace MsgPack.Internal
 			in ReadOnlySequence<byte> value = default,
 			in CollectionItemIterator collectionIterator = default,
 			long collectionLength = default,
-			TExtensionType extensionType = default,
+			ExtensionTypeObject extensionTypeObject = default,
 			long requestHint = default
 		)
 		{
@@ -35,40 +35,40 @@ namespace MsgPack.Internal
 			this.Value = value;
 			this.CollectionIterator = collectionIterator;
 			this.CollectionLength = collectionLength;
-			this.ExtensionType = extensionType;
+			this.ExtensionTypeObject = extensionTypeObject;
 			this.RequestHint = requestHint;
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> CollectionHeader(ElementType elementType, in CollectionItemIterator iterator, long length = -1)
-			=> new DecodeItemResult<TExtensionType>(elementType, collectionIterator: iterator, collectionLength: length);
+		public static DecodeItemResult CollectionHeader(ElementType elementType, in CollectionItemIterator iterator, long length = -1)
+			=> new DecodeItemResult(elementType, collectionIterator: iterator, collectionLength: length);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> ScalarOrSequence(ElementType elementType, ReadOnlyMemory<byte> value)
+		public static DecodeItemResult ScalarOrSequence(ElementType elementType, ReadOnlyMemory<byte> value)
 			=> ScalarOrSequence(elementType, new ReadOnlySequence<byte>(value));
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> ScalarOrSequence(ElementType elementType, in ReadOnlySequence<byte> value)
-			=> new DecodeItemResult<TExtensionType>(elementType, value: value);
+		public static DecodeItemResult ScalarOrSequence(ElementType elementType, in ReadOnlySequence<byte> value)
+			=> new DecodeItemResult(elementType, value: value);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> Null()
-			=> new DecodeItemResult<TExtensionType>(ElementType.Null);
+		public static DecodeItemResult Null()
+			=> new DecodeItemResult(ElementType.Null);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> True()
-			=> new DecodeItemResult<TExtensionType>(ElementType.True);
+		public static DecodeItemResult True()
+			=> new DecodeItemResult(ElementType.True);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> False()
-			=> new DecodeItemResult<TExtensionType>(ElementType.False);
+		public static DecodeItemResult False()
+			=> new DecodeItemResult(ElementType.False);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> ExtensionTypeObject(TExtensionType extensionType, in ReadOnlySequence<byte> body)
-			=> new DecodeItemResult<TExtensionType>(ElementType.Extension, extensionType : extensionType, value : body);
+		public static DecodeItemResult ExtensionType(ExtensionTypeObject extensionTypeObject)
+			=> new DecodeItemResult(ElementType.Extension, extensionTypeObject : extensionTypeObject);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult<TExtensionType> InsufficientInput(long requestHint)
-			=> new DecodeItemResult<TExtensionType>(ElementType.None, requestHint: requestHint);
+		public static DecodeItemResult InsufficientInput(long requestHint)
+			=> new DecodeItemResult(ElementType.None, requestHint: requestHint);
 	}
 }

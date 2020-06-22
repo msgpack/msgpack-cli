@@ -18,14 +18,14 @@ namespace MsgPack.Internal
 		/// <remarks>
 		///		When this property returns <c>false</c>, following methods should throw <see cref="System.NotSupportedException"/>.
 		///		<list type="bullet">
-		///			<item><see cref="Decoder{TExtensionType}.DecodeArrayHeader(in System.Buffers.SequenceReader{System.Byte})"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.DecodeArrayHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int32)"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.DecodeMapHeader(in System.Buffers.SequenceReader{System.Byte})"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.DecodeMapHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int32)"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.DecodeArrayOrMapHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int64)"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.DecodeArrayOrMapHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int64, out System.Int32)"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.Drain(in System.Buffers.SequenceReader{System.Byte}, in CollectionContext, System.Int64, System.Threading.CancellationToken)"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.Drain(in System.Buffers.SequenceReader{System.Byte}, in CollectionContext, System.Int64, out System.Int32, System.Threading.CancellationToken)"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.DecodeArrayHeader(in System.Buffers.SequenceReader{System.Byte})"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.DecodeArrayHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int32)"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.DecodeMapHeader(in System.Buffers.SequenceReader{System.Byte})"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.DecodeMapHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int32)"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.DecodeArrayOrMapHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int64)"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.DecodeArrayOrMapHeader(in System.Buffers.SequenceReader{System.Byte}, out System.Int64, out System.Int32)"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.Drain(in System.Buffers.SequenceReader{System.Byte}, in CollectionContext, System.Int64, System.Threading.CancellationToken)"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.Drain(in System.Buffers.SequenceReader{System.Byte}, in CollectionContext, System.Int64, out System.Int32, System.Threading.CancellationToken)"/></item>
 		///		</list>
 		/// </remarks>
 		public bool CanCountCollectionItems { get; }
@@ -50,9 +50,9 @@ namespace MsgPack.Internal
 		/// <remarks>
 		///		When this property returns <c>false</c>, following methods should throw <see cref="System.NotSupportedException"/>.
 		///		<list type="bullet">
-		///			<item><see cref="Encoder{TExtensionType}.EncodeExtension(TExtensionType, System.ReadOnlySpan{System.Byte}, System.Buffers.IBufferWriter{System.Byte})"/></item>
-		///			<item><see cref="Encoder{TExtensionType}.EncodeExtension(TExtensionType, System.Buffers.ReadOnlySequence{System.Byte}, System.Buffers.IBufferWriter{System.Byte})"/></item>
-		///			<item><see cref="Decoder{TExtensionType}.DecodeExtension(in System.Buffers.SequenceReader{System.Byte}, out TExtensionType, out System.Buffers.ReadOnlySequence{System.Byte}, out System.Int32, System.Threading.CancellationToken)(in System.Buffers.SequenceReader{System.Byte}, out System.Int32)"/></item>
+		///			<item><see cref="FormatEncoder{TExtensionType}.EncodeExtension(TExtensionType, System.ReadOnlySpan{System.Byte}, System.Buffers.IBufferWriter{System.Byte})"/></item>
+		///			<item><see cref="FormatEncoder{TExtensionType}.EncodeExtension(TExtensionType, System.Buffers.ReadOnlySequence{System.Byte}, System.Buffers.IBufferWriter{System.Byte})"/></item>
+		///			<item><see cref="FormatDecoder{TExtensionType}.DecodeExtension(in System.Buffers.SequenceReader{System.Byte}, out TExtensionType, out System.Buffers.ReadOnlySequence{System.Byte}, out System.Int32, System.Threading.CancellationToken)(in System.Buffers.SequenceReader{System.Byte}, out System.Int32)"/></item>
 		///		</list>
 		///		In additon, <c>TExtentionType</c> type parameter should be <see cref="NullExtensionType"/>.
 		/// </remarks>

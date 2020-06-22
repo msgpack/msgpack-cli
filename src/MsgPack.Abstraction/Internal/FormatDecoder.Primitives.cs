@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 
 namespace MsgPack.Internal
 {
-	partial class Decoder<TExtensionType>
+	partial class FormatDecoder
 	{
 		/// <summary>
 		///		Decodes <see cref="Byte" /> value from specified sequence.

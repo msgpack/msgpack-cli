@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace MsgPack.Internal
 {
-	partial class Decoder<TExtensionType>
+	partial class FormatDecoder
 	{
 <#
 foreach (var outputType in new [] {

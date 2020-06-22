@@ -6,7 +6,7 @@ using System.Buffers;
 
 namespace MsgPack.Internal
 {
-	public abstract class EncoderOptionsBuilder
+	public abstract class FormatEncoderOptionsBuilder
 	{
 		private int _cancellationSupportThreshold = OptionsDefaults.CancellationSupportThreshold;
 
@@ -50,9 +50,9 @@ namespace MsgPack.Internal
 
 		public bool ClearsBuffer { get; set; } = OptionsDefaults.ClearsBuffer;
 
-		protected EncoderOptionsBuilder() { }
+		protected FormatEncoderOptionsBuilder() { }
 
-		public EncoderOptionsBuilder WithoutBufferClear()
+		public FormatEncoderOptionsBuilder WithoutBufferClear()
 		{
 			this.ClearsBuffer = false;
 			return this;
