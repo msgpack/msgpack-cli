@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading;
 using MsgPack.Internal;
 
-namespace MsgPack.Serialization.Internal
+namespace MsgPack.Serialization
 {
 	public sealed class AsyncDeserializationOperationContext<TExtensionType>
 	{

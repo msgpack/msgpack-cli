@@ -95,7 +95,7 @@ namespace MsgPack.Internal
 					try
 					{
 						var totalLength = this.EncodeLargeString1Path(value, buffer, encoding, estimatedLength, encodingBuffer);
-						buffer.Write(encodingBuffer.AsSpan(0, totalLength));
+						buffer.Write(encodingBuffer.AsMemory(0, totalLength).Span);
 					}
 					finally
 					{
@@ -221,7 +221,7 @@ namespace MsgPack.Internal
 					try
 					{
 						var totalLength = this.EncodeLargeString1Path(value, buffer, encoding, estimatedLength, encodingBuffer);
-						buffer.Write(encodingBuffer.AsSpan(0, totalLength));
+						buffer.Write(encodingBuffer.AsMemory(0, totalLength).Span);
 					}
 					finally
 					{

@@ -13,9 +13,9 @@ using System.Text;
 using System.Threading;
 using MsgPack.Internal;
 
-namespace MsgPack.Serialization.Internal
+namespace MsgPack.Serialization
 {
-	public sealed class AsyncSerializationOperationContext<TExtensionType>
+	public struct SerializationOperationContext<TExtensionType>
 	{
 		public Encoder<TExtensionType> Encoder { get; }
 		public SerializationOptions Options { get; }
@@ -23,16 +23,13 @@ namespace MsgPack.Serialization.Internal
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public AsyncSerializationOperationContext(Encoder<TExtensionType> encoder, SerializationOptions? options, CancellationToken cancellationToken)
+		public SerializationOperationContext(Encoder<TExtensionType> encoder, SerializationOptions? options, CancellationToken cancellationToken)
 		{
 			this.Encoder = Ensure.NotNull(encoder);
 			this.Options = options ?? SerializationOptions.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
 		}
-
-		public SerializationOperationContext<TExtensionType> AsSerializationOperationContext()
-			=> new SerializationOperationContext<TExtensionType>(this.Encoder, this.Options, this.CancellationToken);
 
 		public CollectionContext CollectionContext => new CollectionContext(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue, this.CurrentDepth);
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Internal
 {
-#warning TODO: Pubternal or CodeGen
+#warning TODO: CodeGen
 	public sealed class StreamBufferWriter : IBufferWriter<byte>, IAsyncDisposable
 	{
 		private readonly Stream _underlying;

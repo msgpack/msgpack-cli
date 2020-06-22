@@ -9,25 +9,42 @@ using System.Threading.Tasks;
 
 namespace MsgPack.Internal
 {
-#warning TODO: PubTernal or CodeGen
-	public sealed class StreamReadOnlyMemoryProvider
+	public struct StreamReadOnlyMemoryProvider
 	{
 		private readonly Stream _stream;
 		private readonly byte[] _buffer;
 
 		public StreamReadOnlyMemoryProvider(Stream stream, byte[] buffer)
 		{
+			Ensure.NotNull(stream);
+			if (!stream.CanRead)
+			{
+				Throw.StreamMustBeAbleToRead(nameof(stream));
+			}
+
+			Ensure.NotNull(buffer);
+			if (buffer.Length == 0)
+			{
+				Throw.TooSmallBuffer(nameof(buffer), 1);
+			}
+
 			this._stream = stream;
 			this._buffer = buffer;
 		}
 
 		public async ValueTask<ReadOnlyMemory<byte>> GetNextAsync(ReadOnlyMemory<byte> previous, int requestHint, CancellationToken cancellationToken)
 		{
-			var required = (long)previous.Length + requestHint;
-			if (required > UInt32.MaxValue)
+			if (this._stream is null)
 			{
-#warning TODO:
-				throw new Exception("Too large");
+				Throw.EmptyObject(typeof(StreamReadOnlyMemoryProvider));
+				// never
+				return default;
+			}
+
+			var required = (long)previous.Length + requestHint;
+			if (required > OptionsDefaults.MaxSingleByteCollectionLength)
+			{
+				Throw.TooLargeLength(previous.Length, requestHint);
 			}
 
 			Memory<byte> buffer;
@@ -37,7 +54,7 @@ namespace MsgPack.Internal
 				{
 					this._buffer.AsSpan().CopyTo(this._buffer.AsSpan(previous.Length));
 				}
-				
+
 				buffer = this._buffer.AsMemory(previous.Length);
 				if (requestHint > 0)
 				{

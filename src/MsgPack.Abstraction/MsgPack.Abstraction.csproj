@@ -7,6 +7,9 @@
   <ItemGroup>
     <Compile Include="../MsgPack/MessageNotSupportedException.cs" Link="MessageNotSupportedException.cs" />
     <Compile Include="../MsgPack/MessageTypeException.cs" Link="MessageTypeException.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.cs" Link="Serialization\PolymorphismSchema.cs" />
+    <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Internals.cs" Link="Serialization\PolymorphismSchema.Internals.cs" />
+    <Compile Include="..\MsgPack\Serialization\SerializerCapabilities.cs" Link="Serialization\SerializerCapabilities.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,19 +25,19 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Decoder`1.Primitives.cs</LastGenOutput>
     </None>
-    <None Update="Serialization\Internal\AsyncSerializationOperationContext`1.tt">
+    <None Update="Serialization\AsyncSerializationOperationContext`1.tt">
       <LastGenOutput>AsyncSerializationOperationContext`1.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Serialization\Internal\AsyncDeserializationOperationContext`1.tt">
+    <None Update="Serialization\AsyncDeserializationOperationContext`1.tt">
       <LastGenOutput>AsyncDeserializationOperationContext`1.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Serialization\Internal\DeserializationOperationContext`1.tt">
+    <None Update="Serialization\DeserializationOperationContext`1.tt">
       <LastGenOutput>DeserializationOperationContext`1.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Serialization\Internal\SerializationOperationContext`1.tt">
+    <None Update="Serialization\SerializationOperationContext`1.tt">
       <LastGenOutput>SerializationOperationContext`1.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
@@ -60,25 +63,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Encoder`1.Primitives.tt</DependentUpon>
     </Compile>
-    <Compile Update="Serialization\Internal\AsyncDeserializationOperationContext`1.cs">
+    <Compile Update="Serialization\AsyncDeserializationOperationContext`1.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AsyncDeserializationOperationContext`1.tt</DependentUpon>
     </Compile>
-    <Compile Update="Serialization\Internal\AsyncSerializationOperationContext`1.cs">
+    <Compile Update="Serialization\AsyncSerializationOperationContext`1.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AsyncSerializationOperationContext`1.tt</DependentUpon>
     </Compile>
-    <Compile Update="Serialization\Internal\DeserializationOperationContext`1.cs">
+    <Compile Update="Serialization\DeserializationOperationContext`1.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>DeserializationOperationContext`1.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Serialization\Internal\SerializationOperationContext`1.cs">
-      <DependentUpon>SerializationOperationContext`1.tt</DependentUpon>
+    <Compile Update="Serialization\SerializationOperationContext`1.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>SerializationOperationContext`1.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   

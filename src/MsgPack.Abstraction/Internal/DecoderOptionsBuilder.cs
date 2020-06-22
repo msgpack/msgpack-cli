@@ -6,6 +6,7 @@ using System.Buffers;
 
 namespace MsgPack.Internal
 {
+#warning Remove unused buffer max pr rename to initial buffer length if appropriate.
 	public abstract class DecoderOptionsBuilder
 	{
 		public bool CanTreatRealAsInteger { get; set; } = OptionsDefaults.CanTreatRealAsInteger;

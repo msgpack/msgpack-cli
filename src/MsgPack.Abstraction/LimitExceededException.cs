@@ -6,11 +6,10 @@ using System;
 
 namespace MsgPack
 {
-#warning TODO: Quota? Limit?
 	public sealed class LimitExceededException : Exception
 	{
 		public LimitExceededException()
-			: this("Sime quota is exeeded.") { }
+			: this("Some limit is exeeded.") { }
 
 		public LimitExceededException(string? message)
 			: base(message) { }
