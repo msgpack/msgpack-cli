@@ -668,7 +668,7 @@ namespace MsgPack.Samples
 			var decoder = new MessagePackDecoder(context.Decoder.Options as MessagePackDecoderOptions);
 #endif
 			CollectionType arrayOrMap;
-			long itemsCount;
+			int itemsCount;
 			CollectionItemIterator propertyIterator;
 
 			if (this.FormatFeatures.CanCountCollectionItems) // OPTIMIZABLE
@@ -1225,7 +1225,7 @@ namespace MsgPack.Samples
 			}
 		}
 
-		private static bool TryDecodeArrayOrMapHeader(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out long itemsCount, out CollectionType arrayOrMap, out CollectionItemIterator propertyIterator, out int requestHint)
+		private static bool TryDecodeArrayOrMapHeader(AsyncDeserializationOperationContext context, ref ReadOnlySequence<byte> sequence, out int itemsCount, out CollectionType arrayOrMap, out CollectionItemIterator propertyIterator, out int requestHint)
 		{
 			context.IncrementDepth();
 			var reader = new SequenceReader<byte>(sequence);
@@ -1442,8 +1442,7 @@ namespace MsgPack.Samples
 
 			var decoder = context.Decoder;
 			context.IncrementDepth();
-
-			long itemsCount;
+			int itemsCount;
 			CollectionType arrayOrMap;
 			CollectionItemIterator propertyIterator;
 			while (!TryDecodeArrayOrMapHeader(context, ref sequence, out itemsCount, out arrayOrMap, out propertyIterator, out requestHint))

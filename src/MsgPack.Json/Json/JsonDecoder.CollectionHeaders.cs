@@ -9,13 +9,13 @@ namespace MsgPack.Json
 {
 	public partial class JsonDecoder
 	{
-		public sealed override CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out long itemsCount, out int requestHint)
+		public sealed override CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out int itemsCount, out int requestHint)
 			=> JsonThrow.CollectionHeaderDecodingIsNotSupported(out itemsCount, out requestHint);
 
-		public sealed override long DecodeArrayHeader(ref SequenceReader<byte> source, out int requestHint)
+		public sealed override int DecodeArrayHeader(ref SequenceReader<byte> source, out int requestHint)
 			=> JsonThrow.CollectionHeaderDecodingIsNotSupported(out requestHint);
 
-		public sealed override long DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint)
+		public sealed override int DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint)
 			=> JsonThrow.CollectionHeaderDecodingIsNotSupported(out requestHint);
 	}
 }

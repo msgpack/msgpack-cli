@@ -9,7 +9,7 @@ namespace MsgPack.Internal
 {
 	public partial class MessagePackDecoder
 	{
-		public sealed override CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out long itemsCount, out int requestHint)
+		public sealed override CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out int itemsCount, out int requestHint)
 		{
 			var startOffset = source.Consumed;
 			var result = this.PrivateDecodeArrayOrMapHeader(ref source, out var header, out itemsCount, out requestHint);
@@ -22,7 +22,7 @@ namespace MsgPack.Internal
 			return result;
 		}
 
-		private CollectionType PrivateDecodeArrayOrMapHeader(ref SequenceReader<byte> source, out byte header, out long itemsCount, out int requestHint)
+		private CollectionType PrivateDecodeArrayOrMapHeader(ref SequenceReader<byte> source, out byte header, out int itemsCount, out int requestHint)
 		{
 			var startOffset = source.Consumed;
 			var result = this.DecodeArrayOrMapHeaderCore(ref source, out header, out itemsCount, out requestHint);
@@ -34,7 +34,7 @@ namespace MsgPack.Internal
 			return result;
 		}
 
-		private CollectionType DecodeArrayOrMapHeaderCore(ref SequenceReader<byte> source, out byte header, out long itemsCount, out int requestHint)
+		private CollectionType DecodeArrayOrMapHeaderCore(ref SequenceReader<byte> source, out byte header, out int itemsCount, out int requestHint)
 		{
 			if (!source.TryRead(out header))
 			{
@@ -53,13 +53,13 @@ namespace MsgPack.Internal
 
 			if ((header & MessagePackCode.MinimumFixedArray) == MessagePackCode.MinimumFixedArray)
 			{
-				itemsCount = (uint)header - MessagePackCode.MinimumFixedArray;
+				itemsCount = (int)header - MessagePackCode.MinimumFixedArray;
 				return CollectionType.Array;
 			}
 
 			if ((header & MessagePackCode.MinimumFixedMap) == MessagePackCode.MinimumFixedMap)
 			{
-				itemsCount = (uint)header - MessagePackCode.MinimumFixedMap;
+				itemsCount = (int)header - MessagePackCode.MinimumFixedMap;
 				return CollectionType.Map;
 			}
 
@@ -108,7 +108,13 @@ namespace MsgPack.Internal
 				}
 				default: // 4
 				{
-					itemsCount = ReadValue<uint>(ref source, offset: 1, out requestHint);
+					var count = ReadValue<uint>(ref source, offset: 1, out requestHint);
+					if (count > OptionsDefaults.MaxMultiByteCollectionLength)
+					{
+						MessagePackThrow.TooLargeArrayOrMapLength(header, source.Consumed - 1, count);
+					}
+
+					itemsCount = unchecked((int)count);
 					break;
 				}
 			}
@@ -122,18 +128,13 @@ namespace MsgPack.Internal
 			return type;
 		}
 
-		public sealed override long DecodeArrayHeader(ref SequenceReader<byte> source, out int requestHint)
+		public sealed override int DecodeArrayHeader(ref SequenceReader<byte> source, out int requestHint)
 		{
 			var startOffset = source.Consumed;
 			var type = this.DecodeArrayOrMapHeaderCore(ref source, out var header, out var itemsCount, out requestHint);
 			if (requestHint != 0)
 			{
 				return 0;
-			}
-
-			if (itemsCount > Int32.MaxValue)
-			{
-				MessagePackThrow.TooLargeArrayOrMapLength(header, startOffset, itemsCount);
 			}
 
 			if (type.IsMap)
@@ -144,18 +145,13 @@ namespace MsgPack.Internal
 			return (int)itemsCount;
 		}
 
-		public sealed override long DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint)
+		public sealed override int DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint)
 		{
 			var startOffset = source.Consumed;
 			var type = this.DecodeArrayOrMapHeaderCore(ref source, out var header, out var itemsCount, out requestHint);
 			if (requestHint != 0)
 			{
 				return 0;
-			}
-
-			if (itemsCount > Int32.MaxValue)
-			{
-				MessagePackThrow.TooLargeArrayOrMapLength(header, startOffset, itemsCount);
 			}
 
 			if (type.IsArray)

@@ -16,10 +16,10 @@ namespace MsgPack.Json
 		public static void TooShortUtf8()
 			=> throw new FormatException($"Input UTF-8 sequence is invalid. The sequence unexpectedly ends.");
 
-		public static CollectionType CollectionHeaderDecodingIsNotSupported(out long itemsCount, out int requestHint)
+		public static CollectionType CollectionHeaderDecodingIsNotSupported(out int itemsCount, out int requestHint)
 			=> throw new NotSupportedException("JSON does not support collection length.");
 
-		public static long CollectionHeaderDecodingIsNotSupported(out int requestHint)
+		public static int CollectionHeaderDecodingIsNotSupported(out int requestHint)
 			=> throw new NotSupportedException("JSON does not support collection length.");
 
 		public static void DrainIsNotSupported(out int requestHint)

@@ -85,7 +85,7 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not an array nor a map.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out long itemsCount)
+		public CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out int itemsCount)
 		{
 			var result = this.DecodeArrayOrMapHeader(ref source, out itemsCount, out var requestHint);
 			if (requestHint != 0)
@@ -110,7 +110,7 @@ namespace MsgPack.Internal
 		///		This method does not return anything else, but may throw an exception.
 		///	</returns>
 		///	<exception cref="MessageTypeException">The decoded value is not an array nor a map.</exception>
-		public abstract CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out long itemsCount, out int requestHint);
+		public abstract CollectionType DecodeArrayOrMapHeader(ref SequenceReader<byte> source, out int itemsCount, out int requestHint);
 
 		/// <summary>
 		///		Decodes current data as array header, and returns the items count if known.
@@ -123,7 +123,7 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not an array.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public long DecodeArrayHeader(ref SequenceReader<byte> source)
+		public int DecodeArrayHeader(ref SequenceReader<byte> source)
 		{
 			var result = this.DecodeArrayHeader(ref source, out var requestHint);
 			if (requestHint != 0)
@@ -148,7 +148,7 @@ namespace MsgPack.Internal
 		///	</returns>
 		///	<exception cref="MessageTypeException">The decoded value is not an array.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public abstract long DecodeArrayHeader(ref SequenceReader<byte> source, out int requestHint);
+		public abstract int DecodeArrayHeader(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
 		///		Decodes current data as map header, and returns the items count if known.
@@ -161,7 +161,7 @@ namespace MsgPack.Internal
 		///	<exception cref="MessageTypeException">The decoded value is not a map.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public long DecodeMapHeader(ref SequenceReader<byte> source)
+		public int DecodeMapHeader(ref SequenceReader<byte> source)
 		{
 			var result = this.DecodeMapHeader(ref source, out var requestHint);
 			if (requestHint != 0)
@@ -185,7 +185,7 @@ namespace MsgPack.Internal
 		///		Note that <c>0</c> is valid value when the map is empty.
 		///	</returns>
 		///	<exception cref="MessageTypeException">The decoded value is not a map.</exception>
-		public abstract long DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint);
+		public abstract int DecodeMapHeader(ref SequenceReader<byte> source, out int requestHint);
 
 		public virtual void DecodeExtension(ref SequenceReader<byte> source, out ExtensionTypeObject result, out int requestHint, CancellationToken cancellationToken = default)
 		{
