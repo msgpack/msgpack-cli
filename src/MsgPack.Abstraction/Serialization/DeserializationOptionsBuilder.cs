@@ -46,7 +46,9 @@ namespace MsgPack.Serialization
 
 		public ArrayPool<byte>? ArrayPool { get; set; }
 
+		public bool ClearsBuffer { get; set; } = OptionsDefaults.ClearsBuffer;
+
 		public DeserializationOptions Create()
-			=> new DeserializationOptions(this.MaxArrayLength, this.MaxMapCount, this.MaxPropertyKeyLength, this.MaxDepth, this.StringEncoding, this.ArrayPool ?? ArrayPool<byte>.Shared);
+			=> new DeserializationOptions(this.MaxArrayLength, this.MaxMapCount, this.MaxPropertyKeyLength, this.MaxDepth, this.StringEncoding, this.ArrayPool ?? ArrayPool<byte>.Shared, this.ClearsBuffer);
 	}
 }

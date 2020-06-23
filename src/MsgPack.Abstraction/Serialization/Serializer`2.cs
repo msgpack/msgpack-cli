@@ -124,7 +124,7 @@ namespace MsgPack.Serialization
 		public ValueTask<T> DeserializeAsync(Stream streamSource, CancellationToken cancellationToken = default)
 		{
 			this.InitializeAsyncDeserializationOperationContext(cancellationToken, out var context);
-			return this._underlying.DeserializeAsync(context, streamSource);
+			return this._underlying.DeserializeAsync(context, context.CreateSequence(streamSource));
 		}
 
 		public bool DeserializeTo(ref SequenceReader<byte> reader, T obj, CancellationToken cancellationToken = default)
@@ -154,7 +154,7 @@ namespace MsgPack.Serialization
 		public ValueTask<bool> DeserializeToAsync(Stream streamSource, T obj, CancellationToken cancellationToken = default)
 		{
 			this.InitializeAsyncDeserializationOperationContext(cancellationToken, out var context);
-			return this._underlying.DeserializeToAsync(context, streamSource, obj);
+			return this._underlying.DeserializeToAsync(context, context.CreateSequence(streamSource), obj);
 		}
 	}
 }

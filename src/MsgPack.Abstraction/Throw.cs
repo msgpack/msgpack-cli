@@ -16,6 +16,9 @@ namespace MsgPack
 		public static void ArgumentOutOfRange(string paramName, string message)
 			=> throw new ArgumentOutOfRangeException(paramName, message);
 
+		public static void ObjectDisposed(string? name)
+			=> throw new ObjectDisposedException(name);
+
 		public static void ExtensionsIsNotSupported()
 			=> throw new NotSupportedException($"Extension type is not supported in this encoder.");
 

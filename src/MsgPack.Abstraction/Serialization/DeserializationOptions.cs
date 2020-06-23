@@ -17,6 +17,7 @@ namespace MsgPack.Serialization
 		public int MaxDepth { get; }
 		public Encoding? StringEncoding { get; }
 		public ArrayPool<byte> ByteBufferPool { get; }
+		public bool ClearsBuffer { get; }
 
 		internal DeserializationOptions(
 			int maxArrayLength,
@@ -24,7 +25,8 @@ namespace MsgPack.Serialization
 			int maxPropertyKeyLength,
 			int maxDepth,
 			Encoding? stringEncoding,
-			ArrayPool<byte> arrayPool
+			ArrayPool<byte> arrayPool,
+			bool clearsBuffer
 		)
 		{
 			this.MaxArrayLength =maxArrayLength;
@@ -33,6 +35,7 @@ namespace MsgPack.Serialization
 			this.MaxDepth = maxDepth;
 			this.StringEncoding = stringEncoding;
 			this.ByteBufferPool = arrayPool;
+			this.ClearsBuffer = clearsBuffer;
 		}
 	}
 }

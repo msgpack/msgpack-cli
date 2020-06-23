@@ -15,7 +15,7 @@ using MsgPack.Internal;
 
 namespace MsgPack.Serialization
 {
-	public sealed class AsyncSerializationOperationContext
+	public sealed partial class AsyncSerializationOperationContext
 	{
 		public FormatEncoder Encoder { get; }
 		public SerializationOptions Options { get; }

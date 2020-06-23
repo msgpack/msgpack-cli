@@ -10,6 +10,7 @@ namespace MsgPack.Internal
 {
 	public struct CollectionItemIterator
 	{
+#warning TODO: in SequenceReader<byte> ??
 		public delegate bool CollectionEndDetection(ref SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint);
 
 		private readonly long _itemsCount;
@@ -43,9 +44,9 @@ namespace MsgPack.Internal
 			=> this._collectionEnds(ref source, ref this._nextItemIndex, this._itemsCount, out requestHint);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public bool CollectionEnds(ReadOnlyMemory<byte> source, out int requestHint)
+		public bool CollectionEnds(in ReadOnlySequence<byte> source, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(source));
+			var reader = new SequenceReader<byte>(source);
 			return this.CollectionEnds(ref reader, out requestHint);
 		}
 
@@ -73,9 +74,9 @@ namespace MsgPack.Internal
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public bool Drain(ref ReadOnlyMemory<byte> source, out int requestHint)
+		public bool Drain(ref ReadOnlySequence<byte> source, out int requestHint)
 		{
-			var reader = new SequenceReader<byte>(new ReadOnlySequence<byte>(source));
+			var reader = new SequenceReader<byte>(source);
 			var ends = this.Drain(ref reader, out requestHint);
 			source = source.Slice((int)reader.Consumed);
 			return ends;

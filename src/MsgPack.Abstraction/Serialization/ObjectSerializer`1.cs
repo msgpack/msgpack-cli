@@ -36,8 +36,8 @@ namespace MsgPack.Serialization
 
 		[return: MaybeNull]
 		public abstract T Deserialize(ref DeserializationOperationContext context, ref SequenceReader<byte> source);
-		public abstract ValueTask<T> DeserializeAsync(AsyncDeserializationOperationContext context, Stream streamSource);
+		public abstract ValueTask<T> DeserializeAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence source);
 		public abstract bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> source, in T obj);
-		public abstract ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext context, Stream streamSource, T obj);
+		public abstract ValueTask<bool> DeserializeToAsync(AsyncDeserializationOperationContext context, ReadOnlyStreamSequence source, T obj);
 	}
 }

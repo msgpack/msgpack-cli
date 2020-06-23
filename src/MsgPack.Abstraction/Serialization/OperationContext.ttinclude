@@ -1,7 +1,7 @@
 <#+
 void WriteContext(bool isSerialization, bool isAsync)
 {
-	var typeClass = isAsync ? "sealed class" : "struct";
+	var typeClass = isAsync ? "sealed partial class" : "struct";
 	var typePrefix = isSerialization ? "Serialization" : "Deserialization";
 	var typeName = $"{(isAsync ? "Async" : String.Empty)}{typePrefix}OperationContext";
 	var optionTypeName = $"{typePrefix}Options";
