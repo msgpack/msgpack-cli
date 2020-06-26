@@ -109,14 +109,14 @@ namespace MsgPack.Internal
 		/// <param name="length">Length to be advanced.</param>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="length"/> is greater than length of <see cref="Memory"/>.</exception>
 		/// <exception cref="ObjectDisposedException">This object is already disposed.</exception>
-		public void Advance(int length)
+		public void Advance(long length)
 		{
 			if (this._array == null)
 			{
 				Throw.ObjectDisposed(this.ToString());
 			}
 
-			this.Memory = this.Memory.Slice(Ensure.IsNotGreaterThan(length, this.Memory.Length));
+			this.Memory = this.Memory.Slice((int)Ensure.IsNotGreaterThan(length, (long)this.Memory.Length));
 		}
 	}
 }
