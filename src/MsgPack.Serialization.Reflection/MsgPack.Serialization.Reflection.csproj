@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -7,6 +7,25 @@
   <ItemGroup>
     <ProjectReference Include="..\MsgPack.Abstraction\MsgPack.Abstraction.csproj" />
     <ProjectReference Include="..\MsgPack.Serialization\MsgPack.Serialization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Serialization\Internal\AsyncDecodeHelpers.Primitives.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AsyncDecodeHelpers.Primitives.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Serialization\Internal\AsyncDecodeHelpers.Primitives.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AsyncDecodeHelpers.Primitives.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
