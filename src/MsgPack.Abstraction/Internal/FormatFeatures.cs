@@ -2,12 +2,16 @@
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
+using MsgPack.Serialization;
+
 namespace MsgPack.Internal
 {
 	public sealed class FormatFeatures
 	{
 #warning TODO: REMOVE
 		public bool IsContextful { get; }
+
+		public string Name { get; }
 
 		/// <summary>
 		///		Gets a value which indicates the underlying format supports collection length.
@@ -58,12 +62,37 @@ namespace MsgPack.Internal
 		/// </remarks>
 		public bool SupportsExtensionTypes { get; }
 
+		public SerializationMethod PreferredSerializationMethod { get; }
+		public AvailableSerializationMethods AvailableSerializationMethods { get; }
+
 		internal FormatFeatures(FormatFeaturesBuilder builder)
 		{
+			this.Name = builder.Name;
 			this.IsContextful = builder.IsContextful;
 			this.CanCountCollectionItems = builder.CanCountCollectionItems;
 			this.CanSpecifyStringEncoding = builder.CanSpecifyStringEncoding;
 			this.SupportsExtensionTypes = builder.SupportsExtensionTypes;
+			this.PreferredSerializationMethod = builder.PreferredSerializationMethod;
+			this.AvailableSerializationMethods = builder.AvailableSerializationMethods;
+		}
+
+		internal SerializationMethod GetSerializationMethod(SerializationMethod? contextPreferredMethod)
+		{
+			if (contextPreferredMethod == null)
+			{
+				return this.PreferredSerializationMethod;
+			}
+
+			if (contextPreferredMethod == SerializationMethod.Array && (this.AvailableSerializationMethods & AvailableSerializationMethods.Array) == 0)
+			{
+				Throw.UnavailableMethod(this.Name, SerializationMethod.Array);
+			}
+			else if ((this.AvailableSerializationMethods & AvailableSerializationMethods.Map) == 0)
+			{
+				Throw.UnavailableMethod(this.Name, SerializationMethod.Map);
+			}
+
+			return contextPreferredMethod.GetValueOrDefault();
 		}
 	}
 }

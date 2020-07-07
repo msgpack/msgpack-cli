@@ -7,6 +7,7 @@ void WriteContext(bool isSerialization, bool isAsync)
 	var optionTypeName = $"{typePrefix}Options";
 	var primitiveType = isSerialization ? "FormatEncoder" : "FormatDecoder";
 	var primitiveName = isSerialization ? "Encoder" : "Decoder";
+	var primitiveVariable = primitiveName.ToLowerInvariant();
 #>
 // Copyright (c) FUJIWARA, Yusuke and all contributors.
 // This file is licensed under Apache2 license.
@@ -39,7 +40,13 @@ namespace MsgPack.Serialization
 		public <#= optionTypeName #> Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
 <#+
-	if (!isSerialization)
+	if (isSerialization)
+	{
+#>
+		public SerializationMethod SerializationMethod { get; }
+<#+
+	}
+	else
 	{
 #>
 		public ArrayPool<byte> ByteBufferPool => this.Options.ByteBufferPool;
@@ -49,12 +56,20 @@ namespace MsgPack.Serialization
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
-		public <#= typeName #>(<#= primitiveType #> <#= primitiveName.ToLowerInvariant() #>, <#= optionTypeName #>? options, CancellationToken cancellationToken)
+		public <#= typeName #>(<#= primitiveType #> <#= primitiveVariable #>, <#= optionTypeName #>? options, CancellationToken cancellationToken)
 		{
-			this.<#= primitiveName #> = Ensure.NotNull(<#= primitiveName.ToLowerInvariant() #>);
+			this.<#= primitiveName #> = Ensure.NotNull(<#= primitiveVariable #>);
 			this.Options = options ?? <#= optionTypeName #>.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
+<#+
+	if (isSerialization)
+	{
+#>
+			this.SerializationMethod = <#= primitiveVariable #>.Options.Features.GetSerializationMethod(this.Options.PreferredSerializationMethod);
+<#+
+	}
+#>
 		}
 
 <#+

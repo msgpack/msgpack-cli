@@ -72,7 +72,6 @@ namespace MsgPack.Samples
 			=> isCurrent ? CurrentMessagePackSerializationFormat : LegacyMessagePackSerializationFormat;
 	}
 
-
 	public static class JsonSerializationFormatFactoryExtensions
 	{
 		private static readonly SerializationFormat SimpleJsonSerializationFormat =
@@ -200,7 +199,13 @@ namespace MsgPack.Samples
 			= true;
 #endif
 		private FormatFeatures FormatFeatures { get; set; } =
-			new FormatFeaturesBuilder
+			new FormatFeaturesBuilder(
+#if MSGPACK
+				"msgpack"
+#else
+				"json"
+#endif
+			)
 			{
 #if MSGPACK
 				CanCountCollectionItems = true,

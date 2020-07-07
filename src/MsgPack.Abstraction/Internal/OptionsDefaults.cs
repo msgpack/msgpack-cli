@@ -3,6 +3,7 @@
 // See the LICENSE in the project root for more information.
 
 using System.Buffers;
+using MsgPack.Serialization;
 
 namespace MsgPack.Internal
 {
@@ -26,5 +27,6 @@ namespace MsgPack.Internal
 		public static readonly ArrayPool<char> CharBufferPool = ArrayPool<char>.Shared;
 		public static readonly bool ClearsBuffer = true;
 		public static readonly bool CanTreatRealAsInteger = true;
+		public static readonly SerializationMethod? PreferredSerializationMethod = null;
 	}
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Include="../MsgPack/MessageNotSupportedException.cs" Link="MessageNotSupportedException.cs" />
     <Compile Include="../MsgPack/MessageTypeException.cs" Link="MessageTypeException.cs" />
+    <Compile Include="..\MsgPack\Serialization\SerializationMethod.cs" Link="Serialization\SerializationMethod.cs" />
     <Compile Include="..\MsgPack\Serialization\SerializerCapabilities.cs" Link="Serialization\SerializerCapabilities.cs" />
   </ItemGroup>
 

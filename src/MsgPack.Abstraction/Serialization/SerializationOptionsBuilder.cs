@@ -2,6 +2,7 @@
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
+using System.Text;
 using MsgPack.Internal;
 
 namespace MsgPack.Serialization
@@ -16,9 +17,13 @@ namespace MsgPack.Serialization
 			set => this._maxDepth = Ensure.IsBetween(value, 1, OptionsDefaults.MaxMultiByteCollectionLength);
 		}
 
-		public System.Text.Encoding? StringEncoding { get; set; }
+		public Encoding? StringEncoding { get; set; }
+
+		public SerializationMethod? PreferredSerializationMethod { get; set; } = OptionsDefaults.PreferredSerializationMethod;
+
+		public bool DisablePrivilegedAccess { get; set; }
 
 		public SerializationOptions Create()
-			=> new SerializationOptions(this.MaxDepth, this.StringEncoding);
+			=> new SerializationOptions(this);
 	}
 }

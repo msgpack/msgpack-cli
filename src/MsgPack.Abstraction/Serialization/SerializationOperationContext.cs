@@ -20,6 +20,7 @@ namespace MsgPack.Serialization
 		public FormatEncoder Encoder { get; }
 		public SerializationOptions Options { get; }
 		public Encoding? StringEncoding => this.Options.StringEncoding;
+		public SerializationMethod SerializationMethod { get; }
 		public int CurrentDepth { get; private set; }
 		public CancellationToken CancellationToken { get; }
 
@@ -29,6 +30,7 @@ namespace MsgPack.Serialization
 			this.Options = options ?? SerializationOptions.Default;
 			this.CurrentDepth = 0;
 			this.CancellationToken = cancellationToken;
+			this.SerializationMethod = encoder.Options.Features.GetSerializationMethod(this.Options.PreferredSerializationMethod);
 		}
 
 		public CollectionContext CollectionContext => new CollectionContext(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue, this.CurrentDepth);
