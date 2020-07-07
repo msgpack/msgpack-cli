@@ -3,7 +3,6 @@
 // See the LICENSE in the project root for more information.
 
 using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -16,8 +15,31 @@ namespace MsgPack
 		{
 			if (value == null)
 			{
-				Throw.ArgumentNull(paramName);
-				Debug.Assert(value != null);
+				ThrowArgumentNull(paramName);
+			}
+
+			return value;
+		}
+
+		public static string NotNullNorEmpty([NotNull]string? value, [CallerArgumentExpression("value")] string paramName = null!)
+		{
+			NotNull(value);
+
+			if (value.Length ==0)
+			{
+				ThrowArgumentEmptyString(paramName);
+			}
+
+			return value;
+		}
+
+		public static string NotBlank([NotNull] string? value, [CallerArgumentExpression("value")] string paramName = null!)
+		{
+			NotNull(value);
+
+			if (String.IsNullOrWhiteSpace(value))
+			{
+				ThrowArgumentBlankString(paramName);
 			}
 
 			return value;
@@ -27,7 +49,7 @@ namespace MsgPack
 		{
 			if (value < 0)
 			{
-				Throw.ArgumentOutOfRange(paramName, "Value cannot be negative number.");
+				ThrowArgumentOutOfRange(paramName, "Value cannot be negative number.");
 			}
 
 			return value;
@@ -38,7 +60,7 @@ namespace MsgPack
 		{
 			if (value.CompareTo(minInclusive) < 0)
 			{
-				Throw.ArgumentOutOfRange(paramName, $"Value cannot be less than {minInclusive}.");
+				ThrowArgumentOutOfRange(paramName, $"Value cannot be less than {minInclusive}.");
 			}
 
 			return value;
@@ -49,7 +71,7 @@ namespace MsgPack
 		{
 			if (value.CompareTo(maxInclusive) > 0)
 			{
-				Throw.ArgumentOutOfRange(paramName, $"Value cannot be greater than {maxInclusive}.");
+				ThrowArgumentOutOfRange(paramName, $"Value cannot be greater than {maxInclusive}.");
 			}
 
 			return value;
@@ -60,15 +82,31 @@ namespace MsgPack
 		{
 			if (value.CompareTo(minInclusive) < 0)
 			{
-				Throw.ArgumentOutOfRange(paramName, $"Value cannot be less than {minInclusive}.");
+				ThrowArgumentOutOfRange(paramName, $"Value cannot be less than {minInclusive}.");
 			}
 
 			if (value.CompareTo(maxInclusive) > 0)
 			{
-				Throw.ArgumentOutOfRange(paramName, $"Value cannot be greater than {maxInclusive}.");
+				ThrowArgumentOutOfRange(paramName, $"Value cannot be greater than {maxInclusive}.");
 			}
 
 			return value;
 		}
+
+		[DoesNotReturn]
+		private static void ThrowArgumentNull(string paramName)
+			=> throw new ArgumentNullException(paramName);
+
+		[DoesNotReturn]
+		private static void ThrowArgumentOutOfRange(string paramName, string message)
+			=> throw new ArgumentOutOfRangeException(paramName, message);
+
+		[DoesNotReturn]
+		private static void ThrowArgumentEmptyString(string paramName)
+			=> throw new ArgumentException("Value cannot be empty string.", paramName);
+
+		[DoesNotReturn]
+		private static void ThrowArgumentBlankString(string paramName)
+			=> throw new ArgumentException("Value cannot be empty or blank string.", paramName);
 	}
 }

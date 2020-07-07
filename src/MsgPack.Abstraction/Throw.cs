@@ -10,12 +10,6 @@ namespace MsgPack
 {
 	internal static class Throw
 	{
-		public static void ArgumentNull(string paramName)
-			=> throw new ArgumentNullException(paramName);
-
-		public static void ArgumentOutOfRange(string paramName, string message)
-			=> throw new ArgumentOutOfRangeException(paramName, message);
-
 		public static void ObjectDisposed(string? name)
 			=> throw new ObjectDisposedException(name);
 
