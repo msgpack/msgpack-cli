@@ -633,7 +633,7 @@ namespace MsgPack.Samples
 		private static void ThrowNotEnoughItems(long actual, int expected)
 			=> throw new MessageTypeException();
 
-		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> reader, in SampleObject obj)
+		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> reader, SampleObject obj)
 		{
 			const int propertyCount =
 					0
@@ -1945,7 +1945,7 @@ namespace MsgPack.Samples
 			throw new NotImplementedException();
 		}
 
-		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> source, in int[] obj)
+		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> source, int[] obj)
 		{
 			throw new NotImplementedException();
 		}
@@ -1976,7 +1976,7 @@ namespace MsgPack.Samples
 			throw new NotImplementedException();
 		}
 
-		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> source, in int obj)
+		public sealed override bool DeserializeTo(ref DeserializationOperationContext context, ref SequenceReader<byte> source, int obj)
 		{
 			throw new NotImplementedException();
 		}

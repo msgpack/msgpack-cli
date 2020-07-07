@@ -3,8 +3,10 @@
 // See the LICENSE in the project root for more information.
 
 using System;
+using System.Runtime.Serialization;
 using System.Text;
 using MsgPack.Internal;
+using MsgPack.Serialization;
 
 namespace MsgPack
 {
@@ -86,6 +88,9 @@ namespace MsgPack
 			}
 		}
 
+		public static void CannotBeNull(Type type)
+			 => throw new SerializationException($"Value of type '{type}' cannot be null.");
+
 		public static void InsufficientInputForDecodeArrayHeader(long position, int requestHint)
 		{
 			if (requestHint < 0)
@@ -97,6 +102,9 @@ namespace MsgPack
 				throw new InsufficientInputException($"It is required more {requestHint:#,0} bytes in input ReadOnlySequence to decode array header at {position:#,0}.");
 			}
 		}
+
+		public static void UnavailableMethod(string name, SerializationMethod array)
+			=> throw new NotSupportedException($"SerializationMethod '{array}' is not supported in '{name}' format.");
 
 		public static void InsufficientInputForDecodeMapHeader(long position, int requestHint)
 		{
