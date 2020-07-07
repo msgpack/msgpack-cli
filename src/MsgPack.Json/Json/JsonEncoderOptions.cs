@@ -57,7 +57,7 @@ namespace MsgPack.Json
 		internal ReadOnlyMemory<int> EscapeTargetChars4Byte { get; }
 
 		public JsonEncoderOptions(JsonEncoderOptionsBuilder builder)
-			: base(builder)
+			: base(builder, JsonFormatFeatures.Value)
 		{
 			this._singleInfinityFormatter =
 				builder.InfinityHandling switch

@@ -19,14 +19,11 @@ namespace MsgPack.Internal
 	/// </remarks>
 	public abstract partial class FormatDecoder
 	{
-		public FormatFeatures FormatFeatures { get; }
-
 		public FormatDecoderOptions Options { get; }
 
-		protected FormatDecoder(FormatDecoderOptions options, FormatFeatures formatFeatures)
+		protected FormatDecoder(FormatDecoderOptions options)
 		{
 			this.Options = Ensure.NotNull(options);
-			this.FormatFeatures = Ensure.NotNull(formatFeatures);
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]

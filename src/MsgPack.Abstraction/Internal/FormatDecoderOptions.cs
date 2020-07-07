@@ -28,7 +28,9 @@ namespace MsgPack.Internal
 
 		public bool ClearsBuffer { get; }
 
-		protected FormatDecoderOptions(FormatDecoderOptionsBuilder builder)
+		public FormatFeatures Features { get; }
+
+		protected FormatDecoderOptions(FormatDecoderOptionsBuilder builder, FormatFeatures features)
 		{
 			builder = Ensure.NotNull(builder);
 
@@ -42,6 +44,7 @@ namespace MsgPack.Internal
 			this.MaxNumberLengthInBytes = builder.MaxNumberLengthInBytes;
 			this.MaxStringLengthInBytes = builder.MaxStringLengthInBytes;
 			this.MaxBinaryLengthInBytes = builder.MaxBinaryLengthInBytes;
+			this.Features = Ensure.NotNull(features);
 		}
 	}
 }

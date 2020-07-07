@@ -20,7 +20,9 @@ namespace MsgPack.Internal
 
 		public bool ClearsBuffer { get; }
 
-		protected FormatEncoderOptions(FormatEncoderOptionsBuilder builder)
+		public FormatFeatures Features { get; }
+
+		protected FormatEncoderOptions(FormatEncoderOptionsBuilder builder, FormatFeatures features)
 		{
 			builder = Ensure.NotNull(builder);
 
@@ -30,6 +32,7 @@ namespace MsgPack.Internal
 			this.ByteBufferPool = builder.ByteBufferPool;
 			this.CharBufferPool = builder.CharBufferPool;
 			this.ClearsBuffer = builder.ClearsBuffer;
+			this.Features = Ensure.NotNull(features);
 		}
 	}
 }

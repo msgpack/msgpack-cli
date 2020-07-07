@@ -16,7 +16,7 @@ namespace MsgPack.Json
 		public JsonParseOptions ParseOptions { get; }
 
 		public JsonDecoderOptions(JsonDecoderOptionsBuilder builder)
-			: base(builder)
+			: base(builder, JsonFormatFeatures.Value)
 		{
 			this.ParseOptions = builder.ParseOptions;
 		}

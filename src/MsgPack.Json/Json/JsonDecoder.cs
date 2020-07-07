@@ -14,19 +14,10 @@ namespace MsgPack.Json
 	/// </summary>
 	public abstract partial class JsonDecoder : FormatDecoder
 	{
-		private static readonly FormatFeatures JsonFormatFeatures =
-			new FormatFeaturesBuilder
-			{
-				CanCountCollectionItems = false,
-				CanSpecifyStringEncoding = false,
-				SupportsExtensionTypes = false,
-				IsContextful = true
-			}.Build();
-
 		public new JsonDecoderOptions Options { get; }
 
 		protected JsonDecoder(JsonDecoderOptions options)
-			: base(options, JsonFormatFeatures)
+			: base(options)
 		{
 			this.Options = options;
 		}

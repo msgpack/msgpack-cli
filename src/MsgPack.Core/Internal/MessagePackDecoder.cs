@@ -11,16 +11,8 @@ namespace MsgPack.Internal
 {
 	public sealed partial class MessagePackDecoder : FormatDecoder
 	{
-		private static readonly FormatFeatures MessagePackFormatFeatures =
-			new FormatFeaturesBuilder
-			{
-				IsContextful = false,
-				CanCountCollectionItems = true,
-				CanSpecifyStringEncoding = true
-			}.Build();
-
 		public MessagePackDecoder(MessagePackDecoderOptions options)
-			: base(options, MessagePackFormatFeatures)
+			: base(options)
 		{
 			this._detectCollectionEnds = this.DetectCollectionEnds;
 		}
