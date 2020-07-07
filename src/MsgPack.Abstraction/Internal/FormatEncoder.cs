@@ -49,6 +49,18 @@ namespace MsgPack.Internal
 			this.EncodeString(value.AsSpan(), buffer, encoding, cancellationToken);
 		}
 
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public void EncodeString(StringBuilder? value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default)
+		{
+			if (value == null)
+			{
+				this.EncodeNull(buffer);
+				return;
+			}
+
+			this.EncodeString(value.ToSequence(), buffer, encoding, cancellationToken);
+		}
+
 		public abstract void EncodeString(ReadOnlySpan<char> value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default);
 
 		public abstract void EncodeString(in ReadOnlySequence<char> value, IBufferWriter<byte> buffer, Encoding? encoding = null, CancellationToken cancellationToken = default);
