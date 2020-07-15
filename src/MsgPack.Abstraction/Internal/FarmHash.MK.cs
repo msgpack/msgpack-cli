@@ -48,7 +48,7 @@ namespace MsgPack.Internal
 				h = Mur(e, h) + a;
 				a = Rotate32(a + f, 12) + d;
 				h = Mur(b ^ seed, h) + a;
-				return fmix(h);
+				return Fmix(h);
 			}
 
 			internal static unsafe uint Hash32Len0to4(byte* s, uint len, uint seed = 0)
@@ -61,7 +61,7 @@ namespace MsgPack.Internal
 					b = b * c1 + v;
 					c ^= b;
 				}
-				return fmix(Mur(b, Mur(len, c)));
+				return Fmix(Mur(b, Mur(len, c)));
 			}
 
 			internal static unsafe uint Hash32Len5to12(byte* s, uint len, uint seed = 0)
@@ -70,7 +70,7 @@ namespace MsgPack.Internal
 				a += Fetch32(s);
 				b += Fetch32(s + len - 4);
 				c += Fetch32(s + ((len >> 1) & 4));
-				return fmix(seed ^ Mur(c, Mur(b, Mur(a, d))));
+				return Fmix(seed ^ Mur(c, Mur(b, Mur(a, d))));
 			}
 
 			public static unsafe uint Hash32(byte* s, uint len)

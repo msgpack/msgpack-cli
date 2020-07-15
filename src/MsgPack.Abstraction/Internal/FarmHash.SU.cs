@@ -40,7 +40,7 @@ namespace MsgPack.Internal
 		internal static class SU
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static void swap(ref __m128i left, ref __m128i right)
+			private static void Swap(ref __m128i left, ref __m128i right)
 			{
 				var temp = left;
 				left = right;
@@ -146,7 +146,7 @@ namespace MsgPack.Internal
 						k = Xor(k, Ssse3.Shuffle(g.AsByte(), f.AsByte()).AsUInt32()); //_mm_shuffle_epi8      
 						g = Add(Xor(c, g), a);
 						f = Add(Xor(be, f), d);
-						swap(ref f, ref q);
+						Swap(ref f, ref q);
 						q = Aes.InverseMixColumns(q.AsByte()).AsUInt32(); // _mm_aesimc_si128                
 						k = Add(k, be);
 						k = Add(k, Ssse3.Shuffle(f.AsByte(), h.AsByte()).AsUInt32());
@@ -181,7 +181,7 @@ namespace MsgPack.Internal
 						k = Xor(k, Ssse3.Shuffle(g.AsByte(), f.AsByte()).AsUInt32()); //_mm_shuffle_epi8      
 						g = Add(Xor(c, g), a);
 						f = Add(Xor(be, f), d);
-						swap(ref f, ref q);
+						Swap(ref f, ref q);
 						q = Aes.InverseMixColumns(q.AsByte()).AsUInt32(); // _mm_aesimc_si128                
 						k = Add(k, be);
 						k = Add(k, Ssse3.Shuffle(f.AsByte(), h.AsByte()).AsUInt32());

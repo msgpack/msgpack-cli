@@ -98,7 +98,7 @@ namespace MsgPack.Internal
 					z += w.second;
 					w.second += z;
 					z *= 9;
-					swap(ref u, ref y);
+					Swap(ref u, ref y);
 
 					z += a0 + a6;
 					v.first += a2;
@@ -115,7 +115,7 @@ namespace MsgPack.Internal
 					w.second += x - y;
 					x += w.second;
 					w.second = Rotate64(w.second, 34);
-					swap(ref u, ref z);
+					Swap(ref u, ref z);
 					s += 64;
 				} while (s != end);
 				// Make s point to the last 64 bytes of input.

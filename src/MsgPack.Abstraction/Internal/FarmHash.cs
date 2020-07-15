@@ -121,7 +121,7 @@ namespace MsgPack.Internal
 			=> shift == 0 ? val : ((val >> shift) | (val << (32 - shift)));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static uint fmix(uint h)
+		private static uint Fmix(uint h)
 		{
 			h ^= h >> 16;
 			h *= 0x85ebca6b;

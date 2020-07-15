@@ -68,7 +68,7 @@ namespace MsgPack.Internal
 			=> Sse2.Shuffle(x, (0 << 6) + (3 << 4) + (2 << 2) + (1 << 0)); // _mm_shuffle_epi32
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void swap(ref ulong left, ref ulong right)
+		private static void Swap(ref ulong left, ref ulong right)
 		{
 			var temp = left;
 			left = right;

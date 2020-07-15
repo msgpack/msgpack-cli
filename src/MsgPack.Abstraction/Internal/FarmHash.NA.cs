@@ -204,7 +204,7 @@ namespace MsgPack.Internal
 					z = Rotate64(z + w.first, 33) * k1;
 					v = WeakHashLen32WithSeeds(s, v.second * k1, x + w.first);
 					w = WeakHashLen32WithSeeds(s + 32, z + w.second, y + Fetch64(s + 16));
-					swap(ref z, ref x);
+					Swap(ref z, ref x);
 					s += 64;
 				} while (s != end);
 				ulong mul = k1 + ((z & 0xff) << 1);
@@ -220,7 +220,7 @@ namespace MsgPack.Internal
 				z = Rotate64(z + w.first, 33) * mul;
 				v = WeakHashLen32WithSeeds(s, v.second * mul, x + w.first);
 				w = WeakHashLen32WithSeeds(s + 32, z + w.second, y + Fetch64(s + 16));
-				swap(ref z, ref x);
+				Swap(ref z, ref x);
 				return HashLen16(HashLen16(v.first, w.first, mul) + ShiftMix(y) * k0 + z,
 								 HashLen16(v.second, w.second, mul) + x,
 								 mul);
