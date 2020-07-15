@@ -111,16 +111,16 @@ namespace MsgPack.Internal
 			return BinaryPrimitives.ReadUInt32LittleEndian(bytes);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		private static unsafe uint Fetch32(byte* p)
 			=> *(uint*)p;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		private static uint Rotate32(uint val, int shift)
 			// Avoid shifting by 32: doing so yields an undefined result.
 			=> shift == 0 ? val : ((val >> shift) | (val << (32 - shift)));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		private static uint Fmix(uint h)
 		{
 			h ^= h >> 16;
@@ -131,7 +131,7 @@ namespace MsgPack.Internal
 			return h;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		private static uint Mur(uint a, uint h)
 		{
 			// Helper from Murmur3 for combining two 32-bit values.
