@@ -53,23 +53,47 @@ namespace MsgPack.Internal
 		/// <returns>Non-cryptgraphic, temporal hash value suitable as hash code.</returns>
 		public static unsafe int Hash32WithSeed(ReadOnlySpan<byte> bytes, uint seed)
 		{
+			var len = (uint)bytes.Length;
 			unchecked
 			{
 				fixed (byte* s = bytes)
 				{
 					if (Sse41.IsSupported && RuntimeInformation.ProcessArchitecture == Architecture.X64)
 					{
-						return (int)NT.Hash32WithSeed(s, (uint)bytes.Length, seed);
-					}
-
-					if (Sse42.IsSupported && Aes.IsSupported)
-					{
-						return (int)SU.Hash32WithSeed(s, (uint)bytes.Length, seed);
+						return (int)NT.Hash32WithSeed(s, len, seed);
 					}
 
 					if (Sse42.IsSupported)
 					{
-						return (int)SA.Hash32WithSeed(s, (uint)bytes.Length, seed);
+						// farmhashsa::Hash32WithSeed and farmshahsu::Hash32WithSeed is same for less than or equal to 24bytes,
+						// so inline here to reduce code size.
+						if (len <= 24)
+						{
+							if (len >= 13)
+							{
+								return (int)MK.Hash32Len13to24(s, len, seed * c1);
+							}
+							else if (len >= 5)
+							{
+								return (int)MK.Hash32Len5to12(s, len, seed);
+							}
+							else
+							{
+								return (int)MK.Hash32Len0to4(s, len, seed);
+							}
+						}
+
+						// Calculation of h is also common.
+						uint h = MK.Hash32Len13to24(s, 24, seed ^ len);
+
+						if (Aes.IsSupported)
+						{
+							return (int)SU.Hash32WithSeed(s, (uint)bytes.Length, seed, h);
+						}
+						else
+						{
+							return (int)SA.Hash32WithSeed(s, (uint)bytes.Length, seed, h);
+						}
 					}
 
 					return (int)MK.Hash32WithSeed(s, (uint)bytes.Length, seed);

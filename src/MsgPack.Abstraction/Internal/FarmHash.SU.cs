@@ -278,27 +278,8 @@ namespace MsgPack.Internal
 				return (o - x + y - z) * c1;
 			}
 
-			public static unsafe uint Hash32WithSeed(byte* s, uint len, uint seed)
-			{
-				if (len <= 24)
-				{
-					if (len >= 13)
-					{
-						return MK.Hash32Len13to24(s, len, seed * c1);
-					}
-					else if (len >= 5)
-					{
-						return MK.Hash32Len5to12(s, len, seed);
-					}
-					else
-					{
-						return MK.Hash32Len0to4(s, len, seed);
-					}
-				}
-
-				uint h = MK.Hash32Len13to24(s, 24, seed ^ len);
-				return Sse42.Crc32(Hash32(s + 24, len - 24) + seed, h); // _mm_crc32_u32
-			}
+			public static unsafe uint Hash32WithSeed(byte* s, uint len, uint seed, uint h)
+				=> Sse42.Crc32(Hash32(s + 24, len - 24) + seed, h); // _mm_crc32_u32
 		}
 	}
 }
