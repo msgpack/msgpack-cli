@@ -27,7 +27,6 @@
 //
 // FarmHash, by Geoff Pike
 
-using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 
@@ -39,52 +38,6 @@ namespace MsgPack.Internal
 	{
 		internal static class SA
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static unsafe __m128i Fetch128(byte* s)
-				=> Sse2.LoadVector128(s).AsUInt32(); // _mm_loadu_si128
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Add(__m128i x, __m128i y)
-				=> Sse2.Add(x, y); // _mm_add_epi32
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Xor(__m128i x, __m128i y)
-				=> Sse2.Xor(x, y); // _mm_xor_si128
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Or(__m128i x, __m128i y)
-				=> Sse2.Or(x, y); // _mm_or_si128
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Mul(__m128i x, __m128i y)
-				=> Sse41.MultiplyLow(x, y); // _mm_mullo_epi32
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Mul5(__m128i x)
-				=> Add(
-					x,
-					Sse2.ShiftLeftLogical(x, 2) // _mm_slli_epi32
-				);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Rotate(__m128i x, byte c)
-				=> Or(
-					Sse2.ShiftLeftLogical(x, c),// _mm_slli_epi32
-					Sse2.ShiftRightLogical(x, (byte)(32 - c)) // _mm_srli_epi32
-				);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Rot17(__m128i x)
-				=> Rotate(x, 17);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Rot19(__m128i x)
-				=> Rotate(x, 19);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Shuffle0321(__m128i x)
-				=> Sse2.Shuffle(x, (0 << 6) + (3 << 4) + (2 << 2) + (1 << 0)); // _mm_shuffle_epi32
-
 			public static unsafe uint Hash32(byte* s, uint len)
 			{
 				const uint seed = 81;
@@ -135,7 +88,7 @@ namespace MsgPack.Internal
 					__m128i be = Add(b, Mul(e, cc1));
 					h = Add(h, f);
 					f = Add(f, h);
-					h = Add(Add(k, Mul5(Rot19(Xor(Mul(Rot17(Mul(d, cc1)), cc2), (h))))), e);
+					h = Add(Add(k, Mul5(Rol19(Xor(Mul(Rol17(Mul(d, cc1)), cc2), (h))))), e);
 					k = Xor(k, Ssse3.Shuffle(g.AsByte(), f.AsByte()).AsUInt32()); // _mm_shuffle_epi8
 					g = Add(Xor(c, g), a);
 					f = Add(Xor(be, f), d);
@@ -170,7 +123,7 @@ namespace MsgPack.Internal
 						__m128i be = Add(b, Mul(e, cc1));
 						h = Add(h, f);
 						f = Add(f, h);
-						h = Add(Add(k, Mul5(Rot19(Xor(Mul(Rot17(Mul(d, cc1)), cc2), (h))))), e);
+						h = Add(Add(k, Mul5(Rol19(Xor(Mul(Rol17(Mul(d, cc1)), cc2), (h))))), e);
 						k = Xor(k, Ssse3.Shuffle(g.AsByte(), f.AsByte()).AsUInt32()); // _mm_shuffle_epi8
 						g = Add(Xor(c, g), a);
 						f = Add(Xor(be, f), d);
@@ -200,7 +153,7 @@ namespace MsgPack.Internal
 						__m128i be = Add(b, Mul(e, cc1));
 						h = Add(h, f);
 						f = Add(f, h);
-						h = Add(Add(k, Mul5(Rot19(Xor(Mul(Rot17(Mul(d, cc1)), cc2), (h))))), e);
+						h = Add(Add(k, Mul5(Rol19(Xor(Mul(Rol17(Mul(d, cc1)), cc2), (h))))), e);
 						k = Xor(k, Ssse3.Shuffle(g.AsByte(), f.AsByte()).AsUInt32()); // _mm_shuffle_epi8
 						g = Add(Xor(c, g), a);
 						f = Add(Xor(be, f), d);

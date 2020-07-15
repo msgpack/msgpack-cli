@@ -163,14 +163,6 @@ namespace MsgPack.Internal
 								 e + Rotate64(f + a, 18) + g, mul);
 			}
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static void swap(ref ulong left, ref ulong right)
-			{
-				var temp = left;
-				left = right;
-				right = temp;
-			}
-
 			public static unsafe ulong Hash64(byte* s, uint len)
 			{
 				const ulong seed = 81;

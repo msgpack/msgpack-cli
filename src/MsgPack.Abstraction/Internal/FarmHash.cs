@@ -116,18 +116,9 @@ namespace MsgPack.Internal
 			=> *(uint*)p;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static unsafe ulong Fetch64(byte* p)
-			=> *(ulong*)p;
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static uint Rotate32(uint val, int shift)
 			// Avoid shifting by 32: doing so yields an undefined result.
 			=> shift == 0 ? val : ((val >> shift) | (val << (32 - shift)));
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong Rotate64(ulong val, int shift)
-			// Avoid shifting by 64: doing so yields an undefined result.
-			=> shift == 0 ? val : ((val >> shift) | (val << (64 - shift)));
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static uint fmix(uint h)

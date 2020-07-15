@@ -40,52 +40,6 @@ namespace MsgPack.Internal
 		internal static class SU
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static unsafe __m128i Fetch128(byte* s)
-				=> Sse2.LoadVector128(s).AsUInt32(); // _mm_loadu_si128
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Add(__m128i x, __m128i y)
-				=> Sse2.Add(x, y); // _mm_add_epi32
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Xor(__m128i x, __m128i y)
-				=> Sse2.Xor(x, y); // _mm_xor_si128
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Or(__m128i x, __m128i y)
-				=> Sse2.Or(x, y); // _mm_or_si128
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Mul(__m128i x, __m128i y)
-				=> Sse41.MultiplyLow(x, y); // _mm_mullo_epi32
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Mul5(__m128i x)
-				=> Add(
-					x,
-					Sse2.ShiftLeftLogical(x, 2) // _mm_slli_epi32
-				);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i RotateLeft(__m128i x, byte c)
-				=> Or(
-					Sse2.ShiftLeftLogical(x, c),// _mm_slli_epi32
-					Sse2.ShiftRightLogical(x, (byte)(32 - c)) // _mm_srli_epi32
-				);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Rol17(__m128i x)
-				=> RotateLeft(x, 17);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Rol19(__m128i x)
-				=> RotateLeft(x, 19);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static __m128i Shuffle0321(__m128i x)
-				=> Sse2.Shuffle(x, (0 << 6) + (3 << 4) + (2 << 2) + (1 << 0)); // _mm_shuffle_epi32
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			private static void swap(ref __m128i left, ref __m128i right)
 			{
 				var temp = left;

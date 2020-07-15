@@ -37,14 +37,6 @@ namespace MsgPack.Internal
 		private static class UO
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			private static void swap(ref ulong left, ref ulong right)
-			{
-				var temp = left;
-				left = right;
-				right = temp;
-			}
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			private static unsafe ulong H(ulong x, ulong y, ulong mul, int r)
 			{
 				ulong a = (x ^ y) * mul;
