@@ -28,7 +28,7 @@ namespace MsgPack
 		public ReadOnlySequence<byte> Body { get; }
 
 		/// <summary>
-		///		Initializes a new instance.
+		///		Initializes a new <see cref="ExtensionTypeObject"/> instance.
 		/// </summary>
 		/// <param name="type">Codec specific type of this extension type data.</param>
 		/// <param name="body">Byte sequence which is body of this extension type data.</param>

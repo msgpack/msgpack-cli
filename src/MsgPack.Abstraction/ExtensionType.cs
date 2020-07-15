@@ -22,7 +22,7 @@ namespace MsgPack
 		public ulong Tag { get; }
 
 		/// <summary>
-		///		Initializes new instance.
+		///		Initializes a new <see cref="ExtensionType"/> instance.
 		///		This constructor should not be called from application directly.
 		/// </summary>
 		/// <param name="tag">Raw tag data.</param>
