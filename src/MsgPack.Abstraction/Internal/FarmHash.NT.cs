@@ -36,10 +36,6 @@ namespace MsgPack.Internal
 		internal static class NT
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public static unsafe uint Hash32(byte* s, uint len)
-				=> (uint)(TE.Hash64(s, len) & 0xFFFFFFFF);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static unsafe uint Hash32WithSeed(byte* s, uint len, uint seed)
 				=> (uint)(TE.Hash64WithSeed(s, len, seed) & 0xFFFFFFFF);
 		}

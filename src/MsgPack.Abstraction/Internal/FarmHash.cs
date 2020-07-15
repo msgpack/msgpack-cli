@@ -51,38 +51,6 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="bytes">Target byte span.</param>
 		/// <returns>Non-cryptgraphic, temporal hash value suitable as hash code.</returns>
-		public static unsafe int Hash32(ReadOnlySpan<byte> bytes)
-		{
-			unchecked
-			{
-				fixed (byte* s = bytes)
-				{
-					if (Sse41.IsSupported && RuntimeInformation.ProcessArchitecture == Architecture.X64)
-					{
-						return (int)NT.Hash32(s, (uint)bytes.Length);
-					}
-
-					if (Sse42.IsSupported && Aes.IsSupported)
-					{
-						return (int)SU.Hash32(s, (uint)bytes.Length);
-					}
-
-					if (Sse42.IsSupported)
-					{
-						return (int)SA.Hash32(s, (uint)bytes.Length);
-					}
-
-					return (int)MK.Hash32(s, (uint)bytes.Length);
-				}
-			}
-		}
-
-		/// <summary>
-		///		Hash function for a byte array. 
-		///		May change from time to time, may differ on different platforms.
-		/// </summary>
-		/// <param name="bytes">Target byte span.</param>
-		/// <returns>Non-cryptgraphic, temporal hash value suitable as hash code.</returns>
 		public static unsafe int Hash32WithSeed(ReadOnlySpan<byte> bytes, uint seed)
 		{
 			unchecked

@@ -249,12 +249,6 @@ namespace MsgPack.Internal
 			}
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public static unsafe ulong Hash64(byte* s, uint len)
-				=> len >= 512 ?
-					Hash64Long(s, len, k2, k1) :
-					XO.Hash64(s, len);
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static unsafe ulong Hash64WithSeed(byte* s, uint len, uint seed)
 				=> len >= 512 ?
 					Hash64Long(s, len, k1, seed) :
