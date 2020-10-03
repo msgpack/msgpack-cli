@@ -20,7 +20,7 @@ indent_style = tab
 tab_width = 4
 
 # 2 space indentation
-[*.{xml,csproj}]
+[*.{xml,csproj,props,targets}]
 indent_style = space
 indent_size = 2
 

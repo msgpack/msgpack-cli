@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(DefineConstants)', '(^|;)UNITY[^;]*($|;)'))">
+    <DefineConstants>$(DefineConstants);UNITY;AOT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(DefineConstants)', '(^|;)UNITY[^;]*($|;)'))">
+    <DefineConstants>$(DefineConstants);LIBRARY</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net35'">
+    <DefineConstants>$(DefineConstants);FEATURE_READ_ONLY_COLLECTION;FEATURE_ISET;FEATURE_TAP;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_TUPLE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net35' or '$(TargetFramework)' == 'netstandard2.0'">
+    <!-- CLR 2 and CLR 4 -->
+    <DefineConstants>$(DefineConstants);FEATURE_CER;FEATURE_CODE_ACCESS_SECURITY</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <DefineConstants>$(DefineConstants);FEATURE_ASYNC_DISPOSABLE;FEATURE_ADVANCED_BIT_CONVERTER;FEATURE_DO_NOT_WRAP_EXCEPTIONS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <DefineConstants>$(DefineConstants);FEATURE_ASYNC_DISPOSABLE;FEATURE_ADVANCED_BIT_CONVERTER;FEATURE_DO_NOT_WRAP_EXCEPTIONS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="('$(TargetFramework)' == 'net5') or ('$(TargetFramework)' == 'net6')">
+    <DefineConstants>$(DefineConstants);FEATURE_ASYNC_DISPOSABLE;FEATURE_ADVANCED_BIT_CONVERTER;FEATURE_DO_NOT_WRAP_EXCEPTIONS;FEATURE_ENCODING_EXTENSION;FEATURE_UTF8STRING;FEATURE_ADVANCED_OBSOLETE</DefineConstants>
+  </PropertyGroup>
+</Project>

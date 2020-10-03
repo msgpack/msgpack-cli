@@ -7,22 +7,4 @@
     <RootNamespace>MsgPack</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(DefineConstants)', '(^|;)UNITY[^;]*($|;)'))">
-    <DefineConstants>$(DefineConstants);UNITY;AOT</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(DefineConstants)', '(^|;)UNITY[^;]*($|;)'))">
-    <DefineConstants>$(DefineConstants);LIBRARY</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' != 'net35'">
-    <DefineConstants>$(DefineConstants);FEATURE_READ_ONLY_COLLECTION;FEATURE_TAP</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_ASYNC_DISPOSABLE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <DefineConstants>$(DefineConstants);FEATURE_ASYNC_DISPOSABLE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="('$(TargetFramework)' == 'net5') or ('$(TargetFramework)' == 'net6')">
-    <DefineConstants>$(DefineConstants);FEATURE_ASYNC_DISPOSABLE;FEATURE_ENCODING_EXTENSION;FEATURE_UTF8STRING</DefineConstants>
-  </PropertyGroup>
 </Project>
