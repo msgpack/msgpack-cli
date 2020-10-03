@@ -12,4 +12,12 @@
     <Version>2.0.0.0</Version>
     <InformationalVersion>2.0.0-nightly</InformationalVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.CLSCompliantAttribute">
+      <_Parameter1>true</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.InteropServices.ComVisibleAttribute">
+      <_Parameter1>false</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>
