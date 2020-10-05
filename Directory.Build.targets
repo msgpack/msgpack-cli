@@ -23,6 +23,7 @@
     <DefineConstants>$(DefineConstants);FEATURE_ASYNC_DISPOSABLE;FEATURE_ADVANCED_BIT_CONVERTER;FEATURE_DO_NOT_WRAP_EXCEPTIONS;FEATURE_ENCODING_EXTENSION;FEATURE_UTF8STRING;FEATURE_ADVANCED_OBSOLETE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../Common/CommonAssemblyInfo.cs" Link="Properties/CommonAssemblyInfo.cs" />
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="'$(TargetFramework)' != 'net35'">
       <_Parameter1>TargetFramework</_Parameter1>
       <_Parameter2>$(TargetFramework)</_Parameter2>
