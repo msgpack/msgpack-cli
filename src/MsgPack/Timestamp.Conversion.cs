@@ -74,55 +74,47 @@ namespace MsgPack
 		/// <returns>A <see cref="MessagePackExtendedTypeObject"/> which equivalant to this instance.</returns>
 		public MessagePackExtendedTypeObject Encode()
 		{
-			if ( ( this.unixEpochSeconds >> 34 ) != 0 )
-			{
-				// timestamp 96
-				var value = this;
-				var body = new byte[ 12 ];
-				body[ 0 ] = unchecked( ( byte )( ( this.nanoseconds >> 24 ) & 0xFF ) );
-				body[ 1 ] = unchecked( ( byte )( ( this.nanoseconds >> 16 ) & 0xFF ) );
-				body[ 2 ] = unchecked( ( byte )( ( this.nanoseconds >> 8 ) & 0xFF ) );
-				body[ 3 ] = unchecked( ( byte )( ( this.nanoseconds ) & 0xFF ) );
-				body[ 4 ] = unchecked( ( byte )( ( this.unixEpochSeconds >> 56 ) & 0xFF ) );
-				body[ 5 ] = unchecked( ( byte )( ( this.unixEpochSeconds >> 48 ) & 0xFF ) );
-				body[ 6 ] = unchecked( ( byte )( ( this.unixEpochSeconds >> 40 ) & 0xFF ) );
-				body[ 7 ] = unchecked( ( byte )( ( this.unixEpochSeconds >> 32 ) & 0xFF ) );
-				body[ 8 ] = unchecked( ( byte )( ( this.unixEpochSeconds >> 24 ) & 0xFF ) );
-				body[ 9 ] = unchecked( ( byte )( ( this.unixEpochSeconds >> 16 ) & 0xFF ) );
-				body[ 10 ] = unchecked( ( byte )( ( this.unixEpochSeconds >> 8 ) & 0xFF ) );
-				body[ 11 ] = unchecked( ( byte )( this.unixEpochSeconds & 0xFF ) );
+			Span<byte> buffer = stackalloc byte[12];
+			var used = this.Encode(buffer);
+			return MessagePackExtendedTypeObject.Unpack(TypeCode, buffer.Slice(0, used).ToArray());
+		}
 
-				return MessagePackExtendedTypeObject.Unpack( TypeCode, body );
+		public int Encode(Span<byte> buffer)
+		{
+			if ((this.unixEpochSeconds >> 34) != 0)
+			{
+				if (buffer.Length < 12)
+				{
+					Throw.TooSmallBuffer(nameof(buffer), 12);
+				}
+
+				// timestamp 96
+				BinaryPrimitives.WriteUInt32BigEndian(buffer, this.nanoseconds);
+				buffer = buffer.Slice(4);
+				BinaryPrimitives.WriteInt64BigEndian(buffer, this.unixEpochSeconds);
+				return 12;
 			}
 			else
 			{
-				var encoded = ( ( ( ulong )this.nanoseconds ) << 34 ) | unchecked( ( ulong )this.unixEpochSeconds );
-				if ( ( encoded & 0xFFFFFFFF00000000L ) == 0 )
+				var encoded = (((ulong)this.nanoseconds) << 34) | unchecked((ulong)this.unixEpochSeconds);
+				if ((encoded & 0xFFFFFFFF00000000L) == 0)
 				{
-					// timestamp 32
-					var value = unchecked( ( uint )encoded );
-					var body = new byte[ 4 ];
-					body[ 0 ] = unchecked( ( byte )( ( encoded >> 24 ) & 0xFF ) );
-					body[ 1 ] = unchecked( ( byte )( ( encoded >> 16 ) & 0xFF ) );
-					body[ 2 ] = unchecked( ( byte )( ( encoded >> 8 ) & 0xFF ) );
-					body[ 3 ] = unchecked( ( byte )( encoded & 0xFF ) );
+					if (buffer.Length < 4)
+					{
+						Throw.TooSmallBuffer(nameof(buffer), 4);
+					}
 
-					return MessagePackExtendedTypeObject.Unpack( TypeCode, body );
+					// timestamp 32
+					BinaryPrimitives.WriteUInt32BigEndian(buffer, unchecked((uint)encoded));
+
+					return 4;
 				}
 				else
 				{
 					// timestamp 64
-					var body = new byte[ 8 ];
-					body[ 0 ] = unchecked( ( byte )( ( encoded >> 56 ) & 0xFF ) );
-					body[ 1 ] = unchecked( ( byte )( ( encoded >> 48 ) & 0xFF ) );
-					body[ 2 ] = unchecked( ( byte )( ( encoded >> 40 ) & 0xFF ) );
-					body[ 3 ] = unchecked( ( byte )( ( encoded >> 32 ) & 0xFF ) );
-					body[ 4 ] = unchecked( ( byte )( ( encoded >> 24 ) & 0xFF ) );
-					body[ 5 ] = unchecked( ( byte )( ( encoded >> 16 ) & 0xFF ) );
-					body[ 6 ] = unchecked( ( byte )( ( encoded >> 8 ) & 0xFF ) );
-					body[ 7 ] = unchecked( ( byte )( encoded & 0xFF ) );
+					BinaryPrimitives.WriteUInt64BigEndian(buffer, encoded);
 
-					return MessagePackExtendedTypeObject.Unpack( TypeCode, body );
+					return 8;
 				}
 			}
 		}
@@ -193,34 +185,58 @@ namespace MsgPack
 		///			<item>Its nanoseconds part is between 0 and 999,999,999.</item>
 		///		</list>
 		/// </remarks>
-		public static Timestamp Decode( MessagePackExtendedTypeObject value )
+		public static Timestamp Decode(MessagePackExtendedTypeObject value)
 		{
-			if ( value.TypeCode != TypeCode )
+			if (value.TypeCode != TypeCode)
 			{
-				throw new ArgumentException( "The value's type code must be 0xFF.", "value" );
+				Throw.InvalidTimestampTypeCode(value.TypeCode, nameof(value));
 			}
 
-			switch( value.Body.Length )
+			return DecodeCore(new ReadOnlySequence<byte>(value.Body));
+		}
+			
+
+		public static Timestamp Decode(ExtensionTypeObject value)
+		{
+			if (value.Type.Tag != unchecked((sbyte)TypeCode))
+			{
+				Throw.InvalidTimestampTypeCode(value.Type.Tag, nameof(value));
+			}
+
+			return DecodeCore(value.Body);
+		}
+
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		private static Timestamp DecodeCore(in ReadOnlySequence<byte> body)
+		{ 
+			switch (body.Length)
 			{
 				case 4:
 				{
 					// timespan32 format
-					return new Timestamp( BigEndianBinary.ToUInt32( value.Body, 0 ), 0 );
+					Span<byte> buffer = stackalloc byte[4];
+					body.CopyTo(buffer);
+					return new Timestamp(BinaryPrimitives.ReadUInt32BigEndian(buffer), 0);
 				}
 				case 8:
 				{
 					// timespan64 format
-					var payload = BigEndianBinary.ToUInt64( value.Body, 0 );
-					return new Timestamp( unchecked( ( long )( payload & 0x00000003ffffffffL ) ), unchecked( ( int )( payload >> 34 ) ) );
+					Span<byte> buffer = stackalloc byte[8];
+					body.CopyTo(buffer);
+					var payload = BinaryPrimitives.ReadUInt64BigEndian(buffer);
+					return new Timestamp(unchecked((long)(payload & 0x00000003ffffffffL)), unchecked((int)(payload >> 34)));
 				}
 				case 12:
 				{
 					// timespan96 format
-					return new Timestamp( BigEndianBinary.ToInt64( value.Body, sizeof( int ) ), unchecked( ( int )BigEndianBinary.ToUInt32( value.Body, 0 ) ) );
+					Span<byte> buffer = stackalloc byte[12];
+					body.CopyTo(buffer);
+					return new Timestamp(BinaryPrimitives.ReadInt64BigEndian(buffer.Slice(sizeof(int))), BinaryPrimitives.ReadInt32BigEndian(buffer));
 				}
 				default:
 				{
-					throw new ArgumentException( "The value's length is not valid.", "value" );
+					Throw.InvalidTimestampLength(body.Length, "value");
+					return default; // Never reaches
 				}
 			}
 		}
