@@ -2,7 +2,6 @@
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
-using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 
@@ -10,7 +9,6 @@ namespace MsgPack.Internal
 {
 	public struct CollectionItemIterator
 	{
-#warning TODO: in SequenceReader<byte> ??
 		public delegate bool CollectionEndDetection(ref SequenceReader<byte> source, ref long nextItemIndex, long itemsCount, out int requestHint);
 
 		private readonly long _itemsCount;
@@ -59,6 +57,7 @@ namespace MsgPack.Internal
 			}
 		}
 
+#warning TODO: CancellationToken
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public bool Drain(ref SequenceReader<byte> source, out int requestHint)
 		{
