@@ -19,7 +19,7 @@ namespace MsgPack
 		/// <remarks>
 		///		Valid range and sementics depend on serialization codec.
 		/// </remarks>
-		public ulong Tag { get; }
+		public long Tag { get; }
 
 		/// <summary>
 		///		Initializes a new <see cref="ExtensionType"/> instance.
@@ -27,7 +27,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="tag">Raw tag data.</param>
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		public ExtensionType(ulong tag)
+		public ExtensionType(long tag)
 		{
 			this.Tag = tag;
 		}
