@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace MsgPack
 {
-	internal static class Ensure
+	internal static partial class Ensure
 	{
 		[return: NotNull]
 		public static T NotNull<T>([NotNull]T value, [CallerArgumentExpression("value")]string paramName = null!)
