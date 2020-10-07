@@ -450,7 +450,7 @@ namespace MsgPack
 				}
 				case TypeCode.String:
 				{
-					return value.ToString();
+					return value.ToString() ?? String.Empty;
 				}
 				case TypeCode.UInt16:
 				{
