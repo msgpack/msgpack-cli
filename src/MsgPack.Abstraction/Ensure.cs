@@ -45,6 +45,18 @@ namespace MsgPack
 			return value;
 		}
 
+		public static string NotBlankAndTrimmed([NotNull] string? value, [CallerArgumentExpression("value")] string paramName = null!)
+		{
+			NotNull(value);
+
+			if (String.IsNullOrWhiteSpace(value))
+			{
+				ThrowArgumentBlankString(paramName);
+			}
+
+			return value.Trim();
+		}
+
 		public static int IsNotNegative(int value, [CallerArgumentExpression("value")]string paramName = null!)
 		{
 			if (value < 0)
