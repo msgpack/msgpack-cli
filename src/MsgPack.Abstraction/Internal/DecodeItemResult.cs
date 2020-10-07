@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace MsgPack.Internal
 {
+#warning TODO: Decode -> Parse, Encode -> Format
 	/// <summary>
 	///		Represents a result of <see cref="FormatDecoder.DecodeItem"/>.
 	/// </summary>
@@ -15,28 +16,27 @@ namespace MsgPack.Internal
 	{
 		public bool HasValue => this.ElementType != ElementType.None;
 		public ElementType ElementType { get; }
+
+		// If ElementType is string , this value is not decoded.
 		public ReadOnlySequence<byte> Value { get; }
 		public CollectionItemIterator CollectionIterator { get; }
 		public long CollectionLength { get; }
-		public ExtensionTypeObject ExtensionTypeObject { get; }
+		public ExtensionType ExtensionType { get; }
 		public ReadOnlySequence<byte> ExtensionBody => this.Value;
-		public long RequestHint { get; }
 
 		private DecodeItemResult(
 			ElementType elementType,
 			in ReadOnlySequence<byte> value = default,
 			in CollectionItemIterator collectionIterator = default,
 			long collectionLength = default,
-			ExtensionTypeObject extensionTypeObject = default,
-			long requestHint = default
+			ExtensionType extensionType = default
 		)
 		{
 			this.ElementType = elementType;
 			this.Value = value;
 			this.CollectionIterator = collectionIterator;
 			this.CollectionLength = collectionLength;
-			this.ExtensionTypeObject = extensionTypeObject;
-			this.RequestHint = requestHint;
+			this.ExtensionType = extensionType;
 		}
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
@@ -64,11 +64,13 @@ namespace MsgPack.Internal
 			=> new DecodeItemResult(ElementType.False);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult ExtensionType(ExtensionTypeObject extensionTypeObject)
-			=> new DecodeItemResult(ElementType.Extension, extensionTypeObject : extensionTypeObject);
+		public static DecodeItemResult ExtensionTypeObject(ExtensionType extensionType, in ReadOnlySequence<byte> body)
+			=> new DecodeItemResult(ElementType.Extension, extensionType: extensionType, value: body);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
-		public static DecodeItemResult InsufficientInput(long requestHint)
-			=> new DecodeItemResult(ElementType.None, requestHint: requestHint);
+		public static DecodeItemResult InsufficientInput()
+			=> new DecodeItemResult(ElementType.None);
+
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 	}
 }
