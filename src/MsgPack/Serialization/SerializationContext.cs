@@ -358,6 +358,7 @@ namespace MsgPack.Serialization
 					case DateTimeConversionMethod.Native:
 					case DateTimeConversionMethod.UnixEpoc:
 					case DateTimeConversionMethod.Timestamp:
+					case DateTimeConversionMethod.Iso8601ExtendedFormat:
 					{
 						break;
 					}
