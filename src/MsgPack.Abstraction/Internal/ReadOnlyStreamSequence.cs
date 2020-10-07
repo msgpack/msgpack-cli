@@ -103,7 +103,7 @@ namespace MsgPack.Internal
 			}
 			else
 			{
-				// comact
+				// compact
 				this.Memory.CopyTo(this._array);
 			}
 
