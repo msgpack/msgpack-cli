@@ -43,10 +43,10 @@ namespace MsgPack
 	/// <summary>
 	///		Encapselates <see cref="String"/> and its serialized UTF-8 bytes.
 	/// </summary>
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
+#if FEATURE_BINARY_SERIALIZATION
+#warning TODO: Enable in .NET Standard 2.0 in Changes.txt
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
-#if !NET35 && !UNITY
+#endif // FEATURE_BINARY_SERIALIZATION
 	[SecuritySafeCritical]
 #endif // !NET35 && !UNITY
 	[DebuggerDisplay( "{DebuggerDisplayString}" )]

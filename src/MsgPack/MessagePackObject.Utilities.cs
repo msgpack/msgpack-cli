@@ -44,9 +44,10 @@ using System.Threading.Tasks;
 
 namespace MsgPack
 {
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
+#if FEATURE_BINARY_SERIALIZATION
+#warning TODO: Enable in .NET Standard 2.0 in Changes.txt
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3 && !NETSTANDARD2_0
+#endif // FEATURE_BINARY_SERIALIZATION
 	partial struct MessagePackObject : IPackable
 #if FEATURE_TAP
 		, IAsyncPackable

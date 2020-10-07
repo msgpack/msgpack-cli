@@ -19,19 +19,18 @@
 #endregion -- License Terms --
 
 using System;
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_BINARY_SERIALIZATION
 using System.Runtime.Serialization;
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_BINARY_SERIALIZATION
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Represents unpacking error when message type is unknown or unavailable.
 	/// </summary>
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_BINARY_SERIALIZATION
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
-	public class MessageTypeException : Exception
+#endif // FEATURE_BINARY_SERIALIZATION
 	{
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with the default error message.
@@ -52,8 +51,8 @@ namespace MsgPack
 		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
 		/// </param>
 		public MessageTypeException(string? message, Exception? inner) : base(message ?? "Invalid message type.", inner) { }
+#if FEATURE_BINARY_SERIALIZATION
 
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with serialized data.
 		/// </summary>
@@ -69,6 +68,7 @@ namespace MsgPack
 		///		The class name is <c>null</c> or <see cref="P:HResult"/> is zero (0).
 		///	</exception>
 		protected MessageTypeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+
+#endif // FEATURE_BINARY_SERIALIZATION
 	}
 }

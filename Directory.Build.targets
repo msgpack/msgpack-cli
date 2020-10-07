@@ -6,6 +6,9 @@
   <PropertyGroup Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('%(DefineConstants)', '(^|;)UNITY[^;]*($|;)'))">
     <DefineConstants>$(DefineConstants);LIBRARY</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);FEATURE_BINARY_SERIALIZATION</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' != 'net35'">
     <DefineConstants>$(DefineConstants);FEATURE_READ_ONLY_COLLECTION;FEATURE_ISET;FEATURE_TAP;FEATURE_EXCEPTION_DISPATCH_INFO;FEATURE_TUPLE</DefineConstants>
   </PropertyGroup>

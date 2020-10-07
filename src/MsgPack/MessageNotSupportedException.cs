@@ -19,18 +19,18 @@
 #endregion -- License Terms --
 
 using System;
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_BINARY_SERIALIZATION
 using System.Runtime.Serialization;
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_BINARY_SERIALIZATION
 
 namespace MsgPack
 {
 	/// <summary>
 	///		Exception occurs when serialized stream contains structures or features which will never be supported by MsgPack/CLI implementation.
 	/// </summary>
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_BINARY_SERIALIZATION
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_BINARY_SERIALIZATION
 	public sealed class MessageNotSupportedException : Exception
 	{
 		/// <summary>
@@ -53,7 +53,7 @@ namespace MsgPack
 		/// </param>
 		public MessageNotSupportedException(string? message, Exception? inner) : base(message ?? "Specified object is not supported.", inner) { }
 
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_BINARY_SERIALIZATION
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageNotSupportedException"/> class with serialized data.
 		/// </summary>
@@ -70,6 +70,7 @@ namespace MsgPack
 		///	</exception>
 		private MessageNotSupportedException(SerializationInfo info, StreamingContext context)
 			: base(info, context) { }
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+
+#endif // FEATURE_BINARY_SERIALIZATION
 	}
 }

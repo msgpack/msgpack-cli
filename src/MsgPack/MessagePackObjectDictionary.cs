@@ -34,6 +34,9 @@ using System.Diagnostics.Contracts;
 #endif // FEATURE_MPCONTRACT
 using System.Globalization;
 using System.Linq;
+#if FEATURE_BINARY_SERIALIZATION
+using System.Runtime.CompilerServices;
+#endif // FEATURE_BINARY_SERIALIZATION
 
 namespace MsgPack
 {
@@ -45,9 +48,9 @@ namespace MsgPack
 	///		Additionally, this dictionary implements 'freezing' feature. 
 	///		For details, see <see cref="IsFrozen"/>, <see cref="Freeze"/>, and <see cref="AsFrozen"/>.
 	/// </remarks>
-#if !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#if FEATURE_BINARY_SERIALIZATION
 	[Serializable]
-#endif // !SILVERLIGHT && !NETSTANDARD1_1 && !NETSTANDARD1_3
+#endif // FEATURE_BINARY_SERIALIZATION
 	[DebuggerTypeProxy( typeof( DictionaryDebuggerProxy<,> ) )]
 	public partial class MessagePackObjectDictionary :
 		IDictionary<MessagePackObject, MessagePackObject>, IDictionary
