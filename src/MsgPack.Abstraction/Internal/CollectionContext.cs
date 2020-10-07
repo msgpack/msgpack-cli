@@ -27,11 +27,11 @@ namespace MsgPack.Internal
 			this.CurrentDepth = currentDepth;
 		}
 
-		public int IncrementDepth()
+		public int IncrementDepth(long position)
 		{
 			if (this.CurrentDepth == this.MaxDepth)
 			{
-				Throw.DepthExeeded(this.CurrentDepth, this.MaxDepth);
+				Throw.DepthExeeded(position, this.MaxDepth);
 			}
 
 			return this.CurrentDepth++;
