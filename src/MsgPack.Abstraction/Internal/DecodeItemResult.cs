@@ -72,5 +72,7 @@ namespace MsgPack.Internal
 			=> new DecodeItemResult(ElementType.None);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public static DecodeItemResult EndOfStream()
+			=> new DecodeItemResult(ElementType.None);
 	}
 }
