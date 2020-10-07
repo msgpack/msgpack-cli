@@ -25,7 +25,7 @@ namespace MsgPack.Internal
 		public static readonly int MaxDepth = 100;
 		public static readonly ArrayPool<byte> ByteBufferPool = ArrayPool<byte>.Shared;
 		public static readonly ArrayPool<char> CharBufferPool = ArrayPool<char>.Shared;
-		public static readonly bool ClearsBuffer = true;
+		public static readonly bool ClearsBufferOnReturn = false;
 		public static readonly bool CanTreatRealAsInteger = true;
 		public static readonly SerializationMethod? PreferredSerializationMethod = null;
 	}
