@@ -1,24 +1,9 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2016 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
+using System.ComponentModel;
 #if FEATURE_BINARY_SERIALIZATION
 using System.Runtime.Serialization;
 #endif // FEATURE_BINARY_SERIALIZATION
@@ -31,17 +16,26 @@ namespace MsgPack
 #if FEATURE_BINARY_SERIALIZATION
 	[Serializable]
 #endif // FEATURE_BINARY_SERIALIZATION
+	public class MessageTypeException : DecodeException
 	{
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with the default error message.
 		/// </summary>
+		[Obsolete("Use .ctor(long) instead.")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public MessageTypeException() : this(null) { }
+
+		public MessageTypeException(long position) : this(position, null) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message.
 		/// </summary>
 		/// <param name="message">The message that describes the error. </param>
+		[Obsolete("Use .ctor(long, string?) instead.")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public MessageTypeException(string? message) : this(message, null) { }
+
+		public MessageTypeException(long position, string? message) : this(position, message, null) { }
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception. 
@@ -50,7 +44,13 @@ namespace MsgPack
 		/// <param name="inner">
 		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
 		/// </param>
-		public MessageTypeException(string? message, Exception? inner) : base(message ?? "Invalid message type.", inner) { }
+		[Obsolete("Use .ctor(long, string?, Exception?) instead.")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public MessageTypeException(string? message, Exception? inner) : this(0, message ?? "Invalid message type.", inner) { }
+
+		public MessageTypeException(long position, string? message, Exception? innerException)
+			:base(position, message, innerException) { }
+
 #if FEATURE_BINARY_SERIALIZATION
 
 		/// <summary>

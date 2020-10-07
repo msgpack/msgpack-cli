@@ -1,26 +1,6 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2018 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 using System.Text;
@@ -30,23 +10,16 @@ namespace MsgPack
 	/// <summary>
 	///		Represents Message Pack extended type object.
 	/// </summary>
+	[Obsolete("Use ExtensionTypeObject instead.")]
 	public struct MessagePackExtendedTypeObject : IEquatable<MessagePackExtendedTypeObject>
 	{
-		/// <summary>
-		///		A type code of this object.
-		/// </summary>
-		private readonly byte _typeCode;
-
 		/// <summary>
 		///		Gets a type code of this object.
 		/// </summary>
 		/// <value>
 		///		A type code. Note that values over <see cref="SByte.MaxValue"/> are reserved for MsgPack spec itself.
 		/// </value>
-		public byte TypeCode
-		{
-			get { return this._typeCode; }
-		}
+		public byte TypeCode { get; }
 
 		/// <summary>
 		///		A binary value portion of this object.
@@ -59,15 +32,7 @@ namespace MsgPack
 		/// <value>
 		///		A binary value portion of this object. This value will not be null.
 		/// </value>
-#if UNITY && DEBUG
-		public
-#else
-		internal
-#endif
-		byte[] Body
-		{
-			get { return this._body ?? Binary.Empty; }
-		}
+		internal byte[] Body => this._body ?? Binary.Empty;
 
 		/// <summary>
 		///		Gets a copy of the binary value portion of this object.
@@ -76,9 +41,7 @@ namespace MsgPack
 		///		A copy of the binary value portion of this object. This value will not be null.
 		/// </value>
 		public byte[] GetBody()
-		{
-			return this._body == null ? Binary.Empty : this._body.Clone() as byte[];
-		}
+			=> this._body == null ? Binary.Empty : (this._body.Clone() as byte[])!;
 
 		/// <summary>
 		///		Gets a value indicating whether this instance is valid.
@@ -86,24 +49,19 @@ namespace MsgPack
 		/// <value>
 		///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
 		/// </value>
-		public bool IsValid
-		{
-			get { return this._body != null; }
-		}
-
+		public bool IsValid => this._body != null;
 
 		// For unpacking
-		private MessagePackExtendedTypeObject( byte[] body, byte unpackedTypeCode )
+		private MessagePackExtendedTypeObject(byte[] body, byte unpackedTypeCode)
 		{
-			if ( body == null )
+			if (body == null)
 			{
-				throw new ArgumentNullException( "body" );
+				throw new ArgumentNullException("body");
 			}
 
-			this._typeCode = unpackedTypeCode;
+			this.TypeCode = unpackedTypeCode;
 			this._body = body;
 		}
-
 
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessagePackExtendedTypeObject"/> struct.
@@ -114,21 +72,21 @@ namespace MsgPack
 		///		The <paramref name="typeCode"/> is over 127. Higher values are reserved for MessagePack format specification.
 		/// </exception>
 		/// <exception cref="System.ArgumentNullException">The <paramref name="body"/> is <c>null</c>.</exception>
-		public MessagePackExtendedTypeObject( byte typeCode, byte[] body )
+		public MessagePackExtendedTypeObject(byte typeCode, byte[] body)
 		{
-			if ( typeCode > 0x7F )
+			if (typeCode > 0x7F)
 			{
 				throw new ArgumentException(
 					"A typeCode must be less than 128 because higher values are reserved for MessagePack format specification.",
-					"typeCode" );
+					"typeCode");
 			}
 
-			if ( body == null )
+			if (body == null)
 			{
-				throw new ArgumentNullException( "body" );
+				throw new ArgumentNullException("body");
 			}
 
-			this._typeCode = typeCode;
+			this.TypeCode = typeCode;
 			this._body = body;
 		}
 
@@ -141,9 +99,9 @@ namespace MsgPack
 		/// <remarks>
 		///		This method allows reserved type code. It means that this method does not throw exception when the <paramref name="typeCode"/> is reserved value (greater then 0x7F).
 		/// </remarks>
-		public static MessagePackExtendedTypeObject Unpack( byte typeCode, byte[] body )
+		public static MessagePackExtendedTypeObject Unpack(byte typeCode, byte[] body)
 		{
-			return new MessagePackExtendedTypeObject( body, typeCode );
+			return new MessagePackExtendedTypeObject(body, typeCode);
 		}
 
 		/// <summary>
@@ -154,47 +112,41 @@ namespace MsgPack
 		/// </returns>
 		public override string ToString()
 		{
-			if ( this._body == null )
+			if (this._body == null)
 			{
 				return String.Empty;
 			}
 
-			var buffer = new StringBuilder( 7 + this._body.Length * 2 );
-			this.ToString( buffer, false );
+			var buffer = new StringBuilder(7 + this._body.Length * 2);
+			this.ToString(buffer, false);
 			return buffer.ToString();
 		}
 
-#if UNITY && DEBUG
-		public
-#else
-		internal
-#endif
-		void ToString( StringBuilder buffer, bool isJson )
+		internal void ToString(StringBuilder buffer, bool isJson)
 		{
-			if ( isJson )
+			if (isJson)
 			{
-				if ( this._body == null )
+				if (this._body == null)
 				{
 					// Assume that JSON is used when a collection is stringified, so empty string should break entire JSON.
-					buffer.Append( "null" );
+					buffer.Append("null");
 					return;
 				}
 
-				buffer.Append( "{\"TypeCode\":" ).Append( this._typeCode ).Append( ", \"Body\":\"" );
-				Binary.ToHexString( this._body, buffer );
-				buffer.Append( "\"}" );
+				buffer.Append("{\"TypeCode\":").Append(this.TypeCode).Append(", \"Body\":\"");
+				Binary.ToHexString(this._body, buffer);
+				buffer.Append("\"}");
 			}
 			else
 			{
-				if ( this._body == null )
+				if (this._body == null)
 				{
 					return;
 				}
 
-				buffer.Append( "[" ).Append( this._typeCode ).Append( "]" );
-				Binary.ToHexString( this._body, buffer );
+				buffer.Append("[").Append(this.TypeCode).Append("]");
+				Binary.ToHexString(this._body, buffer);
 			}
-
 		}
 
 		/// <summary>
@@ -205,24 +157,24 @@ namespace MsgPack
 		/// </returns>
 		public override int GetHashCode()
 		{
-			if ( this._body == null )
+			if (this._body == null)
 			{
 				return 0;
 			}
 
 			unchecked
 			{
-				int hashCode = this._typeCode << 24;
+				int hashCode = this.TypeCode << 24;
 				hashCode ^= this._body.Length;
-				int hashCodeTargetLength = Math.Min( this._body.Length / 4, 8 );
-				for ( int i = 0; i < hashCodeTargetLength; i++ )
+				int hashCodeTargetLength = Math.Min(this._body.Length / 4, 8);
+				for (int i = 0; i < hashCodeTargetLength; i++)
 				{
-					uint temp = this._body[ i ];
-					temp |= ( uint )( this._body[ i + 1 ] << 8 );
-					temp |= ( uint )( this._body[ i + 2 ] << 16 );
-					temp |= ( uint )( this._body[ i + 3 ] << 24 );
+					uint temp = this._body[i];
+					temp |= (uint)(this._body[i + 1] << 8);
+					temp |= (uint)(this._body[i + 2] << 16);
+					temp |= (uint)(this._body[i + 3] << 24);
 
-					hashCode ^= ( int )temp;
+					hashCode ^= (int)temp;
 				}
 
 				return hashCode;
@@ -236,14 +188,14 @@ namespace MsgPack
 		/// <returns>
 		///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
 		/// </returns>
-		public override bool Equals( object obj )
+		public override bool Equals(object? obj)
 		{
-			if ( !( obj is MessagePackExtendedTypeObject ) )
+			if (!(obj is MessagePackExtendedTypeObject other))
 			{
 				return false;
 			}
 
-			return this.Equals( ( MessagePackExtendedTypeObject )obj );
+			return this.Equals(other);
 		}
 
 		/// <summary>
@@ -253,26 +205,26 @@ namespace MsgPack
 		/// <returns>
 		///   <c>true</c> if the specified <see cref="MessagePackExtendedTypeObject" /> is equal to this instance; otherwise, <c>false</c>.
 		/// </returns>
-		public bool Equals( MessagePackExtendedTypeObject other )
+		public bool Equals(MessagePackExtendedTypeObject other)
 		{
-			if ( this._typeCode != other._typeCode )
+			if (this.TypeCode != other.TypeCode)
 			{
 				return false;
 			}
 
-			if ( ReferenceEquals( this._body, other._body ) )
+			if (ReferenceEquals(this._body, other._body))
 			{
 				return true;
 			}
 
-			if ( this._body.Length != other._body.Length )
+			if (this._body.Length != other._body.Length)
 			{
 				return false;
 			}
 
-			for ( int i = 0; i < this._body.Length; i++ )
+			for (int i = 0; i < this._body.Length; i++)
 			{
-				if ( this._body[ i ] != other._body[ i ] )
+				if (this._body[i] != other._body[i])
 				{
 					return false;
 				}
@@ -289,9 +241,9 @@ namespace MsgPack
 		/// <returns>
 		///   <c>true</c> if the specified <see cref="MessagePackExtendedTypeObject" />s are equal; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool operator ==( MessagePackExtendedTypeObject left, MessagePackExtendedTypeObject right )
+		public static bool operator ==(MessagePackExtendedTypeObject left, MessagePackExtendedTypeObject right)
 		{
-			return left.Equals( right );
+			return left.Equals(right);
 		}
 
 		/// <summary>
@@ -302,9 +254,9 @@ namespace MsgPack
 		/// <returns>
 		///   <c>true</c> if the specified <see cref="MessagePackExtendedTypeObject" />s are not equal; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool operator !=( MessagePackExtendedTypeObject left, MessagePackExtendedTypeObject right )
+		public static bool operator !=(MessagePackExtendedTypeObject left, MessagePackExtendedTypeObject right)
 		{
-			return !left.Equals( right );
+			return !left.Equals(right);
 		}
 	}
 }

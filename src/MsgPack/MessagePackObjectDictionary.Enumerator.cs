@@ -1,39 +1,15 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
+using System.Diagnostics;
 
 namespace MsgPack
 {
-	partial class MessagePackObjectDictionary
+	public partial class MessagePackObjectDictionary
 	{
 		/// <summary>
 		///		Enumerates the elements of a <see cref="MessagePackObjectDictionary"/> in order.
@@ -84,7 +60,7 @@ namespace MsgPack
 				get
 				{
 					var entry = this.GetCurrentStrict();
-					return new DictionaryEntry( entry.Key, entry.Value );
+					return new DictionaryEntry(entry.Key, entry.Value);
 				}
 			}
 
@@ -102,29 +78,29 @@ namespace MsgPack
 			{
 				this.VerifyVersion();
 
-				if ( this._position == BeforeHead || this._position == End )
+				if (this._position == BeforeHead || this._position == End)
 				{
-					throw new InvalidOperationException( "The enumerator is positioned before the first element of the collection or after the last element." );
+					throw new InvalidOperationException("The enumerator is positioned before the first element of the collection or after the last element.");
 				}
 
 				return this._current;
 			}
 
-			internal Enumerator( MessagePackObjectDictionary dictionary )
+			internal Enumerator(MessagePackObjectDictionary dictionary)
 				: this()
 			{
-				Contract.Assert( dictionary != null, "dictionary != null" );
+				Debug.Assert(dictionary != null, "dictionary != null");
 
-				this = default( Enumerator );
+				this = default(Enumerator);
 				this._underlying = dictionary;
 				this.ResetCore();
 			}
 
 			internal void VerifyVersion()
 			{
-				if ( this._underlying != null && this._underlying._version != this._initialVersion )
+				if (this._underlying != null && this._underlying._version != this._initialVersion)
 				{
-					throw new InvalidOperationException( "The collection was modified after the enumerator was created." );
+					throw new InvalidOperationException("The collection was modified after the enumerator was created.");
 				}
 			}
 
@@ -148,14 +124,14 @@ namespace MsgPack
 			///	</exception>
 			public bool MoveNext()
 			{
-				if ( this._position == End )
+				if (this._position == End)
 				{
 					return false;
 				}
 
-				if ( this._position == IsDictionary )
+				if (this._position == IsDictionary)
 				{
-					if ( !this._enumerator.MoveNext() )
+					if (!this._enumerator.MoveNext())
 					{
 						return false;
 					}
@@ -164,9 +140,10 @@ namespace MsgPack
 					return true;
 				}
 
-				if ( this._position == BeforeHead )
+				if (this._position == BeforeHead)
 				{
-					if ( this._underlying._keys.Count == 0 )
+#warning TODO: NRE
+					if (this._underlying._keys.Count == 0)
 					{
 						this._position = End;
 						return false;
@@ -180,13 +157,15 @@ namespace MsgPack
 					this._position++;
 				}
 
-				if ( this._position == this._underlying._keys.Count )
+#warning TODO: NRE
+				if (this._position == this._underlying._keys.Count)
 				{
 					this._position = End;
 					return false;
 				}
 
-				this._current = new KeyValuePair<MessagePackObject, MessagePackObject>( this._underlying._keys[ this._position ], this._underlying._values[ this._position ] );
+#warning TODO: NRE
+				this._current = new KeyValuePair<MessagePackObject, MessagePackObject>(this._underlying._keys[this._position], this._underlying._values[this._position]);
 				return true;
 			}
 
@@ -204,9 +183,9 @@ namespace MsgPack
 			internal void ResetCore()
 			{
 				this._initialVersion = this._underlying._version;
-				this._current = default( KeyValuePair<MessagePackObject, MessagePackObject> );
+				this._current = default(KeyValuePair<MessagePackObject, MessagePackObject>);
 				this._initialVersion = this._underlying._version;
-				if ( this._underlying._dictionary != null )
+				if (this._underlying._dictionary != null)
 				{
 					this._enumerator = this._underlying._dictionary.GetEnumerator();
 					this._position = IsDictionary;
@@ -223,7 +202,7 @@ namespace MsgPack
 		/// </summary>
 		private struct DictionaryEnumerator : IDictionaryEnumerator
 		{
-			private IDictionaryEnumerator _underlying;
+			private readonly IDictionaryEnumerator _underlying;
 
 			/// <summary>
 			///		Gets the element at the current position of the enumerator.
@@ -234,10 +213,7 @@ namespace MsgPack
 			/// <exception cref="InvalidOperationException">
 			///		The enumerator is positioned before the first element of the collection or after the last element. 
 			/// </exception>
-			public object Current
-			{
-				get { return this._underlying.Entry; }
-			}
+			public object Current => this._underlying.Entry;
 
 			/// <summary>
 			///		Gets the element at the current position of the enumerator.
@@ -248,10 +224,7 @@ namespace MsgPack
 			/// <exception cref="T:System.InvalidOperationException">
 			///		The enumerator is positioned before the first element of the collection or after the last element. 
 			///	</exception>
-			public DictionaryEntry Entry
-			{
-				get { return this._underlying.Entry; }
-			}
+			public DictionaryEntry Entry => this._underlying.Entry;
 
 			/// <summary>
 			///		Gets the key of the element at the current position of the enumerator.
@@ -262,10 +235,7 @@ namespace MsgPack
 			/// <exception cref="T:System.InvalidOperationException">
 			///		The enumerator is positioned before the first element of the collection or after the last element. 
 			///	</exception>
-			public object Key
-			{
-				get { return this.Entry.Key; }
-			}
+			public object Key => this.Entry.Key;
 
 			/// <summary>
 			///		Gets the value of the element at the current position of the enumerator.
@@ -276,17 +246,14 @@ namespace MsgPack
 			/// <exception cref="T:System.InvalidOperationException">
 			///		The enumerator is positioned before the first element of the collection or after the last element. 
 			///	</exception>
-			public object Value
-			{
-				get { return this.Entry.Value; }
-			}
+			public object? Value => this.Entry.Value;
 
-			internal DictionaryEnumerator( MessagePackObjectDictionary dictionary )
+			internal DictionaryEnumerator(MessagePackObjectDictionary dictionary)
 				: this()
 			{
-				Contract.Assert( dictionary != null, "dictionary != null" );
+				Debug.Assert(dictionary != null, "dictionary != null");
 
-				this._underlying = new Enumerator( dictionary );
+				this._underlying = new Enumerator(dictionary);
 			}
 
 			/// <summary>
@@ -299,10 +266,7 @@ namespace MsgPack
 			/// <exception cref="T:System.InvalidOperationException">
 			///		The collection was modified after the enumerator was created. 
 			///	</exception>
-			public bool MoveNext()
-			{
-				return this._underlying.MoveNext();
-			}
+			public bool MoveNext() => this._underlying.MoveNext();
 
 			/// <summary>
 			///		Sets the enumerator to its initial position, which is before the first element in the collection.
@@ -310,10 +274,7 @@ namespace MsgPack
 			/// <exception cref="T:System.InvalidOperationException">
 			///		The collection was modified after the enumerator was created. 
 			///	</exception>
-			void IEnumerator.Reset()
-			{
-				this._underlying.Reset();
-			}
+			void IEnumerator.Reset() => this._underlying.Reset();
 		}
 	}
 }

@@ -1,44 +1,21 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
+using System.Diagnostics;
 
 namespace MsgPack
 {
-	partial class MessagePackObjectDictionary
+#warning TODO: UNITY KEYSET
+	public partial class MessagePackObjectDictionary
 	{
 #if !UNITY
-		partial class KeySet
+		public partial class KeySet
 #else
-		partial class KeyCollection
+		public partial class KeyCollection
 #endif // UNITY
 		{
 #if !UNITY
@@ -64,10 +41,7 @@ namespace MsgPack
 				/// <value>
 				///		The element in the underlying collection at the current position of the enumerator.
 				/// </value>
-				public MessagePackObject Current
-				{
-					get { return this._underlying.Current.Key; }
-				}
+				public MessagePackObject Current => this._underlying.Current.Key;
 
 				/// <summary>
 				///		Gets the element at the current position of the enumerator.
@@ -78,14 +52,11 @@ namespace MsgPack
 				/// <exception cref="InvalidOperationException">
 				///		The enumerator is positioned before the first element of the collection or after the last element. 
 				/// </exception>
-				object IEnumerator.Current
-				{
-					get { return this._underlying.GetCurrentStrict().Key; }
-				}
+				object IEnumerator.Current => this._underlying.GetCurrentStrict().Key;
 
-				internal Enumerator( MessagePackObjectDictionary dictionary )
+				internal Enumerator(MessagePackObjectDictionary dictionary)
 				{
-					Contract.Assert( dictionary != null, "dictionary != null" );
+					Debug.Assert(dictionary != null, "dictionary != null");
 
 					this._underlying = dictionary.GetEnumerator();
 				}
@@ -93,10 +64,7 @@ namespace MsgPack
 				/// <summary>
 				///		Releases all resources used by the this instance.
 				/// </summary>
-				public void Dispose()
-				{
-					this._underlying.Dispose();
-				}
+				public void Dispose() => this._underlying.Dispose();
 
 				/// <summary>
 				///		Advances the enumerator to the next element of the underlying collection.
@@ -120,10 +88,7 @@ namespace MsgPack
 				/// <exception cref="T:System.InvalidOperationException">
 				///		The collection was modified after the enumerator was created. 
 				///	</exception>
-				void IEnumerator.Reset()
-				{
-					this._underlying.ResetCore();
-				}
+				void IEnumerator.Reset() => this._underlying.ResetCore();
 			}
 		}
 	}
