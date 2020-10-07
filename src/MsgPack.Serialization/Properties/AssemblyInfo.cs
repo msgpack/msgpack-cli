@@ -9,5 +9,8 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("MsgPack.Serialization.ILGeneration.UnitTest")]
 [assembly: InternalsVisibleTo("MsgPack.Serialization.Reflection.UnitTest")]
 #endif // DEBUG
+[assembly: InternalsVisibleTo("MsgPack.Compatibility")]
 [assembly: InternalsVisibleTo("MsgPack.Serialization.ILGeneration")]
 [assembly: InternalsVisibleTo("MsgPack.Serialization.Reflection")]
+
+#warning TODO: Rename this package to MsgPack.Serialization.Core

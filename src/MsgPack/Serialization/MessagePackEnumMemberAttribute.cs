@@ -11,6 +11,7 @@ namespace MsgPack.Serialization
 	/// </summary>
 	/// <remarks>
 	///		If this attributes is used for non-enum typed members, this attribute will be ignored.
+	///		<include file='../../Common/Remarks.xml' path='docs/doc[@name="EnumSerialization"]'/>
 	/// </remarks>
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
 	public sealed class MessagePackEnumMemberAttribute : Attribute
@@ -22,6 +23,9 @@ namespace MsgPack.Serialization
 		///		The default serialization method for this enum typed member.
 		///		Note that the method for the enum type will be overrided with this.
 		/// </value>
+		/// <remarks>
+		///		<include file='../../Common/Remarks.xml' path='docs/doc[@name="EnumSerialization"]'/>
+		/// </remarks>
 		public EnumMemberSerializationMethod SerializationMethod { get; set; }
 
 		/// <summary>

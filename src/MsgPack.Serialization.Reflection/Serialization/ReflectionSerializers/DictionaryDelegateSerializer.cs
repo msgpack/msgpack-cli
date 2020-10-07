@@ -1,4 +1,4 @@
-﻿// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
@@ -46,7 +46,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			AsyncDeserialization deserializeValueAsync,
 #endif // FEATURE_TAP
 			Type targetType,
-			in CollectionTraits traits
+			in CollectionTraits traits,
+			ISerializerGenerationOptions options
 		)
 		{
 			var countPropertyGetter = traits.CountPropertyGetter!;
@@ -89,9 +90,15 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			this._deserializeValueAsync = deserializeValueAsync;
 #endif // FEATURE_TAP
 
-#warning TODO: allowNonCollectionEnumerableTypes
-			this._keyIsCollection = keyType!.GetCollectionTraits(CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false).CollectionType != CollectionKind.NotCollection;
-			this._valueIsCollection = valueType!.GetCollectionTraits(CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false).CollectionType != CollectionKind.NotCollection;
+			this._keyIsCollection =
+				keyType!.GetCollectionTraits(
+					CollectionTraitOptions.None, 
+					allowNonCollectionEnumerableTypes: options.CompatibilityOptions.AllowsNonCollectionEnumerableTypes
+				).CollectionType != CollectionKind.NotCollection;
+			this._valueIsCollection =
+				valueType!.GetCollectionTraits(
+					CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: options.CompatibilityOptions.AllowsNonCollectionEnumerableTypes
+				).CollectionType != CollectionKind.NotCollection;
 		}
 
 		public void Serialize(ref SerializationOperationContext context, object? obj, IBufferWriter<byte> sink)

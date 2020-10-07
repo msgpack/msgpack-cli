@@ -1,23 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\MsgPack.Abstraction\Ensure.cs" Link="Ensure.cs" />
+    <Compile Include="..\MsgPack.Abstraction\Ensure.Enum.cs" Link="Ensure.Enum.cs" />
     <Compile Include="..\MsgPack.Abstraction\Internal\MethodImplOptionsShim.cs" Link="Internal\MethodImplOptionsShim.cs" />
+    <Compile Include="..\MsgPack.Abstraction\Internal\OptionsDefaults.cs" Link="Internal\OptionsDefaults.cs" />
+    <Compile Include="..\MsgPack.Abstraction\StringEscape.cs" Link="StringEscape.cs" />
+    <Compile Include="..\MsgPack.Core\System.Text\EncodingExtensions.cs" Link="System.Text\EncodingExtensions.cs" />
     <Compile Include="..\MsgPack\ReflectionAbstractions.cs" Link="ReflectionAbstractions.cs" />
-    <Compile Include="..\MsgPack\Serialization\BindingOptions.cs" Link="Serialization\BindingOptions.cs" />
     <Compile Include="..\MsgPack\Serialization\CollectionDetailedKind.cs" Link="Serialization\CollectionDetailedKind.cs" />
     <Compile Include="..\MsgPack\Serialization\CollectionKind.cs" Link="Serialization\CollectionKind.cs" />
     <Compile Include="..\MsgPack\Serialization\CollectionTraitOptions.cs" Link="Serialization\CollectionTraitOptions.cs" />
     <Compile Include="..\MsgPack\Serialization\CollectionTraits.cs" Link="Serialization\CollectionTraits.cs" />
     <Compile Include="..\MsgPack\Serialization\DataMemberContract.cs" Link="Serialization\DataMemberContract.cs" />
-    <Compile Include="..\MsgPack\Serialization\DateTimeConversionMethod.cs" Link="Serialization\DateTimeConversionMethod.cs" />
     <Compile Include="..\MsgPack\Serialization\DateTimeMemberConversionMethod.cs" Link="Serialization\DateTimeMemberConversionMethod.cs" />
+    <Compile Include="..\MsgPack\Serialization\DictionaryKeyTransformers.cs" Link="Serialization\DictionaryKeyTransformers.cs" />
     <Compile Include="..\MsgPack\Serialization\EnumMemberSerializationMethod.cs" Link="Serialization\EnumMemberSerializationMethod.cs" />
-    <Compile Include="..\MsgPack\Serialization\EnumSerializationMethod.cs" Link="Serialization\EnumSerializationMethod.cs" />
+    <Compile Include="..\MsgPack\Serialization\KeyNameTransformers.cs" Link="Serialization\KeyNameTransformers.cs" />
     <Compile Include="..\MsgPack\Serialization\MessagePackDateTimeMemberAttribute.cs" Link="Serialization\MessagePackDateTimeMemberAttribute.cs" />
     <Compile Include="..\MsgPack\Serialization\MessagePackDeserializationConstructorAttribute.cs" Link="Serialization\MessagePackDeserializationConstructorAttribute.cs" />
     <Compile Include="..\MsgPack\Serialization\MessagePackEnumAttribute.cs" Link="Serialization\MessagePackEnumAttribute.cs" />
@@ -30,6 +34,7 @@
     <Compile Include="..\MsgPack\Serialization\PolymorphicTypeVerificationContext.cs" Link="Serialization\PolymorphicTypeVerificationContext.cs" />
     <Compile Include="..\MsgPack\Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" Link="Serialization\Polymorphic\IPolymorphicHelperAttributes.cs" />
     <Compile Include="..\MsgPack\Serialization\Polymorphic\RuntimeTypeVerifier.cs" Link="Serialization\Polymorphic\RuntimeTypeVerifier.cs" />
+    <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoder.cs" Link="Serialization\Polymorphic\TypeInfoEncoder.cs" />
     <Compile Include="..\MsgPack\Serialization\Polymorphic\TypeInfoEncoding.cs" Link="Serialization\Polymorphic\TypeInfoEncoding.cs" />
     <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.Constructors.cs" Link="Serialization\PolymorphismSchema.Constructors.cs" />
     <Compile Include="..\MsgPack\Serialization\PolymorphismSchema.cs" Link="Serialization\PolymorphismSchema.cs" />
@@ -39,12 +44,19 @@
     <Compile Include="..\MsgPack\Serialization\PolymorphismType.cs" Link="Serialization\PolymorphismType.cs" />
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.CollectionTraits.cs" Link="Serialization\ReflectionExtensions.CollectionTraits.cs" />
     <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.cs" Link="Serialization\ReflectionExtensions.cs" />
+    <Compile Include="..\MsgPack\Serialization\ReflectionExtensions.InvokePreservingExtension.cs" Link="Serialization\ReflectionExtensions.InvokePreservingExtension.cs" />
     <Compile Include="..\MsgPack\Serialization\Reflection\GenericTypeExtensions.cs" Link="Serialization\Reflection\GenericTypeExtensions.cs" />
     <Compile Include="..\MsgPack\Serialization\Reflection\ReflectionExtensions.cs" Link="Serialization\Reflection\ReflectionExtensions.cs" />
     <Compile Include="..\MsgPack\Serialization\SerializationTarget.cs" Link="Serialization\SerializationTarget.cs" />
+    <Compile Include="..\MsgPack\Serialization\SerializerCapabilities.cs" Link="Serialization\SerializerCapabilities.cs" />
+    <Compile Include="..\MsgPack\Serialization\SerializerRegistrationOptions.cs" Link="Serialization\SerializerRegistrationOptions.cs" />
     <Compile Include="..\MsgPack\Serialization\SerializingMember.cs" Link="Serialization\SerializingMember.cs" />
-    <Compile Include="..\MsgPack\StringEscape.cs" Link="StringEscape.cs" />
+    <Compile Include="..\MsgPack\Serialization\TypeKeyRepository.cs" Link="Serialization\TypeKeyRepository.cs" />
     <Compile Include="..\MsgPack\TupleItems.cs" Link="TupleItems.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!$(DefineConstants.Contains('FEATURE_COM_TYPES'))">
+    <Compile Remove="Serialization/BuiltInSerializers/FileTimeObjectSerializer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,10 +69,73 @@
 
   <ItemGroup>
     <Folder Include="Internal\" />
-    <Folder Include="Serialization\Polymorphic\" />
+    <Folder Include="System.Text\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Serialization\Dianostic.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Dianostic.tt</DependentUpon>
+    </None>
+    <None Include="Serialization\SerializerProviderExtensions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SerializerProviderExtensions.tt</DependentUpon>
+    </None>
+    <None Include="Serialization\SerializerProviderExtensions.Register.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SerializerProviderExtensions.Register.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Serialization\AsyncDeserializationOperationContext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AsyncDeserializationOperationContext.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\AsyncSerializationOperationContext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AsyncSerializationOperationContext.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\BuiltinSerializers\DateTimeSerializers.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DateTimeSerializers.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\BuiltinSerializers\EnumSerializers.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EnumSerializers.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\DeserializationOperationContext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DeserializationOperationContext.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\Dianostic.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Dianostic.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\SerializationOperationContext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SerializationOperationContext.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\SerializerProviderExtensions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SerializerProviderExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Serialization\SerializerProviderExtensions.Register.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SerializerProviderExtensions.Register.tt</DependentUpon>
+    </Compile>
     <Compile Update="Serialization\Throw.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -69,6 +144,38 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Serialization\AsyncDeserializationOperationContext.tt">
+      <LastGenOutput>AsyncDeserializationOperationContext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Serialization\AsyncSerializationOperationContext.tt">
+      <LastGenOutput>AsyncSerializationOperationContext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Serialization\DeserializationOperationContext.tt">
+      <LastGenOutput>DeserializationOperationContext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Serialization\Dianostic.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Dianostic.cs</LastGenOutput>
+    </None>
+    <None Update="Serialization\BuiltinSerializers\EnumSerializers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EnumSerializers.cs</LastGenOutput>
+    </None>
+    <None Update="Serialization\SerializationOperationContext.tt">
+      <LastGenOutput>SerializationOperationContext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Serialization\SerializerProviderExtensions.Register.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SerializerProviderExtensions.Register.cs</LastGenOutput>
+    </None>
+    <None Update="Serialization\SerializerProviderExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SerializerProviderExtensions.cs</LastGenOutput>
+    </None>
     <None Update="Serialization\Throw.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Throw.cs</LastGenOutput>

@@ -1,31 +1,14 @@
-#region -- License Terms --
-// 
-// MessagePack for CLI
-// 
-// Copyright (C) 2015-2016 FUJIWARA, Yusuke
-// 
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-// 
-//        http://www.apache.org/licenses/LICENSE-2.0
-// 
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-// 
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+#if !FEATURE_READ_ONLY_COLLECTION
+using System.Diagnostics.CodeAnalysis;
+#endif // !FEATURE_READ_ONLY_COLLECTION
 using System.Linq;
 
 namespace MsgPack.Serialization
@@ -42,7 +25,7 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The type of the serialization target. This value can be <c>null</c>.
 		/// </value>
-		internal Type TargetType { get; private set; }
+		internal Type? TargetType { get; private set; }
 
 		/// <summary>
 		///		Gets the type of the polymorphism.
@@ -79,9 +62,7 @@ namespace MsgPack.Serialization
 		///		The schema for child items of the serialization target collection/tuple.
 		/// </value>
 		internal IList<PolymorphismSchema> ChildSchemaList
-		{
-			get { return this._children; }
-		}
+			=> this._children;
 
 		/// <summary>
 		///		Gets the schema for collection items of the serialization target collection.
@@ -89,11 +70,11 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The schema for collection items of the serialization target collection.
 		/// </value>
-		internal PolymorphismSchema ItemSchema
+		internal PolymorphismSchema? ItemSchema
 		{
 			get
 			{
-				switch ( this.ChildrenType )
+				switch (this.ChildrenType)
 				{
 					case PolymorphismSchemaChildrenType.None:
 					{
@@ -105,7 +86,7 @@ namespace MsgPack.Serialization
 					}
 					case PolymorphismSchemaChildrenType.DictionaryKeyValues:
 					{
-						return this._children.Skip( 1 ).FirstOrDefault();
+						return this._children.Skip(1).FirstOrDefault();
 					}
 					default:
 					{
@@ -115,9 +96,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private PolymorphismSchema TryGetItemSchema()
+		private PolymorphismSchema? TryGetItemSchema()
 		{
-			switch ( this.ChildrenType )
+			switch (this.ChildrenType)
 			{
 				case PolymorphismSchemaChildrenType.CollectionItems:
 				{
@@ -125,7 +106,7 @@ namespace MsgPack.Serialization
 				}
 				case PolymorphismSchemaChildrenType.DictionaryKeyValues:
 				{
-					return this._children.Skip( 1 ).FirstOrDefault();
+					return this._children.Skip(1).FirstOrDefault();
 				}
 				default:
 				{
@@ -140,11 +121,11 @@ namespace MsgPack.Serialization
 		/// <value>
 		///		The schema for collection items of the serialization target collection.
 		/// </value>
-		internal PolymorphismSchema KeySchema
+		internal PolymorphismSchema? KeySchema
 		{
 			get
 			{
-				switch ( this.ChildrenType )
+				switch (this.ChildrenType)
 				{
 					case PolymorphismSchemaChildrenType.None:
 					{
@@ -162,9 +143,9 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		private PolymorphismSchema TryGetKeySchema()
+		private PolymorphismSchema? TryGetKeySchema()
 		{
-			if ( this.ChildrenType == PolymorphismSchemaChildrenType.DictionaryKeyValues )
+			if (this.ChildrenType == PolymorphismSchemaChildrenType.DictionaryKeyValues)
 			{
 				return this._children.FirstOrDefault();
 			}
@@ -174,100 +155,66 @@ namespace MsgPack.Serialization
 			}
 		}
 
-#if NET35 || NET40 || SILVERLIGHT || UNITY || CORE_CLR || NETSTANDARD1_1
+#if !FEATURE_READ_ONLY_COLLECTION
 		private sealed class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+			where TKey : notnull
 		{
 			private readonly IDictionary<TKey, TValue> _underlying;
 
 			ICollection<TKey> IDictionary<TKey, TValue>.Keys
-			{
-				get { return this._underlying.Keys; }
-			}
+				=> this._underlying.Keys;
 
 			ICollection<TValue> IDictionary<TKey, TValue>.Values
+				=> this._underlying.Values;
+
+			TValue IDictionary<TKey, TValue>.this[TKey key]
 			{
-				get { return this._underlying.Values; }
+				get => this._underlying[key];
+				set => throw new NotSupportedException();
 			}
 
-			TValue IDictionary<TKey, TValue>.this[ TKey key ]
-			{
-				get { return this._underlying[ key ]; }
-				set
-				{
-					throw new NotSupportedException();
-				}
-			}
+			int ICollection<KeyValuePair<TKey, TValue>>.Count => this._underlying.Count;
 
-			int ICollection<KeyValuePair<TKey, TValue>>.Count
-			{
-				get { return this._underlying.Count; }
-			}
+			bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => true;
 
-			bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
-			{
-				get { return true; }
-			}
-
-			public ReadOnlyDictionary( IDictionary<TKey, TValue> underlying )
+			public ReadOnlyDictionary(IDictionary<TKey, TValue> underlying)
 			{
 				this._underlying = underlying;
 			}
 
-			bool IDictionary<TKey, TValue>.ContainsKey( TKey key )
-			{
-				return this._underlying.ContainsKey( key );
-			}
+			bool IDictionary<TKey, TValue>.ContainsKey(TKey key)
+				=> this._underlying.ContainsKey(key);
 
-			bool IDictionary<TKey, TValue>.TryGetValue( TKey key, out TValue value )
-			{
-				return this._underlying.TryGetValue( key, out value );
-			}
+			bool IDictionary<TKey, TValue>.TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
+				=> this._underlying.TryGetValue(key, out value);
 
-			bool ICollection<KeyValuePair<TKey, TValue>>.Contains( KeyValuePair<TKey, TValue> item )
-			{
-				return this._underlying.Contains( item );
-			}
+			bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
+				=> this._underlying.Contains(item);
 
-			void ICollection<KeyValuePair<TKey, TValue>>.CopyTo( KeyValuePair<TKey, TValue>[] array, int arrayIndex )
-			{
-				this._underlying.CopyTo( array, arrayIndex );
-			}
+			void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+				=> this._underlying.CopyTo(array, arrayIndex);
 
 			IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
-			{
-				return this._underlying.GetEnumerator();
-			}
+				=> this._underlying.GetEnumerator();
 
 			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-			{
-				return this._underlying.GetEnumerator();
-			}
+				=> this._underlying.GetEnumerator();
 
-			void IDictionary<TKey, TValue>.Add( TKey key, TValue value )
-			{
-				throw new NotSupportedException();
-			}
+			void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
+				=> throw new NotSupportedException();
 
-			bool IDictionary<TKey, TValue>.Remove( TKey key )
-			{
-				throw new NotSupportedException();
-			}
+			bool IDictionary<TKey, TValue>.Remove(TKey key)
+				=> throw new NotSupportedException();
 
-			void ICollection<KeyValuePair<TKey, TValue>>.Add( KeyValuePair<TKey, TValue> item )
-			{
-				throw new NotSupportedException();
-			}
+			void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
+				=> throw new NotSupportedException();
 
 			void ICollection<KeyValuePair<TKey, TValue>>.Clear()
-			{
-				throw new NotSupportedException();
-			}
+				=> throw new NotSupportedException();
 
-			bool ICollection<KeyValuePair<TKey, TValue>>.Remove( KeyValuePair<TKey, TValue> item )
-			{
-				throw new NotSupportedException();
-			}
+			bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+				=> throw new NotSupportedException();
 		}
-#endif // NET35 || NET40 || SILVERLIGHT || UNITY
+#endif // !FEATURE_READ_ONLY_COLLECTION
 	}
 }

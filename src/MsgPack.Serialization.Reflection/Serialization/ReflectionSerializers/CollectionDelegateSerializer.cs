@@ -39,7 +39,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			AsyncDeserialization deserializeItemAsync,
 #endif // FEATURE_TAP
 			Type targetType,
-			in CollectionTraits traits
+			in CollectionTraits traits,
+			ISerializerGenerationOptions options
 		)
 		{
 			var countPropertyGetter = traits.CountPropertyGetter!;
@@ -70,8 +71,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			this._deserializeItemAsync = deserializeItemAsync;
 #endif // FEATURE_TAP
 
-#warning TODO: allowNonCollectionEnumerableTypes
-			this._itemIsCollection = traits.ElementType!.GetCollectionTraits(CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false).CollectionType != CollectionKind.NotCollection;
+			this._itemIsCollection =
+				traits.ElementType!.GetCollectionTraits(
+					CollectionTraitOptions.None,
+					allowNonCollectionEnumerableTypes: options.CompatibilityOptions.AllowsNonCollectionEnumerableTypes
+				).CollectionType != CollectionKind.NotCollection;
 		}
 
 		public void Serialize(ref SerializationOperationContext context, object? obj, IBufferWriter<byte> sink)

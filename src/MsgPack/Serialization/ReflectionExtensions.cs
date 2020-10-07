@@ -3,23 +3,13 @@
 // See the LICENSE in the project root for more information.
 
 using System;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
 namespace MsgPack.Serialization
 {
-#if UNITY && DEBUG
-	public
-#else
-	internal
-#endif
-	static partial class ReflectionExtensions
+	internal static partial class ReflectionExtensions
 	{
 		private const string NullableAttributeTypeName = "System.CompilerServices.NullableAttribute";
 		private const string NullableContextAttributeTypeName = "System.CompilerServices.NullableContextAttribute";
@@ -102,12 +92,11 @@ namespace MsgPack.Serialization
 				return asType;
 			}
 #else
-#if DEBUG
-			Contract.Assert( typeof( MemberInfo ).IsAssignableFrom( typeof( Type ) ), "Type is assginable to MemberInfo on this platform, so should not step in this line." );
-			Contract.Assert( typeof( Type ).IsAssignableFrom( typeof( TypeInfo ) ), "TypeInfo is assginable to Type on this platform, so should not step in this line." );
-#endif // DEBUG
+			Debug.Assert(typeof(MemberInfo).IsAssignableFrom(typeof(Type)), "Type is assginable to MemberInfo on this platform, so should not step in this line.");
+			Debug.Assert(typeof(Type).IsAssignableFrom(typeof(TypeInfo)), "TypeInfo is assginable to Type on this platform, so should not step in this line.");
+
 			var asTypeInfo = source as TypeInfo;
-			if ( asTypeInfo != null )
+			if (asTypeInfo != null)
 			{
 				// Nested type.
 				return asTypeInfo.AsType();
@@ -119,10 +108,10 @@ namespace MsgPack.Serialization
 
 			if (asProperty == null && asField == null)
 			{
-				throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "'{0}'({1}) is not field nor property.", source, source.GetType()));
+				throw new InvalidOperationException($"'{source}'({source.GetType()}) is not field nor property.");
 			}
 
-			return asProperty != null ? asProperty.PropertyType : asField.FieldType;
+			return asProperty != null ? asProperty.PropertyType : asField!.FieldType;
 		}
 	}
 }

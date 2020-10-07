@@ -19,10 +19,10 @@ namespace MsgPack.Serialization
 	public sealed class MessagePackMemberAttribute : Attribute
 	{
 		/// <summary>
-		///		Gets the ID of the member.
+		///		Gets the ID of this member.
 		/// </summary>
 		/// <value>
-		///		The ID of the member.
+		///		The ID of this member. This value will be array index on serialized stream.
 		/// </value>
 		public int Id { get; }
 
@@ -30,17 +30,18 @@ namespace MsgPack.Serialization
 		///		Gets or sets the name of this member.
 		/// </summary>
 		/// <value>
-		///		The name which will be used in map key on serialized MessagePack stream.
+		///		The name which will be used in map key on serialized stream.
+		///		If this value is not specified, the qualified member's name will be used.
 		/// </value>
 		public string? Name { get; set; }
 
 		private NilImplication _nilImplication;
 
 		/// <summary>
-		///		Gets or sets the implication of the nil value.
+		///		Gets or sets the implication of nil value.
 		/// </summary>
 		/// <value>
-		///		The implication of the nil value.
+		///		The implication of nil value.
 		///		Default value is <see cref="F:NilImplication.MemberDefault"/>.
 		/// </value>
 		public NilImplication NilImplication

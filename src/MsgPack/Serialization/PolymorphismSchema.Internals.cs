@@ -4,14 +4,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -21,7 +14,7 @@ using MsgPack.Serialization.Polymorphic;
 
 namespace MsgPack.Serialization
 {
-	partial class PolymorphismSchema
+	public partial class PolymorphismSchema
 	{
 		private static readonly Func<PolymorphicTypeVerificationContext, bool> DefaultTypeVerfiier = _ => true;
 
@@ -31,69 +24,68 @@ namespace MsgPack.Serialization
 		public static PolymorphismSchema Default { get; } = new PolymorphismSchema();
 
 		/// <summary>
-		///		ForPolymorphicObject( Type targetType )
+		///		ForPolymorphicObject(Type targetType)
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicObjectTypeEmbeddingMethod =
-			typeof(PolymorphismSchema).GetMethod("ForPolymorphicObject", new[] { typeof(Type) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForPolymorphicObject), new[] { typeof(Type) })!;
 
 		/// <summary>
-		///		ForPolymorphicObject( Type targetType, IDictionary{byte, Type} codeTypeMapping )
+		///		ForPolymorphicObject(Type targetType, IDictionary{byte, Type} codeTypeMapping)
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicObjectCodeTypeMappingMethod =
-			typeof(PolymorphismSchema).GetMethod("ForPolymorphicObject", new[] { typeof(Type), typeof(IDictionary<string, Type>) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForPolymorphicObject), new[] { typeof(Type), typeof(IDictionary<string, Type>) })!;
 
 		/// <summary>
 		///		ForContextSpecifiedCollection( Type targetType, PolymorphismSchema itemsSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForContextSpecifiedCollectionMethod =
-			typeof(PolymorphismSchema).GetMethod("ForContextSpecifiedCollection", new[] { typeof(Type), typeof(PolymorphismSchema) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForContextSpecifiedCollection), new[] { typeof(Type), typeof(PolymorphismSchema) })!;
 
 		/// <summary>
 		///		ForPolymorphicCollection( Type targetType, PolymorphismSchema itemsSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicCollectionTypeEmbeddingMethod =
-			typeof(PolymorphismSchema).GetMethod("ForPolymorphicCollection", new[] { typeof(Type), typeof(PolymorphismSchema) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForPolymorphicCollection), new[] { typeof(Type), typeof(PolymorphismSchema) })!;
 
 		/// <summary>
 		///		ForPolymorphicCollection( Type targetType, IDictionary{byte, Type} codeTypeMapping, PolymorphismSchema itemsSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicCollectionCodeTypeMappingMethod =
-			typeof(PolymorphismSchema).GetMethod("ForPolymorphicCollection", new[] { typeof(Type), typeof(IDictionary<string, Type>), typeof(PolymorphismSchema) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForPolymorphicCollection), new[] { typeof(Type), typeof(IDictionary<string, Type>), typeof(PolymorphismSchema) })!;
 
 		/// <summary>
 		///		ForContextSpecifiedDictionary( Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForContextSpecifiedDictionaryMethod =
-			typeof(PolymorphismSchema).GetMethod("ForContextSpecifiedDictionary", new[] { typeof(Type), typeof(PolymorphismSchema), typeof(PolymorphismSchema) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForContextSpecifiedDictionary), new[] { typeof(Type), typeof(PolymorphismSchema), typeof(PolymorphismSchema) })!;
 
 		/// <summary>
 		///		ForPolymorphicDictionary( Type targetType, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicDictionaryTypeEmbeddingMethod =
-			typeof(PolymorphismSchema).GetMethod("ForPolymorphicDictionary", new[] { typeof(Type), typeof(PolymorphismSchema), typeof(PolymorphismSchema) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForPolymorphicDictionary), new[] { typeof(Type), typeof(PolymorphismSchema), typeof(PolymorphismSchema) })!;
 
 		/// <summary>
 		///		ForPolymorphicDictionary( Type targetType, IDictionary{byte, Type} codeTypeMapping, PolymorphismSchema keysSchema, PolymorphismSchema valuesSchema )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicDictionaryCodeTypeMappingMethod =
-			typeof(PolymorphismSchema).GetMethod("ForPolymorphicDictionary", new[] { typeof(Type), typeof(IDictionary<string, Type>), typeof(PolymorphismSchema), typeof(PolymorphismSchema) });
+			typeof(PolymorphismSchema).GetMethod(nameof(ForPolymorphicDictionary), new[] { typeof(Type), typeof(IDictionary<string, Type>), typeof(PolymorphismSchema), typeof(PolymorphismSchema) })!;
 
-#if !NET35 && !UNITY
+#if FEATURE_TUPLE
 		/// <summary>
 		///		ForPolymorphicTuple( Type targetType, PolymorphismSchema[] itemSchemaList )
 		/// </summary>
 		internal static readonly MethodInfo ForPolymorphicTupleMethod =
-			typeof(PolymorphismSchema).GetMethod("ForPolymorphicTuple", new[] { typeof(Type), typeof(PolymorphismSchema[]) });
-#endif // !NET35 && !UNITY
+			typeof(PolymorphismSchema).GetMethod(nameof(ForPolymorphicTuple), new[] { typeof(Type), typeof(PolymorphismSchema[]) })!;
+#endif // FEATURE_TUPLE
 
 		internal static readonly ConstructorInfo CodeTypeMapConstructor =
 			typeof(Dictionary<,>).MakeGenericType(typeof(string), typeof(Type))
-				.GetConstructor(new[] { typeof(int) });
+				.GetConstructor(new[] { typeof(int) })!;
 
 		internal static readonly MethodInfo AddToCodeTypeMapMethod =
 			typeof(Dictionary<,>).MakeGenericType(typeof(string), typeof(Type))
-				.GetMethod("Add", new[] { typeof(string), typeof(Type) });
-
+				.GetMethod("Add", new[] { typeof(string), typeof(Type) })!;
 
 		internal string DebugString
 		{
@@ -148,7 +140,7 @@ namespace MsgPack.Serialization
 
 					break;
 				}
-#if !NET35 && !UNITY
+#if FEATURE_TUPLE
 				case PolymorphismSchemaChildrenType.TupleItems:
 				{
 					buffer.Append(", TupleItemsSchema:[");
@@ -176,42 +168,30 @@ namespace MsgPack.Serialization
 
 					break;
 				}
-#endif // !NET35 && !UNITY
+#endif // FEATURE_TUPLE
 			}
 
 			buffer.Append('}');
 		}
 
 		internal static PolymorphismSchema Create(
-			DiagnosticSource diag,
-			Type type,
-#if !UNITY
+			Type memberType,
 			SerializingMember? memberMayBeNull
-#else
-			SerializingMember memberMayBeNull
-#endif // !UNITY
-			)
+		)
 		{
-			if (type.GetIsValueType())
+			if (memberType.GetIsValueType())
 			{
-				diag.DefaultPolymorphicSchemaForValueType(
-					new
-					{
-						targetType =
-							memberMayBeNull == null ?
-#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
-							type :
-#else
-							type.GetTypeInfo() :
-#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
-#if !UNITY
-							memberMayBeNull.Value.Member,
-#else
-							memberMayBeNull.Member,
-#endif
-						schema = Default
-					}
-				);
+				if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.DefaultSchemaForValueType))
+				{
+					Diagnostic.PolymorphicTrace.DefaultSchemaForValueType(
+						new
+						{
+							targetType = memberType,
+							schema = Default
+						}
+					);
+				}
+
 				// Value types will never be polymorphic.
 				return Default;
 			}
@@ -220,43 +200,35 @@ namespace MsgPack.Serialization
 			{
 				var schema =
 					CreateCore(
-						diag,
 #if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
-						type,
+						memberType,
 #else
 						type.GetTypeInfo(),
 #endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
 						Default
 					);
-				diag.PolymorphicSchemaCreatedForRootType(
-					new
-					{
-						targetType =
-#if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
-							type,
-#else
-							type.GetTypeInfo(),
-#endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
-						schema = schema
-					}
-				);
+				if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.SchemaCreatedForRootType))
+				{
+					Diagnostic.PolymorphicTrace.SchemaCreatedForRootType(
+						new
+						{
+							targetType = memberType,
+							schema
+						}
+					);
+				}
+
 				return schema;
 			}
 
-#if !UNITY
 			var member = memberMayBeNull.Value;
-#else
-			var member = memberMayBeNull;
-#endif // !UNITY
 
 			return
 				CreateCore(
-					diag,
 					member.Member,
 					CreateCore(
-						diag,
 #if !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
-						type,
+						memberType,
 #else
 						type.GetTypeInfo(),
 #endif // !NETFX_CORE && !NETSTANDARD1_1 && !NETSTANDARD1_3
@@ -265,7 +237,7 @@ namespace MsgPack.Serialization
 				);
 		}
 
-		private static PolymorphismSchema CreateCore(DiagnosticSource diag, MemberInfo member, PolymorphismSchema defaultSchema)
+		private static PolymorphismSchema CreateCore(MemberInfo member, PolymorphismSchema defaultSchema)
 		{
 			var table = TypeTable.Create(member, defaultSchema);
 
@@ -277,13 +249,17 @@ namespace MsgPack.Serialization
 				{
 					if (!table.Member.Exists && !table.CollectionItem.Exists)
 					{
-						diag.DefaultPolymorphicSchemaForUnqualifiedCollectionMember(
-							new
-							{
-								targetMember = member,
-								schema = defaultSchema
-							}
-						);
+						if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.DefaultSchemaForUnqualifiedCollectionMember))
+						{
+							Diagnostic.PolymorphicTrace.DefaultSchemaForUnqualifiedCollectionMember(
+								new
+								{
+									targetMember = member,
+									schema = defaultSchema
+								}
+							);
+						}
+
 						return defaultSchema;
 					}
 
@@ -305,26 +281,35 @@ namespace MsgPack.Serialization
 								PolymorphismSchemaChildrenType.None
 							)
 						);
-					diag.PolymorphicSchemaCreatedForCollectionMember(
-						new
-						{
-							targetMember = member,
-							schema = result
-						}
-					);
+
+					if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.SchemaCreatedForCollectionMember))
+					{
+						Diagnostic.PolymorphicTrace.SchemaCreatedForCollectionMember(
+							new
+							{
+								targetMember = member,
+								schema = result
+							}
+						);
+					}
+
 					return result;
 				}
 				case CollectionKind.Map:
 				{
 					if (!table.Member.Exists && !table.DictionaryKey.Exists && !table.CollectionItem.Exists)
 					{
-						diag.DefaultPolymorphicSchemaForUnqualifiedDictionaryMember(
-							new
-							{
-								targetMember = member,
-								schema = defaultSchema
-							}
-						);
+						if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.DefaultSchemaForUnqualifiedDictionaryMember))
+						{
+							Diagnostic.PolymorphicTrace.DefaultSchemaForUnqualifiedDictionaryMember(
+								new
+								{
+									targetMember = member,
+									schema = defaultSchema
+								}
+							);
+						}
+
 						return defaultSchema;
 					}
 
@@ -355,29 +340,37 @@ namespace MsgPack.Serialization
 							)
 						);
 
-					diag.PolymorphicSchemaCreatedForDictionaryMember(
-						new
-						{
-							targetMember = member,
-							schema = result
-						}
-					);
+					if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.SchemaCreatedForDictionaryMember))
+					{
+						Diagnostic.PolymorphicTrace.SchemaCreatedForDictionaryMember(
+							new
+							{
+								targetMember = member,
+								schema = result
+							}
+						);
+					}
+
 					return result;
 				}
 				default:
 				{
-#if !NET35 && !UNITY
+#if FEATURE_TUPLE
 					if (TupleItems.IsTuple(member.GetMemberValueType()))
 					{
 						if (table.TupleItems.Count == 0)
 						{
-							diag.DefaultPolymorphicSchemaForUnqualifiedTupleMember(
-								new
-								{
-									targetMember = member,
-									schema = defaultSchema
-								}
-							);
+							if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.DefaultSchemaForUnqualifiedTupleMember))
+							{
+								Diagnostic.PolymorphicTrace.DefaultSchemaForUnqualifiedTupleMember(
+									new
+									{
+										targetMember = member,
+										schema = defaultSchema
+									}
+								);
+							}
+
 							return defaultSchema;
 						}
 
@@ -402,27 +395,34 @@ namespace MsgPack.Serialization
 								).ToArray()
 							);
 
-						diag.PolymorphicSchemaCreatedForTupleMember(
-							new
-							{
-								targetMember = member,
-								schema = result
-							}
-						);
-						return result;
-					}
-					else
-#endif // !NET35 && !UNITY
-					{
-						if (!table.Member.Exists)
+						if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.SchemaCreatedForTupleMember))
 						{
-							diag.DefaultPolymorphicSchemaForUnqualifiedObjectMember(
+							Diagnostic.PolymorphicTrace.SchemaCreatedForTupleMember(
 								new
 								{
 									targetMember = member,
-									schema = defaultSchema
+									schema = result
 								}
 							);
+						}
+
+						return result;
+					}
+					else
+#endif // FEATURE_TUPLE
+					{
+						if (!table.Member.Exists)
+						{
+							if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.DefaultSchemaForUnqualifiedObjectMember))
+							{
+								Diagnostic.PolymorphicTrace.DefaultSchemaForUnqualifiedObjectMember(
+									new
+									{
+										targetMember = member,
+										schema = defaultSchema
+									}
+								);
+							}
 							return defaultSchema;
 						}
 
@@ -434,13 +434,17 @@ namespace MsgPack.Serialization
 								table.Member.TypeVerifier,
 								PolymorphismSchemaChildrenType.None
 							);
-						diag.PolymorphicSchemaCreatedForObjectMember(
-							new
-							{
-								targetMember = member,
-								schema = result
-							}
-						);
+
+						if (Diagnostic.PolymorphicTrace.IsEnabled(Diagnostic.PolymorphicTrace.Keys.SchemaCreatedForObjectMember))
+						{
+							Diagnostic.PolymorphicTrace.SchemaCreatedForObjectMember(
+								new
+								{
+									targetMember = member,
+									schema = result
+								}
+							);
+						}
 						return result;
 					}
 				}
@@ -452,76 +456,67 @@ namespace MsgPack.Serialization
 			public readonly TypeTableEntry Member;
 			public readonly TypeTableEntry CollectionItem;
 			public readonly TypeTableEntry DictionaryKey;
-#if !NET35 && !UNITY
+#if FEATURE_TUPLE
 			public readonly IList<TypeTableEntry> TupleItems;
-#endif // !NET35 && !UNITY
+#endif // FEATURE_TUPLE
 
 			private TypeTable(
 				TypeTableEntry member,
 				TypeTableEntry collectionItem,
 				TypeTableEntry dictionaryKey
-#if !NET35 && !UNITY
+#if FEATURE_TUPLE
 				, IList<TypeTableEntry> tupleItems
-#endif // !NET35 && !UNITY
+#endif // FEATURE_TUPLE
 			)
 			{
 				this.Member = member;
 				this.CollectionItem = collectionItem;
 				this.DictionaryKey = dictionaryKey;
-#if !NET35 && !UNITY
+#if FEATURE_TUPLE
 				this.TupleItems = tupleItems;
-#endif // !NET35 && !UNITY
+#endif // FEATURE_TUPLE
 			}
 
 			public static TypeTable Create(MemberInfo member, PolymorphismSchema defaultSchema)
-			{
-				return
-					new TypeTable(
-						TypeTableEntry.Create(member, PolymorphismTarget.Member, defaultSchema),
-						TypeTableEntry.Create(member, PolymorphismTarget.CollectionItem, defaultSchema.TryGetItemSchema()),
-						TypeTableEntry.Create(member, PolymorphismTarget.DictionaryKey, defaultSchema.TryGetKeySchema())
-#if !NET35 && !UNITY
-						, TypeTableEntry.CreateTupleItems(member)
-#endif // !NET35 && !UNITY
-					);
-			}
-		}
+				=> new TypeTable(
+					TypeTableEntry.Create(member, PolymorphismTarget.Member, defaultSchema),
+					TypeTableEntry.Create(member, PolymorphismTarget.CollectionItem, defaultSchema.TryGetItemSchema()),
+					TypeTableEntry.Create(member, PolymorphismTarget.DictionaryKey, defaultSchema.TryGetKeySchema())
+#if FEATURE_TUPLE
+					, TypeTableEntry.CreateTupleItems(member)
+#endif // !FEATURE_TUPLE
+				);
+		} // TypeTable
 
 		private sealed class TypeTableEntry
 		{
-#if !NET35 && !UNITY
+#if FEATURE_TUPLE
 			private static readonly TypeTableEntry[] EmptyEntries = new TypeTableEntry[0];
-#endif // !NET35 && !UNITY
+#endif // FEATURE_TUPLE
 
 			private readonly Dictionary<string, Type> _knownTypeMapping = new Dictionary<string, Type>();
 
-			public IDictionary<string, Type> CodeTypeMapping { get { return this._knownTypeMapping; } }
+			public IDictionary<string, Type> CodeTypeMapping => this._knownTypeMapping;
 
 			private bool _useTypeEmbedding;
 
 			public PolymorphismType PolymorphismType
-			{
-				get
-				{
-					return
-						this._useTypeEmbedding
-							? PolymorphismType.RuntimeType
-							: this._knownTypeMapping.Count > 0
-								? PolymorphismType.KnownTypes
-								: PolymorphismType.None;
-				}
-			}
+				=> this._useTypeEmbedding ?
+					PolymorphismType.RuntimeType :
+					this._knownTypeMapping.Count > 0 ?
+						PolymorphismType.KnownTypes :
+						PolymorphismType.None;
 
-			public bool Exists { get { return this._useTypeEmbedding || this._knownTypeMapping.Count > 0; } }
+			public bool Exists => this._useTypeEmbedding || this._knownTypeMapping.Count > 0;
 
-			public Func<PolymorphicTypeVerificationContext, bool> TypeVerifier { get; private set; }
+			public Func<PolymorphicTypeVerificationContext, bool>? TypeVerifier { get; private set; }
 
 			private TypeTableEntry() { }
 
-			public static TypeTableEntry Create(MemberInfo member, PolymorphismTarget targetType, PolymorphismSchema defaultSchema)
+			public static TypeTableEntry Create(MemberInfo member, PolymorphismTarget targetType, PolymorphismSchema? defaultSchema)
 			{
 				var result = new TypeTableEntry();
-				var memberName = member.ToString();
+				var memberName = member.ToString()!;
 				foreach (
 					var attribute in
 						member.GetCustomAttributes(false)
@@ -559,7 +554,7 @@ namespace MsgPack.Serialization
 							.OrderBy(a => a.ItemNumber)
 				)
 				{
-					result[attribute.ItemNumber - 1].Interpret(attribute, member.ToString(), attribute.ItemNumber);
+					result[attribute.ItemNumber - 1].Interpret(attribute, member.ToString()!, attribute.ItemNumber);
 				}
 
 				return result;
@@ -568,33 +563,24 @@ namespace MsgPack.Serialization
 
 			private void Interpret(IPolymorphicHelperAttribute attribute, string memberName, int tupleItemNumber)
 			{
-				var asKnown = attribute as IPolymorphicKnownTypeAttribute;
-				if (asKnown != null)
+				if (attribute is IPolymorphicKnownTypeAttribute asKnown)
 				{
 					this.SetKnownType(attribute.Target, memberName, tupleItemNumber, asKnown.TypeCode, asKnown.BindingType);
 					return;
 				}
 
-#if DEBUG
-				Contract.Assert(attribute is IPolymorphicRuntimeTypeAttribute, attribute + " is IPolymorphicRuntimeTypeAttribute");
-#endif // DEBUG
+				var asRuntimeType = attribute as IPolymorphicRuntimeTypeAttribute;
+				Debug.Assert(asRuntimeType != null, attribute + " is IPolymorphicRuntimeTypeAttribute");
 				if (this._useTypeEmbedding)
 				{
-#if DEBUG
-					Contract.Assert(attribute.Target == PolymorphismTarget.TupleItem, attribute.Target + " == PolymorphismTarget.TupleItem");
-#endif // DEBUG
+					Debug.Assert(attribute.Target == PolymorphismTarget.TupleItem, attribute.Target + " == PolymorphismTarget.TupleItem");
+
 					throw new SerializationException(
-						String.Format(
-							CultureInfo.CurrentCulture,
-							"Cannot specify multiple '{0}' to #{1} item of tuple type member '{2}'.",
-							typeof(MessagePackRuntimeTupleItemTypeAttribute),
-							tupleItemNumber,
-							memberName
-						)
+						$"Cannot specify multiple '{typeof(MessagePackRuntimeTupleItemTypeAttribute)}' to #{tupleItemNumber} item of tuple type member '{memberName}'."
 					);
 				}
 
-				this.SetRuntimeType(attribute.Target, memberName, tupleItemNumber, GetVerifier(attribute as IPolymorphicRuntimeTypeAttribute));
+				this.SetRuntimeType(attribute.Target, memberName, tupleItemNumber, GetVerifier(asRuntimeType));
 			}
 
 			private void SetDefault(PolymorphismTarget target, string memberName, int tupleItemNumber, PolymorphismSchema defaultSchema)
@@ -646,7 +632,7 @@ namespace MsgPack.Serialization
 				}
 			}
 
-			private void SetRuntimeType(PolymorphismTarget target, string memberName, int tupleItemNumber, Func<PolymorphicTypeVerificationContext, bool> typeVerifier)
+			private void SetRuntimeType(PolymorphismTarget target, string memberName, int tupleItemNumber, Func<PolymorphicTypeVerificationContext, bool>? typeVerifier)
 			{
 				if (this._knownTypeMapping.Count > 0)
 				{
@@ -664,48 +650,19 @@ namespace MsgPack.Serialization
 				{
 					case PolymorphismTarget.CollectionItem:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify '{0}' and '{1}' simultaneously to collection items of member '{2}' itself.",
-								typeof(MessagePackRuntimeCollectionItemTypeAttribute),
-								typeof(MessagePackKnownCollectionItemTypeAttribute),
-								memberName
-							);
+						return $"Cannot specify '{typeof(MessagePackRuntimeCollectionItemTypeAttribute)}' and '{typeof(MessagePackKnownCollectionItemTypeAttribute)}' simultaneously to collection items of member '{memberName}' itself.";
 					}
 					case PolymorphismTarget.DictionaryKey:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify '{0}' and '{1}' simultaneously to dictionary keys of member '{2}' itself.",
-								typeof(MessagePackRuntimeDictionaryKeyTypeAttribute),
-								typeof(MessagePackKnownDictionaryKeyTypeAttribute),
-								memberName
-							);
+						return $"Cannot specify '{typeof(MessagePackRuntimeDictionaryKeyTypeAttribute)}' and '{typeof(MessagePackKnownDictionaryKeyTypeAttribute)}' simultaneously to dictionary keys of member '{memberName}' itself.";
 					}
 					case PolymorphismTarget.TupleItem:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify '{0}' and '{1}' simultaneously to #{2} item of tuple type member '{3}' itself.",
-								typeof(MessagePackRuntimeTupleItemTypeAttribute),
-								typeof(MessagePackKnownTupleItemTypeAttribute),
-								tupleItemNumber,
-								memberName
-							);
+						return $"Cannot specify '{typeof(MessagePackRuntimeTupleItemTypeAttribute)}' and '{typeof(MessagePackKnownTupleItemTypeAttribute)}' simultaneously to #{tupleItemNumber} item of tuple type member '{memberName}' itself.";
 					}
 					default:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify '{0}' and '{1}' simultaneously to member '{2}' itself.",
-								typeof(MessagePackRuntimeTypeAttribute),
-								typeof(MessagePackKnownTypeAttribute),
-								memberName
-							);
+						return $"Cannot specify '{typeof(MessagePackRuntimeTypeAttribute)}' and '{typeof(MessagePackKnownTypeAttribute)}' simultaneously to member '{memberName}' itself.";
 					}
 				}
 			}
@@ -716,44 +673,19 @@ namespace MsgPack.Serialization
 				{
 					case PolymorphismTarget.CollectionItem:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify multiple types for ext-type code '{0}' for collection items of member '{1}'.",
-								StringEscape.ForDisplay(typeCode),
-								memberName
-							);
+						return $"Cannot specify multiple types for ext-type code '{StringEscape.ForDisplay(typeCode)}' for collection items of member '{memberName}'.";
 					}
 					case PolymorphismTarget.DictionaryKey:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify multiple types for ext-type code '{0}' for dictionary keys of member '{1}'.",
-								StringEscape.ForDisplay(typeCode),
-								memberName
-							);
+						return $"Cannot specify multiple types for ext-type code '{StringEscape.ForDisplay(typeCode)}' for dictionary keys of member '{memberName}'.";
 					}
 					case PolymorphismTarget.TupleItem:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify multiple types for ext-type code '{0}' for #{1} item of tuple type member '{2}'.",
-								StringEscape.ForDisplay(typeCode),
-								tupleItemNumber,
-								memberName
-							);
+						return $"Cannot specify multiple types for ext-type code '{StringEscape.ForDisplay(typeCode)}' for #{tupleItemNumber} item of tuple type member '{memberName}'.";
 					}
 					default:
 					{
-						return
-							String.Format(
-								CultureInfo.CurrentCulture,
-								"Cannot specify multiple types for ext-type code '{0}' for member '{1}'.",
-								StringEscape.ForDisplay(typeCode),
-								memberName
-							);
+						return $"Cannot specify multiple types for ext-type code '{StringEscape.ForDisplay(typeCode)}' for member '{memberName}'.";
 					}
 				}
 			}
@@ -775,16 +707,16 @@ namespace MsgPack.Serialization
 				var method = attribute.VerifierType.GetRuntimeMethods().SingleOrDefault(m => IsVerificationMethod(m, attribute.VerifierMethodName));
 				if (method == null)
 				{
-					throw new SerializationException(String.Format(CultureInfo.CurrentCulture, "A public static or instance method named '{0}' with single parameter typed PolymorphicTypeVerificationContext in type '{1}'.", attribute.VerifierMethodName, attribute.VerifierMethodName));
+					throw new SerializationException($"A public static or instance method named '{attribute.VerifierMethodName}' with single parameter typed PolymorphicTypeVerificationContext in type '{attribute.VerifierType}'.");
 				}
 
 				if (method.IsStatic)
 				{
-					return method.CreateDelegate(typeof(Func<PolymorphicTypeVerificationContext, bool>)) as Func<PolymorphicTypeVerificationContext, bool>;
+					return method.CreateDelegate<Func<PolymorphicTypeVerificationContext, bool>>();
 				}
 				else
 				{
-					return method.CreateDelegate(typeof(Func<PolymorphicTypeVerificationContext, bool>), Activator.CreateInstance(attribute.VerifierType)) as Func<PolymorphicTypeVerificationContext, bool>;
+					return (method.CreateDelegate(typeof(Func<PolymorphicTypeVerificationContext, bool>), Activator.CreateInstance(attribute.VerifierType)) as Func<PolymorphicTypeVerificationContext, bool>)!;
 				}
 			}
 
@@ -803,6 +735,6 @@ namespace MsgPack.Serialization
 				var parameters = method.GetParameters();
 				return parameters.Length == 1 && parameters[0].ParameterType.IsAssignableFrom(typeof(PolymorphicTypeVerificationContext));
 			}
-		}
+		} // TypeTableEntry
 	}
 }

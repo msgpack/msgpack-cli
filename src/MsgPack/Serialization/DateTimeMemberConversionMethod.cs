@@ -9,6 +9,9 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Defines behavior of built-in serializers to conversion of <see cref="DateTime"/> value for specific member.
 	/// </summary>
+	/// <remarks>
+	///		<include file='../../Common/Remarks.xml' path='docs/doc[@name="DateTimeConversion"]'/>
+	/// </remarks>
 	public enum DateTimeMemberConversionMethod
 	{
 		/// <summary>
@@ -51,6 +54,16 @@ namespace MsgPack.Serialization
 		///			If you can depend on this assembly, consider <see cref="Timestamp"/> for date-time typed members to maximize interoperability for other languages.
 		///		</para>
 		/// </remarks>
-		Timestamp = 3
+		Timestamp = 3,
+
+		// 3 is reserved for Iso8601BasicFormat
+
+		/// <summary>
+		///		Uses ISO 8601 extended format string, that is, "yyyy-MM-ddTHH:mm:ss.f+Z" format.
+		/// </summary>
+		/// <remarks>
+		///		This value is default in JSON codec and its family.
+		/// </remarks>
+		Iso8601ExtendedFormat = 4
 	}
 }

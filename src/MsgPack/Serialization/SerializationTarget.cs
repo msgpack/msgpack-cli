@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 #warning TODO: Implement generator and reflection with this type!
 #warning TODO: Separate factory method from this file for maintenancibility.
@@ -16,7 +17,7 @@ namespace MsgPack.Serialization
 	/// <summary>
 	///		Implements serialization target member extraction logics.
 	/// </summary>
-	internal readonly struct SerializationTarget
+	internal readonly partial struct SerializationTarget
 	{
 		// Type names to avoid user who doesn't embed "message pack assembly's attributes" in their code directly.
 		private static readonly string MessagePackMemberAttributeTypeName = typeof(MessagePackMemberAttribute).FullName!;
@@ -62,64 +63,17 @@ namespace MsgPack.Serialization
 								(SerializerCapabilities.Serialize | SerializerCapabilities.Deserialize | SerializerCapabilities.DeserializeTo)
 					) :
 					(
-						!this.CanDeserialize?
+						!this.CanDeserialize ?
 							SerializerCapabilities.Serialize :
 							this.Type.GetIsValueType() ?
 								(SerializerCapabilities.Serialize | SerializerCapabilities.Deserialize) :
 								(SerializerCapabilities.Serialize | SerializerCapabilities.Deserialize | SerializerCapabilities.DeserializeTo)
 					);
 
-		private static string?[]? FindCorrespondentMemberNames(IReadOnlyList<SerializingMember> members, ConstructorInfo? constructor)
-		{
-			if (constructor == null)
-			{
-				return null;
-			}
-
-			Debug.Assert(!members.Any(m => m.Member == null), "members contains Tuple item.");
-
-			var constructorParameters = constructor.GetParameters();
-			return
-					constructorParameters.GroupJoin(
-						members,
-						p => new KeyValuePair<string, Type>(p.Name!, p.ParameterType),
-						m => new KeyValuePair<string, Type>(m.Contract.Name, m.Member!.GetMemberValueType()),
-						(p, ms) => DetermineCorrespondentMemberName(p, ms),
-						MemberConstructorParameterEqualityComparer.Instance
-					).ToArray();
-		}
-
-		private static string? DetermineCorrespondentMemberName(ParameterInfo parameterInfo, IEnumerable<SerializingMember> members)
-		{
-			var membersArray = members.ToArray();
-			switch (membersArray.Length)
-			{
-				case 0:
-				{
-					return null;
-				}
-				case 1:
-				{
-					return membersArray[0].MemberName;
-				}
-				default:
-				{
-					ThrowAmbigiousMatchException(parameterInfo, membersArray);
-					// never
-					return default!;
-				}
-			}
-		}
-
-		private static void ThrowAmbigiousMatchException(ParameterInfo parameterInfo, ICollection<SerializingMember> members) =>
-			throw new AmbiguousMatchException(
-				$"There are multiple candiates for corresponding member for parameter '{parameterInfo}' of constructor. [{String.Join(", ", members.Select(x => x.ToString()))}]"
-			);
-
 		public string? GetCorrespondentMemberName(int constructorParameterIndex)
 			=> this._correspondentMemberNames?[constructorParameterIndex];
 
-		public static void VerifyType(Type targetType)
+		private static void VerifyType(Type targetType)
 		{
 			if (targetType.GetIsInterface() || targetType.GetIsAbstract())
 			{
@@ -127,37 +81,54 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public static void VerifyCanSerializeTargetType(SerializerGenerationOptions options, Type targetType)
+		private static void VerifyCanSerializeTargetType(ISerializerGenerationOptions options, Type targetType)
 		{
-			if (options.DisablesPrivilegedAccess && !targetType.GetIsPublic() && !targetType.GetIsNestedPublic() && !ThisAssembly.Equals(targetType.GetAssembly()))
+			VerifyType(targetType);
+
+			if (options.BindingOptions.IsPrivilegedAccessDisabled && !targetType.GetIsPublic() && !targetType.GetIsNestedPublic() && !ThisAssembly.Equals(targetType.GetAssembly()))
 			{
 				Throw.CannotSerializeNonPublicTypeUnlessPrivledgedAccessEnabled(targetType);
 			}
 		}
 
-		public static SerializationTarget Prepare(DiagnosticListener diag, SerializerGenerationOptions options, Type targetType)
+		public static SerializationTarget Prepare(ISerializerGenerationOptions options, Type targetType)
 		{
 			VerifyCanSerializeTargetType(options, targetType);
 
-			var memberIgnoreList = options.IgnoringMembers.TryGetValue(targetType, out var ignoringMembers) ? ignoringMembers : Enumerable.Empty<string>();
-			var getters = GetTargetMembers(targetType, options)
+			var memberIgnoreList = options.BindingOptions.GetIgnoringMembers(targetType);
+
+			var deserializationConstructor = FindDeserializationConstructor(options, targetType, out var constructorKind);
+			var correspondentParameterMapping = new ConstructorParameterMapping(deserializationConstructor?.GetParameters() ?? Array.Empty<ParameterInfo>());
+
+			var getters = GetTargetMembers(targetType, (n, t) => correspondentParameterMapping.GetMappedParameterName(n, t), options, AreInternalsVisibleTo(targetType, options))
 						  .Where(getter => !memberIgnoreList.Contains(getter.MemberName, StringComparer.Ordinal))
 						  .OrderBy(entry => entry.Contract.Id)
 						  .ToArray();
 
-			if (getters.Length == 0 && !options.SerializableAnywayInterfaceDetector(targetType, options))
+			if (getters.Length == 0 && !options.CompatibilityOptions.SerializableInterfaceDetectors.Any(d => d(targetType, options)))
 			{
 				Throw.IsNotSerializableAnyway(targetType);
 			}
 
-			var memberCandidates = getters.Where(entry => CheckTargetEligibility(options, entry.Member!)).ToArray();
+			var memberCandidates = getters.Where(entry => entry.GetterAccessStrategy != MemberAccessStrategy.Skip).ToArray();
+
+			// NEW SPEC Draft
+			// 1. If it is "unbalanced" between getters and setters, skip unsettables.
+			// 2. If there is an explicit constructor, then use it. If multiple, use .ctor() for backward compatibility [should be error, needs switch]
+			// 3. If there is an parameterful consctructor, then use it.
+			// 4. Use default consctructor.
+			// 5. Deserialize rest members via setters. This is backward-compatible behavior.
+
+#warning If there are any settable members, ctor is ignored in v1??? We can use both of ctor and setters...
+			// Needs verification::
+			// 1. .ctor -> setters
+			// 2. .ctor -> IUnpackable
+			// 3. .ctor -> both parameters and setter -- should be once, and the change is backward compatible.
 
 			if (memberCandidates.Length == 0 && !options.AllowsAsymmetricSerializer)
 			{
-				ConstructorKind constructorKind;
-				var deserializationConstructor = FindDeserializationConstructor(diag, options, targetType, out constructorKind);
-				var complementedMembers = ComplementMembers(getters, options, targetType);
-				var correspondingMemberNames = FindCorrespondentMemberNames(complementedMembers, deserializationConstructor);
+				var complementedMembers = ComplementMembers(getters, options.CompatibilityOptions, targetType);
+				var correspondingMemberNames = correspondentParameterMapping.GetCorrespondentMemberNames();
 				return
 					new SerializationTarget(
 						targetType,
@@ -165,20 +136,18 @@ namespace MsgPack.Serialization
 						complementedMembers,
 						deserializationConstructor,
 						correspondingMemberNames,
-						DetermineCanDeserialize(diag, constructorKind, options, targetType, correspondingMemberNames, allowDefault: false)
+						DetermineCanDeserialize(constructorKind, options, targetType, correspondingMemberNames, allowDefault: false)
 					);
 			}
 			else
 			{
 				bool? canDeserialize;
-				ConstructorKind constructorKind;
 
 				// Try to get default constructor.
 				var constructor = targetType.GetConstructor(ReflectionAbstractions.EmptyTypes);
 				if (constructor == null && !targetType.GetIsValueType())
 				{
 					// Try to get deserialization constructor.
-					var deserializationConstructor = FindDeserializationConstructor(diag, options, targetType, out constructorKind);
 					if (deserializationConstructor == null && !options.AllowsAsymmetricSerializer)
 					{
 						Throw.TargetDoesNotHavePublicDefaultConstructor(targetType);
@@ -227,10 +196,10 @@ namespace MsgPack.Serialization
 				else
 				{
 					// ID order.
-					members = ComplementMembers(memberCandidates, options, targetType);
+					members = ComplementMembers(memberCandidates, options.CompatibilityOptions, targetType);
 				}
 
-				var correspondingMemberNames = FindCorrespondentMemberNames(members, constructor);
+				var correspondingMemberNames = correspondentParameterMapping.GetCorrespondentMemberNames();
 				return
 					new SerializationTarget(
 						targetType,
@@ -238,29 +207,82 @@ namespace MsgPack.Serialization
 						members,
 						constructor,
 						correspondingMemberNames,
-						canDeserialize ?? DetermineCanDeserialize(diag, constructorKind, options, targetType, correspondingMemberNames, allowDefault: true)
+						canDeserialize ?? DetermineCanDeserialize(constructorKind, options, targetType, correspondingMemberNames, allowDefault: true)
 					);
 			}
+		}
+
+		private static readonly NaiveConcurrentFifoCache<string, NaiveConcurrentFifoCache<Assembly, bool>> s_areInternalsVisibleToCache =
+			new NaiveConcurrentFifoCache<string, NaiveConcurrentFifoCache<Assembly, bool>>(3);
+
+		private static bool AreInternalsVisibleTo(Type type, ISerializerGenerationOptions options)
+		{
+			if (options.BindingOptions.AssumesInternalsVisibleTo)
+			{
+				return true;
+			}
+
+			var cacheExists = s_areInternalsVisibleToCache.TryGetValue(options.RuntimeCodeGenerationAssemblyName, out var areInternalsVisibleToCacheForGeneratingAssembly);
+
+			if (cacheExists && areInternalsVisibleToCacheForGeneratingAssembly!.TryGetValue(type.Assembly, out var areInternalsVisibleTo))
+			{
+				return areInternalsVisibleTo;
+			}
+
+			if (!cacheExists)
+			{
+				areInternalsVisibleToCacheForGeneratingAssembly = new NaiveConcurrentFifoCache<Assembly, bool>(10);
+				s_areInternalsVisibleToCache.Put(
+					options.RuntimeCodeGenerationAssemblyName,
+					areInternalsVisibleToCacheForGeneratingAssembly,
+					(old, _) => old // discard new one because it must be empty.
+				);
+			}
+
+			var result =
+				type.Assembly.GetCustomAttributes<InternalsVisibleToAttribute>().Any(
+					a =>
+					{
+						var allowedAssembly = new AssemblyName(a.AssemblyName);
+						if (allowedAssembly.GetPublicKey() != null)
+						{
+							return false;
+						}
+
+						return allowedAssembly.Name == options.RuntimeCodeGenerationAssemblyName;
+					}
+				);
+
+			areInternalsVisibleToCacheForGeneratingAssembly!.Put(
+				type.Assembly,
+				result,
+				(old, _) => old // 'old' and 'new' are always same, so pick up old here.
+			);
+			return result;
 		}
 
 		private static bool HasAnyCorrespondingMembers(IEnumerable<string?> correspondingMemberNames)
 			=> correspondingMemberNames.Count(x => !String.IsNullOrEmpty(x)) > 0;
 
-		private static bool HasDeserializableInterface(Type targetType, SerializerGenerationOptions options)
-			=> options.DeserializableInterfaceDetector(targetType, options);
+		private static bool HasDeserializableInterface(Type targetType, ISerializerGenerationOptions options)
+			=> options.CompatibilityOptions.DeserializableInterfaceDetectors.Any(d => d(targetType, options));
 
-		private static bool DetermineCanDeserialize(DiagnosticSource diag, ConstructorKind kind, SerializerGenerationOptions options, Type targetType, IEnumerable<string?> correspondingMemberNames, bool allowDefault)
+		private static bool DetermineCanDeserialize(ConstructorKind kind, ISerializerGenerationOptions options, Type targetType, IEnumerable<string?> correspondingMemberNames, bool allowDefault)
 		{
 			if (HasDeserializableInterface(targetType, options))
 			{
-				diag.DetectedAsDeserializable(
-					new
-					{
-						targetType,
-						constructorKind = "ImplementsInterface",
-						allowsDefault = allowDefault
-					}
-				);
+				if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.DetectedAsDeserializable))
+				{
+					Diagnostic.GeneratorTrace.DetectedAsDeserializable(
+						new
+						{
+							targetType,
+							constructorKind = "ImplementsInterface",
+							allowsDefault = allowDefault
+						}
+					);
+				}
+
 				return true;
 			}
 
@@ -268,39 +290,51 @@ namespace MsgPack.Serialization
 			{
 				case ConstructorKind.Marked:
 				{
-					diag.DetectedAsDeserializable(
-						new
-						{
-							targetType,
-							constructorKind = "MarkedWithAttribute",
-							allowsDefault = allowDefault
-						}
-					);
+					if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.DetectedAsDeserializable))
+					{
+						Diagnostic.GeneratorTrace.DetectedAsDeserializable(
+							new
+							{
+								targetType,
+								constructorKind = "MarkedWithAttribute",
+								allowsDefault = allowDefault
+							}
+						);
+					}
+
 					return true;
 				}
 				case ConstructorKind.Parameterful:
 				{
 					var result = HasAnyCorrespondingMembers(correspondingMemberNames);
-					diag.DetectedAsDeserializable(
-						new
-						{
-							targetType,
-							constructorKind = "Parameterful",
-							allowsDefault = allowDefault
-						}
-					);
+					if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.DetectedAsDeserializable))
+					{
+						Diagnostic.GeneratorTrace.DetectedAsDeserializable(
+							new
+							{
+								targetType,
+								constructorKind = "Parameterful",
+								allowsDefault = allowDefault
+							}
+						);
+					}
+
 					return result;
 				}
 				case ConstructorKind.Default:
 				{
-					diag.DetectedAsDeserializable(
-						new
-						{
-							targetType,
-							constructorKind = "Default",
-							allowsDefault = allowDefault
-						}
-					);
+					if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.DetectedAsDeserializable))
+					{
+						Diagnostic.GeneratorTrace.DetectedAsDeserializable(
+							new
+							{
+								targetType,
+								constructorKind = "Default",
+								allowsDefault = allowDefault
+							}
+						);
+					}
+
 					return allowDefault;
 				}
 				default:
@@ -338,11 +372,16 @@ namespace MsgPack.Serialization
 			return distinctMembers.ToArray();
 		}
 
-		private static IEnumerable<SerializingMember> GetTargetMembers(Type type, SerializerGenerationOptions options)
+		private static IEnumerable<SerializingMember> GetTargetMembers(
+			Type targetType,
+			Func<string, Type, string?> correspondentParameterNameProvider,
+			ISerializerGenerationOptions options,
+			bool isInternalsVisible
+		)
 		{
-			Debug.Assert(type != null, "type != null");
+			Debug.Assert(targetType != null, "type != null");
 
-			var members = GetDistinctMembers(type);
+			var members = GetDistinctMembers(targetType);
 			var filtered =
 				members.Where(item =>
 					item.GetCustomAttributesData().Any(a => a.GetAttributeType().FullName == MessagePackMemberAttributeTypeName)
@@ -350,19 +389,26 @@ namespace MsgPack.Serialization
 
 			if (filtered.Length > 0)
 			{
-				return GetAnnotatedMembersWithDuplicationDetection(type, filtered);
+				return GetAnnotatedMembersWithDuplicationDetection(targetType, filtered, correspondentParameterNameProvider, options, isInternalsVisible);
 			}
 
-			var compatibleMembers = GetCompatibleMembers(type.GetCustomAttributesData(), members, options).ToArray();
+			var typeAttributes = targetType.GetCustomAttributesData();
+			var compatibleMembers = GetCompatibleMembers(targetType, typeAttributes, members, correspondentParameterNameProvider, options, isInternalsVisible).ToArray();
 			if (compatibleMembers.Any())
 			{
 				return compatibleMembers;
 			}
 
-			return GetPublicUnpreventedMembers(members, options);
+			return GetPublicUnpreventedMembers(targetType, typeAttributes, members, correspondentParameterNameProvider, options, isInternalsVisible);
 		}
 
-		private static IEnumerable<SerializingMember> GetAnnotatedMembersWithDuplicationDetection(Type type, MemberInfo[] filtered)
+		private static IEnumerable<SerializingMember> GetAnnotatedMembersWithDuplicationDetection(
+			Type targetType,
+			MemberInfo[] filtered,
+			Func<string, Type, string?> correspondentParameterNameProvider,
+			ISerializerGenerationOptions options,
+			bool isInternalsVisible
+		)
 		{
 			var duplicated =
 				filtered.FirstOrDefault(
@@ -371,7 +417,7 @@ namespace MsgPack.Serialization
 
 			if (duplicated != null)
 			{
-				Throw.MemberIsMarkedWithMemberAndIgnoreAttribute(type, duplicated.Name);
+				Throw.MemberIsMarkedWithMemberAndIgnoreAttribute(targetType, duplicated.Name);
 			}
 
 			return
@@ -379,15 +425,22 @@ namespace MsgPack.Serialization
 					member =>
 					{
 						var attribute = member.GetCustomAttributesData().Single(a => a.GetAttributeType().FullName == MessagePackMemberAttributeTypeName);
+						var memberName = (string?)GetAttributeProperty(MessagePackMemberAttributeTypeName, attribute, "Name") ?? member.Name;
+						var memberType = member.GetMemberValueType();
+						var memberTraits = memberType.GetCollectionTraits(CollectionTraitOptions.Full, options.CompatibilityOptions.AllowsNonCollectionEnumerableTypes);
+						var correspondentParameterName = correspondentParameterNameProvider(memberName, memberType);
 						return
-							new SerializingMember(
+								new SerializingMember(
 								member,
 								new DataMemberContract(
 									member,
-									(string?)GetAttributeProperty(MessagePackMemberAttributeTypeName, attribute, "Name"),
+									memberName,
 									(NilImplication)((int?)GetAttributeProperty(MessagePackMemberAttributeTypeName, attribute, "NilImplication")).GetValueOrDefault(),
 									(int?)GetAttributeArgument(MessagePackMemberAttributeTypeName, attribute, 0)
-								)
+								),
+								memberTraits,
+								GetAccessStrategy(targetType, member, memberTraits, options, isInternalsVisible, isSetter: false, correspondentParameterName),
+								GetAccessStrategy(targetType, member, memberTraits, options, isInternalsVisible, isSetter: true, correspondentParameterName)
 							);
 					}
 				);
@@ -417,78 +470,76 @@ namespace MsgPack.Serialization
 			return property.GetTypedValue().Value;
 		}
 
-		private static MessagePackMemberAttributeData? ProvideDefaultMessagePackMemberAttributeCompatibility(
+		private static IEnumerable<SerializingMember> GetCompatibleMembers(
+			Type targetType,
 			IEnumerable<CustomAttributeData> typeAttributes,
-			IEnumerable<CustomAttributeData> memberAttributes
+			MemberInfo[] members,
+			Func<string, Type, string?> correspondentParameterNameProvider,
+			ISerializerGenerationOptions options,
+			bool isInternalsVisible
 		)
-		{
-			if (!typeAttributes.Any(a => a.GetAttributeType().FullName == "System.Runtime.Serialization.DataContractAttribute"))
-			{
-				return null;
-			}
-
-			var dataMemberAttribute =
-				memberAttributes
-				.FirstOrDefault(a =>
-					a.GetAttributeType()
-					.FullName == "System.Runtime.Serialization.DataMemberAttribute"
-				);
-			if (dataMemberAttribute == null)
-			{
-				return null;
-			}
-
-			var name = default(string?);
-			var order = default(int?);
-			foreach(var namedArgument in dataMemberAttribute.GetNamedArguments())
-			{
-				var memberName = namedArgument.GetMemberName();
-				if (memberName == "Name")
-				{
-					name = (string?)namedArgument.GetTypedValue().Value;
-				}
-				else if(memberName == "Order")
-				{
-					order = (int?)namedArgument.GetTypedValue().Value;
-				}
-			}
-
-			return new MessagePackMemberAttributeData(order < 0 ? null : order, name);
-		}
-
-		private static IEnumerable<SerializingMember> GetCompatibleMembers(IEnumerable<CustomAttributeData> typeAttributes, MemberInfo[] members, SerializerGenerationOptions options)
-			=> members.Select(m => 
+			=> members.Select(m =>
 				(
 					Member: m,
-					Attribute: (options.MessagePackMemberAttributeCompatibilityProvider ?? ProvideDefaultMessagePackMemberAttributeCompatibility)
+					Attribute: (options.CompatibilityOptions.MessagePackMemberAttributeCompatibilityProvider)
 								.Invoke(typeAttributes, m.GetCustomAttributesData())
 				)
 			).Where(x => x.Attribute != null)
 			.Select(x =>
-				new SerializingMember(
-					x.Member,
-					// TODO: NilImplication
-					new DataMemberContract(x.Member, x.Attribute.GetValueOrDefault().Name, NilImplication.MemberDefault, x.Attribute.GetValueOrDefault().Id)
-				)
+				{
+					var memberName = x.Attribute.GetValueOrDefault().Name ?? x.Member.Name;
+					var memberType = x.Member.GetMemberValueType();
+					var memberTraits = memberType.GetCollectionTraits(CollectionTraitOptions.Full, options.CompatibilityOptions.AllowsNonCollectionEnumerableTypes);
+					var correspondentParameterName = correspondentParameterNameProvider(memberName, memberType);
+					return
+						new SerializingMember(
+							x.Member,
+							new DataMemberContract(
+								x.Member,
+								memberName,
+								x.Attribute.GetValueOrDefault().NilImplication,
+								x.Attribute.GetValueOrDefault().Id
+							),
+							memberTraits,
+							GetAccessStrategy(targetType, x.Member, memberTraits, options, isInternalsVisible, isSetter: false, correspondentParameterName),
+							GetAccessStrategy(targetType, x.Member, memberTraits, options, isInternalsVisible, isSetter: true, correspondentParameterName)
+						);
+				}
 			);
 
-		private static IEnumerable<SerializingMember> GetPublicUnpreventedMembers(MemberInfo[] members, SerializerGenerationOptions options)
-		{
-			return members.Where(
+		private static IEnumerable<SerializingMember> GetPublicUnpreventedMembers(
+			Type targetType,
+			IEnumerable<CustomAttributeData> typeAttributes,
+			MemberInfo[] members,
+			Func<string, Type, string?> correspondentParameterNameProvider,
+			ISerializerGenerationOptions options,
+			bool isInternalsVisible
+		)
+			=> members.Where(
 				member =>
 					member.GetIsPublic()
-					&& !member
-#if !UNITY
-						.GetCustomAttributesData()
-						.Select(data => data.GetAttributeType().FullName!)
-#else
-						.GetCustomAttributes( true )
-						.Select(data => data.GetType().FullName)
-#endif // !UNITY
-						.Any(t => options.IgnoreAttributeTypeNames.Contains(t))
 					&& !IsNonSerializedField(member)
-				).Select(member => new SerializingMember(member, new DataMemberContract(member)));
-		}
+					&& options.CompatibilityOptions.IgnoringAttributeCompatibilityProvider(
+						typeAttributes, 
+						member.GetCustomAttributesData()
+					) is null
+					&& !IsNonSerializedField(member)
+			).Select(
+				(member, i) =>
+				{
+					var memberType = member.GetMemberValueType();
+					var memberTraits = memberType.GetCollectionTraits(CollectionTraitOptions.Full, options.CompatibilityOptions.AllowsNonCollectionEnumerableTypes);
+					var correspondentParameterName = correspondentParameterNameProvider(member.Name, memberType);
+					return
+						new SerializingMember(
+							member,
+							new DataMemberContract(member),
+							memberTraits,
+							GetAccessStrategy(targetType, member, memberTraits, options, isInternalsVisible, isSetter: false, correspondentParameterName),
+							GetAccessStrategy(targetType, member, memberTraits, options, isInternalsVisible, isSetter: true, correspondentParameterName)
+						);
+				}
+			);
 
 		private static bool IsNonSerializedField(MemberInfo member)
 		{
@@ -501,7 +552,7 @@ namespace MsgPack.Serialization
 			return (asField.Attributes & FieldAttributes.NotSerialized) != 0;
 		}
 
-		private static ConstructorInfo? FindDeserializationConstructor(DiagnosticSource diag, SerializerGenerationOptions options, Type targetType, out ConstructorKind constructorKind)
+		private static ConstructorInfo? FindDeserializationConstructor(ISerializerGenerationOptions options, Type targetType, out ConstructorKind constructorKind)
 		{
 			var constructors = targetType.GetConstructors().ToArray();
 
@@ -548,13 +599,16 @@ namespace MsgPack.Serialization
 			var mostRichConstructors =
 				constructors.GroupBy(ctor => ctor.GetParameters().Length).OrderByDescending(g => g.Key).First().ToArray();
 
-			diag.DeserializationConstructorFound(
-				new
-				{
-					targetType = targetType,
-					constructors = mostRichConstructors.Select(x => x.ToString()).ToArray()
-				}
-			);
+			if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.DeserializationConstructorFound))
+			{
+				Diagnostic.GeneratorTrace.DeserializationConstructorFound(
+					new
+					{
+						targetType,
+						constructors = mostRichConstructors.Select(x => x.ToString()).ToArray()
+					}
+				);
+			}
 
 			switch (mostRichConstructors.Length)
 			{
@@ -615,71 +669,319 @@ namespace MsgPack.Serialization
 				).ToArray();
 		}
 
-
-		private static bool CheckTargetEligibility(SerializerGenerationOptions options, MemberInfo member)
+		private static MemberAccessStrategy GetAccessStrategy(
+			Type targetType,
+			MemberInfo member,
+			CollectionTraits memberTraits,
+			ISerializerGenerationOptions options,
+			bool isInternalsVisible,
+			bool isSetter,
+			string? correspondentParameterName
+		)
 		{
-			Type returnType;
+			var isPublic = false;
+			var isAssembly = false;
+			var isReadOnly = false;
 
-			if (member is PropertyInfo asProperty)
+			// 1. Check member. Static, literal, or setonly member should be skipped.
+			if (member is FieldInfo asField)
 			{
-				if (asProperty.GetIndexParameters().Length > 0)
+				if (asField.IsStatic || asField.IsLiteral)
 				{
-					// Indexer cannot be target except the type itself implements IDictionary or IDictionary<TKey,TValue>
-					return false;
-				}
-
-#if !NETSTANDARD1_1 && !NETSTANDARD1_3
-				var setter = asProperty.GetSetMethod(true);
-#else
-				var setter = asProperty.SetMethod;
-#endif // !NETSTANDARD1_1 && !NETSTANDARD1_3
-				if (setter != null)
-				{
-					if (setter.GetIsPublic())
+					if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.SkipStaticMember))
 					{
-						return true;
+						Diagnostic.GeneratorTrace.SkipStaticMember(
+							new
+							{
+								targetMember = member
+							}
+						);
 					}
 
-					if (!options.DisablesPrivilegedAccess)
-					{
-						// Can deserialize non-public setter if privileged.
-						return true;
-					}
+					return MemberAccessStrategy.Skip;
 				}
 
-				returnType = asProperty.PropertyType;
-			}
-			else if (member is FieldInfo asField)
-			{
-				if (!asField.IsInitOnly)
-				{
-					return true;
-				}
-
-				returnType = asField.FieldType;
+				isPublic = asField.IsPublic;
+				isAssembly = asField.IsAssembly || asField.IsFamilyOrAssembly;
+				isReadOnly = asField.IsInitOnly;
 			}
 			else
 			{
-				Debug.Fail($"Unknown type member '{member}'");
-				return true;
+				var asProperty = member as PropertyInfo;
+				Debug.Assert(asProperty != null);
+
+				if (asProperty.GetIndexParameters().Length > 0)
+				{
+					if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.SkipIndexer))
+					{
+						Diagnostic.GeneratorTrace.SkipIndexer(
+							new
+							{
+								targetMember = member
+							}
+						);
+					}
+
+					return MemberAccessStrategy.Skip;
+				}
+
+				if (!isSetter)
+				{
+					var getter = asProperty.GetGetMethod(nonPublic: true);
+					if (getter == null)
+					{
+						if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.SkipSetOnlyProperty))
+						{
+							Diagnostic.GeneratorTrace.SkipSetOnlyProperty(
+								new
+								{
+									targetMember = member
+								}
+							);
+						}
+
+						return MemberAccessStrategy.Skip;
+					}
+
+					if (getter.IsStatic)
+					{
+						if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.SkipStaticMember))
+						{
+							Diagnostic.GeneratorTrace.SkipStaticMember(
+								new
+								{
+									targetMember = member
+								}
+							);
+						}
+
+						return MemberAccessStrategy.Skip;
+					}
+
+					isPublic = getter.IsPublic;
+					isAssembly = getter.IsAssembly || getter.IsFamilyOrAssembly;
+				}
+				else
+				{
+					var setter = asProperty.GetSetMethod(nonPublic: true);
+					if (setter != null)
+					{
+						if (setter.IsStatic)
+						{
+							if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.SkipStaticMember))
+							{
+								Diagnostic.GeneratorTrace.SkipStaticMember(
+									new
+									{
+										targetMember = member
+									}
+								);
+							}
+
+							return MemberAccessStrategy.Skip;
+						}
+
+						isPublic = setter.IsPublic;
+						isAssembly = setter.IsAssembly || setter.IsFamilyOrAssembly;
+					}
+					else
+					{
+						isReadOnly = true;
+					}
+				}
 			}
 
-			var traits = returnType.GetCollectionTraits(CollectionTraitOptions.WithAddMethod, allowNonCollectionEnumerableTypes: false);
-			switch (traits.CollectionType)
+			// 2. If field/property is init only, we MAY set it via ctor.
+			if (isSetter && isReadOnly)
+			{
+				return GetAccessStrategyForReadOnlyMember(targetType, member, memberTraits, options, correspondentParameterName);
+			}
+
+			// 3. If runtime code generation is disabled, we can only use reflection anyway.
+			if (options.IsRuntimeCodeGenerationDisabled)
+			{
+				if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseReflectionMemberAccess))
+				{
+					Diagnostic.GeneratorTrace.UseReflectionMemberAccess(
+						new
+						{
+							targetMember = member
+						}
+					);
+				}
+
+				// Use reflection
+				return MemberAccessStrategy.WithReflection;
+			}
+
+			// 4. If target is public, we can access it directly.
+			if (isPublic)
+			{
+				if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseDirectMemberAccessDueToPublic))
+				{
+					Diagnostic.GeneratorTrace.UseDirectMemberAccessDueToPublic(
+						new
+						{
+							targetMember = member
+						}
+					);
+				}
+
+				return MemberAccessStrategy.Direct;
+			}
+
+			// 5. If assembly builder can access to target internals and target's accessibility is assembly, then we can use it directly.
+			if (isInternalsVisible)
+			{
+				if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseDirectMemberAccessDueToInternalsVisibleTo))
+				{
+					Diagnostic.GeneratorTrace.UseDirectMemberAccessDueToInternalsVisibleTo(
+						new
+						{
+							targetMember = member,
+							generatingAssembly = options.RuntimeCodeGenerationAssemblyName
+						}
+					);
+				}
+
+				return MemberAccessStrategy.Direct;
+			}
+
+			// 6. If privileged access is disabled, we can only use constructor.
+			if (!options.BindingOptions.IsPrivilegedAccessDisabled)
+			{
+				if (isSetter && correspondentParameterName != null)
+				{
+					if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseConstructorForMemberAccessDueToAccessibility))
+					{
+						Diagnostic.GeneratorTrace.UseConstructorForMemberAccessDueToAccessibility(
+							new
+							{
+								targetMember = member,
+								correspondentParameterName
+							}
+						);
+					}
+
+					return MemberAccessStrategy.ViaConstrutor;
+				}
+
+				// Skip this member for now -- it leads exception when no accessible members available.
+				if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.SkipMemberDueToAccessibility))
+				{
+					Diagnostic.GeneratorTrace.SkipMemberDueToAccessibility(
+						new
+						{
+							targetMember = member
+						}
+					);
+				}
+
+			}
+
+#if FEATURE_IGNORE_ACCESS_CHECKS_TO_ATTRIBUTE
+			// 7. Use System.Runtime.CompilerServices.IgnoreAccessChecksToAttribute if possible in current platform.
+			if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseIgnoreAccessChecksToAttributeForMemberAccess))
+			{
+				Diagnostic.GeneratorTrace.UseIgnoreAccessChecksToAttributeForMemberAccess(
+					new
+					{
+						targetMember = member
+					}
+				);
+			}
+
+			return MemberAccessStrategy.DirectWithIgnoreAccessChecksToAttribute;
+#else
+
+			// 8. Now, we can use delegate.
+			//    Delegate creation may throw MemberAccessException when required code access security permission is not grant,
+			//    however, in such case, we cannot [de]serialize target type anyway.
+			if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseDelegateForMemberAccess))
+			{
+				Diagnostic.GeneratorTrace.UseDelegateForMemberAccess(
+					new
+					{
+						targetMember = member
+					}
+				);
+			}
+
+			return MemberAccessStrategy.ViaDelegate;
+#endif
+		}
+
+		private static MemberAccessStrategy GetAccessStrategyForReadOnlyMember(Type targetType, MemberInfo member, CollectionTraits memberTraits, ISerializerGenerationOptions options, string? correspondentParameterName)
+		{
+			if (correspondentParameterName != null)
+			{
+				if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseConstructorForMemberAccessDueToReadOnly))
+				{
+					Diagnostic.GeneratorTrace.UseConstructorForMemberAccessDueToReadOnly(
+						new
+						{
+							targetMember = member,
+							correspondentParameterName
+						}
+					);
+				}
+
+				return MemberAccessStrategy.ViaConstrutor;
+			}
+
+			switch (memberTraits.CollectionType)
 			{
 				case CollectionKind.Array:
 				case CollectionKind.Map:
 				{
-					return traits.AddMethod != null;
+					if (memberTraits.AddMethod != null)
+					{
+						if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.UseCollectionAddForReadOnlyMember))
+						{
+							Diagnostic.GeneratorTrace.UseCollectionAddForReadOnlyMember(
+								new
+								{
+									targetMember = member,
+									correspondentParameterName
+								}
+							);
+						}
+
+						return MemberAccessStrategy.CollectionAdd;
+					}
+
+					break;
 				}
 				default:
 				{
-					return false;
+					break;
 				}
+			}
+
+			if (options.AllowsAsymmetricSerializer)
+			{
+				if (Diagnostic.GeneratorTrace.IsEnabled(Diagnostic.GeneratorTrace.Keys.WillBeAsymmetricDueToReadOnlyMember))
+				{
+					Diagnostic.GeneratorTrace.WillBeAsymmetricDueToReadOnlyMember(
+						new
+						{
+							targetType,
+							targetMember = member,
+							correspondentParameterName
+						}
+					);
+				}
+
+				return MemberAccessStrategy.WillBeAsymmetric;
+			}
+			else
+			{
+				Throw.CannotSerializeTypeWhichDeclaresReadOnlySignificantNonCollectionMemberWhenAsymmetricSerializerIsNotAllowed(targetType, member);
+				return default; // never reaches
 			}
 		}
 
-		private static IReadOnlyList<SerializingMember> ComplementMembers(IReadOnlyList<SerializingMember> candidates, SerializerGenerationOptions options, Type targetType)
+		private static IReadOnlyList<SerializingMember> ComplementMembers(IReadOnlyList<SerializingMember> candidates, ISerializationCompatibilityOptions options, Type targetType)
 		{
 			if (candidates.Count == 0)
 			{
@@ -691,7 +993,7 @@ namespace MsgPack.Serialization
 				return candidates;
 			}
 
-			if (options.OneBoundDataMemberOrder && candidates[0].Contract.Id == 0)
+			if (options.UsesOneBoundDataMemberOrder && candidates[0].Contract.Id == 0)
 			{
 				Throw.DataMemberAttributeCannotBeZeroWhenOneBoundDataMemberOrderIsTrue(targetType, candidates[0].MemberName);
 			}
@@ -706,7 +1008,7 @@ namespace MsgPack.Serialization
 			}
 #endif
 			var result = new List<SerializingMember>(maxId + 1);
-			for (int source = 0, destination = options.OneBoundDataMemberOrder ? 1 : 0;
+			for (int source = 0, destination = options.UsesOneBoundDataMemberOrder ? 1 : 0;
 				source < candidates.Count;
 				source++, destination++)
 			{
@@ -803,7 +1105,7 @@ namespace MsgPack.Serialization
 			}
 		}
 
-		public static SerializationTarget CreateForCollection(Type targetType, CollectionTraits traits, ConstructorInfo collectionConstructor, bool canDeserialize)
+		public static SerializationTarget CreateForCollection(Type targetType, CollectionTraits traits, ConstructorInfo? collectionConstructor, bool canDeserialize)
 			=> new SerializationTarget(targetType, traits, Array.Empty<SerializingMember>(), collectionConstructor, Array.Empty<string>(), canDeserialize);
 
 		public static SerializationTarget CreateForTuple(Type targetType)
@@ -826,6 +1128,43 @@ namespace MsgPack.Serialization
 			return GenericSerializer.IsSupported( type, traits, configuration.PreferReflectionBasedSerializer ) || SerializerRepository.InternalDefault.ContainsFor( type );
 		}
 #endif // FEATURE_CODEGEN
+
+		private sealed class ConstructorParameterMapping
+		{
+			private readonly Dictionary<string, string> _parameterMemberMapping;
+			private readonly Dictionary<string, ParameterInfo> _parametersLookup;
+
+			public ConstructorParameterMapping(ParameterInfo[] parameters)
+			{
+				this._parametersLookup = parameters.ToDictionary(p => p.Name!, StringComparer.OrdinalIgnoreCase);
+				this._parameterMemberMapping = new Dictionary<string, string>(parameters.Length);
+			}
+
+			public string? GetMappedParameterName(string memberName, Type memberType)
+			{
+				if (!this._parametersLookup.TryGetValue(memberName, out var parameter) || parameter.ParameterType != memberType)
+				{
+					return null;
+				}
+
+				if (!this._parameterMemberMapping.TryAdd(parameter.Name!, memberName))
+				{
+					Throw.CannotDetectCorrepondentMemberNameUniquely(
+						parameter,
+						new [] { this._parameterMemberMapping[parameter.Name!], memberName }
+					);
+				}
+
+				return parameter.Name;
+			}
+
+			public string?[] GetCorrespondentMemberNames()
+				=> this._parametersLookup
+					.Values
+					.OrderBy(p => p.Position)
+					.Select(p => this._parameterMemberMapping.TryGetValue(p.Name!, out var memberName) ? memberName : null)
+					.ToArray();
+		}
 
 		private sealed class MemberConstructorParameterEqualityComparer : EqualityComparer<KeyValuePair<string, Type>>
 		{

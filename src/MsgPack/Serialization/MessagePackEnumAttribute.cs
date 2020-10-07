@@ -10,7 +10,8 @@ namespace MsgPack.Serialization
 	///		Marks that this enum type has special characteristics on MessagePack serialization.
 	/// </summary>
 	/// <remarks>
-	///		Enum types which are not marked with this attribute will be serialized as <see cref="SerializationContext.EnumSerializationMethod"/> value.
+	///		Enum types which are not marked with this attribute will be serialized as <see cref="SerializerProvider.EnumSerializationMethod"/> value.
+	///		<include file='../../Common/Remarks.xml' path='docs/doc[@name="EnumSerialization"]'/>
 	/// </remarks>
 	[AttributeUsage(AttributeTargets.Enum, Inherited = false, AllowMultiple = false)]
 	public sealed class MessagePackEnumAttribute : Attribute
@@ -22,6 +23,9 @@ namespace MsgPack.Serialization
 		///		The default serialization method for this enum type.
 		///		Note that the method for individual enum typed members will be overrided with <see cref="MessagePackEnumMemberAttribute"/>.
 		/// </value>
+		/// <remarks>
+		///		<include file='../../Common/Remarks.xml' path='docs/doc[@name="EnumSerialization"]'/>
+		/// </remarks>
 		public EnumSerializationMethod SerializationMethod { get; set; }
 
 		/// <summary>

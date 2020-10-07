@@ -24,20 +24,19 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		private readonly AsyncDeserializingFill _deserializeToAsync;
 #endif // FEATURE_TAP
 
-		public ReflectionSerializer(ObjectSerializationContext ownerContext, SerializationTarget target)
-			: base(ownerContext, target.GetCapabilities())
+		public ReflectionSerializer(SerializerProvider ownerProvider, in SerializationTarget target, ISerializerGenerationOptions options, PolymorphismSchema schema)
+			: base(ownerProvider, target.GetCapabilities())
 		{
-#warning TODO: PolymorphismSchema
-
+#warning TODO: AbstractCollectionSupport here
 			IReflectionObjectSerializer serializer;
 			if (!target.IsCollection)
 			{
-				serializer = new ObjectDelegateSerializer(ownerContext, target);
+				serializer = new ObjectDelegateSerializer(ownerProvider, target, options);
 			}
 			else if (target.CollectionTraits.CollectionType == CollectionKind.Array)
 			{
 #warning TODO: PolymorphismSchema
-				var itemSerializer = ownerContext.GetSerializer(target.CollectionTraits.ElementType!, null);
+				var itemSerializer = ownerProvider.GetSerializer(target.CollectionTraits.ElementType!, null);
 				serializer =
 					target.CollectionTraits.DetailedCollectionType switch
 					{
@@ -49,7 +48,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 								itemSerializer.DeserializeObjectAsync,
 #endif // FEATURE_TAP
 								target.Type,
-								target.CollectionTraits
+								target.CollectionTraits,
+								options
 							),
 						_ => new CollectionDelegateSerializer(
 							itemSerializer.SerializeObject,
@@ -58,7 +58,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							itemSerializer.DeserializeObjectAsync,
 #endif // FEATURE_TAP
 							target.Type,
-							target.CollectionTraits
+							target.CollectionTraits,
+							options
 						)
 					};
 			}
@@ -81,7 +82,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						valueSerializer.DeserializeObjectAsync,
 #endif // FEATURE_TAP
 						target.Type,
-						target.CollectionTraits
+						target.CollectionTraits,
+						options
 					);
 			}
 

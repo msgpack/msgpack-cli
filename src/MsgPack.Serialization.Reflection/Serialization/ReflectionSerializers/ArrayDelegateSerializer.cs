@@ -31,7 +31,8 @@ namespace MsgPack.Serialization.ReflectionSerializers
 			AsyncDeserialization deserializeItemAsync,
 #endif // FEATURE_TAP
 			Type targetType,
-			in CollectionTraits traits
+			in CollectionTraits traits,
+			ISerializerGenerationOptions options
 		)
 		{
 			this._targetType = targetType;
@@ -40,8 +41,11 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if FEATURE_TAP
 			this._deserializeItemAsync = deserializeItemAsync;
 #endif // FEATURE_TAP
-#warning TODO: allowNonCollectionEnumerableTypes
-			this._itemIsCollection = traits.ElementType!.GetCollectionTraits(CollectionTraitOptions.None, allowNonCollectionEnumerableTypes: false).CollectionType != CollectionKind.NotCollection;
+			this._itemIsCollection =
+				traits.ElementType!.GetCollectionTraits(
+					CollectionTraitOptions.None, 
+					allowNonCollectionEnumerableTypes: options.CompatibilityOptions.AllowsNonCollectionEnumerableTypes
+				).CollectionType != CollectionKind.NotCollection;
 		}
 
 		public void Serialize(ref SerializationOperationContext context, object? obj, IBufferWriter<byte> sink)

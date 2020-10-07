@@ -1,4 +1,4 @@
-﻿// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
 // This file is licensed under Apache2 license.
 // See the LICENSE in the project root for more information.
 
@@ -39,18 +39,18 @@ namespace MsgPack.Serialization.ReflectionSerializers
 		// object
 		// tuple
 		// value tuple
-		public ObjectDelegateSerializer(ObjectSerializationContext context, SerializationTarget target)
+		public ObjectDelegateSerializer(SerializerProvider provider, in SerializationTarget target, ISerializerGenerationOptions options)
 		{
 			this._target = target;
 			var isTuple = TupleItems.IsTuple(target.Type);
 			this._tupleTypes = isTuple ? null : TupleItems.CreateTupleTypeList(target.Type);
-			this._memberValueEncoders = CreateMemberValueEncoders(context, target.Members).ToList();
+			this._memberValueEncoders = CreateMemberValueEncoders(provider, target.Members).ToList();
 			this._memberValueDecoders =
 				CreateMemberValueDecoders(
-					context,
+					provider,
 					target.Members,
 					hasDeserializationConstructor: target.DeserializationConstructor != null,
-					hasPriviledgedAccess: !context.Options.DisablePrivilegedAccess
+					hasPriviledgedAccess: !options.BindingOptions.IsPrivilegedAccessDisabled
 				).ToList();
 			this._memberIsCollections = DetermineWhetherIndividualMembersAreCollection(target.Members).ToList();
 			this._memberValueGetters = CreateMemberValueGetters(target.Members, this._tupleTypes).ToList();
@@ -59,20 +59,22 @@ namespace MsgPack.Serialization.ReflectionSerializers
 #if FEATURE_TAP
 			this._asyncMemberValueDecoders =
 				CreateAsyncMemberValueDecoders(
-					context,
+					provider,
 					target.Members,
 					hasDeserializationConstructor: target.DeserializationConstructor != null,
-					hasPriviledgedAccess: !context.Options.DisablePrivilegedAccess
+					hasPriviledgedAccess: !options.BindingOptions.IsPrivilegedAccessDisabled
 				).ToList();
 #endif // FEATURE_TAP
 		}
 
-		private static IEnumerable<Delegate> CreateMemberValueEncoders(ObjectSerializationContext context, IEnumerable<SerializingMember> members)
+		private static IEnumerable<Delegate> CreateMemberValueEncoders(SerializerProvider provider, IEnumerable<SerializingMember> members)
 		{
 			foreach (var member in members)
 			{
 				var type = member.Member.GetMemberValueType();
 				var memberInfo = member.Member;
+				var schema = PolymorphismSchema.Create(type, member);
+
 				yield return
 					type switch
 					{
@@ -100,19 +102,20 @@ namespace MsgPack.Serialization.ReflectionSerializers
 							=> EncodeBinary,
 						var t when t == typeof(ReadOnlySpan<byte>) => ReflectionSerializerThrow.ByRefLikeIsNotSupported(memberInfo),
 						var t when t == typeof(Span<byte>) => ReflectionSerializerThrow.ByRefLikeIsNotSupported(memberInfo),
-#warning TODO: PolymorphismSchema
-						_ => new Serialization(context.GetSerializer(type, null).SerializeObject)
+						_ => new Serialization(provider.GetPolymorphicSerializer(type, schema).SerializeObject)
 					};
 			}
 		}
 
-		private static IEnumerable<Delegate> CreateMemberValueDecoders(ObjectSerializationContext context, IEnumerable<SerializingMember> members, bool hasDeserializationConstructor, bool hasPriviledgedAccess)
+		private static IEnumerable<Delegate> CreateMemberValueDecoders(SerializerProvider provider, IEnumerable<SerializingMember> members, bool hasDeserializationConstructor, bool hasPriviledgedAccess)
 		{
 			foreach (var member in members)
 			{
 				var type = member.Member.GetMemberValueType();
 				var item = (Type: type, IsNullable: member.Member!.IsNullable());
 				var memberInfo = member.Member;
+				var schema = PolymorphismSchema.Create(type, member);
+
 				yield return
 					item switch
 					{
@@ -162,23 +165,22 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						var x when x.Type == typeof(ReadOnlySequence<byte>) && x.IsNullable => DecodeReadOnlySequenceOfByteNullable,
 						var x when x.Type == typeof(ReadOnlySpan<byte>) => ReflectionSerializerThrow.ByRefLikeIsNotSupported(memberInfo),
 						var x when x.Type == typeof(Span<byte>) => ReflectionSerializerThrow.ByRefLikeIsNotSupported(memberInfo),
-#warning TODO: PolymorphismSchema
 						_ =>
 							hasDeserializationConstructor ?
-								new Deserialization(context.GetSerializer(type, null).DeserializeObject) :
+								new Deserialization(provider.GetPolymorphicSerializer(type, schema).DeserializeObject) :
 								memberInfo switch
 								{
 									PropertyInfo p =>
 										p switch
 										{
-											var pi when pi.GetSetMethod(nonPublic: hasPriviledgedAccess) != null => new Deserialization(context.GetSerializer(type, null).DeserializeObject),
-											_ => new DeserializingFill(context.GetSerializer(type, null).DeserializeObjectTo),
+											var pi when pi.GetSetMethod(nonPublic: hasPriviledgedAccess) != null => new Deserialization(provider.GetPolymorphicSerializer(type, schema).DeserializeObject),
+											_ => new DeserializingFill(provider.GetPolymorphicSerializer(type, schema).DeserializeObjectTo),
 										},
 									FieldInfo f =>
 										f switch
 										{
-											var fi when !fi.IsInitOnly => new Deserialization(context.GetSerializer(type, null).DeserializeObject),
-											_ => new DeserializingFill(context.GetSerializer(type, null).DeserializeObjectTo),
+											var fi when !fi.IsInitOnly => new Deserialization(provider.GetPolymorphicSerializer(type, schema).DeserializeObject),
+											_ => new DeserializingFill(provider.GetPolymorphicSerializer(type, schema).DeserializeObjectTo),
 										},
 									_ => ReflectionSerializerThrow.UnexpectedMemberType(memberInfo)
 								}
@@ -188,13 +190,15 @@ namespace MsgPack.Serialization.ReflectionSerializers
 
 #if FEATURE_TAP
 
-		private static IEnumerable<Delegate> CreateAsyncMemberValueDecoders(ObjectSerializationContext context, IEnumerable<SerializingMember> members, bool hasDeserializationConstructor, bool hasPriviledgedAccess)
+		private static IEnumerable<Delegate> CreateAsyncMemberValueDecoders(SerializerProvider provider, IEnumerable<SerializingMember> members, bool hasDeserializationConstructor, bool hasPriviledgedAccess)
 		{
 			foreach (var member in members)
 			{
 				var type = member.Member.GetMemberValueType();
 				var item = (Type: type, IsNullable: member.Member!.IsNullable());
 				var memberInfo = member.Member;
+				var schema = PolymorphismSchema.Create(type, member);
+
 				yield return
 					item switch
 					{
@@ -244,23 +248,22 @@ namespace MsgPack.Serialization.ReflectionSerializers
 						var x when x.Type == typeof(ReadOnlySequence<byte>) && x.IsNullable => DecodeReadOnlySequenceOfByteNullableAsync,
 						var x when x.Type == typeof(ReadOnlySpan<byte>) => ReflectionSerializerThrow.ByRefLikeIsNotSupported(memberInfo),
 						var x when x.Type == typeof(Span<byte>) => ReflectionSerializerThrow.ByRefLikeIsNotSupported(memberInfo),
-#warning TODO: PolymorphismSchema
 						_ =>
 							hasDeserializationConstructor ?
-								new AsyncDeserialization(context.GetSerializer(type, null).DeserializeObjectAsync) :
+								new AsyncDeserialization(provider.GetPolymorphicSerializer(type, schema).DeserializeObjectAsync) :
 								memberInfo switch
 								{
 									PropertyInfo p =>
 										p switch
 										{
-											var pi when pi.GetSetMethod(nonPublic: hasPriviledgedAccess) != null => new Deserialization(context.GetSerializer(type, null).DeserializeObject),
-											_ => new AsyncDeserializingFill(context.GetSerializer(type, null).DeserializeObjectToAsync),
+											var pi when pi.GetSetMethod(nonPublic: hasPriviledgedAccess) != null => new Deserialization(provider.GetPolymorphicSerializer(type, schema).DeserializeObject),
+											_ => new AsyncDeserializingFill(provider.GetPolymorphicSerializer(type, schema).DeserializeObjectToAsync),
 										},
 									FieldInfo f =>
 										f switch
 										{
-											var fi when !fi.IsInitOnly => new Deserialization(context.GetSerializer(type, null).DeserializeObject),
-											_ => new AsyncDeserializingFill(context.GetSerializer(type, null).DeserializeObjectToAsync),
+											var fi when !fi.IsInitOnly => new Deserialization(provider.GetPolymorphicSerializer(type, schema).DeserializeObject),
+											_ => new AsyncDeserializingFill(provider.GetPolymorphicSerializer(type, schema).DeserializeObjectToAsync),
 										},
 									_ => ReflectionSerializerThrow.UnexpectedMemberType(memberInfo)
 								}
