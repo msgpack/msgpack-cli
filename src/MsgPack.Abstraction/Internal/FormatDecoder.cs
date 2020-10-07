@@ -9,8 +9,6 @@ using System.Threading;
 
 namespace MsgPack.Internal
 {
-#warning TODO: Use 'Try' prefix for published APIs which can return 'requestHint'.
-
 	/// <summary>
 	///		Defines an interface and basic functionarity of stateless <see cref="FormatDecoder"/>.
 	/// </summary>
@@ -38,7 +36,16 @@ namespace MsgPack.Internal
 
 		public abstract void Skip(ref SequenceReader<byte> source, in CollectionContext collectionContext, out int requestHint, CancellationToken cancellationToken = default);
 
-		public abstract bool DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult result, CancellationToken cancellationToken = default);
+		public void DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult result, CancellationToken cancellationToken = default)
+		{
+			this.DecodeItem(ref source, out result, out var requestHint, cancellationToken);
+			if (requestHint != 0)
+			{
+				Throw.InsufficientInputForAnyItem(source.Consumed, requestHint);
+			}
+		}
+
+		public abstract void DecodeItem(ref SequenceReader<byte> source, out DecodeItemResult result, out int requestHint, CancellationToken cancellationToken = default);
 
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public void GetRawString(ref SequenceReader<byte> source, out ReadOnlySpan<byte> rawString, CancellationToken cancellationToken = default)
