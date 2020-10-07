@@ -19,14 +19,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Byte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Byte DecodeByte(ref SequenceReader<byte> source)
@@ -49,14 +45,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Byte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract Byte DecodeByte(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -64,14 +57,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Byte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Byte? DecodeNullableByte(ref SequenceReader<byte> source)
@@ -94,14 +84,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Byte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract Byte? DecodeNullableByte(ref SequenceReader<byte> source, out int requestHint);
 
@@ -110,14 +97,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Int16 DecodeInt16(ref SequenceReader<byte> source)
@@ -140,14 +123,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract Int16 DecodeInt16(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -155,14 +135,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Int16? DecodeNullableInt16(ref SequenceReader<byte> source)
@@ -185,14 +162,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract Int16? DecodeNullableInt16(ref SequenceReader<byte> source, out int requestHint);
 
@@ -201,14 +175,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Int32 DecodeInt32(ref SequenceReader<byte> source)
@@ -231,14 +201,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract Int32 DecodeInt32(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -246,14 +213,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Int32? DecodeNullableInt32(ref SequenceReader<byte> source)
@@ -276,14 +240,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract Int32? DecodeNullableInt32(ref SequenceReader<byte> source, out int requestHint);
 
@@ -292,14 +253,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Int64 DecodeInt64(ref SequenceReader<byte> source)
@@ -322,14 +279,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract Int64 DecodeInt64(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -337,14 +291,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Int64? DecodeNullableInt64(ref SequenceReader<byte> source)
@@ -367,14 +318,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Int64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract Int64? DecodeNullableInt64(ref SequenceReader<byte> source, out int requestHint);
 
@@ -383,14 +331,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="SByte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public SByte DecodeSByte(ref SequenceReader<byte> source)
@@ -413,14 +357,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="SByte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract SByte DecodeSByte(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -428,14 +369,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="SByte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public SByte? DecodeNullableSByte(ref SequenceReader<byte> source)
@@ -458,14 +396,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="SByte" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract SByte? DecodeNullableSByte(ref SequenceReader<byte> source, out int requestHint);
 
@@ -474,14 +409,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public UInt16 DecodeUInt16(ref SequenceReader<byte> source)
@@ -504,14 +435,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract UInt16 DecodeUInt16(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -519,14 +447,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public UInt16? DecodeNullableUInt16(ref SequenceReader<byte> source)
@@ -549,14 +474,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt16" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract UInt16? DecodeNullableUInt16(ref SequenceReader<byte> source, out int requestHint);
 
@@ -565,14 +487,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public UInt32 DecodeUInt32(ref SequenceReader<byte> source)
@@ -595,14 +513,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract UInt32 DecodeUInt32(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -610,14 +525,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public UInt32? DecodeNullableUInt32(ref SequenceReader<byte> source)
@@ -640,14 +552,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt32" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract UInt32? DecodeNullableUInt32(ref SequenceReader<byte> source, out int requestHint);
 
@@ -656,14 +565,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public UInt64 DecodeUInt64(ref SequenceReader<byte> source)
@@ -686,14 +591,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract UInt64 DecodeUInt64(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -701,14 +603,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public UInt64? DecodeNullableUInt64(ref SequenceReader<byte> source)
@@ -731,14 +630,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="UInt64" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract UInt64? DecodeNullableUInt64(ref SequenceReader<byte> source, out int requestHint);
 
@@ -747,14 +643,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Single" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Single DecodeSingle(ref SequenceReader<byte> source)
@@ -777,14 +669,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Single" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract Single DecodeSingle(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -792,14 +681,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Single" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Single? DecodeNullableSingle(ref SequenceReader<byte> source)
@@ -822,14 +708,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Single" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract Single? DecodeNullableSingle(ref SequenceReader<byte> source, out int requestHint);
 
@@ -838,14 +721,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Double" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Double DecodeDouble(ref SequenceReader<byte> source)
@@ -868,14 +747,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Double" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract Double DecodeDouble(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -883,14 +759,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Double" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Double? DecodeNullableDouble(ref SequenceReader<byte> source)
@@ -913,14 +786,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Double" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract Double? DecodeNullableDouble(ref SequenceReader<byte> source, out int requestHint);
 
@@ -929,14 +799,10 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Boolean" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Boolean DecodeBoolean(ref SequenceReader<byte> source)
@@ -959,14 +825,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Boolean" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract Boolean DecodeBoolean(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -974,14 +837,11 @@ namespace MsgPack.Internal
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Boolean" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public Boolean? DecodeNullableBoolean(ref SequenceReader<byte> source)
@@ -1004,14 +864,11 @@ namespace MsgPack.Internal
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="Boolean" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract Boolean? DecodeNullableBoolean(ref SequenceReader<byte> source, out int requestHint);
 

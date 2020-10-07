@@ -37,14 +37,10 @@ foreach (var outputType in new [] {
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= outputType #>" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public <#= outputType #> Decode<#= outputType #>(ref SequenceReader<byte> source)
@@ -67,14 +63,11 @@ foreach (var outputType in new [] {
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= outputType #>" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		public abstract <#= outputType #> Decode<#= outputType #>(ref SequenceReader<byte> source, out int requestHint);
 
 		/// <summary>
@@ -82,14 +75,11 @@ foreach (var outputType in new [] {
 		/// </summary>
 		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= outputType #>" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public <#= outputType #>? DecodeNullable<#= outputType #>(ref SequenceReader<byte> source)
@@ -112,14 +102,11 @@ foreach (var outputType in new [] {
 		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
 		/// </param>
 		/// <return>
-		///		Decoded value if this method succeeds to decode value; Default value when <paramref name="source" /> does not contain enough bytes to decode.
-		///		If this value is default, <paramref name="source" /> will not be advanced.
+		///		Decoded value if this method succeeds to decode value.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
 		/// </return>
-		/// <remarks>
-		///		The caller must concatinate old remaining sequence and new sequence when this method returns <c>false</c> and then recall.
-		/// </remarks>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= outputType #>" /> type.</exception>
-		/// <exception cref="NotSupportedException">The underlying format does not suppor this type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract <#= outputType #>? DecodeNullable<#= outputType #>(ref SequenceReader<byte> source, out int requestHint);
 
