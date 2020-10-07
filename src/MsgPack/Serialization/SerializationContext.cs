@@ -117,27 +117,6 @@ namespace MsgPack.Serialization
 
 		private readonly object _generationLock;
 
-		private readonly BindingOptions _bindingOptions;
-
-		/// <summary>
-		///		Gets the option settings for binding of type with serializer for field/property.
-		/// </summary>
-		/// <value>
-		///		The option settings for binding of type's property/field in serializer generation.
-		///		This value will not be <c>null</c>.
-		/// </value>
-		public BindingOptions BindingOptions
-		{
-			get
-			{
-#if DEBUG
-				Contract.Ensures( Contract.Result<BindingOptions>() != null );
-#endif // DEBUG
-
-				return this._bindingOptions;
-			}
-		}
-
 		/// <summary>
 		///		Gets the current <see cref="SerializerRepository"/>.
 		/// </summary>
