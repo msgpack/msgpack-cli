@@ -12,16 +12,17 @@ namespace MsgPack
 #if FEATURE_BINARY_SERIALIZATION
 	[Serializable]
 #endif // FEATURE_BINARY_SERIALIZATION
-	public sealed class LimitExceededException : Exception
+	public sealed class LimitExceededException : DecodeException
 	{
-		public LimitExceededException()
-			: this("Some limit is exeeded.") { }
+		public LimitExceededException(long potision)
+			: this(potision, "Some limit is exeeded.") { }
 
-		public LimitExceededException(string? message)
-			: base(message) { }
+		public LimitExceededException(long potision, string? message)
+			: base(potision, message) { }
 
-		public LimitExceededException(string? message, Exception? innerException)
-			: base(message, innerException) { }
+		public LimitExceededException(long potision, string? message, Exception? innerException)
+			: base(potision, message, innerException) { }
+
 #if FEATURE_BINARY_SERIALIZATION
 
 		private LimitExceededException(SerializationInfo info, StreamingContext context)

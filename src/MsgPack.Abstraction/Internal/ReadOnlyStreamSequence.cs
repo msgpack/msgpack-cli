@@ -25,6 +25,14 @@ namespace MsgPack.Internal
 		private byte[] _array;
 
 		/// <summary>
+		///		Gets the position of the head of the <see cref="Memory"/> on underlying <see cref="Stream"/>.
+		/// </summary>
+		/// <value>
+		///		The position of the head of the <see cref="Memory"/> on underlying <see cref="Stream"/>.
+		/// </value>
+		public long Position { get; private set; }
+
+		/// <summary>
 		///		Gets internal buffer as <see cref="ReadOnlyMemory{Byte}"/> which holds last fetched data.
 		/// </summary>
 		public ReadOnlyMemory<byte> Memory { get; private set; }
@@ -117,6 +125,7 @@ namespace MsgPack.Internal
 			}
 
 			this.Memory = this.Memory.Slice((int)Ensure.IsNotGreaterThan(length, (long)this.Memory.Length));
+			this.Position += length;
 		}
 	}
 }

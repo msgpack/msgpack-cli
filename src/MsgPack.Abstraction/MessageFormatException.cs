@@ -9,26 +9,23 @@ using System.Runtime.Serialization;
 
 namespace MsgPack
 {
-	/// <summary>
-	///		An exception thrown if there are no more inputs when be requested.
-	/// </summary>
 #if FEATURE_BINARY_SERIALIZATION
 	[Serializable]
 #endif // FEATURE_BINARY_SERIALIZATION
-	public sealed class InsufficientInputException : DecodeException
+	public sealed class MessageFormatException : DecodeException
 	{
-		public InsufficientInputException(long position)
-			: this(position, "There are no more inputs.") { }
+		public MessageFormatException(long position)
+			: this(position, "Input has invalid byte sequence.") { }
 
-		public InsufficientInputException(long position, string? message)
+		public MessageFormatException(long position, string? message)
 			: base(position, message) { }
 
-		public InsufficientInputException(long position, string? message, Exception? innerException)
+		public MessageFormatException(long position, string? message, Exception? innerException)
 			: base(position, message, innerException) { }
 
 #if FEATURE_BINARY_SERIALIZATION
 
-		private InsufficientInputException(SerializationInfo info, StreamingContext context)
+		private MessageFormatException(SerializationInfo info, StreamingContext context)
 			: base(info, context) { }
 
 #endif // FEATURE_BINARY_SERIALIZATION
