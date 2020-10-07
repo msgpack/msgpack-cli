@@ -75,7 +75,7 @@ namespace MsgPack.Internal
 			set => this._charBufferPool = Ensure.NotNull(value);
 		}
 
-		public bool ClearsBuffer { get; set; } = OptionsDefaults.ClearsBuffer;
+		public bool ClearsBuffer { get; set; } = OptionsDefaults.ClearsBufferOnReturn;
 
 		protected FormatDecoderOptionsBuilder() { }
 

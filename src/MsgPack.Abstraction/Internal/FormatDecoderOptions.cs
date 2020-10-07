@@ -3,6 +3,7 @@
 // See the LICENSE in the project root for more information.
 
 using System.Buffers;
+using MsgPack.Codecs;
 
 namespace MsgPack.Internal
 {
@@ -28,9 +29,9 @@ namespace MsgPack.Internal
 
 		public bool ClearsBuffer { get; }
 
-		public FormatFeatures Features { get; }
+		public CodecFeatures Features { get; }
 
-		protected FormatDecoderOptions(FormatDecoderOptionsBuilder builder, FormatFeatures features)
+		protected FormatDecoderOptions(FormatDecoderOptionsBuilder builder, CodecFeatures features)
 		{
 			builder = Ensure.NotNull(builder);
 
