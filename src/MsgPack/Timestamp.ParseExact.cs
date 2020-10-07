@@ -1,38 +1,14 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2017 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
+using System.Diagnostics;
 using System.Globalization;
 
 namespace MsgPack
 {
-	partial struct Timestamp
+	public partial struct Timestamp
 	{
 		/// <summary>
 		///		Converts specified <see cref="String"/> representation of a msgpack timestamp to its <see cref="Timestamp"/> equivalant
@@ -64,9 +40,9 @@ namespace MsgPack
 		/// <exception cref="FormatException">
 		///		The specified <paramref name="input"/> is not valid for the specified <paramref name="format"/> and <paramref name="formatProvider"/>.
 		/// </exception>
-		public static Timestamp ParseExact( string input, string format, IFormatProvider formatProvider )
+		public static Timestamp ParseExact(string input, string format, IFormatProvider formatProvider)
 		{
-			return ParseExact( input, format, formatProvider, DateTimeStyles.None );
+			return ParseExact(input, format, formatProvider, DateTimeStyles.None);
 		}
 
 		/// <summary>
@@ -104,10 +80,10 @@ namespace MsgPack
 		/// <exception cref="FormatException">
 		///		The specified <paramref name="input"/> is not valid for the specified <paramref name="format"/>, <paramref name="formatProvider"/>, and <paramref name="styles"/>.
 		/// </exception>
-		public static Timestamp ParseExact( string input, string format, IFormatProvider formatProvider, DateTimeStyles styles )
+		public static Timestamp ParseExact(string input, string format, IFormatProvider formatProvider, DateTimeStyles styles)
 		{
 			Timestamp result;
-			HandleParseResult( TryParseExactCore( input, format, formatProvider, styles, out result ), "Cannot parse specified input with specified format." );
+			HandleParseResult(TryParseExactCore(input, format, formatProvider, styles, out result), "Cannot parse specified input with specified format.");
 			return result;
 		}
 
@@ -146,25 +122,25 @@ namespace MsgPack
 		/// <exception cref="FormatException">
 		///		The specified <paramref name="input"/> is not valid for any specified <paramref name="formats"/>, <paramref name="formatProvider"/>, and <paramref name="styles"/>.
 		/// </exception>
-		public static Timestamp ParseExact( string input, string[] formats, IFormatProvider formatProvider, DateTimeStyles styles )
+		public static Timestamp ParseExact(string input, string[] formats, IFormatProvider formatProvider, DateTimeStyles styles)
 		{
 			Timestamp result;
-			HandleParseResult( TryParseExactCore( input, formats, formatProvider, styles, out result ), "Cannot parse specified input with any specified formats." );
+			HandleParseResult(TryParseExactCore(input, formats, formatProvider, styles, out result), "Cannot parse specified input with any specified formats.");
 			return result;
 		}
 
-		private static void HandleParseResult( TimestampParseResult result, string messageForInvalidInput )
+		private static void HandleParseResult(TimestampParseResult result, string messageForInvalidInput)
 		{
-			if ( result == TimestampParseResult.Success )
+			if (result == TimestampParseResult.Success)
 			{
 				return;
 			}
 
 			string parameterName;
-			string message;
+			string? message;
 
 			var parameter = result & TimestampParseResult.ParameterMask;
-			switch( parameter )
+			switch (parameter)
 			{
 				case TimestampParseResult.ParameterFormat:
 				{
@@ -173,7 +149,7 @@ namespace MsgPack
 				}
 				default:
 				{
-					Contract.Assert( parameter == TimestampParseResult.ParameterInput, parameter + " == TimestampParseResult.Input" );
+					Debug.Assert(parameter == TimestampParseResult.ParameterInput, parameter + " == TimestampParseResult.Input");
 					parameterName = "input";
 					break;
 				}
@@ -181,11 +157,11 @@ namespace MsgPack
 
 			var kind = result & TimestampParseResult.KindMask;
 
-			switch ( kind )
+			switch (kind)
 			{
 				case TimestampParseResult.KindEmpty:
 				{
-					message = String.Format( CultureInfo.CurrentCulture, "'{0}' must not be empty.", parameterName );
+					message = String.Format(CultureInfo.CurrentCulture, "'{0}' must not be empty.", parameterName);
 					break;
 				}
 				case TimestampParseResult.KindExtraCharactors:
@@ -270,9 +246,9 @@ namespace MsgPack
 				}
 				case TimestampParseResult.KindNull:
 				{
-					Contract.Assert(
-						( result & TimestampParseResult.ExceptionTypeMask ) == TimestampParseResult.ArgumentNullException,
-						( result & TimestampParseResult.ExceptionTypeMask ) + " == TimestampParseResult.ArgumentNullException"
+					Debug.Assert(
+						(result & TimestampParseResult.ExceptionTypeMask) == TimestampParseResult.ArgumentNullException,
+						(result & TimestampParseResult.ExceptionTypeMask) + " == TimestampParseResult.ArgumentNullException"
 					);
 					message = null;
 					break;
@@ -294,29 +270,29 @@ namespace MsgPack
 				}
 				default:
 				{
-					Contract.Assert( kind == TimestampParseResult.KindNoMatchedFormats, kind + " == TimestampParseResult.KindNoMatchedFormats" );
+					Debug.Assert(kind == TimestampParseResult.KindNoMatchedFormats, kind + " == TimestampParseResult.KindNoMatchedFormats");
 					message = "The input is not valid Timestamp.";
 					break;
 				}
 			}
 
-			switch( result & TimestampParseResult.ExceptionTypeMask )
+			switch (result & TimestampParseResult.ExceptionTypeMask)
 			{
 				case TimestampParseResult.ArgumentNullException:
 				{
-					throw new ArgumentNullException( parameterName );
+					throw new ArgumentNullException(parameterName);
 				}
 				case TimestampParseResult.ArgumentException:
 				{
-					throw new ArgumentException( message, parameterName );
+					throw new ArgumentException(message, parameterName);
 				}
 				default:
 				{
-					Contract.Assert(
-						( result & TimestampParseResult.ExceptionTypeMask ) == TimestampParseResult.FormatException,
-						( result & TimestampParseResult.ExceptionTypeMask ) + " == TimestampParseResult.FormatException"
+					Debug.Assert(
+						(result & TimestampParseResult.ExceptionTypeMask) == TimestampParseResult.FormatException,
+						(result & TimestampParseResult.ExceptionTypeMask) + " == TimestampParseResult.FormatException"
 					);
-					throw new FormatException( message );
+					throw new FormatException(message);
 				}
 			}
 		}

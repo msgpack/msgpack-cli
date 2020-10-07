@@ -19,25 +19,29 @@
 #endregion -- License Terms --
 
 using System;
+using System.Buffers;
+using System.Buffers.Binary;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using MsgPack.Internal;
 
 namespace MsgPack
 {
 	partial struct Timestamp
 	{
-		private long ToTicks( Type destination )
+		private long ToTicks(Type destination)
 		{
-			if ( this.unixEpochSeconds < MinUnixEpochSecondsForTicks )
+			if (this.unixEpochSeconds < MinUnixEpochSecondsForTicks)
 			{
-				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "This value is too small for '{0}'.", destination ) );
+				throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "This value is too small for '{0}'.", destination));
 			}
 
-			if ( this.unixEpochSeconds > MaxUnixEpochSecondsForTicks )
+			if (this.unixEpochSeconds > MaxUnixEpochSecondsForTicks)
 			{
-				throw new InvalidOperationException( String.Format( CultureInfo.CurrentCulture, "This value is too large for '{0}'.", destination ) );
+				throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, "This value is too large for '{0}'.", destination));
 			}
 
-			return ( UnixEpochInSeconds + this.unixEpochSeconds ) * SecondsToTicks + this.nanoseconds / NanoToTicks;
+			return (UnixEpochInSeconds + this.unixEpochSeconds) * SecondsToTicks + this.nanoseconds / NanoToTicks;
 		}
 
 		/// <summary>
@@ -49,7 +53,7 @@ namespace MsgPack
 		/// </exception>
 		public DateTime ToDateTime()
 		{
-			return new DateTime( this.ToTicks( typeof( DateTime ) ), DateTimeKind.Utc );
+			return new DateTime(this.ToTicks(typeof(DateTime)), DateTimeKind.Utc);
 		}
 
 		/// <summary>
@@ -61,7 +65,7 @@ namespace MsgPack
 		/// </exception>
 		public DateTimeOffset ToDateTimeOffset()
 		{
-			return new DateTimeOffset( this.ToTicks( typeof( DateTimeOffset ) ), TimeSpan.Zero );
+			return new DateTimeOffset(this.ToTicks(typeof(DateTimeOffset)), TimeSpan.Zero);
 		}
 
 		/// <summary>
@@ -123,23 +127,23 @@ namespace MsgPack
 			}
 		}
 
-		private static void FromDateTimeTicks( long ticks, out long unixEpocSeconds, out int nanoSeconds )
+		private static void FromDateTimeTicks(long ticks, out long unixEpocSeconds, out int nanoSeconds)
 		{
-			FromOffsetTicks( ticks - UnixEpochTicks, out unixEpocSeconds, out nanoSeconds );
+			FromOffsetTicks(ticks - UnixEpochTicks, out unixEpocSeconds, out nanoSeconds);
 		}
 
-		private static void FromOffsetTicks( long ticks, out long unixEpocSeconds, out int nanoSeconds )
+		private static void FromOffsetTicks(long ticks, out long unixEpocSeconds, out int nanoSeconds)
 		{
 			long remaining;
-			unixEpocSeconds = DivRem( ticks, SecondsToTicks, out remaining );
-			nanoSeconds = unchecked( ( int )remaining ) * 100;
-			if ( nanoSeconds < 0 )
+			unixEpocSeconds = DivRem(ticks, SecondsToTicks, out remaining);
+			nanoSeconds = unchecked((int)remaining) * 100;
+			if (nanoSeconds < 0)
 			{
 				// In this case, we must adjust these values
 				// from "negative nanosec from nearest larger negative integer"
 				// to "positive nanosec from nearest smaller nagative integer".
 				unixEpocSeconds -= 1;
-				nanoSeconds = ( MaxNanoSeconds + 1 ) + nanoSeconds;
+				nanoSeconds = (MaxNanoSeconds + 1) + nanoSeconds;
 			}
 		}
 
@@ -148,12 +152,12 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">A <see cref="DateTime"/>.</param>
 		/// <returns>An equivalant <see cref="Timestamp"/> to specified <see cref="DateTime"/></returns>
-		public static Timestamp FromDateTime( DateTime value )
+		public static Timestamp FromDateTime(DateTime value)
 		{
 			long unixEpocSeconds;
 			int nanoSeconds;
-			FromDateTimeTicks( ( value.Kind == DateTimeKind.Local ? value.ToUniversalTime() : value ).Ticks, out unixEpocSeconds, out nanoSeconds );
-			return new Timestamp( unixEpocSeconds, nanoSeconds );
+			FromDateTimeTicks((value.Kind == DateTimeKind.Local ? value.ToUniversalTime() : value).Ticks, out unixEpocSeconds, out nanoSeconds);
+			return new Timestamp(unixEpocSeconds, nanoSeconds);
 		}
 
 		/// <summary>
@@ -161,12 +165,12 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">A <see cref="DateTimeOffset"/>.</param>
 		/// <returns>An equivalant <see cref="Timestamp"/> to specified <see cref="DateTimeOffset"/></returns>
-		public static Timestamp FromDateTimeOffset( DateTimeOffset value )
+		public static Timestamp FromDateTimeOffset(DateTimeOffset value)
 		{
 			long unixEpocSeconds;
 			int nanoSeconds;
-			FromDateTimeTicks( value.UtcTicks, out unixEpocSeconds, out nanoSeconds );
-			return new Timestamp( unixEpocSeconds, nanoSeconds );
+			FromDateTimeTicks(value.UtcTicks, out unixEpocSeconds, out nanoSeconds);
+			return new Timestamp(unixEpocSeconds, nanoSeconds);
 		}
 
 		/// <summary>
@@ -229,7 +233,7 @@ namespace MsgPack
 		/// <exception cref="InvalidOperationException">
 		///		This instance represents before <see cref="DateTime.MinValue"/> or after <see cref="DateTime.MaxValue"/>.
 		/// </exception>
-		public static explicit operator DateTime( Timestamp value )
+		public static explicit operator DateTime(Timestamp value)
 		{
 			return value.ToDateTime();
 		}
@@ -242,7 +246,7 @@ namespace MsgPack
 		/// <exception cref="InvalidOperationException">
 		///		This instance represents before <see cref="DateTimeOffset.MinValue"/> or after <see cref="DateTimeOffset.MaxValue"/>.
 		/// </exception>
-		public static explicit operator DateTimeOffset( Timestamp value )
+		public static explicit operator DateTimeOffset(Timestamp value)
 		{
 			return value.ToDateTimeOffset();
 		}
@@ -252,7 +256,7 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">A <see cref="Timestamp"/>.</param>
 		/// <returns>A <see cref="MessagePackExtendedTypeObject"/>.</returns>
-		public static implicit operator MessagePackExtendedTypeObject( Timestamp value )
+		public static implicit operator MessagePackExtendedTypeObject(Timestamp value)
 		{
 			return value.Encode();
 		}
@@ -262,9 +266,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">A <see cref="DateTime"/>.</param>
 		/// <returns>A <see cref="Timestamp"/>.</returns>
-		public static implicit operator Timestamp( DateTime value )
+		public static implicit operator Timestamp(DateTime value)
 		{
-			return FromDateTime( value );
+			return FromDateTime(value);
 		}
 
 		/// <summary>
@@ -272,9 +276,9 @@ namespace MsgPack
 		/// </summary>
 		/// <param name="value">A <see cref="DateTimeOffset"/>.</param>
 		/// <returns>A <see cref="Timestamp"/>.</returns>
-		public static implicit operator Timestamp( DateTimeOffset value )
+		public static implicit operator Timestamp(DateTimeOffset value)
 		{
-			return FromDateTimeOffset( value );
+			return FromDateTimeOffset(value);
 		}
 
 		/// <summary>
@@ -289,9 +293,9 @@ namespace MsgPack
 		/// <exception cref="ArgumentOutOfRangeException">
 		///		<paramref name="value"/> have invalid nanoseconds value.
 		/// </exception>
-		public static explicit operator Timestamp( MessagePackExtendedTypeObject value )
+		public static explicit operator Timestamp(MessagePackExtendedTypeObject value)
 		{
-			return Decode( value );
+			return Decode(value);
 		}
 	}
 }

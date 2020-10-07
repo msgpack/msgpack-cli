@@ -1,33 +1,8 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2017 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
 using System.Globalization;
 
 namespace MsgPack
@@ -67,9 +42,9 @@ namespace MsgPack
 		///		The specified <paramref name="format"/> is not supported.
 		///		Or the specified <paramref name="styles"/> has invalid combination.
 		/// </exception>
-		public static bool TryParseExact( string input, string format, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result )
+		public static bool TryParseExact(string input, string format, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result)
 		{
-			return TryParseExactCore( input, format, formatProvider, styles, out result ) == TimestampParseResult.Success;
+			return TryParseExactCore(input, format, formatProvider, styles, out result) == TimestampParseResult.Success;
 		}
 
 		/// <summary>
@@ -105,90 +80,90 @@ namespace MsgPack
 		///		The specified <paramref name="formats"/> is empty.
 		///		Or the specified <paramref name="styles"/> has invalid combination.
 		/// </exception>
-		public static bool TryParseExact( string input, string[] formats, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result )
+		public static bool TryParseExact(string input, string[] formats, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result)
 		{
-			return TryParseExactCore( input, formats, formatProvider, styles, out result ) == TimestampParseResult.Success;
+			return TryParseExactCore(input, formats, formatProvider, styles, out result) == TimestampParseResult.Success;
 		}
 
-		private static TimestampParseResult TryParseExactCore( string input, string format, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result )
+		private static TimestampParseResult TryParseExactCore(string input, string format, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result)
 		{
-			ValidateParseInput( input );
+			ValidateParseInput(input);
 
-			if ( input.Length == 0 )
+			if (input.Length == 0)
 			{
-				result = default( Timestamp );
+				result = default(Timestamp);
 				return TimestampParseResult.EmptyInput;
 			}
 
-			if ( format == null )
+			if (format == null)
 			{
-				throw new ArgumentNullException( "format" );
+				throw new ArgumentNullException("format");
 			}
 
-			if ( format.Length == 0 )
+			if (format.Length == 0)
 			{
-				throw new ArgumentException( "The 'format' must not be empty.", "format" );
+				throw new ArgumentException("The 'format' must not be empty.", "format");
 			}
 
-			ValidateParseStyles( styles );
+			ValidateParseStyles(styles);
 
-			var error = TimestampStringConverter.TryParseExact( input, format, formatProvider, styles, out result );
-			if ( error == TimestampParseResult.UnsupportedFormat )
+			var error = TimestampStringConverter.TryParseExact(input, format, formatProvider, styles, out result);
+			if (error == TimestampParseResult.UnsupportedFormat)
 			{
 				// UnsupportedFormat should throw Exception instead of returning false.
-				HandleParseResult( error, "Cannot parse specified input with specified format." );
+				HandleParseResult(error, "Cannot parse specified input with specified format.");
 			}
 
 			return error;
 		}
 
-		private static TimestampParseResult TryParseExactCore( string input, string[] formats, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result )
+		private static TimestampParseResult TryParseExactCore(string input, string[] formats, IFormatProvider formatProvider, DateTimeStyles styles, out Timestamp result)
 		{
-			ValidateParseInput( input );
+			ValidateParseInput(input);
 
-			if ( formats == null )
+			if (formats == null)
 			{
-				throw new ArgumentNullException( "formats" );
+				throw new ArgumentNullException("formats");
 			}
 
-			if ( formats.Length == 0 )
+			if (formats.Length == 0)
 			{
-				throw new ArgumentException( "The 'formats' must not be empty.", "formats" );
+				throw new ArgumentException("The 'formats' must not be empty.", "formats");
 			}
 
-			ValidateParseStyles( styles );
+			ValidateParseStyles(styles);
 
-			if ( input.Length == 0 )
+			if (input.Length == 0)
 			{
-				result = default( Timestamp );
+				result = default(Timestamp);
 				return TimestampParseResult.EmptyInput;
 			}
 
-			foreach ( var format in formats )
+			foreach (var format in formats)
 			{
-				if ( TimestampStringConverter.TryParseExact( input, format, formatProvider, styles, out result ) == TimestampParseResult.Success )
+				if (TimestampStringConverter.TryParseExact(input, format, formatProvider, styles, out result) == TimestampParseResult.Success)
 				{
 					return TimestampParseResult.Success;
 				}
 			}
 
-			result = default( Timestamp );
+			result = default(Timestamp);
 			return TimestampParseResult.NoMatchedFormats;
 		}
 
-		private static void ValidateParseInput( string input )
+		private static void ValidateParseInput(string input)
 		{
-			if ( input == null )
+			if (input == null)
 			{
-				throw new ArgumentNullException( "input" );
+				throw new ArgumentNullException("input");
 			}
 		}
 
-		private static void ValidateParseStyles( DateTimeStyles styles )
+		private static void ValidateParseStyles(DateTimeStyles styles)
 		{
-			if ( styles != DateTimeStyles.None && ( styles & ~( DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite ) ) != 0 )
+			if (styles != DateTimeStyles.None && (styles & ~(DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite)) != 0)
 			{
-				throw new ArgumentException( "Timestamp currently only support DateTimeStyles.None, DateTimeStyles.AllowLeadingWhite, and DateTimeStyles.AllowTrailingWhite.", "styles" );
+				throw new ArgumentException("Timestamp currently only support DateTimeStyles.None, DateTimeStyles.AllowLeadingWhite, and DateTimeStyles.AllowTrailingWhite.", "styles");
 			}
 		}
 	}

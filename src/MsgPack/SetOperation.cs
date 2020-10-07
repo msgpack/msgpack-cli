@@ -1,37 +1,10 @@
-﻿#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2010-2015 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
-
-#if !UNITY
-using System;
 using System.Collections.Generic;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
+using System.Diagnostics;
 using System.Linq;
-
 
 namespace MsgPack
 {
@@ -40,38 +13,29 @@ namespace MsgPack
 	/// </summary>
 	internal static class SetOperation
 	{
-		[Pure]
 #if NET35
-		public static bool IsProperSubsetOf<T>( ICollection<T> set, IEnumerable<T> other )
+		public static bool IsProperSubsetOf<T>(ICollection<T> set, IEnumerable<T> other)
 #else
-		public static bool IsProperSubsetOf<T>( ISet<T> set, IEnumerable<T> other )
+		public static bool IsProperSubsetOf<T>(ISet<T> set, IEnumerable<T> other)
 #endif
 		{
-#region CONTRACT
-			Contract.Assert( set != null, "set != null " );
+			Debug.Assert(set != null, "set != null ");
+			Ensure.NotNull(other);
 
-			if ( other == null )
+			if (other is ICollection<T> asCollection)
 			{
-				throw new ArgumentNullException( "other" );
-			}
-#endregion CONTRACT
-
-			var asCollection = other as ICollection<T>;
-			if ( asCollection != null )
-			{
-				if ( set.Count == 0 )
+				if (set.Count == 0)
 				{
 					return 0 < asCollection.Count;
 				}
 
-				if ( asCollection.Count <= set.Count )
+				if (asCollection.Count <= set.Count)
 				{
 					return false;
 				}
 			}
 
-			int otherCount;
-			if ( !IsSubsetOfCore( set, other, out otherCount ) )
+			if (!IsSubsetOfCore(set, other, out var otherCount))
 			{
 				return false;
 			}
@@ -79,42 +43,33 @@ namespace MsgPack
 			return set.Count < otherCount;
 		}
 
-		[Pure]
 #if NET35
-		public static bool IsSubsetOf<T>( ICollection<T> set, IEnumerable<T> other )
+		public static bool IsSubsetOf<T>(ICollection<T> set, IEnumerable<T> other)
 #else
-		public static bool IsSubsetOf<T>( ISet<T> set, IEnumerable<T> other )
+		public static bool IsSubsetOf<T>(ISet<T> set, IEnumerable<T> other)
 #endif
 		{
-#region CONTRACT
-			Contract.Assert( set != null, "set != null" );
+			Debug.Assert(set != null, "set != null");
+			Ensure.NotNull(other);
 
-			if ( other == null )
-			{
-				throw new ArgumentNullException( "other" );
-			}
-#endregion CONTRACT
-
-			if ( set.Count == 0 )
+			if (set.Count == 0)
 			{
 				return true;
 			}
 
-			var asCollection = other as ICollection<T>;
-			if ( asCollection != null && asCollection.Count < set.Count )
+			if (other is ICollection<T> asCollection && asCollection.Count < set.Count)
 			{
 				return false;
 			}
 
 			int checkedCount;
-			return IsSubsetOfCore( set, other, out checkedCount );
+			return IsSubsetOfCore(set, other, out checkedCount);
 		}
 
-		[Pure]
 #if NET35
-		private static bool IsSubsetOfCore<T>( ICollection<T> set, IEnumerable<T> other, out int otherCount )
+		private static bool IsSubsetOfCore<T>(ICollection<T> set, IEnumerable<T> other, out int otherCount)
 #else
-		private static bool IsSubsetOfCore<T>( ISet<T> set, IEnumerable<T> other, out int otherCount )
+		private static bool IsSubsetOfCore<T>(ISet<T> set, IEnumerable<T> other, out int otherCount)
 #endif
 		{
 			otherCount = 0;
@@ -122,22 +77,17 @@ namespace MsgPack
 			// Other must be set to handle duplicated items.
 			// e.x., [1,2,3] is proper subset of [1,2,3,4,1] but not [1,1,1,1,1]
 #if NET35
-			var asSet = other as HashSet<T>;
+			var asSet = other as HashSet<T> ?? new HashSet<T>(other);
 #else
-			var asSet = other as ISet<T>;
+			var asSet = other as ISet<T> ?? new HashSet<T>(other);
 #endif
-			if ( asSet == null )
-			{
-				asSet = new HashSet<T>( other );
-			}
-
 			int matchCount = 0;
 
-			foreach ( var item in asSet )
+			foreach (var item in asSet)
 			{
 				otherCount++;
 
-				if ( set.Contains( item ) )
+				if (set.Contains(item))
 				{
 					matchCount++;
 				}
@@ -147,33 +97,24 @@ namespace MsgPack
 			return set.Count <= matchCount;
 		}
 
-		[Pure]
 #if NET35
-		public static bool IsProperSupersetOf<T>( ICollection<T> set, IEnumerable<T> other )
+		public static bool IsProperSupersetOf<T>(ICollection<T> set, IEnumerable<T> other)
 #else
-		public static bool IsProperSupersetOf<T>( ISet<T> set, IEnumerable<T> other )
+		public static bool IsProperSupersetOf<T>(ISet<T> set, IEnumerable<T> other)
 #endif
 		{
-#region CONTRACT
-			Contract.Assert( set != null, "set != null" );
+			Debug.Assert(set != null, "set != null");
+			Ensure.NotNull(other);
 
-			if ( other == null )
+			if (other is ICollection<T> asCollection)
 			{
-				throw new ArgumentNullException( "other" );
-			}
-#endregion CONTRACT
-
-			var asCollection = other as ICollection<T>;
-			if ( asCollection != null )
-			{
-				if ( asCollection.Count == 0 )
+				if (asCollection.Count == 0)
 				{
 					return 0 < set.Count;
 				}
 			}
 
-			int checkedCount;
-			if ( !IsSupersetOfCore( set, other, out checkedCount ) )
+			if (!IsSupersetOfCore(set, other, out var checkedCount))
 			{
 				return false;
 			}
@@ -181,45 +122,35 @@ namespace MsgPack
 			return checkedCount < set.Count;
 		}
 
-		[Pure]
 #if NET35
-		public static bool IsSupersetOf<T>( ICollection<T> set, IEnumerable<T> other )
+		public static bool IsSupersetOf<T>(ICollection<T> set, IEnumerable<T> other)
 #else
-		public static bool IsSupersetOf<T>( ISet<T> set, IEnumerable<T> other )
+		public static bool IsSupersetOf<T>(ISet<T> set, IEnumerable<T> other)
 #endif
 		{
-#region CONTRACT
-			Contract.Assert( set != null, "set != null" );
+			Debug.Assert(set != null, "set != null");
+			Ensure.NotNull(other);
 
-			if ( other == null )
+			if (other is ICollection<T> asCollection && asCollection.Count < set.Count)
 			{
-				throw new ArgumentNullException( "other" );
-			}
-#endregion CONTRACT
-
-			var asCollection = other as ICollection<T>;
-			if ( asCollection != null && asCollection.Count < set.Count )
-			{
-				if ( asCollection.Count == 0 )
+				if (asCollection.Count == 0)
 				{
 					return true;
 				}
 
-				if ( set.Count <= asCollection.Count )
+				if (set.Count <= asCollection.Count)
 				{
 					return false;
 				}
 			}
 
-			int checkedCount;
-			return IsSupersetOfCore( set, other, out checkedCount );
+			return IsSupersetOfCore(set, other, out _);
 		}
 
-		[Pure]
 #if NET35
-		private static bool IsSupersetOfCore<T>( ICollection<T> set, IEnumerable<T> other, out int otherCount )
+		private static bool IsSupersetOfCore<T>(ICollection<T> set, IEnumerable<T> other, out int otherCount)
 #else
-		private static bool IsSupersetOfCore<T>( ISet<T> set, IEnumerable<T> other, out int otherCount )
+		private static bool IsSupersetOfCore<T>(ISet<T> set, IEnumerable<T> other, out int otherCount)
 #endif
 		{
 			otherCount = 0;
@@ -227,20 +158,16 @@ namespace MsgPack
 			// Other must be set to handle duplicated items.
 			// e.x., [1,2,3] is proper superset of [1,2] and [1,2,1]
 #if NET35
-			var asSet = other as HashSet<T>;
+			var asSet = other as HashSet<T> ?? new HashSet<T>(other);
 #else
-			var asSet = other as ISet<T>;
+			var asSet = other as ISet<T> ?? new HashSet<T>(other);
 #endif
-			if ( asSet == null )
-			{
-				asSet = new HashSet<T>( other );
-			}
 
-			foreach ( var item in asSet )
+			foreach (var item in asSet)
 			{
 				otherCount++;
 
-				if ( !set.Contains( item ) )
+				if (!set.Contains(item))
 				{
 					return false;
 				}
@@ -250,50 +177,35 @@ namespace MsgPack
 			return true;
 		}
 
-		[Pure]
 #if NET35
-		public static bool Overlaps<T>( ICollection<T> set, IEnumerable<T> other )
+		public static bool Overlaps<T>(ICollection<T> set, IEnumerable<T> other)
 #else
-		public static bool Overlaps<T>( ISet<T> set, IEnumerable<T> other )
+		public static bool Overlaps<T>(ISet<T> set, IEnumerable<T> other)
 #endif
 		{
-#region CONTRACT
-			Contract.Assert( set != null, "set != null" );
+			Debug.Assert(set != null, "set != null");
+			Ensure.NotNull(other);
 
-			if ( other == null )
-			{
-				throw new ArgumentNullException( "other" );
-			}
-#endregion CONTRACT
-
-			if ( set.Count == 0 )
+			if (set.Count == 0)
 			{
 				return false;
 			}
 
-			return other.Any( item => set.Contains( item ) );
+			return other.Any(item => set.Contains(item));
 		}
 
-		[Pure]
 #if NET35
-		public static bool SetEquals<T>( ICollection<T> set, IEnumerable<T> other )
+		public static bool SetEquals<T>(ICollection<T> set, IEnumerable<T> other)
 #else
-		public static bool SetEquals<T>( ISet<T> set, IEnumerable<T> other )
+		public static bool SetEquals<T>(ISet<T> set, IEnumerable<T> other)
 #endif
 		{
-#region CONTRACT
-			Contract.Assert( set != null, "set != null" );
+			Debug.Assert(set != null, "set != null");
+			Ensure.NotNull(other);
 
-			if ( other == null )
+			if (set.Count == 0)
 			{
-				throw new ArgumentNullException( "other" );
-			}
-#endregion CONTRACT
-
-			if ( set.Count == 0 )
-			{
-				var asCollection = other as ICollection<T>;
-				if ( asCollection != null )
+				if (other is ICollection<T> asCollection)
 				{
 					return asCollection.Count == 0;
 				}
@@ -301,14 +213,14 @@ namespace MsgPack
 
 			// Cannot use other.All() here because it always returns true for empty source.
 #if NET35
-			var asSet = other as HashSet<T> ?? new HashSet<T>( other );
+			var asSet = other as HashSet<T> ?? new HashSet<T>(other);
 #else
-			var asSet = other as ISet<T> ?? new HashSet<T>( other );
+			var asSet = other as ISet<T> ?? new HashSet<T>(other);
 #endif
 			int matchCount = 0;
-			foreach ( var item in asSet )
+			foreach (var item in asSet)
 			{
-				if ( !set.Contains( item ) )
+				if (!set.Contains(item))
 				{
 					return false;
 				}
@@ -322,4 +234,3 @@ namespace MsgPack
 		}
 	}
 }
-#endif // !UNITY

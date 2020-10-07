@@ -43,7 +43,7 @@ namespace MsgPack
 		/// </remarks>
 		public override string ToString()
 		{
-			return this.ToString( null, null );
+			return this.ToString(null, null);
 		}
 
 		/// <summary>
@@ -65,9 +65,9 @@ namespace MsgPack
 		///			The round trip format is <c>yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff'Z'</c> which 'fffffffff' nanoseconds. 
 		///		</para>
 		/// </remarks>
-		public string ToString( IFormatProvider formatProvider )
+		public string ToString(IFormatProvider formatProvider)
 		{
-			return this.ToString( null, formatProvider );
+			return this.ToString(null, formatProvider);
 		}
 
 		/// <summary>
@@ -92,10 +92,12 @@ namespace MsgPack
 		///			this overload uses <c>null</c> for <c>formatProvider</c> parameter.
 		///		</para>
 		/// </remarks>
-		public string ToString( string format )
+		public string ToString(string format)
 		{
-			return this.ToString( format, null );
+			return this.ToString(format, null);
 		}
+
+#warning TODO: TryFormat
 
 		/// <summary>
 		///		Returns a <see cref="String"/> representation of this instance with the default format and the specified format provider.
@@ -128,10 +130,10 @@ namespace MsgPack
 		///			If you want to ensure interoperability for other implementation, specify <c>"s"</c> and <see cref="CultureInfo.InvariantCulture"/> resepectively.
 		///		</para>
 		/// </remarks>
-		public string ToString( string format, IFormatProvider formatProvider )
+		public string ToString(string? format, IFormatProvider? formatProvider)
 		{
-			var value = new Value( this );
-			return TimestampStringConverter.ToString( format, formatProvider, ref value );
+			var value = new Value(this);
+			return TimestampStringConverter.ToString(format, formatProvider, ref value);
 		}
 	}
 }

@@ -1,37 +1,13 @@
-#region -- License Terms --
-//
-// MessagePack for CLI
-//
-// Copyright (C) 2017 FUJIWARA, Yusuke
-//
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-//
-//        http://www.apache.org/licenses/LICENSE-2.0
-//
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//
-#endregion -- License Terms --
-
-#if UNITY_5 || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WII || UNITY_IPHONE || UNITY_ANDROID || UNITY_PS3 || UNITY_XBOX360 || UNITY_FLASH || UNITY_BKACKBERRY || UNITY_WINRT
-#define UNITY
-#endif
+// Copyright (c) FUJIWARA, Yusuke and all contributors.
+// This file is licensed under Apache2 license.
+// See the LICENSE in the project root for more information.
 
 using System;
-#if FEATURE_MPCONTRACT
-using Contract = MsgPack.MPContract;
-#else
-using System.Diagnostics.Contracts;
-#endif // FEATURE_MPCONTRACT
+using System.Diagnostics;
 
 namespace MsgPack
 {
-	partial struct Timestamp
+	public partial struct Timestamp
 	{
 		private const int SecondsPerMinutes = 60;
 		private const int SecondsPerHours = SecondsPerMinutes * 60;
@@ -70,7 +46,7 @@ namespace MsgPack
 		/// </remarks>
 		public int NanosecondsPart
 		{
-			get { return unchecked( ( int )this.nanoseconds ); }
+			get { return unchecked((int)this.nanoseconds); }
 		}
 
 		/// <summary>
@@ -83,7 +59,7 @@ namespace MsgPack
 			{
 				long year;
 				int month, day, dayOfYear;
-				this.GetDatePart( out year, out month, out day, out dayOfYear );
+				this.GetDatePart(out year, out month, out day, out dayOfYear);
 				return year;
 			}
 		}
@@ -98,7 +74,7 @@ namespace MsgPack
 			{
 				long year;
 				int month, day, dayOfYear;
-				this.GetDatePart( out year, out month, out day, out dayOfYear );
+				this.GetDatePart(out year, out month, out day, out dayOfYear);
 				return month;
 			}
 		}
@@ -113,7 +89,7 @@ namespace MsgPack
 			{
 				long year;
 				int month, day, dayOfYear;
-				this.GetDatePart( out year, out month, out day, out dayOfYear );
+				this.GetDatePart(out year, out month, out day, out dayOfYear);
 				return day;
 			}
 		}
@@ -127,12 +103,12 @@ namespace MsgPack
 			get
 			{
 				long remainder;
-				var hour = DivRem( this.unixEpochSeconds, SecondsPerHours, out remainder ) % 24;
+				var hour = DivRem(this.unixEpochSeconds, SecondsPerHours, out remainder) % 24;
 				unchecked
 				{
 					return
-						( int )( this.unixEpochSeconds < 0
-							? hour + ( remainder != 0 ? 23 : ( hour < 0 ? 24 : 0 ) )
+						(int)(this.unixEpochSeconds < 0
+							? hour + (remainder != 0 ? 23 : (hour < 0 ? 24 : 0))
 							: hour
 						);
 				}
@@ -148,12 +124,12 @@ namespace MsgPack
 			get
 			{
 				long remainder;
-				var minute = DivRem( this.unixEpochSeconds, SecondsPerMinutes, out remainder ) % 60;
+				var minute = DivRem(this.unixEpochSeconds, SecondsPerMinutes, out remainder) % 60;
 				unchecked
 				{
 					return
-						( int )( this.unixEpochSeconds < 0
-							? minute + ( remainder != 0 ? 59 : ( minute < 0 ? 60 : 0 ) )
+						(int)(this.unixEpochSeconds < 0
+							? minute + (remainder != 0 ? 59 : (minute < 0 ? 60 : 0))
 							: minute
 						);
 				}
@@ -168,7 +144,7 @@ namespace MsgPack
 		{
 			get
 			{
-				var second = unchecked( ( int )( this.unixEpochSeconds % 60 ) );
+				var second = unchecked((int)(this.unixEpochSeconds % 60));
 				return second < 0 ? second + 60 : second;
 			}
 		}
@@ -179,7 +155,7 @@ namespace MsgPack
 		/// <value>A millisecond portion of this instance. The value will be between 0 and 999.</value>
 		public int Millisecond
 		{
-			get { return this.NanosecondsPart / ( 1000 * 1000 ); }
+			get { return this.NanosecondsPart / (1000 * 1000); }
 		}
 
 		/// <summary>
@@ -188,7 +164,7 @@ namespace MsgPack
 		/// <value>A microsecond portion of this instance. The value will be between 0 and 999.</value>
 		public int Microsecond
 		{
-			get { return ( this.NanosecondsPart / 1000 ) % 1000; }
+			get { return (this.NanosecondsPart / 1000) % 1000; }
 		}
 
 		/// <summary>
@@ -200,7 +176,7 @@ namespace MsgPack
 		/// </remarks>
 		public int Nanosecond
 		{
-			get { return ( this.NanosecondsPart ) % 1000; }
+			get { return (this.NanosecondsPart) % 1000; }
 		}
 
 		/// <summary>
@@ -211,7 +187,7 @@ namespace MsgPack
 		{
 			get
 			{
-				return new Timestamp( this.unixEpochSeconds - this.TimeOfDay.unixEpochSeconds, 0 );
+				return new Timestamp(this.unixEpochSeconds - this.TimeOfDay.unixEpochSeconds, 0);
 			}
 		}
 
@@ -225,7 +201,7 @@ namespace MsgPack
 			{
 				return
 					new Timestamp(
-						this.unixEpochSeconds < 0 ? ( this.unixEpochSeconds % SecondsPerDay + SecondsPerDay ) : ( this.unixEpochSeconds % SecondsPerDay ),
+						this.unixEpochSeconds < 0 ? (this.unixEpochSeconds % SecondsPerDay + SecondsPerDay) : (this.unixEpochSeconds % SecondsPerDay),
 						this.NanosecondsPart
 					);
 			}
@@ -240,12 +216,12 @@ namespace MsgPack
 			get
 			{
 				long remainder;
-				var divided = unchecked( ( int )DivRem( this.unixEpochSeconds, SecondsPerDay, out remainder ));
-				return	
-					( DayOfWeek )(
+				var divided = unchecked((int)DivRem(this.unixEpochSeconds, SecondsPerDay, out remainder));
+				return
+					(DayOfWeek)(
 						(
-							( this.unixEpochSeconds < 0
-								? ( ( divided + ( ( int )remainder < 0 ? -1 : 0 ) ) % 7 + 7 )
+							(this.unixEpochSeconds < 0
+								? ((divided + ((int)remainder < 0 ? -1 : 0)) % 7 + 7)
 								: divided
 							) + DayOfWeekOfEpoc
 						) % 7
@@ -263,7 +239,7 @@ namespace MsgPack
 			{
 				long year;
 				int month, day, dayOfYear;
-				this.GetDatePart( out year, out month, out day, out dayOfYear );
+				this.GetDatePart(out year, out month, out day, out dayOfYear);
 				return dayOfYear;
 			}
 		}
@@ -281,20 +257,20 @@ namespace MsgPack
 		/// </remarks>
 		public bool IsLeapYear
 		{
-			get { return IsLeapYearInternal( this.Year ); }
+			get { return IsLeapYearInternal(this.Year); }
 		}
 
-		internal static bool IsLeapYearInternal( long year )
+		internal static bool IsLeapYearInternal(long year)
 		{
 			// Note: This algorithm assumes that BC uses leap year same as AD and B.C.1 is 0.
 			// This algorithm avoids remainder operation as possible.
-			return !( year % 4 != 0 || ( year % 100 == 0 && year % 400 != 0 ) );
+			return !(year % 4 != 0 || (year % 100 == 0 && year % 400 != 0));
 		}
 
-		internal static int GetLastDay( int month, bool isLeapYear )
+		internal static int GetLastDay(int month, bool isLeapYear)
 		{
-			var lastDay = LastDays[ month ];
-			if ( month == 2 )
+			var lastDay = LastDays[month];
+			if (month == 2)
 			{
 				lastDay = isLeapYear ? 29 : 28;
 			}
@@ -302,27 +278,27 @@ namespace MsgPack
 			return lastDay;
 		}
 
-		private void GetDatePart( out long year, out int month, out int day, out int dayOfYear )
+		private void GetDatePart(out long year, out int month, out int day, out int dayOfYear)
 		{
-			if ( this.unixEpochSeconds < -UnixEpochInSeconds )
+			if (this.unixEpochSeconds < -UnixEpochInSeconds)
 			{
-				this.GetDatePartBC( out year, out month, out day, out dayOfYear );
+				this.GetDatePartBC(out year, out month, out day, out dayOfYear);
 			}
 			else
 			{
-				this.GetDatePartAD( out year, out month, out day, out dayOfYear );
+				this.GetDatePartAD(out year, out month, out day, out dayOfYear);
 			}
 		}
 
-		private void GetDatePartAD( out long year, out int month, out int day, out int dayOfYear )
+		private void GetDatePartAD(out long year, out int month, out int day, out int dayOfYear)
 		{
-			Contract.Assert( this.unixEpochSeconds >= -UnixEpochInSeconds, this.unixEpochSeconds + " > " + ( -UnixEpochInSeconds ) );
+			Debug.Assert(this.unixEpochSeconds >= -UnixEpochInSeconds, this.unixEpochSeconds + " > " + (-UnixEpochInSeconds));
 
 			// From coreclr System.DateTime.cs
 			// https://github.com/dotnet/coreclr/blob/0825741447c14a6a70c60b7c429e16f95214e74e/src/mscorlib/shared/System/DateTime.cs#L863
 
 			// First, use 0001-01-01 as epoch to simplify leap year calculation
-			var seconds = unchecked( ( ulong )( this.unixEpochSeconds + UnixEpochInSeconds ) );
+			var seconds = unchecked((ulong)(this.unixEpochSeconds + UnixEpochInSeconds));
 
 			// number of days since 0001-01-01
 			var daysOffset = seconds / SecondsPerDay;
@@ -330,12 +306,12 @@ namespace MsgPack
 			// number of whole 400-year periods since 0001-01-01
 			var numberOf400Years = daysOffset / DaysPer400Years;
 			// day number within 400-year period
-			var daysIn400Years = unchecked( ( uint )( daysOffset - numberOf400Years * DaysPer400Years ) );
+			var daysIn400Years = unchecked((uint)(daysOffset - numberOf400Years * DaysPer400Years));
 
 			// number of whole 100-year periods within 400-year period
 			var numberOf100Years = daysIn400Years / DaysPer100Years;
 			// Last 100-year period has an extra day, so decrement result if 4
-			if ( numberOf100Years == 4 )
+			if (numberOf100Years == 4)
 			{
 				numberOf100Years = 3;
 			}
@@ -351,63 +327,62 @@ namespace MsgPack
 			// number of whole years within 4-year period
 			var numberOf1Year = daysIn4Years / DaysPerYear;
 			// Last year has an extra day, so decrement result if 4
-			if ( numberOf1Year == 4 )
+			if (numberOf1Year == 4)
 			{
 				numberOf1Year = 3;
 			}
 
 			// compute year
-			year = unchecked( ( long )( numberOf400Years * 400 + numberOf100Years * 100 + numberOf4years * 4 + numberOf1Year + 1 ) );
+			year = unchecked((long)(numberOf400Years * 400 + numberOf100Years * 100 + numberOf4years * 4 + numberOf1Year + 1));
 			// day number within year
 			var daysInYear = daysIn4Years - numberOf1Year * DaysPerYear;
-			dayOfYear = unchecked( ( int )( daysInYear + 1 ) );
+			dayOfYear = unchecked((int)(daysInYear + 1));
 			// Leap year calculation
-			var isLeapYear = numberOf1Year == 3 && ( numberOf4years != 24 || numberOf100Years == 3 );
+			var isLeapYear = numberOf1Year == 3 && (numberOf4years != 24 || numberOf100Years == 3);
 			var days = isLeapYear ? DaysToMonth366 : DaysToMonth365;
 			// All months have less than 32 days, so n >> 5 is a good conservative
 			// estimate for the month
-			var numberOfMonth = ( daysInYear >> 5 ) + 1;
-#if DEBUG
-			Contract.Assert( numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear );
-#endif // DEBUG
+			var numberOfMonth = (daysInYear >> 5) + 1;
+
+			Debug.Assert(numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear);
+
 			// m = 1-based month number
-			while ( daysInYear >= days[ numberOfMonth ] )
+			while (daysInYear >= days[numberOfMonth])
 			{
 				numberOfMonth++;
-#if DEBUG
-				Contract.Assert( numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear );
-#endif // DEBUG
+
+				Debug.Assert(numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear);
 			}
 			// compute month and day
-			month = unchecked( ( int )numberOfMonth );
-			day = unchecked( ( int )( daysInYear - days[ numberOfMonth - 1 ] + 1 ) );
+			month = unchecked((int)numberOfMonth);
+			day = unchecked((int)(daysInYear - days[numberOfMonth - 1] + 1));
 		}
 
-		private void GetDatePartBC( out long year, out int month, out int day, out int dayOfYear )
+		private void GetDatePartBC(out long year, out int month, out int day, out int dayOfYear)
 		{
-			Contract.Assert( this.unixEpochSeconds < -UnixEpochInSeconds, this.unixEpochSeconds + " > " + ( -UnixEpochInSeconds ) );
+			Debug.Assert(this.unixEpochSeconds < -UnixEpochInSeconds, this.unixEpochSeconds + " > " + (-UnixEpochInSeconds));
 
 			// From coreclr System.DateTime.cs
 			// https://github.com/dotnet/coreclr/blob/0825741447c14a6a70c60b7c429e16f95214e74e/src/mscorlib/shared/System/DateTime.cs#L863
 
 			// First, use 0001-01-01 as epoch to simplify leap year calculation.
 			// This method calculate negative offset from 0001-01-01.
-			var seconds = unchecked( ( ulong )( ( this.unixEpochSeconds + UnixEpochInSeconds ) * -1 ) );
+			var seconds = unchecked((ulong)((this.unixEpochSeconds + UnixEpochInSeconds) * -1));
 
 			// number of days since 0001-01-01
 			var daysOffset = seconds / SecondsPerDay;
-			daysOffset += ( seconds % SecondsPerDay ) > 0 ? 1u : 0u;
+			daysOffset += (seconds % SecondsPerDay) > 0 ? 1u : 0u;
 
 			// number of whole 400-year periods since 0001-01-01
-			var numberOf400Years = ( daysOffset - 1 ) / DaysPer400Years; // decrement offset 1 to adjust 1 to 12-31
-			// day number within 400-year period
-			var daysIn400Years = unchecked( ( uint )( daysOffset - numberOf400Years * DaysPer400Years ) );
+			var numberOf400Years = (daysOffset - 1) / DaysPer400Years; // decrement offset 1 to adjust 1 to 12-31
+																	   // day number within 400-year period
+			var daysIn400Years = unchecked((uint)(daysOffset - numberOf400Years * DaysPer400Years));
 
 			// number of whole 100-year periods within 400-year period
 			var numberOf100Years =
-				daysIn400Years <= ( DaysPer100Years  + 1 ) // 1st year is leap year (power of 400)
+				daysIn400Years <= (DaysPer100Years + 1) // 1st year is leap year (power of 400)
 					? 0
-					: ( ( daysIn400Years - 2 ) / DaysPer100Years ); // decrement 1st leap year day and offset 1 to adjust 1 to 12-31
+					: ((daysIn400Years - 2) / DaysPer100Years); // decrement 1st leap year day and offset 1 to adjust 1 to 12-31
 
 			// day number within 100-year period
 			var daysIn100Years = daysIn400Years - numberOf100Years * DaysPer100Years;
@@ -416,46 +391,45 @@ namespace MsgPack
 			var numberOf4years =
 				daysIn100Years == 0
 					? 0
-					: ( ( daysIn100Years - 1 ) / DaysPer4Years ); // decrement offset 1 to adjust 1 to 12-31
+					: ((daysIn100Years - 1) / DaysPer4Years); // decrement offset 1 to adjust 1 to 12-31
 
 			// day number within 4-year period
 			var daysIn4Years = daysIn100Years - numberOf4years * DaysPer4Years;
 
 			// number of whole years within 4-year period
 			var numberOf1Year =
-				daysIn4Years <= ( DaysPerYear + ( numberOf4years != 0 ? 1 : 0 ) ) // is leap year in 4 years range?
+				daysIn4Years <= (DaysPerYear + (numberOf4years != 0 ? 1 : 0)) // is leap year in 4 years range?
 					? 0
-					: ( ( daysIn4Years - 2 ) / DaysPerYear ); // decrement 1st leap year day and offset 1 to adjust 1 to 12-31
+					: ((daysIn4Years - 2) / DaysPerYear); // decrement 1st leap year day and offset 1 to adjust 1 to 12-31
 
 			// compute year, note that 0001 -1 is 0000 (=B.C.1)
-			year = -unchecked( ( long )( numberOf400Years * 400 + numberOf100Years * 100 + numberOf4years * 4 + numberOf1Year ) );
-			var isLeapYear = numberOf1Year == 0 && ( numberOf4years != 0 || numberOf100Years == 0 );
+			year = -unchecked((long)(numberOf400Years * 400 + numberOf100Years * 100 + numberOf4years * 4 + numberOf1Year));
+			var isLeapYear = numberOf1Year == 0 && (numberOf4years != 0 || numberOf100Years == 0);
 			// day number within year
 			var daysInYear =
 				isLeapYear
-				? ( 366 - daysIn4Years )
-				: ( 365 - ( daysIn4Years - 1 - numberOf1Year * DaysPerYear ) );
+				? (366 - daysIn4Years)
+				: (365 - (daysIn4Years - 1 - numberOf1Year * DaysPerYear));
 
-			dayOfYear = unchecked( ( int )( daysInYear + 1 ) );
+			dayOfYear = unchecked((int)(daysInYear + 1));
 			// Leap year calculation
 			var days = isLeapYear ? DaysToMonth366 : DaysToMonth365;
 			// All months have more than 32 days, so n >> 5 is a good conservative
 			// estimate for the month
-			var numberOfMonth = ( daysInYear >> 5 ) + 1;
-#if DEBUG
-			Contract.Assert( numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear );
-#endif // DEBUG
+			var numberOfMonth = (daysInYear >> 5) + 1;
+
+			Debug.Assert(numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear);
+
 			// m = 1-based month number
-			while ( daysInYear >= days[ numberOfMonth ] )
+			while (daysInYear >= days[numberOfMonth])
 			{
 				numberOfMonth++;
-#if DEBUG
-				Contract.Assert( numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear );
-#endif // DEBUG
+
+				Debug.Assert(numberOfMonth <= 12, numberOfMonth + "<= 12, daysInYear = " + daysInYear);
 			}
 			// compute month and day
-			month = unchecked( ( int )numberOfMonth );
-			day = unchecked( ( int )( daysInYear - days[ numberOfMonth - 1 ] + 1 ) );
+			month = unchecked((int)numberOfMonth);
+			day = unchecked((int)(daysInYear - days[numberOfMonth - 1] + 1));
 		}
 
 		/// <summary>
@@ -494,7 +468,7 @@ namespace MsgPack
 #else // !NET35 && !NET45 && !NETSTANDARD1_1 && !UNITY && !SILVERLIGHT
 					( now.Ticks / TimeSpan.TicksPerSecond ) - UnixEpochInSeconds,
 #endif // !NET35 && !NET45 && !NETSTANDARD1_1 && !UNITY && !SILVERLIGHT
-					unchecked( ( int )( now.Ticks % 10000000 * 100 ) )
+					unchecked((int)(now.Ticks % 10000000 * 100))
 				);
 			}
 		}
