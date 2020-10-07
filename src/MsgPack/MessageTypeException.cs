@@ -21,8 +21,6 @@ namespace MsgPack
 		/// <summary>
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with the default error message.
 		/// </summary>
-		[Obsolete("Use .ctor(long) instead.")]
-		[EditorBrowsable(EditorBrowsableState.Never)]
 		public MessageTypeException() : this(null) { }
 
 		public MessageTypeException(long position) : this(position, null) { }
@@ -31,8 +29,6 @@ namespace MsgPack
 		///		Initializes a new instance of the <see cref="MessageTypeException"/> class with a specified error message.
 		/// </summary>
 		/// <param name="message">The message that describes the error. </param>
-		[Obsolete("Use .ctor(long, string?) instead.")]
-		[EditorBrowsable(EditorBrowsableState.Never)]
 		public MessageTypeException(string? message) : this(message, null) { }
 
 		public MessageTypeException(long position, string? message) : this(position, message, null) { }
@@ -44,8 +40,6 @@ namespace MsgPack
 		/// <param name="inner">
 		///		The exception that is the cause of the current exception, or a <c>null</c> if no inner exception is specified.
 		/// </param>
-		[Obsolete("Use .ctor(long, string?, Exception?) instead.")]
-		[EditorBrowsable(EditorBrowsableState.Never)]
 		public MessageTypeException(string? message, Exception? inner) : this(0, message ?? "Invalid message type.", inner) { }
 
 		public MessageTypeException(long position, string? message, Exception? innerException)
