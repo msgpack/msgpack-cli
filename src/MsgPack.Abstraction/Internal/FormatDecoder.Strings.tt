@@ -24,21 +24,21 @@ namespace MsgPack.Internal
 foreach (var spec in new [] {
 	new
 	{
-		Name = "String", Type = "String", ThrowSuffix = "ForString",
+		Name = "String", Type = "String", SpanType = "Span<char>", ThrowSuffix = "ForString", SpanTypeDoc = "<see cref=\"Span{T}\" /> of <see cref=\"Char\" />",
 		ExtraParameters = "Encoding? encoding = null, ",
 		ExtraParameterDocs = new [] { "<param name=\"encoding\">Specify charactor encoding. This value can be omitted, and default is UTF-8 without BOM.</param>" },
 		ExtraArguments = "encoding, ", IfDef = String.Empty
 	},
 	new
 	{
-		Name = "Utf8String", Type = "Utf8String", ThrowSuffix = "ForUtf8String",
+		Name = "Utf8String", Type = "Utf8String", SpanType = "Utf8Span", ThrowSuffix = "ForUtf8String", SpanTypeDoc = "<see cref=\"Utf8Span\" />",
 		ExtraParameters = "Encoding? encoding = null, ",
 		ExtraParameterDocs = new [] { "<param name=\"encoding\">Specify charactor encoding. This value can be omitted, and default is UTF-8 without BOM.</param>" },
 		ExtraArguments = "encoding, ", IfDef = "FEATURE_UTF8STRING"
 	},
 	new
 	{
-		Name = "Binary", Type = "byte[]", ThrowSuffix = String.Empty,
+		Name = "Binary", Type = "byte[]", SpanType = "Span<byte>", ThrowSuffix = String.Empty, SpanTypeDoc = "<see cref=\"Span{T}\" /> of <see cref=\"Byte\" />",
 		ExtraParameters = String.Empty,
 		ExtraParameterDocs = Array.Empty<string>(),
 		ExtraArguments = String.Empty, IfDef = String.Empty
@@ -164,6 +164,127 @@ foreach (var spec in new [] {
 		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= spec.Type #>" /> type.</exception>
 		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
 		public abstract <#= spec.Type #>? DecodeNullable<#= spec.Name #>(ref SequenceReader<byte> source, out int requestHint, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default);
+
+		/// <summary>
+		///		Decodes the value from specified sequence to <#= spec.SpanTypeDoc #>.
+		/// </summary>
+		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
+		/// <param name="buffer"><#= spec.SpanTypeDoc #> which will store the decoded binary.</param>
+<#
+	foreach (var doc in spec.ExtraParameterDocs)
+	{
+#>
+		/// <#= doc #>
+<#
+	}
+#>
+		/// <param name="cacellationToken"><see cref="CancellationToken" /> to cancel long running operation. This value can be omitted.</param>
+		/// <return>
+		///		The length of the decoded value.
+		///		This value can be <c>0</c> for empty string.
+		/// </return>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
+		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= spec.Type #>" /> type.</exception>
+		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public int Decode<#= spec.Name #>(ref SequenceReader<byte> source, <#= spec.SpanType #> buffer, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default)
+		{
+			var result = this.Decode<#= spec.Name #>(ref source, buffer, out var requestHint, <#= spec.ExtraArguments #>cancellationToken);
+			if (requestHint != 0)
+			{
+				Throw.InsufficientInput<#= spec.ThrowSuffix #>(source.Consumed, typeof(<#= spec.Type #>), <#= spec.ExtraArguments #>requestHint);
+			}
+
+			return result!;
+		}
+
+		/// <summary>
+		///		Decodes the value from specified sequence to <#= spec.SpanTypeDoc #>.
+		/// </summary>
+		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
+		/// <param name="buffer"><#= spec.SpanTypeDoc #> which will store the decoded binary.</param>
+		/// <param name="requestHint">
+		///		<c>0</c> if this method succeeds to decode value; Positive integer when <paramref name="source" /> does not contain enough bytes to decode, and required memory bytes hint is stored.
+		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
+		/// </param>
+<#
+	foreach (var doc in spec.ExtraParameterDocs)
+	{
+#>
+		/// <#= doc #>
+<#
+	}
+#>
+		/// <param name="cacellationToken"><see cref="CancellationToken" /> to cancel long running operation. This value can be omitted.</param>
+		/// <return>
+		///		The length of the decoded value.
+		///		This value can be <c>0</c> for empty string.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
+		/// </return>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
+		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= spec.Type #>" /> type.</exception>
+		public abstract int Decode<#= spec.Name #>(ref SequenceReader<byte> source, <#= spec.SpanType #> buffer, out int requestHint, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default);
+
+		/// <summary>
+		///		Decodes the value or <c>null</c> from specified sequence to <#= spec.SpanTypeDoc #>.
+		/// </summary>
+		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
+		/// <param name="buffer"><#= spec.SpanTypeDoc #> which will store the decoded binary.</param>
+<#
+	foreach (var doc in spec.ExtraParameterDocs)
+	{
+#>
+		/// <#= doc #>
+<#
+	}
+#>
+		/// <return>
+		///		The length of the decoded value;
+		///		<c>null</c> when the underlying value is <c>null</c>.
+		///		This value can be <c>0</c> for empty string.
+		/// </return>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
+		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= spec.Type #>" /> type.</exception>
+		///	<exception cref="InsufficientInputException"><paramref name="source"/> does not contain enough bytes to decode.</exception>
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public int? DecodeNullable<#= spec.Name #>(ref SequenceReader<byte> source, <#= spec.SpanType #> buffer, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default)
+		{
+			var result = this.DecodeNullable<#= spec.Name #>(ref source, buffer, out var requestHint, <#= spec.ExtraArguments #>cancellationToken);
+			if (requestHint != 0)
+			{
+				Throw.InsufficientInput<#= spec.ThrowSuffix #>(source.Consumed, typeof(<#= spec.Type #>), <#= spec.ExtraArguments #>requestHint);
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		///		Decodes the value or <c>null</c> from specified sequence to <#= spec.SpanTypeDoc #>.
+		/// </summary>
+		/// <param name="source"><see cref="SequenceReader{T}">SequenceReader&lt;byte&gt;</see>.</param>
+		/// <param name="buffer"><#= spec.SpanTypeDoc #> which will store the decoded binary.</param>
+		/// <param name="requestHint">
+		///		<c>0</c> if this method succeeds to decode value; Positive integer when <paramref name="source" /> does not contain enough bytes to decode, and required memory bytes hint is stored.
+		///		Note that <c>-1</c> represents unknown size. If so, caller must supply new buffer with most efficient size.
+		/// </param>
+<#
+	foreach (var doc in spec.ExtraParameterDocs)
+	{
+#>
+		/// <#= doc #>
+<#
+	}
+#>
+		/// <return>
+		///		The length of the decoded value;
+		///		<c>null</c> when the underlying value is <c>null</c>.
+		///		This value can be <c>0</c> for empty string.
+		///		Note that the value of this return is not defined when <paramref name="requestHint" /> is <c>0</c>. 
+		/// </return>
+		/// <exception cref="MessageFormatException"><paramref name="source"/> contains valid byte sequence for the underlying format.</exception>
+		/// <exception cref="MessageTypeException">The underlying format value is not compatible to <see cref="<#= spec.Type #>" /> type.</exception>
+		[MethodImpl(MethodImplOptionsShim.AggressiveInlining)]
+		public abstract int? DecodeNullable<#= spec.Name #>(ref SequenceReader<byte> source, <#= spec.SpanType #> buffer, out int requestHint, <#= spec.ExtraParameters #>CancellationToken cancellationToken = default);
 
 <#
 	if (!String.IsNullOrEmpty(spec.IfDef))
