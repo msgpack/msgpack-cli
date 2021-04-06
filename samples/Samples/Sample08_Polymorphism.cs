@@ -56,11 +56,7 @@ namespace Samples
 			using ( var buffer = new MemoryStream() )
 			{
 				serializer.Pack(
-					buffer, new PolymorphicHolder
-					{
-						WithRuntimeType = new FileObject { Path = "/path/to/file" },
-						WithKnownType = new DirectoryObject { Path = "/path/to/dir/" }
-					}
+					buffer, rootObject	
 				);
 
 				buffer.Position = 0;
