@@ -29,10 +29,10 @@
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.0'">
-    <PackageReference Include="Microsoft.NETCore.App" Version="1.0.5" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="Microsoft.NETCore.App" Version="2.0.0" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp1.0'">
     <Compile Include="..\MsgPack.UnitTest\Serialization\RoslynCodeGeneration.cs">
