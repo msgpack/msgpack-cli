@@ -1,4 +1,4 @@
-﻿#region -- License Terms --
+#region -- License Terms --
 //
 // MessagePack for CLI
 //
@@ -69,7 +69,7 @@ namespace Samples
 			Debug.WriteLine( "Same Id? {0}", targetObject.Id == deserializedObject.Id );
 			Debug.WriteLine( "Same Title? {0}", targetObject.Title == deserializedObject.Title );
 			// Note that MsgPack defacto-standard is Unix epoc in milliseconds precision, so micro- and nano- seconds will be lost. See sample 04 for workaround.
-			Debug.WriteLine( "Same Date? {0}", targetObject.Date.ToString( "YYYY-MM-DD HH:mm:ss.fff" ) == deserializedObject.Date.ToString( "YYYY-MM-DD HH:mm:ss.fff" ) );
+			Debug.WriteLine( "Same Date? {0}", targetObject.Date.ToString( "yyyy-MM-dd HH:mm:ss.fff" ) == deserializedObject.Date.ToLocalTime().ToString( "yyyy-MM-dd HH:mm:ss.fff" ) );
 			// Image and Comment tests are ommitted here.
 			// Collection elements are deserialzed.
 			Debug.WriteLine( "Items count: {0}", deserializedObject.Tags.Count );
